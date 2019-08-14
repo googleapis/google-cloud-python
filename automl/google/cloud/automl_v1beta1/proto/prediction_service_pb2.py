@@ -42,7 +42,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1B\026PredictionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/automl_v1beta1/proto/prediction_service.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a\x32google/cloud/automl_v1beta1/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a\x17google/api/client.proto"\xd4\x01\n\x0ePredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\x07payload\x18\x02 \x01(\x0b\x32+.google.cloud.automl.v1beta1.ExamplePayload\x12G\n\x06params\x18\x03 \x03(\x0b\x32\x37.google.cloud.automl.v1beta1.PredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd1\x01\n\x0fPredictResponse\x12?\n\x07payload\x18\x01 \x03(\x0b\x32..google.cloud.automl.v1beta1.AnnotationPayload\x12L\n\x08metadata\x18\x02 \x03(\x0b\x32:.google.cloud.automl.v1beta1.PredictResponse.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xba\x02\n\x13\x42\x61tchPredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x0cinput_config\x18\x03 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.BatchPredictInputConfig\x12L\n\routput_config\x18\x04 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.BatchPredictOutputConfig\x12L\n\x06params\x18\x05 \x03(\x0b\x32<.google.cloud.automl.v1beta1.BatchPredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x14\n\x12\x42\x61tchPredictResult2\xb4\x03\n\x11PredictionService\x12\xa8\x01\n\x07Predict\x12+.google.cloud.automl.v1beta1.PredictRequest\x1a,.google.cloud.automl.v1beta1.PredictResponse"B\x82\xd3\xe4\x93\x02<"7/v1beta1/{name=projects/*/locations/*/models/*}:predict:\x01*\x12\xa8\x01\n\x0c\x42\x61tchPredict\x12\x30.google.cloud.automl.v1beta1.BatchPredictRequest\x1a\x1d.google.longrunning.Operation"G\x82\xd3\xe4\x93\x02\x41"</v1beta1/{name=projects/*/locations/*/models/*}:batchPredict:\x01*\x1aI\xca\x41\x15\x61utoml.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xbd\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x16PredictionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n:google/cloud/automl_v1beta1/proto/prediction_service.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a:google/cloud/automl_v1beta1/proto/annotation_payload.proto\x1a\x32google/cloud/automl_v1beta1/proto/data_items.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a\x32google/cloud/automl_v1beta1/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a\x17google/api/client.proto"\xd4\x01\n\x0ePredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12<\n\x07payload\x18\x02 \x01(\x0b\x32+.google.cloud.automl.v1beta1.ExamplePayload\x12G\n\x06params\x18\x03 \x03(\x0b\x32\x37.google.cloud.automl.v1beta1.PredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd1\x01\n\x0fPredictResponse\x12?\n\x07payload\x18\x01 \x03(\x0b\x32..google.cloud.automl.v1beta1.AnnotationPayload\x12L\n\x08metadata\x18\x02 \x03(\x0b\x32:.google.cloud.automl.v1beta1.PredictResponse.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xba\x02\n\x13\x42\x61tchPredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x0cinput_config\x18\x03 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.BatchPredictInputConfig\x12L\n\routput_config\x18\x04 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.BatchPredictOutputConfig\x12L\n\x06params\x18\x05 \x03(\x0b\x32<.google.cloud.automl.v1beta1.BatchPredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x96\x01\n\x12\x42\x61tchPredictResult\x12O\n\x08metadata\x18\x01 \x03(\x0b\x32=.google.cloud.automl.v1beta1.BatchPredictResult.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xb4\x03\n\x11PredictionService\x12\xa8\x01\n\x07Predict\x12+.google.cloud.automl.v1beta1.PredictRequest\x1a,.google.cloud.automl.v1beta1.PredictResponse"B\x82\xd3\xe4\x93\x02<"7/v1beta1/{name=projects/*/locations/*/models/*}:predict:\x01*\x12\xa8\x01\n\x0c\x42\x61tchPredict\x12\x30.google.cloud.automl.v1beta1.BatchPredictRequest\x1a\x1d.google.longrunning.Operation"G\x82\xd3\xe4\x93\x02\x41"</v1beta1/{name=projects/*/locations/*/models/*}:batchPredict:\x01*\x1aI\xca\x41\x15\x61utoml.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xbd\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x16PredictionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -449,23 +449,98 @@ _BATCHPREDICTREQUEST = _descriptor.Descriptor(
 )
 
 
+_BATCHPREDICTRESULT_METADATAENTRY = _descriptor.Descriptor(
+    name="MetadataEntry",
+    full_name="google.cloud.automl.v1beta1.BatchPredictResult.MetadataEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.automl.v1beta1.BatchPredictResult.MetadataEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.automl.v1beta1.BatchPredictResult.MetadataEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=769,
+    serialized_end=816,
+)
+
 _BATCHPREDICTRESULT = _descriptor.Descriptor(
     name="BatchPredictResult",
     full_name="google.cloud.automl.v1beta1.BatchPredictResult",
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
-    fields=[],
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="metadata",
+            full_name="google.cloud.automl.v1beta1.BatchPredictResult.metadata",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
     extensions=[],
-    nested_types=[],
+    nested_types=[_BATCHPREDICTRESULT_METADATAENTRY],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1135,
-    serialized_end=1155,
+    serialized_start=1136,
+    serialized_end=1286,
 )
 
 _PREDICTREQUEST_PARAMSENTRY.containing_type = _PREDICTREQUEST
@@ -498,6 +573,10 @@ _BATCHPREDICTREQUEST.fields_by_name[
 _BATCHPREDICTREQUEST.fields_by_name[
     "params"
 ].message_type = _BATCHPREDICTREQUEST_PARAMSENTRY
+_BATCHPREDICTRESULT_METADATAENTRY.containing_type = _BATCHPREDICTRESULT
+_BATCHPREDICTRESULT.fields_by_name[
+    "metadata"
+].message_type = _BATCHPREDICTRESULT_METADATAENTRY
 DESCRIPTOR.message_types_by_name["PredictRequest"] = _PREDICTREQUEST
 DESCRIPTOR.message_types_by_name["PredictResponse"] = _PREDICTRESPONSE
 DESCRIPTOR.message_types_by_name["BatchPredictRequest"] = _BATCHPREDICTREQUEST
@@ -535,11 +614,18 @@ PredictRequest = _reflection.GeneratedProtocolMessageType(
           ``score_threshold`` - (float) A value from 0.0 to 1.0. When
           the model makes predictions for an image, it will only produce
           results that have at least this confidence score. The default
-          is 0.5. \* For Tables: ``feature_importance`` - (boolean)
-          Whether  [feature\_importance][[google.cloud.automl.v1beta1.Ta
-          blesModelColumnInfo.feature\_importance] should be populated
-          in the returned  [TablesAnnotation(-s)][[google.cloud.automl.v
-          1beta1.TablesAnnotation]. The default is false.
+          is 0.5.  -  For Image Object Detection: ``score_threshold`` -
+          (float) When Model    detects objects on the image, it will
+          only produce bounding boxes    which have at least this
+          confidence score. Value in 0 to 1 range,    default is 0.5.
+          ``max_bounding_box_count`` - (int64) No more than    this
+          number of bounding boxes will be returned in the response.
+          Default is 100, the requested value may be limited by server.
+          -  For Tables: ``feature_importance`` - (boolean) Whether  [fe
+          ature\_importance][[google.cloud.automl.v1beta1.TablesModelCol
+          umnInfo.feature\_importance] should be populated in the
+          returned  [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.
+          TablesAnnotation]. The default is false.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.PredictRequest)
     ),
@@ -620,10 +706,24 @@ BatchPredictRequest = _reflection.GeneratedProtocolMessageType(
           predictions should be written.
       params:
           Additional domain-specific parameters for the predictions, any
-          string must be up to 25000 characters long.  -  For Video
-          Classification : ``score_threshold`` - (float) A value from
-          0.0 to 1.0. When the model makes predictions for a video, it
-          will    only produce results that have at least this
+          string must be up to 25000 characters long.  -  For Text
+          Classification:  ``score_threshold`` - (float) A value from
+          0.0 to 1.0. When the model makes predictions for a text
+          snippet, it will only produce results that have at least this
+          confidence score. The default is 0.5.  -  For Image
+          Classification:  ``score_threshold`` - (float) A value from
+          0.0 to 1.0. When the model makes predictions for an image, it
+          will only produce results that have at least this confidence
+          score. The default is 0.5.  -  For Image Object Detection:
+          ``score_threshold`` - (float) When Model detects objects on
+          the image, it will only produce bounding boxes which have at
+          least this confidence score. Value in 0 to 1 range, default is
+          0.5. ``max_bounding_box_count`` - (int64) No more than this
+          number of bounding boxes will be produced per image. Default
+          is 100, the requested value may be limited by server.  -  For
+          Video Classification : ``score_threshold`` - (float) A value
+          from    0.0 to 1.0. When the model makes predictions for a
+          video, it will    only produce results that have at least this
           confidence score. The    default is 0.5.
           ``segment_classification`` - (boolean) Set to true to
           request segment-level classification. AutoML Video
@@ -670,23 +770,44 @@ BatchPredictResult = _reflection.GeneratedProtocolMessageType(
     "BatchPredictResult",
     (_message.Message,),
     dict(
+        MetadataEntry=_reflection.GeneratedProtocolMessageType(
+            "MetadataEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_BATCHPREDICTRESULT_METADATAENTRY,
+                __module__="google.cloud.automl_v1beta1.proto.prediction_service_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BatchPredictResult.MetadataEntry)
+            ),
+        ),
         DESCRIPTOR=_BATCHPREDICTRESULT,
         __module__="google.cloud.automl_v1beta1.proto.prediction_service_pb2",
         __doc__="""Result of the Batch Predict. This message is returned in
   [response][google.longrunning.Operation.response] of the operation
   returned by the
   [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
+  
+  
+  Attributes:
+      metadata:
+          Additional domain-specific prediction response metadata.  -
+          For Image Object Detection: ``max_bounding_box_count`` -
+          (int64) At    most that many bounding boxes per image could
+          have been returned.  -  For Video Object Tracking:
+          ``max_bounding_box_count`` - (int64) At    most that many
+          bounding boxes per frame could have been returned.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.BatchPredictResult)
     ),
 )
 _sym_db.RegisterMessage(BatchPredictResult)
+_sym_db.RegisterMessage(BatchPredictResult.MetadataEntry)
 
 
 DESCRIPTOR._options = None
 _PREDICTREQUEST_PARAMSENTRY._options = None
 _PREDICTRESPONSE_METADATAENTRY._options = None
 _BATCHPREDICTREQUEST_PARAMSENTRY._options = None
+_BATCHPREDICTRESULT_METADATAENTRY._options = None
 
 _PREDICTIONSERVICE = _descriptor.ServiceDescriptor(
     name="PredictionService",
@@ -696,8 +817,8 @@ _PREDICTIONSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\025automl.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=1158,
-    serialized_end=1594,
+    serialized_start=1289,
+    serialized_end=1725,
     methods=[
         _descriptor.MethodDescriptor(
             name="Predict",

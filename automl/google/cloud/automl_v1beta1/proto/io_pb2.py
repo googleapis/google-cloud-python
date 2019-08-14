@@ -937,11 +937,11 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] is
   expected, unless specified otherwise. Additionally any input .CSV file
   by itself must be 100MB or smaller, unless specified otherwise. If an
-  "example" file (i.e. image, video etc.) with identical content (even if
-  it had different GCS\_FILE\_PATH) is mentioned multiple times, then its
-  label, bounding boxes etc. are appended. The same file should be always
-  provided with the same ML\_USE and GCS\_FILE\_PATH, if it is not then
-  these values are nondeterministically selected from the given ones.
+  "example" file (that is, image, video etc.) with identical content (even
+  if it had different GCS\_FILE\_PATH) is mentioned multiple times, then
+  its label, bounding boxes etc. are appended. The same file should be
+  always provided with the same ML\_USE and GCS\_FILE\_PATH, if it is not,
+  then these values are nondeterministically selected from the given ones.
   
   The formats are represented in EBNF with commas being literal and with
   non-terminal symbols defined near the end of this comment. The formats
@@ -966,11 +966,15 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      is 0.01, and no more than 500 BOUNDING\_BOX-es per image are allowed
      (one BOUNDING\_BOX is defined per line). If an image has not yet been
      labeled, then it should be mentioned just once with no LABEL and the
-     ",,,,,,," in place of the BOUNDING\_BOX. Four sample rows:
+     ",,,,,,," in place of the BOUNDING\_BOX. For images which are known
+     to not contain any bounding boxes, they should be labelled explictly
+     as "NEGATIVE\_IMAGE", followed by ",,,,,,," in place of the
+     BOUNDING\_BOX. Sample rows:
      TRAIN,gs://folder/image1.png,car,0.1,0.1,,,0.3,0.3,,
      TRAIN,gs://folder/image1.png,bike,.7,.6,,,.8,.9,,
      UNASSIGNED,gs://folder/im2.png,car,0.1,0.1,0.2,0.1,0.2,0.3,0.1,0.3
      TEST,gs://folder/im3.png,,,,,,,,,
+     TRAIN,gs://folder/im4.png,NEGATIVE\_IMAGE,,,,,,,,,
   
   -  For Video Classification: CSV file(s) with each line in format:
      ML\_USE,GCS\_FILE\_PATH where ML\_USE VALIDATE value should not be
@@ -1023,15 +1027,15 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      gs://folder/video2.avi,car,1,0,.1,.9,,,.9,.1,,
      gs://folder/video2.avi,,,,,,,,,,,
   -  For Text Extraction: CSV file(s) with each line in format:
-     ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL (i.e. JSON
-     Lines) file which either imports text in-line or as documents. The
-     in-line .JSONL file contains, per line, a proto that wraps a
+     ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL (that is,
+     JSON Lines) file which either imports text in-line or as documents.
+     The in-line .JSONL file contains, per line, a proto that wraps a
      TextSnippet proto (in json representation) followed by one or more
      AnnotationPayload protos (called annotations), which have
      display\_name and text\_extraction detail populated. The given text
-     is expected to be annotated exhaustively, e.g. if you look for
-     animals and text contains "dolphin" that is not labeled, then
-     "dolphin" will be assumed to not be an animal. Any given text snippet
+     is expected to be annotated exhaustively, for example, if you look
+     for animals and text contains "dolphin" that is not labeled, then
+     "dolphin" is assumed to not be an animal. Any given text snippet
      content must have 30,000 characters or less, and also be UTF-8 NFC
      encoded (ASCII already is). The document .JSONL file contains, per
      line, a proto that wraps a Document proto with input\_config set.
@@ -1046,37 +1050,38 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      TEXT\_SNIPPET and GCS\_FILE\_PATH are distinguished by a pattern. If
      the column content is a valid gcs file path, i.e. prefixed by
      "gs://", it will be treated as a GCS\_FILE\_PATH, else if the content
-     is enclosed within double quotes (""), it will be treated as a
+     is enclosed within double quotes (""), it is treated as a
      TEXT\_SNIPPET. In the GCS\_FILE\_PATH case, the path must lead to a
-     .txt file with UTF-8 encoding, e.g. "gs://folder/content.txt", and
-     the content in it will be extracted as a text snippet. In
-     TEXT\_SNIPPET case, the column content excluding quotes will be
-     treated as to be imported text snippet. In both cases, the text
-     snippet/file size must be within 128kB. Maximum 100 unique labels are
-     allowed per CSV row. Four sample rows: TRAIN,"They have bad food and
-     very rude",RudeService,BadFood
+     .txt file with UTF-8 encoding, for example,
+     "gs://folder/content.txt", and the content in it is extracted as a
+     text snippet. In TEXT\_SNIPPET case, the column content excluding
+     quotes is treated as to be imported text snippet. In both cases, the
+     text snippet/file size must be within 128kB. Maximum 100 unique
+     labels are allowed per CSV row. Sample rows: TRAIN,"They have bad
+     food and very rude",RudeService,BadFood
      TRAIN,gs://folder/content.txt,SlowService TEST,"Typically always bad
      service there.",RudeService VALIDATE,"Stomach ache to go.",BadFood
   
   -  For Text Sentiment: CSV file(s) with each line in format:
      ML\_USE,(TEXT\_SNIPPET \| GCS\_FILE\_PATH),SENTIMENT TEXT\_SNIPPET
      and GCS\_FILE\_PATH are distinguished by a pattern. If the column
-     content is a valid gcs file path, i.e. prefixed by "gs://", it will
-     be treated as a GCS\_FILE\_PATH, otherwise it will be treated as a
+     content is a valid gcs file path, that is, prefixed by "gs://", it is
+     treated as a GCS\_FILE\_PATH, otherwise it is treated as a
      TEXT\_SNIPPET. In the GCS\_FILE\_PATH case, the path must lead to a
-     .txt file with UTF-8 encoding, e.g. "gs://folder/content.txt", and
-     the content in it will be extracted as a text snippet. In
-     TEXT\_SNIPPET case, the column content itself will be treated as to
-     be imported text snippet. In both cases, the text snippet must be up
-     to 500 characters long. Four sample rows: TRAIN,"@freewrytin God is
-     way too good for Claritin",2 TRAIN,"I need Claritin so bad",3
-     TEST,"Thank god for Claritin.",4 VALIDATE,gs://folder/content.txt,2
+     .txt file with UTF-8 encoding, for example,
+     "gs://folder/content.txt", and the content in it is extracted as a
+     text snippet. In TEXT\_SNIPPET case, the column content itself is
+     treated as to be imported text snippet. In both cases, the text
+     snippet must be up to 500 characters long. Sample rows:
+     TRAIN,"@freewrytin this is way too good for your product",2 TRAIN,"I
+     need this product so bad",3 TEST,"Thank you for this product.",4
+     VALIDATE,gs://folder/content.txt,2
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
   
   [bigquery\_source][google.cloud.automl.v1beta1.InputConfig.bigquery\_source]
-  can be used. All inputs will be concatenated into a single
+  can be used. All inputs is concatenated into a single
   
   [primary\_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary\_table\_name]
   For gcs\_source: CSV file(s), where the first row of the first file is
@@ -1094,7 +1099,6 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   the BigQuery table must be 100GB or smaller. An imported table must have
   between 2 and 1,000 columns, inclusive, and between 1000 and 100,000,000
   rows, inclusive. There are at most 5 import data running in parallel.
-  
   Definitions: ML\_USE = "TRAIN" \| "VALIDATE" \| "TEST" \| "UNASSIGNED"
   Describes how the given example (file) should be used for model
   training. "UNASSIGNED" can be used when user has no preference.
@@ -1141,7 +1145,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   Errors: If any of the provided CSV files can't be parsed or if more than
   certain percent of CSV rows cannot be processed then the operation fails
   and nothing is imported. Regardless of overall success or failure the
-  per-row failures, up to a certain count cap, will be listed in
+  per-row failures, up to a certain count cap, is listed in
   Operation.metadata.partial\_failures.
   
   
@@ -1184,13 +1188,27 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   
   The formats are represented in EBNF with commas being literal and with
   non-terminal symbols defined near the end of this comment. The formats
-  are: \* For Video Classification: CSV file(s) with each line in format:
-  GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END GCS\_FILE\_PATH
-  leads to video of up to 50GB in size and up to 3h duration. Supported
-  extensions: .MOV, .MPEG4, .MP4, .AVI. TIME\_SEGMENT\_START and
-  TIME\_SEGMENT\_END must be within the length of the video, and end has
-  to be after the start. Three sample rows: gs://folder/video1.mp4,10,40
-  gs://folder/video1.mp4,20,60 gs://folder/vid2.mov,0,inf
+  are:
+  
+  -  For Image Classification: CSV file(s) with each line having just a
+     single column: GCS\_FILE\_PATH which leads to image of up to 30MB in
+     size. Supported extensions: .JPEG, .GIF, .PNG. This path is treated
+     as the ID in the Batch predict output. Three sample rows:
+     gs://folder/image1.jpeg gs://folder/image2.gif gs://folder/image3.png
+  
+  -  For Image Object Detection: CSV file(s) with each line having just a
+     single column: GCS\_FILE\_PATH which leads to image of up to 30MB in
+     size. Supported extensions: .JPEG, .GIF, .PNG. This path is treated
+     as the ID in the Batch predict output. Three sample rows:
+     gs://folder/image1.jpeg gs://folder/image2.gif gs://folder/image3.png
+  -  For Video Classification: CSV file(s) with each line in format:
+     GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END
+     GCS\_FILE\_PATH leads to video of up to 50GB in size and up to 3h
+     duration. Supported extensions: .MOV, .MPEG4, .MP4, .AVI.
+     TIME\_SEGMENT\_START and TIME\_SEGMENT\_END must be within the length
+     of the video, and end has to be after the start. Three sample rows:
+     gs://folder/video1.mp4,10,40 gs://folder/video1.mp4,20,60
+     gs://folder/vid2.mov,0,inf
   
   -  For Video Object Tracking: CSV file(s) with each line in format:
      GCS\_FILE\_PATH,TIME\_SEGMENT\_START,TIME\_SEGMENT\_END
@@ -1200,6 +1218,20 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      of the video, and end has to be after the start. Three sample rows:
      gs://folder/video1.mp4,10,240 gs://folder/video1.mp4,300,360
      gs://folder/vid2.mov,0,inf
+  -  For Text Classification: CSV file(s) with each line having just a
+     single column: GCS\_FILE\_PATH \| TEXT\_SNIPPET Any given text file
+     can have size upto 128kB. Any given text snippet content must have
+     60,000 characters or less. Three sample rows: gs://folder/text1.txt
+     "Some text content to predict" gs://folder/text3.pdf Supported file
+     extensions: .txt, .pdf
+  
+  -  For Text Sentiment: CSV file(s) with each line having just a single
+     column: GCS\_FILE\_PATH \| TEXT\_SNIPPET Any given text file can have
+     size upto 128kB. Any given text snippet content must have 500
+     characters or less. Three sample rows: gs://folder/text1.txt "Some
+     text content to predict" gs://folder/text3.pdf Supported file
+     extensions: .txt, .pdf
+  
   -  For Text Extraction .JSONL (i.e. JSON Lines) file(s) which either
      provide text in-line or as documents (for a single BatchPredict call
      only one of the these formats may be used). The in-line .JSONL
@@ -1222,11 +1254,8 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   must be 100GB or smaller, where first file must have a header containing
   column names. If the first row of a subsequent file is the same as the
   header, then it is also treated as a header. All other rows contain
-  values for the corresponding columns. For all CLASSIFICATION and
-  REGRESSION
-  
-  [prediction\_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type]:
-  The column names must contain the model's
+  values for the corresponding columns. The column names must contain the
+  model's
   
   [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
   
@@ -1234,48 +1263,21 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   (order doesn't matter). The columns corresponding to the model's input
   feature column specs must contain values compatible with the column
   spec's data types. Prediction on all the rows, i.e. the CSV lines, will
-  be attempted. First three sample rows of a CSV file: "First Name","Last
-  Name","Dob","Addresses"
+  be attempted. For FORECASTING
+  
+  [prediction\_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type]:
+  all columns having
+  
+  [TIME\_SERIES\_AVAILABLE\_PAST\_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType]
+  type will be ignored. First three sample rows of a CSV file: "First
+  Name","Last Name","Dob","Addresses"
   
   "John","Doe","1968-01-22","[{"status":"current","address":"123\_First\_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456\_Main\_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
   
   "Jane","Doe","1980-10-16","[{"status":"current","address":"789\_Any\_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321\_Main\_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
-  For FORECASTING
-  
-  [prediction\_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type]:
-  The column names must contain the union of the model's
-  
-  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
-  
-  [display\_name-s][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
-  and
-  
-  [target\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.target\_column\_spec]
-  
-  [display\_name][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
-  (order doesn't matter), with values compatible with these column specs
-  data types, except as specified below. The input rows must contain not
-  only the to-be-predicted rows but also the historical data rows, even if
-  they would be identical as the ones on which the model has been trained.
-  The historical rows must have non-NULL target column values. The
-  to-be-predicted rows must have NULL values in the target column and all
-  columns having
-  
-  [TIME\_SERIES\_AVAILABLE\_PAST\_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType.KEY]
-  type, regardless if these columns are
-  [nullable][google.cloud.automl.v1beta1.DataType.nullable]. Prediction
-  only on the to-be-predicted rows will be attempted. First four sample
-  rows of a CSV file:
-  
-  "Year","City","OlympicsThatYear","Population","WaterUsedGigaGallons"
-  "2000","NYC","true","8008278","452.7"
-  "2001","NYC","false","8024963","432.2" "2002","NYC","true","",""
   BigQuery case: An URI of a BigQuery table. The user data size of the
-  BigQuery table must be 100GB or smaller. For all CLASSIFICATION and
-  REGRESSION
-  
-  [prediction\_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type]:
-  The column names must contain the model's
+  BigQuery table must be 100GB or smaller. The column names must contain
+  the model's
   
   [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
   
@@ -1286,38 +1288,21 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   attempted. For FORECASTING
   
   [prediction\_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type]:
-  The column names must contain the union of the model's
+  all columns having
   
-  [input\_feature\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input\_feature\_column\_specs]
-  
-  [display\_name-s][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
-  and
-  
-  [target\_column\_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.target\_column\_spec]
-  
-  [display\_name][google.cloud.automl.v1beta1.ColumnSpec.display\_name]
-  (order doesn't matter), with values compatible with these column specs
-  data types, except as specified below. The table's rows must contain not
-  only the to-be-predicted rows but also the historical data rows, even if
-  they would be identical as the ones on which the model has been trained.
-  The historical rows must have non-NULL target column values. The
-  to-be-predicted rows must have NULL values in the target column and all
-  columns having
-  
-  [TIME\_SERIES\_AVAILABLE\_PAST\_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType.KEY]
-  type, regardless if these columns are
-  [nullable][google.cloud.automl.v1beta1.DataType.nullable]. Prediction
-  only on the to-be-predicted rows will be attempted.
+  [TIME\_SERIES\_AVAILABLE\_PAST\_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType]
+  type will be ignored.
   
   Definitions: GCS\_FILE\_PATH = A path to file on GCS, e.g.
-  "gs://folder/video.avi". TIME\_SEGMENT\_START = TIME\_OFFSET Expresses a
-  beginning, inclusive, of a time segment within an example that has a
-  time dimension (e.g. video). TIME\_SEGMENT\_END = TIME\_OFFSET Expresses
-  an end, exclusive, of a time segment within an example that has a time
-  dimension (e.g. video). TIME\_OFFSET = A number of seconds as measured
-  from the start of an example (e.g. video). Fractions are allowed, up to
-  a microsecond precision. "inf" is allowed and it means the end of the
-  example.
+  "gs://folder/video.avi". TEXT\_SNIPPET = A content of a text snippet,
+  UTF-8 encoded, enclosed within double quotes ("") TIME\_SEGMENT\_START =
+  TIME\_OFFSET Expresses a beginning, inclusive, of a time segment within
+  an example that has a time dimension (e.g. video). TIME\_SEGMENT\_END =
+  TIME\_OFFSET Expresses an end, exclusive, of a time segment within an
+  example that has a time dimension (e.g. video). TIME\_OFFSET = A number
+  of seconds as measured from the start of an example (e.g. video).
+  Fractions are allowed, up to a microsecond precision. "inf" is allowed
+  and it means the end of the example.
   
   Errors: If any of the provided CSV files can't be parsed or if more than
   certain percent of CSV rows cannot be processed then the operation fails
@@ -1424,10 +1409,50 @@ BatchPredictOutputConfig = _reflection.GeneratedProtocolMessageType(
   
   [gcs\_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs\_destination]
   must be set unless specified otherwise for a domain. If gcs\_destination
-  is set then in the given directory a new directory will be created. Its
-  name will be "prediction--", where timestamp is in
-  YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. The contents of it depends on
-  the ML problem the predictions are made for. \* For Video
+  is set then in the given directory a new directory is created. Its name
+  will be "prediction--", where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
+  ISO-8601 format. The contents of it depends on the ML problem the
+  predictions are made for.
+  
+  -  For Image Classification: In the created directory files
+     ``image_classification_1.jsonl``,
+     ``image_classification_2.jsonl``,...,\ ``image_classification_N.jsonl``
+     will be created, where N may be 1, and depends on the total number of
+     the successfully predicted images and annotations. A single image
+     will be listed only once with all its annotations, and its
+     annotations will never be split across files. Each .JSONL file will
+     contain, per line, a JSON representation of a proto that wraps
+     image's "ID" : "" followed by a list of zero or more
+     AnnotationPayload protos (called annotations), which have
+     classification detail populated. If prediction for any image failed
+     (partially or completely), then an additional ``errors_1.jsonl``,
+     ``errors_2.jsonl``,..., ``errors_N.jsonl`` files will be created (N
+     depends on total number of failed predictions). These files will have
+     a JSON representation of a proto that wraps the same "ID" : "" but
+     here followed by exactly one
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  containing only ``code`` and ``message``\ fields.
+  
+  -  For Image Object Detection: In the created directory files
+     ``image_object_detection_1.jsonl``,
+     ``image_object_detection_2.jsonl``,...,\ ``image_object_detection_N.jsonl``
+     will be created, where N may be 1, and depends on the total number of
+     the successfully predicted images and annotations. Each .JSONL file
+     will contain, per line, a JSON representation of a proto that wraps
+     image's "ID" : "" followed by a list of zero or more
+     AnnotationPayload protos (called annotations), which have
+     image\_object\_detection detail populated. A single image will be
+     listed only once with all its annotations, and its annotations will
+     never be split across files. If prediction for any image failed
+     (partially or completely), then additional ``errors_1.jsonl``,
+     ``errors_2.jsonl``,..., ``errors_N.jsonl`` files will be created (N
+     depends on total number of failed predictions). These files will have
+     a JSON representation of a proto that wraps the same "ID" : "" but
+     here followed by exactly one
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  containing only ``code`` and ``message``\ fields. \* For Video
   Classification: In the created directory a video\_classification.csv
   file, and a .JSON file per each video classification requested in the
   input (i.e. each line in given CSV(s)), will be created.
@@ -1486,6 +1511,56 @@ BatchPredictOutputConfig = _reflection.GeneratedProtocolMessageType(
           video_object_tracking.csv. All AnnotationPayload protos will have
           video_object_tracking field set.
   
+  -  For Text Classification: In the created directory files
+     ``text_classification_1.jsonl``,
+     ``text_classification_2.jsonl``,...,\ ``text_classification_N.jsonl``
+     will be created, where N may be 1, and depends on the total number of
+     inputs and annotations found.
+  
+     ::
+  
+         Each .JSONL file will contain, per line, a JSON representation of a
+         proto that wraps input text snippet or input text file and a list of
+         zero or more AnnotationPayload protos (called annotations), which
+         have classification detail populated. A single text snippet or file
+         will be listed only once with all its annotations, and its
+         annotations will never be split across files.
+  
+         If prediction for any text snippet or file failed (partially or
+         completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
+         `errors_N.jsonl` files will be created (N depends on total number of
+         failed predictions). These files will have a JSON representation of a
+         proto that wraps input text snippet or input text file followed by
+         exactly one
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  containing only ``code`` and ``message``.
+  
+  -  For Text Sentiment: In the created directory files
+     ``text_sentiment_1.jsonl``,
+     ``text_sentiment_2.jsonl``,...,\ ``text_sentiment_N.jsonl`` will be
+     created, where N may be 1, and depends on the total number of inputs
+     and annotations found.
+  
+     ::
+  
+         Each .JSONL file will contain, per line, a JSON representation of a
+         proto that wraps input text snippet or input text file and a list of
+         zero or more AnnotationPayload protos (called annotations), which
+         have text_sentiment detail populated. A single text snippet or file
+         will be listed only once with all its annotations, and its
+         annotations will never be split across files.
+  
+         If prediction for any text snippet or file failed (partially or
+         completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
+         `errors_N.jsonl` files will be created (N depends on total number of
+         failed predictions). These files will have a JSON representation of a
+         proto that wraps input text snippet or input text file followed by
+         exactly one
+  
+  ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+  containing only ``code`` and ``message``.
+  
   -  For Text Extraction: In the created directory files
      ``text_extraction_1.jsonl``,
      ``text_extraction_2.jsonl``,...,\ ``text_extraction_N.jsonl`` will be
@@ -1494,25 +1569,25 @@ BatchPredictOutputConfig = _reflection.GeneratedProtocolMessageType(
      whether the input used inline text, or documents. If input was
      inline, then each .JSONL file will contain, per line, a JSON
      representation of a proto that wraps given in request text snippet's
-     "id" : "" followed by a list of zero or more AnnotationPayload protos
-     (called annotations), which have text\_extraction detail populated. A
-     single text snippet will be listed only once with all its
-     annotations, and its annotations will never be split across files. If
-     input used documents, then each .JSONL file will contain, per line, a
-     JSON representation of a proto that wraps given in request document
-     proto, followed by its OCR-ed representation in the form of a text
-     snippet, finally followed by a list of zero or more AnnotationPayload
-     protos (called annotations), which have text\_extraction detail
-     populated and refer, via their indices, to the OCR-ed text snippet. A
-     single document (and its text snippet) will be listed only once with
-     all its annotations, and its annotations will never be split across
-     files. If prediction for any text snippet failed (partially or
-     completely), then additional ``errors_1.jsonl``,
-     ``errors_2.jsonl``,..., ``errors_N.jsonl`` files will be created (N
-     depends on total number of failed predictions). These files will have
-     a JSON representation of a proto that wraps either the "id" : "" (in
-     case of inline) or the document proto (in case of document) but here
-     followed by exactly one
+     "id" (if specified), followed by input text snippet, and a list of
+     zero or more AnnotationPayload protos (called annotations), which
+     have text\_extraction detail populated. A single text snippet will be
+     listed only once with all its annotations, and its annotations will
+     never be split across files. If input used documents, then each
+     .JSONL file will contain, per line, a JSON representation of a proto
+     that wraps given in request document proto, followed by its OCR-ed
+     representation in the form of a text snippet, finally followed by a
+     list of zero or more AnnotationPayload protos (called annotations),
+     which have text\_extraction detail populated and refer, via their
+     indices, to the OCR-ed text snippet. A single document (and its text
+     snippet) will be listed only once with all its annotations, and its
+     annotations will never be split across files. If prediction for any
+     text snippet failed (partially or completely), then additional
+     ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl`` files
+     will be created (N depends on total number of failed predictions).
+     These files will have a JSON representation of a proto that wraps
+     either the "id" : "" (in case of inline) or the document proto (in
+     case of document) but here followed by exactly one
   
   ```google.rpc.Status`` <https:%20//github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
   containing only ``code`` and ``message``.
@@ -1665,9 +1740,9 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
           docker - Used for Docker containers. Use the params field to
           customize the container. The container is verified to work
           correctly    on ubuntu 16.04 operating system. See more at
-          `containers    quickstart
-          <https://cloud.google.com/vision/automl/docs/containers-gcs-
-          quickstart>`__ -  core\_ml - Used for iOS mobile devices.
+          [containers  quickstart](https:
+          //cloud.google.com/vision/automl/docs/containers-gcs-
+          quickstart) \* core\_ml - Used for iOS mobile devices.
       params:
           Additional model-type and format specific parameters
           describing the requirements for the to be exported model

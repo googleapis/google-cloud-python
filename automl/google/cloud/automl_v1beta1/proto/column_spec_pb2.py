@@ -298,12 +298,7 @@ ColumnSpec = _reflection.GeneratedProtocolMessageType(
           Dataset.tables\_dataset\_metadata.stats\_update\_time field
           for the timestamp at which these stats were last updated.
       top_correlated_columns:
-          Output only. Top 10 most correlated with this column columns
-          of the table, ordered by [cramers\_v][google.cloud.automl.v1be
-          ta1.CorrelationStats.cramers\_v] metric. This field may be
-          stale, see the ancestor's
-          Dataset.tables\_dataset\_metadata.stats\_update\_time field
-          for the timestamp at which these stats were last updated.
+          Deprecated.
       etag:
           Used to perform consistent read-modify-write updates. If not
           set, a blind "overwrite" update happens.

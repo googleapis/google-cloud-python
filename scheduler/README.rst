@@ -19,7 +19,7 @@ Python Client for Cloud Scheduler API
 .. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dscheduler
    :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dscheduler
 .. _Cloud Scheduler API: https://cloud.google.com/scheduler
-.. _Client Library Documentation: https://googleapis.dev/python/scheduler/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudscheduler/latest
 .. _Product Documentation:  https://cloud.google.com/scheduler
 
 Quick Start

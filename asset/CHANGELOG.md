@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.4.0
+
+08-01-2019 14:24 PDT
+
+### New Features
+- Generate asset v1p2beta1. ([#8888](https://github.com/googleapis/google-cloud-python/pull/8888))
+
+### Internal / Testing Changes
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.3.0
 
 07-22-2019 17:42 PDT
