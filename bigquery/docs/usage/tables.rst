@@ -28,6 +28,15 @@ Get a table resource with the
    :start-after: [START bigquery_get_table]
    :end-before: [END bigquery_get_table]
 
+Determine if a table exists with the
+:func:`~google.cloud.bigquery.client.Client.get_table` method:
+
+.. literalinclude:: ../samples/samples/table_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_table_exists]
+   :end-before: [END bigquery_table_exists]
+
 Browse data rows in a table with the
 :func:`~google.cloud.bigquery.client.Client.list_rows` method:
 
@@ -108,6 +117,7 @@ Insert rows into a table's data with the
 :func:`~google.cloud.bigquery.client.Client.insert_rows` method:
 
 .. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/table_insert_rows.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_table_insert_rows]
@@ -120,6 +130,7 @@ Copy a table with the
 :func:`~google.cloud.bigquery.client.Client.copy_table` method:
 
 .. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/copy_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_copy_table]
