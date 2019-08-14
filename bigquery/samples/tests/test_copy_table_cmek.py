@@ -16,7 +16,9 @@
 from .. import copy_table_cmek
 
 
-def test_copy_table_cmek(capsys, client):
+def test_copy_table_cmek(capsys, client, dataset_id, table_w_data):
 
+    copy_table_cmek.copy_table_cmek(client, dataset_id, table_w_data)
     out, err = capsys.readouterr()
-    assert 
+    assert "The process completed" in out
+    assert "A copy of the table created" in out
