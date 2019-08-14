@@ -26,7 +26,7 @@ def add_empty_column(client, table_id):
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    # TODO(developer): Set table_id to the ID of the table to add an empty column
+    # TODO(developer): Set table_id to the ID of the table to add an empty column.
     # table_id = "your-project.your_dataset.your_table_name"
 
     table = client.get_table(table_id)
