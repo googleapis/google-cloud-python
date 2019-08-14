@@ -19,7 +19,7 @@ def client_list_jobs(client):
     from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
-    # project = 'my_project'  # replace with your project ID
+    # project = "my_project"  # replace with your project ID
     # client = bigquery.Client(project=project)
 
     # List the 10 most recent jobs in reverse chronological order.

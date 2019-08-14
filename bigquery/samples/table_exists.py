@@ -19,7 +19,7 @@ def table_exists(client, table_id):
     from google.cloud.exceptions import NotFound
 
     # TODO(developer): Set table_id to the ID of the table to determine existence.
-    # table_id = 'your-project.your_dataset.your_table'
+    # table_id = "your-project.your_dataset.your_table"
 
     try:
         client.get_table(table_id)
