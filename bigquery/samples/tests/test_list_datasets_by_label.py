@@ -16,9 +16,8 @@
 from .. import list_datasets_by_label
 
 
-def test_list_datasets_by_label(capsys, client, dataset_id, dataset_label):
+def test_list_datasets_by_label(capsys, client, dataset_label):
 
-    label_filter = "labels.color:green"
     list_datasets_by_label.list_datasets_by_label(client)
     out, err = capsys.readouterr()
-    assert "Datasets filtered by {}:".format(label_filter) in out
+    assert "{}".format(dataset_label) in out
