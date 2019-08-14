@@ -1,0 +1,1884 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>A tables-specific client for AutoML &#8212; google-cloud e9ea9ed documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Changelog" href="../../changelog.html" />
+    <link rel="prev" title="Types for Cloud AutoML API Client" href="types.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.automl_v1beta1.tables.tables_client">
+<span id="a-tables-specific-client-for-automl"></span><h1>A tables-specific client for AutoML<a class="headerlink" href="#module-google.cloud.automl_v1beta1.tables.tables_client" title="Permalink to this headline">#</a></h1>
+<p>A tables helper for the google.cloud.automl_v1beta1 AutoML API</p>
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient">
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.automl_v1beta1.tables.tables_client.</code><code class="sig-name descname">TablesClient</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region='us-central1'</em>, <em class="sig-param">client=None</em>, <em class="sig-param">prediction_client=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient" title="Permalink to this definition">#</a></dt>
+<dd><p>AutoML Tables API helper.</p>
+<p>This is intended to simplify usage of the auto-generated python client,
+in particular for the <a class="reference external" href="https://cloud.google.com/automl-tables/">AutoML Tables product</a>.</p>
+<p>Constructor.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The project all future calls will
+default to. Most methods take <cite>project</cite> as an optional
+parameter, and can override your choice of <cite>project</cite> supplied
+here.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The region all future calls will
+default to. Most methods take <cite>region</cite> as an optional
+parameter, and can override your choice of <cite>region</cite> supplied
+here. Note, only <cite>us-central1</cite> is supported to-date.</p></li>
+<li><p><strong>transport</strong> (<em>Union</em><em>[</em><em>AutoMlGrpcTransport</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>Credentials</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a><em>]</em><em>, </em><em>AutoMlGrpcTransport</em><em>]</em>) – A transport instance, responsible for actually making the API
+calls.  The default transport uses the gRPC protocol.  This
+argument may also be a callable which returns a transport
+instance. Callables will be sent the credentials as the first
+argument and the default transport class as the second
+argument.</p></li>
+<li><p><strong>channel</strong> (<a class="reference external" href="https://grpc.github.io/grpc/python/grpc.html#grpc.Channel" title="(in gRPC Python v1.22.0)"><em>grpc.Channel</em></a>) – DEPRECATED. A <code class="docutils literal notranslate"><span class="pre">Channel</span></code> instance
+through which to make calls. This argument is mutually exclusive
+with <code class="docutils literal notranslate"><span class="pre">credentials</span></code>; providing both will raise an exception.</p></li>
+<li><p><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.6.2)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.
+This argument is mutually exclusive with providing a
+transport instance to <code class="docutils literal notranslate"><span class="pre">transport</span></code>; doing so will raise
+an exception.</p></li>
+<li><p><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – DEPRECATED. A dictionary of call options for
+each method. If not specified, the default configuration is used.</p></li>
+<li><p><strong>client_options</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>google.api_core.client_options.ClientOptions</em><em>]</em>) – Client options used to set user options on the client. API Endpoint
+should be set through client_options.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.batch_predict">
+<code class="sig-name descname">batch_predict</code><span class="sig-paren">(</span><em class="sig-param">bigquery_input_uri=None</em>, <em class="sig-param">bigquery_output_uri=None</em>, <em class="sig-param">gcs_input_uris=None</em>, <em class="sig-param">gcs_output_uri_prefix=None</em>, <em class="sig-param">model=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">inputs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.batch_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.batch_predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes a batch prediction on a model. This does _not_ require the
+model to be deployed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">batch_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">gcs_input_uris</span><span class="o">=</span><span class="s1">&#39;gs://inputs/input.csv&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gcs_output_uri_prefix</span><span class="o">=</span><span class="s1">&#39;gs://outputs/&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span>
+<span class="gp">... </span> <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>gcs_input_uris</strong> (<em>Optional</em><em>(</em><em>Union</em><em>[</em><em>List</em><em>[</em><em>string</em><em>]</em><em>, </em><em>string</em><em>]</em><em>)</em>) – Either a list of or a single GCS URI containing the data you
+want to predict off of.</p></li>
+<li><p><strong>gcs_output_uri_prefix</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The folder in GCS you want to write output to.</p></li>
+<li><p><strong>bigquery_input_uri</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The BigQuery table to input data from.</p></li>
+<li><p><strong>bigquery_output_uri</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The BigQuery table to output data to.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to predict
+with.  This must be supplied if <cite>model</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to predict
+with. This must be supplied if <cite>model_display_name</cite> or <cite>model</cite>
+are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to predict with . This must be
+supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_test_train_column">
+<code class="sig-name descname">clear_test_train_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.clear_test_train_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_test_train_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Clears the test/train (ml_use) column which designates which data
+belongs to the test and train sets.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">clear_test_train_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the test/train column of. If no <cite>table_spec_name</cite> is supplied,
+this will be used together with <cite>table_spec_index</cite> to infer the
+name of table to update the test/train column of. This must be
+supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are
+not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the test/train column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the test/train column of.
+This must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the test/train column
+of.  If no <cite>table_spec_name</cite> is supplied, this will be used
+together with <cite>table_spec_index</cite> to infer the name of table to
+update the test/train column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_time_column">
+<code class="sig-name descname">clear_time_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.clear_time_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_time_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Clears the time column which designates which data will be of type
+timestamp and will be used for the timeseries data.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">set_time_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the time column of. If no <cite>table_spec_name</cite> is supplied,
+this will be used together with <cite>table_spec_index</cite> to infer the
+name of table to update the time column of. This must be
+supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are
+not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the time column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the time column of.
+This must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the time column
+of.  If no <cite>table_spec_name</cite> is supplied, this will be used
+together with <cite>table_spec_index</cite> to infer the name of table to
+update the time column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.TableSpec" title="google.cloud.automl_v1beta1.types.TableSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSpec</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_weight_column">
+<code class="sig-name descname">clear_weight_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.clear_weight_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.clear_weight_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Clears the weight column for a given dataset.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">clear_weight_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the weight column of. If no <cite>table_spec_name</cite> is supplied, this
+will be used together with <cite>table_spec_index</cite> to infer the name
+of table to update the weight column of. This must be supplied
+if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the weight column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the weight column of. This
+must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the weight column of.
+If no <cite>table_spec_name</cite> is supplied, this will be used together
+with <cite>table_spec_index</cite> to infer the name of table to update
+the weight column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.create_dataset">
+<code class="sig-name descname">create_dataset</code><span class="sig-paren">(</span><em class="sig-param">dataset_display_name</em>, <em class="sig-param">metadata={}</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.create_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.create_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a dataset. Keep in mind, importing data is a separate step.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>string</em>) – A human-readable name to refer to this dataset by.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.create_model">
+<code class="sig-name descname">create_model</code><span class="sig-paren">(</span><em class="sig-param">model_display_name</em>, <em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">train_budget_milli_node_hours=None</em>, <em class="sig-param">optimization_objective=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">model_metadata={}</em>, <em class="sig-param">include_column_spec_names=None</em>, <em class="sig-param">exclude_column_spec_names=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.create_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.create_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a model. This will train your model on the given dataset.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">&#39;my_model&#39;</span><span class="p">,</span> <span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># blocks on result</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_display_name</strong> (<em>string</em>) – A human-readable name to refer to this model by.</p></li>
+<li><p><strong>train_budget_milli_node_hours</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The amount of time (in thousandths of an hour) to spend
+training. This value must be between 1,000 and 72,000 inclusive
+(between 1 and 72 hours).</p></li>
+<li><p><strong>optimization_objective</strong> (<em>string</em>) – The metric AutoML tables should optimize for.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to train
+your model on. This must be supplied if <cite>dataset</cite> or
+<cite>dataset_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to train
+your model on. This must be supplied if <cite>dataset_display_name</cite>
+or <cite>dataset</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to train your model on. This
+must be supplied if <cite>dataset_display_name</cite> or <cite>dataset_name</cite>
+are not supplied.</p></li>
+<li><p><strong>model_metadata</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – Optional model metadata to supply to the client.</p></li>
+<li><p><strong>include_column_spec_names</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The list of the names of the columns you want to include to train
+your model on.</p></li>
+<li><p><strong>exclude_column_spec_names</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The list of the names of the columns you want to exclude and
+not train your model on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.delete_dataset">
+<code class="sig-name descname">delete_dataset</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.delete_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.delete_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a dataset. This does not delete any models trained on
+this dataset.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># blocks on delete request</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to
+delete.  This must be supplied if <cite>dataset</cite> or <cite>dataset_name</cite>
+are not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+delete. This must be supplied if <cite>dataset_display_name</cite> or
+<cite>dataset</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to delete. This must be
+supplied if <cite>dataset_display_name</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.delete_model">
+<code class="sig-name descname">delete_model</code><span class="sig-paren">(</span><em class="sig-param">model=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.delete_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.delete_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a model. Note this will not delete any datasets associated
+with this model.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete_model</span><span class="p">(</span><span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># blocks on delete request</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to
+delete.  This must be supplied if <cite>model</cite> or <cite>model_name</cite>
+are not supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to
+delete. This must be supplied if <cite>model_display_name</cite> or
+<cite>model</cite> are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to delete. This must be
+supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.deploy_model">
+<code class="sig-name descname">deploy_model</code><span class="sig-paren">(</span><em class="sig-param">model=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.deploy_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.deploy_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Deploys a model. This allows you make online predictions using the
+model you’ve deployed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">deploy_model</span><span class="p">(</span><span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># blocks on deploy request</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to
+deploy.  This must be supplied if <cite>model</cite> or <cite>model_name</cite>
+are not supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to
+deploy. This must be supplied if <cite>model_display_name</cite> or
+<cite>model</cite> are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to deploy. This must be
+supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.export_data">
+<code class="sig-name descname">export_data</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">gcs_output_uri_prefix=None</em>, <em class="sig-param">bigquery_output_uri=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.export_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.export_data" title="Permalink to this definition">#</a></dt>
+<dd><p>Exports data from a dataset.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gcs_output_uri_prefix</span><span class="o">=</span><span class="s1">&#39;gs://cloud-ml-tables-data/bank-marketing.csv&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to export
+data from. This must be supplied if <cite>dataset</cite> or <cite>dataset_name</cite>
+are not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+export data from. This must be supplied if
+<cite>dataset_display_name</cite> or <cite>dataset</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to export data from. This must
+be supplied if <cite>dataset_display_name</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>gcs_output_uri_prefix</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>string</em><em>, </em><em>Sequence</em><em>[</em><em>string</em><em>]</em><em>]</em><em>]</em>) – A single <cite>gs://..</cite> prefixed URI to export to. This must be
+supplied if <cite>bigquery_output_uri</cite> is not.</p></li>
+<li><p><strong>bigquery_output_uri</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – A URI pointing to the BigQuery table containing the data to
+export. This must be supplied if <cite>gcs_output_uri_prefix</cite> is not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_column_spec">
+<code class="sig-name descname">get_column_spec</code><span class="sig-paren">(</span><em class="sig-param">column_spec_name</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.get_column_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_column_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a single column spec in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_column_spec</span><span class="p">(</span><span class="s1">&#39;my_column_spec&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_spec_name</strong> (<em>string</em>) – This is the fully-qualified name generated by the AutoML API
+for this column spec.</p></li>
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ColumnSpec" title="google.cloud.automl_v1beta1.types.ColumnSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnSpec</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_dataset">
+<code class="sig-name descname">get_dataset</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a single dataset in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – This is the fully-qualified name generated by the AutoML API
+for this dataset. This is not to be confused with the
+human-assigned <cite>dataset_display_name</cite> that is provided when
+creating a dataset. Either <cite>dataset_name</cite> or
+<cite>dataset_display_name</cite> must be provided.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – This is the name you provided for the dataset when first
+creating it. Either <cite>dataset_name</cite> or <cite>dataset_display_name</cite>
+must be provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance if
+found, <cite>None</cite> otherwise.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_model">
+<code class="sig-name descname">get_model</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a single model in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – This is the fully-qualified name generated by the AutoML API
+for this model. This is not to be confused with the
+human-assigned <cite>model_display_name</cite> that is provided when
+creating a model. Either <cite>model_name</cite> or
+<cite>model_display_name</cite> must be provided.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – This is the name you provided for the model when first
+creating it. Either <cite>model_name</cite> or <cite>model_display_name</cite>
+must be provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_model_evaluation">
+<code class="sig-name descname">get_model_evaluation</code><span class="sig-paren">(</span><em class="sig-param">model_evaluation_name</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.get_model_evaluation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_model_evaluation" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a single evaluation model in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_model_evaluation</span><span class="p">(</span><span class="s1">&#39;my_model_evaluation&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_evaluation_name</strong> (<em>string</em>) – This is the fully-qualified name generated by the AutoML API
+for this model evaluation.</p></li>
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ModelEvaluation" title="google.cloud.automl_v1beta1.types.ModelEvaluation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelEvaluation</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_table_spec">
+<code class="sig-name descname">get_table_spec</code><span class="sig-paren">(</span><em class="sig-param">table_spec_name</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.get_table_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.get_table_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a single table spec in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table_spec</span><span class="p">(</span><span class="s1">&#39;my_table_spec&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_spec_name</strong> (<em>string</em>) – This is the fully-qualified name generated by the AutoML API
+for this table spec.</p></li>
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.TableSpec" title="google.cloud.automl_v1beta1.types.TableSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSpec</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.import_data">
+<code class="sig-name descname">import_data</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">gcs_input_uris=None</em>, <em class="sig-param">bigquery_input_uri=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.import_data" title="Permalink to this definition">#</a></dt>
+<dd><p>Imports data into a dataset.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">gcs_input_uris</span><span class="o">=</span><span class="s1">&#39;gs://cloud-ml-tables-data/bank-marketing.csv&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to import
+data into. This must be supplied if <cite>dataset</cite> or <cite>dataset_name</cite>
+are not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+import data into. This must be supplied if
+<cite>dataset_display_name</cite> or <cite>dataset</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to import data into. This must
+be supplied if <cite>dataset_display_name</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>gcs_input_uris</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>string</em><em>, </em><em>Sequence</em><em>[</em><em>string</em><em>]</em><em>]</em><em>]</em>) – Either a single <cite>gs://..</cite> prefixed URI, or a list of URIs
+referring to GCS-hosted CSV files containing the data to
+import. This must be supplied if <cite>bigquery_input_uri</cite> is not.</p></li>
+<li><p><strong>bigquery_input_uri</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – A URI pointing to the BigQuery table containing the data to
+import. This must be supplied if <cite>gcs_input_uris</cite> is not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_column_specs">
+<code class="sig-name descname">list_column_specs</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.list_column_specs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_column_specs" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists column specs.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_column_specs</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># process the spec</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose specs you want to
+read. If not supplied, the client can determine this name from
+a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> was provided, we use this index to
+determine which table to read column specs from.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to read
+specs from. If no <cite>table_spec_name</cite> is supplied, this will be
+used together with <cite>table_spec_index</cite> to infer the name of
+table to read specs from. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to read
+specs from. If no <cite>table_spec_name</cite> is supplied, this will be
+used together with <cite>table_spec_index</cite> to infer the name of
+table to read specs from. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_display_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to read specs from. If no
+<cite>table_spec_name</cite> is supplied, this will be used together with
+<cite>table_spec_index</cite> to infer the name of table to read specs
+from. This must be supplied if <cite>table_spec_name</cite>,
+<cite>dataset_name</cite> or <cite>dataset_display_name</cite> are not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of
+<a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ColumnSpec" title="google.cloud.automl_v1beta1.types.ColumnSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnSpec</span></code></a> instances.
+You can also iterate over the pages of the response using its
+<cite>pages</cite> property.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_datasets">
+<code class="sig-name descname">list_datasets</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.list_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_datasets" title="Permalink to this definition">#</a></dt>
+<dd><p>List all datasets in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># do something</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>
+instances.  You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_model_evaluations">
+<code class="sig-name descname">list_model_evaluations</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">model=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.list_model_evaluations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_model_evaluations" title="Permalink to this definition">#</a></dt>
+<dd><p>List all model evaluations for a given model.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ms</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_model_evaluations</span><span class="p">(</span><span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ms</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># do something</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to list
+evaluations for.  This must be supplied if <cite>model</cite> or
+<cite>model_name</cite> are not supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to list
+evaluations for. This must be supplied if <cite>model_display_name</cite>
+or <cite>model</cite> are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to list evaluations for. This
+must be supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of
+<a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ModelEvaluation" title="google.cloud.automl_v1beta1.types.ModelEvaluation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelEvaluation</span></code></a>
+instances.  You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_models">
+<code class="sig-name descname">list_models</code><span class="sig-paren">(</span><em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.list_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_models" title="Permalink to this definition">#</a></dt>
+<dd><p>List all models in a particular project and region.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ms</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_models</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ms</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># do something</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Model" title="google.cloud.automl_v1beta1.types.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>
+instances.  You can also iterate over the pages of the response
+using its <cite>pages</cite> property.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_table_specs">
+<code class="sig-name descname">list_table_specs</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.list_table_specs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.list_table_specs" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists table specs.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_table_specs</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># process the spec</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to read
+specs from. This must be supplied if <cite>dataset</cite> or
+<cite>dataset_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to read
+specs from. This must be supplied if <cite>dataset_display_name</cite> or
+<cite>dataset</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to read specs from. This must
+be supplied if <cite>dataset_display_name</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+An iterable of
+<a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.TableSpec" title="google.cloud.automl_v1beta1.types.TableSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSpec</span></code></a> instances.
+You can also iterate over the pages of the response using its
+<cite>pages</cite> property.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">inputs</em>, <em class="sig-param">model=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes a prediction on a deployed model. This will fail if the model
+was not deployed.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Income&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>string</em><em>]</em><em>, </em><em>Dict</em><em>[</em><em>string</em><em>, </em><em>string</em><em>]</em><em>]</em>) – Either the sorted list of column values to predict with, or a
+key-value map of column display name to value to predict with.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to predict
+with.  This must be supplied if <cite>model</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to predict
+with. This must be supplied if <cite>model_display_name</cite> or <cite>model</cite>
+are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to predict with . This must be
+supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.PredictResponse" title="google.cloud.automl_v1beta1.types.PredictResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">PredictResponse</span></code></a>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_target_column">
+<code class="sig-name descname">set_target_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">column_spec_name=None</em>, <em class="sig-param">column_spec_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.set_target_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_target_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the target column for a given table.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">set_target_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_spec_display_name</span><span class="o">=</span><span class="s1">&#39;Income&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>column_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The name AutoML-assigned name for the column you want to set as
+the target column.</p></li>
+<li><p><strong>column_spec_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name of the column you want to set as the
+target column. If this is supplied in place of
+<cite>column_spec_name</cite>, you also need to provide either a way to
+lookup the source dataset (using one of the <cite>dataset*</cite> kwargs),
+or the <cite>table_spec_name</cite> of the table this column belongs to.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose target column you
+want to set . If not supplied, the client can determine this
+name from a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> or <cite>column_spec_name</cite> was provided, we
+use this index to determine which table to set the target
+column on.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the target column of. If no <cite>table_spec_name</cite> is supplied, this
+will be used together with <cite>table_spec_index</cite> to infer the name
+of table to update the target column of. This must be supplied
+if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the target column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the target column of. This
+must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the target column of.
+If no <cite>table_spec_name</cite> is supplied, this will be used together
+with <cite>table_spec_index</cite> to infer the name of table to update
+the target column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_test_train_column">
+<code class="sig-name descname">set_test_train_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">column_spec_name=None</em>, <em class="sig-param">column_spec_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.set_test_train_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_test_train_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the test/train (ml_use) column which designates which data
+belongs to the test and train sets. This column must be categorical.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">set_test_train_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_spec_display_name</span><span class="o">=</span><span class="s1">&#39;TestSplit&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>column_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The name AutoML-assigned name for the column you want to set as
+the test/train column.</p></li>
+<li><p><strong>column_spec_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name of the column you want to set as the
+test/train column. If this is supplied in place of
+<cite>column_spec_name</cite>, you also need to provide either a way to
+lookup the source dataset (using one of the <cite>dataset*</cite> kwargs),
+or the <cite>table_spec_name</cite> of the table this column belongs to.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose test/train column
+you want to set . If not supplied, the client can determine
+this name from a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> or <cite>column_spec_name</cite> was provided, we
+use this index to determine which table to set the test/train
+column on.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the test/train column of. If no <cite>table_spec_name</cite> is supplied,
+this will be used together with <cite>table_spec_index</cite> to infer the
+name of table to update the test/train column of. This must be
+supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are
+not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the test/train column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the test/train column of.
+This must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the test/train column
+of.  If no <cite>table_spec_name</cite> is supplied, this will be used
+together with <cite>table_spec_index</cite> to infer the name of table to
+update the test/train column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_time_column">
+<code class="sig-name descname">set_time_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">column_spec_name=None</em>, <em class="sig-param">column_spec_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.set_time_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_time_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the time column which designates which data will be of type
+timestamp and will be used for the timeseries data.
+This column must be of type timestamp.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">set_time_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_spec_name</span><span class="o">=</span><span class="s1">&#39;Unix Time&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>column_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The name AutoML-assigned name for the column you want to set as
+the time column.</p></li>
+<li><p><strong>column_spec_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name of the column you want to set as the
+time column. If this is supplied in place of
+<cite>column_spec_name</cite>, you also need to provide either a way to
+lookup the source dataset (using one of the <cite>dataset*</cite> kwargs),
+or the <cite>table_spec_name</cite> of the table this column belongs to.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose time column
+you want to set . If not supplied, the client can determine
+this name from a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> or <cite>column_spec_name</cite> was provided, we
+use this index to determine which table to set the time
+column on.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the time column of. If no <cite>table_spec_name</cite> is supplied,
+this will be used together with <cite>table_spec_index</cite> to infer the
+name of table to update the time column of. This must be
+supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are
+not supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the time column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the time column of.
+This must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the time column
+of.  If no <cite>table_spec_name</cite> is supplied, this will be used
+together with <cite>table_spec_index</cite> to infer the name of table to
+update the time column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.TableSpec" title="google.cloud.automl_v1beta1.types.TableSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableSpec</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_weight_column">
+<code class="sig-name descname">set_weight_column</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">column_spec_name=None</em>, <em class="sig-param">column_spec_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.set_weight_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.set_weight_column" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the weight column for a given table.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">set_weight_column</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_spec_display_name</span><span class="o">=</span><span class="s1">&#39;Income&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>column_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The name AutoML-assigned name for the column you want to
+set as the weight column.</p></li>
+<li><p><strong>column_spec_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name of the column you want to set as the
+weight column. If this is supplied in place of
+<cite>column_spec_name</cite>, you also need to provide either a way to
+lookup the source dataset (using one of the <cite>dataset*</cite> kwargs),
+or the <cite>table_spec_name</cite> of the table this column belongs to.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose weight column you
+want to set . If not supplied, the client can determine this
+name from a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> or <cite>column_spec_name</cite> was provided, we
+use this index to determine which table to set the weight
+column on.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+the weight column of. If no <cite>table_spec_name</cite> is supplied, this
+will be used together with <cite>table_spec_index</cite> to infer the name
+of table to update the weight column of. This must be supplied
+if <cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update the weight column of. If no <cite>table_spec_name</cite> is
+supplied, this will be used together with <cite>table_spec_index</cite> to
+infer the name of table to update the weight column of. This
+must be supplied if <cite>table_spec_name</cite>, <cite>dataset</cite> or
+<cite>dataset_display_name</cite> are not supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update the weight column of.
+If no <cite>table_spec_name</cite> is supplied, this will be used together
+with <cite>table_spec_index</cite> to infer the name of table to update
+the weight column of. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset_name</cite> or <cite>dataset_display_name</cite> are
+not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.undeploy_model">
+<code class="sig-name descname">undeploy_model</code><span class="sig-paren">(</span><em class="sig-param">model=None</em>, <em class="sig-param">model_name=None</em>, <em class="sig-param">model_display_name=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.undeploy_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.undeploy_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Undeploys a model.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">undeploy_model</span><span class="p">(</span><span class="n">model_display_name</span><span class="o">=</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">op</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># blocks on undeploy request</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>model_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the model you want to
+undeploy.  This must be supplied if <cite>model</cite> or <cite>model_name</cite>
+are not supplied.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the model you want to
+undeploy. This must be supplied if <cite>model_display_name</cite> or
+<cite>model</cite> are not supplied.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>model</em><em>]</em>) – The <cite>model</cite> instance you want to undeploy. This must be
+supplied if <cite>model_display_name</cite> or <cite>model_name</cite> are not
+supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">_OperationFuture</span></code>
+instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.automl_v1beta1.tables.tables_client.TablesClient.update_column_spec">
+<code class="sig-name descname">update_column_spec</code><span class="sig-paren">(</span><em class="sig-param">dataset=None</em>, <em class="sig-param">dataset_display_name=None</em>, <em class="sig-param">dataset_name=None</em>, <em class="sig-param">table_spec_name=None</em>, <em class="sig-param">table_spec_index=0</em>, <em class="sig-param">column_spec_name=None</em>, <em class="sig-param">column_spec_display_name=None</em>, <em class="sig-param">type_code=None</em>, <em class="sig-param">nullable=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">region=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/automl_v1beta1/tables/tables_client.html#TablesClient.update_column_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.automl_v1beta1.tables.tables_client.TablesClient.update_column_spec" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates a column’s specs.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">automl_v1beta1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">automl_v1beta1</span><span class="o">.</span><span class="n">TablesClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="s1">&#39;~/.gcp/account.json&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s1">&#39;us-central1&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">update_column_specs</span><span class="p">(</span><span class="n">dataset_display_name</span><span class="o">=</span><span class="s1">&#39;my_dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">column_spec_display_name</span><span class="o">=</span><span class="s1">&#39;Outcome&#39;</span><span class="p">,</span> <span class="n">type_code</span><span class="o">=</span><span class="s1">&#39;CATEGORY&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>project</cite>
+it will be used if this parameter is not supplied. Keep in
+mind, the service account this client was initialized with must
+have access to this project.</p></li>
+<li><p><strong>region</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – If you have initialized the client with a value for <cite>region</cite> it
+will be used if this parameter is not supplied.</p></li>
+<li><p><strong>column_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The name AutoML-assigned name for the column you want to
+update.</p></li>
+<li><p><strong>column_spec_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name of the column you want to update. If
+this is supplied in place of <cite>column_spec_name</cite>, you also need
+to provide either a way to lookup the source dataset (using one
+of the <cite>dataset*</cite> kwargs), or the <cite>table_spec_name</cite> of the
+table this column belongs to.</p></li>
+<li><p><strong>table_spec_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name for the table whose specs you want to
+update. If not supplied, the client can determine this name
+from a source <cite>Dataset</cite> object.</p></li>
+<li><p><strong>table_spec_index</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – If no <cite>table_spec_name</cite> was provided, we use this index to
+determine which table to update column specs on.</p></li>
+<li><p><strong>dataset_display_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The human-readable name given to the dataset you want to update
+specs on. If no <cite>table_spec_name</cite> is supplied, this will be
+used together with <cite>table_spec_index</cite> to infer the name of
+table to update specs on. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset_name</strong> (<em>Optional</em><em>[</em><em>string</em><em>]</em>) – The AutoML-assigned name given to the dataset you want to
+update specs one. If no <cite>table_spec_name</cite> is supplied, this
+will be used together with <cite>table_spec_index</cite> to infer the name
+of table to update specs on. This must be supplied if
+<cite>table_spec_name</cite>, <cite>dataset</cite> or <cite>dataset_display_name</cite> are not
+supplied.</p></li>
+<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.Dataset" title="google.cloud.automl_v1beta1.types.Dataset"><em>Dataset</em></a><em>]</em>) – The <cite>Dataset</cite> instance you want to update specs on. If no
+<cite>table_spec_name</cite> is supplied, this will be used together with
+<cite>table_spec_index</cite> to infer the name of table to update specs
+on. This must be supplied if <cite>table_spec_name</cite>, <cite>dataset_name</cite>
+or <cite>dataset_display_name</cite> are not supplied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="types.html#google.cloud.automl_v1beta1.types.ColumnSpec" title="google.cloud.automl_v1beta1.types.ColumnSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnSpec</span></code></a> instance.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><strong>google.api_core.exceptions.GoogleAPICallError</strong></a> – If the request
+    failed for any reason.</p></li>
+<li><p><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><strong>google.api_core.exceptions.RetryError</strong></a> – If the request failed due
+    to a retryable error and retry attempts failed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If required parameters are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../asset/index.html">Asset Management</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">AutoML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/index.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">BigQuery Data-Transfer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_storage/index.html">BigQuery Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/index.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../containeranalysis/index.html">Container Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datacatalog/index.html">Data Catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datalabeling/index.html">Data Labeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dlp/index.html">Data Loss Prevention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Dataproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/index.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/index.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grafeas/index.html">Grafeas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iam/index.html">IAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iot/index.html">IoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kms/index.html">Key Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../oslogin/index.html">OSLogin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">PubSub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redis/index.html">Memorystore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/index.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/index.html">Runtime Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scheduler/index.html">Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../securitycenter/index.html">Security Center</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../websecurityscanner/index.html">Security Scanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/index.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/index.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../irm/index.html">Stackdriver Incident Response &amp; Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/index.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trace/index.html">Stackdriver Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/index.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../talent/index.html">Talent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../texttospeech/index.html">Text-to-Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/index.html">Translate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../webrisk/index.html">Web Risk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html">Release History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Cloud AutoML API</a><ul>
+      <li>Previous: <a href="types.html" title="previous chapter">Types for Cloud AutoML API Client</a></li>
+      <li>Next: <a href="../../changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/automl/gapic/v1beta1/tables.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

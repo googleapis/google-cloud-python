@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Python Client for Cloud AutoML API &#8212; google-cloud f2df9ca documentation</title>
+    <title>Python Client for Cloud AutoML API &#8212; google-cloud e9ea9ed documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -109,6 +109,29 @@ API to see other available methods on the client.</p></li>
 more about the product and see How-to Guides.</p></li>
 </ul>
 </div>
+<div class="section" id="making-testing-local-changes">
+<h3>Making &amp; Testing Local Changes<a class="headerlink" href="#making-testing-local-changes" title="Permalink to this headline">#</a></h3>
+<p>If you want to make changes to this library, here is how to set up your
+development environment:</p>
+<ol class="arabic">
+<li><p>Make sure you have <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> installed and activated as shown above.</p></li>
+<li><p>Run the following one-time setup (it will be persisted in your virtualenv):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r ../docs/requirements.txt</span>
+<span class="go">pip install -U nox mock pytest</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you want to run all tests, you will need a billing-enabled
+<a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects">GCP project</a>, and a <a class="reference external" href="https://cloud.google.com/iam/docs/creating-managing-service-accounts">service account</a> with access to the AutoML APIs.
+Note: the first time the tests run in a new project it will take a _long_
+time, on the order of 2-3 hours. This is one-time setup that will be skipped
+in future runs.</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export PROJECT_ID=&lt;project-id&gt; GOOGLE_APPLICATION_CREDENTIALS=&lt;/path/to/creds.json&gt;</span>
+<span class="go">nox</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="api-reference">
 <h2>Api Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
@@ -116,6 +139,7 @@ more about the product and see How-to Guides.</p></li>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/api.html">Client for Cloud AutoML API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/types.html">Types for Cloud AutoML API Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/tables.html">A tables-specific client for AutoML</a></li>
 </ul>
 </div>
 </div>
