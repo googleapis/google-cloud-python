@@ -26,6 +26,7 @@ def client_query(client):
         'WHERE state = "TX" '
         "LIMIT 100"
     )
+
     query_job = client.query(
         query,
         # Location must match that of the dataset(s) referenced in the query.
