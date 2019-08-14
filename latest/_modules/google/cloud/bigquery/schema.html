@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud e9ea9ed documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud 66fe46e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -50,6 +50,8 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery_v2</span> <span class="k">import</span> <span class="n">types</span>
 
+
+<span class="n">_STRUCT_TYPES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;RECORD&quot;</span><span class="p">,</span> <span class="s2">&quot;STRUCT&quot;</span><span class="p">)</span>
 
 <span class="c1"># SQL types reference:</span>
 <span class="c1"># https://cloud.google.com/bigquery/data-types#legacy_sql_data_types</span>
@@ -184,7 +186,7 @@
 
         <span class="c1"># If this is a RECORD type, then sub-fields are also included,</span>
         <span class="c1"># add this to the serialized representation.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;RECORD&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="n">_STRUCT_TYPES</span><span class="p">:</span>
             <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">]</span>
 
         <span class="c1"># Done; return the serialized dictionary.</span>
