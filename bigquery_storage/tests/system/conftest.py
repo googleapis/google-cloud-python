@@ -32,10 +32,15 @@ def project_id():
 
 
 @pytest.fixture(scope="session")
-def dataset(project_id):
+def bq_client():
     from google.cloud import bigquery
 
-    bq_client = bigquery.Client()
+    return bigquery.Client()
+
+
+@pytest.fixture(scope="session")
+def dataset(project_id, bq_client):
+    from google.cloud import bigquery
 
     unique_suffix = str(uuid.uuid4()).replace("-", "_")
     dataset_name = "bq_storage_system_tests_" + unique_suffix
@@ -51,10 +56,8 @@ def dataset(project_id):
 
 
 @pytest.fixture(scope="session")
-def table(project_id, dataset):
+def table(project_id, dataset, bq_client):
     from google.cloud import bigquery
-
-    bq_client = bigquery.Client()
 
     schema = [
         bigquery.SchemaField("first_name", "STRING", mode="REQUIRED"),
@@ -72,10 +75,8 @@ def table(project_id, dataset):
 
 
 @pytest.fixture
-def table_with_data_ref(dataset, table):
+def table_with_data_ref(dataset, table, bq_client):
     from google.cloud import bigquery
-
-    bq_client = bigquery.Client()
 
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.CSV
@@ -102,10 +103,8 @@ def table_with_data_ref(dataset, table):
 
 
 @pytest.fixture
-def col_partition_table_ref(project_id, dataset):
+def col_partition_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
-
-    bq_client = bigquery.Client()
 
     schema = [
         bigquery.SchemaField("occurred", "DATE", mode="REQUIRED"),
@@ -132,10 +131,8 @@ def col_partition_table_ref(project_id, dataset):
 
 
 @pytest.fixture
-def ingest_partition_table_ref(project_id, dataset):
+def ingest_partition_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
-
-    bq_client = bigquery.Client()
 
     schema = [
         bigquery.SchemaField("shape", "STRING", mode="REQUIRED"),
@@ -163,10 +160,8 @@ def ingest_partition_table_ref(project_id, dataset):
 
 
 @pytest.fixture
-def all_types_table_ref(project_id, dataset):
+def all_types_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
-
-    bq_client = bigquery.Client()
 
     schema = [
         bigquery.SchemaField("string_field", "STRING"),

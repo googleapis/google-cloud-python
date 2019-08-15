@@ -32,7 +32,7 @@ from google.protobuf import timestamp_pb2
 
 # TODO: remove once a similar method is implemented in the library itself
 # https://github.com/googleapis/google-cloud-python/issues/4553
-def _add_rows(table_ref, new_data, partition_suffix=""):
+def _add_rows(table_ref, new_data, bq_client, partition_suffix=""):
     """Insert additional rows into an existing table.
 
     Args:
@@ -42,9 +42,12 @@ def _add_rows(table_ref, new_data, partition_suffix=""):
             New data to insert with each row represented as a dictionary.
             The keys must match the table column names, and the values
             must be JSON serializable.
+        bq_client (bigquery.Client):
+            A BigQuery client instance to use for API calls.
+        partition_suffix (str):
+            An option suffix to append to the table_id, useful for selecting
+            partitions of ingestion-time partitioned tables.
     """
-    bq_client = bigquery.Client()
-
     job_config = bigquery.LoadJobConfig(
         source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     )
@@ -192,7 +195,7 @@ def test_column_selection_read(client, project_id, table_with_data_ref, data_for
         assert sorted(row.keys()) == ["age", "first_name"]
 
 
-def test_snapshot(client, project_id, table_with_data_ref):
+def test_snapshot(client, project_id, table_with_data_ref, bq_client):
     before_new_data = timestamp_pb2.Timestamp()
     before_new_data.GetCurrentTime()
 
@@ -201,7 +204,7 @@ def test_snapshot(client, project_id, table_with_data_ref):
         {u"first_name": u"NewGuyFoo", u"last_name": u"Smith", u"age": 46},
         {u"first_name": u"NewGuyBar", u"last_name": u"Jones", u"age": 30},
     ]
-    _add_rows(table_with_data_ref, new_data)
+    _add_rows(table_with_data_ref, new_data, bq_client)
 
     # read data using the timestamp before the additional data load
     session = client.create_read_session(
@@ -224,7 +227,9 @@ def test_snapshot(client, project_id, table_with_data_ref):
         assert "NewGuy" not in row["first_name"]  # no new records
 
 
-def test_column_partitioned_table(client, project_id, col_partition_table_ref):
+def test_column_partitioned_table(
+    client, project_id, col_partition_table_ref, bq_client
+):
     data = [
         {"description": "Tracking established.", "occurred": "2017-02-15"},
         {"description": "Look, a solar eclipse!", "occurred": "2018-02-15"},
@@ -233,7 +238,7 @@ def test_column_partitioned_table(client, project_id, col_partition_table_ref):
         {"description": "1 year after false eclipse report.", "occurred": "2019-02-15"},
     ]
 
-    _add_rows(col_partition_table_ref, data)
+    _add_rows(col_partition_table_ref, data, bq_client)
 
     # Read from the table with a partition filter specified, and verify that
     # only the expected data is returned.
@@ -271,22 +276,22 @@ def test_column_partitioned_table(client, project_id, col_partition_table_ref):
     ),
 )
 def test_ingestion_time_partitioned_table(
-    client, project_id, ingest_partition_table_ref, data_format
+    client, project_id, ingest_partition_table_ref, bq_client, data_format
 ):
     data = [{"shape": "cigar", "altitude": 1200}, {"shape": "disc", "altitude": 750}]
-    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190809")
+    _add_rows(ingest_partition_table_ref, data, bq_client, partition_suffix="$20190809")
 
     data = [
         {"shape": "sphere", "altitude": 3500},
         {"shape": "doughnut", "altitude": 100},
     ]
-    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190810")
+    _add_rows(ingest_partition_table_ref, data, bq_client, partition_suffix="$20190810")
 
     data = [
         {"shape": "elephant", "altitude": 1},
         {"shape": "rocket", "altitude": 12700},
     ]
-    _add_rows(ingest_partition_table_ref, data, partition_suffix="$20190811")
+    _add_rows(ingest_partition_table_ref, data, bq_client, partition_suffix="$20190811")
 
     read_options = bigquery_storage_v1beta1.types.TableReadOptions()
     read_options.row_restriction = "DATE(_PARTITIONTIME) = '2019-08-10'"
@@ -319,7 +324,9 @@ def test_ingestion_time_partitioned_table(
         (bigquery_storage_v1beta1.enums.DataFormat.ARROW),
     ),
 )
-def test_decoding_data_types(client, project_id, all_types_table_ref, data_format):
+def test_decoding_data_types(
+    client, project_id, all_types_table_ref, bq_client, data_format
+):
     data = [
         {
             u"string_field": u"Price: € 9.95.",
@@ -338,7 +345,7 @@ def test_decoding_data_types(client, project_id, all_types_table_ref, data_forma
         }
     ]
 
-    _add_rows(all_types_table_ref, data)
+    _add_rows(all_types_table_ref, data, bq_client)
 
     session = client.create_read_session(
         all_types_table_ref,
