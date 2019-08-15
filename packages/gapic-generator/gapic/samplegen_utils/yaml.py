@@ -36,6 +36,12 @@ class Element(ABC):
 
 
 @dataclasses.dataclass(frozen=True)
+class Null(Element):
+    def render(self, spaces: int = 0) -> str:
+        return ""
+
+
+@dataclasses.dataclass(frozen=True)
 class KeyVal(Element):
     """A single key/value entry."""
     key: str
@@ -65,9 +71,11 @@ class Collection(Element):
         return f"{self.name}:\n" + "\n".join(
             indent(
                 "-"
-                + "\n".join(e.render(spaces=spaces + self.INDENT_SPACES) for e in l)[
-                    1:
-                ],
+                + "\n".join(
+                    r
+                    for r in (e.render(spaces + self.INDENT_SPACES) for e in l)
+                    if r
+                )[1:],
                 " " * (spaces),
             )
             for l in self.elements
@@ -106,4 +114,4 @@ class Doc(Element):
     elements: List[Element]
 
     def render(self):
-        return "---\n{}".format("\n".join(e.render() for e in self.elements))
+        return "---\n{}\n".format("\n".join(e.render() for e in self.elements))

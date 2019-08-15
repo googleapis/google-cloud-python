@@ -356,7 +356,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, mock_generate_sample, fs)
                   sample: clam_sample
                   path: '{base_path}/clam_sample.py'
                   region_tag: clam_sample
-                """.rstrip()),
+                """),
             )
         ]
     )
@@ -446,7 +446,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                 - <<: *python
                   sample: 157884ee
                   path: '{base_path}/157884ee.py'
-                  region_tag: """)
+                """)
             ),
         ]
     )

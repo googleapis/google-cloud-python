@@ -63,8 +63,7 @@ def test_generate_manifest():
                                           "sample", "squid_sample"),
                                       gapic_yaml.KeyVal(
                                           "path", "'{base_path}/squid_fpath.py'"),
-                                      gapic_yaml.KeyVal(
-                                          "region_tag", ""),
+                                      gapic_yaml.Null,
                                   ],
                                   [
                                       gapic_yaml.Alias("python"),
@@ -80,24 +79,25 @@ def test_generate_manifest():
 
     assert info == doc
 
-    expected_rendering = dedent("""
-                                ---
-                                type: manifest/samples
-                                schema_version: 3
-                                python: &python
-                                  environment: python
-                                  bin: python3
-                                  base_path: samples/
-                                  invocation: '{bin} {path} @args'
-                                samples:
-                                - <<: *python
-                                  sample: squid_sample
-                                  path: '{base_path}/squid_fpath.py'
-                                  region_tag: 
-                                - <<: *python
-                                  sample: clam_sample
-                                  path: '{base_path}/clam_fpath.py'
-                                  region_tag: giant_clam_sample""".lstrip("\n"))
+    expected_rendering = dedent(
+        """\
+        ---
+        type: manifest/samples
+        schema_version: 3
+        python: &python
+          environment: python
+          bin: python3
+          base_path: samples/
+          invocation: '{bin} {path} @args'
+        samples:
+        - <<: *python
+          sample: squid_sample
+          path: '{base_path}/squid_fpath.py'
+        - <<: *python
+          sample: clam_sample
+          path: '{base_path}/clam_fpath.py'
+          region_tag: giant_clam_sample
+        """)
 
     rendered_yaml = doc.render()
     assert rendered_yaml == expected_rendering
@@ -119,7 +119,6 @@ def test_generate_manifest():
                 "invocation": "{bin} {path} @args",
                 "sample": "squid_sample",
                 "path": "{base_path}/squid_fpath.py",
-                "region_tag": None,
             },
             {
                 "environment": "python",
