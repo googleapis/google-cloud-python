@@ -66,7 +66,7 @@ def dataset_id(client):
 
 
 @pytest.fixture
-def dataset_label(client, dataset_id):
+def dataset_with_labels_id(client, dataset_id):
     dataset = client.get_dataset(dataset_id)
     dataset.labels = {"color": "green"}
     dataset = client.update_dataset(dataset, ["labels"])

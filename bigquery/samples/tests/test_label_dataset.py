@@ -18,7 +18,6 @@ from .. import label_dataset
 
 def test_label_dataset(capsys, client, dataset_id):
 
-    labels = {"color": "green"}
     label_dataset.label_dataset(client, dataset_id)
     out, err = capsys.readouterr()
     assert "color: green" in out

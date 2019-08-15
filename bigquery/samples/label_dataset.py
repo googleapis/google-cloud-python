@@ -26,10 +26,11 @@ def label_dataset(client, dataset_id):
 
     dataset = client.get_dataset(dataset_id)
 
-    labels = {"color": "green"}
-    dataset.labels = labels
+    dataset.labels = {"color": "green"}
 
     dataset = client.update_dataset(dataset, ["labels"])
+
+    dataset = client.get_dataset(dataset_id)
 
     print("Dataset ID: {}".format(dataset_id))
     print("Added labels:")
