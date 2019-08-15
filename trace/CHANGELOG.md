@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.22.1
+
+08-12-2019 13:51 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8973](https://github.com/googleapis/google-cloud-python/pull/8973))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Fix pip / usage examples in README.rst. ([#8833](https://github.com/googleapis/google-cloud-python/pull/8833))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.22.0
 
 07-24-2019 17:50 PDT
