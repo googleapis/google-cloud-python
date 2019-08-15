@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.4.1
+
+08-12-2019 13:44 PDT
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+
 ## 0.4.0
 
 08-01-2019 14:24 PDT
