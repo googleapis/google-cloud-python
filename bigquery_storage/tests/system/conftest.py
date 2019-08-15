@@ -32,10 +32,19 @@ def project_id():
 
 
 @pytest.fixture(scope="session")
-def bq_client():
+def credentials():
+    from google.oauth2 import service_account
+
+    # NOTE: the test config in noxfile checks that the env variable is indeed set
+    filename = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+    return service_account.Credentials.from_service_account_file(filename)
+
+
+@pytest.fixture(scope="session")
+def bq_client(credentials):
     from google.cloud import bigquery
 
-    return bigquery.Client()
+    return bigquery.Client(credentials=credentials)
 
 
 @pytest.fixture(scope="session")
@@ -202,8 +211,8 @@ def all_types_table_ref(project_id, dataset, bq_client):
 
 
 @pytest.fixture(scope="session")
-def client():
-    return bigquery_storage_v1beta1.BigQueryStorageClient()
+def client(credentials):
+    return bigquery_storage_v1beta1.BigQueryStorageClient(credentials=credentials)
 
 
 @pytest.fixture()
