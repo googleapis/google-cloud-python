@@ -18,7 +18,7 @@ import os.path as path
 import gapic.samplegen.samplegen as samplegen
 import gapic.utils as utils
 
-from gapic.samplegen.utils import CallingForm
+from gapic.samplegen_utils.types import CallingForm
 from textwrap import dedent
 
 

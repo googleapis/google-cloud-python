@@ -46,7 +46,7 @@ class KeyVal(Element):
         return f"{whitespace}{self.key}: {self.val}"
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Collection(Element):
     """An ordered list of subobjects."""
     name: str
@@ -62,7 +62,6 @@ class Collection(Element):
         # -  cephalopod: squid
         #   bivalve: clam
         #   gastropod: whelk
-        whitespace = " " * spaces
         return f"{self.name}:\n" + "\n".join(
             indent(
                 "-"
@@ -75,7 +74,7 @@ class Collection(Element):
         )
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Alias(Element):
     """An anchor to a map."""
     target: str
@@ -85,7 +84,7 @@ class Alias(Element):
         return f"{whitespace}<<: *{self.target}"
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True)
 class Map(Element):
     """A named collection with a list of attributes."""
     name: str
@@ -99,3 +98,12 @@ class Map(Element):
         )
         whitespace = " " * spaces
         return f"{whitespace}{self.name}:{maybe_anchor}\n{element_str}"
+
+
+@dataclasses.dataclass(frozen=True)
+class Doc(Element):
+    """A yaml document"""
+    elements: List[Element]
+
+    def render(self):
+        return "---\n{}".format("\n".join(e.render() for e in self.elements))

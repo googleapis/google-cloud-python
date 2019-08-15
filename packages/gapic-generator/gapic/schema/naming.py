@@ -15,7 +15,7 @@
 import dataclasses
 import os
 import re
-from typing import cast, List, Match, Sequence, Tuple
+from typing import cast, List, Match, Tuple
 
 from google.protobuf import descriptor_pb2
 
@@ -45,8 +45,8 @@ class Naming:
 
     @classmethod
     def build(cls,
-            *file_descriptors: descriptor_pb2.FileDescriptorProto,
-            opts: options.Options = options.Options(),
+              *file_descriptors: descriptor_pb2.FileDescriptorProto,
+              opts: options.Options = options.Options(),
               ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
 
@@ -101,7 +101,7 @@ class Naming:
 
         # Okay, do the match
         match = cast(Match,
-            re.search(pattern=pattern, string=root_package)).groupdict()
+                     re.search(pattern=pattern, string=root_package)).groupdict()
         match['namespace'] = match['namespace'] or ''
         package_info = cls(
             name=match['name'].capitalize(),

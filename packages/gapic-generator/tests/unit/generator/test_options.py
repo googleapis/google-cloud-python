@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 from unittest import mock
 import warnings
 
 from gapic.generator import options
+from gapic.samplegen_utils import types
 
 
 def test_options_empty():
@@ -46,3 +48,9 @@ def test_options_unrecognized_likely_typo():
     with mock.patch.object(warnings, 'warn') as warn:
         options.Options.build('go-gapic-abc=xyz')
     assert len(warn.mock_calls) == 0
+
+
+def test_options_no_valid_sample_config(fs):
+    fs.create_file("sampledir/not_a_config.yaml")
+    with pytest.raises(types.InvalidConfig):
+        options.Options.build("samples=sampledir/")

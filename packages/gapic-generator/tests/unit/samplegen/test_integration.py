@@ -16,8 +16,10 @@ import jinja2
 import os.path as path
 import pytest
 
-import gapic.samplegen.samplegen as samplegen
 import gapic.utils as utils
+
+from gapic.samplegen import samplegen
+from gapic.samplegen_utils import (types, utils as gapic_utils)
 
 from common_types import (DummyMethod, DummyService,
                           DummyApiSchema, DummyNaming, message_factory, enum_factory)
@@ -69,20 +71,20 @@ def test_generate_sample_basic():
                            "value_is_file": True}],
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
-    fpath, template_stream = samplegen.generate_sample(
-        sample, True, env, schema)
-    sample_str = "".join(iter(template_stream))
+    sample_str = samplegen.generate_sample(
+        sample, env, schema)
 
+    sample_id = ("mollusc_classify_sync")
     expected_str = '''# TODO: add a copyright
 # TODO: add a license
 #
-# DO NOT EDIT! This is a generated sample ("CallingForm.Request",  "mollusc_classify_sync")
+# DO NOT EDIT! This is a generated sample ("request",  "%s")
 #
 # To install the latest published package dependency, execute the following:
 #   pip3 install molluscs-v1-mollusc
 
 
-# [START mollusc_classify_sync]
+# [START %s]
 
 def sample_classify(video):
     """Determine the full taxonomy of input mollusc"""
@@ -99,7 +101,7 @@ def sample_classify(video):
 
     print("Mollusc is a {}".format(response.taxonomy))
 
-# [END mollusc_classify_sync]
+# [END %s]
 
 def main():
     import argparse
@@ -115,7 +117,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
+''' % (sample_id, sample_id, sample_id)
 
     assert sample_str == expected_str
 
@@ -124,8 +126,8 @@ def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}
 
-    with pytest.raises(samplegen.UnknownService):
-        samplegen.generate_sample(sample, True, env, schema)
+    with pytest.raises(types.UnknownService):
+        samplegen.generate_sample(sample, env, schema)
 
 
 def test_generate_sample_rpc_not_found():
@@ -133,5 +135,197 @@ def test_generate_sample_rpc_not_found():
         {"Mollusc": DummyService({})}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
-    with pytest.raises(samplegen.RpcMethodNotFound):
-        samplegen.generate_sample(sample, True, env, schema)
+    with pytest.raises(types.RpcMethodNotFound):
+        list(samplegen.generate_sample(sample, env, schema))
+
+
+def test_generate_sample_config_fpaths(fs):
+    expected_path = 'cfgs/sample_config.yaml'
+    fs.create_file(
+        expected_path,
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(expected_path))
+
+    assert actual_paths == [expected_path]
+
+
+def test_generate_sample_config_fpaths_directories(fs):
+    good_contents = dedent(
+        '''
+        ---
+        type: com.google.api.codegen.SampleConfigProto
+        schema_version: 1.2.0
+        samples:
+        - service: google.cloud.language.v1.LanguageService
+        '''
+    )
+    # We need some invalid configs in the directory as well to verify that
+    # they don't cause spurious failures.
+    bad_contents = 'bad contents'
+    directory = 'sampleconfig'
+    for p in [
+            "config_1.yaml",
+            "config_2.yaml",
+            "config_notes.txt",
+            "subdir/config_3.yaml",
+            "subdir/config_4.yaml",
+            "subdir/nested/config_5.yaml",
+    ]:
+        fs.create_file(path.join(directory, p), contents=good_contents)
+
+    for p in [
+            "bad_config_1.yaml",
+            "subdir/bad_config_2.yaml",
+            "subdir/nested/bad_config_3.yaml",
+    ]:
+        fs.create_file(path.join(directory, p), contents=bad_contents)
+
+    expected_paths = [
+        "sampleconfig/config_1.yaml",
+        "sampleconfig/config_2.yaml",
+        "sampleconfig/subdir/config_3.yaml",
+        "sampleconfig/subdir/config_4.yaml",
+        "sampleconfig/subdir/nested/config_5.yaml",
+    ]
+
+    actual_paths = sorted(gapic_utils.generate_all_sample_fpaths(directory))
+
+    assert actual_paths == expected_paths
+
+
+def test_generate_sample_config_fpaths_directories_no_configs(fs):
+    directory = 'sampleconfig'
+    for f in ['a.yaml', 'b.yaml']:
+        fs.create_file(path.join(directory, f))
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
+
+    assert not actual_paths
+
+
+def test_generate_sample_config_fpaths_not_yaml(fs):
+    expected_path = 'cfgs/sample_config.not_yaml'
+    fs.create_file(expected_path)
+
+    with pytest.raises(types.InvalidConfig):
+        list(gapic_utils.generate_all_sample_fpaths(expected_path))
+
+
+def test_generate_sample_config_fpaths_bad_contents(
+        fs,
+        # Note the typo: SampleConfigPronto
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigPronto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+):
+    expected_path = 'cfgs/sample_config.yaml'
+    fs.create_file(expected_path, contents=contents)
+
+    with pytest.raises(types.InvalidConfig):
+        list(gapic_utils.generate_all_sample_fpaths(expected_path))
+
+
+def test_generate_sample_config_fpaths_bad_contents_old(fs):
+    test_generate_sample_config_fpaths_bad_contents(
+        fs,
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.1.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+
+
+def test_generate_sample_config_fpaths_bad_contents_no_samples(fs):
+    test_generate_sample_config_fpaths_bad_contents(
+        fs,
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            '''
+        )
+    )
+
+
+def test_generate_sample_config_partial_config(fs):
+    expected_path = 'sample.yaml'
+    fs.create_file(
+        expected_path,
+        # Note the typo: SampleConfigPronto
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigPronto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            ---
+            # Note: this one IS a valid config
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+    expected_paths = [expected_path]
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(expected_path))
+
+    assert actual_paths == expected_paths
+
+
+def test_generate_sample_config_partial_config_directory(fs):
+    directory = 'samples'
+    fpath = path.join(directory, 'sample.yaml')
+    fs.create_file(
+        fpath,
+        # Note the typo in the first sample: SampleConfigPronto
+        contents=dedent(
+            '''
+            ---
+            # Note: this one is NOT a valid config
+            type: com.google.api.codegen.SampleConfigPronto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            ---
+            # Note: this one IS a valid config
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
+        )
+    )
+    expected_paths = [fpath]
+
+    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
+
+    assert actual_paths == expected_paths
+
+
+def test_generate_sample_config_fpaths_no_such_file(fs):
+    with pytest.raises(types.InvalidConfig):
+        list(gapic_utils.generate_all_sample_fpaths('cfgs/sample_config.yaml'))

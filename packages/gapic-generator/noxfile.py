@@ -26,7 +26,7 @@ showcase_version = '0.2.0'
 def unit(session):
     """Run the unit test suite."""
 
-    session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('coverage', 'pytest', 'pytest-cov', 'pyfakefs')
     session.install('-e', '.')
 
     session.run(

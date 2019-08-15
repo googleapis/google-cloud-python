@@ -51,6 +51,9 @@ setup(
     extras_require={
         ':python_version<"3.7"': ('dataclasses >= 0.4',),
     },
+    tests_require=(
+        'pyfakefs >= 3.6',
+    ),
     classifiers=(
         'Development Status :: 4 - Beta',
         'Environment :: Console',

@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from textwrap import dedent
 from typing import Mapping
 from unittest import mock
 
 import jinja2
-
 import pytest
 
 from google.protobuf import descriptor_pb2
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
 from gapic.generator import options
+from gapic.samplegen_utils import yaml
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
@@ -244,6 +246,212 @@ def test_get_filename_with_proto_and_sub():
         api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'bar/types/baz/bacon.py'
+
+
+def test_parse_sample_paths(fs):
+    for fpath in [
+            'sample.yaml',
+            'sampledir/sample.yaml',
+            'other_sampledir/sample.yaml',
+    ]:
+        fs.create_file(
+            fpath,
+            contents=dedent(
+                '''
+                ---
+                type: com.google.api.codegen.SampleConfigProto
+                schema_version: 1.2.0
+                samples:
+                - service: google.cloud.language.v1.LanguageService
+                '''
+            )
+        )
+
+    opts = options.Options.build(
+        ("samples=sample.yaml,"
+         "samples=sampledir/,"
+         "samples=other_sampledir"))
+
+    expected_configs = (
+        'sample.yaml',
+        'sampledir/sample.yaml',
+        'other_sampledir/sample.yaml',
+    )
+
+    assert opts.sample_configs == expected_configs
+
+
+@mock.patch(
+    'gapic.samplegen.samplegen.generate_sample',
+    return_value='',
+)
+@mock.patch(
+    'time.gmtime',
+)
+def test_samplegen_config_to_output_files(mock_gmtime, mock_generate_sample, fs):
+    # These time values are nothing special,
+    # they just need to be deterministic.
+    returner = mock.MagicMock()
+    returner.tm_year = 2112
+    returner.tm_mon = 6
+    returner.tm_mday = 1
+    returner.tm_hour = 13
+    returner.tm_min = 13
+    returner.tm_sec = 13
+    mock_gmtime.return_value = returner
+
+    fs.create_file(
+        'samples.yaml',
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid_streaming
+            - region_tag: clam_sample
+              rpc: get_clam
+            '''
+        )
+    )
+
+    mock_generate_sample
+
+    g = generator.Generator(
+        options.Options.build(
+            'samples=samples.yaml',
+        )
+    )
+    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    actual_response = g.get_response(api_schema)
+    expected_response = CodeGeneratorResponse(
+        file=[
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/clam_sample.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
+                content=dedent("""\
+                ---
+                type: manifest/samples
+                schema_version: 3
+                python: &python
+                  environment: python
+                  bin: python3
+                  base_path: samples
+                  invocation: '{bin} {path} @args'
+                samples:
+                - <<: *python
+                  sample: squid_sample
+                  path: '{base_path}/squid_sample.py'
+                  region_tag: humboldt_tag
+                - <<: *python
+                  sample: clam_sample
+                  path: '{base_path}/clam_sample.py'
+                  region_tag: clam_sample
+                """.rstrip()),
+            )
+        ]
+    )
+
+    assert actual_response == expected_response
+
+
+@mock.patch(
+    'gapic.samplegen.samplegen.generate_sample',
+    return_value='',
+)
+@mock.patch(
+    'time.gmtime',
+)
+def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
+    # These time values are nothing special,
+    # they just need to be deterministic.
+    returner = mock.MagicMock()
+    returner.tm_year = 2112
+    returner.tm_mon = 6
+    returner.tm_mday = 1
+    returner.tm_hour = 13
+    returner.tm_min = 13
+    returner.tm_sec = 13
+    mock_gmtime.return_value = returner
+
+    # Note: The first two samples will have the same nominal ID, the first by
+    #       explicit naming and the second by falling back to the region_tag.
+    #       The third has no id of any kind, so the generator is required to make a
+    #       unique ID for it.
+    fs.create_file(
+        'samples.yaml',
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid_streaming
+            # Note that this region tag collides with the id of the previous sample.
+            - region_tag: squid_sample
+              rpc: get_squid_streaming
+            # No id or region tag.
+            - rpc: get_squid_streaming
+            '''
+        )
+    )
+    g = generator.Generator(options.Options.build('samples=samples.yaml'))
+    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    actual_response = g.get_response(api_schema)
+    expected_response = CodeGeneratorResponse(
+        file=[
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample_91a465c6.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample_c8014108.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/157884ee.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
+                content=dedent("""\
+                ---
+                type: manifest/samples
+                schema_version: 3
+                python: &python
+                  environment: python
+                  bin: python3
+                  base_path: samples
+                  invocation: '{bin} {path} @args'
+                samples:
+                - <<: *python
+                  sample: squid_sample_91a465c6
+                  path: '{base_path}/squid_sample_91a465c6.py'
+                  region_tag: humboldt_tag
+                - <<: *python
+                  sample: squid_sample_c8014108
+                  path: '{base_path}/squid_sample_c8014108.py'
+                  region_tag: squid_sample
+                - <<: *python
+                  sample: 157884ee
+                  path: '{base_path}/157884ee.py'
+                  region_tag: """)
+            ),
+        ]
+    )
+
+    assert actual_response == expected_response
 
 
 def make_generator(opts_str: str = '') -> generator.Generator:

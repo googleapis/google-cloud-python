@@ -12,10 +12,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Module containing miscellaneous utilities
-that will eventually move somewhere else (probably)."""
-
 from enum import Enum, auto
+from gapic.utils import to_snake_case
+
+
+class SampleError(Exception):
+    pass
+
+
+class ReservedVariableName(SampleError):
+    pass
+
+
+class RpcMethodNotFound(SampleError):
+    pass
+
+
+class UnknownService(SampleError):
+    pass
+
+
+class InvalidConfig(SampleError):
+    pass
+
+
+class InvalidStatement(SampleError):
+    pass
+
+
+class BadLoop(SampleError):
+    pass
+
+
+class MismatchedFormatSpecifier(SampleError):
+    pass
+
+
+class UndefinedVariableReference(SampleError):
+    pass
+
+
+class BadAttributeLookup(SampleError):
+    pass
+
+
+class RedefinedVariable(SampleError):
+    pass
+
+
+class BadAssignment(SampleError):
+    pass
+
+
+class InconsistentRequestName(SampleError):
+    pass
+
+
+class InvalidRequestSetup(SampleError):
+    pass
+
+
+class InvalidEnumVariant(SampleError):
+    pass
 
 
 class CallingForm(Enum):
@@ -41,3 +99,6 @@ class CallingForm(Enum):
             return cls.RequestStreamingServer
 
         return cls.Request
+
+    def __str__(self):
+        return to_snake_case(super().__str__().split(".")[-1])

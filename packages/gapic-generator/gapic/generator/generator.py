@@ -12,20 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import OrderedDict
-from typing import Dict, Mapping
-import os
-import re
-
 import jinja2
-
-from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
-
-from gapic import utils
-from gapic.generator import formatter
-from gapic.generator import options
+import yaml
+import re
+import os
+from typing import (Any, DefaultDict, Dict, Mapping, List)
+from hashlib import sha256
+from collections import (OrderedDict, defaultdict)
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.samplegen_utils.types import InvalidConfig
 from gapic.samplegen import samplegen
+from gapic.generator import options
+from gapic.generator import formatter
 from gapic.schema import api
+from gapic import utils
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
 class Generator:
@@ -57,6 +58,8 @@ class Generator:
         self._env.filters['wrap'] = utils.wrap
         self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
 
+        self._sample_configs = opts.sample_configs
+
     def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
 
@@ -72,13 +75,15 @@ class Generator:
         """
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
-        # TODO: handle sample_templates specially, generate samples.
         sample_templates, client_templates = utils.partition(
             lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME,
             self._env.loader.list_templates())
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
+        # Sample templates work differently: there's (usually) only one,
+        # and instead of iterating over it/them, we iterate over samples
+        # and plug those into the template.
         for template_name in client_templates:
             # Sanity check: Skip "private" templates.
             filename = template_name.split('/')[-1]
@@ -90,8 +95,92 @@ class Generator:
                                                       api_schema=api_schema,
                                                       ))
 
+        output_files.update(self._generate_samples_and_manifest(api_schema))
+
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=[i for i in output_files.values()])
+
+    def _generate_samples_and_manifest(
+        self,
+        api_schema: api.API
+    ) -> Dict[str, CodeGeneratorResponse.File]:
+        """Generate samples and samplegen manifest for the API.
+
+        Arguments:
+            api_schema (api.API): The schema for the API to which the samples belong.
+
+        Returns:
+            Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
+        """
+        id_to_samples: DefaultDict[str, List[Any]] = defaultdict(list)
+        for config_fpath in self._sample_configs:
+            with open(config_fpath) as f:
+                configs = yaml.safe_load_all(f.read())
+
+            spec_generator = (
+                spec
+                for cfg in configs if is_valid_sample_cfg(cfg)
+                for spec in cfg.get("samples", [])
+            )
+
+            for spec in spec_generator:
+                # Every sample requires an ID, preferably provided by the
+                # samplegen config author.
+                # If no ID is provided, fall back to the region tag.
+                # If there's no region tag, generate a unique ID.
+                #
+                # Ideally the sample author should pick a descriptive, unique ID,
+                # but this may be impractical and can be error-prone.
+                sample_id = (spec.get("id")
+                             or spec.get("region_tag")
+                             or sha256(str(spec).encode('utf8')).hexdigest()[:8])
+
+                spec["id"] = sample_id
+                id_to_samples[sample_id].append(spec)
+
+        # Interpolate the special variables in the sample_out_dir template.
+        out_dir = "samples"
+        fpath_to_spec_and_rendered = {}
+        for samples in id_to_samples.values():
+            for spec in samples:
+                id_is_unique = len(samples) == 1
+                # The ID is used to generate the file name and by sample tester
+                # to link filenames to invoked samples. It must be globally unique.
+                if not id_is_unique:
+                    spec_hash = sha256(
+                        str(spec).encode('utf8')).hexdigest()[:8]
+                    spec["id"] += f"_{spec_hash}"
+
+                sample = samplegen.generate_sample(spec, self._env, api_schema)
+
+                fpath = spec["id"] + ".py"
+                fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (spec,
+                                                                            sample)
+
+        output_files = {
+            fname: CodeGeneratorResponse.File(
+                content=formatter.fix_whitespace(sample),
+                name=fname
+            )
+            for fname, (_, sample) in fpath_to_spec_and_rendered.items()
+        }
+
+        # Only generate a manifest if we generated samples.
+        if output_files:
+            manifest_fname, manifest_doc = samplegen.generate_manifest(
+                ((fname, spec)
+                 for fname, (spec, _) in fpath_to_spec_and_rendered.items()),
+                out_dir,
+                api_schema
+            )
+
+            manifest_fname = os.path.join(out_dir, manifest_fname)
+            output_files[manifest_fname] = CodeGeneratorResponse.File(
+                content=manifest_doc.render(),
+                name=manifest_fname
+            )
+
+        return output_files
 
     def _render_template(
             self,

@@ -16,15 +16,15 @@ import dataclasses
 import itertools
 import jinja2
 import keyword
+import os
 import re
 import time
 
-from gapic.samplegen import utils, yaml
+from gapic.samplegen_utils import (types, yaml)
 from gapic.schema import (api, wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
-from textwrap import dedent
-from typing import (ChainMap, Dict, List, Mapping, Optional, Set, Tuple, Union)
+from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
 
 from google.protobuf import descriptor_pb2
 
@@ -32,9 +32,6 @@ from google.protobuf import descriptor_pb2
 # * In real sample configs, many variables are
 #   defined with an _implicit_ $resp variable.
 
-MIN_SCHEMA_VERSION = (1, 2, 0)
-
-VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
 
 # TODO: read in copyright and license from files.
 FILE_HEADER: Dict[str, str] = {
@@ -58,6 +55,8 @@ RESERVED_WORDS = frozenset(
     )
 )
 
+# TODO: configure the base template name so that
+#       e.g. other languages can use the same machinery.
 TEMPLATE_NAME = "sample.py.j2"
 
 
@@ -107,66 +106,6 @@ class TransformedRequest:
     body: Optional[List[AttributeRequestSetup]]
 
 
-class SampleError(Exception):
-    pass
-
-
-class ReservedVariableName(SampleError):
-    pass
-
-
-class RpcMethodNotFound(SampleError):
-    pass
-
-
-class UnknownService(SampleError):
-    pass
-
-
-class InvalidConfig(SampleError):
-    pass
-
-
-class InvalidStatement(SampleError):
-    pass
-
-
-class BadLoop(SampleError):
-    pass
-
-
-class MismatchedFormatSpecifier(SampleError):
-    pass
-
-
-class UndefinedVariableReference(SampleError):
-    pass
-
-
-class BadAttributeLookup(SampleError):
-    pass
-
-
-class RedefinedVariable(SampleError):
-    pass
-
-
-class BadAssignment(SampleError):
-    pass
-
-
-class InconsistentRequestName(SampleError):
-    pass
-
-
-class InvalidRequestSetup(SampleError):
-    pass
-
-
-class InvalidEnumVariant(SampleError):
-    pass
-
-
 def coerce_response_name(s: str) -> str:
     # In the sample config, the "$resp" keyword is used to refer to the
     # item of interest as received by the corresponding calling form.
@@ -197,7 +136,6 @@ class Validator:
 
     def __init__(self, method: wrappers.Method):
         # The response ($resp) variable is special and guaranteed to exist.
-        # TODO: name lookup also involes type checking
         self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
@@ -226,7 +164,7 @@ class Validator:
         return self.var_defs_.get(var_name)
 
     def validate_and_transform_request(self,
-                                       calling_form: utils.CallingForm,
+                                       calling_form: types.CallingForm,
                                        request: List[Mapping[str, str]]) -> List[TransformedRequest]:
         """Validates and transforms the "request" block from a sample config.
 
@@ -301,12 +239,12 @@ class Validator:
             duplicate = dict(r)
             val = duplicate.get("value")
             if not val:
-                raise InvalidRequestSetup(
+                raise types.InvalidRequestSetup(
                     "Missing keyword in request entry: 'value'")
 
             field = duplicate.get("field")
             if not field:
-                raise InvalidRequestSetup(
+                raise types.InvalidRequestSetup(
                     "Missing keyword in request entry: 'field'")
 
             spurious_keywords = set(duplicate.keys()) - {"value",
@@ -315,7 +253,7 @@ class Validator:
                                                          "input_parameter",
                                                          "comment"}
             if spurious_keywords:
-                raise InvalidRequestSetup(
+                raise types.InvalidRequestSetup(
                     "Spurious keyword(s) in request entry: {}".format(
                         ", ".join(f"'{kword}'" for kword in spurious_keywords)))
 
@@ -329,7 +267,7 @@ class Validator:
             for i, attr_name in enumerate(attr_chain):
                 attr = base.fields.get(attr_name)
                 if not attr:
-                    raise BadAttributeLookup(
+                    raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
                             self.request_type_.type, attr_name))
 
@@ -340,7 +278,7 @@ class Validator:
                     # way to verify that the value is a valid enum variant.
                     witness = any(e.name == val for e in attr.enum.values)
                     if not witness:
-                        raise InvalidEnumVariant(
+                        raise types.InvalidEnumVariant(
                             "Invalid variant for enum {}: '{}'".format(attr, val))
                     # Python code can set protobuf enums from strings.
                     # This is preferable to adding the necessary import statement
@@ -353,7 +291,7 @@ class Validator:
             if i != len(attr_chain) - 1:
                 # We broke out of the loop after processing an enum.
                 extra_attrs = ".".join(attr_chain[i:])
-                raise InvalidEnumVariant(
+                raise types.InvalidEnumVariant(
                     f"Attempted to reference attributes of enum value: '{extra_attrs}'")
 
             if len(attr_chain) > 1:
@@ -363,7 +301,7 @@ class Validator:
                 # there can't be duplicates.
                 # This is admittedly a bit of a hack.
                 if attr_chain[0] in base_param_to_attrs:
-                    raise InvalidRequestSetup(
+                    raise types.InvalidRequestSetup(
                         "Duplicated top level field in request block: '{}'".format(
                             attr_chain[0]))
                 del duplicate["field"]
@@ -374,12 +312,12 @@ class Validator:
                 AttributeRequestSetup(**duplicate))  # type: ignore
 
         client_streaming_forms = {
-            utils.CallingForm.RequestStreamingClient,
-            utils.CallingForm.RequestStreamingBidi,
+            types.CallingForm.RequestStreamingClient,
+            types.CallingForm.RequestStreamingBidi,
         }
 
         if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
-            raise InvalidRequestSetup(
+            raise types.InvalidRequestSetup(
                 "Too many base parameters for client side streaming form")
 
         return [
@@ -407,13 +345,13 @@ class Validator:
 
         for statement in response:
             if len(statement) != 1:
-                raise InvalidStatement(
+                raise types.InvalidStatement(
                     "Invalid statement: {}".format(statement))
 
             keyword, body = next(iter(statement.items()))
             validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
             if not validater:
-                raise InvalidStatement(
+                raise types.InvalidStatement(
                     "Invalid statement keyword: {}".format(keyword))
 
             validater(self, body)
@@ -448,7 +386,7 @@ class Validator:
             base = expression[:first_dot] if first_dot > 0 else expression
             match = chain_link_re.match(base)
             if not match:
-                raise BadAttributeLookup(
+                raise types.BadAttributeLookup(
                     f"Badly formed attribute expression: {expression}")
 
             name, idxed, mapped = (match.groupdict()["attr_name"],
@@ -456,19 +394,19 @@ class Validator:
                                    bool(match.groupdict()["key"]))
             field = scope.get(name)
             if not field:
-                exception_class = (BadAttributeLookup if depth else
-                                   UndefinedVariableReference)
+                exception_class = (types.BadAttributeLookup if depth else
+                                   types.UndefinedVariableReference)
                 raise exception_class(f"No such variable or attribute: {name}")
 
             # Invalid input
             if (idxed or mapped) and not field.repeated:
-                raise BadAttributeLookup(
+                raise types.BadAttributeLookup(
                     f"Collection lookup on non-repeated field: {base}")
 
             # Can only ignore indexing or mapping in an indexed (or mapped) field
             # if it is the terminal point in the expression.
             if field.repeated and not (idxed or mapped) and first_dot != -1:
-                raise BadAttributeLookup(
+                raise types.BadAttributeLookup(
                     ("Accessing attribute on a non-terminal collection without"
                      f"indexing into the collection: {base}")
                 )
@@ -480,17 +418,17 @@ class Validator:
                 # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L496
                 # for a better understanding of how map attributes are handled in protobuf
                 if not message or not message.options.map_field:
-                    raise BadAttributeLookup(
+                    raise types.BadAttributeLookup(
                         f"Badly formed mapped field: {base}")
 
                 value_field = message.fields.get("value")
                 if not value_field:
-                    raise BadAttributeLookup(
+                    raise types.BadAttributeLookup(
                         f"Mapped attribute has no value field: {base}")
 
                 value_message = value_field.message
                 if not value_message:
-                    raise BadAttributeLookup(
+                    raise types.BadAttributeLookup(
                         f"Mapped value field is not a message: {base}")
 
                 if first_dot != -1:
@@ -502,7 +440,7 @@ class Validator:
 
             # Enums and primitives are only allowed at the tail of an expression.
             if not message:
-                raise BadAttributeLookup(
+                raise types.BadAttributeLookup(
                     f"Non-terminal attribute is not a message: {base}")
 
             return validate_recursively(expression[first_dot + 1:],
@@ -518,7 +456,7 @@ class Validator:
             ReservedVariableName: If an attempted lvalue is a reserved keyword.
         """
         if lval in RESERVED_WORDS:
-            raise ReservedVariableName(
+            raise types.ReservedVariableName(
                 "Tried to define a variable with reserved name: {}".format(
                     lval)
             )
@@ -526,7 +464,7 @@ class Validator:
         # Even though it's valid python to reassign variables to any rvalue,
         # the samplegen spec prohibits this.
         if lval in self.var_defs_:
-            raise RedefinedVariable(
+            raise types.RedefinedVariable(
                 "Tried to redefine variable: {}".format(lval))
 
         self.var_defs_[lval] = type_
@@ -547,7 +485,7 @@ class Validator:
         fmt_str = body[0]
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
-            raise MismatchedFormatSpecifier(
+            raise types.MismatchedFormatSpecifier(
                 "Expected {} expresssions in format string but received {}".format(
                     num_prints, len(body) - 1
                 )
@@ -571,7 +509,7 @@ class Validator:
         #       re-implementing the python interpreter.
         m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
         if not m:
-            raise BadAssignment("Bad assignment statement: {}".format(body))
+            raise types.BadAssignment(f"Bad assignment statement: {body}")
 
         lval, rval = m.groups()
 
@@ -596,14 +534,14 @@ class Validator:
 
         fname_fmt = body.get("filename")
         if not fname_fmt:
-            raise InvalidStatement(
+            raise types.InvalidStatement(
                 "Missing key in 'write_file' statement: 'filename'")
 
         self._validate_format(fname_fmt)
 
         contents_var = body.get("contents")
         if not contents_var:
-            raise InvalidStatement(
+            raise types.InvalidStatement(
                 "Missing key in 'write_file' statement: 'contents'")
 
         self.validate_expression(contents_var)
@@ -662,7 +600,7 @@ class Validator:
                 loop[self.COLL_KWORD])
 
             if not collection_field.repeated:
-                raise BadLoop(
+                raise types.BadLoop(
                     "Tried to use a non-repeated field as a collection: {}".format(
                         tokens[-1]))
 
@@ -683,7 +621,7 @@ class Validator:
             segments -= map_args
             segments -= {self.KEY_KWORD, self.VAL_KWORD}
             if segments:
-                raise BadLoop(
+                raise types.BadLoop(
                     "Unexpected keywords in loop statement: {}".format(
                         segments)
                 )
@@ -699,11 +637,11 @@ class Validator:
                 self._handle_lvalue(val, map_field.message.fields["value"])
 
             if not (key or val):
-                raise BadLoop(
+                raise types.BadLoop(
                     "Need at least one of 'key' or 'value' in a map loop")
 
         else:
-            raise BadLoop("Unexpected loop form: {}".format(segments))
+            raise types.BadLoop("Unexpected loop form: {}".format(segments))
 
         self.validate_response(loop[self.BODY_KWORD])
         # Restore the previous lexical scope.
@@ -722,95 +660,111 @@ class Validator:
 
 
 def generate_sample(sample,
-                    id_is_unique: bool,
                     env: jinja2.environment.Environment,
-                    api_schema: api.API) -> Tuple[str, jinja2.environment.TemplateStream]:
+                    api_schema: api.API) -> str:
+    """Generate a standalone, runnable sample.
 
+    Rendering and writing the rendered output is left for the caller.
+
+    Args:
+        sample (Any): A definition for a single sample generated from parsed yaml.
+        env (jinja2.environment.Environment): The jinja environment used to generate
+                                              the filled template for the sample.
+        api_schema (api.API): The schema that defines the API to which the sample belongs.
+
+    Returns:
+        str: The rendered sample.
+    """
     sample_template = env.get_template(TEMPLATE_NAME)
 
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
     if not service:
-        raise UnknownService("Unknown service: {}", service_name)
+        raise types.UnknownService("Unknown service: {}", service_name)
 
     rpc_name = sample["rpc"]
     rpc = service.methods.get(rpc_name)
     if not rpc:
-        raise RpcMethodNotFound(
+        raise types.RpcMethodNotFound(
             "Could not find rpc in service {}: {}".format(
                 service_name, rpc_name)
         )
 
-    calling_form = utils.CallingForm.method_default(rpc)
+    calling_form = types.CallingForm.method_default(rpc)
 
     v = Validator(rpc)
     sample["request"] = v.validate_and_transform_request(calling_form,
                                                          sample["request"])
     v.validate_response(sample["response"])
 
-    sample_fpath = (
-        sample["id"] + (str(calling_form)
-                        if not id_is_unique else "") + ".py"
-    )
-
     sample["package_name"] = api_schema.naming.warehouse_package_name
 
-    return (
-        sample_fpath,
-        sample_template.stream(
-            file_header=FILE_HEADER,
-            sample=sample,
-            imports=[],
-            calling_form=calling_form,
-            calling_form_enum=utils.CallingForm,
-        ),
+    return sample_template.render(
+        file_header=FILE_HEADER,
+        sample=sample,
+        imports=[],
+        calling_form=calling_form,
+        calling_form_enum=types.CallingForm,
     )
 
 
-def generate_manifest(fpaths_and_samples, api_schema, *, manifest_time: int = None):
+def generate_manifest(
+        fpaths_and_samples,
+        base_path: str,
+        api_schema,
+        *,
+        manifest_time: int = None
+) -> Tuple[str, yaml.Doc]:
     """Generate a samplegen manifest for use by sampletest
 
     Args:
         fpaths_and_samples (Iterable[Tuple[str, Mapping[str, Any]]]):
                          The file paths and samples to be listed in the manifest
-
+        base_path (str): The base directory where the samples are generated.
         api_schema (~.api.API): An API schema object.
         manifest_time (int): Optional. An override for the timestamp in the name of the manifest filename.
                              Primarily used for testing.
 
     Returns:
-        Tuple[str, Dict[str,Any]]: The filename of the manifest and the manifest data as a dictionary.
+        Tuple[str, yaml.Doc]: The filename of the manifest and the manifest data as a dictionary.
 
     """
-    all_info = [
-        yaml.KeyVal("type", "manifest/samples"),
-        yaml.KeyVal("schema_version", "3"),
-        yaml.Map(
-            name="python",
-            anchor_name="python",
-            elements=[
-                yaml.KeyVal("environment", "python"),
-                yaml.KeyVal("bin", "python3"),
-                # TODO: make this the real sample base directory
-                yaml.KeyVal("base_path", "sample/base/directory"),
-                yaml.KeyVal("invocation", "'{bin} {path} @args'"),
-            ],
-        ),
-        yaml.Collection(
-            name="samples",
-            elements=[
-                [
-                    yaml.Alias("python"),
-                    yaml.KeyVal("sample", sample["id"]),
-                    yaml.KeyVal("path", "'{base_path}/%s'" % fpath),
-                    yaml.KeyVal("region_tag", sample.get("region_tag", "")),
-                ]
-                for fpath, sample in fpaths_and_samples
-            ],
-        ),
-    ]
+    doc = yaml.Doc(
+        [
+            yaml.KeyVal("type", "manifest/samples"),
+            yaml.KeyVal("schema_version", "3"),
+            # TODO: make the environment configurable to allow other languages
+            #       to use the same basic machinery.
+            yaml.Map(
+                name="python",
+                anchor_name="python",
+                elements=[
+                    yaml.KeyVal("environment", "python"),
+                    yaml.KeyVal("bin", "python3"),
+                    yaml.KeyVal("base_path", base_path),
+                    yaml.KeyVal("invocation", "'{bin} {path} @args'"),
+                ],
+            ),
+            yaml.Collection(
+                name="samples",
+                elements=[
+                    [
+                        yaml.Alias("python"),
+                        yaml.KeyVal("sample", sample["id"]),
+                        yaml.KeyVal("path",
+                                    "'{base_path}/%s'" % os.path.relpath(fpath,
+                                                                         base_path)),
+                        yaml.KeyVal("region_tag",
+                                    sample.get("region_tag", "")),
+                    ]
+                    for fpath, sample in fpaths_and_samples
+                ],
+            ),
+        ]
+    )
 
     dt = time.gmtime(manifest_time)
+    # TODO: allow other language configuration
     manifest_fname_template = (
         "{api}.{version}.python."
         "{year:04d}{month:02d}{day:02d}."
@@ -829,4 +783,4 @@ def generate_manifest(fpaths_and_samples, api_schema, *, manifest_time: int = No
         second=dt.tm_sec,
     )
 
-    return manifest_fname, all_info
+    return manifest_fname, doc
