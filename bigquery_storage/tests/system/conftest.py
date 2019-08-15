@@ -201,7 +201,7 @@ def all_types_table_ref(project_id, dataset, bq_client):
     bq_client.delete_table(created_table)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def client():
     return bigquery_storage_v1beta1.BigQueryStorageClient()
 
