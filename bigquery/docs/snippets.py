@@ -491,14 +491,6 @@ def test_update_table_expiration(client, to_delete):
         "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
     )
 )
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_table() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
-    )
-)
 def test_relax_column(client, to_delete):
     """Updates a schema field from required to nullable."""
     dataset_id = "relax_column_dataset_{}".format(_millis())
@@ -579,8 +571,6 @@ def test_update_table_cmek(client, to_delete):
     assert table.encryption_configuration.kms_key_name == updated_kms_key_name
     assert original_kms_key_name != updated_kms_key_name
     # [END bigquery_update_table_cmek]
-
-
 
 
 @pytest.mark.skip(
