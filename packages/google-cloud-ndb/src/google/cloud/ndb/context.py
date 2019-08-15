@@ -312,7 +312,7 @@ class Context(_Context):
 
     def flush(self):
         """Force any pending batch operations to go ahead and run."""
-        raise NotImplementedError
+        self.eventloop.run()
 
     def get_cache_policy(self):
         """Return the current context cache policy function.

@@ -126,9 +126,10 @@ class TestContext:
         assert context.global_cache.cache == {"anotherkey": "otherdata"}
 
     def test_flush(self):
-        context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.flush()
+        eventloop = mock.Mock(spec=("run",))
+        context = self._make_one(eventloop=eventloop)
+        context.flush()
+        eventloop.run.assert_called_once_with()
 
     def test_get_cache_policy(self):
         context = self._make_one()
