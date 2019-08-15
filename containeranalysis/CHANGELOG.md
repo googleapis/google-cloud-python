@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0
+
+08-12-2019 13:53 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8948](https://github.com/googleapis/google-cloud-python/pull/8948))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Normalize docs. ([#8994](https://github.com/googleapis/google-cloud-python/pull/8994))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.2.0
 
 07-12-2019 16:56 PDT
