@@ -1,7 +1,7 @@
 Python Client for Stackdriver Logging
 =====================================
 
-|pypi| |versions| |compat_check_pypi| |compat_check_github|
+|pypi| |versions| 
 
 `Stackdriver Logging API`_: Writes log entries and manages your Stackdriver
 Logging configuration.
@@ -13,10 +13,6 @@ Logging configuration.
    :target: https://pypi.org/project/google-cloud-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
    :target: https://pypi.org/project/google-cloud-logging/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-logging
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-logging
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlogging
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlogging
 .. _Stackdriver Logging API: https://cloud.google.com/logging
 .. _Client Library Documentation: https://googleapis.dev/python/logging/latest
 .. _Product Documentation:  https://cloud.google.com/logging/docs
