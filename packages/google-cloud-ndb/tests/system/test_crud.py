@@ -406,11 +406,14 @@ def test_update_entity(ds_entity):
 
 @pytest.mark.usefixtures("client_context")
 def test_insert_entity_in_transaction(dispose_of):
+    commit_callback = mock.Mock()
+
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
     def save_entity():
+        ndb.get_context().call_on_commit(commit_callback)
         entity = SomeKind(foo=42, bar="none")
         key = entity.put()
         dispose_of(key._key)
@@ -420,6 +423,7 @@ def test_insert_entity_in_transaction(dispose_of):
     retrieved = key.get()
     assert retrieved.foo == 42
     assert retrieved.bar == "none"
+    commit_callback.assert_called_once_with()
 
 
 @pytest.mark.usefixtures("client_context")

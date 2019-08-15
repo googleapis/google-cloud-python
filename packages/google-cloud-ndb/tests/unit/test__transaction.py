@@ -19,6 +19,7 @@ from unittest import mock
 import pytest
 
 from google.api_core import exceptions as core_exceptions
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
@@ -75,7 +76,10 @@ class Test_transaction_async:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._transaction._datastore_api")
     def test_success(_datastore_api):
+        on_commit_callback = mock.Mock()
+
         def callback():
+            context_module.get_context().call_on_commit(on_commit_callback)
             return "I tried, momma."
 
         begin_future = tasklets.Future("begin transaction")
@@ -95,6 +99,7 @@ class Test_transaction_async:
         commit_future.set_result(None)
 
         assert future.result() == "I tried, momma."
+        on_commit_callback.assert_called_once_with()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -143,6 +143,7 @@ _ContextTuple = collections.namedtuple(
         "transaction",
         "cache",
         "global_cache",
+        "on_commit_callbacks",
     ],
 )
 
@@ -178,6 +179,7 @@ class _Context(_ContextTuple):
         global_cache_policy=None,
         global_cache_timeout_policy=None,
         datastore_policy=None,
+        on_commit_callbacks=None,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -207,6 +209,7 @@ class _Context(_ContextTuple):
             transaction=transaction,
             cache=new_cache,
             global_cache=global_cache,
+            on_commit_callbacks=on_commit_callbacks,
         )
 
         context.set_cache_policy(cache_policy)
@@ -468,7 +471,10 @@ class Context(_Context):
         Args:
             callback (Callable): The callback function.
         """
-        raise NotImplementedError
+        if self.in_transaction():
+            self.on_commit_callbacks.append(callback)
+        else:
+            callback()
 
     def in_transaction(self):
         """Get whether a transaction is currently active.

@@ -330,8 +330,18 @@ class TestContext:
 
     def test_call_on_commit(self):
         context = self._make_one()
-        with pytest.raises(NotImplementedError):
-            context.call_on_commit(None)
+        callback = mock.Mock()
+        context.call_on_commit(callback)
+        callback.assert_called_once_with()
+
+    def test_call_on_commit_with_transaction(self):
+        callbacks = []
+        callback = "himom!"
+        context = self._make_one(
+            transaction=b"tx123", on_commit_callbacks=callbacks
+        )
+        context.call_on_commit(callback)
+        assert context.on_commit_callbacks == ["himom!"]
 
     def test_in_transaction(self):
         context = self._make_one()

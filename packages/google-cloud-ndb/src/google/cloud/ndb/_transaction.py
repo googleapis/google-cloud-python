@@ -99,7 +99,11 @@ def _transaction_async(context, callback, read_only=False):
         read_only, retries=0
     )
 
-    with context.new(transaction=transaction_id).use() as tx_context:
+    on_commit_callbacks = []
+    tx_context = context.new(
+        transaction=transaction_id, on_commit_callbacks=on_commit_callbacks
+    )
+    with tx_context.use():
         try:
             # Run the callback
             result = callback()
@@ -115,6 +119,8 @@ def _transaction_async(context, callback, read_only=False):
             raise
 
         tx_context._clear_global_cache()
+        for callback in on_commit_callbacks:
+            callback()
 
         return result
 
