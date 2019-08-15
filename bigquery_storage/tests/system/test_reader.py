@@ -30,6 +30,8 @@ from google.cloud import bigquery_storage_v1beta1
 from google.protobuf import timestamp_pb2
 
 
+# TODO: remove once a similar method is implemented in the library itself
+# https://github.com/googleapis/google-cloud-python/issues/4553
 def _add_rows(table_ref, new_data, partition_suffix=""):
     """Insert additional rows into an existing table.
 
