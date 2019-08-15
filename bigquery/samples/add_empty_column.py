@@ -18,11 +18,6 @@ def add_empty_column(client, table_id):
     # [START bigquery_add_empty_column]
     from google.cloud import bigquery
 
-    schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 

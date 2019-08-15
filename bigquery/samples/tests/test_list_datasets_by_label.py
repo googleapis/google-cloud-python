@@ -16,8 +16,8 @@
 from .. import list_datasets_by_label
 
 
-def test_list_datasets_by_label(capsys, client, dataset_label):
+def test_list_datasets_by_label(capsys, client, dataset_with_labels_id):
 
     list_datasets_by_label.list_datasets_by_label(client)
     out, err = capsys.readouterr()
-    assert "{}".format(dataset_label) in out
+    assert "{}".format(dataset_with_labels_id) in out

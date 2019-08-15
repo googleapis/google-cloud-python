@@ -16,7 +16,7 @@
 from .. import get_dataset_labels
 
 
-def test_get_dataset_labels(capsys, client, dataset_id, dataset_label):
+def test_get_dataset_labels(capsys, client, dataset_id, dataset_with_labels_id):
 
     get_dataset_labels.get_dataset_labels(client, dataset_id)
     out, err = capsys.readouterr()

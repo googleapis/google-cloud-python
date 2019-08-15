@@ -16,7 +16,7 @@
 from .. import delete_dataset_labels
 
 
-def test_delete_dataset_labels(capsys, client, dataset_id, dataset_label):
+def test_delete_dataset_labels(capsys, client, dataset_id, dataset_with_labels_id):
 
     delete_dataset_labels.delete_dataset_labels(client, dataset_id)
     out, err = capsys.readouterr()
