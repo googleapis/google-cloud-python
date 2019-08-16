@@ -51,11 +51,23 @@ class Client(object):
         kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
-            Generally, you should not need to set additional keyword
-            arguments.
-            Regional endpoints can be set via ``client_options`` that takes a
-            single key-value pair that defines the endpoint, i.e.
-            ``client_options={"api_endpoint": REGIONAL_ENDPOINT}``.
+            Generally you should not need to set additional keyword
+            arguments. Optionally, regional endpoints can be set via 
+            ``client_options`` that takes a single key-value pair that
+            defines the endpoint.
+
+    Example:
+
+    .. code-block:: python
+
+        from google.cloud import pubsub_v1
+
+        subscriber_client = pubsub_v1.SubscriberClient(
+            # Optional
+            client_options = {
+                "api_endpoint": REGIONAL_ENDPOINT
+            }
+        )
     """
 
     def __init__(self, **kwargs):

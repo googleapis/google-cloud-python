@@ -54,13 +54,44 @@ class Client(object):
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
-            Generally, you should not need to set additional keyword arguments.
-            Before being passed along to the GAPIC constructor, a channel may
-            be added if ``credentials`` are passed explicitly or if the
-            Pub / Sub emulator is detected as running.
-            Regional endpoints can be set via ``client_options`` that takes a
-            single key-value pair that defines the endpoint, i.e.
-            ``client_options={"api_endpoint": REGIONAL_ENDPOINT}``.
+            Generally you should not need to set additional keyword
+            arguments. Optionally, publish retry settings can be set via 
+            ``client_config`` where user-provided retry configurations are
+            applied to default retry settings. And regional endpoints can be
+            set via ``client_options`` that takes a single key-value pair that
+            defines the endpoint.
+    
+    Example:
+
+    .. code-block:: python
+
+        from google.cloud import pubsub_v1
+
+        publisher_client = pubsub_v1.PublisherClient(
+            # Optional
+            batch_settings = pubsub_v1.types.BatchSettings(
+                max_bytes=1024,  # One kilobyte
+                max_latency=1,   # One second
+            ),
+
+            # Optional
+            client_config = {
+                "interfaces": {
+                    "google.pubsub.v1.Publisher": {
+                        "retry_params": {
+                            "messaging": {
+                                'total_timeout_millis': 650000,  # default: 600000
+                            }
+                        }
+                    }
+                }
+            },
+
+            # Optional
+            client_options = {
+                "api_endpoint": REGIONAL_ENDPOINT
+            }
+        )
     """
 
     _batch_class = thread.Batch
