@@ -21,6 +21,7 @@ try:
 except ImportError:  # Python 2.7
     import collections as collections_abc
 
+import copy
 import functools
 import gzip
 import io
@@ -1520,10 +1521,18 @@ class Client(ClientWithProject):
 
         if job_config is None:
             job_config = job.LoadJobConfig()
+        else:
+            # Make a copy so that the job config isn't modified in-place.
+            job_config_properties = copy.deepcopy(job_config._properties)
+            job_config = job.LoadJobConfig()
+            job_config._properties = job_config_properties
         job_config.source_format = job.SourceFormat.PARQUET
 
         if location is None:
             location = self.location
+
+        if not job_config.schema:
+            job_config.schema = _pandas_helpers.dataframe_to_bq_schema(dataframe)
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
