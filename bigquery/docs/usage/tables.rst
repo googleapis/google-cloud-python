@@ -122,7 +122,7 @@ Insert rows into a table's data with the
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
-Adds an empty column to the existing table with the
+Add an empty column to the existing table with the
 :func:`~google.cloud.bigquery.update_table` method:
 
 .. literalinclude:: ../samples/add_empty_column.py
