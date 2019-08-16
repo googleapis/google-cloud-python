@@ -116,7 +116,6 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_w_empty_client_options(self):
-        from google.cloud.bigquery._http import Connection
         from google.api_core.client_options import ClientOptions
 
         creds = _make_credentials()
@@ -133,8 +132,6 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_w_client_options_dict(self):
-        from google.cloud.bigquery._http import Connection
-        from google.api_core.client_options import ClientOptions
 
         creds = _make_credentials()
         http = object()
@@ -150,7 +147,6 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_w_client_options_object(self):
-        from google.cloud.bigquery._http import Connection
         from google.api_core.client_options import ClientOptions
 
         creds = _make_credentials()
