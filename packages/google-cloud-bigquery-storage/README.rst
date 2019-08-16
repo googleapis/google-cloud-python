@@ -1,17 +1,13 @@
 Python Client for BigQuery Storage API (`Beta`_)
 =================================================
 
-|compat_check_pypi| |compat_check_github|
+
 
 `BigQuery Storage API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-bigquery-storage
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-bigquery-storage
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_storage
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_storage
 .. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _BigQuery Storage API: https://cloud.google.com/bigquery/docs/reference/storage/
 .. _Client Library Documentation: https://googleapis.dev/python/bigquerystorage/latest
