@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.monitoring_v3.gapic.notification_channel_service_client &#8212; google-cloud 666ad4f documentation</title>
+    <title>google.cloud.monitoring_v3.gapic.notification_channel_service_client &#8212; google-cloud 1a103d3 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -87,6 +87,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring_v3.proto</span> <span class="k">import</span> <span class="n">notification_service_pb2_grpc</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span>
 
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
@@ -315,8 +316,8 @@
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -409,8 +410,8 @@
 <span class="sd">            name (str): The channel type for which to execute the request. The format is</span>
 <span class="sd">                ``projects/[PROJECT_ID]/notificationChannelDescriptors/{channel_type}``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -522,8 +523,8 @@
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -617,8 +618,8 @@
 <span class="sd">            name (str): The channel for which to execute the request. The format is</span>
 <span class="sd">                ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -708,8 +709,8 @@
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -797,8 +798,8 @@
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.monitoring_v3.types.FieldMask`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -879,8 +880,8 @@
 <span class="sd">                channel). If false, channels that are still referenced by an existing</span>
 <span class="sd">                alerting policy will fail to be deleted in a delete operation.</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
-<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
-<span class="sd">                be retried.</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
 <span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
 <span class="sd">                for the request to complete. Note that if ``retry`` is</span>
 <span class="sd">                specified, the timeout applies to each individual attempt.</span>
@@ -927,6 +928,284 @@
             <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;delete_notification_channel&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NotificationChannelServiceClient.send_notification_channel_verification_code"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.NotificationChannelServiceClient.send_notification_channel_verification_code">[docs]</a>    <span class="k">def</span> <span class="nf">send_notification_channel_verification_code</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Causes a verification code to be delivered to the channel. The code can</span>
+<span class="sd">        then be supplied in ``VerifyNotificationChannel`` to verify the channel.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = monitoring_v3.NotificationChannelServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.notification_channel_path(&#39;[PROJECT]&#39;, &#39;[NOTIFICATION_CHANNEL]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.send_notification_channel_verification_code(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The notification channel to which to send a verification code.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;send_notification_channel_verification_code&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;send_notification_channel_verification_code&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">send_notification_channel_verification_code</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                    <span class="s2">&quot;SendNotificationChannelVerificationCode&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                    <span class="s2">&quot;SendNotificationChannelVerificationCode&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">notification_service_pb2</span><span class="o">.</span><span class="n">SendNotificationChannelVerificationCodeRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;send_notification_channel_verification_code&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NotificationChannelServiceClient.get_notification_channel_verification_code"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.NotificationChannelServiceClient.get_notification_channel_verification_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_notification_channel_verification_code</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">expire_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Requests a verification code for an already verified channel that can then</span>
+<span class="sd">        be used in a call to VerifyNotificationChannel() on a different channel</span>
+<span class="sd">        with an equivalent identity in the same or in a different project. This</span>
+<span class="sd">        makes it possible to copy a channel between projects without requiring</span>
+<span class="sd">        manual reverification of the channel. If the channel is not in the</span>
+<span class="sd">        verified state, this method will fail (in other words, this may only be</span>
+<span class="sd">        used if the SendNotificationChannelVerificationCode and</span>
+<span class="sd">        VerifyNotificationChannel paths have already been used to put the given</span>
+<span class="sd">        channel into the verified state).</span>
+
+<span class="sd">        There is no guarantee that the verification codes returned by this method</span>
+<span class="sd">        will be of a similar structure or form as the ones that are delivered</span>
+<span class="sd">        to the channel via SendNotificationChannelVerificationCode; while</span>
+<span class="sd">        VerifyNotificationChannel() will recognize both the codes delivered via</span>
+<span class="sd">        SendNotificationChannelVerificationCode() and returned from</span>
+<span class="sd">        GetNotificationChannelVerificationCode(), it is typically the case that</span>
+<span class="sd">        the verification codes delivered via</span>
+<span class="sd">        SendNotificationChannelVerificationCode() will be shorter and also</span>
+<span class="sd">        have a shorter expiration (e.g. codes such as &quot;G-123456&quot;) whereas</span>
+<span class="sd">        GetVerificationCode() will typically return a much longer, websafe base</span>
+<span class="sd">        64 encoded string that has a longer expiration time.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = monitoring_v3.NotificationChannelServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.notification_channel_path(&#39;[PROJECT]&#39;, &#39;[NOTIFICATION_CHANNEL]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_notification_channel_verification_code(name)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The notification channel for which a verification code is to be generated</span>
+<span class="sd">                and retrieved. This must name a channel that is already verified; if</span>
+<span class="sd">                the specified channel is not verified, the request will fail.</span>
+<span class="sd">            expire_time (Union[dict, ~google.cloud.monitoring_v3.types.Timestamp]): The desired expiration time. If specified, the API will guarantee that</span>
+<span class="sd">                the returned code will not be valid after the specified timestamp;</span>
+<span class="sd">                however, the API cannot guarantee that the returned code will be</span>
+<span class="sd">                valid for at least as long as the requested time (the API puts an upper</span>
+<span class="sd">                bound on the amount of time for which a code may be valid). If omitted,</span>
+<span class="sd">                a default expiration will be used, which may be less than the max</span>
+<span class="sd">                permissible expiration (so specifying an expiration may extend the</span>
+<span class="sd">                code&#39;s lifetime over omitting an expiration, even though the API does</span>
+<span class="sd">                impose an upper limit on the maximum expiration that is permitted).</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.monitoring_v3.types.Timestamp`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;get_notification_channel_verification_code&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;get_notification_channel_verification_code&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_notification_channel_verification_code</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                    <span class="s2">&quot;GetNotificationChannelVerificationCode&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                    <span class="s2">&quot;GetNotificationChannelVerificationCode&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">notification_service_pb2</span><span class="o">.</span><span class="n">GetNotificationChannelVerificationCodeRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">expire_time</span><span class="o">=</span><span class="n">expire_time</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;get_notification_channel_verification_code&quot;</span><span class="p">](</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NotificationChannelServiceClient.verify_notification_channel"><a class="viewcode-back" href="../../../../../monitoring/gapic/v3/api.html#google.cloud.monitoring_v3.NotificationChannelServiceClient.verify_notification_channel">[docs]</a>    <span class="k">def</span> <span class="nf">verify_notification_channel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">code</span><span class="p">,</span>
+        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verifies a ``NotificationChannel`` by proving receipt of the code</span>
+<span class="sd">        delivered to the channel as a result of calling</span>
+<span class="sd">        ``SendNotificationChannelVerificationCode``.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import monitoring_v3</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = monitoring_v3.NotificationChannelServiceClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.notification_channel_path(&#39;[PROJECT]&#39;, &#39;[NOTIFICATION_CHANNEL]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # TODO: Initialize `code`:</span>
+<span class="sd">            &gt;&gt;&gt; code = &#39;&#39;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.verify_notification_channel(name, code)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The notification channel to verify.</span>
+<span class="sd">            code (str): The verification code that was delivered to the channel as a result of</span>
+<span class="sd">                invoking the ``SendNotificationChannelVerificationCode`` API method or</span>
+<span class="sd">                that was retrieved from a verified channel via</span>
+<span class="sd">                ``GetNotificationChannelVerificationCode``. For example, one might have</span>
+<span class="sd">                &quot;G-123456&quot; or &quot;TKNZGhhd2EyN3I1MnRnMjRv&quot; (in general, one is only</span>
+<span class="sd">                guaranteed that the code is valid UTF-8; one should not make any</span>
+<span class="sd">                assumptions regarding the structure or format of the code).</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
+<span class="sd">                be retried using a default configuration.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+<span class="sd">            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata</span>
+<span class="sd">                that is provided to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="c1"># Wrap the transport method to add retry and timeout logic.</span>
+        <span class="k">if</span> <span class="s2">&quot;verify_notification_channel&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span>
+                <span class="s2">&quot;verify_notification_channel&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">verify_notification_channel</span><span class="p">,</span>
+                <span class="n">default_retry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span><span class="s2">&quot;VerifyNotificationChannel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+                <span class="n">default_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method_configs</span><span class="p">[</span>
+                    <span class="s2">&quot;VerifyNotificationChannel&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client_info</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">notification_service_pb2</span><span class="o">.</span><span class="n">VerifyNotificationChannelRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">routing_header</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routing_metadata</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">routing_header</span><span class="o">.</span><span class="n">to_grpc_metadata</span><span class="p">(</span>
+                <span class="n">routing_header</span>
+            <span class="p">)</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">routing_metadata</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner_api_calls</span><span class="p">[</span><span class="s2">&quot;verify_notification_channel&quot;</span><span class="p">](</span>
             <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span></div>
 </pre></div>
