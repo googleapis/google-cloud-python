@@ -131,6 +131,16 @@ Adds an empty column to the existing table with the
    :start-after: [START bigquery_add_empty_column]
    :end-before: [END bigquery_add_empty_column]
 
+
+Add a column to the existing table with the
+:func:`~google.cloud.bigquery.client.Client.query` method:
+
+.. literalinclude:: ../samples/client_query_add_column.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_add_column_query_append]
+   :end-before: [END bigquery_add_column_query_append]
+
 Copying a Table
 ^^^^^^^^^^^^^^^
 
@@ -199,15 +209,6 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_query]
    :end-before: [END bigquery_query]
-
-[-REPLACE_COMMENT-]
-:func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:
-
-.. literalinclude:: ../samples/client_query_add_column.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_add_column_query_append]
-   :end-before: [END bigquery_add_column_query_append]
 
 [-REPLACE_COMMENT-]
 :func:`~google.cloud.bigquery.[-REPLACE_METHOD-]` method:

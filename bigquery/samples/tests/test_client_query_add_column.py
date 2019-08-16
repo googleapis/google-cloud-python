@@ -16,7 +16,9 @@
 from .. import client_query_add_column
 
 
-def test_client_query_add_column(capsys, client):
+def test_client_query_add_column(capsys, client, dataset_id):
 
+    client_query_add_column.client_query_add_column(client, dataset_id)
     out, err = capsys.readouterr()
-    assert 
+    assert "'sample_table') contains 2 columns." in out
+    assert "'sample_table') now contains 3 columns." in out

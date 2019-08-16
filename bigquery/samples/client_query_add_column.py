@@ -13,32 +13,32 @@
 # limitations under the License.
 
 
-def client_query_add_column(client, to_delete):
+def client_query_add_column(client, dataset_id):
 
     # [START bigquery_add_column_query_append]
-    dataset_id = "query_add_column_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
+    from google.cloud import bigquery
 
-    table_ref = dataset_ref.table("my_table")
+    # TODO(developer): Construct a BigQuery client object.
+    # client = bigquery.Client()
+
+    # TODO(developer): Set dataset_id to the ID of the dataset where the table is.
+    # dataset_id = "your-project.your_dataset"
+
+    dataset = client.get_dataset(dataset_id)
+
     schema = [
         bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
     ]
-    table = client.create_table(bigquery.Table(table_ref, schema=schema))
 
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
+    table_id = dataset.table("sample_table")
+
+    table = client.create_table(bigquery.Table(table_id, schema=schema))
 
     # Retrieves the destination table and checks the length of the schema
-    table_id = "my_table"
-    table_ref = dataset_ref.table(table_id)
-    table = client.get_table(table_ref)
-    print("Table {} contains {} columns.".format(table_id, len(table.schema)))
+    table = client.get_table(table_id)
+    if len(table.schema) == 2:
+        print("Table {} contains {} columns.".format(table_id, len(table.schema)))
 
     # Configures the query to append the results to a destination table,
     # allowing field addition
@@ -46,7 +46,7 @@ def client_query_add_column(client, to_delete):
     job_config.schema_update_options = [
         bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION
     ]
-    job_config.destination = table_ref
+    job_config.destination = table_id
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
 
     query_job = client.query(
@@ -60,13 +60,11 @@ def client_query_add_column(client, to_delete):
         job_config=job_config,
     )  # API request - starts the query
 
-    query_job.result()  # Waits for the query to finish
-    print("Query job {} complete.".format(query_job.job_id))
+    query_job.result()
 
     # Checks the updated length of the schema
     table = client.get_table(table)
-    print("Table {} now contains {} columns.".format(table_id, len(table.schema)))
-    assert len(table.schema) == 3
-    assert table.num_rows > 0
+    if len(table.schema) == 3 and table.num_rows > 0:
+        print("Table {} now contains {} columns.".format(table_id, len(table.schema)))
 
     # [END bigquery_add_column_query_append]
