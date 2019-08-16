@@ -60,7 +60,6 @@ class TestClient(unittest.TestCase):
             self.assertEqual(client._emulator_host, emulator_host)
             getenv.assert_called_once_with(_FIRESTORE_EMULATOR_HOST)
 
-
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         database = "now-db"
@@ -71,7 +70,7 @@ class TestClient(unittest.TestCase):
             credentials=credentials,
             database=database,
             client_info=client_info,
-            client_options=client_options
+            client_options=client_options,
         )
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
@@ -84,7 +83,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
-            client_options={"api_endpoint":"foo-firestore.googleapis.com"}
+            client_options={"api_endpoint": "foo-firestore.googleapis.com"},
         )
         self.assertIs(client._target, "foo-firestore.googleapis.com")
 
