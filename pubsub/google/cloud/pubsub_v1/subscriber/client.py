@@ -214,7 +214,7 @@ class Client(object):
 
         Returns:
             google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture: A
-                Future object that can be used to manage the background stream.
+                StreamingPullFuture object that can be used to manage the background stream.
         """
         flow_control = types.FlowControl(*flow_control)
 
