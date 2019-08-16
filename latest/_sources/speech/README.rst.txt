@@ -2,7 +2,7 @@ Python Client for Cloud Speech API
 ==================================
 
 
-|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|GA| |pypi| |versions| 
 
 The `Cloud Speech API`_ enables developers to convert audio to text by applying
 powerful neural network models.  The API recognizes over 80 languages and
@@ -17,10 +17,6 @@ variants, to support your global user base.
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-speech
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-speech
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dspeech
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dspeech
 .. _Cloud Speech API: https://cloud.google.com/speech
 .. _Client Library Documentation: https://googleapis.dev/python/speech/latest
 .. _Product Documentation:  https://cloud.google.com/speech

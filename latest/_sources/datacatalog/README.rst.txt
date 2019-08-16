@@ -1,7 +1,7 @@
 Python Client for Google Cloud Data Catalog API (`Alpha`_)
 ==========================================================
 
-|compat_check_pypi| |compat_check_github|
+
 
 `Google Cloud Data Catalog API`_: Google Cloud Data Catalog API provides features to attach metadata to
 Google Cloud Platform resources like BigQuery Tables. Key critical resources
@@ -10,10 +10,6 @@ include: Entries (Data Catalog representation of a cloud resource).
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-datacatalog
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-datacatalog
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatacatalog
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatacatalog
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Data Catalog API: https://cloud.google.com/data-catalog
 .. _Client Library Documentation: https://googleapis.dev/python/datacatalog/latest
