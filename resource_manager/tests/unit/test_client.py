@@ -61,30 +61,40 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection._client_info, client_info)
 
     def test_ctor_w_empty_client_options(self):
-        from google.cloud._http import ClientInfo
         from google.api_core.client_options import ClientOptions
 
         http = object()
-        client_info = ClientInfo()
         client_options = ClientOptions()
         client = self._make_one(
-            _http=http, client_info=client_info, client_options=client_options
+            _http=http, client_options=client_options
         )
         self.assertEqual(
             client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
         )
 
     def test_ctor_w_client_options_object(self):
-        from google.cloud._http import ClientInfo
         from google.api_core.client_options import ClientOptions
 
         http = object()
-        client_info = ClientInfo()
         client_options = ClientOptions(
             api_endpoint="https://foo-cloudresourcemanager.googleapis.com"
         )
         client = self._make_one(
-            _http=http, client_info=client_info, client_options=client_options
+            _http=http, client_options=client_options
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL,
+            "https://foo-cloudresourcemanager.googleapis.com",
+        )
+
+    def test_ctor_w_client_options_dict(self):
+        http = object()
+        client_options = {
+            "api_endpoint": "https://foo-cloudresourcemanager.googleapis.com"
+        }
+    
+        client = self._make_one(
+            _http=http, client_options=client_options
         )
         self.assertEqual(
             client._connection.API_BASE_URL,
