@@ -1,17 +1,13 @@
 Python Client for Data Labeling API (`Beta`_)
 ==============================================
 
-|compat_check_pypi| |compat_check_github|
+
 
 `Data Labeling API`_: Public API for Google Cloud AI Data Labeling Service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-datalabeling
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-datalabeling
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatalabeling
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Ddatalabeling
 .. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Data Labeling API: https://cloud.google.com/data-labeling
 .. _Client Library Documentation: https://googleapis.dev/python/datalabeling/latest
