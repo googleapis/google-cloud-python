@@ -64,6 +64,36 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._http_internal, http)
         self.assertIs(client._connection._client_info, client_info)
 
+    def test_ctor_w_empty_client_options(self):
+        from google.api_core.client_options import ClientOptions
+
+        http = object()
+        client_options = ClientOptions()
+        client = self._make_one(_http=http, client_options=client_options)
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_constructor_w_client_options_object(self):
+        from google.api_core.client_options import ClientOptions
+
+        http = object()
+        client_options = ClientOptions(
+            api_endpoint="https://foo-runtimeconfig.googleapis.com"
+        )
+        client = self._make_one(_http=http, client_options=client_options)
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-runtimeconfig.googleapis.com"
+        )
+
+    def test_constructor_w_client_options_dict(self):
+        http = object()
+        client_options = {"api_endpoint": "https://foo-runtimeconfig.googleapis.com"}
+        client = self._make_one(_http=http, client_options=client_options)
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-runtimeconfig.googleapis.com"
+        )
+
     def test_config(self):
         PROJECT = "PROJECT"
         CONFIG_NAME = "config_name"
