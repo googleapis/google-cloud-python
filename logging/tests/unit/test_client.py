@@ -67,6 +67,42 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection._client_info, client_info)
 
+    def test_ctor_w_empty_client_options(self):
+        from google.api_core.client_options import ClientOptions
+
+        creds = _make_credentials()
+        client_options = ClientOptions()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, client_options=client_options
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_ctor_w_client_options_object(self):
+        from google.api_core.client_options import ClientOptions
+
+        creds = _make_credentials()
+        client_options = ClientOptions(
+            api_endpoint="https://foo-logging.googleapis.com"
+        )
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, client_options=client_options
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-logging.googleapis.com"
+        )
+
+    def test_ctor_w_client_options_dict(self):
+        creds = _make_credentials()
+        client_options = {"api_endpoint": "https://foo-logging.googleapis.com"}
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, client_options=client_options
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://foo-logging.googleapis.com"
+        )
+
     def test_logging_api_wo_gapic(self):
         from google.cloud.logging._http import _LoggingAPI
 
