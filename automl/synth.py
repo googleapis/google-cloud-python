@@ -33,26 +33,32 @@ for version in versions:
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
 
-    s.replace(
-        f"google/cloud/automl_{version}/__init__.py",
-        f"from google.cloud.automl_v1beta1.gapic import prediction_service_client",
-        f"from google.cloud.automl_v1beta1.gapic import prediction_service_client"
-        f"from google.cloud.automl_v1beta1.tables import tables_client"
-        f"\n\n"
-        f"class TablesClient(tables_client.TablesClient):"
-        f"    __doc__ = tables_client.TablesClient.__doc__"
-    )
-
-    s.replace(
-        f"google/cloud/automl_{version}/__init__.py",
-        f"__all__ = (\"enums\", \"types\", \"AutoMlClient\", \"PredictionServiceClient\")",
-        f"__all__ = (\"enums\", \"types\", \"AutoMlClient\", \"PredictionServiceClient\", \"TablesClient\")"
-    )
-
 s.move(library / f"docs/conf.py")
 
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/automl.py")
+
+# Add tables client to v1beta1
+s.replace(
+    f"google/cloud/automl_v1beta1/__init__.py",
+    f"from google.cloud.automl_v1beta1.gapic import prediction_service_client",
+    f"from google.cloud.automl_v1beta1.gapic import prediction_service_client\n"
+    f"from google.cloud.automl_v1beta1.tables import tables_client"
+    f"\n\n"
+    f"class TablesClient(tables_client.TablesClient):"
+    f"    __doc__ = tables_client.TablesClient.__doc__"
+)
+
+s.replace(
+    f"google/cloud/automl_v1beta1/__init__.py",
+    f"""__all__ = \(
+    'enums',
+    'types',
+    'AutoMlClient',
+    'PredictionServiceClient',
+\)""",
+    f"__all__ = (\"enums\", \"types\", \"AutoMlClient\", \"PredictionServiceClient\", \"TablesClient\")"
+)
 
 # Fixup issues in generated code
 s.replace(
