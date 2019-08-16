@@ -67,3 +67,20 @@ def _make_sql_scalars_enum():
 
 
 StandardSqlDataTypes = _make_sql_scalars_enum()
+
+
+# see also https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
+class LegacySqlDataTypes(str, enum.Enum):
+    """Enum of legacy SQL types names."""
+
+    STRING = "STRING"
+    BYTES = "BYTES"
+    INTEGER = "INTEGER"
+    FLOAT = "FLOAT"
+    NUMERIC = "NUMERIC"
+    BOOLEAN = "BOOLEAN"
+    RECORD = "RECORD"
+    TIMESTAMP = "TIMESTAMP"
+    DATE = "DATE"
+    TIME = "TIME"
+    DATETIME = "DATETIME"
