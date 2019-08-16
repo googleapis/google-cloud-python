@@ -65,9 +65,7 @@ class TestClient(unittest.TestCase):
 
         http = object()
         client_options = ClientOptions()
-        client = self._make_one(
-            _http=http, client_options=client_options
-        )
+        client = self._make_one(_http=http, client_options=client_options)
         self.assertEqual(
             client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
         )
@@ -79,9 +77,7 @@ class TestClient(unittest.TestCase):
         client_options = ClientOptions(
             api_endpoint="https://foo-cloudresourcemanager.googleapis.com"
         )
-        client = self._make_one(
-            _http=http, client_options=client_options
-        )
+        client = self._make_one(_http=http, client_options=client_options)
         self.assertEqual(
             client._connection.API_BASE_URL,
             "https://foo-cloudresourcemanager.googleapis.com",
@@ -92,10 +88,8 @@ class TestClient(unittest.TestCase):
         client_options = {
             "api_endpoint": "https://foo-cloudresourcemanager.googleapis.com"
         }
-    
-        client = self._make_one(
-            _http=http, client_options=client_options
-        )
+
+        client = self._make_one(_http=http, client_options=client_options)
         self.assertEqual(
             client._connection.API_BASE_URL,
             "https://foo-cloudresourcemanager.googleapis.com",
