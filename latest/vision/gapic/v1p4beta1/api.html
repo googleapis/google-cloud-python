@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Client for Cloud Vision API &#8212; google-cloud 5c08cfd documentation</title>
+    <title>Client for Cloud Vision API &#8212; google-cloud 666ad4f documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -1471,9 +1471,10 @@ that is provided to the method.</p></li>
 <code class="sig-name descname">batch_annotate_files</code><span class="sig-paren">(</span><em class="sig-param">requests</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1p4beta1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1p4beta1.ImageAnnotatorClient.batch_annotate_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Service that performs image detection and annotation for a batch of files.
 Now only “application/pdf”, “image/tiff” and “image/gif” are supported.</p>
-<p>This service will extract at most the first 10 frames (gif) or pages
-(pdf or tiff) from each file provided and perform detection and annotation
-for each image extracted.</p>
+<p>This service will extract at most 5 (customers can specify which 5 in
+AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each
+file provided and perform detection and annotation for each image
+extracted.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1p4beta1</span>
 <span class="go">&gt;&gt;&gt;</span>

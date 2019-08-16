@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.vision_v1p4beta1.gapic.image_annotator_client &#8212; google-cloud 5c08cfd documentation</title>
+    <title>google.cloud.vision_v1p4beta1.gapic.image_annotator_client &#8212; google-cloud 666ad4f documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -298,9 +298,10 @@
 <span class="sd">        Service that performs image detection and annotation for a batch of files.</span>
 <span class="sd">        Now only &quot;application/pdf&quot;, &quot;image/tiff&quot; and &quot;image/gif&quot; are supported.</span>
 
-<span class="sd">        This service will extract at most the first 10 frames (gif) or pages</span>
-<span class="sd">        (pdf or tiff) from each file provided and perform detection and annotation</span>
-<span class="sd">        for each image extracted.</span>
+<span class="sd">        This service will extract at most 5 (customers can specify which 5 in</span>
+<span class="sd">        AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each</span>
+<span class="sd">        file provided and perform detection and annotation for each image</span>
+<span class="sd">        extracted.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import vision_v1p4beta1</span>
