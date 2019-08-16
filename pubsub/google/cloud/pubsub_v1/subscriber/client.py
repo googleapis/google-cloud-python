@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 from __future__ import absolute_import
 
-import pkg_resources
 import os
+import pkg_resources
 
 import grpc
 
@@ -52,7 +52,7 @@ class Client(object):
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally you should not need to set additional keyword
-            arguments. Optionally, regional endpoints can be set via 
+            arguments. Optionally, regional endpoints can be set via
             ``client_options`` that takes a single key-value pair that
             defines the endpoint.
 

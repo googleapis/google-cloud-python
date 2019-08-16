@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,12 +55,12 @@ class Client(object):
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally you should not need to set additional keyword
-            arguments. Optionally, publish retry settings can be set via 
+            arguments. Optionally, publish retry settings can be set via
             ``client_config`` where user-provided retry configurations are
             applied to default retry settings. And regional endpoints can be
             set via ``client_options`` that takes a single key-value pair that
             defines the endpoint.
-    
+
     Example:
 
     .. code-block:: python
