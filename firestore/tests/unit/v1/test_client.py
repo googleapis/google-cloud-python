@@ -85,7 +85,7 @@ class TestClient(unittest.TestCase):
             credentials=credentials,
             client_options={"api_endpoint": "foo-firestore.googleapis.com"},
         )
-        self.assertIs(client._target, "foo-firestore.googleapis.com")
+        self.assertEqual(client._target, "foo-firestore.googleapis.com")
 
     @mock.patch(
         "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
