@@ -445,6 +445,8 @@ class SkillProficiencyLevel(enum.IntEnum):
 
 class Visibility(enum.IntEnum):
     """
+    Deprecated. All resources are only visible to the owner.
+
     An enum that represents who has view access to the resource.
 
     Attributes:
@@ -869,7 +871,7 @@ class Location(object):
 class LocationFilter(object):
     class TelecommutePreference(enum.IntEnum):
         """
-        Specify whether including telecommute jobs.
+        Specify whether to include telecommute jobs.
 
         Attributes:
           TELECOMMUTE_PREFERENCE_UNSPECIFIED (int): Default value if the telecommute preference isn't specified.
