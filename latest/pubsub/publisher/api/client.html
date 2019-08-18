@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Publisher Client API &#8212; google-cloud 6029022 documentation</title>
+    <title>Publisher Client API &#8212; google-cloud 8998983 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -50,16 +50,45 @@ settings for batch publishing.</p></li>
 <li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Any additional arguments provided are sent as keyword
 arguments to the underlying
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PublisherClient</span></code>.
-Generally, you should not need to set additional keyword arguments.
-Before being passed along to the GAPIC constructor, a channel may
-be added if <code class="docutils literal notranslate"><span class="pre">credentials</span></code> are passed explicitly or if the
-Pub / Sub emulator is detected as running.
-Regional endpoints can be set via <code class="docutils literal notranslate"><span class="pre">client_options</span></code> that takes a
-single key-value pair that defines the endpoint, i.e.
-<code class="docutils literal notranslate"><span class="pre">client_options={&quot;api_endpoint&quot;:</span> <span class="pre">REGIONAL_ENDPOINT}</span></code>.</p></li>
+Generally you should not need to set additional keyword
+arguments. Optionally, publish retry settings can be set via
+<code class="docutils literal notranslate"><span class="pre">client_config</span></code> where user-provided retry configurations are
+applied to default retry settings. And regional endpoints can be
+set via <code class="docutils literal notranslate"><span class="pre">client_options</span></code> that takes a single key-value pair that
+defines the endpoint.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub_v1</span>
+
+<span class="n">publisher_client</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">(</span>
+    <span class="c1"># Optional</span>
+    <span class="n">batch_settings</span> <span class="o">=</span> <span class="n">pubsub_v1</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">BatchSettings</span><span class="p">(</span>
+        <span class="n">max_bytes</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>  <span class="c1"># One kilobyte</span>
+        <span class="n">max_latency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>   <span class="c1"># One second</span>
+    <span class="p">),</span>
+
+    <span class="c1"># Optional</span>
+    <span class="n">client_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;interfaces&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;google.pubsub.v1.Publisher&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;retry_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;messaging&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;total_timeout_millis&#39;</span><span class="p">:</span> <span class="mi">650000</span><span class="p">,</span>  <span class="c1"># default: 600000</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1"># Optional</span>
+    <span class="n">client_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;api_endpoint&quot;</span><span class="p">:</span> <span class="n">REGIONAL_ENDPOINT</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.publisher.client.Client.create_topic">
 <code class="sig-name descname">create_topic</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">message_storage_policy=None</em>, <em class="sig-param">kms_key_name=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.client.Client.create_topic" title="Permalink to this definition">#</a></dt>
@@ -184,10 +213,8 @@ settings for batch publishing.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The constructed client.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>PublisherClient</p>
+<dd class="field-even"><p>A Publisher <a class="reference internal" href="#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>
+instance that is the constructed client.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -208,10 +235,8 @@ settings for batch publishing.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The constructed client.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>PublisherClient</p>
+<dd class="field-even"><p>A Publisher <a class="reference internal" href="#google.cloud.pubsub_v1.publisher.client.Client" title="google.cloud.pubsub_v1.publisher.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>
+instance that is the constructed client.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -358,7 +383,7 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+<dd class="field-even"><p>A <a class="reference internal" href="../../../core/page_iterator.html#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">GRPCIterator</span></code></a> instance.
 An iterable of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> instances.
 You can also iterate over the pages of the response
 using its <cite>pages</cite> property.</p>
@@ -422,7 +447,7 @@ that is provided to the method.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PageIterator</span></code> instance.
+<dd class="field-even"><p>A <a class="reference internal" href="../../../core/page_iterator.html#google.api_core.page_iterator.GRPCIterator" title="google.api_core.page_iterator.GRPCIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">GRPCIterator</span></code></a> instance.
 An iterable of <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.Topic" title="google.cloud.pubsub_v1.types.Topic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Topic</span></code></a> instances.
 You can also iterate over the pages of the response
 using its <cite>pages</cite> property.</p>
@@ -483,12 +508,10 @@ sent as metadata. (These may be text strings or byte strings.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An object conforming to the
-<code class="docutils literal notranslate"><span class="pre">concurrent.futures.Future</span></code> interface (but not an instance
-of that class).</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Future</p>
+<dd class="field-even"><p>A <a class="reference internal" href="futures.html#google.cloud.pubsub_v1.publisher.futures.Future" title="google.cloud.pubsub_v1.publisher.futures.Future"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></a>
+instance that conforms to Python Standard library’s
+<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code></a> interface (but not an
+instance of that class).</p>
 </dd>
 </dl>
 </dd></dl>

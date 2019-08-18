@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 6029022 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 8998983 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -32,7 +32,7 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.pubsub_v1.publisher.client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2019, Google LLC All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -87,14 +87,45 @@
 <span class="sd">            settings for batch publishing.</span>
 <span class="sd">        kwargs (dict): Any additional arguments provided are sent as keyword</span>
 <span class="sd">            arguments to the underlying</span>
-<span class="sd">            :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.</span>
-<span class="sd">            Generally, you should not need to set additional keyword arguments.</span>
-<span class="sd">            Before being passed along to the GAPIC constructor, a channel may</span>
-<span class="sd">            be added if ``credentials`` are passed explicitly or if the</span>
-<span class="sd">            Pub / Sub emulator is detected as running.</span>
-<span class="sd">            Regional endpoints can be set via ``client_options`` that takes a</span>
-<span class="sd">            single key-value pair that defines the endpoint, i.e.</span>
-<span class="sd">            ``client_options={&quot;api_endpoint&quot;: REGIONAL_ENDPOINT}``.</span>
+<span class="sd">            :class:`~google.cloud.pubsub_v1.gapic.publisher_client.PublisherClient`.</span>
+<span class="sd">            Generally you should not need to set additional keyword</span>
+<span class="sd">            arguments. Optionally, publish retry settings can be set via</span>
+<span class="sd">            ``client_config`` where user-provided retry configurations are</span>
+<span class="sd">            applied to default retry settings. And regional endpoints can be</span>
+<span class="sd">            set via ``client_options`` that takes a single key-value pair that</span>
+<span class="sd">            defines the endpoint.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from google.cloud import pubsub_v1</span>
+
+<span class="sd">        publisher_client = pubsub_v1.PublisherClient(</span>
+<span class="sd">            # Optional</span>
+<span class="sd">            batch_settings = pubsub_v1.types.BatchSettings(</span>
+<span class="sd">                max_bytes=1024,  # One kilobyte</span>
+<span class="sd">                max_latency=1,   # One second</span>
+<span class="sd">            ),</span>
+
+<span class="sd">            # Optional</span>
+<span class="sd">            client_config = {</span>
+<span class="sd">                &quot;interfaces&quot;: {</span>
+<span class="sd">                    &quot;google.pubsub.v1.Publisher&quot;: {</span>
+<span class="sd">                        &quot;retry_params&quot;: {</span>
+<span class="sd">                            &quot;messaging&quot;: {</span>
+<span class="sd">                                &#39;total_timeout_millis&#39;: 650000,  # default: 600000</span>
+<span class="sd">                            }</span>
+<span class="sd">                        }</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">            },</span>
+
+<span class="sd">            # Optional</span>
+<span class="sd">            client_options = {</span>
+<span class="sd">                &quot;api_endpoint&quot;: REGIONAL_ENDPOINT</span>
+<span class="sd">            }</span>
+<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_batch_class</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">Batch</span>
@@ -151,7 +182,8 @@
 <span class="sd">            kwargs: Additional arguments to pass to the constructor.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            PublisherClient: The constructed client.</span>
+<span class="sd">            A Publisher :class:`~google.cloud.pubsub_v1.publisher.client.Client`</span>
+<span class="sd">            instance that is the constructed client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;credentials&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
@@ -240,9 +272,10 @@
 <span class="sd">                sent as metadata. (These may be text strings or byte strings.)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~google.api_core.future.Future: An object conforming to the</span>
-<span class="sd">            ``concurrent.futures.Future`` interface (but not an instance</span>
-<span class="sd">            of that class).</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.publisher.futures.Future`</span>
+<span class="sd">            instance that conforms to Python Standard library&#39;s</span>
+<span class="sd">            :class:`~concurrent.futures.Future` interface (but not an</span>
+<span class="sd">            instance of that class).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Sanity check: Is the data being sent as a bytestring?</span>
         <span class="c1"># If it is literally anything else, complain loudly about it.</span>
