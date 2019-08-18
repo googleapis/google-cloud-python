@@ -1548,6 +1548,14 @@ class Client(ClientWithProject):
                         PendingDeprecationWarning,
                         stacklevel=2,
                     )
+                else:
+                    warnings.warn(
+                        "Loading from a dataframe without a schema will be "
+                        "deprecated in the future, please provide a schema.",
+                        PendingDeprecationWarning,
+                        stacklevel=2,
+                    )
+
                 dataframe.to_parquet(tmppath, compression=parquet_compression)
 
             with open(tmppath, "rb") as parquet_file:
