@@ -167,6 +167,18 @@ s.replace(
     """
 )
 
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    "~google.api_core.page_iterator.PageIterator",
+    "~google.api_core.page_iterator.GRPCIterator"
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
+    "~google.api_core.page_iterator.PageIterator",
+    "~google.api_core.page_iterator.GRPCIterator"
+)
+
 # Temporary fixup for 'grpc-google-iam-vi 0.12.4' (before generation).
 s.replace(
     "google/cloud/pubsub_v1/gapic/transports/*_grpc_transport.py",

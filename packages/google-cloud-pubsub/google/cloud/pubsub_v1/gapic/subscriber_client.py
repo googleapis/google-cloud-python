@@ -603,7 +603,7 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`~google.cloud.pubsub_v1.types.Subscription` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
@@ -1202,7 +1202,7 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`~google.cloud.pubsub_v1.types.Snapshot` instances.
             You can also iterate over the pages of the response
             using its `pages` property.

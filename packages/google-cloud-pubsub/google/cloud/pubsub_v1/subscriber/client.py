@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 from __future__ import absolute_import
 
-import pkg_resources
 import os
+import pkg_resources
 
 import grpc
 
@@ -50,12 +50,24 @@ class Client(object):
     Args:
         kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
-            :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
-            Generally, you should not need to set additional keyword
-            arguments.
-            Regional endpoints can be set via ``client_options`` that takes a
-            single key-value pair that defines the endpoint, i.e.
-            ``client_options={"api_endpoint": REGIONAL_ENDPOINT}``.
+            :class:`~google.cloud.pubsub_v1.gapic.subscriber_client.SubscriberClient`.
+            Generally you should not need to set additional keyword
+            arguments. Optionally, regional endpoints can be set via
+            ``client_options`` that takes a single key-value pair that
+            defines the endpoint.
+
+    Example:
+
+    .. code-block:: python
+
+        from google.cloud import pubsub_v1
+
+        subscriber_client = pubsub_v1.SubscriberClient(
+            # Optional
+            client_options = {
+                "api_endpoint": REGIONAL_ENDPOINT
+            }
+        )
     """
 
     def __init__(self, **kwargs):
@@ -105,7 +117,8 @@ class Client(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PublisherClient: The constructed client.
+            A Subscriber :class:`~google.cloud.pubsub_v1.subscriber.client.Client`
+            instance that is the constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -201,8 +214,8 @@ class Client(object):
                 how callbacks are executed concurrently.
 
         Returns:
-            google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture: A
-                Future object that can be used to manage the background stream.
+            A :class:`~google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture`
+            instance that can be used to manage the background stream.
         """
         flow_control = types.FlowControl(*flow_control)
 
