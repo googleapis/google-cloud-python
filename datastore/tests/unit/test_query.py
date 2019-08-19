@@ -677,8 +677,10 @@ class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
     def test_fetch_entity_pb_client_none(self):
         from google.cloud.datastore.query import Iterator
 
+        # 1. Client is explicitly None
         client = self._make_client()
         query = self._make_one(client)
+
         iterator = query.fetch_entity_pb(client=None)
 
         self.assertIsInstance(iterator, Iterator)
@@ -686,19 +688,38 @@ class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
+        self.assertTrue(iterator.item_to_value)
+        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
+
+        # 1. Client is implicitly None
+        client = self._make_client()
+        query = self._make_one(client)
+
+        iterator = query.fetch_entity_pb()
+
+        self.assertIsInstance(iterator, Iterator)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator.client, client)
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator._offset, 0)
+        self.assertTrue(iterator.item_to_value)
+        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
 
     def test_fetch_entity_pb_client_set(self):
         from google.cloud.datastore.query import Iterator
 
         client = self._make_client()
+        other_client = self._make_client()
         query = self._make_one(client)
-        iterator = query.fetch(limit=7, offset=8, client=client)
+        iterator = query.fetch_entity_pb(limit=7, offset=8, client=other_client)
 
         self.assertIsInstance(iterator, Iterator)
         self.assertIs(iterator._query, query)
-        self.assertIs(iterator.client, client)
+        self.assertIs(iterator.client, other_client)
         self.assertEqual(iterator.max_results, 7)
         self.assertEqual(iterator._offset, 8)
+        self.assertTrue(iterator.item_to_value)
+        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
 
 
 class _Query(object):
