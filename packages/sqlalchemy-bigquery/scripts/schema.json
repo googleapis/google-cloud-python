@@ -20,6 +20,11 @@
 },
 {
   "mode": "NULLABLE",
+  "name": "numeric",
+  "type": "NUMERIC"
+},
+{
+  "mode": "NULLABLE",
   "name": "boolean",
   "type": "BOOLEAN"
 },

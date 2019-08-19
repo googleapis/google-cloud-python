@@ -14,6 +14,7 @@ from pytz import timezone
 import pytest
 import sqlalchemy
 import datetime
+import decimal
 
 
 ONE_ROW_CONTENTS_EXPANDED = [
@@ -21,6 +22,7 @@ ONE_ROW_CONTENTS_EXPANDED = [
     datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
     'W 52 St & 11 Ave',
     40.76727216,
+    decimal.Decimal('40.76727216'),
     False,
     datetime.date(2013, 10, 10),
     datetime.datetime(2013, 10, 10, 11, 27, 16),
@@ -40,6 +42,7 @@ ONE_ROW_CONTENTS = [
     datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
     'W 52 St & 11 Ave',
     40.76727216,
+    decimal.Decimal('40.76727216'),
     False,
     datetime.date(2013, 10, 10),
     datetime.datetime(2013, 10, 10, 11, 27, 16),
@@ -63,6 +66,7 @@ ONE_ROW_CONTENTS_DML = [
     datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
     'test',
     40.76727216,
+    decimal.Decimal('40.76727216'),
     False,
     datetime.date(2013, 10, 10),
     datetime.datetime(2013, 10, 10, 11, 27, 16),
@@ -75,6 +79,7 @@ SAMPLE_COLUMNS = [
     {'name': 'timestamp', 'type': types.TIMESTAMP(), 'nullable': True, 'default': None},
     {'name': 'string', 'type': types.String(), 'nullable': True, 'default': None},
     {'name': 'float', 'type': types.Float(), 'nullable': True, 'default': None},
+    {'name': 'numeric', 'type': types.DECIMAL(), 'nullable': True, 'default': None},
     {'name': 'boolean', 'type': types.Boolean(), 'nullable': True, 'default': None},
     {'name': 'date', 'type': types.DATE(), 'nullable': True, 'default': None},
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
@@ -177,7 +182,7 @@ def api_client():
 
 def test_dry_run(engine, api_client):
     sql = 'SELECT * FROM test_pybigquery.sample_one_row'
-    assert api_client.dry_run_query(sql).total_bytes_processed == 132
+    assert api_client.dry_run_query(sql).total_bytes_processed == 148
 
     sql = 'SELECT * FROM sample_one_row'
     with pytest.raises(BadRequest) as excinfo:
@@ -206,7 +211,7 @@ def test_dataset_location(engine_with_location):
 
 def test_reflect_select(table, table_using_test_dataset):
     for table in [table, table_using_test_dataset]:
-        assert len(table.c) == 17
+        assert len(table.c) == 18
 
         assert isinstance(table.c.integer, Column)
         assert isinstance(table.c.integer.type, types.Integer)
