@@ -183,7 +183,7 @@ def test_dry_run(engine, api_client):
     with pytest.raises(BadRequest) as excinfo:
         api_client.dry_run_query(sql)
 
-    assert 'Table name "sample_one_row" cannot be resolved: dataset name is missing.' in str(excinfo.value.message)
+    assert 'Table name "sample_one_row" missing dataset while no default dataset is set in the request.' in str(excinfo.value.message)
 
 
 def test_engine_with_dataset(engine_using_test_dataset):
