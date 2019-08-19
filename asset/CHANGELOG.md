@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.4.2
+
+08-19-2019 15:11 PDT
+
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Implementation Changes
+
+### New Features
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
 ## 0.4.1
 
 08-12-2019 13:44 PDT
