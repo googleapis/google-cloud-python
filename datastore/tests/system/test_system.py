@@ -668,6 +668,14 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         self.assertEqual(len(entity_retrieved_pbs), 4)
         self.assertEqual(entity_retrieved_pbs, entity_pbs)
 
+        # Client is explicitly None
+        query = Config.CLIENT.query(kind="TestEntityPB")
+        entity_retrieved_pbs = list(query.fetch_entity_pb(client=None))
+
+        self.assertEqual(len(entity_retrieved_pbs), 4)
+        self.assertEqual(entity_retrieved_pbs, entity_pbs)
+
+        # Client is explicitly proivded
         query = Config.CLIENT.query(kind="TestEntityPB")
         entity_retrieved_pbs = list(query.fetch_entity_pb(client=Config.CLIENT))
 
