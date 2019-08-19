@@ -1,7 +1,7 @@
 Core Helpers for Google Cloud Python Client Library
 ===================================================
 
-|pypi| |versions| |compat_check_pypi| |compat_check_github|
+|pypi| |versions| 
 
 This library is not meant to stand-alone. Instead it defines
 common helpers (e.g. base ``Client`` classes) used by all of the
@@ -14,10 +14,6 @@ common helpers (e.g. base ``Client`` classes) used by all of the
    :target: https://pypi.org/project/google-cloud-core/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-core.svg
    :target: https://pypi.org/project/google-cloud-core/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-core
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-core
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcore
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcore
 .. _Documentation: https://googleapis.dev/python/google-cloud-core/latest
 
 Quick Start

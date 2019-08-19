@@ -25,7 +25,7 @@ version = "0.1.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    "google-cloud-monitoring>=0.31.1, <0.33dev",
+    "google-cloud-monitoring>=0.31.1, <0.34",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

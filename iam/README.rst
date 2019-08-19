@@ -1,17 +1,13 @@
 Python Client for IAM API (`Alpha`_)
 ================================================================
 
-|compat_check_pypi| |compat_check_github|
+
 
 `IAM API`_: IAM API
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-iam
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-iam
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diam
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diam
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _IAM API: https://cloud.google.com/iam
 .. _Client Library Documentation: https://googleapis.dev/python/iam/latest

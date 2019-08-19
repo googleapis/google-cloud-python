@@ -1,7 +1,7 @@
 Python Client for Google Cloud RuntimeConfig
 ============================================
 
-|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|alpha| |pypi| |versions| 
 
 The `Google Cloud RuntimeConfig`_ API enables developers to dynamically
 configure and expose variables through Google Cloud Platform. In addition, you
@@ -17,10 +17,6 @@ return based on certain conditions.
    :target: https://pypi.org/project/google-cloud-runtimeconfig/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
    :target: https://pypi.org/project/google-cloud-runtimeconfig/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-runtimeconfig
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-runtimeconfig
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Druntimeconfig
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Druntimeconfig
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Client Library Documentation: https://googleapis.dev/python/runtimeconfig/latest
 .. _Product Documentation: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
