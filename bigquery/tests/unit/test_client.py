@@ -5379,14 +5379,13 @@ class TestClientUpload(object):
                 dataframe, self.TABLE_REF, location=self.LOCATION
             )
 
-        for warning in warned:
-            if warning.category in (
-                DeprecationWarning,
-                PendingDeprecationWarning,
-            ) and "please provide a schema" in str(warning):
-                break
-        else:
-            pytest.fail("A missing schema deprecation warning was not raised.")
+        matches = [
+            warning
+            for warning in warned
+            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
+            and "please provide a schema" in str(warning)
+        ]
+        assert matches, "A missing schema deprecation warning was not raised."
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
