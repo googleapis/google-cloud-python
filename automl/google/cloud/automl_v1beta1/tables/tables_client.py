@@ -301,7 +301,7 @@ class TablesClient(object):
                 and op.operation.name is not None
             ):
                 name = op.operation.name
-        except:
+        except AttributeError:
             pass
         _LOGGER.info(
             (
