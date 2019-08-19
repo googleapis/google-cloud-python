@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud 8998983 documentation</title>
+    <title>Types for Cloud Talent Solution API Client &#8212; google-cloud f383515 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -3438,8 +3438,10 @@ the same location level as this field is strongly recommended.</p>
 <dl class="attribute">
 <dt id="google.cloud.talent_v4beta1.types.Job.visibility">
 <code class="sig-name descname">visibility</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.Job.visibility" title="Permalink to this definition">#</a></dt>
-<dd><p>Optional. The visibility of the job.  Defaults to [Visibility.
-ACCOUNT_ONLY][google.cloud.talent.v4beta1.Visibility.ACCOUNT          _ONLY] if not specified.</p>
+<dd><p>Deprecated. The job is only visible to the owner.  The
+visibility of the job.  Defaults to [Visibility.ACCOUNT_ONLY]
+[google.cloud.talent.v4beta1.Visibility.ACCOUNT_ONLY] if not
+specified.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4961,7 +4963,7 @@ related queries.</p>
 <dt id="google.cloud.talent_v4beta1.types.LocationFilter.lat_lng">
 <code class="sig-name descname">lat_lng</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.LocationFilter.lat_lng" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The latitude and longitude of the geographic center
-from which to search. This field’s ignored if <code class="docutils literal notranslate"><span class="pre">address</span></code> is
+to search from. This field is ignored if <code class="docutils literal notranslate"><span class="pre">address</span></code> is
 provided.</p>
 </dd></dl>
 
@@ -4969,9 +4971,9 @@ provided.</p>
 <dt id="google.cloud.talent_v4beta1.types.LocationFilter.distance_in_miles">
 <code class="sig-name descname">distance_in_miles</code><a class="headerlink" href="#google.cloud.talent_v4beta1.types.LocationFilter.distance_in_miles" title="Permalink to this definition">#</a></dt>
 <dd><p>Optional. The distance_in_miles is applied when the location
-being searched for is identified as a city or smaller. When
-the location being searched for is a state or larger, this
-field is ignored.</p>
+being searched for is identified as a city or smaller. This
+field is ignored if the location being searched for is a state
+or larger.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -4994,7 +4996,8 @@ combined with another location filter to search for a
 combination of job locations, such as “Mountain View” or
 “telecommuting” jobs. However, when used in combination with
 other location filters, telecommuting jobs can be treated as
-less relevant than other jobs in the search response.</p>
+less relevant than other jobs in the search response.  This
+field is only used for job search requests.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -6137,8 +6140,42 @@ profiles fitting the other search criteria are retrieved
 regardless of where they’re located.  If [LocationFilter.negat
 ed][google.cloud.talent.v4beta1.LocationFilter.negated] is
 specified, the result doesn’t contain profiles from that
-location.  For example, search for profiles with addresses in
-“New York City”.</p>
+location.  If [LocationFilter.address][google.cloud.talent.v4b
+eta1.LocationFilter.address] is provided, the [LocationType][g
+oogle.cloud.talent.v4beta1.Location.LocationType], center
+point (latitude and longitude), and radius are automatically
+detected by the Google Maps Geocoding API and included as
+well. If [LocationFilter.address][google.cloud.talent.v4beta1.
+LocationFilter.address] is not recognized as a location, the
+filter falls back to keyword search.  If the detected [Locatio
+nType][google.cloud.talent.v4beta1.Location.LocationType] is [
+LocationType.SUB_ADMINISTRATIVE_AREA][google.cloud.talent.v4
+beta1.Location.LocationType.SUB_ADMINISTRATIVE_AREA], [Locat
+ionType.ADMINISTRATIVE_AREA][google.cloud.talent.v4beta1.Loca
+tion.LocationType.ADMINISTRATIVE_AREA], or [LocationType.COUN
+TRY][google.cloud.talent.v4beta1.Location.LocationType.COUNTRY
+], or location is recognized but a radius can not be
+determined by the geo-coder, the filter is performed against
+the detected location name (using exact text matching).
+Otherwise, the filter is performed against the detected center
+point and a radius. The largest value from among the following
+options is automatically set as the radius value: 1. 10 miles.
+2. Detected location radius + [LocationFilter.distance_in_mi
+les][google.cloud.talent.v4beta1.LocationFilter.distance_in_
+miles]. 3. If the detected [LocationType][google.cloud.talent.
+v4beta1.Location.LocationType] is one of [LocationType.SUB_LO
+CALITY][google.cloud.talent.v4beta1.Location.LocationType.SUB          _LOCALITY], [LocationType.SUB_LOCALITY_2][google.cloud.talen
+t.v4beta1.Location.LocationType.SUB_LOCALITY_2], [LocationTy
+pe.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.Location
+Type.NEIGHBORHOOD], [LocationType.POSTAL_CODE][google.cloud.t
+alent.v4beta1.Location.LocationType.POSTAL_CODE], or [Locatio
+nType.STREET_ADDRESS][google.cloud.talent.v4beta1.Location.Lo
+cationType.STREET_ADDRESS], the following two values are
+calculated and the larger of the two is compared to #1 and #2,
+above: - Calculated radius of the city (from the city center)
+that contains the geo-coded location. - Distance from the city
+center (of the city containing the geo-coded location) to the
+detected location center + 0.5 miles.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -7508,9 +7545,9 @@ For example, “enginee” is corrected to “engineer”.</p>
 sorted. Defaults is “relevance desc” if no value is specified.
 Supported options are:  -  “relevance desc”: By descending
 relevance, as determined by the API    algorithms. -
-“update_time desc”: Sort by    [Profile.update_time][google.
+“update_date desc”: Sort by    [Profile.update_time][google.
 cloud.talent.v4beta1.Profile.update_time]    in descending
-order (recently updated profiles first). -  “create_time
+order (recently updated profiles first). -  “create_date
 desc”: Sort by    [Profile.create_time][google.cloud.talent.v
 4beta1.Profile.create_time]    in descending order (recently
 created profiles first). -  “first_name”: Sort by    [PersonN
