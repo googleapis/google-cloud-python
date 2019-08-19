@@ -3,6 +3,11 @@ indexes:
 - kind: Character
   ancestor: yes
   properties:
+  - name: appearances
+
+- kind: Character
+  ancestor: yes
+  properties:
   - name: alive
 
 - kind: Character
