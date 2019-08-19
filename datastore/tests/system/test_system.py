@@ -612,10 +612,15 @@ class TestDatastoreRawEntityPBMethods(TestDatastore):
         keys = [key1, key2]
         entity_retrieved_pbs = Config.CLIENT.get_multi_entity_pb(keys=keys)
         self.assertEqual(len(entity_retrieved_pbs), 2)
-        self.assertEqual(entity_retrieved_pbs[0].key.path[0].id, 1111)
-        self.assertEqual(entity_retrieved_pbs[1].key.path[0].id, 2222)
 
-    def test_fetch_entity_pbs(self):
+        retrieved_keys = []
+        for entity_retrieved_pb in entity_retrieved_pbs:
+            retrieved_keys.append(entity_retrieved_pb.key.path[0].id)
+
+        self.assertTrue(1111 in retrieved_keys)
+        self.assertTrue(2222 in retrieved_keys)
+
+    def test_fetch_entity_pb(self):
         # Store multiple entities
         key1 = Config.CLIENT.key("TestEntityPB", 1111)
         entity1_pb = entity_pb2.Entity()
