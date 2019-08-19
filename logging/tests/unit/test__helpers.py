@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import logging
 import unittest
 
 import mock
@@ -119,6 +120,47 @@ class Test_retrieve_metadata_server(unittest.TestCase):
                 metadata = self._call_fut(metadata_key)
 
         self.assertIsNone(metadata)
+
+
+class Test__normalize_severity(unittest.TestCase):
+    @staticmethod
+    def _stackdriver_severity():
+        from google.cloud.logging._helpers import LogSeverity
+
+        return LogSeverity
+
+    def _normalize_severity_helper(self, stdlib_level, enum_level):
+        from google.cloud.logging._helpers import _normalize_severity
+
+        self.assertEqual(_normalize_severity(stdlib_level), enum_level)
+
+    def test__normalize_severity_critical(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.CRITICAL, severity.CRITICAL)
+
+    def test__normalize_severity_error(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.ERROR, severity.ERROR)
+
+    def test__normalize_severity_warning(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.WARNING, severity.WARNING)
+
+    def test__normalize_severity_info(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.INFO, severity.INFO)
+
+    def test__normalize_severity_debug(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.DEBUG, severity.DEBUG)
+
+    def test__normalize_severity_notset(self):
+        severity = self._stackdriver_severity()
+        self._normalize_severity_helper(logging.NOTSET, severity.DEFAULT)
+
+    def test__normalize_severity_non_standard(self):
+        unknown_level = 35
+        self._normalize_severity_helper(unknown_level, unknown_level)
 
 
 class EntryMock(object):

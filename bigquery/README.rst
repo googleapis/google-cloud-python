@@ -1,7 +1,7 @@
 Python Client for Google BigQuery
 =================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| 
 
 Querying massive datasets can be time consuming and expensive without the
 right hardware and infrastructure. Google `BigQuery`_ solves this problem by
@@ -18,7 +18,7 @@ processing power of Google's infrastructure.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery.svg
    :target: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigquery/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/bigquery/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/v2/
 
 Quick Start
@@ -34,7 +34,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud BigQuery API.:  https://cloud.google.com/bigquery
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

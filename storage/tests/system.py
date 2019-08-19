@@ -90,6 +90,19 @@ def tearDownModule():
 
 
 class TestClient(unittest.TestCase):
+    def setUp(self):
+        self.case_hmac_keys_to_delete = []
+
+    def tearDown(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        for hmac_key in self.case_hmac_keys_to_delete:
+            if hmac_key.state == HMACKeyMetadata.ACTIVE_STATE:
+                hmac_key.state = HMACKeyMetadata.INACTIVE_STATE
+                hmac_key.update()
+            if hmac_key.state == HMACKeyMetadata.INACTIVE_STATE:
+                retry_429_harder(hmac_key.delete)()
+
     def test_get_service_account_email(self):
         domain = "gs-project-accounts.iam.gserviceaccount.com"
 
@@ -101,6 +114,42 @@ class TestClient(unittest.TestCase):
         matches = [pattern.match(email) for pattern in patterns]
 
         self.assertTrue(any(match for match in matches if match is not None))
+
+    def test_hmac_key_crud(self):
+        from google.cloud.storage.hmac_key import HMACKeyMetadata
+
+        credentials = Config.CLIENT._credentials
+        email = credentials.service_account_email
+
+        before_keys = set(Config.CLIENT.list_hmac_keys())
+
+        metadata, secret = Config.CLIENT.create_hmac_key(email)
+        self.case_hmac_keys_to_delete.append(metadata)
+
+        self.assertIsInstance(secret, six.text_type)
+        self.assertEqual(len(secret), 40)
+
+        after_keys = set(Config.CLIENT.list_hmac_keys())
+        self.assertFalse(metadata in before_keys)
+        self.assertTrue(metadata in after_keys)
+
+        another = HMACKeyMetadata(Config.CLIENT)
+
+        another._properties["accessId"] = "nonesuch"
+        self.assertFalse(another.exists())
+
+        another._properties["accessId"] = metadata.access_id
+        self.assertTrue(another.exists())
+
+        another.reload()
+
+        self.assertEqual(another._properties, metadata._properties)
+
+        metadata.state = HMACKeyMetadata.INACTIVE_STATE
+        metadata.update()
+
+        metadata.delete()
+        self.case_hmac_keys_to_delete.remove(metadata)
 
 
 class TestStorageBuckets(unittest.TestCase):
@@ -552,6 +601,23 @@ class TestStorageWriteFiles(TestStorageFiles):
         copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
 
+    def test_download_blob_w_uri(self):
+        blob = self.bucket.blob("MyBuffer")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        temp_filename = tempfile.mktemp()
+        with open(temp_filename, "wb") as file_obj:
+            Config.CLIENT.download_blob_to_file(
+                "gs://" + self.bucket.name + "/MyBuffer", file_obj
+            )
+
+        with open(temp_filename, "rb") as file_obj:
+            stored_contents = file_obj.read()
+
+        self.assertEqual(file_contents, stored_contents)
+
 
 class TestUnicode(unittest.TestCase):
     @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
@@ -737,7 +803,7 @@ class TestStorageSignURLs(unittest.TestCase):
             cls.skipTest("Signing tests requires a service account credential")
 
         bucket_name = "gcp-signing" + unique_resource_id()
-        cls.bucket = Config.CLIENT.create_bucket(bucket_name)
+        cls.bucket = retry_429(Config.CLIENT.create_bucket)(bucket_name)
         cls.blob = cls.bucket.blob("README.txt")
         cls.blob.upload_from_string(cls.BLOB_CONTENT)
 
@@ -1269,9 +1335,9 @@ class TestAnonymousClient(unittest.TestCase):
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
-        blob, = bucket.list_blobs(max_results=1)
+        blob, = retry_429_503(bucket.list_blobs)(max_results=1)
         with tempfile.TemporaryFile() as stream:
-            blob.download_to_file(stream)
+            retry_429_503(blob.download_to_file)(stream)
 
 
 class TestKMSIntegration(TestStorageFiles):
@@ -1666,6 +1732,7 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             blob_acl.save()
 
+    @unittest.skipUnless(False, "Back-end fix for BPO/UBLA expected 2019-07-12")
     def test_bpo_set_unset_preserves_acls(self):
         new_bucket_name = "bpo-acls" + unique_resource_id("-")
         self.assertRaises(
@@ -1686,6 +1753,8 @@ class TestIAMConfiguration(unittest.TestCase):
         # Set BPO
         bucket.iam_configuration.bucket_policy_only_enabled = True
         bucket.patch()
+
+        self.assertTrue(bucket.iam_configuration.bucket_policy_only_enabled)
 
         # While BPO is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):

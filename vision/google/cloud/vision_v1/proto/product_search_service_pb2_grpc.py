@@ -125,6 +125,11 @@ class ProductSearchStub(object):
             request_serializer=google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2.ImportProductSetsRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.PurgeProducts = channel.unary_unary(
+            "/google.cloud.vision.v1.ProductSearch/PurgeProducts",
+            request_serializer=google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2.PurgeProductsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
 
 
 class ProductSearchServicer(object):
@@ -386,6 +391,36 @@ class ProductSearchServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def PurgeProducts(self, request, context):
+        """Asynchronous API to delete all Products in a ProductSet or all Products
+    that are in no ProductSet.
+
+    If a Product is a member of the specified ProductSet in addition to other
+    ProductSets, the Product will still be deleted.
+
+    It is recommended to not delete the specified ProductSet until after this
+    operation has completed. It is also recommended to not add any of the
+    Products involved in the batch delete to a new ProductSet while this
+    operation is running because those Products may still end up deleted.
+
+    It's not possible to undo the PurgeProducts operation. Therefore, it is
+    recommended to keep the csv files used in ImportProductSets (if that was
+    how you originally built the Product Set) before starting PurgeProducts, in
+    case you need to re-import the data after deletion.
+
+    If the plan is to purge all of the Products from a ProductSet and then
+    re-use the empty ProductSet to re-import new Products into the empty
+    ProductSet, you must wait until the PurgeProducts operation has finished
+    for that ProductSet.
+
+    The [google.longrunning.Operation][google.longrunning.Operation] API can be
+    used to keep track of the progress and results of the request.
+    `Operation.metadata` contains `BatchOperationMetadata`. (progress)
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ProductSearchServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -477,6 +512,11 @@ def add_ProductSearchServicer_to_server(servicer, server):
         "ImportProductSets": grpc.unary_unary_rpc_method_handler(
             servicer.ImportProductSets,
             request_deserializer=google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2.ImportProductSetsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "PurgeProducts": grpc.unary_unary_rpc_method_handler(
+            servicer.PurgeProducts,
+            request_deserializer=google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2.PurgeProductsRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
     }

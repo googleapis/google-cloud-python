@@ -24,7 +24,7 @@ class ClassificationType(enum.IntEnum):
     Type of the classification problem.
 
     Attributes:
-      CLASSIFICATION_TYPE_UNSPECIFIED (int): Should not be used, an un-set enum has this value by default.
+      CLASSIFICATION_TYPE_UNSPECIFIED (int): An un-set value of this enum.
       MULTICLASS (int): At most one label is allowed per example.
       MULTILABEL (int): Multiple labels are allowed for one example.
     """
@@ -51,13 +51,6 @@ class NullValue(enum.IntEnum):
 class TypeCode(enum.IntEnum):
     """
     ``TypeCode`` is used as a part of ``DataType``.
-
-    Each legal value of a DataType can be encoded to or decoded from a JSON
-    value, using the encodings listed below, and definitions of which can be
-    found at
-
-    https: //developers.google.com/protocol-buffers //
-    /docs/reference/google.protobuf#value.
 
     Attributes:
       TYPE_CODE_UNSPECIFIED (int): Not specified. Should not be used.

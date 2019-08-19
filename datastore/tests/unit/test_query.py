@@ -689,7 +689,7 @@ class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
         self.assertTrue(iterator.item_to_value)
-        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
+        self.assertEqual(iterator.item_to_value("a", "b"), "b")
 
         # 1. Client is implicitly None
         client = self._make_client()
@@ -703,7 +703,7 @@ class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
         self.assertTrue(iterator.item_to_value)
-        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
+        self.assertEqual(iterator.item_to_value("a", "b"), "b")
 
     def test_fetch_entity_pb_client_set(self):
         from google.cloud.datastore.query import Iterator
@@ -719,7 +719,7 @@ class TestQueryRawEntityPBMethods(BaseQueryTestCase, unittest.TestCase):
         self.assertEqual(iterator.max_results, 7)
         self.assertEqual(iterator._offset, 8)
         self.assertTrue(iterator.item_to_value)
-        self.assertEqual(iterator.item_to_value('a', 'b'), 'b')
+        self.assertEqual(iterator.item_to_value("a", "b"), "b")
 
 
 class _Query(object):

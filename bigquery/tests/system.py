@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 try:
     import pyarrow
+    import pyarrow.types
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 try:
@@ -59,6 +60,7 @@ from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
 from google.cloud import bigquery
+from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
@@ -104,6 +106,11 @@ TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
         ],
     ),
 ]
+
+# The VPC-SC team maintains a mirror of the GCS bucket used for code
+# samples. The public bucket crosses the configured security boundary.
+# See: https://github.com/googleapis/google-cloud-python/issues/8550
+SAMPLES_BUCKET = os.environ.get("GCLOUD_TEST_SAMPLES_BUCKET", "cloud-samples-data")
 
 retry_storage_errors = RetryErrors(
     (TooManyRequests, InternalServerError, ServiceUnavailable)
@@ -1864,6 +1871,42 @@ class TestBigQuery(unittest.TestCase):
         expected_rows = [("Some value", record)]
         self.assertEqual(row_tuples, expected_rows)
 
+    def test_create_routine(self):
+        routine_name = "test_routine"
+        dataset = self.temp_dataset(_make_dataset_id("create_routine"))
+        float64_type = bigquery_v2.types.StandardSqlDataType(
+            type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.FLOAT64
+        )
+        routine = bigquery.Routine(
+            dataset.routine(routine_name),
+            language="JAVASCRIPT",
+            type_="SCALAR_FUNCTION",
+            return_type=float64_type,
+            imported_libraries=[
+                "gs://{}/bigquery/udfs/max-value.js".format(SAMPLES_BUCKET)
+            ],
+        )
+        routine.arguments = [
+            bigquery.RoutineArgument(
+                name="arr",
+                data_type=bigquery_v2.types.StandardSqlDataType(
+                    type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.ARRAY,
+                    array_element_type=float64_type,
+                ),
+            )
+        ]
+        routine.body = "return maxValue(arr)"
+        query_string = "SELECT `{}`([-100.0, 3.14, 100.0, 42.0]) as max_value;".format(
+            str(routine.reference)
+        )
+
+        routine = retry_403(Config.CLIENT.create_routine)(routine)
+        query_job = retry_403(Config.CLIENT.query)(query_string)
+        rows = list(query_job.result())
+
+        assert len(rows) == 1
+        assert rows[0].max_value == 100.0
+
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("create_table_nested_schema"))
@@ -1923,6 +1966,71 @@ class TestBigQuery(unittest.TestCase):
 
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_nested_table_to_arrow(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        SF = bigquery.SchemaField
+        schema = [
+            SF("string_col", "STRING", mode="NULLABLE"),
+            SF(
+                "record_col",
+                "RECORD",
+                mode="NULLABLE",
+                fields=[
+                    SF("nested_string", "STRING", mode="NULLABLE"),
+                    SF("nested_repeated", "INTEGER", mode="REPEATED"),
+                ],
+            ),
+            SF("float_col", "FLOAT", mode="NULLABLE"),
+        ]
+        record = {"nested_string": "another string value", "nested_repeated": [0, 1, 2]}
+        to_insert = [
+            {"string_col": "Some value", "record_col": record, "float_col": 3.14}
+        ]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
+        table_id = "test_table"
+        dataset = self.temp_dataset(_make_dataset_id("nested_df"))
+        table = dataset.table(table_id)
+        self.to_delete.insert(0, table)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(body, table, job_config=job_config).result()
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+
+        tbl = Config.CLIENT.list_rows(table, selected_fields=schema).to_arrow(
+            bqstorage_client=bqstorage_client
+        )
+
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 1)
+        self.assertEqual(tbl.num_columns, 3)
+        # Columns may not appear in the requested order.
+        self.assertTrue(
+            pyarrow.types.is_float64(tbl.schema.field_by_name("float_col").type)
+        )
+        self.assertTrue(
+            pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type)
+        )
+        record_col = tbl.schema.field_by_name("record_col").type
+        self.assertTrue(pyarrow.types.is_struct(record_col))
+        self.assertEqual(record_col.num_children, 2)
+        self.assertEqual(record_col[0].name, "nested_string")
+        self.assertTrue(pyarrow.types.is_string(record_col[0].type))
+        self.assertEqual(record_col[1].name, "nested_repeated")
+        self.assertTrue(pyarrow.types.is_list(record_col[1].type))
+        self.assertTrue(pyarrow.types.is_int64(record_col[1].type.value_type))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_nested_table_to_dataframe(self):

@@ -23,22 +23,30 @@ from google.api_core.protobuf_helpers import get_messages
 from google.cloud.datalabeling_v1beta1.proto import annotation_pb2
 from google.cloud.datalabeling_v1beta1.proto import annotation_spec_set_pb2
 from google.cloud.datalabeling_v1beta1.proto import data_labeling_service_pb2
+from google.cloud.datalabeling_v1beta1.proto import data_payloads_pb2
 from google.cloud.datalabeling_v1beta1.proto import dataset_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_job_pb2
+from google.cloud.datalabeling_v1beta1.proto import evaluation_pb2
 from google.cloud.datalabeling_v1beta1.proto import human_annotation_config_pb2
 from google.cloud.datalabeling_v1beta1.proto import instruction_pb2
-from google.longrunning import operations_pb2
+from google.cloud.datalabeling_v1beta1.proto import (
+    operations_pb2 as proto_operations_pb2,
+)
+from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 
 _shared_modules = [
-    operations_pb2,
+    longrunning_operations_pb2,
     any_pb2,
     duration_pb2,
     empty_pb2,
+    field_mask_pb2,
     timestamp_pb2,
     status_pb2,
 ]
@@ -47,9 +55,13 @@ _local_modules = [
     annotation_pb2,
     annotation_spec_set_pb2,
     data_labeling_service_pb2,
+    data_payloads_pb2,
     dataset_pb2,
+    evaluation_job_pb2,
+    evaluation_pb2,
     human_annotation_config_pb2,
     instruction_pb2,
+    proto_operations_pb2,
 ]
 
 names = []

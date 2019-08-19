@@ -26,6 +26,7 @@ from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 
 _marker = object()
@@ -153,6 +154,26 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.pop()
 
+    def _bucket_arg_to_bucket(self, bucket_or_name):
+        """Helper to return given bucket or create new by name.
+
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The newly created bucket or the given one.
+        """
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+        return bucket
+
     @property
     def current_batch(self):
         """Currently-active batch.
@@ -252,12 +273,7 @@ class Client(ClientWithProject):
             >>> bucket = client.get_bucket(bucket)  # API request.
 
         """
-
-        bucket = None
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         bucket.reload(client=self)
         return bucket
@@ -299,7 +315,7 @@ class Client(ClientWithProject):
                 Optional. Whether requester pays for API requests for this
                 bucket and its blobs.
             project (str):
-                Optional. the project under which the  bucket is to be created.
+                Optional. the project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
 
         Returns:
@@ -331,12 +347,7 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
-
-        bucket = None
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
@@ -379,7 +390,7 @@ class Client(ClientWithProject):
 
             >>> with open('file-to-download-to') as file_obj:
             >>>     client.download_blob_to_file(
-            >>>         'gs://bucket_name/path/to/blob', file)
+            >>>         'gs://bucket_name/path/to/blob', file_obj)
 
 
         """
@@ -390,9 +401,83 @@ class Client(ClientWithProject):
             if scheme != "gs":
                 raise ValueError("URI scheme must be gs")
             bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path, bucket)
+            blob_or_uri = Blob(path[1:], bucket)
 
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+
+    def list_blobs(
+        self,
+        bucket_or_name,
+        max_results=None,
+        page_token=None,
+        prefix=None,
+        delimiter=None,
+        versions=None,
+        projection="noAcl",
+        fields=None,
+    ):
+        """Return an iterator used to find blobs in the bucket.
+
+        If :attr:`user_project` is set, bills the API request to that project.
+
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+
+            max_results (int):
+                (Optional) The maximum number of blobs in each page of results
+                from this request. Non-positive values are ignored. Defaults to
+                a sensible value set by the API.
+
+            page_token (str):
+                (Optional) If present, return the next batch of blobs, using the
+                value, which must correspond to the ``nextPageToken`` value
+                returned in the previous response.  Deprecated: use the ``pages``
+                property of the returned iterator instead of manually passing the
+                token.
+
+            prefix (str):
+                (Optional) prefix used to filter blobs.
+
+            delimiter (str):
+                (Optional) Delimiter, used with ``prefix`` to
+                emulate hierarchy.
+
+            versions (bool):
+                (Optional) Whether object versions should be returned
+                as separate blobs.
+
+            projection (str):
+                (Optional) If used, must be 'full' or 'noAcl'.
+                Defaults to ``'noAcl'``. Specifies the set of
+                properties to return.
+
+            fields (str):
+                (Optional) Selector specifying which fields to include
+                in a partial response. Must be a list of fields. For
+                example to get a partial response with just the next
+                page token and the name and language of each blob returned:
+                ``'items(name,contentLanguage),nextPageToken'``.
+                See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
+
+        Returns:
+            Iterator of all :class:`~google.cloud.storage.blob.Blob`
+            in this bucket matching the arguments.
+        """
+        bucket = self._bucket_arg_to_bucket(bucket_or_name)
+        return bucket.list_blobs(
+            max_results=max_results,
+            page_token=page_token,
+            prefix=prefix,
+            delimiter=delimiter,
+            versions=versions,
+            projection=projection,
+            fields=fields,
+            client=self,
+        )
 
     def list_buckets(
         self,
@@ -477,6 +562,98 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
+    def create_hmac_key(self, service_account_email, project_id=None):
+        """Create an HMAC key for a service account.
+
+        :type service_account_email: str
+        :param service_account_email: e-mail address of the service account
+
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
+        :rtype:
+            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
+        :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
+        """
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
+        qs_params = {"serviceAccountEmail": service_account_email}
+        api_response = self._connection.api_request(
+            method="POST", path=path, query_params=qs_params
+        )
+        metadata = HMACKeyMetadata(self)
+        metadata._properties = api_response["metadata"]
+        secret = api_response["secret"]
+        return metadata, secret
+
+    def list_hmac_keys(
+        self,
+        max_results=None,
+        service_account_email=None,
+        show_deleted_keys=None,
+        project_id=None,
+    ):
+        """List HMAC keys for a project.
+
+        :type max_results: int
+        :param max_results:
+            (Optional) max number of keys to return in a given page.
+
+        :type service_account_email: str
+        :param service_account_email:
+            (Optional) limit keys to those created by the given service account.
+
+        :type show_deleted_keys: bool
+        :param show_deleted_keys:
+            (Optional) included deleted keys in the list. Default is to
+            exclude them.
+
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
+        :rtype:
+            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
+        :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
+        """
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
+        extra_params = {}
+
+        if service_account_email is not None:
+            extra_params["serviceAccountEmail"] = service_account_email
+
+        if show_deleted_keys is not None:
+            extra_params["showDeletedKeys"] = show_deleted_keys
+
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_hmac_key_metadata,
+            max_results=max_results,
+            extra_params=extra_params,
+        )
+
+    def get_hmac_key_metadata(self, access_id, project_id=None):
+        """Return a metadata instance for the given HMAC key.
+
+        :type access_id: str
+        :param access_id: Unique ID of an existing key.
+
+        :type project_id: str
+        :param project_id: (Optional) project ID of an existing key.
+            Defaults to client's project.
+        """
+        metadata = HMACKeyMetadata(self, access_id, project_id)
+        metadata.reload()  # raises NotFound for missing key
+        return metadata
+
 
 def _item_to_bucket(iterator, item):
     """Convert a JSON bucket to the native object.
@@ -494,3 +671,20 @@ def _item_to_bucket(iterator, item):
     bucket = Bucket(iterator.client, name)
     bucket._set_properties(item)
     return bucket
+
+
+def _item_to_hmac_key_metadata(iterator, item):
+    """Convert a JSON key metadata resource to the native object.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type item: dict
+    :param item: An item to be converted to a key metadata instance.
+
+    :rtype: :class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`
+    :returns: The next key metadata instance in the page.
+    """
+    metadata = HMACKeyMetadata(iterator.client)
+    metadata._properties = item
+    return metadata

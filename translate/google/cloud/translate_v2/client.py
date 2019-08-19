@@ -17,6 +17,7 @@
 
 import six
 
+import google.api_core.client_options
 from google.cloud.client import Client as BaseClient
 
 from google.cloud.translate_v2._http import Connection
@@ -61,6 +62,9 @@ class Client(BaseClient):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options on the client.
+        API Endpoint should be set through client_options.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -72,10 +76,22 @@ class Client(BaseClient):
         credentials=None,
         _http=None,
         client_info=None,
+        client_options=None,
     ):
         self.target_language = target_language
         super(Client, self).__init__(credentials=credentials, _http=_http)
-        self._connection = Connection(self, client_info=client_info)
+
+        kw_args = {"client_info": client_info}
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
+
+        self._connection = Connection(self, **kw_args)
 
     def get_languages(self, target_language=None):
         """Get list of supported languages for translation.

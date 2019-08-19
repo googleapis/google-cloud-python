@@ -44,32 +44,53 @@ BatchSettings.__new__.__defaults__ = (
     1000,  # max_messages: 1,000
 )
 
+if sys.version_info >= (3, 5):
+    BatchSettings.__doc__ = "The settings for batch publishing the messages."
+    BatchSettings.max_bytes.__doc__ = (
+        "The maximum total size of the messages to collect before automatically "
+        "publishing the batch."
+    )
+    BatchSettings.max_latency.__doc__ = (
+        "The maximum number of seconds to wait for additional messages before "
+        "automatically publishing the batch."
+    )
+    BatchSettings.max_messages.__doc__ = (
+        "The maximum number of messages to collect before automatically "
+        "publishing the batch."
+    )
+
+
 # Define the type class and default values for flow control settings.
 #
 # This class is used when creating a publisher or subscriber client, and
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple(
-    "FlowControl",
-    [
-        "max_bytes",
-        "max_messages",
-        "resume_threshold",
-        "max_requests",
-        "max_request_batch_size",
-        "max_request_batch_latency",
-        "max_lease_duration",
-    ],
+    "FlowControl", ["max_bytes", "max_messages", "max_lease_duration"]
 )
 FlowControl.__new__.__defaults__ = (
     100 * 1024 * 1024,  # max_bytes: 100mb
     100,  # max_messages: 100
-    0.8,  # resume_threshold: 80%
-    100,  # max_requests: 100
-    100,  # max_request_batch_size: 100
-    0.01,  # max_request_batch_latency: 0.01s
     2 * 60 * 60,  # max_lease_duration: 2 hours.
 )
+
+if sys.version_info >= (3, 5):
+    FlowControl.__doc__ = (
+        "The settings for controlling the rate at which messages are pulled "
+        "with an asynchronous subscription."
+    )
+    FlowControl.max_bytes.__doc__ = (
+        "The maximum total size of received - but not yet processed - messages "
+        "before pausing the message stream."
+    )
+    FlowControl.max_messages.__doc__ = (
+        "The maximum number of received - but not yet processed - messages before "
+        "pausing the message stream."
+    )
+    FlowControl.max_lease_duration.__doc__ = (
+        "The maximum amount of time in seconds to hold a lease on a message "
+        "before dropping it from the lease management."
+    )
 
 
 _shared_modules = [

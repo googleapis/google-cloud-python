@@ -20,6 +20,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -35,6 +36,7 @@ from google.cloud.automl_v1beta1.gapic import prediction_service_client_config
 from google.cloud.automl_v1beta1.gapic.transports import (
     prediction_service_grpc_transport,
 )
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import data_items_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
@@ -108,6 +110,7 @@ class PredictionServiceClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -138,6 +141,9 @@ class PredictionServiceClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -156,6 +162,15 @@ class PredictionServiceClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -164,6 +179,7 @@ class PredictionServiceClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=prediction_service_grpc_transport.PredictionServiceGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -174,7 +190,7 @@ class PredictionServiceClient(object):
                 self.transport = transport
         else:
             self.transport = prediction_service_grpc_transport.PredictionServiceGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -218,13 +234,17 @@ class PredictionServiceClient(object):
            image\_bytes up to 30MB.
         -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
            image\_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 10,000 characters,
+        -  Text Classification - TextSnippet, content up to 60,000 characters,
            UTF-8 encoded.
         -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
-           NFC encoded. \* Translation - TextSnippet, content up to 25,000
-           characters, UTF-8 encoded.
+           NFC encoded.
+        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
+           encoded.
         -  Tables - Row, with column values matching the columns of the model,
-           up to 5MB.
+           up to 5MB. Not available for FORECASTING
+
+        ``prediction_type``.
+
         -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
            encoded.
 
@@ -242,8 +262,7 @@ class PredictionServiceClient(object):
 
         Args:
             name (str): Name of the model requested to serve the prediction.
-            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required.
-                Payload to perform a prediction on. The payload must match the
+            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required. Payload to perform a prediction on. The payload must match the
                 problem type that the model was trained to solve.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -263,9 +282,17 @@ class PredictionServiceClient(object):
                    default is 0.5. ``max_bounding_box_count`` - (int64) No more than
                    this number of bounding boxes will be returned in the response.
                    Default is 100, the requested value may be limited by server.
+
+                -  For Tables: ``feature_importance`` - (boolean) Whether
+
+                [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]
+                should be populated in the returned
+
+                [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
+                The default is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -331,8 +358,10 @@ class PredictionServiceClient(object):
         done, ``BatchPredictResult`` is returned in the ``response`` field.
         Available for following ML problems:
 
+        -  Image Classification
+        -  Image Object Detection
         -  Video Classification
-        -  Text Extraction
+        -  Video Object Tracking \* Text Extraction
         -  Tables
 
         Example:
@@ -373,6 +402,27 @@ class PredictionServiceClient(object):
             params (dict[str -> str]): Additional domain-specific parameters for the predictions, any string
                 must be up to 25000 characters long.
 
+                -  For Text Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for a text snippet, it will only produce results
+                   that have at least this confidence score. The default is 0.5.
+
+                -  For Image Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for an image, it will only produce results that
+                   have at least this confidence score. The default is 0.5.
+
+                -  For Image Object Detection:
+
+                   ``score_threshold`` - (float) When Model detects objects on the
+                   image, it will only produce bounding boxes which have at least this
+                   confidence score. Value in 0 to 1 range, default is 0.5.
+                   ``max_bounding_box_count`` - (int64) No more than this number of
+                   bounding boxes will be produced per image. Default is 100, the
+                   requested value may be limited by server.
+
                 -  For Video Classification : ``score_threshold`` - (float) A value from
                    0.0 to 1.0. When the model makes predictions for a video, it will
                    only produce results that have at least this confidence score. The
@@ -397,9 +447,19 @@ class PredictionServiceClient(object):
                    classification type, the quality of it depends on training data, but
                    there are no metrics provided to describe that quality. The default
                    is "false".
+
+                -  For Video Object Tracking: ``score_threshold`` - (float) When Model
+                   detects objects on video frames, it will only produce bounding boxes
+                   which have at least this confidence score. Value in 0 to 1 range,
+                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
+                   this number of bounding boxes will be returned per frame. Default is
+                   100, the requested value may be limited by server.
+                   ``min_bounding_box_size`` - (float) Only bounding boxes with shortest
+                   edge at least that long as a relative value of video frame size will
+                   be returned. Value in 0 to 1 range. Default is 0.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

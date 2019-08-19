@@ -20,6 +20,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -86,6 +87,7 @@ class BigQueryStorageClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -116,6 +118,9 @@ class BigQueryStorageClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -134,6 +139,15 @@ class BigQueryStorageClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -142,6 +156,7 @@ class BigQueryStorageClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=big_query_storage_grpc_transport.BigQueryStorageGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -152,7 +167,7 @@ class BigQueryStorageClient(object):
                 self.transport = transport
         else:
             self.transport = big_query_storage_grpc_transport.BigQueryStorageGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -186,6 +201,7 @@ class BigQueryStorageClient(object):
         requested_streams=None,
         read_options=None,
         format_=None,
+        sharding_strategy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -241,9 +257,11 @@ class BigQueryStorageClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`
             format_ (~google.cloud.bigquery_storage_v1beta1.types.DataFormat): Data output format. Currently default to Avro.
+            sharding_strategy (~google.cloud.bigquery_storage_v1beta1.types.ShardingStrategy): The strategy to use for distributing data among multiple streams. Currently
+                defaults to liquid sharding.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -278,6 +296,7 @@ class BigQueryStorageClient(object):
             requested_streams=requested_streams,
             read_options=read_options,
             format=format_,
+            sharding_strategy=sharding_strategy,
         )
         if metadata is None:
             metadata = []
@@ -337,8 +356,8 @@ class BigQueryStorageClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.StreamPosition`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -420,8 +439,8 @@ class BigQueryStorageClient(object):
                 Number of added streams may be less than this, see CreateReadSessionRequest
                 for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -512,8 +531,8 @@ class BigQueryStorageClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -559,6 +578,7 @@ class BigQueryStorageClient(object):
     def split_read_stream(
         self,
         original_stream,
+        fraction=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -593,9 +613,16 @@ class BigQueryStorageClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
+            fraction (float): A value in the range (0.0, 1.0) that specifies the fractional point at
+                which the original stream should be split. The actual split point is
+                evaluated on pre-filtered rows, so if a filter is provided, then there is
+                no guarantee that the division of the rows between the new child streams
+                will be proportional to this fractional value. Additionally, because the
+                server-side unit for assigning data is collections of rows, this fraction
+                will always map to to a data storage boundary on the server side.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -623,7 +650,9 @@ class BigQueryStorageClient(object):
                 client_info=self._client_info,
             )
 
-        request = storage_pb2.SplitReadStreamRequest(original_stream=original_stream)
+        request = storage_pb2.SplitReadStreamRequest(
+            original_stream=original_stream, fraction=fraction
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)

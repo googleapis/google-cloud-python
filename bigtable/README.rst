@@ -1,7 +1,7 @@
 Python Client for Google Cloud Bigtable
 =======================================
 
-|beta| |pypi| |versions|
+|beta| |pypi| |versions| 
 
 `Google Cloud Bigtable`_ is Google's NoSQL Big Data database service. It's the
 same database that powers many core Google services, including Search,
@@ -17,7 +17,7 @@ Analytics, Maps, and Gmail.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigtable/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/bigtable/latest
 .. _Product Documentation:  https://cloud.google.com/bigtable/docs
 
 Quick Start
@@ -33,7 +33,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Bigtable API.:  https://cloud.google.com/bigtable
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

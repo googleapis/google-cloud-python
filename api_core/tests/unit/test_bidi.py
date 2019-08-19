@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import logging
 import threading
 
@@ -114,6 +115,87 @@ class Test_RequestQueueGenerator(object):
         items = list(generator)
 
         assert items == []
+
+
+class Test_Throttle(object):
+    def test_repr(self):
+        delta = datetime.timedelta(seconds=4.5)
+        instance = bidi._Throttle(access_limit=42, time_window=delta)
+        assert repr(instance) == \
+            "_Throttle(access_limit=42, time_window={})".format(repr(delta))
+
+    def test_raises_error_on_invalid_init_arguments(self):
+        with pytest.raises(ValueError) as exc_info:
+            bidi._Throttle(
+                access_limit=10, time_window=datetime.timedelta(seconds=0.0)
+            )
+        assert "time_window" in str(exc_info.value)
+        assert "must be a positive timedelta" in str(exc_info.value)
+
+        with pytest.raises(ValueError) as exc_info:
+            bidi._Throttle(
+                access_limit=0, time_window=datetime.timedelta(seconds=10)
+            )
+        assert "access_limit" in str(exc_info.value)
+        assert "must be positive" in str(exc_info.value)
+
+    def test_does_not_delay_entry_attempts_under_threshold(self):
+        throttle = bidi._Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
+        entries = []
+
+        for _ in range(3):
+            with throttle as time_waited:
+                entry_info = {
+                    "entered_at": datetime.datetime.now(),
+                    "reported_wait": time_waited,
+                }
+                entries.append(entry_info)
+
+        # check the reported wait times ...
+        assert all(entry["reported_wait"] == 0.0 for entry in entries)
+
+        # .. and the actual wait times
+        delta = entries[1]["entered_at"] - entries[0]["entered_at"]
+        assert delta.total_seconds() < 0.1
+        delta = entries[2]["entered_at"] - entries[1]["entered_at"]
+        assert delta.total_seconds() < 0.1
+
+    def test_delays_entry_attempts_above_threshold(self):
+        throttle = bidi._Throttle(
+            access_limit=3, time_window=datetime.timedelta(seconds=1)
+        )
+        entries = []
+
+        for _ in range(6):
+            with throttle as time_waited:
+                entry_info = {
+                    "entered_at": datetime.datetime.now(),
+                    "reported_wait": time_waited,
+                }
+                entries.append(entry_info)
+
+        # For each group of 4 consecutive entries the time difference between
+        # the first and the last entry must have been greater than time_window,
+        # because a maximum of 3 are allowed in each time_window.
+        for i, entry in enumerate(entries[3:], start=3):
+            first_entry = entries[i - 3]
+            delta = entry["entered_at"] - first_entry["entered_at"]
+            assert delta.total_seconds() > 1.0
+
+        # check the reported wait times
+        # (NOTE: not using assert all(...), b/c the coverage check would complain)
+        for i, entry in enumerate(entries):
+            if i != 3:
+                assert entry["reported_wait"] == 0.0
+
+        # The delayed entry is expected to have been delayed for a significant
+        # chunk of the full second, and the actual and reported delay times
+        # should reflect that.
+        assert entries[3]["reported_wait"] > 0.7
+        delta = entries[3]["entered_at"] - entries[2]["entered_at"]
+        assert delta.total_seconds() > 0.7
 
 
 class _CallAndFuture(grpc.Call, grpc.Future):
@@ -288,16 +370,65 @@ class CallStub(object):
 
 
 class TestResumableBidiRpc(object):
-    def test_initial_state(self):
-        callback = mock.Mock()
-        callback.return_value = True
-        bidi_rpc = bidi.ResumableBidiRpc(None, callback)
+    def test_ctor_defaults(self):
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock()
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
 
         assert bidi_rpc.is_active is False
+        assert bidi_rpc._finalized is False
+        assert bidi_rpc._start_rpc is start_rpc
+        assert bidi_rpc._should_recover is should_recover
+        assert bidi_rpc._should_terminate is bidi._never_terminate
+        assert bidi_rpc._initial_request is None
+        assert bidi_rpc._rpc_metadata is None
+        assert bidi_rpc._reopen_throttle is None
+
+    def test_ctor_explicit(self):
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock()
+        should_terminate = mock.Mock()
+        initial_request = mock.Mock()
+        metadata = {"x-foo": "bar"}
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc,
+            should_recover,
+            should_terminate=should_terminate,
+            initial_request=initial_request,
+            metadata=metadata,
+            throttle_reopen=True,
+        )
+
+        assert bidi_rpc.is_active is False
+        assert bidi_rpc._finalized is False
+        assert bidi_rpc._should_recover is should_recover
+        assert bidi_rpc._should_terminate is should_terminate
+        assert bidi_rpc._initial_request is initial_request
+        assert bidi_rpc._rpc_metadata == metadata
+        assert isinstance(bidi_rpc._reopen_throttle, bidi._Throttle)
+
+    def test_done_callbacks_terminate(self):
+        cancellation = mock.Mock()
+        start_rpc = mock.Mock()
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        should_terminate = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, should_terminate=should_terminate
+        )
+        callback = mock.Mock(spec=["__call__"])
+
+        bidi_rpc.add_done_callback(callback)
+        bidi_rpc._on_call_done(cancellation)
+
+        should_terminate.assert_called_once_with(cancellation)
+        should_recover.assert_not_called()
+        callback.assert_called_once_with(cancellation)
+        assert not bidi_rpc.is_active
 
     def test_done_callbacks_recoverable(self):
         start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, lambda _: True)
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
         callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
@@ -305,16 +436,45 @@ class TestResumableBidiRpc(object):
 
         callback.assert_not_called()
         start_rpc.assert_called_once()
+        should_recover.assert_called_once_with(mock.sentinel.future)
         assert bidi_rpc.is_active
 
     def test_done_callbacks_non_recoverable(self):
-        bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)
+        start_rpc = mock.create_autospec(grpc.StreamStreamMultiCallable, instance=True)
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
         callback = mock.Mock(spec=["__call__"])
 
         bidi_rpc.add_done_callback(callback)
         bidi_rpc._on_call_done(mock.sentinel.future)
 
         callback.assert_called_once_with(mock.sentinel.future)
+        should_recover.assert_called_once_with(mock.sentinel.future)
+        assert not bidi_rpc.is_active
+
+    def test_send_terminate(self):
+        cancellation = ValueError()
+        call_1 = CallStub([cancellation], active=False)
+        call_2 = CallStub([])
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True, side_effect=[call_1, call_2]
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
+        should_terminate = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover, should_terminate=should_terminate)
+
+        bidi_rpc.open()
+
+        bidi_rpc.send(mock.sentinel.request)
+
+        assert bidi_rpc.pending_requests == 1
+        assert bidi_rpc._request_queue.get() is None
+
+        should_recover.assert_not_called()
+        should_terminate.assert_called_once_with(cancellation)
+        assert bidi_rpc.call == call_1
+        assert bidi_rpc.is_active is False
+        assert call_1.cancelled is True
 
     def test_send_recover(self):
         error = ValueError()
@@ -358,6 +518,26 @@ class TestResumableBidiRpc(object):
         assert call.cancelled is True
         assert bidi_rpc.pending_requests == 1
         assert bidi_rpc._request_queue.get() is None
+
+    def test_recv_terminate(self):
+        cancellation = ValueError()
+        call = CallStub([cancellation])
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
+        should_terminate = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover, should_terminate=should_terminate)
+
+        bidi_rpc.open()
+
+        bidi_rpc.recv()
+
+        should_recover.assert_not_called()
+        should_terminate.assert_called_once_with(cancellation)
+        assert bidi_rpc.call == call
+        assert bidi_rpc.is_active is False
+        assert call.cancelled is True
 
     def test_recv_recover(self):
         error = ValueError()
@@ -441,6 +621,22 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.call is None
         assert bidi_rpc.is_active is False
         callback.assert_called_once_with(error2)
+
+    def test_using_throttle_on_reopen_requests(self):
+        call = CallStub([])
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=True)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, throttle_reopen=True
+        )
+
+        patcher = mock.patch.object(bidi_rpc._reopen_throttle.__class__, "__enter__")
+        with patcher as mock_enter:
+            bidi_rpc._reopen()
+
+        mock_enter.assert_called_once()
 
     def test_send_not_open(self):
         bidi_rpc = bidi.ResumableBidiRpc(None, lambda _: False)

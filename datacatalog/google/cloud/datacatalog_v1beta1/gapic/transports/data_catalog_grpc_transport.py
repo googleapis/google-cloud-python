@@ -58,7 +58,14 @@ class DataCatalogGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -69,7 +76,9 @@ class DataCatalogGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="datacatalog.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="datacatalog.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -79,12 +88,14 @@ class DataCatalogGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -108,8 +119,14 @@ class DataCatalogGrpcTransport(object):
         return the complete resource, only the resource identifier and high
         level fields. Clients can subsequentally call Get methods.
 
+        Note that searches do not have full recall. There may be results that
+        match your query but are not returned, even in subsequent pages of
+        results. These missing results may vary across repeated calls to search.
+        Do not rely on this method if you need to guarantee full recall.
+
         See `Data Catalog Search
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
+        for more information.
 
         Returns:
             Callable: A callable which accepts the appropriate

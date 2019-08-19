@@ -4,6 +4,54 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.39.0
+
+08-12-2019 13:57 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8976](https://github.com/googleapis/google-cloud-python/pull/8976))
+
+### New Features
+- Add 'parent' argument to annotation requests; add 'ProductSearchClient.purge_products' method; add 'object_annotations' field to product search results (via synth). ([#8988](https://github.com/googleapis/google-cloud-python/pull/8988))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 0.38.1
+
+07-24-2019 17:54 PDT
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+## 0.38.0
+
+07-09-2019 10:05 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8411](https://github.com/googleapis/google-cloud-python/pull/8411))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8529](https://github.com/googleapis/google-cloud-python/pull/8529))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8602](https://github.com/googleapis/google-cloud-python/pull/8602))
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- All of the negative vision vpc sc tests should use the same file. ([#8439](https://github.com/googleapis/google-cloud-python/pull/8439))
+- In order to make sure access to the bucket is blocked by vpc sc, try to download any arbitrary file from the bucket. ([#8374](https://github.com/googleapis/google-cloud-python/pull/8374))
+- Add disclaimer to auto-generated template files (via synth). ([#8335](https://github.com/googleapis/google-cloud-python/pull/8335))
+- Add Vision API system tests to verify accessing a gcs bucket outside of a secure perimeter is blocked. ([#8276](https://github.com/googleapis/google-cloud-python/pull/8276))
+- Add Vision API Product Search tests to verify ProductSearch is blocked by VPC SC when trying to access a resource outside of a secure perimeter when run from within a secure perimeter. ([#8269](https://github.com/googleapis/google-cloud-python/pull/8269))
+- Add AsyncBatchAnnotateFiles system test ([#8260](https://github.com/googleapis/google-cloud-python/pull/8260))
+- Add ImportProductSets system test ([#8259](https://github.com/googleapis/google-cloud-python/pull/8259))
+- Suppress checking 'cov-fail-under' in nox default session (via synth). ([#8257](https://github.com/googleapis/google-cloud-python/pull/8257))
+- Declare encoding as utf-8 in pb2 files (via synth).  ([#8371](https://github.com/googleapis/google-cloud-python/pull/8371))
+
 ## 0.37.0
 
 05-30-2019 15:19 PDT

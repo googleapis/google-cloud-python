@@ -2,6 +2,9 @@
 import grpc
 
 from google.cloud.automl_v1beta1.proto import (
+    annotation_spec_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__spec__pb2,
+)
+from google.cloud.automl_v1beta1.proto import (
     column_spec_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_column__spec__pb2,
 )
 from google.cloud.automl_v1beta1.proto import (
@@ -85,7 +88,7 @@ class AutoMlStub(object):
         self.GetAnnotationSpec = channel.unary_unary(
             "/google.cloud.automl.v1beta1.AutoMl/GetAnnotationSpec",
             request_serializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_service__pb2.GetAnnotationSpecRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_dataset__pb2.AnnotationSpec.FromString,
+            response_deserializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__spec__pb2.AnnotationSpec.FromString,
         )
         self.GetTableSpec = channel.unary_unary(
             "/google.cloud.automl.v1beta1.AutoMl/GetTableSpec",
@@ -226,7 +229,8 @@ class AutoMlServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ImportData(self, request, context):
-        """Imports data into a dataset. For Tables this method can only be called on an empty Dataset.
+        """Imports data into a dataset.
+    For Tables this method can only be called on an empty Dataset.
 
     For Tables:
     *   A
@@ -338,11 +342,10 @@ class AutoMlServicer(object):
     same parameters has no effect. Deploying with different parametrs
     (as e.g. changing
 
-    [node_number][google.cloud.automl.v1beta1.ImageObjectDetectionModelDeploymentMetadata.node_number]
-    ) will update the deployment without pausing the model's availability.
+    [node_number][google.cloud.automl.v1beta1.ImageObjectDetectionModelDeploymentMetadata.node_number])
+    will reset the deployment state without pausing the model's availability.
 
-    Only applicable for Text Classification, Image Object Detection and Tables;
-    all other domains manage deployment automatically.
+    Only applicable for Text Classification, Image Object Detection and Tables; all other domains manage deployment automatically.
 
     Returns an empty response in the
     [response][google.longrunning.Operation.response] field when it completes.
@@ -453,7 +456,7 @@ def add_AutoMlServicer_to_server(servicer, server):
         "GetAnnotationSpec": grpc.unary_unary_rpc_method_handler(
             servicer.GetAnnotationSpec,
             request_deserializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_service__pb2.GetAnnotationSpecRequest.FromString,
-            response_serializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_dataset__pb2.AnnotationSpec.SerializeToString,
+            response_serializer=google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_annotation__spec__pb2.AnnotationSpec.SerializeToString,
         ),
         "GetTableSpec": grpc.unary_unary_rpc_method_handler(
             servicer.GetTableSpec,

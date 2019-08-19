@@ -344,6 +344,12 @@ class Test_Blob(unittest.TestCase):
             blob.public_url, "https://storage.googleapis.com/name/parent/child"
         )
 
+    def test_public_url_w_tilde_in_name(self):
+        BLOB_NAME = "foo~bar"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
+
     def test_public_url_with_non_ascii(self):
         blob_name = u"winter \N{snowman}"
         bucket = _Bucket()
@@ -426,7 +432,7 @@ class Test_Blob(unittest.TestCase):
             expected_creds = credentials
 
         encoded_name = blob_name.encode("utf-8")
-        expected_resource = "/name/{}".format(parse.quote(encoded_name))
+        expected_resource = "/name/{}".format(parse.quote(encoded_name, safe=b"/~"))
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": expiration,
@@ -464,6 +470,10 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_v2_w_slash_in_name(self):
         BLOB_NAME = "parent/child"
+        self._generate_signed_url_v2_helper(blob_name=BLOB_NAME)
+
+    def test_generate_signed_url_v2_w_tilde_in_name(self):
+        BLOB_NAME = "foo~bar"
         self._generate_signed_url_v2_helper(blob_name=BLOB_NAME)
 
     def test_generate_signed_url_v2_w_endpoint(self):
@@ -512,6 +522,10 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_v4_w_slash_in_name(self):
         BLOB_NAME = "parent/child"
+        self._generate_signed_url_v4_helper(blob_name=BLOB_NAME)
+
+    def test_generate_signed_url_v4_w_tilde_in_name(self):
+        BLOB_NAME = "foo~bar"
         self._generate_signed_url_v4_helper(blob_name=BLOB_NAME)
 
     def test_generate_signed_url_v4_w_endpoint(self):
@@ -3119,10 +3133,10 @@ class Test_Blob(unittest.TestCase):
 
 class Test__quote(unittest.TestCase):
     @staticmethod
-    def _call_fut(value):
+    def _call_fut(*args, **kw):
         from google.cloud.storage.blob import _quote
 
-        return _quote(value)
+        return _quote(*args, **kw)
 
     def test_bytes(self):
         quoted = self._call_fut(b"\xDE\xAD\xBE\xEF")
@@ -3136,6 +3150,21 @@ class Test__quote(unittest.TestCase):
     def test_bad_type(self):
         with self.assertRaises(TypeError):
             self._call_fut(None)
+
+    def test_w_slash_default(self):
+        with_slash = "foo/bar/baz"
+        quoted = self._call_fut(with_slash)
+        self.assertEqual(quoted, "foo%2Fbar%2Fbaz")
+
+    def test_w_slash_w_safe(self):
+        with_slash = "foo/bar/baz"
+        quoted_safe = self._call_fut(with_slash, safe=b"/")
+        self.assertEqual(quoted_safe, with_slash)
+
+    def test_w_tilde(self):
+        with_tilde = "bam~qux"
+        quoted = self._call_fut(with_tilde, safe=b"~")
+        self.assertEqual(quoted, with_tilde)
 
 
 class Test__maybe_rewind(unittest.TestCase):

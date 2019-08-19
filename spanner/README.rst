@@ -1,7 +1,7 @@
 Python Client for Cloud Spanner
 ===============================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| 
 
 `Cloud Spanner`_ is the world's first fully managed relational database service
 to offer both strong consistency and horizontal scalability for
@@ -22,7 +22,7 @@ workloads.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
    :target: https://pypi.org/project/google-cloud-spanner/
 .. _Cloud Spanner: https://cloud.google.com/spanner/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/spanner/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/spanner/latest
 .. _Product Documentation:  https://cloud.google.com/spanner/docs
 
 Quick Start
@@ -38,7 +38,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Spanner API.:  https://cloud.google.com/spanner
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -155,8 +155,30 @@ Once you have a transaction object (such as the first argument sent to
         print(row)
 
 
-Insert records using a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Insert records using Data Manipulation Language (DML) with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the ``execute_update()`` method to execute a DML statement:
+
+.. code:: python
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def insert_singers(transaction):
+        row_ct = transaction.execute_update(
+            "INSERT Singers (SingerId, FirstName, LastName) "
+            " VALUES (10, 'Virginia', 'Watson')"
+        )
+
+        print("{} record(s) inserted.".format(row_ct))
+
+    database.run_in_transaction(insert_singers)
+
+
+Insert records using Mutations with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add one or more records to a table, use ``insert``:
 
@@ -172,8 +194,29 @@ To add one or more records to a table, use ``insert``:
     )
 
 
-Update records using a Transaction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Update records using Data Manipulation Language (DML) with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def update_albums(transaction):
+        row_ct = transaction.execute_update(
+            "UPDATE Albums "
+            "SET MarketingBudget = MarketingBudget * 2 "
+            "WHERE SingerId = 1 and AlbumId = 1"
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(update_albums)
+
+
+Update records using Mutations with a Transaction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``Transaction.update`` updates one or more existing records in a table.  Fails
 if any of the records does not already exist.

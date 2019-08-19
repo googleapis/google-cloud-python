@@ -22,6 +22,7 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import automl_v1beta1
+from google.cloud.automl_v1beta1.proto import annotation_spec_pb2
 from google.cloud.automl_v1beta1.proto import column_spec_pb2
 from google.cloud.automl_v1beta1.proto import dataset_pb2
 from google.cloud.automl_v1beta1.proto import io_pb2
@@ -931,7 +932,7 @@ class TestAutoMlClient(object):
             "display_name": display_name,
             "example_count": example_count,
         }
-        expected_response = dataset_pb2.AnnotationSpec(**expected_response)
+        expected_response = annotation_spec_pb2.AnnotationSpec(**expected_response)
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
@@ -974,12 +975,14 @@ class TestAutoMlClient(object):
         name_2 = "name2-1052831874"
         time_column_spec_id = "timeColumnSpecId1558734824"
         row_count = 1340416618
+        valid_row_count = 406068761
         column_count = 122671386
         etag = "etag3123477"
         expected_response = {
             "name": name_2,
             "time_column_spec_id": time_column_spec_id,
             "row_count": row_count,
+            "valid_row_count": valid_row_count,
             "column_count": column_count,
             "etag": etag,
         }
@@ -1072,12 +1075,14 @@ class TestAutoMlClient(object):
         name = "name3373707"
         time_column_spec_id = "timeColumnSpecId1558734824"
         row_count = 1340416618
+        valid_row_count = 406068761
         column_count = 122671386
         etag = "etag3123477"
         expected_response = {
             "name": name,
             "time_column_spec_id": time_column_spec_id,
             "row_count": row_count,
+            "valid_row_count": valid_row_count,
             "column_count": column_count,
             "etag": etag,
         }

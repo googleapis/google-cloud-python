@@ -18,7 +18,7 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-
+common = gcp.CommonTemplates()
 version = "v1beta1"
 
 library = gapic.py_library(
@@ -75,17 +75,6 @@ s.replace(
     "big_query_storage_client.BigQueryStorageClient",
 )
 
-# The grpc transport channel shouldn't limit the size of a grpc message at the
-# default 4mb.
-s.replace("google/cloud/bigquery_storage_v1beta1/gapic/transports/*_grpc_transport.py",
-    "return google.api_core.grpc_helpers.create_channel\(\n(\s+)address,\n"
-    "\s+credentials=.*,\n\s+scopes=.*,\n",
-    "\g<0>\g<1>options={\n"
-    "\g<1>    'grpc.max_send_message_length': -1,\n"
-    "\g<1>    'grpc.max_receive_message_length': -1,\n"
-    "\g<1>}.items(),\n",
-)
-
 # START: Ignore lint and coverage
 s.replace(
     ["google/cloud/bigquery_storage_v1beta1/gapic/big_query_storage_client.py"],
@@ -129,5 +118,18 @@ s.replace(
     "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",
 )
 # END: Ignore lint and coverage
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+extra_deps = [".[fastavro,pandas,pyarrow]"]
+templated_files = common.py_library(
+    unit_cov_level=79,
+    cov_level=79,
+    samples_test=True,
+    system_test_dependencies=extra_deps,
+    unit_test_dependencies=extra_deps,
+)
+s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

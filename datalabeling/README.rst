@@ -1,15 +1,17 @@
 Python Client for Data Labeling API (`Beta`_)
 ==============================================
 
+
+
 `Data Labeling API`_: Public API for Google Cloud AI Data Labeling Service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
-.. _Data Labeling API: https://cloud.google.com/datalabeling
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/datalabeling/usage.html
-.. _Product Documentation:  https://cloud.google.com/datalabeling
+.. _Data Labeling API: https://cloud.google.com/data-labeling
+.. _Client Library Documentation: https://googleapis.dev/python/datalabeling/latest
+.. _Product Documentation:  https://cloud.google.com/data-labeling/docs/
 
 Quick Start
 -----------
@@ -23,8 +25,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Data Labeling API.:  https://cloud.google.com/datalabeling
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable the Data Labeling API.:  https://cloud.google.com/data-labeling
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -83,5 +85,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Data Labeling API Product documentation:  https://cloud.google.com/datalabeling
+.. _Data Labeling API Product documentation:  https://cloud.google.com/data-labeling/docs
 .. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst

@@ -1,7 +1,7 @@
 Python Client for Google Cloud Dataproc API
 ===========================================
 
-|alpha| |pypi| |versions|
+|alpha| |pypi| |versions| 
 
 `Google Cloud Dataproc API`_: Manages Hadoop-based clusters and jobs on Google Cloud Platform.
 
@@ -15,7 +15,7 @@ Python Client for Google Cloud Dataproc API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc.svg
    :target: https://pypi.org/project/google-cloud-dataproc/
 .. _Google Cloud Dataproc API: https://cloud.google.com/dataproc
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/dataproc/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/dataproc/latest
 .. _Product Documentation:  https://cloud.google.com/dataproc
 
 Quick Start
@@ -31,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Dataproc API.:  https://cloud.google.com/dataproc
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

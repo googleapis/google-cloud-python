@@ -70,7 +70,7 @@ class Message(object):
             published.
     """
 
-    def __init__(self, message, ack_id, request_queue, autolease=True):
+    def __init__(self, message, ack_id, request_queue):
         """Construct the Message.
 
         .. note::
@@ -85,9 +85,6 @@ class Message(object):
             request_queue (queue.Queue): A queue provided by the policy that
                 can accept requests; the policy is responsible for handling
                 those requests.
-            autolease (bool): An optional flag determining whether a new Message
-                instance should automatically lease itself upon creation.
-                Defaults to :data:`True`.
         """
         self._message = message
         self._ack_id = ack_id
@@ -98,11 +95,6 @@ class Message(object):
         # was received. Tracking this provides us a way to be smart about
         # the default lease deadline.
         self._received_timestamp = time.time()
-
-        # The policy should lease this message, telling PubSub that it has
-        # it until it is acked or otherwise dropped.
-        if autolease:
-            self.lease()
 
     def __repr__(self):
         # Get an abbreviated version of the data.
@@ -206,19 +198,6 @@ class Message(object):
         """
         self._request_queue.put(
             requests.DropRequest(ack_id=self._ack_id, byte_size=self.size)
-        )
-
-    def lease(self):
-        """Inform the policy to lease this message continually.
-
-        .. note::
-            By default this method is called by the constructor, and you should
-            never need to call it manually, unless the
-            :class:`~.pubsub_v1.subscriber.message.Message` instance was
-            created with ``autolease=False``.
-        """
-        self._request_queue.put(
-            requests.LeaseRequest(ack_id=self._ack_id, byte_size=self.size)
         )
 
     def modify_ack_deadline(self, seconds):

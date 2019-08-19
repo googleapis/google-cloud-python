@@ -59,7 +59,14 @@ class PredictionServiceGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -79,7 +86,9 @@ class PredictionServiceGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="automl.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="automl.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -89,12 +98,14 @@ class PredictionServiceGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -118,13 +129,17 @@ class PredictionServiceGrpcTransport(object):
            image\_bytes up to 30MB.
         -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
            image\_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 10,000 characters,
+        -  Text Classification - TextSnippet, content up to 60,000 characters,
            UTF-8 encoded.
         -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
-           NFC encoded. \* Translation - TextSnippet, content up to 25,000
-           characters, UTF-8 encoded.
+           NFC encoded.
+        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
+           encoded.
         -  Tables - Row, with column values matching the columns of the model,
-           up to 5MB.
+           up to 5MB. Not available for FORECASTING
+
+        ``prediction_type``.
+
         -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
            encoded.
 
@@ -146,8 +161,10 @@ class PredictionServiceGrpcTransport(object):
         done, ``BatchPredictResult`` is returned in the ``response`` field.
         Available for following ML problems:
 
+        -  Image Classification
+        -  Image Object Detection
         -  Video Classification
-        -  Text Extraction
+        -  Video Object Tracking \* Text Extraction
         -  Tables
 
         Returns:

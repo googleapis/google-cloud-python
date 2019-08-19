@@ -62,7 +62,14 @@ class ImageAnnotatorGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -80,7 +87,9 @@ class ImageAnnotatorGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="vision.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="vision.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -90,12 +99,14 @@ class ImageAnnotatorGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -127,9 +138,10 @@ class ImageAnnotatorGrpcTransport(object):
         Service that performs image detection and annotation for a batch of files.
         Now only "application/pdf", "image/tiff" and "image/gif" are supported.
 
-        This service will extract at most the first 10 frames (gif) or pages
-        (pdf or tiff) from each file provided and perform detection and annotation
-        for each image extracted.
+        This service will extract at most 5 (customers can specify which 5 in
+        AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each
+        file provided and perform detection and annotation for each image
+        extracted.
 
         Returns:
             Callable: A callable which accepts the appropriate
