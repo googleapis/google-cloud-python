@@ -13,10 +13,12 @@
 # limitations under the License.
 
 
-def client_query_batch(client, to_delete):
+def client_query_batch(client):
 
     # [START bigquery_query_batch]
-    # from google.cloud import bigquery
+    from google.cloud import bigquery
+
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
     job_config = bigquery.QueryJobConfig()
@@ -38,6 +40,10 @@ def client_query_batch(client, to_delete):
     query_job = client.get_job(
         query_job.job_id, location=location
     )  # API request - fetches job
-    print("Job {} is currently in state {}".format(query_job.job_id, query_job.state))
+
+    if query_job.state == "PENDING":
+        print(
+            "Job {} is currently in state {}".format(query_job.job_id, query_job.state)
+        )
 
     # [END bigquery_query_batch]

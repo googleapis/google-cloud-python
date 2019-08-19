@@ -14,15 +14,25 @@ Run a query and wait for it to finish with the
    :end-before: [END bigquery_query]
 
 
-Run a dry run query
-^^^^^^^^^^^^^^^^^^^
+Run a query
+^^^^^^^^^^^
 
+Run a dry run query with the 
+:func:`~google.cloud.bigquery.client.Client.query` method:
 .. literalinclude:: ../snippets.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_dry_run]
    :end-before: [END bigquery_query_dry_run]
 
+Run a query at a batch priority with the
+:func:`~google.cloud.bigquery.client.Client.query` method:
+
+.. literalinclude:: ../samples/client_query_batch.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_query_batch]
+   :end-before: [END bigquery_query_batch]
 
 Writing query results to a destination table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

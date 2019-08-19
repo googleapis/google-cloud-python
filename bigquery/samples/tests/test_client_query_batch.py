@@ -18,5 +18,6 @@ from .. import client_query_batch
 
 def test_client_query_batch(capsys, client):
 
+    client_query_batch.client_query_batch(client)
     out, err = capsys.readouterr()
-    assert 
+    assert "is currently in state PENDING" in out
