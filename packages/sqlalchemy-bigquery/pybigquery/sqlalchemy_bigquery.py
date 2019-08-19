@@ -405,7 +405,7 @@ class BigQueryDialect(DefaultDialect):
 
     def get_pk_constraint(self, connection, table_name, schema=None, **kw):
         # BigQuery has no support for primary keys.
-        return []
+        return {'constrained_columns': []}
 
     def get_indexes(self, connection, table_name, schema=None, **kw):
         table = self._get_table(connection, table_name, schema)
