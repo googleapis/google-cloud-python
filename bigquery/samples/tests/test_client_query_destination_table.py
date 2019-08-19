@@ -16,7 +16,8 @@
 from .. import client_query_destination_table
 
 
-def test_client_query_destination_table(capsys, client):
+def test_client_query_destination_table(capsys, client, table_id):
 
+    client_query_destination_table.client_query_destination_table(client, table_id)
     out, err = capsys.readouterr()
-    assert 
+    assert "Query results loaded to the table {}".format(table_id) in out

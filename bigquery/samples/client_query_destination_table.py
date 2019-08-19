@@ -13,25 +13,21 @@
 # limitations under the License.
 
 
-def client_query_destination_table(client, to_delete):
+def client_query_destination_table(client, table_id):
 
     # [START bigquery_query_destination_table]
-    """Run a query"""
-    dataset_id = "query_destination_table_{}".format(_millis())
-    dataset_ref = client.dataset(dataset_id)
-    to_delete.append(dataset_ref)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
-    client.create_dataset(dataset)
+    from google.cloud import bigquery
 
-    # from google.cloud import bigquery
+    # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
-    # dataset_id = 'your_dataset_id'
+
+    # TODO(developer): Set table_id to the ID of the destination table.
+    # table_id = "your-project.your_dataset.your_table_name"
 
     job_config = bigquery.QueryJobConfig()
-    # Set the destination table
-    table_ref = client.dataset(dataset_id).table("your_table_id")
-    job_config.destination = table_ref
+
+    table = client.get_table(table_id)
+    job_config.destination = table
     sql = """
         SELECT corpus
         FROM `bigquery-public-data.samples.shakespeare`
@@ -48,6 +44,7 @@ def client_query_destination_table(client, to_delete):
     )  # API request - starts the query
 
     query_job.result()  # Waits for the query to finish
-    print("Query results loaded to table {}".format(table_ref.path))
+    if query_job.state == "DONE":
+        print("Query results loaded to the table {}".format(table_id))
 
     # [END bigquery_query_destination_table]

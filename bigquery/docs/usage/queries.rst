@@ -34,13 +34,15 @@ Run a query at a batch priority with the
    :start-after: [START bigquery_query_batch]
    :end-before: [END bigquery_query_batch]
 
-Writing query results to a destination table
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Write a query results
+^^^^^^^^^^^^^^^^^^^^^
 
 See BigQuery documentation for more information on
 `writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
 
-.. literalinclude:: ../snippets.py
+Write a query results to a destination table with the
+:func:`~google.cloud.bigquery.client.Client.query` method:
+.. literalinclude:: ../samples/client_query_destination_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_destination_table]
