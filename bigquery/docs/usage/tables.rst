@@ -113,6 +113,15 @@ Insert rows into a table's data with the
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
+Add a column to the existing table with the
+:func:`~google.cloud.bigquery.client.Client.query` method:
+
+.. literalinclude:: ../samples/client_query_add_column.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_add_column_query_append]
+   :end-before: [END bigquery_add_column_query_append]
+
 Copying a Table
 ^^^^^^^^^^^^^^^
 
@@ -124,6 +133,24 @@ Copy a table with the
    :dedent: 4
    :start-after: [START bigquery_copy_table]
    :end-before: [END bigquery_copy_table]
+
+Copy a table with CMEK with the
+:func:`~google.cloud.bigquery.client.Client.copy_table` method:
+
+.. literalinclude:: ../samples/copy_table_cmek.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_copy_table_cmek]
+   :end-before: [END bigquery_copy_table_cmek]
+
+Copy multiple tables with the
+:func:`~google.cloud.bigquery.client.Client.copy_table` method:
+
+.. literalinclude:: ../samples/copy_table_multiple_source.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_copy_table_multiple_source]
+   :end-before: [END bigquery_copy_table_multiple_source]
 
 Copy table data to Google Cloud Storage with the
 :func:`~google.cloud.bigquery.client.Client.extract_table` method:
