@@ -307,9 +307,9 @@ class TablesClient(object):
             (
                 "Operation '{}' is running in the background. The returned "
                 "Operation '{}' can be used to query or block on the status "
-                "of this operation. Ending your python session with _not_ "
+                "of this operation. Ending your python session will _not_ "
                 "cancel this operation. Read the documentation here:\n\n"
-                "\thttps://google-cloud-python.readthedocs.io/en/stable/core/operation.html\n\n"
+                "\thttps://googleapis.dev/python/google-api-core/latest/operation.html\n\n"
                 "for more information on the Operation class."
             ).format(message, name)
         )
