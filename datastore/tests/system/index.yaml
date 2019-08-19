@@ -1,29 +1,5 @@
 indexes:
 
-- kind: TestEntityPB
-  properties:
-  - name: string_key
-  - name: int32_key
-
-- kind: TestEntityPB
-  properties:
-  - name: string_key
-    direction: asc
-  - name: int32_key
-    direction: asc
-
-- kind: TestEntityPB
-  properties:
-  - name: string_key
-    direction: desc
-  - name: int32_key
-    direction: desc
-
-- kind: Character
-  ancestor: yes
-  properties:
-  - name: appearances
-
 - kind: Character
   ancestor: yes
   properties:
@@ -40,3 +16,22 @@ indexes:
   properties:
   - name: name
   - name: family
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+  - name: int32_key
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+    direction: asc
+  - name: int32_key
+    direction: asc
+
+- kind: TestEntityPB
+  properties:
+  - name: string_key
+    direction: desc
+  - name: int32_key
+    direction: desc
