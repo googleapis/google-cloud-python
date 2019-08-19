@@ -1126,9 +1126,9 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           sorted. Defaults is "relevance desc" if no value is specified.
           Supported options are:  -  "relevance desc": By descending
           relevance, as determined by the API    algorithms. -
-          "update\_time desc": Sort by    [Profile.update\_time][google.
+          "update\_date desc": Sort by    [Profile.update\_time][google.
           cloud.talent.v4beta1.Profile.update\_time]    in descending
-          order (recently updated profiles first). -  "create\_time
+          order (recently updated profiles first). -  "create\_date
           desc": Sort by    [Profile.create\_time][google.cloud.talent.v
           4beta1.Profile.create\_time]    in descending order (recently
           created profiles first). -  "first\_name": Sort by    [PersonN

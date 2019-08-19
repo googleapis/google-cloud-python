@@ -2115,8 +2115,43 @@ ProfileQuery = _reflection.GeneratedProtocolMessageType(
           regardless of where they're located.  If [LocationFilter.negat
           ed][google.cloud.talent.v4beta1.LocationFilter.negated] is
           specified, the result doesn't contain profiles from that
-          location.  For example, search for profiles with addresses in
-          "New York City".
+          location.  If [LocationFilter.address][google.cloud.talent.v4b
+          eta1.LocationFilter.address] is provided, the [LocationType][g
+          oogle.cloud.talent.v4beta1.Location.LocationType], center
+          point (latitude and longitude), and radius are automatically
+          detected by the Google Maps Geocoding API and included as
+          well. If [LocationFilter.address][google.cloud.talent.v4beta1.
+          LocationFilter.address] is not recognized as a location, the
+          filter falls back to keyword search.  If the detected [Locatio
+          nType][google.cloud.talent.v4beta1.Location.LocationType] is [
+          LocationType.SUB\_ADMINISTRATIVE\_AREA][google.cloud.talent.v4
+          beta1.Location.LocationType.SUB\_ADMINISTRATIVE\_AREA], [Locat
+          ionType.ADMINISTRATIVE\_AREA][google.cloud.talent.v4beta1.Loca
+          tion.LocationType.ADMINISTRATIVE\_AREA], or [LocationType.COUN
+          TRY][google.cloud.talent.v4beta1.Location.LocationType.COUNTRY
+          ], or location is recognized but a radius can not be
+          determined by the geo-coder, the filter is performed against
+          the detected location name (using exact text matching).
+          Otherwise, the filter is performed against the detected center
+          point and a radius. The largest value from among the following
+          options is automatically set as the radius value: 1. 10 miles.
+          2. Detected location radius + [LocationFilter.distance\_in\_mi
+          les][google.cloud.talent.v4beta1.LocationFilter.distance\_in\_
+          miles]. 3. If the detected [LocationType][google.cloud.talent.
+          v4beta1.Location.LocationType] is one of [LocationType.SUB\_LO
+          CALITY][google.cloud.talent.v4beta1.Location.LocationType.SUB\
+          _LOCALITY], [LocationType.SUB\_LOCALITY\_2][google.cloud.talen
+          t.v4beta1.Location.LocationType.SUB\_LOCALITY\_2], [LocationTy
+          pe.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.Location
+          Type.NEIGHBORHOOD], [LocationType.POSTAL\_CODE][google.cloud.t
+          alent.v4beta1.Location.LocationType.POSTAL\_CODE], or [Locatio
+          nType.STREET\_ADDRESS][google.cloud.talent.v4beta1.Location.Lo
+          cationType.STREET\_ADDRESS], the following two values are
+          calculated and the larger of the two is compared to #1 and #2,
+          above: - Calculated radius of the city (from the city center)
+          that contains the geo-coded location. - Distance from the city
+          center (of the city containing the geo-coded location) to the
+          detected location center + 0.5 miles.
       job_title_filters:
           Optional. Job title filter specifies job titles of profiles to
           match on.  If a job title isn't specified, profiles with any
@@ -2253,13 +2288,13 @@ LocationFilter = _reflection.GeneratedProtocolMessageType(
           related queries.
       lat_lng:
           Optional. The latitude and longitude of the geographic center
-          from which to search. This field's ignored if ``address`` is
+          to search from. This field is ignored if ``address`` is
           provided.
       distance_in_miles:
           Optional. The distance\_in\_miles is applied when the location
-          being searched for is identified as a city or smaller. When
-          the location being searched for is a state or larger, this
-          field is ignored.
+          being searched for is identified as a city or smaller. This
+          field is ignored if the location being searched for is a state
+          or larger.
       telecommute_preference:
           Optional. Allows the client to return jobs without a set
           location, specifically, telecommuting jobs (telecommuting is
@@ -2280,7 +2315,8 @@ LocationFilter = _reflection.GeneratedProtocolMessageType(
           combination of job locations, such as "Mountain View" or
           "telecommuting" jobs. However, when used in combination with
           other location filters, telecommuting jobs can be treated as
-          less relevant than other jobs in the search response.
+          less relevant than other jobs in the search response.  This
+          field is only used for job search requests.
       negated:
           Optional. Whether to apply negation to the filter so profiles
           matching the filter are excluded.  Currently only supported in
