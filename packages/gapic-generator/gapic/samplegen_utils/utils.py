@@ -28,6 +28,20 @@ MIN_SCHEMA_VERSION = (1, 2, 0)
 VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
 
 
+def coerce_response_name(s: str) -> str:
+    # In the sample config, the "$resp" keyword is used to refer to the
+    # item of interest as received by the corresponding calling form.
+    # For a 'regular', i.e. unary, synchronous, non-long-running method,
+    # it's the return value; for a server-streaming method, it's the iteration
+    # variable in the for loop that iterates over the return value, and for
+    # a long running promise, the user calls result on the method return value to
+    # resolve the future.
+    #
+    # The sample schema uses '$resp' as the special variable,
+    # but in the samples the 'response' variable is used instead.
+    return s.replace("$resp", "response")
+
+
 def is_valid_sample_cfg(
         doc,
         min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,

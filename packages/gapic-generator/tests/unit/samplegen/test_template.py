@@ -16,6 +16,7 @@
 import jinja2
 import os.path as path
 import gapic.samplegen.samplegen as samplegen
+import gapic.samplegen_utils.utils as sample_utils
 import gapic.utils as utils
 
 from gapic.samplegen_utils.types import CallingForm
@@ -45,7 +46,7 @@ def check_template(template_fragment, expected_output, **kwargs):
     )
 
     env.filters['snake_case'] = utils.to_snake_case
-    env.filters['coerce_response_name'] = samplegen.coerce_response_name
+    env.filters['coerce_response_name'] = sample_utils.coerce_response_name
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)

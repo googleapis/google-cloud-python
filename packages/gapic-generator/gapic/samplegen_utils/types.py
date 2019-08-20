@@ -76,6 +76,10 @@ class InvalidEnumVariant(SampleError):
     pass
 
 
+class InvalidSampleFpath(SampleError):
+    pass
+
+
 class CallingForm(Enum):
     Request = auto()
     RequestPaged = auto()

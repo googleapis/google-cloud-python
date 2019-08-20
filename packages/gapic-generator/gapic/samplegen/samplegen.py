@@ -20,7 +20,7 @@ import os
 import re
 import time
 
-from gapic.samplegen_utils import (types, yaml)
+from gapic.samplegen_utils import types
 from gapic.schema import (api, wrappers)
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
@@ -55,9 +55,7 @@ RESERVED_WORDS = frozenset(
     )
 )
 
-# TODO: configure the base template name so that
-#       e.g. other languages can use the same machinery.
-TEMPLATE_NAME = "sample.py.j2"
+DEFAULT_TEMPLATE_NAME = "sample.py.j2"
 
 
 @dataclasses.dataclass(frozen=True)
@@ -106,20 +104,6 @@ class TransformedRequest:
     body: Optional[List[AttributeRequestSetup]]
 
 
-def coerce_response_name(s: str) -> str:
-    # In the sample config, the "$resp" keyword is used to refer to the
-    # item of interest as received by the corresponding calling form.
-    # For a 'regular', i.e. unary, synchronous, non-long-running method,
-    # it's the return value; for a server-streaming method, it's the iteration
-    # variable in the for loop that iterates over the return value, and for
-    # a long running promise, the user calls result on the method return value to
-    # resolve the future.
-    #
-    # The sample schema uses '$resp' as the special variable,
-    # but in the samples the 'response' variable is used instead.
-    return s.replace("$resp", "response")
-
-
 class Validator:
     """Class that validates a sample.
 
@@ -159,6 +143,17 @@ class Validator:
                 "$resp": MockField(response_type, False)
             }
         )
+
+    @staticmethod
+    def preprocess_sample(sample, api_schema):
+        """Modify a sample to set default or missing fields.
+
+        Args:
+           sample (Any): A definition for a single sample generated from parsed yaml.
+           api_schema (api.API): The schema that defines the API to which the sample belongs.
+        """
+        sample["package_name"] = api_schema.naming.warehouse_package_name
+        sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
@@ -661,7 +656,8 @@ class Validator:
 
 def generate_sample(sample,
                     env: jinja2.environment.Environment,
-                    api_schema: api.API) -> str:
+                    api_schema: api.API,
+                    template_name: str = DEFAULT_TEMPLATE_NAME) -> str:
     """Generate a standalone, runnable sample.
 
     Rendering and writing the rendered output is left for the caller.
@@ -671,11 +667,13 @@ def generate_sample(sample,
         env (jinja2.environment.Environment): The jinja environment used to generate
                                               the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
+        template_name (str): An optional override for the name of the template
+                             used to generate the sample.
 
     Returns:
         str: The rendered sample.
     """
-    sample_template = env.get_template(TEMPLATE_NAME)
+    sample_template = env.get_template(template_name)
 
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
@@ -693,11 +691,12 @@ def generate_sample(sample,
     calling_form = types.CallingForm.method_default(rpc)
 
     v = Validator(rpc)
+    # Tweak some small aspects of the sample to set sane defaults for optional
+    # fields, add fields that are required for the template, and so forth.
+    v.preprocess_sample(sample, api_schema)
     sample["request"] = v.validate_and_transform_request(calling_form,
                                                          sample["request"])
     v.validate_response(sample["response"])
-
-    sample["package_name"] = api_schema.naming.warehouse_package_name
 
     return sample_template.render(
         file_header=FILE_HEADER,
@@ -706,86 +705,3 @@ def generate_sample(sample,
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
     )
-
-
-def generate_manifest(
-        fpaths_and_samples,
-        base_path: str,
-        api_schema,
-        *,
-        manifest_time: int = None
-) -> Tuple[str, yaml.Doc]:
-    """Generate a samplegen manifest for use by sampletest
-
-    Args:
-        fpaths_and_samples (Iterable[Tuple[str, Mapping[str, Any]]]):
-                         The file paths and samples to be listed in the manifest
-        base_path (str): The base directory where the samples are generated.
-        api_schema (~.api.API): An API schema object.
-        manifest_time (int): Optional. An override for the timestamp in the name of the manifest filename.
-                             Primarily used for testing.
-
-    Returns:
-        Tuple[str, yaml.Doc]: The filename of the manifest and the manifest data as a dictionary.
-
-    """
-
-    doc = yaml.Doc(
-        [
-            yaml.KeyVal("type", "manifest/samples"),
-            yaml.KeyVal("schema_version", "3"),
-            # TODO: make the environment configurable to allow other languages
-            #       to use the same basic machinery.
-            yaml.Map(
-                name="python",
-                anchor_name="python",
-                elements=[
-                    yaml.KeyVal("environment", "python"),
-                    yaml.KeyVal("bin", "python3"),
-                    yaml.KeyVal("base_path", base_path),
-                    yaml.KeyVal("invocation", "'{bin} {path} @args'"),
-                ],
-            ),
-            yaml.Collection(
-                name="samples",
-                elements=[
-                    [   # type: ignore
-                        # Mypy doesn't correctly intuit the type of the
-                        # "region_tag" conditional expression.
-                        yaml.Alias("python"),
-                        yaml.KeyVal("sample", sample["id"]),
-                        yaml.KeyVal("path",
-                                    "'{base_path}/%s'" % os.path.relpath(fpath,
-                                                                         base_path)),
-                        (yaml.KeyVal("region_tag", sample["region_tag"])
-                         if "region_tag" in sample else
-                         yaml.Null),
-
-                    ]
-                    for fpath, sample in fpaths_and_samples
-                ],
-            ),
-        ]
-    )
-
-    dt = time.gmtime(manifest_time)
-    # TODO: allow other language configuration
-    manifest_fname_template = (
-        "{api}.{version}.python."
-        "{year:04d}{month:02d}{day:02d}."
-        "{hour:02d}{minute:02d}{second:02d}."
-        "manifest.yaml"
-    )
-
-    manifest_fname = manifest_fname_template.format(
-        api=api_schema.naming.name,
-        version=api_schema.naming.version,
-        year=dt.tm_year,
-        month=dt.tm_mon,
-        day=dt.tm_mday,
-        hour=dt.tm_hour,
-        minute=dt.tm_min,
-        second=dt.tm_sec,
-    )
-
-    return manifest_fname, doc

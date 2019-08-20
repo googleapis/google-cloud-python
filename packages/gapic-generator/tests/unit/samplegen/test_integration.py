@@ -38,7 +38,7 @@ env = jinja2.Environment(
     trim_blocks=True, lstrip_blocks=True
 )
 env.filters['snake_case'] = utils.to_snake_case
-env.filters['coerce_response_name'] = samplegen.coerce_response_name
+env.filters['coerce_response_name'] = gapic_utils.coerce_response_name
 
 
 def test_generate_sample_basic():

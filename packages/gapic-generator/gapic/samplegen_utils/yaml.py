@@ -107,6 +107,18 @@ class Map(Element):
         whitespace = " " * spaces
         return f"{whitespace}{self.name}:{maybe_anchor}\n{element_str}"
 
+    def get(self, key, default=None):
+        # Use iter([]) instead of a generator expression due to a bug in pytest.
+        # See https://github.com/pytest-dev/pytest-cov/issues/310 for details.
+        return next(
+            iter(
+                [e.val  # type: ignore
+                 for e in self.elements
+                 if e.key == key]  # type: ignore
+            ),
+            default
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class Doc(Element):

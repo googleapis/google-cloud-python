@@ -22,6 +22,7 @@ from google.protobuf import descriptor_pb2
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.types as types
 import gapic.samplegen_utils.yaml as gapic_yaml
+from gapic.schema import (api, naming)
 import gapic.schema.wrappers as wrappers
 
 from common_types import (DummyField, DummyMessage,
@@ -75,6 +76,25 @@ def test_define_redefinition():
                                                                repeated_iter=[True])))
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
+
+
+def test_preprocess_sample():
+    # Verify that the default response is added.
+    sample = {}
+    api_schema = api.API(
+        naming.Naming(
+            namespace=("mollusc", "cephalopod", "teuthida")
+        ),
+        all_protos={},
+    )
+
+    samplegen.Validator.preprocess_sample(sample, api_schema)
+
+    response = sample.get("response")
+    assert response == [{"print": ["%s", "$resp"]}]
+
+    package_name = sample.get("package_name")
+    assert package_name == "mollusc-cephalopod-teuthida-"
 
 
 def test_define_input_param():
@@ -1170,8 +1190,8 @@ def test_validate_request_calling_form():
 
 def test_coerce_response_name():
     # Don't really need a test, but it shuts up code coverage.
-    assert samplegen.coerce_response_name("$resp.squid") == "response.squid"
-    assert samplegen.coerce_response_name("mollusc.squid") == "mollusc.squid"
+    assert utils.coerce_response_name("$resp.squid") == "response.squid"
+    assert utils.coerce_response_name("mollusc.squid") == "mollusc.squid"
 
 
 def test_regular_response_type():

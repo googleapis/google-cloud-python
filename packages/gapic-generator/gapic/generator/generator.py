@@ -19,9 +19,10 @@ import os
 from typing import (Any, DefaultDict, Dict, Mapping, List)
 from hashlib import sha256
 from collections import (OrderedDict, defaultdict)
-from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.samplegen_utils.utils import (
+    coerce_response_name, is_valid_sample_cfg)
 from gapic.samplegen_utils.types import InvalidConfig
-from gapic.samplegen import samplegen
+from gapic.samplegen import (manifest, samplegen)
 from gapic.generator import options
 from gapic.generator import formatter
 from gapic.schema import api
@@ -56,7 +57,7 @@ class Generator:
         self._env.filters['snake_case'] = utils.to_snake_case
         self._env.filters['sort_lines'] = utils.sort_lines
         self._env.filters['wrap'] = utils.wrap
-        self._env.filters['coerce_response_name'] = samplegen.coerce_response_name
+        self._env.filters['coerce_response_name'] = coerce_response_name
 
         self._sample_configs = opts.sample_configs
 
@@ -76,7 +77,8 @@ class Generator:
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
 
         sample_templates, client_templates = utils.partition(
-            lambda fname: os.path.basename(fname) == samplegen.TEMPLATE_NAME,
+            lambda fname: os.path.basename(
+                fname) == samplegen.DEFAULT_TEMPLATE_NAME,
             self._env.loader.list_templates())
 
         # Iterate over each template and add the appropriate output files
@@ -138,7 +140,6 @@ class Generator:
                 spec["id"] = sample_id
                 id_to_samples[sample_id].append(spec)
 
-        # Interpolate the special variables in the sample_out_dir template.
         out_dir = "samples"
         fpath_to_spec_and_rendered = {}
         for samples in id_to_samples.values():
@@ -167,10 +168,9 @@ class Generator:
 
         # Only generate a manifest if we generated samples.
         if output_files:
-            manifest_fname, manifest_doc = samplegen.generate_manifest(
+            manifest_fname, manifest_doc = manifest.generate(
                 ((fname, spec)
                  for fname, (spec, _) in fpath_to_spec_and_rendered.items()),
-                out_dir,
                 api_schema
             )
 
