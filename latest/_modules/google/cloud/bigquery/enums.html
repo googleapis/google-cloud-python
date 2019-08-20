@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.enums &#8212; google-cloud 027bd0c documentation</title>
+    <title>google.cloud.bigquery.enums &#8212; google-cloud 504cc24 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -101,6 +101,29 @@
 
 
 <span class="n">StandardSqlDataTypes</span> <span class="o">=</span> <span class="n">_make_sql_scalars_enum</span><span class="p">()</span>
+
+
+<span class="c1"># See also: https://cloud.google.com/bigquery/data-types#legacy_sql_data_types</span>
+<span class="c1"># and https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types</span>
+<span class="k">class</span> <span class="nc">SqlTypeNames</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enum of allowed SQL type names in schema.SchemaField.&quot;&quot;&quot;</span>
+
+    <span class="n">STRING</span> <span class="o">=</span> <span class="s2">&quot;STRING&quot;</span>
+    <span class="n">BYTES</span> <span class="o">=</span> <span class="s2">&quot;BYTES&quot;</span>
+    <span class="n">INTEGER</span> <span class="o">=</span> <span class="s2">&quot;INTEGER&quot;</span>
+    <span class="n">INT64</span> <span class="o">=</span> <span class="s2">&quot;INTEGER&quot;</span>
+    <span class="n">FLOAT</span> <span class="o">=</span> <span class="s2">&quot;FLOAT&quot;</span>
+    <span class="n">FLOAT64</span> <span class="o">=</span> <span class="s2">&quot;FLOAT&quot;</span>
+    <span class="n">NUMERIC</span> <span class="o">=</span> <span class="s2">&quot;NUMERIC&quot;</span>
+    <span class="n">BOOLEAN</span> <span class="o">=</span> <span class="s2">&quot;BOOLEAN&quot;</span>
+    <span class="n">BOOL</span> <span class="o">=</span> <span class="s2">&quot;BOOLEAN&quot;</span>
+    <span class="n">GEOGRAPHY</span> <span class="o">=</span> <span class="s2">&quot;GEOGRAPHY&quot;</span>  <span class="c1"># NOTE: not available in legacy types</span>
+    <span class="n">RECORD</span> <span class="o">=</span> <span class="s2">&quot;RECORD&quot;</span>
+    <span class="n">STRUCT</span> <span class="o">=</span> <span class="s2">&quot;RECORD&quot;</span>
+    <span class="n">TIMESTAMP</span> <span class="o">=</span> <span class="s2">&quot;TIMESTAMP&quot;</span>
+    <span class="n">DATE</span> <span class="o">=</span> <span class="s2">&quot;DATE&quot;</span>
+    <span class="n">TIME</span> <span class="o">=</span> <span class="s2">&quot;TIME&quot;</span>
+    <span class="n">DATETIME</span> <span class="o">=</span> <span class="s2">&quot;DATETIME&quot;</span>
 </pre></div>
 
           </div>
