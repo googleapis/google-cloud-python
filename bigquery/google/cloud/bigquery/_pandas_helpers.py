@@ -187,29 +187,42 @@ def bq_to_arrow_array(series, bq_field):
     return pyarrow.array(series, type=arrow_type)
 
 
-def dataframe_to_bq_schema(dataframe):
+def dataframe_to_bq_schema(dataframe, bq_schema):
     """Convert a pandas DataFrame schema to a BigQuery schema.
-
-    TODO(GH#8140): Add bq_schema argument to allow overriding autodetected
-                   schema for a subset of columns.
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame for which the client determines the BigQuery schema.
+        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            A BigQuery schema. Use this argument to override the autodetected
+            type for some or all of the DataFrame columns.
 
     Returns:
         Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
             The automatically determined schema. Returns None if the type of
             any column cannot be determined.
     """
-    bq_schema = []
+    if bq_schema:
+        bq_schema_index = {field.name: field for field in bq_schema}
+    else:
+        bq_schema_index = {}
+
+    bq_schema_out = []
     for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+        # Use provided type from schema, if present.
+        bq_field = bq_schema_index.get(column)
+        if bq_field:
+            bq_schema_out.append(bq_field)
+            continue
+
+        # Otherwise, try to automatically determine the type based on the
+        # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
             return None
         bq_field = schema.SchemaField(column, bq_type)
-        bq_schema.append(bq_field)
-    return tuple(bq_schema)
+        bq_schema_out.append(bq_field)
+    return tuple(bq_schema_out)
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
@@ -217,7 +230,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Arrow table.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -255,7 +268,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Parquet file.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
