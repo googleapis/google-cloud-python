@@ -17,20 +17,18 @@
 import sys
 
 from google.cloud import language_v1
-from google.cloud.language_v1.types import language_service
-
+from google.cloud.language_v1.types.language_service import EncodingType
 
 def sample_analyze_sentiment(content):
 
     client = language_v1.LanguageService()
 
-    if not content:
-        content = "Your text to analyze, e.g. Hello, world!"
+    # content = "Your text to analyze, e.g. Hello, world!"
 
-    type_ = language_service.Document.Type.PLAIN_TEXT
-    document = language_service.Document(type=type_, content=content)
+    type_ = language_v1.Document.Type.PLAIN_TEXT
+    document = language_v1.Document(type=type_, content=content)
     request = language_v1.AnalyzeSentimentRequest(
-        document=document, encoding_type=language_service.EncodingType.UTF8
+        document=document, encoding_type=EncodingType.UTF8
     )
 
     response = client.analyze_sentiment(request)
