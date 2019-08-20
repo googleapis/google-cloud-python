@@ -1532,7 +1532,13 @@ class Client(ClientWithProject):
             location = self.location
 
         if not job_config.schema:
-            job_config.schema = _pandas_helpers.dataframe_to_bq_schema(dataframe)
+            autodetected_schema = _pandas_helpers.dataframe_to_bq_schema(dataframe)
+
+            # Only use an explicit schema if we were able to determine one
+            # matching the dataframe. If not, fallback to the pandas to_parquet
+            # method.
+            if autodetected_schema:
+                job_config.schema = autodetected_schema
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
