@@ -15,13 +15,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.tasks_v2.proto import (
     target_pb2 as google_dot_cloud_dot_tasks__v2_dot_proto_dot_target__pb2,
 )
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -32,14 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\031com.google.cloud.tasks.v2B\nQueueProtoP\001Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasks"
     ),
     serialized_pb=_b(
-        '\n\'google/cloud/tasks_v2/proto/queue.proto\x12\x15google.cloud.tasks.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xff\x02\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x1b\x61pp_engine_routing_override\x18\x02 \x01(\x0b\x32\'.google.cloud.tasks.v2.AppEngineRouting\x12\x36\n\x0brate_limits\x18\x03 \x01(\x0b\x32!.google.cloud.tasks.v2.RateLimits\x12\x38\n\x0cretry_config\x18\x04 \x01(\x0b\x32".google.cloud.tasks.v2.RetryConfig\x12\x31\n\x05state\x18\x05 \x01(\x0e\x32".google.cloud.tasks.v2.Queue.State\x12.\n\npurge_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42\x65\n\x19\x63om.google.cloud.tasks.v2B\nQueueProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
+        '\n\'google/cloud/tasks_v2/proto/queue.proto\x12\x15google.cloud.tasks.v2\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xdd\x03\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x1b\x61pp_engine_routing_override\x18\x02 \x01(\x0b\x32\'.google.cloud.tasks.v2.AppEngineRouting\x12\x36\n\x0brate_limits\x18\x03 \x01(\x0b\x32!.google.cloud.tasks.v2.RateLimits\x12\x38\n\x0cretry_config\x18\x04 \x01(\x0b\x32".google.cloud.tasks.v2.RetryConfig\x12\x31\n\x05state\x18\x05 \x01(\x0e\x32".google.cloud.tasks.v2.Queue.State\x12.\n\npurge_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03:\\\xea\x41Y\n\x1f\x63loudtasks.googleapis.com/Queue\x12\x36projects/{project}/locations/{location}/queues/{queue}"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42\x65\n\x19\x63om.google.cloud.tasks.v2B\nQueueProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_tasks__v2_dot_proto_dot_target__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -194,13 +194,15 @@ _QUEUE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_QUEUE_STATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AY\n\037cloudtasks.googleapis.com/Queue\0226projects/{project}/locations/{location}/queues/{queue}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
     serialized_start=231,
-    serialized_end=614,
+    serialized_end=708,
 )
 
 
@@ -274,8 +276,8 @@ _RATELIMITS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=616,
-    serialized_end=722,
+    serialized_start=710,
+    serialized_end=816,
 )
 
 
@@ -385,8 +387,8 @@ _RETRYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=725,
-    serialized_end=934,
+    serialized_start=819,
+    serialized_end=1028,
 )
 
 _QUEUE.fields_by_name[
@@ -537,11 +539,10 @@ RateLimits = _reflection.GeneratedProtocolMessageType(
       max_dispatches_per_second:
           The maximum rate at which tasks are dispatched from this
           queue.  If unspecified when the queue is created, Cloud Tasks
-          will pick the default.  -  For [App Engine
-          queues][google.cloud.tasks.v2.AppEngineHttpQueue],    the
-          maximum allowed value is 500.  This field has the same meaning
-          as `rate in queue.yaml/xml <https://cloud.google.com/appengine
-          /docs/standard/python/config/queueref#rate>`_.
+          will pick the default.  -  The maximum allowed value is 500.
+          This field has the same meaning as `rate in queue.yaml/xml <ht
+          tps://cloud.google.com/appengine/docs/standard/python/config/q
+          ueueref#rate>`_.
       max_burst_size:
           Output only. The max burst size.  Max burst size limits how
           fast tasks in queue are processed when many tasks are in the
@@ -560,10 +561,10 @@ RateLimits = _reflection.GeneratedProtocolMessageType(
           es\_per\_second].  Cloud Tasks will pick the value of
           ``max_burst_size`` based on the value of [max\_dispatches\_per
           \_second][google.cloud.tasks.v2.RateLimits.max\_dispatches\_pe
-          r\_second].  For App Engine queues that were created or
-          updated using ``queue.yaml/xml``, ``max_burst_size`` is equal
-          to `bucket\_size <https://cloud.google.com/appengine/docs/stan
-          dard/python/config/queueref#bucket_size>`_. Since
+          r\_second].  For queues that were created or updated using
+          ``queue.yaml/xml``, ``max_burst_size`` is equal to
+          `bucket\_size <https://cloud.google.com/appengine/docs/standar
+          d/python/config/queueref#bucket_size>`_. Since
           ``max_burst_size`` is output only, if
           [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue] is
           called on a queue created by ``queue.yaml/xml``,
@@ -684,4 +685,5 @@ _sym_db.RegisterMessage(RetryConfig)
 
 
 DESCRIPTOR._options = None
+_QUEUE._options = None
 # @@protoc_insertion_point(module_scope)
