@@ -5440,43 +5440,38 @@ class TestClientUpload(object):
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
-        dt_col = pandas.Series(
+        df_data = collections.OrderedDict(
             [
-                datetime.datetime(2010, 1, 2, 3, 44, 50),
-                datetime.datetime(2011, 2, 3, 14, 50, 59),
-                datetime.datetime(2012, 3, 14, 15, 16),
-            ],
-            dtype="datetime64[ns]",
+                ("int_col", [1, 2, 3]),
+                ("int_as_float_col", [1.0, float("nan"), 3.0]),
+                ("float_col", [1.0, 2.0, 3.0]),
+                ("bool_col", [True, False, True]),
+                (
+                    "dt_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ),
+                ),
+                (
+                    "ts_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ).dt.tz_localize(pytz.utc),
+                ),
+                ("string_col", ["abc", "def", "ghi"]),
+            ]
         )
-        ts_col = pandas.Series(
-            [
-                datetime.datetime(2010, 1, 2, 3, 44, 50),
-                datetime.datetime(2011, 2, 3, 14, 50, 59),
-                datetime.datetime(2012, 3, 14, 15, 16),
-            ],
-            dtype="datetime64[ns]",
-        ).dt.tz_localize(pytz.utc)
-        df_data = {
-            "int_col": [1, 2, 3],
-            "int_as_float_col": [1.0, float("nan"), 3.0],
-            "float_col": [1.0, 2.0, 3.0],
-            "bool_col": [True, False, True],
-            "dt_col": dt_col,
-            "ts_col": ts_col,
-            "string_col": ["abc", "def", "ghi"],
-        }
-        dataframe = pandas.DataFrame(
-            df_data,
-            columns=[
-                "int_col",
-                "int_as_float_col",
-                "float_col",
-                "bool_col",
-                "dt_col",
-                "ts_col",
-                "string_col",
-            ],
-        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
