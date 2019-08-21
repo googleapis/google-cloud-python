@@ -329,7 +329,7 @@ def _run_query(client, query, job_config=None):
     action="store_true",
     default=False,
     help=(
-        "Sets query to be a dry run to estimate costs"
+        "Sets query to be a dry run to estimate costs. "
         "Defaults to executing the query instead of dry run if this argument is not used."
     ),
 )
