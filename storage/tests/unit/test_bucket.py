@@ -2669,7 +2669,7 @@ class Test_Bucket(unittest.TestCase):
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
 
-    def test_get_bucket_from_uri_w_valid_uri(self):
+    def test_get_bucket_from_string_w_valid_uri(self):
         from google.cloud.storage.bucket import Bucket
 
         connection = _Connection()
@@ -2681,7 +2681,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
 
-    def test_get_bucket_from_uri_w_invalid_uri(self):
+    def test_get_bucket_from_string_w_invalid_uri(self):
         from google.cloud.storage.bucket import Bucket
 
         connection = _Connection()
