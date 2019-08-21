@@ -122,7 +122,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-extra_deps = [".[fastavro,pandas,pyarrow]"]
+extra_deps = [".[fastavro,pandas,pyarrow]", 'os.path.join("..", "bigquery")']
 templated_files = common.py_library(
     unit_cov_level=79,
     cov_level=79,
