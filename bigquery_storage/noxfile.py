@@ -118,7 +118,6 @@ def system(session):
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
     session.install("-e", ".[fastavro,pandas,pyarrow]")
-    session.install("-e", "../bigquery/")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
