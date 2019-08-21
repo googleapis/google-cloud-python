@@ -626,6 +626,77 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
     assert isinstance(return_value, pandas.DataFrame)
 
 
+def test_bigquery_magic_dryrun_option_sets_job_config():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic("bigquery", "--dry_run", sql)
+
+        job_config_used = run_query_mock.call_args_list[0][0][-1]
+        assert job_config_used.dry_run is True
+
+
+def test_bigquery_magic_dryrun_option_returns_query_job():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+
+    with run_query_patch as run_query_mock:
+        run_query_mock.return_value = query_job_mock
+        query_job_mock.to_dataframe.return_value = result
+        return_value = ip.run_cell_magic("bigquery", "--dry_run", sql)
+
+    assert isinstance(return_value, job.QueryJob)
+
+def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+    query_job_mock.to_dataframe.return_value = result
+    assert "q_job" not in ip.user_ns
+
+    with run_query_patch as run_query_mock:
+        run_query_mock.return_value = query_job_mock
+        return_value = ip.run_cell_magic("bigquery", "q_job --dry_run", sql)
+
+    assert return_value is None
+    assert "q_job" in ip.user_ns
+    q_job = ip.user_ns["q_job"]
+    assert isinstance(q_job, job.QueryJob)
+
+
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     ip = IPython.get_ipython()
