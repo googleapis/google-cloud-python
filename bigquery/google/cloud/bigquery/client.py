@@ -1534,8 +1534,9 @@ class Client(ClientWithProject):
                 for field in job_config.schema:
                     if field.field_type in _STRUCT_TYPES:
                         raise ValueError(
-                            "Pyarrow does not support serializing dataframes with "
-                            "struct (record) column types."
+                            "Uploading dataframes with struct (record) column types "
+                            "is not supported. See: "
+                            "https://github.com/googleapis/google-cloud-python/issues/8191"
                         )
 
             if pyarrow and job_config.schema:
