@@ -123,7 +123,7 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 optional_deps = [".[fastavro,pandas,pyarrow]"]
-system_test_deps = optional_deps + ["../bigquery"]
+system_test_deps = optional_deps + ["../bigquery/"]
 templated_files = common.py_library(
     unit_cov_level=79,
     cov_level=79,
