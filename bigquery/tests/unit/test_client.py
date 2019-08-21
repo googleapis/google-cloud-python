@@ -5364,31 +5364,6 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_wo_schema_warning(self):
-        client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
-        dataframe = pandas.DataFrame(records)
-
-        load_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
-        )
-        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
-
-        with load_patch, pyarrow_patch, warnings.catch_warnings(record=True) as warned:
-            client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, location=self.LOCATION
-            )
-
-        matches = [
-            warning
-            for warning in warned
-            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
-            and "please provide a schema" in str(warning)
-        ]
-        assert matches, "A missing schema deprecation warning was not raised."
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_schema_wo_pyarrow(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
