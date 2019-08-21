@@ -31,6 +31,10 @@ while [ -n "$1" ]; do
       elif [[ $1 == --gapic-* ]]; then
         PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
         shift 2
+      elif [[ $1 == --samples* ]]; then
+        # --samples is a special option that all generators should recognize.
+        PLUGIN_OPTIONS="$PLUGIN_OPTIONS,$1=$2"
+        shift 2
       else
         # Ignore anything we do not recognize.
         shift

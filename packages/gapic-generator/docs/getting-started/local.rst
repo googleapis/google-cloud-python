@@ -153,4 +153,18 @@ This plugin is invoked under the hood via. the ``--python_gapic_out`` switch.
   where it expects to find protos, and *order matters*. In this case,
   the common protos must come first, and then the path to the API being built.
 
+.. include:: _samplegen.rst
+  
+.. code-block:: shell
+
+  # Multiple sample paths or directories can be passed simultaneously by duplicating
+  # the 'samples' option. Options are comma delimited.
+  # If no 'samples' option is passed, the generator does not generate a manifest.
+  $ protoc path/to/api/protos/*.proto \
+                --proto_path=../api-common-protos/ \
+                --proto_path=. \
+                --python_gapic_opt="samples=sample_config.yaml,samples=sample_dir/" \
+                --python_gapic_out=/dest/
+
+
 .. include:: _verifying.rst

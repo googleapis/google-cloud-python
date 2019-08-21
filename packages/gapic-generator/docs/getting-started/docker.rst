@@ -119,5 +119,21 @@ Perform the actual code generation step with ``docker run``:
     structure present in the imports of the proto files must be preserved
     beneath this for compilation to succeed.
 
+.. include:: _samplegen.rst
+
+.. code-block:: shell
+
+  # Multiple sample paths or directories can be passed simultaneously by duplicating
+  # the 'samples' option.
+  # If no 'samples' option is passed, the generator does not generate a manifest.
+  $ docker run \
+    --mount type=bind,source=$(pwd)/path/to/proto/dir,destination=/in/path/to/proto,readonly \
+    --mount type=bind,source=$(pwd)/dest/,destination=/out/ \
+    --rm \
+    --user $UID \
+    gcr.io/gapic-images/gapic-generator-python \
+    --samples path/to/sample/config.yaml \
+    --samples path/to/sample/dir/
+
 
 .. include:: _verifying.rst
