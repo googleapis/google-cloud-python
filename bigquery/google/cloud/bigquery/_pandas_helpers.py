@@ -198,11 +198,18 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             type for some or all of the DataFrame columns.
 
     Returns:
-        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
-            The automatically determined schema. Returns None if the type of
-            any column cannot be determined.
+        Sequence[google.cloud.bigquery.schema.SchemaField]:
+            The automatically determined schema. Returns empty tuple if the
+            type of any column cannot be determined.
     """
     if bq_schema:
+        for field in bq_schema:
+            if field.field_type in schema._STRUCT_TYPES:
+                raise ValueError(
+                    "Uploading dataframes with struct (record) column types "
+                    "is not supported. See: "
+                    "https://github.com/googleapis/google-cloud-python/issues/8191"
+                )
         bq_schema_index = {field.name: field for field in bq_schema}
     else:
         bq_schema_index = {}
@@ -220,7 +227,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
             warnings.warn("Unable to determine type of column '{}'.".format(column))
-            return None
+            return ()
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
     return tuple(bq_schema_out)

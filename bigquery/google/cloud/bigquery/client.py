@@ -61,7 +61,6 @@ from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineReference
-from google.cloud.bigquery.schema import _STRUCT_TYPES
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _table_arg_to_table
 from google.cloud.bigquery.table import _table_arg_to_table_ref
@@ -1532,26 +1531,9 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
-        if job_config.schema:
-            for field in job_config.schema:
-                if field.field_type in _STRUCT_TYPES:
-                    raise ValueError(
-                        "Uploading dataframes with struct (record) column types "
-                        "is not supported. See: "
-                        "https://github.com/googleapis/google-cloud-python/issues/8191"
-                    )
-
-        autodetected_schema = _pandas_helpers.dataframe_to_bq_schema(
+        job_config.schema = _pandas_helpers.dataframe_to_bq_schema(
             dataframe, job_config.schema
         )
-
-        # Only use an explicit schema if we were able to determine one
-        # matching the dataframe. If not, fallback to the pandas to_parquet
-        # method.
-        if autodetected_schema:
-            job_config.schema = autodetected_schema
-        else:
-            job_config.schema = ()
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)

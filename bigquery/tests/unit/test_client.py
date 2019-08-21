@@ -5230,7 +5230,7 @@ class TestClientUpload(object):
         from google.cloud.bigquery import job
 
         client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
         load_patch = mock.patch(
@@ -5265,7 +5265,7 @@ class TestClientUpload(object):
         from google.cloud.bigquery import job
 
         client = self._make_client(location=self.LOCATION)
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
         load_patch = mock.patch(
@@ -5300,7 +5300,7 @@ class TestClientUpload(object):
         from google.cloud.bigquery import job
 
         client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
         job_config = job.LoadJobConfig()
 
@@ -5702,7 +5702,7 @@ class TestClientUpload(object):
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
         client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
         load_patch = mock.patch(
