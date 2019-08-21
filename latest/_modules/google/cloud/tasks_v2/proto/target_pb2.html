@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.tasks_v2.proto.target_pb2 &#8212; google-cloud 405e009 documentation</title>
+    <title>google.cloud.tasks_v2.proto.target_pb2 &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -433,11 +433,11 @@
 <span class="s2">  construct the URL that the task is delivered to can be set at the</span>
 <span class="s2">  queue-level or task-level:</span>
 <span class="s2">  </span>
-<span class="s2">  -  If set,</span>
-<span class="s2">     [app\_engine\_routing\_override][google.cloud.tasks.v2.AppEngineHttpQueue.app\_engine\_routing\_override]</span>
-<span class="s2">     is used for all tasks in the queue, no matter what the setting is for</span>
-<span class="s2">     the [task-level</span>
-<span class="s2">     app\_engine\_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app\_engine\_routing].</span>
+<span class="s2">  -  If [app\_engine\_routing\_override is set on the</span>
+<span class="s2">     queue][Queue.app\_engine\_routing\_override], this value is used for</span>
+<span class="s2">     all tasks in the queue, no matter what the setting is for the</span>
+<span class="s2">     [task-level</span>
+<span class="s2">     app\_engine\_routing][AppEngineHttpRequest.app\_engine\_routing].</span>
 <span class="s2">  </span>
 <span class="s2">  The ``url`` that the task will be sent to is:</span>
 <span class="s2">  </span>
@@ -458,12 +458,13 @@
 <span class="s2">  Tasks does not receive response before the</span>
 <span class="s2">  [deadline][google.cloud.tasks.v2.Task.dispatch\_deadline]. Failed tasks</span>
 <span class="s2">  will be retried according to the [retry</span>
-<span class="s2">  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is</span>
-<span class="s2">  considered an App Engine system error instead of an application error</span>
-<span class="s2">  and will cause Cloud Tasks&#39; traffic congestion control to temporarily</span>
-<span class="s2">  throttle the queue&#39;s dispatches. Unlike other types of task targets, a</span>
-<span class="s2">  ``429`` (Too Many Requests) response from an app handler does not cause</span>
-<span class="s2">  traffic congestion control to throttle the queue.</span>
+<span class="s2">  configuration][google.cloud.tasks.v2.Queue.retry\_config]. ``503``</span>
+<span class="s2">  (Service Unavailable) is considered an App Engine system error instead</span>
+<span class="s2">  of an application error and will cause Cloud Tasks&#39; traffic congestion</span>
+<span class="s2">  control to temporarily throttle the queue&#39;s dispatches. Unlike other</span>
+<span class="s2">  types of task targets, a ``429`` (Too Many Requests) response from an</span>
+<span class="s2">  app handler does not cause traffic congestion control to throttle the</span>
+<span class="s2">  queue.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -480,12 +481,12 @@
 <span class="s2">          google.com/appengine/docs/python/tools/webapp/requesthandlercl</span>
 <span class="s2">          ass&gt;`_.</span>
 <span class="s2">      app_engine_routing:</span>
-<span class="s2">          Task-level setting for App Engine routing.  If set, [app\_engi</span>
-<span class="s2">          ne\_routing\_override][google.cloud.tasks.v2.AppEngineHttpQueu</span>
-<span class="s2">          e.app\_engine\_routing\_override] is used for all tasks in the</span>
-<span class="s2">          queue, no matter what the setting is for the [task-level app\_</span>
-<span class="s2">          engine\_routing][google.cloud.tasks.v2.AppEngineHttpRequest.ap</span>
-<span class="s2">          p\_engine\_routing].</span>
+<span class="s2">          Task-level setting for App Engine routing.  -  If</span>
+<span class="s2">          [app\_engine\_routing\_override is set on the</span>
+<span class="s2">          queue][Queue.app\_engine\_routing\_override], this value is</span>
+<span class="s2">          used for    all tasks in the queue, no matter what the setting</span>
+<span class="s2">          is for the    [task-level    app\_engine\_routing][AppEngineHt</span>
+<span class="s2">          tpRequest.app\_engine\_routing].</span>
 <span class="s2">      relative_uri:</span>
 <span class="s2">          The relative URI.  The relative URI must begin with &quot;/&quot; and</span>
 <span class="s2">          must be a valid HTTP relative URI. It can contain a path and</span>
@@ -559,6 +560,13 @@
 <span class="s2">  routing &lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;`_,</span>
 <span class="s2">  and `App Engine Flex request</span>
 <span class="s2">  routing &lt;https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed&gt;`_.</span>
+<span class="s2">  </span>
+<span class="s2">  Using [AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting]</span>
+<span class="s2">  requires</span>
+<span class="s2">  ```appengine.applications.get`` &lt;https://cloud.google.com/appengine/docs/admin-api/access-control&gt;`_</span>
+<span class="s2">  Google IAM permission for the project and the following scope:</span>
+<span class="s2">  </span>
+<span class="s2">  ``https://www.googleapis.com/auth/cloud-platform``</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>

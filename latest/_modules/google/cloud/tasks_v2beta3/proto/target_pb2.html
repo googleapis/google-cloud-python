@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud 405e009 documentation</title>
+    <title>google.cloud.tasks_v2beta3.proto.target_pb2 &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -784,9 +784,10 @@
 <span class="s2">  queue. If any other HTTP response code is returned or no response is</span>
 <span class="s2">  received, the task will be retried according to the following:</span>
 <span class="s2">  </span>
-<span class="s2">  -  User-specified throttling: [retry configuration][Queue.RetryConfig],</span>
-<span class="s2">     [rate limits][Queue.RateLimits], and the [queue&#39;s</span>
-<span class="s2">     state][google.cloud.tasks.v2beta3.Queue.state].</span>
+<span class="s2">  -  User-specified throttling: [retry</span>
+<span class="s2">     configuration][google.cloud.tasks.v2beta3.Queue.retry\_config], [rate</span>
+<span class="s2">     limits][google.cloud.tasks.v2beta3.Queue.rate\_limits], and the</span>
+<span class="s2">     [queue&#39;s state][google.cloud.tasks.v2beta3.Queue.state].</span>
 <span class="s2">  </span>
 <span class="s2">  -  System throttling: To prevent the worker from overloading, Cloud</span>
 <span class="s2">     Tasks may temporarily reduce the queue&#39;s effective rate.</span>
@@ -794,12 +795,12 @@
 <span class="s2">  </span>
 <span class="s2">  System throttling happens because:</span>
 <span class="s2">  </span>
-<span class="s2">  -  Cloud Tasks backoffs on all errors. Normally the backoff specified in</span>
-<span class="s2">     [rate limits][Queue.RateLimits] will be used. But if the worker</span>
-<span class="s2">     returns ``429`` (Too Many Requests), ``503`` (Service Unavailable),</span>
-<span class="s2">     or the rate of errors is high, Cloud Tasks will use a higher backoff</span>
-<span class="s2">     rate. The retry specified in the ``Retry-After`` HTTP response header</span>
-<span class="s2">     is considered.</span>
+<span class="s2">  -  Cloud Tasks backs off on all errors. Normally the backoff specified</span>
+<span class="s2">     in [rate limits][google.cloud.tasks.v2beta3.Queue.rate\_limits] will</span>
+<span class="s2">     be used. But if the worker returns ``429`` (Too Many Requests),</span>
+<span class="s2">     ``503`` (Service Unavailable), or the rate of errors is high, Cloud</span>
+<span class="s2">     Tasks will use a higher backoff rate. The retry specified in the</span>
+<span class="s2">     ``Retry-After`` HTTP response header is considered.</span>
 <span class="s2">  </span>
 <span class="s2">  -  To prevent traffic spikes and to smooth sudden large traffic spikes,</span>
 <span class="s2">     dispatches ramp up slowly when the queue is newly created or idle and</span>
@@ -851,8 +852,9 @@
 <span class="s2">          [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].</span>
 <span class="s2">      authorization_header:</span>
 <span class="s2">          The mode for generating an ``Authorization`` header for HTTP</span>
-<span class="s2">          requests.  If specified, all ``Authorization`` headers in the</span>
-<span class="s2">          [HttpTarget.headers][] field will be overridden.</span>
+<span class="s2">          requests.  If specified, all ``Authorization`` headers in the </span>
+<span class="s2">          [HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.h</span>
+<span class="s2">          eaders] field will be overridden.</span>
 <span class="s2">      oauth_token:</span>
 <span class="s2">          If specified, an `OAuth token</span>
 <span class="s2">          &lt;https://developers.google.com/identity/protocols/OAuth2&gt;`_</span>
@@ -982,12 +984,13 @@
 <span class="s2">  Tasks does not receive response before the</span>
 <span class="s2">  [deadline][google.cloud.tasks.v2beta3.Task.dispatch\_deadline]. Failed</span>
 <span class="s2">  tasks will be retried according to the [retry</span>
-<span class="s2">  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is</span>
-<span class="s2">  considered an App Engine system error instead of an application error</span>
-<span class="s2">  and will cause Cloud Tasks&#39; traffic congestion control to temporarily</span>
-<span class="s2">  throttle the queue&#39;s dispatches. Unlike other types of task targets, a</span>
-<span class="s2">  ``429`` (Too Many Requests) response from an app handler does not cause</span>
-<span class="s2">  traffic congestion control to throttle the queue.</span>
+<span class="s2">  configuration][google.cloud.tasks.v2beta3.Queue.retry\_config]. ``503``</span>
+<span class="s2">  (Service Unavailable) is considered an App Engine system error instead</span>
+<span class="s2">  of an application error and will cause Cloud Tasks&#39; traffic congestion</span>
+<span class="s2">  control to temporarily throttle the queue&#39;s dispatches. Unlike other</span>
+<span class="s2">  types of task targets, a ``429`` (Too Many Requests) response from an</span>
+<span class="s2">  app handler does not cause traffic congestion control to throttle the</span>
+<span class="s2">  queue.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>

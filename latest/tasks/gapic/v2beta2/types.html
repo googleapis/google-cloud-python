@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 405e009 documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -43,16 +43,16 @@
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest.schedule_time">
 <code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest.schedule_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task’s current schedule time, available in the
-[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_tim
-e] returned by
+<dd><p>Required. The task’s current schedule time, available in the [
+schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time
+] returned by
 [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
 response or
 [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease]
@@ -110,7 +110,12 @@ Google IAM permission for the project and the following scope:</p>
 same project as the queue. For more information, see <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed">How Requests are
 Routed</a>
 and how routing is affected by <a class="reference external" href="https://cloud.google.com/appengine/docs/python/config/dispatchref">dispatch
-files</a>.</p>
+files</a>.
+Traffic is encrypted during transport and never leaves Google
+datacenters. Because this traffic is carried over a communication
+mechanism internal to Google, you cannot explicitly set the protocol
+(for example, HTTP or HTTPS). The request to the handler, however, will
+appear to have used the HTTP protocol.</p>
 <p>The [AppEngineRouting][google.cloud.tasks.v2beta2.AppEngineRouting] used
 to construct the URL that the task is delivered to can be set at the
 queue-level or task-level:</p>
@@ -127,13 +132,26 @@ app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_r
 <code class="docutils literal notranslate"><span class="pre">+</span></code>
 [relative_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url]</p></li>
 </ul>
+<p>Tasks can be dispatched to secure app handlers, unsecure app handlers,
+and URIs restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">admin</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_.
+Because tasks are not run as any user, they cannot be dispatched to URIs
+restricted with
+<code class="docutils literal notranslate"><span class="pre">`login:</span> <span class="pre">required</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/appref">https://cloud.google.com/appengine/docs/standard/python/config/appref</a>&gt;`_
+Task dispatches also do not follow redirects.</p>
 <p>The task attempt has succeeded if the app’s request handler returns an
-HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. <code class="docutils literal notranslate"><span class="pre">503</span></code> is
-considered an App Engine system error instead of an application error.
-Requests returning error <code class="docutils literal notranslate"><span class="pre">503</span></code> will be retried regardless of retry
-configuration and not counted against retry counts. Any other response
-code or a failure to receive a response before the deadline is a failed
-attempt.</p>
+HTTP response code in the range [<code class="docutils literal notranslate"><span class="pre">200</span></code> - <code class="docutils literal notranslate"><span class="pre">299</span></code>]. The task attempt
+has failed if the app’s handler returns a non-2xx response code or Cloud
+Tasks does not receive response before the
+[deadline][Task.dispatch_deadline]. Failed tasks will be retried
+according to the [retry
+configuration][google.cloud.tasks.v2beta2.Queue.retry_config]. <code class="docutils literal notranslate"><span class="pre">503</span></code>
+(Service Unavailable) is considered an App Engine system error instead
+of an application error and will cause Cloud Tasks’ traffic congestion
+control to temporarily throttle the queue’s dispatches. Unlike other
+types of task targets, a <code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests) response from an
+app handler does not cause traffic congestion control to throttle the
+queue.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.http_method">
 <code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.http_method" title="Permalink to this definition">#</a></dt>
@@ -305,6 +323,8 @@ neHttpRequest.app_engine_routing].</p>
 <dt id="google.cloud.tasks_v2beta2.types.AppEngineRouting">
 <em class="property">class </em><code class="sig-prename descclassname">google.cloud.tasks_v2beta2.types.</code><code class="sig-name descname">AppEngineRouting</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.AppEngineRouting" title="Permalink to this definition">#</a></dt>
 <dd><p>App Engine Routing.</p>
+<p>Defines routing characteristics specific to App Engine - service,
+version, and instance.</p>
 <p>For more information about services, versions, and instances see <a class="reference external" href="https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine">An
 Overview of App
 Engine</a>,
@@ -394,16 +414,15 @@ name.  -  <code class="docutils literal notranslate"><span class="pre">service</
 -  <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">=</span></code>    [instance][google.cloud.tasks.v2beta2.App
 EngineRouting.instance]  -  <code class="docutils literal notranslate"><span class="pre">instance_dot_service</span> <span class="pre">=</span></code>    [ins
 tance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-<code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>&#160;&#160; <span class="pre">+</span></code>
+<code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>
 [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 -  <code class="docutils literal notranslate"><span class="pre">instance_dot_version</span> <span class="pre">=</span></code>    [instance][google.cloud.tasks
-.v2beta2.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>&#160;&#160; <span class="pre">+</span></code>
+.v2beta2.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>
 [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
 -  <code class="docutils literal notranslate"><span class="pre">instance_dot_version_dot_service</span> <span class="pre">=</span></code>    [instance][google
-.cloud.tasks.v2beta2.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>
-<span class="pre">+</span></code>
+.cloud.tasks.v2beta2.AppEngineRouting.instance]    <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>
 [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-<code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span>&#160;&#160; <span class="pre">+</span></code>
+<code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">'.'</span> <span class="pre">+</span></code>
 [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 If
 [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
@@ -701,16 +720,16 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CancelLeaseRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CancelLeaseRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CancelLeaseRequest.schedule_time">
 <code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CancelLeaseRequest.schedule_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task’s current schedule time, available in the
-[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_tim
-e] returned by
+<dd><p>Required. The task’s current schedule time, available in the [
+schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time
+] returned by
 [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
 response or
 [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease]
@@ -762,7 +781,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CreateQueueRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CreateQueueRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The location name in which the queue will be
+<dd><p>Required. The location name in which the queue will be
 created. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code>  The list of
 allowed locations can be obtained by calling Cloud Tasks’
@@ -773,7 +792,7 @@ ons.ListLocations].</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CreateQueueRequest.queue">
 <code class="sig-name descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CreateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue to create.  [Queue’s
+<dd><p>Required. The queue to create.  [Queue’s
 name][google.cloud.tasks.v2beta2.Queue.name] cannot be the
 same as an existing queue.</p>
 </dd></dl>
@@ -800,7 +819,7 @@ same as an existing queue.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CreateTaskRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CreateTaskRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code>
 The queue must already exist.</p>
 </dd></dl>
@@ -808,7 +827,7 @@ The queue must already exist.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.CreateTaskRequest.task">
 <code class="sig-name descname">task</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.CreateTaskRequest.task" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task to add.  Task names have the following
+<dd><p>Required. The task to add.  Task names have the following
 format: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUE</span>
 <span class="pre">UE_ID/tasks/TASK_ID</span></code>. The user can optionally specify a task
 [name][google.cloud.tasks.v2beta2.Task.name]. If a name is not
@@ -883,7 +902,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.DeleteQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.DeleteQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -903,8 +922,8 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.DeleteTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.DeleteTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1038,7 +1057,7 @@ omitted, policy format version 1 will be returned.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.GetQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.GetQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The resource name of the queue. For example:
+<dd><p>Required. The resource name of the queue. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1058,8 +1077,8 @@ omitted, policy format version 1 will be returned.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.GetTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.GetTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1100,7 +1119,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.LeaseTasksRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.LeaseTasksRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1109,17 +1128,31 @@ data that it contains.  Authorization for
 <code class="sig-name descname">max_tasks</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.LeaseTasksRequest.max_tasks" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum number of tasks to lease.  The system will make a
 best effort to return as close to as <code class="docutils literal notranslate"><span class="pre">max_tasks</span></code> as
-possible.  The largest that <code class="docutils literal notranslate"><span class="pre">max_tasks</span></code> can be is 1000.</p>
+possible.  The largest that <code class="docutils literal notranslate"><span class="pre">max_tasks</span></code> can be is 1000.  The
+maximum total size of a [lease tasks
+response][google.cloud.tasks.v2beta2.LeaseTasksResponse] is 32
+MB. If the sum of all task sizes requested reaches this limit,
+fewer tasks than requested are returned.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.LeaseTasksRequest.lease_duration">
 <code class="sig-name descname">lease_duration</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.LeaseTasksRequest.lease_duration" title="Permalink to this definition">#</a></dt>
-<dd><p>After the worker has successfully finished the work associated
-with the task, the worker must call via [AcknowledgeTask][goog
-le.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask] before the
-[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_tim
-e]. Otherwise the task will be returned to a later
+<dd><p>Required. The duration of the lease.  Each task returned in
+the [response][google.cloud.tasks.v2beta2.LeaseTasksResponse]
+will have its [schedule_time][google.cloud.tasks.v2beta2.Task
+.schedule_time] set to the current time plus the
+<code class="docutils literal notranslate"><span class="pre">lease_duration</span></code>. The task is leased until its [schedule_ti
+me][google.cloud.tasks.v2beta2.Task.schedule_time]; thus, the
+task will not be returned to another
+[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
+call before its [schedule_time][google.cloud.tasks.v2beta2.Ta
+sk.schedule_time].  After the worker has successfully
+finished the work associated with the task, the worker must
+call via [AcknowledgeTask][google.cloud.tasks.v2beta2.CloudTas
+ks.AcknowledgeTask] before the [schedule_time][google.cloud.t
+asks.v2beta2.Task.schedule_time]. Otherwise the task will be
+returned to a later
 [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
 call so that another worker can retry it.  The maximum lease
 duration is 1 week. <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be truncated to
@@ -1227,7 +1260,7 @@ displayed as empty in Cloud Tasks.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.ListQueuesRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.ListQueuesRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The location name. For example:
+<dd><p>Required. The location name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
 </dd></dl>
 
@@ -1340,7 +1373,7 @@ only 2 hours.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.ListTasksRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.ListTasksRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1363,12 +1396,12 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.ListTasksRequest.page_size">
 <code class="sig-name descname">page_size</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.ListTasksRequest.page_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Requested page size. Fewer tasks than requested might be
-returned.  The maximum page size is 1000. If unspecified, the
-page size will be the maximum. Fewer tasks than requested
-might be returned, even if more tasks exist; use [next_page_
-token][google.cloud.tasks.v2beta2.ListTasksResponse.next_page
-_token] in the response to determine if more tasks exist.</p>
+<dd><p>Maximum page size.  Fewer tasks than requested might be
+returned, even if more tasks exist; use [next_page_token][go
+ogle.cloud.tasks.v2beta2.ListTasksResponse.next_page_token]
+in the response to determine if more tasks exist.  The maximum
+page size is 1000. If unspecified, the page size will be the
+maximum.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1453,7 +1486,7 @@ empty, there are no more results.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.PauseQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.PauseQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1648,7 +1681,7 @@ when the task is returned by Cloud Tasks.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.PurgeQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.PurgeQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1915,16 +1948,16 @@ same meaning as <a class="reference external" href="https://cloud.google.com/app
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.RenewLeaseRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.RenewLeaseRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.RenewLeaseRequest.schedule_time">
 <code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.RenewLeaseRequest.schedule_time" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task’s current schedule time, available in the
-[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_tim
-e] returned by
+<dd><p>Required. The task’s current schedule time, available in the [
+schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time
+] returned by
 [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
 response or
 [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease]
@@ -1935,7 +1968,7 @@ currently holds the lease.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.RenewLeaseRequest.lease_duration">
 <code class="sig-name descname">lease_duration</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.RenewLeaseRequest.lease_duration" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The desired new lease duration, starting from now.
+<dd><p>Required. The desired new lease duration, starting from now.
 The maximum lease duration is 1 week. <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will
 be truncated to the nearest second.</p>
 </dd></dl>
@@ -1990,7 +2023,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.ResumeQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.ResumeQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -2159,8 +2192,8 @@ has the same meaning as <a class="reference external" href="https://cloud.google
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.RunTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.RunTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2391,8 +2424,8 @@ microsecond.</p>
 <dt id="google.cloud.tasks_v2beta2.types.TaskStatus.attempt_dispatch_count">
 <code class="sig-name descname">attempt_dispatch_count</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.TaskStatus.attempt_dispatch_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Output only. The number of attempts dispatched.  This count
-includes tasks which have been dispatched but haven’t received
-a response.</p>
+includes attempts which have been dispatched but haven’t
+received a response.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2527,7 +2560,7 @@ caller is allowed.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2beta2.types.UpdateQueueRequest.queue">
 <code class="sig-name descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2beta2.types.UpdateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue to create or update.  The queue’s
+<dd><p>Required. The queue to create or update.  The queue’s
 [name][google.cloud.tasks.v2beta2.Queue.name] must be
 specified.  Output only fields cannot be modified using
 UpdateQueue. Any value specified for an output only field will

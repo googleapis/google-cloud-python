@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.tasks_v2beta2.proto.target_pb2 &#8212; google-cloud 405e009 documentation</title>
+    <title>google.cloud.tasks_v2beta2.proto.target_pb2 &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -51,7 +51,6 @@
 
 
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">annotations_pb2</span> <span class="k">as</span> <span class="n">google_dot_api_dot_annotations__pb2</span>
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span> <span class="k">as</span> <span class="n">google_dot_protobuf_dot_duration__pb2</span>
 
 
 <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">FileDescriptor</span><span class="p">(</span>
@@ -62,12 +61,9 @@
         <span class="s2">&quot;</span><span class="se">\n\036</span><span class="s2">com.google.cloud.tasks.v2beta2B</span><span class="se">\013</span><span class="s2">TargetProtoP</span><span class="se">\001</span><span class="s2">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks&quot;</span>
     <span class="p">),</span>
     <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span>
-        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/tasks_v2beta2/proto/target.proto</span><span class="se">\x12\x1a</span><span class="s1">google.cloud.tasks.v2beta2</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto&quot;</span><span class="se">\x0c\n\n</span><span class="s1">PullTarget&quot;+</span><span class="se">\n\x0b</span><span class="s1">PullMessage</span><span class="se">\x12\x0f\n\x07</span><span class="s1">payload</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x0b\n\x03</span><span class="s1">tag</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;h</span><span class="se">\n\x13\x41</span><span class="s1">ppEngineHttpTarget</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x1b\x61</span><span class="s1">pp_engine_routing_override</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta2.AppEngineRouting&quot;</span><span class="se">\xc4\x02\n\x14\x41</span><span class="s1">ppEngineHttpRequest</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">http_method</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&amp;.google.cloud.tasks.v2beta2.HttpMethod</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\x12\x61</span><span class="s1">pp_engine_routing</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta2.AppEngineRouting</span><span class="se">\x12\x14\n\x0c</span><span class="s1">relative_url</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x07</span><span class="s1">headers</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">=.google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry</span><span class="se">\x12\x0f\n\x07</span><span class="s1">payload</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">.</span><span class="se">\n\x0c</span><span class="s1">HeadersEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;T</span><span class="se">\n\x10\x41</span><span class="s1">ppEngineRouting</span><span class="se">\x12\x0f\n\x07</span><span class="s1">service</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">version</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">instance</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">host</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*[</span><span class="se">\n\n</span><span class="s1">HttpMethod</span><span class="se">\x12\x1b\n\x17</span><span class="s1">HTTP_METHOD_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">POST</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">GET</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">HEAD</span><span class="se">\x10\x03\x12\x07\n\x03</span><span class="s1">PUT</span><span class="se">\x10\x04\x12\n\n\x06\x44\x45</span><span class="s1">LETE</span><span class="se">\x10\x05\x42</span><span class="s1">p</span><span class="se">\n\x1e\x63</span><span class="s1">om.google.cloud.tasks.v2beta2B</span><span class="se">\x0b</span><span class="s1">TargetProtoP</span><span class="se">\x01</span><span class="s1">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">-google/cloud/tasks_v2beta2/proto/target.proto</span><span class="se">\x12\x1a</span><span class="s1">google.cloud.tasks.v2beta2</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto&quot;</span><span class="se">\x0c\n\n</span><span class="s1">PullTarget&quot;+</span><span class="se">\n\x0b</span><span class="s1">PullMessage</span><span class="se">\x12\x0f\n\x07</span><span class="s1">payload</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x0b\n\x03</span><span class="s1">tag</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">&quot;h</span><span class="se">\n\x13\x41</span><span class="s1">ppEngineHttpTarget</span><span class="se">\x12</span><span class="s1">Q</span><span class="se">\n\x1b\x61</span><span class="s1">pp_engine_routing_override</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta2.AppEngineRouting&quot;</span><span class="se">\xc4\x02\n\x14\x41</span><span class="s1">ppEngineHttpRequest</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\x0b</span><span class="s1">http_method</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&amp;.google.cloud.tasks.v2beta2.HttpMethod</span><span class="se">\x12</span><span class="s1">H</span><span class="se">\n\x12\x61</span><span class="s1">pp_engine_routing</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">,.google.cloud.tasks.v2beta2.AppEngineRouting</span><span class="se">\x12\x14\n\x0c</span><span class="s1">relative_url</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">N</span><span class="se">\n\x07</span><span class="s1">headers</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">=.google.cloud.tasks.v2beta2.AppEngineHttpRequest.HeadersEntry</span><span class="se">\x12\x0f\n\x07</span><span class="s1">payload</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x1a</span><span class="s1">.</span><span class="se">\n\x0c</span><span class="s1">HeadersEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">:</span><span class="se">\x02\x38\x01</span><span class="s1">&quot;T</span><span class="se">\n\x10\x41</span><span class="s1">ppEngineRouting</span><span class="se">\x12\x0f\n\x07</span><span class="s1">service</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0f\n\x07</span><span class="s1">version</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">instance</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x0c\n\x04</span><span class="s1">host</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">*[</span><span class="se">\n\n</span><span class="s1">HttpMethod</span><span class="se">\x12\x1b\n\x17</span><span class="s1">HTTP_METHOD_UNSPECIFIED</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">POST</span><span class="se">\x10\x01\x12\x07\n\x03</span><span class="s1">GET</span><span class="se">\x10\x02\x12\x08\n\x04</span><span class="s1">HEAD</span><span class="se">\x10\x03\x12\x07\n\x03</span><span class="s1">PUT</span><span class="se">\x10\x04\x12\n\n\x06\x44\x45</span><span class="s1">LETE</span><span class="se">\x10\x05\x42</span><span class="s1">p</span><span class="se">\n\x1e\x63</span><span class="s1">om.google.cloud.tasks.v2beta2B</span><span class="se">\x0b</span><span class="s1">TargetProtoP</span><span class="se">\x01</span><span class="s1">Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasksb</span><span class="se">\x06</span><span class="s1">proto3&#39;</span>
     <span class="p">),</span>
-    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-        <span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span>
-    <span class="p">],</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="n">_HTTPMETHOD</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">EnumDescriptor</span><span class="p">(</span>
@@ -101,8 +97,8 @@
     <span class="p">],</span>
     <span class="n">containing_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">serialized_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">717</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">808</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">685</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">776</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterEnumDescriptor</span><span class="p">(</span><span class="n">_HTTPMETHOD</span><span class="p">)</span>
 
@@ -130,8 +126,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">139</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">119</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -187,8 +183,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">153</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">196</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">121</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">164</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -226,8 +222,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">198</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">302</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">166</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -283,8 +279,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">583</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">629</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">551</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">597</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_APPENGINEHTTPREQUEST</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">Descriptor</span><span class="p">(</span>
@@ -393,8 +389,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">305</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">629</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">273</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">597</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -486,8 +482,8 @@
     <span class="n">syntax</span><span class="o">=</span><span class="s2">&quot;proto3&quot;</span><span class="p">,</span>
     <span class="n">extension_ranges</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">oneofs</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">631</span><span class="p">,</span>
-    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">715</span><span class="p">,</span>
+    <span class="n">serialized_start</span><span class="o">=</span><span class="mi">599</span><span class="p">,</span>
+    <span class="n">serialized_end</span><span class="o">=</span><span class="mi">683</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_APPENGINEHTTPTARGET</span><span class="o">.</span><span class="n">fields_by_name</span><span class="p">[</span>
@@ -639,6 +635,11 @@
 <span class="s2">  Routed &lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;`_</span>
 <span class="s2">  and how routing is affected by `dispatch</span>
 <span class="s2">  files &lt;https://cloud.google.com/appengine/docs/python/config/dispatchref&gt;`_.</span>
+<span class="s2">  Traffic is encrypted during transport and never leaves Google</span>
+<span class="s2">  datacenters. Because this traffic is carried over a communication</span>
+<span class="s2">  mechanism internal to Google, you cannot explicitly set the protocol</span>
+<span class="s2">  (for example, HTTP or HTTPS). The request to the handler, however, will</span>
+<span class="s2">  appear to have used the HTTP protocol.</span>
 <span class="s2">  </span>
 <span class="s2">  The [AppEngineRouting][google.cloud.tasks.v2beta2.AppEngineRouting] used</span>
 <span class="s2">  to construct the URL that the task is delivered to can be set at the</span>
@@ -656,13 +657,27 @@
 <span class="s2">     ``+``</span>
 <span class="s2">     [relative\_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative\_url]</span>
 <span class="s2">  </span>
+<span class="s2">  Tasks can be dispatched to secure app handlers, unsecure app handlers,</span>
+<span class="s2">  and URIs restricted with</span>
+<span class="s2">  ```login: admin`` &lt;https://cloud.google.com/appengine/docs/standard/python/config/appref&gt;`_.</span>
+<span class="s2">  Because tasks are not run as any user, they cannot be dispatched to URIs</span>
+<span class="s2">  restricted with</span>
+<span class="s2">  ```login: required`` &lt;https://cloud.google.com/appengine/docs/standard/python/config/appref&gt;`_</span>
+<span class="s2">  Task dispatches also do not follow redirects.</span>
+<span class="s2">  </span>
 <span class="s2">  The task attempt has succeeded if the app&#39;s request handler returns an</span>
-<span class="s2">  HTTP response code in the range [``200`` - ``299``]. ``503`` is</span>
-<span class="s2">  considered an App Engine system error instead of an application error.</span>
-<span class="s2">  Requests returning error ``503`` will be retried regardless of retry</span>
-<span class="s2">  configuration and not counted against retry counts. Any other response</span>
-<span class="s2">  code or a failure to receive a response before the deadline is a failed</span>
-<span class="s2">  attempt.</span>
+<span class="s2">  HTTP response code in the range [``200`` - ``299``]. The task attempt</span>
+<span class="s2">  has failed if the app&#39;s handler returns a non-2xx response code or Cloud</span>
+<span class="s2">  Tasks does not receive response before the</span>
+<span class="s2">  [deadline][Task.dispatch\_deadline]. Failed tasks will be retried</span>
+<span class="s2">  according to the [retry</span>
+<span class="s2">  configuration][google.cloud.tasks.v2beta2.Queue.retry\_config]. ``503``</span>
+<span class="s2">  (Service Unavailable) is considered an App Engine system error instead</span>
+<span class="s2">  of an application error and will cause Cloud Tasks&#39; traffic congestion</span>
+<span class="s2">  control to temporarily throttle the queue&#39;s dispatches. Unlike other</span>
+<span class="s2">  types of task targets, a ``429`` (Too Many Requests) response from an</span>
+<span class="s2">  app handler does not cause traffic congestion control to throttle the</span>
+<span class="s2">  queue.</span>
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
@@ -747,6 +762,9 @@
         <span class="n">DESCRIPTOR</span><span class="o">=</span><span class="n">_APPENGINEROUTING</span><span class="p">,</span>
         <span class="vm">__module__</span><span class="o">=</span><span class="s2">&quot;google.cloud.tasks_v2beta2.proto.target_pb2&quot;</span><span class="p">,</span>
         <span class="vm">__doc__</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;App Engine Routing.</span>
+<span class="s2">  </span>
+<span class="s2">  Defines routing characteristics specific to App Engine - service,</span>
+<span class="s2">  version, and instance.</span>
 <span class="s2">  </span>
 <span class="s2">  For more information about services, versions, and instances see `An</span>
 <span class="s2">  Overview of App</span>
@@ -835,16 +853,15 @@
 <span class="s2">          -  ``instance =``    [instance][google.cloud.tasks.v2beta2.App</span>
 <span class="s2">          EngineRouting.instance]  -  ``instance_dot_service =``    [ins</span>
 <span class="s2">          tance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]</span>
-<span class="s2">          ``+ &#39;.&#39;   +``</span>
+<span class="s2">          ``+ &#39;.&#39; +``</span>
 <span class="s2">          [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]</span>
 <span class="s2">          -  ``instance_dot_version =``    [instance][google.cloud.tasks</span>
-<span class="s2">          .v2beta2.AppEngineRouting.instance]    ``+ &#39;.&#39;   +``</span>
+<span class="s2">          .v2beta2.AppEngineRouting.instance]    ``+ &#39;.&#39; +``</span>
 <span class="s2">          [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]</span>
 <span class="s2">          -  ``instance_dot_version_dot_service =``    [instance][google</span>
-<span class="s2">          .cloud.tasks.v2beta2.AppEngineRouting.instance]    ``+ &#39;.&#39;</span>
-<span class="s2">          +``</span>
+<span class="s2">          .cloud.tasks.v2beta2.AppEngineRouting.instance]    ``+ &#39;.&#39; +``</span>
 <span class="s2">          [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]</span>
-<span class="s2">          ``+ &#39;.&#39;   +``</span>
+<span class="s2">          ``+ &#39;.&#39; +``</span>
 <span class="s2">          [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]</span>
 <span class="s2">          If</span>
 <span class="s2">          [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]</span>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud Tasks API Client &#8212; google-cloud 405e009 documentation</title>
+    <title>Types for Cloud Tasks API Client &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -77,11 +77,11 @@ appear to have used the HTTP protocol.</p>
 construct the URL that the task is delivered to can be set at the
 queue-level or task-level:</p>
 <ul class="simple">
-<li><p>If set,
-[app_engine_routing_override][google.cloud.tasks.v2.AppEngineHttpQueue.app_engine_routing_override]
-is used for all tasks in the queue, no matter what the setting is for
-the [task-level
-app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].</p></li>
+<li><p>If [app_engine_routing_override is set on the
+queue][Queue.app_engine_routing_override], this value is used for
+all tasks in the queue, no matter what the setting is for the
+[task-level
+app_engine_routing][AppEngineHttpRequest.app_engine_routing].</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> that the task will be sent to is:</p>
 <ul class="simple">
@@ -101,12 +101,13 @@ has failed if the app’s handler returns a non-2xx response code or Cloud
 Tasks does not receive response before the
 [deadline][google.cloud.tasks.v2.Task.dispatch_deadline]. Failed tasks
 will be retried according to the [retry
-configuration][Queue.RetryConfig]. <code class="docutils literal notranslate"><span class="pre">503</span></code> (Service Unavailable) is
-considered an App Engine system error instead of an application error
-and will cause Cloud Tasks’ traffic congestion control to temporarily
-throttle the queue’s dispatches. Unlike other types of task targets, a
-<code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests) response from an app handler does not cause
-traffic congestion control to throttle the queue.</p>
+configuration][google.cloud.tasks.v2.Queue.retry_config]. <code class="docutils literal notranslate"><span class="pre">503</span></code>
+(Service Unavailable) is considered an App Engine system error instead
+of an application error and will cause Cloud Tasks’ traffic congestion
+control to temporarily throttle the queue’s dispatches. Unlike other
+types of task targets, a <code class="docutils literal notranslate"><span class="pre">429</span></code> (Too Many Requests) response from an
+app handler does not cause traffic congestion control to throttle the
+queue.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.AppEngineHttpRequest.http_method">
 <code class="sig-name descname">http_method</code><a class="headerlink" href="#google.cloud.tasks_v2.types.AppEngineHttpRequest.http_method" title="Permalink to this definition">#</a></dt>
@@ -122,12 +123,12 @@ app is written in e.g. <a class="reference external" href="https://cloud.google.
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.AppEngineHttpRequest.app_engine_routing">
 <code class="sig-name descname">app_engine_routing</code><a class="headerlink" href="#google.cloud.tasks_v2.types.AppEngineHttpRequest.app_engine_routing" title="Permalink to this definition">#</a></dt>
-<dd><p>Task-level setting for App Engine routing.  If set, [app_engi
-ne_routing_override][google.cloud.tasks.v2.AppEngineHttpQueu
-e.app_engine_routing_override] is used for all tasks in the
-queue, no matter what the setting is for the [task-level app_
-engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.ap
-p_engine_routing].</p>
+<dd><p>Task-level setting for App Engine routing.  -  If
+[app_engine_routing_override is set on the
+queue][Queue.app_engine_routing_override], this value is
+used for    all tasks in the queue, no matter what the setting
+is for the    [task-level    app_engine_routing][AppEngineHt
+tpRequest.app_engine_routing].</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -250,6 +251,11 @@ Engine</a>,
 routing</a>,
 and <a class="reference external" href="https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed">App Engine Flex request
 routing</a>.</p>
+<p>Using [AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting]
+requires
+<code class="docutils literal notranslate"><span class="pre">`appengine.applications.get</span></code> &lt;<a class="reference external" href="https://cloud.google.com/appengine/docs/admin-api/access-control">https://cloud.google.com/appengine/docs/admin-api/access-control</a>&gt;`_
+Google IAM permission for the project and the following scope:</p>
+<p><code class="docutils literal notranslate"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.AppEngineRouting.service">
 <code class="sig-name descname">service</code><a class="headerlink" href="#google.cloud.tasks_v2.types.AppEngineRouting.service" title="Permalink to this definition">#</a></dt>
@@ -601,7 +607,7 @@ binding. This field is logged only for Cloud Audit Logging.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.CreateQueueRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2.types.CreateQueueRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The location name in which the queue will be
+<dd><p>Required. The location name in which the queue will be
 created. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code>  The list of
 allowed locations can be obtained by calling Cloud Tasks’
@@ -612,7 +618,7 @@ ons.ListLocations].</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.CreateQueueRequest.queue">
 <code class="sig-name descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2.types.CreateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue to create.  [Queue’s
+<dd><p>Required. The queue to create.  [Queue’s
 name][google.cloud.tasks.v2.Queue.name] cannot be the same as
 an existing queue.</p>
 </dd></dl>
@@ -639,7 +645,7 @@ an existing queue.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.CreateTaskRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2.types.CreateTaskRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code>
 The queue must already exist.</p>
 </dd></dl>
@@ -647,7 +653,7 @@ The queue must already exist.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.CreateTaskRequest.task">
 <code class="sig-name descname">task</code><a class="headerlink" href="#google.cloud.tasks_v2.types.CreateTaskRequest.task" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task to add.  Task names have the following
+<dd><p>Required. The task to add.  Task names have the following
 format: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUE</span>
 <span class="pre">UE_ID/tasks/TASK_ID</span></code>. The user can optionally specify a task
 [name][google.cloud.tasks.v2.Task.name]. If a name is not
@@ -722,7 +728,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.DeleteQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.DeleteQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -742,8 +748,8 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.DeleteTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.DeleteTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -877,7 +883,7 @@ omitted, policy format version 1 will be returned.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.GetQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.GetQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The resource name of the queue. For example:
+<dd><p>Required. The resource name of the queue. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -897,8 +903,8 @@ omitted, policy format version 1 will be returned.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.GetTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.GetTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -939,7 +945,7 @@ data that it contains.  Authorization for
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.ListQueuesRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2.types.ListQueuesRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The location name. For example:
+<dd><p>Required. The location name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
 </dd></dl>
 
@@ -1051,7 +1057,7 @@ hours.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.ListTasksRequest.parent">
 <code class="sig-name descname">parent</code><a class="headerlink" href="#google.cloud.tasks_v2.types.ListTasksRequest.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1163,7 +1169,7 @@ there are no more results.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.PauseQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.PauseQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1306,7 +1312,7 @@ overwritten blindly.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.PurgeQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.PurgeQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1478,10 +1484,8 @@ even if the queue has reached its
 <code class="sig-name descname">max_dispatches_per_second</code><a class="headerlink" href="#google.cloud.tasks_v2.types.RateLimits.max_dispatches_per_second" title="Permalink to this definition">#</a></dt>
 <dd><p>The maximum rate at which tasks are dispatched from this
 queue.  If unspecified when the queue is created, Cloud Tasks
-will pick the default.  -  For [App Engine
-queues][google.cloud.tasks.v2.AppEngineHttpQueue],    the
-maximum allowed value is 500.  This field has the same meaning
-as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate">rate in queue.yaml/xml</a>.</p>
+will pick the default.  -  The maximum allowed value is 500.
+This field has the same meaning as <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate">rate in queue.yaml/xml</a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1503,9 +1507,9 @@ s_per_second][google.cloud.tasks.v2.RateLimits.max_dispatch
 es_per_second].  Cloud Tasks will pick the value of
 <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> based on the value of [max_dispatches_per
 _second][google.cloud.tasks.v2.RateLimits.max_dispatches_pe
-r_second].  For App Engine queues that were created or
-updated using <code class="docutils literal notranslate"><span class="pre">queue.yaml/xml</span></code>, <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> is equal
-to <a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size">bucket_size</a>. Since
+r_second].  For queues that were created or updated using
+<code class="docutils literal notranslate"><span class="pre">queue.yaml/xml</span></code>, <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> is equal to
+<a class="reference external" href="https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size">bucket_size</a>. Since
 <code class="docutils literal notranslate"><span class="pre">max_burst_size</span></code> is output only, if
 [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue] is
 called on a queue created by <code class="docutils literal notranslate"><span class="pre">queue.yaml/xml</span></code>,
@@ -1556,7 +1560,7 @@ meaning as <a class="reference external" href="https://cloud.google.com/appengin
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.ResumeQueueRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.ResumeQueueRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue name. For example:
+<dd><p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 </dd></dl>
 
@@ -1704,8 +1708,8 @@ pick the default.  This field has the same meaning as
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.RunTaskRequest.name">
 <code class="sig-name descname">name</code><a class="headerlink" href="#google.cloud.tasks_v2.types.RunTaskRequest.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/l</span>
-<span class="pre">ocations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
+<dd><p>Required. The task name. For example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/lo</span>
+<span class="pre">cations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1839,8 +1843,7 @@ le.cloud.tasks.v2.AppEngineHttpRequest] set.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.Task.schedule_time">
 <code class="sig-name descname">schedule_time</code><a class="headerlink" href="#google.cloud.tasks_v2.types.Task.schedule_time" title="Permalink to this definition">#</a></dt>
-<dd><p>The time when the task is scheduled to be attempted.  For App
-Engine queues, this is when the task will be attempted or
+<dd><p>The time when the task is scheduled to be attempted or
 retried.  <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> will be truncated to the nearest
 microsecond.</p>
 </dd></dl>
@@ -2059,7 +2062,7 @@ caller is allowed.</p>
 <dl class="attribute">
 <dt id="google.cloud.tasks_v2.types.UpdateQueueRequest.queue">
 <code class="sig-name descname">queue</code><a class="headerlink" href="#google.cloud.tasks_v2.types.UpdateQueueRequest.queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Required.  The queue to create or update.  The queue’s
+<dd><p>Required. The queue to create or update.  The queue’s
 [name][google.cloud.tasks.v2.Queue.name] must be specified.
 Output only fields cannot be modified using UpdateQueue. Any
 value specified for an output only field will be ignored. The

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.tasks_v2beta3.gapic.cloud_tasks_client &#8212; google-cloud 405e009 documentation</title>
+    <title>google.cloud.tasks_v2beta3.gapic.cloud_tasks_client &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -301,9 +301,7 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The location name. For example:</span>
+<span class="sd">            parent (str): Required. The location name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
 <span class="sd">            filter_ (str): ``filter`` can be used to specify a subset of queues. Any ``Queue``</span>
 <span class="sd">                field can be used as a filter and several operators as supported. For</span>
@@ -404,9 +402,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_queue(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The resource name of the queue. For example:</span>
+<span class="sd">            name (str): Required. The resource name of the queue. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -499,16 +495,12 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_queue(parent, queue)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The location name in which the queue will be created. For example:</span>
-<span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
+<span class="sd">            parent (str): Required. The location name in which the queue will be created. For</span>
+<span class="sd">                example: ``projects/PROJECT_ID/locations/LOCATION_ID``</span>
 
 <span class="sd">                The list of allowed locations can be obtained by calling Cloud Tasks&#39;</span>
 <span class="sd">                implementation of ``ListLocations``.</span>
-<span class="sd">            queue (Union[dict, ~google.cloud.tasks_v2beta3.types.Queue]): Required.</span>
-
-<span class="sd">                The queue to create.</span>
+<span class="sd">            queue (Union[dict, ~google.cloud.tasks_v2beta3.types.Queue]): Required. The queue to create.</span>
 
 <span class="sd">                ``Queue&#39;s name`` cannot be the same as an existing queue.</span>
 
@@ -606,9 +598,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.update_queue(queue)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            queue (Union[dict, ~google.cloud.tasks_v2beta3.types.Queue]): Required.</span>
-
-<span class="sd">                The queue to create or update.</span>
+<span class="sd">            queue (Union[dict, ~google.cloud.tasks_v2beta3.types.Queue]): Required. The queue to create or update.</span>
 
 <span class="sd">                The queue&#39;s ``name`` must be specified.</span>
 
@@ -705,9 +695,7 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_queue(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            name (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -779,9 +767,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.purge_queue(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            name (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -855,9 +841,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.pause_queue(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            name (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -936,9 +920,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.resume_queue(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            name (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -1291,9 +1273,7 @@
 <span class="sd">            ...         pass</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            parent (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
 <span class="sd">            response_view (~google.cloud.tasks_v2beta3.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
@@ -1396,9 +1376,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.get_task(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The task name. For example:</span>
+<span class="sd">            name (str): Required. The task name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            response_view (~google.cloud.tasks_v2beta3.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>
@@ -1488,15 +1466,11 @@
 <span class="sd">            &gt;&gt;&gt; response = client.create_task(parent, task)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            parent (str): Required.</span>
-
-<span class="sd">                The queue name. For example:</span>
+<span class="sd">            parent (str): Required. The queue name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``</span>
 
 <span class="sd">                The queue must already exist.</span>
-<span class="sd">            task (Union[dict, ~google.cloud.tasks_v2beta3.types.Task]): Required.</span>
-
-<span class="sd">                The task to add.</span>
+<span class="sd">            task (Union[dict, ~google.cloud.tasks_v2beta3.types.Task]): Required. The task to add.</span>
 
 <span class="sd">                Task names have the following format:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``.</span>
@@ -1614,9 +1588,7 @@
 <span class="sd">            &gt;&gt;&gt; client.delete_task(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The task name. For example:</span>
+<span class="sd">            name (str): Required. The task name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
@@ -1704,9 +1676,7 @@
 <span class="sd">            &gt;&gt;&gt; response = client.run_task(name)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): Required.</span>
-
-<span class="sd">                The task name. For example:</span>
+<span class="sd">            name (str): Required. The task name. For example:</span>
 <span class="sd">                ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``</span>
 <span class="sd">            response_view (~google.cloud.tasks_v2beta3.types.View): The response\_view specifies which subset of the ``Task`` will be</span>
 <span class="sd">                returned.</span>

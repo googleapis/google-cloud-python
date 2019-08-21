@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Client for Cloud Tasks API &#8212; google-cloud 405e009 documentation</title>
+    <title>Client for Cloud Tasks API &#8212; google-cloud c927a72 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -99,14 +99,12 @@ After the task is acknowledged, it will not be returned by a later
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
-<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
-returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
-restriction is to ensure that your worker currently holds the lease.</p>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
+<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required. The task’s current schedule time, available in the
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code>
+response. This restriction is to ensure that your worker currently holds
+the lease.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </p></li>
@@ -155,14 +153,12 @@ to the next caller of <code class="docutils literal notranslate"><span class="pr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
-<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
-returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
-restriction is to ensure that your worker currently holds the lease.</p>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
+<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required. The task’s current schedule time, available in the
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code>
+response. This restriction is to ensure that your worker currently holds
+the lease.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </p></li>
@@ -229,14 +225,12 @@ using this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The location name in which the queue will be created. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The location name in which the queue will be created. For
+example: <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
 <p>The list of allowed locations can be obtained by calling Cloud Tasks’
 implementation of <code class="docutils literal notranslate"><span class="pre">ListLocations</span></code>.</p>
 </p></li>
-<li><p><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required.</p>
-<p>The queue to create.</p>
+<li><p><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required. The queue to create.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Queue's</span> <span class="pre">name</span></code> cannot be the same as an existing queue.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a></p>
@@ -291,13 +285,11 @@ that is provided to the method.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required. The queue name. For example:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
 <p>The queue must already exist.</p>
 </p></li>
-<li><p><strong>task</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Task" title="google.cloud.tasks_v2beta2.types.Task"><em>Task</em></a><em>]</em>) – <p>Required.</p>
-<p>The task to add.</p>
+<li><p><strong>task</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Task" title="google.cloud.tasks_v2beta2.types.Task"><em>Task</em></a><em>]</em>) – <p>Required. The task to add.</p>
 <p>Task names have the following format:
 <code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code>.
 The user can optionally specify a task <code class="docutils literal notranslate"><span class="pre">name</span></code>. If a name is not
@@ -385,10 +377,8 @@ using this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -431,10 +421,8 @@ failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -581,10 +569,8 @@ that is provided to the method.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The resource name of the queue. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The resource name of the queue. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -627,10 +613,8 @@ that is provided to the method.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
 <li><p><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
 <p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
@@ -696,11 +680,14 @@ perform the work associated with the task. To return the payloads in the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
-<li><p><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>After the worker has successfully finished the work associated with the
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
+<li><p><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Required. The duration of the lease.</p>
+<p>Each task returned in the <code class="docutils literal notranslate"><span class="pre">response</span></code> will have its <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
+set to the current time plus the <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code>. The task is leased
+until its <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>; thus, the task will not be returned to
+another <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> call before its <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>.</p>
+<p>After the worker has successfully finished the work associated with the
 task, the worker must call via <code class="docutils literal notranslate"><span class="pre">AcknowledgeTask</span></code> before the
 <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>. Otherwise the task will be returned to a later
 <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> call so that another worker can retry it.</p>
@@ -713,6 +700,9 @@ message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta
 <p>The system will make a best effort to return as close to as
 <code class="docutils literal notranslate"><span class="pre">max_tasks</span></code> as possible.</p>
 <p>The largest that <code class="docutils literal notranslate"><span class="pre">max_tasks</span></code> can be is 1000.</p>
+<p>The maximum total size of a <code class="docutils literal notranslate"><span class="pre">lease</span> <span class="pre">tasks</span> <span class="pre">response</span></code> is 32 MB. If the
+sum of all task sizes requested reaches this limit, fewer tasks than
+requested are returned.</p>
 </p></li>
 <li><p><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
@@ -800,10 +790,8 @@ that is provided to the method.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The location name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p>
-</p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The location name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID</span></code></p></li>
 <li><p><strong>filter_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p><code class="docutils literal notranslate"><span class="pre">filter</span></code> can be used to specify a subset of queues. Any <code class="docutils literal notranslate"><span class="pre">Queue</span></code>
 field can be used as a filter and several operators as supported. For
 example: <code class="docutils literal notranslate"><span class="pre">&lt;=,</span> <span class="pre">&lt;,</span> <span class="pre">&gt;=,</span> <span class="pre">&gt;,</span> <span class="pre">!=,</span> <span class="pre">=,</span> <span class="pre">:</span></code>. The filter syntax is the same as
@@ -880,10 +868,8 @@ time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
 <p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
@@ -953,10 +939,8 @@ the queue is paused. A queue is paused if its <code class="docutils literal notr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -1008,10 +992,8 @@ might be dispatched before the purge takes effect. A purge is irreversible.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -1069,19 +1051,16 @@ starting from now. The new task lease will be returned in the task’s
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
-<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required.</p>
-<p>The task’s current schedule time, available in the <code class="docutils literal notranslate"><span class="pre">schedule_time</span></code>
-returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code> response. This
-restriction is to ensure that your worker currently holds the lease.</p>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
+<li><p><strong>schedule_time</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><em>Timestamp</em></a><em>]</em>) – <p>Required. The task’s current schedule time, available in the
+<code class="docutils literal notranslate"><span class="pre">schedule_time</span></code> returned by <code class="docutils literal notranslate"><span class="pre">LeaseTasks</span></code> response or <code class="docutils literal notranslate"><span class="pre">RenewLease</span></code>
+response. This restriction is to ensure that your worker currently holds
+the lease.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Timestamp" title="google.cloud.tasks_v2beta2.types.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </p></li>
-<li><p><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Required.</p>
-<p>The desired new lease duration, starting from now.</p>
+<li><p><strong>lease_duration</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Duration" title="google.cloud.tasks_v2beta2.types.Duration"><em>Duration</em></a><em>]</em>) – <p>Required. The desired new lease duration, starting from now.</p>
 <p>The maximum lease duration is 1 week. <code class="docutils literal notranslate"><span class="pre">lease_duration</span></code> will be
 truncated to the nearest second.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
@@ -1146,10 +1125,8 @@ Risks</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The queue name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The queue name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID</span></code></p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
 be retried using a default configuration.</p></li>
@@ -1208,10 +1185,8 @@ already succeeded or permanently failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – <p>Required.</p>
-<p>The task name. For example:
-<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p>
-</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Required. The task name. For example:
+<code class="docutils literal notranslate"><span class="pre">projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID</span></code></p></li>
 <li><p><strong>response_view</strong> (<em>View</em>) – <p>The response_view specifies which subset of the <code class="docutils literal notranslate"><span class="pre">Task</span></code> will be
 returned.</p>
 <p>By default response_view is <code class="docutils literal notranslate"><span class="pre">BASIC</span></code>; not all information is retrieved
@@ -1400,8 +1375,7 @@ using this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required.</p>
-<p>The queue to create or update.</p>
+<li><p><strong>queue</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.tasks_v2beta2.types.Queue" title="google.cloud.tasks_v2beta2.types.Queue"><em>Queue</em></a><em>]</em>) – <p>Required. The queue to create or update.</p>
 <p>The queue’s <code class="docutils literal notranslate"><span class="pre">name</span></code> must be specified.</p>
 <p>Output only fields cannot be modified using UpdateQueue. Any value
 specified for an output only field will be ignored. The queue’s <code class="docutils literal notranslate"><span class="pre">name</span></code>
