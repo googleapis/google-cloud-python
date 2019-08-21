@@ -669,6 +669,7 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
 
     assert isinstance(return_value, job.QueryJob)
 
+
 def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
