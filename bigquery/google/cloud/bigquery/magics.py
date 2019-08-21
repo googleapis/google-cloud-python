@@ -294,7 +294,7 @@ def _run_query(client, query, job_config=None):
 
     if job_config and job_config.dry_run:
         assert query_job.state == "DONE"
-        print("Query successfully validated. This query will process {} bytes.".format(query_job.total_bytes_processed))
+        print("Query successfully validated. This query will process {} bytes.".format(query_job.estimated_bytes_processed))
         return query_job
 
     print("Executing query with job ID: {}".format(query_job.job_id))
