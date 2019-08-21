@@ -2631,7 +2631,7 @@ class TestStructuredProperty:
         class MineToo(model.Model):
             bar = model.StructuredProperty(Mine)
 
-        minetoo = MineToo(projection=("bar.foo",))
+        minetoo = MineToo(projection=("saywhat",))
         with pytest.raises(model.UnprojectedPropertyError):
             MineToo.bar._get_value(minetoo)
 
@@ -3401,6 +3401,50 @@ class TestModel:
             "_values": {"pages": 287, "author": "Tim Robert"},
             "_projection": ("pages", "author"),
         }
+
+    @staticmethod
+    def test_constructor_with_structured_property_projection():
+        class Author(model.Model):
+            first_name = model.StringProperty()
+            last_name = model.StringProperty()
+
+        class Book(model.Model):
+            pages = model.IntegerProperty()
+            author = model.StructuredProperty(Author)
+            publisher = model.StringProperty()
+
+        entity = Book(
+            pages=287,
+            author=Author(first_name="Tim", last_name="Robert"),
+            projection=("author.first_name", "author.last_name"),
+        )
+        assert entity._projection == ("author.first_name", "author.last_name")
+        assert entity.author._projection == ("first_name", "last_name")
+
+    @staticmethod
+    def test_constructor_with_repeated_structured_property_projection():
+        class Author(model.Model):
+            first_name = model.StringProperty()
+            last_name = model.StringProperty()
+
+        class Book(model.Model):
+            pages = model.IntegerProperty()
+            authors = model.StructuredProperty(Author, repeated=True)
+            publisher = model.StringProperty()
+
+        entity = Book(
+            pages=287,
+            authors=[
+                Author(first_name="Tim", last_name="Robert"),
+                Author(first_name="Jim", last_name="Bobert"),
+            ],
+            projection=("authors.first_name", "authors.last_name"),
+        )
+        assert entity._projection == (
+            "authors.first_name",
+            "authors.last_name",
+        )
+        assert entity.authors[0]._projection == ("first_name", "last_name")
 
     @staticmethod
     def test_constructor_non_existent_property():
@@ -4470,7 +4514,7 @@ class Test_entity_from_protobuf:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_legacy_repeated_structured_property():
+    def test_repeated_structured_property():
         class OtherKind(model.Model):
             foo = model.IntegerProperty()
             bar = model.StringProperty()
@@ -4495,6 +4539,29 @@ class Test_entity_from_protobuf:
         assert entity.baz[0].bar == "himom"
         assert entity.baz[1].foo == 144
         assert entity.baz[1].bar == "hellodad"
+        assert entity.copacetic is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_legacy_repeated_structured_property_projection():
+        class OtherKind(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        class ThisKind(model.Model):
+            baz = model.StructuredProperty(OtherKind, repeated=True)
+            copacetic = model.BooleanProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update(
+            {"baz.foo": 42, "baz.bar": "himom", "copacetic": True}
+        )
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.baz[0].foo == 42
+        assert entity.baz[0].bar == "himom"
         assert entity.copacetic is True
 
 

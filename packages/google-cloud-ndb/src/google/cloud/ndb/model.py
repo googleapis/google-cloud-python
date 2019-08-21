@@ -540,6 +540,13 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
         # native support for embedded entities and NDB now uses that, by
         # default. This handles the case of reading structured properties from
         # older NDB datastore instances.
+        #
+        # Turns out this is also useful when doing projection queries with
+        # repeated structured properties, in which case, due to oddities with
+        # how Datastore handles these things, we'll get a scalar value for the
+        # subvalue, instead of an array, like you'd expect when just
+        # marshalling the entity normally (instead of in a projection query).
+        #
         if prop is None and "." in name:
             supername, subname = name.split(".", 1)
             structprop = getattr(model_class, supername, None)
@@ -550,10 +557,18 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                     kind = structprop._model_class._get_kind()
                     key = key_module.Key(kind, None)
                     if structprop._repeated:
-                        value = [
-                            _BaseValue(ds_entity_module.Entity(key._key))
-                            for _ in subvalue
-                        ]
+                        if isinstance(subvalue, list):
+                            # Not a projection
+                            value = [
+                                _BaseValue(ds_entity_module.Entity(key._key))
+                                for _ in subvalue
+                            ]
+                        else:
+                            # Is a projection, so subvalue is scalar. Only need
+                            # one subentity.
+                            value = [
+                                _BaseValue(ds_entity_module.Entity(key._key))
+                            ]
                     else:
                         value = ds_entity_module.Entity(key._key)
                         value = _BaseValue(value)
@@ -563,10 +578,16 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 if structprop._repeated:
                     # Branch coverage bug,
                     # See: https://github.com/nedbat/coveragepy/issues/817
-                    for subentity, subsubvalue in zip(  # pragma no branch
-                        value, subvalue
-                    ):
-                        subentity.b_val.update({subname: subsubvalue})
+                    if isinstance(subvalue, list):
+                        # Not a projection
+                        for subentity, subsubvalue in zip(  # pragma no branch
+                            value, subvalue
+                        ):
+                            subentity.b_val.update({subname: subsubvalue})
+                    else:
+                        # Is a projection, so subvalue is scalar and we only
+                        # have one subentity.
+                        value[0].b_val.update({subname: subvalue})
                 else:
                     value.b_val.update({subname: subvalue})
 
@@ -4493,6 +4514,23 @@ class Model(metaclass=MetaModel):
                 representing the projection for the model instance.
         """
         self._projection = tuple(projection)
+
+        # Handle projections for structured properties by recursively setting
+        # projections on sub-entities.
+        by_prefix = {}
+        for name in projection:
+            if "." in name:
+                head, tail = name.split(".", 1)
+                by_prefix.setdefault(head, []).append(tail)
+
+        for name, projection in by_prefix.items():
+            prop = self._properties.get(name)
+            value = prop._get_user_value(self)
+            if prop._repeated:
+                for entity in value:
+                    entity._set_projection(projection)
+            else:
+                value._set_projection(projection)
 
     @classmethod
     def _check_properties(cls, property_names, require_indexed=True):
