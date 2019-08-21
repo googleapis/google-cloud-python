@@ -49,6 +49,21 @@ _NO_BQSTORAGE_ERROR = (
 
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
 
+_PANDAS_DTYPE_TO_BQ = {
+    "bool": "BOOLEAN",
+    "datetime64[ns, UTC]": "TIMESTAMP",
+    "datetime64[ns]": "DATETIME",
+    "float32": "FLOAT",
+    "float64": "FLOAT",
+    "int8": "INTEGER",
+    "int16": "INTEGER",
+    "int32": "INTEGER",
+    "int64": "INTEGER",
+    "uint8": "INTEGER",
+    "uint16": "INTEGER",
+    "uint32": "INTEGER",
+}
+
 
 class _DownloadState(object):
     """Flag to indicate that a thread should exit early."""
@@ -170,6 +185,31 @@ def bq_to_arrow_array(series, bq_field):
     if bq_field.field_type.upper() in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
+
+
+def dataframe_to_bq_schema(dataframe):
+    """Convert a pandas DataFrame schema to a BigQuery schema.
+
+    TODO(GH#8140): Add bq_schema argument to allow overriding autodetected
+                   schema for a subset of columns.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame to convert to convert to Parquet file.
+
+    Returns:
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
+            The automatically determined schema. Returns None if the type of
+            any column cannot be determined.
+    """
+    bq_schema = []
+    for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+        bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
+        if not bq_type:
+            return None
+        bq_field = schema.SchemaField(column, bq_type)
+        bq_schema.append(bq_field)
+    return tuple(bq_schema)
 
 
 def dataframe_to_arrow(dataframe, bq_schema):

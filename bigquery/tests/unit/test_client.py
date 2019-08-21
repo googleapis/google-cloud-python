@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import copy
+import collections
 import datetime
 import decimal
 import email
@@ -5325,8 +5326,77 @@ class TestClientUpload(object):
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-        assert sent_config is job_config
         assert sent_config.source_format == job.SourceFormat.PARQUET
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_automatic_schema(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        df_data = collections.OrderedDict(
+            [
+                ("int_col", [1, 2, 3]),
+                ("float_col", [1.0, 2.0, 3.0]),
+                ("bool_col", [True, False, True]),
+                (
+                    "dt_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ),
+                ),
+                (
+                    "ts_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ).dt.tz_localize(pytz.utc),
+                ),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == (
+            SchemaField("int_col", "INTEGER"),
+            SchemaField("float_col", "FLOAT"),
+            SchemaField("bool_col", "BOOLEAN"),
+            SchemaField("dt_col", "DATETIME"),
+            SchemaField("ts_col", "TIMESTAMP"),
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -5509,7 +5579,7 @@ class TestClientUpload(object):
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-        assert sent_config is job_config
+        assert sent_config.schema == schema
         assert sent_config.source_format == job.SourceFormat.PARQUET
 
     # Low-level tests
