@@ -5608,11 +5608,11 @@ class TestClientUpload(object):
         )
 
         assert warned  # there should be at least one warning
-        unknown_col_warning = None
-        for warning in warned:
-            if "unknown_col" in str(warning):  # pragma: no cover
-                unknown_col_warning = warning
-        assert unknown_col_warning.category == UserWarning
+        unknown_col_warnings = [
+            warning for warning in warned if "unknown_col" in str(warning)
+        ]
+        assert unknown_col_warnings
+        assert unknown_col_warnings[0].category == UserWarning
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
