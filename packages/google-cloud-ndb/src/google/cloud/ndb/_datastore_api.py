@@ -251,6 +251,7 @@ class _LookupBatch:
 
         # Process results, which are divided into found, missing, and deferred
         results = rpc.result()
+        log.debug(results)
 
         # For all deferred keys, batch them up again with their original
         # futures

@@ -227,6 +227,20 @@ def test_insert_entity(dispose_of, ds_client):
     dispose_of(key._key)
 
 
+@pytest.mark.usefixtures("client_context")
+def test_insert_roundtrip_naive_datetime(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.DateTimeProperty()
+
+    entity = SomeKind(foo=datetime.datetime(2010, 5, 12, 2, 42))
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == datetime.datetime(2010, 5, 12, 2, 42)
+
+    dispose_of(key._key)
+
+
 def test_parallel_threads(dispose_of, namespace):
     client = ndb.Client(namespace=namespace)
 

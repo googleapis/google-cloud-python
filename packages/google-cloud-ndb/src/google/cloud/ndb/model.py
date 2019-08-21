@@ -3426,6 +3426,13 @@ class DateTimeProperty(Property):
                 "Expected datetime, got {!r}".format(value)
             )
 
+        if value.tzinfo is not None:
+            raise exceptions.BadValueError(
+                "DatetimeProperty {} can only support naive datetimes "
+                "(presumed UTC). Please derive a new Property to support "
+                "alternate timezones.".format(self._name)
+            )
+
     @staticmethod
     def _now():
         """datetime.datetime: Return current datetime.
@@ -3453,6 +3460,19 @@ class DateTimeProperty(Property):
         ):
             value = self._now()
             self._store_value(entity, value)
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (datetime.datetime): The value to be converted.
+
+        Returns:
+            Optional[datetime.datetime]: The value without ``tzinfo`` or
+                ``None`` if value did not have ``tzinfo`` set.
+        """
+        if value.tzinfo is not None:
+            return value.replace(tzinfo=None)
 
 
 class DateProperty(DateTimeProperty):

@@ -14,6 +14,7 @@
 
 import datetime
 import pickle
+import pytz
 import types
 import unittest.mock
 import zlib
@@ -2427,6 +2428,13 @@ class TestDateTimeProperty:
             prop._validate(None)
 
     @staticmethod
+    def test__validate_with_tz():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = datetime.datetime.now(tz=pytz.utc)
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
     def test__now():
         dt_val = model.DateTimeProperty._now()
         assert isinstance(dt_val, datetime.datetime)
@@ -2485,6 +2493,18 @@ class TestDateTimeProperty:
         prop = model.DateTimeProperty(name="dt_val")
         with pytest.raises(NotImplementedError):
             prop._db_get_value(None, None)
+
+    @staticmethod
+    def test__from_base_type_no_timezone():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = datetime.datetime.now()
+        assert prop._from_base_type(value) is None
+
+    @staticmethod
+    def test__from_base_type_timezone():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = datetime.datetime(2010, 5, 12, tzinfo=pytz.utc)
+        assert prop._from_base_type(value) == datetime.datetime(2010, 5, 12)
 
 
 class TestDateProperty:
