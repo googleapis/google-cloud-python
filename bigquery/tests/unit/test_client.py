@@ -5434,7 +5434,7 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_w_partial_automatic_schema(self):
+    def test_load_table_from_dataframe_w_partial_schema(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
         from google.cloud.bigquery.schema import SchemaField
@@ -5468,7 +5468,8 @@ class TestClientUpload(object):
                         dtype="datetime64[ns]",
                     ).dt.tz_localize(pytz.utc),
                 ),
-                ("string_col", ["abc", "def", "ghi"]),
+                ("string_col", ["abc", None, "def"]),
+                ("bytes_col", [b"abc", b"def", None]),
             ]
         )
         dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
@@ -5479,6 +5480,7 @@ class TestClientUpload(object):
         schema = (
             SchemaField("int_as_float_col", "INTEGER"),
             SchemaField("string_col", "STRING"),
+            SchemaField("bytes_col", "BYTES"),
         )
         job_config = job.LoadJobConfig(schema=schema)
         with load_patch as load_table_from_file:
@@ -5509,7 +5511,112 @@ class TestClientUpload(object):
             SchemaField("dt_col", "DATETIME"),
             SchemaField("ts_col", "TIMESTAMP"),
             SchemaField("string_col", "STRING"),
+            SchemaField("bytes_col", "BYTES"),
         )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_partial_schema_extra_types(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        df_data = collections.OrderedDict(
+            [
+                ("int_col", [1, 2, 3]),
+                ("int_as_float_col", [1.0, float("nan"), 3.0]),
+                ("string_col", ["abc", None, "def"]),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        schema = (
+            SchemaField("int_as_float_col", "INTEGER"),
+            SchemaField("string_col", "STRING"),
+            SchemaField("unknown_col", "BYTES"),
+        )
+        job_config = job.LoadJobConfig(schema=schema)
+        with load_patch as load_table_from_file:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == (
+            SchemaField("int_col", "INTEGER"),
+            SchemaField("int_as_float_col", "INTEGER"),
+            SchemaField("string_col", "STRING"),
+        )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        df_data = collections.OrderedDict(
+            [
+                ("string_col", ["abc", "def", "ghi"]),
+                ("unknown_col", ["jkl", None, "mno"]),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        schema = (SchemaField("string_col", "STRING"),)
+        job_config = job.LoadJobConfig(schema=schema)
+        with load_patch as load_table_from_file, warnings.catch_warnings(
+            record=True
+        ) as warned:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        assert warned  # there should be at least one warning
+        unknown_col_warning = None
+        for warning in warned:
+            if "unknown_col" in str(warning):  # pragma: no cover
+                unknown_col_warning = warning
+        assert unknown_col_warning.category == UserWarning
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == ()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

@@ -1532,6 +1532,15 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        if job_config.schema:
+            for field in job_config.schema:
+                if field.field_type in _STRUCT_TYPES:
+                    raise ValueError(
+                        "Uploading dataframes with struct (record) column types "
+                        "is not supported. See: "
+                        "https://github.com/googleapis/google-cloud-python/issues/8191"
+                    )
+
         autodetected_schema = _pandas_helpers.dataframe_to_bq_schema(
             dataframe, job_config.schema
         )
@@ -1541,20 +1550,13 @@ class Client(ClientWithProject):
         # method.
         if autodetected_schema:
             job_config.schema = autodetected_schema
+        else:
+            job_config.schema = ()
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
 
         try:
-            if job_config.schema:
-                for field in job_config.schema:
-                    if field.field_type in _STRUCT_TYPES:
-                        raise ValueError(
-                            "Uploading dataframes with struct (record) column types "
-                            "is not supported. See: "
-                            "https://github.com/googleapis/google-cloud-python/issues/8191"
-                        )
-
             if pyarrow and job_config.schema:
                 if parquet_compression == "snappy":  # adjust the default value
                     parquet_compression = parquet_compression.upper()

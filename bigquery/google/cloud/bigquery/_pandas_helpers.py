@@ -219,6 +219,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
+            warnings.warn("Unable to determine type of column '{}'.".format(column))
             return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
