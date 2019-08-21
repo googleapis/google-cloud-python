@@ -5330,6 +5330,40 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_struct_fields_error(self):
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+
+        records = [{"float_column": 3.14, "struct_column": [{"foo": 1}, {"bar": -1}]}]
+        dataframe = pandas.DataFrame(data=records)
+
+        schema = [
+            SchemaField("float_column", "FLOAT"),
+            SchemaField(
+                "agg_col",
+                "RECORD",
+                fields=[SchemaField("foo", "INTEGER"), SchemaField("bar", "INTEGER")],
+            ),
+        ]
+        job_config = job.LoadJobConfig(schema=schema)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with pytest.raises(ValueError) as exc_info, load_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        err_msg = str(exc_info.value)
+        assert "struct" in err_msg
+        assert "not support" in err_msg
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_schema_wo_pyarrow(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
