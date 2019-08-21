@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import collections
 import concurrent.futures
 import csv
 import datetime
@@ -633,6 +634,81 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             sorted(row_tuples, key=by_wavelength), sorted(ROWS, key=by_wavelength)
         )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_automatic_schema(self):
+        """Test that a DataFrame with dtypes that map well to BigQuery types
+        can be uploaded without specifying a schema.
+
+        https://github.com/googleapis/google-cloud-python/issues/9044
+        """
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", pandas.Series([True, False, True], dtype="bool")),
+                (
+                    "ts_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ).dt.tz_localize(pytz.utc),
+                ),
+                (
+                    "dt_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ),
+                ),
+                ("float32_col", pandas.Series([1.0, 2.0, 3.0], dtype="float32")),
+                ("float64_col", pandas.Series([4.0, 5.0, 6.0], dtype="float64")),
+                ("int8_col", pandas.Series([-12, -11, -10], dtype="int8")),
+                ("int16_col", pandas.Series([-9, -8, -7], dtype="int16")),
+                ("int32_col", pandas.Series([-6, -5, -4], dtype="int32")),
+                ("int64_col", pandas.Series([-3, -2, -1], dtype="int64")),
+                ("uint8_col", pandas.Series([0, 1, 2], dtype="uint8")),
+                ("uint16_col", pandas.Series([3, 4, 5], dtype="uint16")),
+                ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
+
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_automatic_schema".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        load_job = Config.CLIENT.load_table_from_dataframe(dataframe, table_id)
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(
+            tuple(table.schema),
+            (
+                bigquery.SchemaField("bool_col", "BOOLEAN"),
+                bigquery.SchemaField("ts_col", "TIMESTAMP"),
+                bigquery.SchemaField("dt_col", "DATETIME"),
+                bigquery.SchemaField("float32_col", "FLOAT"),
+                bigquery.SchemaField("float64_col", "FLOAT"),
+                bigquery.SchemaField("int8_col", "INTEGER"),
+                bigquery.SchemaField("int16_col", "INTEGER"),
+                bigquery.SchemaField("int32_col", "INTEGER"),
+                bigquery.SchemaField("int64_col", "INTEGER"),
+                bigquery.SchemaField("uint8_col", "INTEGER"),
+                bigquery.SchemaField("uint16_col", "INTEGER"),
+                bigquery.SchemaField("uint32_col", "INTEGER"),
+            ),
+        )
+        self.assertEqual(table.num_rows, 3)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
