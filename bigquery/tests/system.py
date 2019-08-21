@@ -679,7 +679,7 @@ class TestBigQuery(unittest.TestCase):
                 ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
             ]
         )
-        dataframe = pandas.DataFrame(df_data)
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)

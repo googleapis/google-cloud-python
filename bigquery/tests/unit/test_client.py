@@ -5365,7 +5365,7 @@ class TestClientUpload(object):
                 ),
             ]
         )
-        dataframe = pandas.DataFrame(df_data)
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
