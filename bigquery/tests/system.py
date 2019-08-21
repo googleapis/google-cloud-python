@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import collections
 import concurrent.futures
 import csv
 import datetime
@@ -642,62 +643,43 @@ class TestBigQuery(unittest.TestCase):
 
         https://github.com/googleapis/google-cloud-python/issues/9044
         """
-        bool_col = pandas.Series([True, False, True], dtype="bool")
-        ts_col = pandas.Series(
+        df_data = collections.OrderedDict(
             [
-                datetime.datetime(2010, 1, 2, 3, 44, 50),
-                datetime.datetime(2011, 2, 3, 14, 50, 59),
-                datetime.datetime(2012, 3, 14, 15, 16),
-            ],
-            dtype="datetime64[ns]",
-        ).dt.tz_localize(pytz.utc)
-        dt_col = pandas.Series(
-            [
-                datetime.datetime(2010, 1, 2, 3, 44, 50),
-                datetime.datetime(2011, 2, 3, 14, 50, 59),
-                datetime.datetime(2012, 3, 14, 15, 16),
-            ],
-            dtype="datetime64[ns]",
+                ("bool_col", pandas.Series([True, False, True], dtype="bool")),
+                (
+                    "ts_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ).dt.tz_localize(pytz.utc),
+                ),
+                (
+                    "dt_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ),
+                ),
+                ("float32_col", pandas.Series([1.0, 2.0, 3.0], dtype="float32")),
+                ("float64_col", pandas.Series([4.0, 5.0, 6.0], dtype="float64")),
+                ("int8_col", pandas.Series([-12, -11, -10], dtype="int8")),
+                ("int16_col", pandas.Series([-9, -8, -7], dtype="int16")),
+                ("int32_col", pandas.Series([-6, -5, -4], dtype="int32")),
+                ("int64_col", pandas.Series([-3, -2, -1], dtype="int64")),
+                ("uint8_col", pandas.Series([0, 1, 2], dtype="uint8")),
+                ("uint16_col", pandas.Series([3, 4, 5], dtype="uint16")),
+                ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
+            ]
         )
-        float32_col = pandas.Series([1.0, 2.0, 3.0], dtype="float32")
-        float64_col = pandas.Series([4.0, 5.0, 6.0], dtype="float64")
-        int8_col = pandas.Series([-12, -11, -10], dtype="int8")
-        int16_col = pandas.Series([-9, -8, -7], dtype="int16")
-        int32_col = pandas.Series([-6, -5, -4], dtype="int32")
-        int64_col = pandas.Series([-3, -2, -1], dtype="int64")
-        uint8_col = pandas.Series([0, 1, 2], dtype="uint8")
-        uint16_col = pandas.Series([3, 4, 5], dtype="uint16")
-        uint32_col = pandas.Series([6, 7, 8], dtype="uint32")
-        dataframe = pandas.DataFrame(
-            {
-                "bool_col": bool_col,
-                "ts_col": ts_col,
-                "dt_col": dt_col,
-                "float32_col": float32_col,
-                "float64_col": float64_col,
-                "int8_col": int8_col,
-                "int16_col": int16_col,
-                "int32_col": int32_col,
-                "int64_col": int64_col,
-                "uint8_col": uint8_col,
-                "uint16_col": uint16_col,
-                "uint32_col": uint32_col,
-            },
-            columns=[
-                "bool_col",
-                "ts_col",
-                "dt_col",
-                "float32_col",
-                "float64_col",
-                "int8_col",
-                "int16_col",
-                "int32_col",
-                "int64_col",
-                "uint8_col",
-                "uint16_col",
-                "uint32_col",
-            ],
-        )
+        dataframe = pandas.DataFrame(df_data)
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
