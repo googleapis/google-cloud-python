@@ -5627,6 +5627,8 @@ class TestClientUpload(object):
             {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
         ]
 
+        job_config = job.LoadJobConfig()
+
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
@@ -5635,7 +5637,7 @@ class TestClientUpload(object):
             client.load_table_from_json(
                 json_rows,
                 self.TABLE_REF,
-                job_config=job.LoadJobConfig(),  # TODO: add options?
+                job_config=job_config,
                 project="project-x",
                 location="EU",
             )
@@ -5653,6 +5655,7 @@ class TestClientUpload(object):
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert job_config.source_format is None  # the original was not modified
         assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
         assert sent_config.schema is None
 

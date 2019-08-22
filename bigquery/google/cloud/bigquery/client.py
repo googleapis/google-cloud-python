@@ -1644,6 +1644,9 @@ class Client(ClientWithProject):
 
         if job_config is None:
             job_config = job.LoadJobConfig()
+        else:
+            # Make a copy so that the job config isn't modified in-place.
+            job_config = copy.deepcopy(job_config)
         job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
 
         if project is None:
