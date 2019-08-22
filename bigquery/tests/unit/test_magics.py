@@ -274,6 +274,26 @@ def test__run_query():
     assert re.match("Query complete after .*s", updates[-1])
 
 
+def test__run_query_dry_run_is_silent():
+    magics.context._credentials = None
+
+    sql = "SELECT 17"
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+    job_config = job.QueryJobConfig()
+    job_config.dry_run = True
+    with client_patch as client_mock, io.capture_output() as captured:
+        client_mock().query(sql).job_id = None
+
+        magics._run_query(client_mock(), sql, job_config=job_config)
+
+    assert len(captured.stderr) == 0
+    assert len(captured.stdout) == 0
+
+
 def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -662,12 +682,13 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
     sql = "SELECT 17 AS num"
     result = pandas.DataFrame([17], columns=["num"])
 
-    with run_query_patch as run_query_mock:
+    with run_query_patch as run_query_mock, io.capture_output() as captured_io:
         run_query_mock.return_value = query_job_mock
         query_job_mock.to_dataframe.return_value = result
         return_value = ip.run_cell_magic("bigquery", "--dry_run", sql)
 
-    assert isinstance(return_value, job.QueryJob)
+        assert "Query validated. This query will process" in captured_io.stdout
+        assert isinstance(return_value, job.QueryJob)
 
 
 def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():

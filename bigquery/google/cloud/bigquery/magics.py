@@ -293,8 +293,6 @@ def _run_query(client, query, job_config=None):
     query_job = client.query(query, job_config=job_config)
 
     if job_config and job_config.dry_run:
-        assert query_job.state == "DONE"
-        print("Query successfully validated. This query will process {} bytes.".format(query_job.total_bytes_processed))
         return query_job
 
     print("Executing query with job ID: {}".format(query_job.job_id))
@@ -450,6 +448,11 @@ def _cell_magic(line, query):
         IPython.get_ipython().push({args.destination_var: query_job})
         return
     elif args.dry_run:
+        print(
+            "Query validated. This query will process {} bytes.".format(
+                query_job.total_bytes_processed
+            )
+        )
         return query_job
 
     result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
