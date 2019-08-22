@@ -5468,7 +5468,7 @@ class TestClientUpload(object):
                         dtype="datetime64[ns]",
                     ).dt.tz_localize(pytz.utc),
                 ),
-                ("string_col", ["abc", None, "def"]),
+                ("string_col", [u"abc", None, u"def"]),
                 ("bytes_col", [b"abc", b"def", None]),
             ]
         )
@@ -5526,7 +5526,7 @@ class TestClientUpload(object):
             [
                 ("int_col", [1, 2, 3]),
                 ("int_as_float_col", [1.0, float("nan"), 3.0]),
-                ("string_col", ["abc", None, "def"]),
+                ("string_col", [u"abc", None, u"def"]),
             ]
         )
         dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
@@ -5576,8 +5576,8 @@ class TestClientUpload(object):
         client = self._make_client()
         df_data = collections.OrderedDict(
             [
-                ("string_col", ["abc", "def", "ghi"]),
-                ("unknown_col", ["jkl", None, "mno"]),
+                ("string_col", [u"abc", u"def", u"ghi"]),
+                ("unknown_col", [b"jkl", None, b"mno"]),
             ]
         )
         dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
@@ -5616,7 +5616,7 @@ class TestClientUpload(object):
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
-        assert tuple(sent_config.schema) == ()
+        assert sent_config.schema is None
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -5626,7 +5626,7 @@ class TestClientUpload(object):
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"name": u"Monty", "age": 100}, {"name": u"Python", "age": 60}]
         dataframe = pandas.DataFrame(records, columns=["name", "age"])
         schema = (SchemaField("name", "STRING"), SchemaField("age", "INTEGER"))
         job_config = job.LoadJobConfig(schema=schema)
@@ -5672,7 +5672,7 @@ class TestClientUpload(object):
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        records = [{"name": u"Monty", "age": 100}, {"name": u"Python", "age": 60}]
         dataframe = pandas.DataFrame(records)
         schema = (SchemaField("name", "STRING"), SchemaField("age", "INTEGER"))
         job_config = job.LoadJobConfig(schema=schema)

@@ -882,7 +882,7 @@ class TestBigQuery(unittest.TestCase):
                         decimal.Decimal("99999999999999999999999999999.999999999"),
                     ],
                 ),
-                ("str_col", ["abc", None, "def"]),
+                ("str_col", [u"abc", None, u"def"]),
                 (
                     "time_col",
                     [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
