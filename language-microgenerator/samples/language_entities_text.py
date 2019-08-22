@@ -19,6 +19,7 @@ import sys
 from google.cloud import language_v1
 from google.cloud.language_v1.types.language_service import EncodingType
 
+
 def entities_text():
 
     client = language_v1.LanguageService()
@@ -28,18 +29,17 @@ def entities_text():
     type_ = language_v1.Document.Type.PLAIN_TEXT
     document = language_v1.Document(type=type_, content=content)
     request = language_v1.AnalyzeEntitiesRequest(
-        document=document,
-        encoding_type=EncodingType.UTF8
+        document=document, encoding_type=EncodingType.UTF8
     )
 
     response = client.analyze_entities(request)
     entities = response.entities
 
     for entity in entities:
-        print('=' * 20)
-        print(u'{:<16}: {}'.format('name', entity.name))
-        print(u'{:<16}: {}'.format('type', entity.type.name))
-        print(u'{:<16}: {}'.format('salience', entity.salience))
+        print("=" * 20)
+        print(u"{:<16}: {}".format("name", entity.name))
+        print(u"{:<16}: {}".format("type", entity.type.name))
+        print(u"{:<16}: {}".format("salience", entity.salience))
         for metadata_entry in entity.metadata:
             print(metadata_entry)
 

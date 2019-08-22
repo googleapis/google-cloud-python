@@ -20,27 +20,30 @@ from google.cloud import language_v1
 from google.cloud.language_v1.types.language_service import EncodingType
 
 
-def sample_analyze_sentiment(content):
-
+def syntax_text():
     client = language_v1.LanguageService()
 
-    # content = "Your text to analyze, e.g. Hello, world!"
+    content = "President Kennedy spoke at the White House."
 
-    type_ = language_v1.Document.Type.PLAIN_TEXT
-    document = language_v1.Document(type=type_, content=content)
-    request = language_v1.AnalyzeSentimentRequest(
+    document = language_v1.Document(
+        type=language_v1.Document.Type.PLAIN_TEXT, content=content
+    )
+    request = language_v1.AnalyzeSyntaxRequest(
         document=document, encoding_type=EncodingType.UTF8
     )
 
-    response = client.analyze_sentiment(request)
-    sentiment = response.document_sentiment
+    response = client.analyze_syntax(request)
+    tokens = response.tokens
 
-    print("Score: {}".format(sentiment.score))
-    print("Magnitude: {}".format(sentiment.magnitude))
+    print("language: {}".format(response.language))
+
+    for token in tokens:
+        part_of_speech_tag = language_v1.PartOfSpeech.Tag(token.part_of_speech.tag)
+        print(u"{}: {}".format(part_of_speech_tag.name, token.text.content))
 
 
 def main():
-    sample_analyze_sentiment("Stuff to talk about")
+    syntax_text()
 
 
 if __name__ == "__main__":
