@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.dataset &#8212; google-cloud fcf99ce documentation</title>
+    <title>google.cloud.bigquery.dataset &#8212; google-cloud 2ab105b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -52,12 +52,21 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">google.cloud._helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.model</span> <span class="k">import</span> <span class="n">ModelReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">RoutineReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
+
+
+<span class="n">_PROJECT_PREFIX_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (?P&lt;project_id&gt;\S+\:[^.]+)\.(?P&lt;dataset_id&gt;[^.]+)$</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_table_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
@@ -303,7 +312,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            dataset_id (str):</span>
 <span class="sd">                A dataset ID in standard SQL format. If ``default_project``</span>
-<span class="sd">                is not specified, this must included both the project ID and</span>
+<span class="sd">                is not specified, this must include both the project ID and</span>
 <span class="sd">                the dataset ID, separated by ``.``.</span>
 <span class="sd">            default_project (str):</span>
 <span class="sd">                Optional. The project ID to use when ``dataset_id`` does not</span>
@@ -324,13 +333,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
         <span class="n">output_project_id</span> <span class="o">=</span> <span class="n">default_project</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">dataset_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">with_prefix</span> <span class="o">=</span> <span class="n">_PROJECT_PREFIX_PATTERN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">with_prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">dataset_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">project_id</span> <span class="o">=</span> <span class="n">with_prefix</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;project_id&quot;</span><span class="p">)</span>
+            <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">with_prefix</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;dataset_id&quot;</span><span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">project_id</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">default_project</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;When default_project is not set, dataset_id must be a &quot;</span>
-                <span class="s2">&quot;fully-qualified dataset ID in standard SQL format. &quot;</span>
-                <span class="s1">&#39;e.g. &quot;project.dataset_id&quot;, got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+                <span class="s2">&quot;fully-qualified dataset ID in standard SQL format, &quot;</span>
+                <span class="s1">&#39;e.g., &quot;project.dataset_id&quot; got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">output_project_id</span><span class="p">,</span> <span class="n">output_dataset_id</span> <span class="o">=</span> <span class="n">parts</span>
@@ -588,7 +603,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            full_dataset_id (str):</span>
 <span class="sd">                A fully-qualified dataset ID in standard SQL format. Must</span>
-<span class="sd">                included both the project ID and the dataset ID, separated by</span>
+<span class="sd">                include both the project ID and the dataset ID, separated by</span>
 <span class="sd">                ``.``.</span>
 
 <span class="sd">        Returns:</span>
