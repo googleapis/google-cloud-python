@@ -25,7 +25,7 @@ api_names_dictionary = {
     "error-reporting": "clouderrorreporting",
     "firestore": "firestore",
     "grafeas": "grafeas",
-    "iam": "cloudiam",
+    "iam": "iamcredentials",
     "iot": "cloudiot",
     "irm": "irm",
     "kms": "cloudkms",
@@ -74,7 +74,7 @@ def get_api_from_path(path):
         return "cloudiam"
     if "spanner" in path:  # for spanner_admin
         return "spanner"
-    if "containeranalysis" in path:  # under google/cloud/devtools
+    if "containeranalysis" in path:  # under google/cloud/devtools/containeranalysis
         return "containeranalysis"
     if "google/cloud/vision" in path:  # for vision helper
         return "vision"
@@ -101,8 +101,10 @@ def get_api_from_path(path):
 
 def make_redirects(dirname, ext=".html"):
     """
-	Assembles a dictionary where key is file path
-	and value is the googleapis.dev url
+	Assembles a dictionary where key is file path and value is the googleapis.dev url
+
+    Returns the dictionary and a list of paths for which a redirect
+    could not be determined.
 	"""
     GOOGLEAPIS_ROOT = f"https://googleapis.dev/python"
     content_page_regex = fr"{dirname}\/(?P<api>[^\/]*?)\/(?P<path>.*)"
@@ -112,30 +114,32 @@ def make_redirects(dirname, ext=".html"):
     bad_paths = []
 
     html_files = get_files_with_extension(dirname, extension=ext)
-    # import pdb; pdb.set_trace();
     print(f"{len(html_files)} files found in '{dirname}'.")
     for file in html_files:
         match = re.match(module_page_regex, file)
-        if match:  # case 1: module level source code page
+        if match:
+            # Pages under _modules are source code.
+            # Redirect them to the api top level page.
             api = get_api_from_path(match.group("path"))
             if api is not None:
                 redirect_link = f"{GOOGLEAPIS_ROOT}/{api}/latest"
             else:
                 bad_paths.append(file)
         else:
+            # Pages with reference documentation.
             match = re.match(content_page_regex, file)
-            if match:  # case 2: api content page
+            if match:
                 api = match.group("api")
                 path = match.group("path")
                 # google-cloud-core and google-api-core docs are split in googleapis.dev
                 if api == "core":
-                    if f"client{ext}" == path or f"config{ext}" == path:
+                    if path == f"client{ext}" or path == f"config{ext}":
                         redirect = f"{GOOGLEAPIS_ROOT}/google-cloud-core/latest/{path}"
-                    elif f"core_changelog{ext}" == path:
+                    elif path == f"core_changelog{ext}":
                         redirect = (
                             f"{GOOGLEAPIS_ROOT}/google-cloud-core/latest/changelog.html"
                         )
-                    elif f"api_core_changelog{ext}" == path:
+                    elif path == f"api_core_changelog{ext}":
                         redirect = (
                             f"{GOOGLEAPIS_ROOT}/google-api-core/latest/changelog.html"
                         )
@@ -151,17 +155,15 @@ def make_redirects(dirname, ext=".html"):
                         f"/starting.html", f"/index.html"
                     )
                     redirects[file] = redirect
-            else:  # case 3: other (top-level page )
+            else:
                 bad_paths.append(file)
 
     for path in bad_paths:
-        # redirect files that don't belong to an api to the google-cloud-python repo readme
         redirects[
             path
         ] = "https://github.com/googleapis/google-cloud-python#google-cloud-python-client"
 
     return redirects, bad_paths
-
 
 def add_redirect(path, url):
     HTML_TEMPLATE = f"""<html>
@@ -194,43 +196,38 @@ if __name__ == "__main__":
     #########################
     redirects, bad_paths = make_redirects("latest")
 
-    # Get a dictionary of paths to urls
     print("An appropriate API could not be determined for these paths.")
     for path in bad_paths:
         print(f"* {path}")
 
-    not_found_urls = []
 
     for path, url in redirects.items():
         resp = requests.get(url)
         if resp.status_code == 200:
             add_redirect(path, url)
         else:
-            not_found_urls.append(url)
+            print(f"404: {url}")
 
-    print("These URLs currently 404 ")
-    for url in not_found_urls:
-        print(f"* {url}")
 
     ###########################
     ## Redirects for /stable
     ###########################
     redirects, bad_paths = make_redirects("stable", ext=".md")
 
-    # Get a dictionary of paths to urls
     print("An appropriate API could not be determined for these paths.")
     for path in bad_paths:
         print(f"* {path}")
-
-    not_found_urls = []
 
     for path, url in redirects.items():
         resp = requests.get(url)
         if resp.status_code == 200:
             add_redirect_to_md(path, url)
         else:
-            not_found_urls.append(url)
-
-    print("These URLs currently 404 ")
-    for url in not_found_urls:
-        print(f"* {url}")
+            # Stable has some older pages that don't exist on latest
+            # Redirect them to the API index page
+            url = re.sub(r"(?P<url>.*?latest)\/.*", r"\g<1>", url)
+            resp = requests.get(url)
+            if resp.status_code == 200:
+                add_redirect_to_md(path, url)
+            else:
+                print(f"404: {url}")
