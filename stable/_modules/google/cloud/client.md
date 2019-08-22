@@ -1,4 +1,4 @@
 ---
-redirect_to: "https://github.com/googleapis/google-cloud-python#google-cloud-python-client"
+redirect_to: "https://googleapis.dev/python/google-cloud-core/latest"
 ---
 

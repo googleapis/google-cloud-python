@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/_modules/google/cloud/iam.html"
+redirect_to: "https://googleapis.dev/python/iamcredentials/latest"
 ---
+

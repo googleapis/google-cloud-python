@@ -71,7 +71,7 @@ def get_api_from_path(path):
     if "grafeas/grafeas" in path:
         return "grafeas"
     if "iam_credentials" in path:
-        return "cloudiam"
+        return "iamcredentials"
     if "spanner" in path:  # for spanner_admin
         return "spanner"
     if "containeranalysis" in path:  # under google/cloud/devtools/containeranalysis
@@ -122,7 +122,7 @@ def make_redirects(dirname, ext=".html"):
             # Redirect them to the api top level page.
             api = get_api_from_path(match.group("path"))
             if api is not None:
-                redirect_link = f"{GOOGLEAPIS_ROOT}/{api}/latest"
+                redirects[file] = f"{GOOGLEAPIS_ROOT}/{api}/latest"
             else:
                 bad_paths.append(file)
         else:
@@ -151,10 +151,9 @@ def make_redirects(dirname, ext=".html"):
                         f"{GOOGLEAPIS_ROOT}/{api_names_dictionary[api]}/latest/{path}"
                     ).replace(".md", ".html")
                     # Some APIs have alternate names for the index page
-                    redirect = redirect.replace(f"/usage.html", f"/index.html").replace(
+                    redirects[file] = redirect.replace(f"/usage.html", f"/index.html").replace(
                         f"/starting.html", f"/index.html"
                     )
-                    redirects[file] = redirect
             else:
                 bad_paths.append(file)
 

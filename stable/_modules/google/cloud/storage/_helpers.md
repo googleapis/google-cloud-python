@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/_modules/google/cloud/storage/_helpers.html"
+redirect_to: "https://googleapis.dev/python/storage/latest"
 ---
+

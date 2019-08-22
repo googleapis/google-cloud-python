@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/_modules/google/cloud/bigquery_datatransfer_v1/gapic/data_transfer_service_client.html"
+redirect_to: "https://googleapis.dev/python/bigquerydatatransfer/latest"
 ---
+
