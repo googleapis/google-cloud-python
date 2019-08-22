@@ -1577,6 +1577,88 @@ class Client(ClientWithProject):
         finally:
             os.remove(tmppath)
 
+    def load_table_from_json(
+        self,
+        json_rows,
+        destination,
+        num_retries=_DEFAULT_NUM_RETRIES,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+    ):
+        """Upload the contents of a table from a JSON string or dict.
+
+        Arguments:
+            json_rows (Iterable[Dict[str, Any]]):
+                Row data to be inserted. Keys must match the table schema fields
+                and values must be JSON-compatible representations.
+            destination (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                Table into which data is to be loaded. If a string is passed
+                in, this method attempts to create a table reference from a
+                string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
+
+        Keyword Arguments:
+            num_retries (int, optional): Number of upload retries.
+            job_id (str): (Optional) Name of the job.
+            job_id_prefix (str):
+                (Optional) the user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                destination table.
+            project (str):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.LoadJobConfig):
+                (Optional) Extra configuration options for the job. The
+                ``source_format`` setting is always set to
+                :attr:`~google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON`.
+
+        Returns:
+            google.cloud.bigquery.job.LoadJob: A new load job.
+        """
+        job_id = _make_job_id(job_id, job_id_prefix)
+
+        if job_config is None:
+            job_config = job.LoadJobConfig()
+        else:
+            # Make a copy so that the job config isn't modified in-place.
+            job_config = copy.deepcopy(job_config)
+        job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
+
+        if job_config.schema is None:
+            job_config.autodetect = True
+
+        if project is None:
+            project = self.project
+
+        if location is None:
+            location = self.location
+
+        destination = _table_arg_to_table_ref(destination, default_project=self.project)
+
+        data_str = u"\n".join(json.dumps(item) for item in json_rows)
+        data_file = io.BytesIO(data_str.encode())
+
+        return self.load_table_from_file(
+            data_file,
+            destination,
+            num_retries=num_retries,
+            job_id=job_id,
+            job_id_prefix=job_id_prefix,
+            location=location,
+            project=project,
+            job_config=job_config,
+        )
+
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
 
