@@ -237,12 +237,14 @@ class Retry(object):
         maximum=_DEFAULT_MAXIMUM_DELAY,
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
         deadline=_DEFAULT_DEADLINE,
+        on_error=None
     ):
         self._predicate = predicate
         self._initial = initial
         self._multiplier = multiplier
         self._maximum = maximum
         self._deadline = deadline
+        self._on_error = on_error
 
     def __call__(self, func, on_error=None):
         """Wrap a callable with retry behavior.
@@ -257,6 +259,8 @@ class Retry(object):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
+        if self._on_error is not None:
+            on_error = self._on_error
 
         @general_helpers.wraps(func)
         def retry_wrapped_func(*args, **kwargs):
@@ -290,6 +294,7 @@ class Retry(object):
             maximum=self._maximum,
             multiplier=self._multiplier,
             deadline=deadline,
+            on_error=self._on_error,
         )
 
     def with_predicate(self, predicate):
@@ -308,6 +313,7 @@ class Retry(object):
             maximum=self._maximum,
             multiplier=self._multiplier,
             deadline=self._deadline,
+            on_error=self._on_error,
         )
 
     def with_delay(self, initial=None, maximum=None, multiplier=None):
@@ -328,16 +334,18 @@ class Retry(object):
             maximum=maximum if maximum is not None else self._maximum,
             multiplier=multiplier if maximum is not None else self._multiplier,
             deadline=self._deadline,
+            on_error=self._on_error,
         )
 
     def __str__(self):
         return (
             "<Retry predicate={}, initial={:.1f}, maximum={:.1f}, "
-            "multiplier={:.1f}, deadline={:.1f}>".format(
+            "multiplier={:.1f}, deadline={:.1f}, on_error={}>".format(
                 self._predicate,
                 self._initial,
                 self._maximum,
                 self._multiplier,
                 self._deadline,
+                self._on_error,
             )
         )
