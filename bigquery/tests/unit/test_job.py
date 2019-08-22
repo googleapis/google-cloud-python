@@ -1504,6 +1504,19 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )
 
+    def test_schema_setter_unsetting_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        config = self._get_target_class()()
+        config._properties["load"]["schema"] = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        config.schema = None
+        self.assertNotIn("schema", config._properties["load"])
+        config.schema = None  # no error, idempotent operation
+
     def test_schema_update_options_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.schema_update_options)
