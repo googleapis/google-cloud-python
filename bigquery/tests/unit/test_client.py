@@ -5618,8 +5618,9 @@ class TestClientUpload(object):
         assert sent_config.autodetect
 
     def test_load_table_from_json_non_default_args(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
 
@@ -5628,7 +5629,12 @@ class TestClientUpload(object):
             {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
         ]
 
-        job_config = job.LoadJobConfig()
+        schema = [
+            SchemaField("name", "STRING"),
+            SchemaField("age", "INTEGER"),
+            SchemaField("adult", "BOOLEAN"),
+        ]
+        job_config = job.LoadJobConfig(schema=schema)
 
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
@@ -5658,8 +5664,8 @@ class TestClientUpload(object):
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert job_config.source_format is None  # the original was not modified
         assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
-        assert sent_config.schema is None
-        assert sent_config.autodetect
+        assert sent_config.schema == schema
+        assert not sent_config.autodetect
 
     # Low-level tests
 
