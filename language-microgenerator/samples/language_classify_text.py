@@ -19,27 +19,32 @@ import sys
 from google.cloud import language_v1
 from google.cloud.language_v1.types.language_service import EncodingType
 
-def sample_analyze_sentiment(content):
+
+def entities_text():
 
     client = language_v1.LanguageService()
 
-    # content = "Your text to analyze, e.g. Hello, world!"
+    text = 'Android is a mobile operating system developed by Google, ' \
+           'based on the Linux kernel and designed primarily for ' \
+           'touchscreen mobile devices such as smartphones and tablets.'
+
 
     type_ = language_v1.Document.Type.PLAIN_TEXT
-    document = language_v1.Document(type=type_, content=content)
-    request = language_v1.AnalyzeSentimentRequest(
-        document=document, encoding_type=EncodingType.UTF8
+    document = language_v1.Document(type=type_, content=text)
+    request = language_v1.ClassifyTextRequest(
+        document=document
     )
 
-    response = client.analyze_sentiment(request)
-    sentiment = response.document_sentiment
+    response = client.classify_text(request)
+    categories = response.categories
 
-    print("Score: {}".format(sentiment.score))
-    print("Magnitude: {}".format(sentiment.magnitude))
-
+    for category in categories:
+        print(u'=' * 20)
+        print(u'{:<16}: {}'.format('name', category.name))
+        print(u'{:<16}: {}'.format('confidence', category.confidence))
 
 def main():
-    sample_analyze_sentiment("Stuff to talk about")
+    entities_text()
 
 
 if __name__ == "__main__":
