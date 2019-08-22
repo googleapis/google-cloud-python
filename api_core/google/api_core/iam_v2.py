@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Non-API-specific IAM policy v3 definitions
+"""Non-API-specific IAM policy v2 definitions
 
 For allowed roles / permissions, see:
 https://cloud.google.com/iam/docs/understanding-roles
