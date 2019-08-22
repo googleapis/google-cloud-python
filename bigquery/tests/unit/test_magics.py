@@ -274,7 +274,7 @@ def test__run_query():
     assert re.match("Query complete after .*s", updates[-1])
 
 
-def test__run_query_dry_run_is_silent():
+def test__run_query_dry_run_without_errors_is_silent():
     magics.context._credentials = None
 
     sql = "SELECT 17"
@@ -287,12 +287,10 @@ def test__run_query_dry_run_is_silent():
     job_config.dry_run = True
     with client_patch as client_mock, io.capture_output() as captured:
         client_mock().query(sql).job_id = None
-
         magics._run_query(client_mock(), sql, job_config=job_config)
 
     assert len(captured.stderr) == 0
     assert len(captured.stdout) == 0
-
 
 def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
@@ -645,7 +643,7 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
 
     assert isinstance(return_value, pandas.DataFrame)
 
-
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_sets_job_config():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -665,7 +663,7 @@ def test_bigquery_magic_dryrun_option_sets_job_config():
         job_config_used = run_query_mock.call_args_list[0][0][-1]
         assert job_config_used.dry_run is True
 
-
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_returns_query_job():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -690,7 +688,7 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
         assert "Query validated. This query will process" in captured_io.stdout
         assert isinstance(return_value, job.QueryJob)
 
-
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")

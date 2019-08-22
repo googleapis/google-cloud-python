@@ -441,6 +441,11 @@ def _cell_magic(line, query):
         display.clear_output()
 
     if error:
+        if args.destination_var:
+            print(
+                "Could not save output to variable '{}'.".format(args.destination_var),
+                file=sys.stderr,
+            )
         print("\nERROR:\n", error, file=sys.stderr)
         return
 

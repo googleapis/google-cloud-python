@@ -579,9 +579,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         # jobs.insert is idempotent because we ensure that every new
         # job has an ID.
-        api_response = client._call_api(
-            retry, method="POST", path=path, data=self.to_api_repr()
-        )
+        try:
+            api_response = client._call_api(
+                retry, method="POST", path=path, data=self.to_api_repr()
+            )
+        except exceptions.GoogleCloudError as exc:
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY):
