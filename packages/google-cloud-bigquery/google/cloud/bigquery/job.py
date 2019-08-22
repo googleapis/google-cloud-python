@@ -1160,6 +1160,10 @@ class LoadJobConfig(_JobConfig):
 
     @schema.setter
     def schema(self, value):
+        if value is None:
+            self._del_sub_prop("schema")
+            return
+
         if not all(hasattr(field, "to_api_repr") for field in value):
             raise ValueError("Schema items must be fields")
         _helpers._set_sub_prop(
