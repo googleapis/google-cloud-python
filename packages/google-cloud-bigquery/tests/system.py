@@ -743,21 +743,22 @@ class TestBigQuery(unittest.TestCase):
         )
         num_rows = 100
         nulls = [None] * num_rows
-        dataframe = pandas.DataFrame(
-            {
-                "bool_col": nulls,
-                "bytes_col": nulls,
-                "date_col": nulls,
-                "dt_col": nulls,
-                "float_col": nulls,
-                "geo_col": nulls,
-                "int_col": nulls,
-                "num_col": nulls,
-                "str_col": nulls,
-                "time_col": nulls,
-                "ts_col": nulls,
-            }
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", nulls),
+                ("bytes_col", nulls),
+                ("date_col", nulls),
+                ("dt_col", nulls),
+                ("float_col", nulls),
+                ("geo_col", nulls),
+                ("int_col", nulls),
+                ("num_col", nulls),
+                ("str_col", nulls),
+                ("time_col", nulls),
+                ("ts_col", nulls),
+            ]
         )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
@@ -796,7 +797,7 @@ class TestBigQuery(unittest.TestCase):
         )
 
         records = [{"name": "Chip", "age": 2}, {"name": "Dale", "age": 3}]
-        dataframe = pandas.DataFrame(records)
+        dataframe = pandas.DataFrame(records, columns=["name", "age"])
         job_config = bigquery.LoadJobConfig(schema=table_schema)
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
@@ -847,44 +848,58 @@ class TestBigQuery(unittest.TestCase):
             #       https://jira.apache.org/jira/browse/ARROW-2587
             # bigquery.SchemaField("struct_col", "RECORD", fields=scalars_schema),
         )
-        dataframe = pandas.DataFrame(
-            {
-                "bool_col": [True, None, False],
-                "bytes_col": [b"abc", None, b"def"],
-                "date_col": [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
-                "dt_col": [
-                    datetime.datetime(1, 1, 1, 0, 0, 0),
-                    None,
-                    datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-                ],
-                "float_col": [float("-inf"), float("nan"), float("inf")],
-                "geo_col": [
-                    "POINT(30 10)",
-                    None,
-                    "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
-                ],
-                "int_col": [-9223372036854775808, None, 9223372036854775807],
-                "num_col": [
-                    decimal.Decimal("-99999999999999999999999999999.999999999"),
-                    None,
-                    decimal.Decimal("99999999999999999999999999999.999999999"),
-                ],
-                "str_col": ["abc", None, "def"],
-                "time_col": [
-                    datetime.time(0, 0, 0),
-                    None,
-                    datetime.time(23, 59, 59, 999999),
-                ],
-                "ts_col": [
-                    datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
-                    None,
-                    datetime.datetime(
-                        9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
-                    ),
-                ],
-            },
-            dtype="object",
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", [True, None, False]),
+                ("bytes_col", [b"abc", None, b"def"]),
+                (
+                    "date_col",
+                    [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
+                ),
+                (
+                    "dt_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0),
+                        None,
+                        datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                    ],
+                ),
+                ("float_col", [float("-inf"), float("nan"), float("inf")]),
+                (
+                    "geo_col",
+                    [
+                        "POINT(30 10)",
+                        None,
+                        "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+                    ],
+                ),
+                ("int_col", [-9223372036854775808, None, 9223372036854775807]),
+                (
+                    "num_col",
+                    [
+                        decimal.Decimal("-99999999999999999999999999999.999999999"),
+                        None,
+                        decimal.Decimal("99999999999999999999999999999.999999999"),
+                    ],
+                ),
+                ("str_col", [u"abc", None, u"def"]),
+                (
+                    "time_col",
+                    [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
+                ),
+                (
+                    "ts_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                        None,
+                        datetime.datetime(
+                            9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
+                        ),
+                    ],
+                ),
+            ]
         )
+        dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
