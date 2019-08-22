@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Reader for BigQuery Storage API &#8212; google-cloud a279630 documentation</title>
+    <title>Reader for BigQuery Storage API &#8212; google-cloud 73695e8 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -81,7 +81,7 @@ format.</p>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe">
 <code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsIterable.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsIterable.to_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
+<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
@@ -100,7 +100,7 @@ is used.</p>
 <dd class="field-even"><p>A data frame of all rows in the stream.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,7 +176,7 @@ is used.</p>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe">
 <code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsPage.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsPage.to_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of rows in the page.</p>
+<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of rows in the page.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
@@ -195,7 +195,7 @@ is used.</p>
 <dd class="field-even"><p>A data frame of all rows in the stream.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,7 +214,7 @@ Iterate over it to fetch all row messages.</p>
 method to parse all messages into a stream of row dictionaries.</p>
 <p>If the pandas and fastavro libraries are installed, use the
 <a class="reference internal" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe" title="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_dataframe()</span></code></a>
-method to parse all messages into a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
+method to parse all messages into a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
 <p>Construct a ReadRowsStream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,7 +290,7 @@ messages.</p>
 <dl class="method">
 <dt id="google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe">
 <code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">read_session</em>, <em class="sig-param">dtypes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/bigquery_storage_v1beta1/reader.html#ReadRowsStream.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery_storage_v1beta1.reader.ReadRowsStream.to_dataframe" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
+<dd><p>Create a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> of all rows in the stream.</p>
 <p>This method requires the pandas libary to create a data frame and the
 fastavro library to parse row messages.</p>
 <div class="admonition warning">
@@ -314,7 +314,7 @@ is used.</p></li>
 <dd class="field-even"><p>A data frame of all rows in the stream.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
