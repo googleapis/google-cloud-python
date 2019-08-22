@@ -1,3 +1,3 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io"
+redirect_to: "https://github.com/googleapis/google-cloud-python#google-cloud-python-client"
 ---
