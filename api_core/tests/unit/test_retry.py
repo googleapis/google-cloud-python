@@ -161,20 +161,25 @@ class TestRetry(object):
         assert retry_._maximum == 60
         assert retry_._multiplier == 2
         assert retry_._deadline == 120
+        assert retry_._on_error is None
 
     def test_constructor_options(self):
+        _some_function = mock.Mock()
+
         retry_ = retry.Retry(
             predicate=mock.sentinel.predicate,
             initial=1,
             maximum=2,
             multiplier=3,
             deadline=4,
+            on_error=_some_function,
         )
         assert retry_._predicate == mock.sentinel.predicate
         assert retry_._initial == 1
         assert retry_._maximum == 2
         assert retry_._multiplier == 3
         assert retry_._deadline == 4
+        assert retry_._on_error is _some_function
 
     def test_with_deadline(self):
         retry_ = retry.Retry()
@@ -209,7 +214,8 @@ class TestRetry(object):
         assert re.match(
             (
                 r"<Retry predicate=<function.*?if_exception_type.*?>, "
-                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0>"
+                r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0, "
+                r"on_error=None>"
             ),
             str(retry_),
         )
@@ -230,8 +236,7 @@ class TestRetry(object):
         target.assert_called_once_with("meep")
         sleep.assert_not_called()
 
-    # Make uniform return half of its maximum, which will be the calculated
-    # sleep time.
+    # Make uniform return half of its maximum, which is the calculated sleep time.
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry(self, sleep, uniform):
@@ -253,3 +258,55 @@ class TestRetry(object):
         target.assert_has_calls([mock.call("meep"), mock.call("meep")])
         sleep.assert_called_once_with(retry_._initial)
         assert on_error.call_count == 1
+
+    @mock.patch("time.sleep", autospec=True)
+    def test___init___without_retry_executed(self, sleep):
+        _some_function = mock.Mock()
+
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(ValueError), on_error=_some_function
+        )
+        # check the proper creation of the class
+        assert retry_._on_error is _some_function
+
+        target = mock.Mock(spec=["__call__"], side_effect=[42])
+        # __name__ is needed by functools.partial.
+        target.__name__ = "target"
+
+        wrapped = retry_(target)
+
+        result = wrapped("meep")
+
+        assert result == 42
+        target.assert_called_once_with("meep")
+        sleep.assert_not_called()
+        _some_function.assert_not_called()
+
+    # Make uniform return half of its maximum, which is the calculated sleep time.
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("time.sleep", autospec=True)
+    def test___init___when_retry_is_executed(self, sleep, uniform):
+        _some_function = mock.Mock()
+
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(ValueError), on_error=_some_function
+        )
+        # check the proper creation of the class
+        assert retry_._on_error is _some_function
+
+        target = mock.Mock(
+            spec=["__call__"], side_effect=[ValueError(), ValueError(), 42]
+        )
+        # __name__ is needed by functools.partial.
+        target.__name__ = "target"
+
+        wrapped = retry_(target)
+        target.assert_not_called()
+
+        result = wrapped("meep")
+
+        assert result == 42
+        assert target.call_count == 3
+        assert _some_function.call_count == 2
+        target.assert_has_calls([mock.call("meep"), mock.call("meep")])
+        sleep.assert_any_call(retry_._initial)
