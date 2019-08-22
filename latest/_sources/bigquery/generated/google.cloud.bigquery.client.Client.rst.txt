@@ -104,6 +104,9 @@ google.cloud.bigquery.client.Client
    ~Client.load_table_from_file
    
    
+   ~Client.load_table_from_json
+   
+   
    ~Client.load_table_from_uri
    
    

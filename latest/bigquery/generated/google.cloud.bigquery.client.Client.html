@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.client.Client &#8212; google-cloud adefce3 documentation</title>
+    <title>google.cloud.bigquery.client.Client &#8212; google-cloud ee2a67f documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -135,28 +135,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_file" title="google.cloud.bigquery.client.Client.load_table_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_file</span></code></a>(file_obj, destination)</p></td>
 <td><p>Upload the contents of this table from a file-like object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_uri</span></code></a>(source_uris, destination)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_json" title="google.cloud.bigquery.client.Client.load_table_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_json</span></code></a>(json_rows, destination)</p></td>
+<td><p>Upload the contents of a table from a JSON string or dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.load_table_from_uri" title="google.cloud.bigquery.client.Client.load_table_from_uri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_table_from_uri</span></code></a>(source_uris, destination)</p></td>
 <td><p>Starts a job for loading data into a table from CloudStorage.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.query" title="google.cloud.bigquery.client.Client.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[, job_config, job_id, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.query" title="google.cloud.bigquery.client.Client.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[, job_config, job_id, …])</p></td>
 <td><p>Run a SQL query.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_from_json" title="google.cloud.bigquery.client.Client.schema_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_from_json</span></code></a>(file_or_path)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_from_json" title="google.cloud.bigquery.client.Client.schema_from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_from_json</span></code></a>(file_or_path)</p></td>
 <td><p>Takes a file object or file path that contains json that describes a table schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_to_json" title="google.cloud.bigquery.client.Client.schema_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_to_json</span></code></a>(schema_list, destination)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.schema_to_json" title="google.cloud.bigquery.client.Client.schema_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_to_json</span></code></a>(schema_list, destination)</p></td>
 <td><p>Takes a list of schema field objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dataset</span></code></a>(dataset, fields[, retry])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_dataset" title="google.cloud.bigquery.client.Client.update_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dataset</span></code></a>(dataset, fields[, retry])</p></td>
 <td><p>Change some fields of a dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_model" title="google.cloud.bigquery.client.Client.update_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_model</span></code></a>(model, fields[, retry])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_model" title="google.cloud.bigquery.client.Client.update_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_model</span></code></a>(model, fields[, retry])</p></td>
 <td><p>[Beta] Change some fields of a model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_routine" title="google.cloud.bigquery.client.Client.update_routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_routine</span></code></a>(routine, fields[, retry])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_routine" title="google.cloud.bigquery.client.Client.update_routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_routine</span></code></a>(routine, fields[, retry])</p></td>
 <td><p>[Beta] Change some fields of a routine.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_table" title="google.cloud.bigquery.client.Client.update_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_table</span></code></a>(table, fields[, retry])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#google.cloud.bigquery.client.Client.update_table" title="google.cloud.bigquery.client.Client.update_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_table</span></code></a>(table, fields[, retry])</p></td>
 <td><p>Change some fields of a table.</p></td>
 </tr>
 </tbody>
@@ -1183,6 +1186,46 @@ to the client’s project.</p></li>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">size</span></code> is not passed in and can not be determined, or if
     the <code class="docutils literal notranslate"><span class="pre">file_obj</span></code> can be detected to be a file opened in text
     mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.load_table_from_json">
+<code class="sig-name descname">load_table_from_json</code><span class="sig-paren">(</span><em class="sig-param">json_rows</em>, <em class="sig-param">destination</em>, <em class="sig-param">num_retries=6</em>, <em class="sig-param">job_id=None</em>, <em class="sig-param">job_id_prefix=None</em>, <em class="sig-param">location=None</em>, <em class="sig-param">project=None</em>, <em class="sig-param">job_config=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/google/cloud/bigquery/client.html#Client.load_table_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Upload the contents of a table from a JSON string or dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_rows</strong> (<em>Iterable</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="../../asset/gapic/v1/types.html#google.cloud.asset_v1.types.Any" title="google.cloud.asset_v1.types.Any"><em>Any</em></a><em>]</em><em>]</em>) – Row data to be inserted. Keys must match the table schema fields
+and values must be JSON-compatible representations.</p></li>
+<li><p><strong>destination</strong> (Union[                 <a class="reference internal" href="google.cloud.bigquery.table.Table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>,                 <a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableReference</span></code></a>,                 str,             ]) – Table into which data is to be loaded. If a string is passed
+in, this method attempts to create a table reference from a
+string using
+<a class="reference internal" href="google.cloud.bigquery.table.TableReference.html#google.cloud.bigquery.table.TableReference.from_string" title="google.cloud.bigquery.table.TableReference.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">google.cloud.bigquery.table.TableReference.from_string()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Number of upload retries.</p></li>
+<li><p><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) Name of the job.</p></li>
+<li><p><strong>job_id_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (Optional) the user-provided prefix for a randomly generated
+job ID. This parameter will be ignored if a <code class="docutils literal notranslate"><span class="pre">job_id</span></code> is
+also given.</p></li>
+<li><p><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Location where to run the job. Must match the location of the
+destination table.</p></li>
+<li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Project ID of the project of where to run the job. Defaults
+to the client’s project.</p></li>
+<li><p><strong>job_config</strong> (<a class="reference internal" href="google.cloud.bigquery.job.LoadJobConfig.html#google.cloud.bigquery.job.LoadJobConfig" title="google.cloud.bigquery.job.LoadJobConfig"><em>google.cloud.bigquery.job.LoadJobConfig</em></a>) – (Optional) Extra configuration options for the job. The
+<code class="docutils literal notranslate"><span class="pre">source_format</span></code> setting is always set to
+<a class="reference internal" href="google.cloud.bigquery.job.SourceFormat.html#google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON" title="google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON"><code class="xref py py-attr docutils literal notranslate"><span class="pre">NEWLINE_DELIMITED_JSON</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A new load job.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="google.cloud.bigquery.job.LoadJob.html#google.cloud.bigquery.job.LoadJob" title="google.cloud.bigquery.job.LoadJob">google.cloud.bigquery.job.LoadJob</a></p>
 </dd>
 </dl>
 </dd></dl>

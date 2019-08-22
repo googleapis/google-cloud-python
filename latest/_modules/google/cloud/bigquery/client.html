@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud adefce3 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud ee2a67f documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -1610,6 +1610,88 @@
 
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmppath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.load_table_from_json"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client.load_table_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_json</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">json_rows</span><span class="p">,</span>
+        <span class="n">destination</span><span class="p">,</span>
+        <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span>
+        <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the contents of a table from a JSON string or dict.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            json_rows (Iterable[Dict[str, Any]]):</span>
+<span class="sd">                Row data to be inserted. Keys must match the table schema fields</span>
+<span class="sd">                and values must be JSON-compatible representations.</span>
+<span class="sd">            destination (Union[ \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.Table`, \</span>
+<span class="sd">                :class:`~google.cloud.bigquery.table.TableReference`, \</span>
+<span class="sd">                str, \</span>
+<span class="sd">            ]):</span>
+<span class="sd">                Table into which data is to be loaded. If a string is passed</span>
+<span class="sd">                in, this method attempts to create a table reference from a</span>
+<span class="sd">                string using</span>
+<span class="sd">                :func:`google.cloud.bigquery.table.TableReference.from_string`.</span>
+
+<span class="sd">        Keyword Arguments:</span>
+<span class="sd">            num_retries (int, optional): Number of upload retries.</span>
+<span class="sd">            job_id (str): (Optional) Name of the job.</span>
+<span class="sd">            job_id_prefix (str):</span>
+<span class="sd">                (Optional) the user-provided prefix for a randomly generated</span>
+<span class="sd">                job ID. This parameter will be ignored if a ``job_id`` is</span>
+<span class="sd">                also given.</span>
+<span class="sd">            location (str):</span>
+<span class="sd">                Location where to run the job. Must match the location of the</span>
+<span class="sd">                destination table.</span>
+<span class="sd">            project (str):</span>
+<span class="sd">                Project ID of the project of where to run the job. Defaults</span>
+<span class="sd">                to the client&#39;s project.</span>
+<span class="sd">            job_config (google.cloud.bigquery.job.LoadJobConfig):</span>
+<span class="sd">                (Optional) Extra configuration options for the job. The</span>
+<span class="sd">                ``source_format`` setting is always set to</span>
+<span class="sd">                :attr:`~google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery.job.LoadJob: A new load job.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">job_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">job_config</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Make a copy so that the job config isn&#39;t modified in-place.</span>
+            <span class="n">job_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">SourceFormat</span><span class="o">.</span><span class="n">NEWLINE_DELIMITED_JSON</span>
+
+        <span class="k">if</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">job_config</span><span class="o">.</span><span class="n">autodetect</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">_table_arg_to_table_ref</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">default_project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+
+        <span class="n">data_str</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">json_rows</span><span class="p">)</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data_str</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
+            <span class="n">data_file</span><span class="p">,</span>
+            <span class="n">destination</span><span class="p">,</span>
+            <span class="n">num_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">,</span>
+            <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span>
+            <span class="n">job_id_prefix</span><span class="o">=</span><span class="n">job_id_prefix</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
