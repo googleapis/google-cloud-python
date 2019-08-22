@@ -939,15 +939,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.num_rows, 2)
 
     def test_load_table_from_json_schema_autodetect(self):
-        # Use schema with NULLABLE fields, because schema autodetection
-        # defaults to field mode NULLABLE.
-        table_schema = (
-            bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
-            bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
-            bigquery.SchemaField("birthday", "DATE", mode="NULLABLE"),
-            bigquery.SchemaField("is_awesome", "BOOLEAN", mode="NULLABLE"),
-        )
-
         json_rows = [
             {"name": "John", "age": 18, "birthday": "2001-10-15", "is_awesome": False},
             {"name": "Chuck", "age": 79, "birthday": "1940-03-10", "is_awesome": True},
@@ -959,13 +950,21 @@ class TestBigQuery(unittest.TestCase):
             Config.CLIENT.project, dataset_id
         )
 
-        # Create the table before loading so that schema mismatch errors are
-        # identified.
+        # Use schema with NULLABLE fields, because schema autodetection
+        # defaults to field mode NULLABLE.
+        table_schema = (
+            bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
+            bigquery.SchemaField("birthday", "DATE", mode="NULLABLE"),
+            bigquery.SchemaField("is_awesome", "BOOLEAN", mode="NULLABLE"),
+        )
+        # create the table before loading so that the column order is predictable
         table = retry_403(Config.CLIENT.create_table)(
             Table(table_id, schema=table_schema)
         )
         self.to_delete.insert(0, table)
 
+        # do not pass an explicit job config to trigger automatic schema detection
         load_job = Config.CLIENT.load_table_from_json(json_rows, table_id)
         load_job.result()
 

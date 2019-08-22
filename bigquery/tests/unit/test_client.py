@@ -5635,6 +5635,7 @@ class TestClientUpload(object):
             SchemaField("adult", "BOOLEAN"),
         ]
         job_config = job.LoadJobConfig(schema=schema)
+        job_config._properties["load"]["unknown_field"] = "foobar"
 
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
@@ -5666,6 +5667,8 @@ class TestClientUpload(object):
         assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
         assert sent_config.schema == schema
         assert not sent_config.autodetect
+        # all properties should have been cloned and sent to the backend
+        assert sent_config._properties.get("load", {}).get("unknown_field") == "foobar"
 
     # Low-level tests
 
