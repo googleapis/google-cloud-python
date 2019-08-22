@@ -1649,6 +1649,9 @@ class Client(ClientWithProject):
             job_config = copy.deepcopy(job_config)
         job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
 
+        if job_config.schema is None:
+            job_config.autodetect = True
+
         if project is None:
             project = self.project
 
