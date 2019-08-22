@@ -340,7 +340,7 @@ class Context(_Context):
         raise NotImplementedError
 
     def get_global_cache_policy(self):
-        """Return the current memcache policy function.
+        """Return the current global cache policy function.
 
         Returns:
             Callable: A function that accepts a
@@ -353,7 +353,7 @@ class Context(_Context):
     get_memcache_policy = get_global_cache_policy  # backwards compatability
 
     def get_global_cache_timeout_policy(self):
-        """Return the current policy function memcache timeout (expiration).
+        """Return the current policy function global cache timeout (expiration).
 
         Returns:
             Callable: A function that accepts a
@@ -407,7 +407,7 @@ class Context(_Context):
         self.datastore_policy = policy
 
     def set_global_cache_policy(self, policy):
-        """Set the memcache policy function.
+        """Set the global cache policy function.
 
         Args:
             policy (Callable): A function that accepts a
@@ -429,7 +429,7 @@ class Context(_Context):
     set_memcache_policy = set_global_cache_policy  # backwards compatibility
 
     def set_global_cache_timeout_policy(self, policy):
-        """Set the policy function for memcache timeout (expiration).
+        """Set the policy function for global cache timeout (expiration).
 
         Args:
             policy (Callable): A function that accepts a

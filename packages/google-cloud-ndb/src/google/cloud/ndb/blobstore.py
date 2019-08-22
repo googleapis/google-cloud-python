@@ -16,11 +16,14 @@
 
 Initially, the blob store was an App Engine specific API for Google Cloud
 Storage.
+
+No longer supported.
 """
 
 
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import model
+from google.cloud.ndb import exceptions
 
 
 __all__ = [
@@ -71,89 +74,89 @@ BlobKeyProperty = model.BlobKeyProperty
 
 class BlobFetchSizeTooLargeError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class BlobInfo:
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     @classmethod
     def get(cls, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     @classmethod
     def get_async(cls, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     @classmethod
     def get_multi(cls, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     @classmethod
     def get_multi_async(cls, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class BlobInfoParseError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class BlobNotFoundError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 class BlobReader:
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 def create_upload_url(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 def create_upload_url_async(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 class DataIndexOutOfRangeError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 def delete(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 def delete_async(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 def delete_multi(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 def delete_multi_async(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 class Error:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 def fetch_data(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 def fetch_data_async(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 get = BlobInfo.get
@@ -164,13 +167,13 @@ get_multi_async = BlobInfo.get_multi_async
 
 class InternalError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
 
 def parse_blob_info(*args, **kwargs):
-    raise NotImplementedError
+    raise exceptions.NoLongerImplementedError()
 
 
 class PermissionDeniedError:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()

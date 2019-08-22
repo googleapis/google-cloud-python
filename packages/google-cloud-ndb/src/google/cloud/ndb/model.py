@@ -2939,7 +2939,7 @@ class UserProperty(Property):
             >>>
             >>> entity.put()
             >>> # Reload without the cached values
-            >>> entity = entity.key.get(use_cache=False, use_memcache=False)
+            >>> entity = entity.key.get(use_cache=False, use_global_cache=False)
             >>> entity.u.user_id()
             '...9174...'
 
@@ -4678,12 +4678,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Synchronously write this entity to Cloud Datastore.
@@ -4698,22 +4700,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             key.Key: The key for the entity. This is always a complete key.
@@ -4729,12 +4729,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Asynchronously write this entity to Cloud Datastore.
@@ -4749,22 +4751,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             tasklets.Future: The eventual result will be the key for the
@@ -4886,12 +4886,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Allocates a range of key IDs for this model class.
@@ -4907,22 +4909,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             tuple(key.Key): Keys for the newly allocated IDs.
@@ -4943,12 +4943,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Allocates a range of key IDs for this model class.
@@ -4964,22 +4966,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             tasklets.Future: Eventual result is ``tuple(key.Key)``: Keys for
@@ -5038,12 +5038,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Get an instance of Model class by ID.
@@ -5074,22 +5076,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             Optional[Model]: The retrieved entity, if one is found.
@@ -5121,12 +5121,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
     ):
         """Get an instance of Model class by ID.
@@ -5157,22 +5159,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             tasklets.Future: Optional[Model]: The retrieved entity, if one is
@@ -5217,12 +5217,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
         **kw_model_args,
     ):
@@ -5265,22 +5267,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             Model: The entity that was either just retrieved or created.
@@ -5313,12 +5313,14 @@ class Model(metaclass=MetaModel):
         retries=None,
         timeout=None,
         deadline=None,
-        force_writes=None,
         use_cache=None,
-        use_memcache=None,
+        use_global_cache=None,
+        global_cache_timeout=None,
         use_datastore=None,
+        use_memcache=None,
         memcache_timeout=None,
         max_memcache_items=None,
+        force_writes=None,
         _options=None,
         **kw_model_args,
     ):
@@ -5355,22 +5357,20 @@ class Model(metaclass=MetaModel):
                 once, with no retries.
             timeout (float): Override the gRPC timeout, in seconds.
             deadline (float): DEPRECATED: Synonym for ``timeout``.
-            force_writes (bool): Specifies whether a write request should
-                succeed even if the app is read-only. (This only applies to
-                user controlled read-only periods.)
             use_cache (bool): Specifies whether to store entities in in-process
                 cache; overrides in-process cache policy for this operation.
-            use_memcache (bool): Specifies whether to store entities in
-                memcache; overrides memcache policy for this operation.
+            use_global_cache (bool): Specifies whether to store entities in
+                global cache; overrides global cache policy for this operation.
             use_datastore (bool): Specifies whether to store entities in
                 Datastore; overrides Datastore policy for this operation.
-            memcache_timeout (int): Maximum lifetime for entities in memcache;
-                overrides memcache timeout policy for this operation.
-            max_memcache_items (int): Maximum batch size for the auto-batching
-                feature of the Context memcache methods. For example, with the
-                default size of max_memcache_items (100), up to 100 memcache
-                set operations will be combined into a single set_multi
+            global_cache_timeout (int): Maximum lifetime for entities in global
+                cache; overrides global cache timeout policy for this
                 operation.
+            use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+            memcache_timeout (int): DEPRECATED: Synonym for
+                ``global_cache_timeout``.
+            max_memcache_items (int): No longer supported.
+            force_writes (bool): No longer supported.
 
         Returns:
             tasklets.Future: Model: The entity that was either just retrieved
@@ -5617,12 +5617,14 @@ def get_multi_async(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Fetches a sequence of keys.
@@ -5644,23 +5646,21 @@ def get_multi_async(
             once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
         read_policy: DEPRECATED: Synonym for ``read_consistency``.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
@@ -5678,12 +5678,14 @@ def get_multi(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Fetches a sequence of keys.
@@ -5705,23 +5707,21 @@ def get_multi(
             once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
         read_policy: DEPRECATED: Synonym for ``read_consistency``.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[Union[:class:`~google.cloud.ndb.model.Model`, :data:`None`]]: List
@@ -5738,12 +5738,14 @@ def put_multi_async(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Stores a sequence of Model instances.
@@ -5757,22 +5759,20 @@ def put_multi_async(
             of models to store.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
@@ -5787,12 +5787,14 @@ def put_multi(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Stores a sequence of Model instances.
@@ -5806,22 +5808,20 @@ def put_multi(
             once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[:class:`~google.cloud.ndb.key.Key`]: A list with the stored keys.
@@ -5837,12 +5837,14 @@ def delete_multi_async(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Deletes a sequence of keys.
@@ -5856,22 +5858,20 @@ def delete_multi_async(
             keys.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[:class:`~google.cloud.ndb.tasklets.Future`]: List of futures.
@@ -5886,12 +5886,14 @@ def delete_multi(
     retries=None,
     timeout=None,
     deadline=None,
-    force_writes=None,
     use_cache=None,
-    use_memcache=None,
+    use_global_cache=None,
+    global_cache_timeout=None,
     use_datastore=None,
+    use_memcache=None,
     memcache_timeout=None,
     max_memcache_items=None,
+    force_writes=None,
     _options=None,
 ):
     """Deletes a sequence of keys.
@@ -5905,22 +5907,20 @@ def delete_multi(
             once, with no retries.
         timeout (float): Override the gRPC timeout, in seconds.
         deadline (float): DEPRECATED: Synonym for ``timeout``.
-        force_writes (bool): Specifies whether a write request should
-            succeed even if the app is read-only. (This only applies to
-            user controlled read-only periods.)
         use_cache (bool): Specifies whether to store entities in in-process
             cache; overrides in-process cache policy for this operation.
-        use_memcache (bool): Specifies whether to store entities in
-            memcache; overrides memcache policy for this operation.
+        use_global_cache (bool): Specifies whether to store entities in
+            global cache; overrides global cache policy for this operation.
         use_datastore (bool): Specifies whether to store entities in
             Datastore; overrides Datastore policy for this operation.
-        memcache_timeout (int): Maximum lifetime for entities in memcache;
-            overrides memcache timeout policy for this operation.
-        max_memcache_items (int): Maximum batch size for the auto-batching
-            feature of the Context memcache methods. For example, with the
-            default size of max_memcache_items (100), up to 100 memcache
-            set operations will be combined into a single set_multi
+        global_cache_timeout (int): Maximum lifetime for entities in global
+            cache; overrides global cache timeout policy for this
             operation.
+        use_memcache (bool): DEPRECATED: Synonym for ``use_global_cache``.
+        memcache_timeout (int): DEPRECATED: Synonym for
+            ``global_cache_timeout``.
+        max_memcache_items (int): No longer supported.
+        force_writes (bool): No longer supported.
 
     Returns:
         List[:data:`None`]: A list whose items are all None, one per deleted

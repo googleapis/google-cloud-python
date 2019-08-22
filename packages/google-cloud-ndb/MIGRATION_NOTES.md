@@ -210,6 +210,10 @@ that are affected are: `memcache_add`, `memcache_cas`, `memcache_decr`,
 - `model.get_indexes()` and `model.get_indexes_async()` are no longer
   implemented, as the support in Datastore for these functions has disappeared
   from GAE to GCP.
+- The `max_memcache_items` option is no longer supported. 
+- The `force_writes` option is no longer supported.
+- `Query.map` and `Query.map_async` are no longer supported.
+- The `blobstore` module is no longer supported.
 
 ## Privatization
 

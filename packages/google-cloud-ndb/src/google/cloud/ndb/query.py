@@ -93,8 +93,6 @@ Some other methods to run a query and access its results::
 
     :meth:`Query.iter`() # Return an iterator; same as iter(q) but more
         flexible.
-    :meth:`Query.map`(callback) # Call the callback function for each query
-        result.
     :meth:`Query.fetch`(N) # Return a list of the first N results
     :meth:`Query.get`() # Return the first result
     :meth:`Query.count`(N) # Return the number of results, with a maximum of N
@@ -120,7 +118,6 @@ which return a Future; to get the operation's ultimate result, yield the Future
 (when inside a tasklet) or call the Future's get_result() method (outside a
 tasklet)::
 
-    :meth:`Query.map_async`(callback)  # Callback may be a tasklet or a plain function
     :meth:`Query.fetch_async`(N)
     :meth:`Query.get_async`()
     :meth:`Query.count_async`(N)
@@ -1902,6 +1899,8 @@ class Query:
     ):
         """Map a callback function or tasklet over the query results.
 
+        DEPRECATED: This method is no longer supported.
+
         Args:
             callback (Callable): A function or tasklet to be applied to each
                 result; see below.
@@ -1958,7 +1957,7 @@ class Query:
                 returned, map() returns a list of the results of all callbacks.
                 (But see 'optional merge future' above.)
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     def map_async(
         self,
@@ -1984,12 +1983,14 @@ class Query:
     ):
         """Map a callback function or tasklet over the query results.
 
+        DEPRECATED: This method is no longer supported.
+
         This is the asynchronous version of :meth:`Query.map`.
 
         Returns:
             tasklets.Future: See :meth:`Query.map` for eventual result.
         """
-        raise NotImplementedError
+        raise exceptions.NoLongerImplementedError()
 
     @_query_options
     def get(
