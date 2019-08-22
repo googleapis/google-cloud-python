@@ -198,9 +198,9 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             type for some or all of the DataFrame columns.
 
     Returns:
-        Sequence[google.cloud.bigquery.schema.SchemaField]:
-            The automatically determined schema. Returns empty tuple if the
-            type of any column cannot be determined.
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
+            The automatically determined schema. Returns None if the type of
+            any column cannot be determined.
     """
     if bq_schema:
         for field in bq_schema:
@@ -227,7 +227,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
             warnings.warn("Unable to determine type of column '{}'.".format(column))
-            return ()
+            return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
     return tuple(bq_schema_out)
