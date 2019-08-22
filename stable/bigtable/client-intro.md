@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/bigtable/client-intro.html"
+redirect_to: "https://googleapis.dev/python/bigtable/latest/client-intro.html"
 ---
+

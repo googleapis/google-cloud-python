@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/spanner/snapshot-usage.html"
+redirect_to: "https://googleapis.dev/python/spanner/latest/snapshot-usage.html"
 ---
+

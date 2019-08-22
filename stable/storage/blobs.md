@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/storage/blobs.html"
+redirect_to: "https://googleapis.dev/python/storage/latest/blobs.html"
 ---
+

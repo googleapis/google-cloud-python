@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/firestore/collection.html"
+redirect_to: "https://googleapis.dev/python/firestore/latest/collection.html"
 ---
+

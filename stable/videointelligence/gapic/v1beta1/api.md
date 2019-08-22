@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/videointelligence/gapic/v1beta1/api.html"
+redirect_to: "https://googleapis.dev/python/videointelligence/latest/gapic/v1beta1/api.html"
 ---
+

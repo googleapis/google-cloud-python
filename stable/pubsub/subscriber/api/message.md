@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/pubsub/subscriber/api/message.html"
+redirect_to: "https://googleapis.dev/python/pubsub/latest/subscriber/api/message.html"
 ---
+

@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/_modules/google/protobuf/struct_pb2.html"
+redirect_to: "https://github.com/googleapis/google-cloud-python#google-cloud-python-client"
 ---
+

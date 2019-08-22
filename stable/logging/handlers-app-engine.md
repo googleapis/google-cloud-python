@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/logging/handlers-app-engine.html"
+redirect_to: "https://googleapis.dev/python/logging/latest/handlers-app-engine.html"
 ---
+

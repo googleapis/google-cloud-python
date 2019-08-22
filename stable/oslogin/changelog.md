@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/oslogin/changelog.html"
+redirect_to: "https://googleapis.dev/python/oslogin/latest/changelog.html"
 ---
+

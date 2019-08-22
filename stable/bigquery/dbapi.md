@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/bigquery/dbapi.html"
+redirect_to: "https://googleapis.dev/python/bigquery/latest/dbapi.html"
 ---
+

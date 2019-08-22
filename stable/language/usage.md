@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/language/usage.html"
+redirect_to: "https://googleapis.dev/python/language/latest/index.html"
 ---
+

@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/resource-manager/project.html"
+redirect_to: "https://googleapis.dev/python/cloudresourcemanager/latest/project.html"
 ---
+

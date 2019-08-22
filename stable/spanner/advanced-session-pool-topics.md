@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/spanner/advanced-session-pool-topics.html"
+redirect_to: "https://googleapis.dev/python/spanner/latest/advanced-session-pool-topics.html"
 ---
+

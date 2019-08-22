@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/texttospeech/gapic/v1beta1/api.html"
+redirect_to: "https://googleapis.dev/python/texttospeech/latest/gapic/v1beta1/api.html"
 ---
+

@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/pubsub/publisher/api/client.html"
+redirect_to: "https://googleapis.dev/python/pubsub/latest/publisher/api/client.html"
 ---
+

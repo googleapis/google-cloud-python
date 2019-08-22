@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/spanner/changelog.html"
+redirect_to: "https://googleapis.dev/python/spanner/latest/changelog.html"
 ---
+

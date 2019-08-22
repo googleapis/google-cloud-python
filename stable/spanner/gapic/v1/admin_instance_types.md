@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/spanner/gapic/v1/admin_instance_types.html"
+redirect_to: "https://googleapis.dev/python/spanner/latest/gapic/v1/admin_instance_types.html"
 ---
+

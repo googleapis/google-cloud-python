@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/language/gapic/v1/types.html"
+redirect_to: "https://googleapis.dev/python/language/latest/gapic/v1/types.html"
 ---
+

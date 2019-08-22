@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/runtimeconfig/variable.html"
+redirect_to: "https://googleapis.dev/python/runtimeconfig/latest/variable.html"
 ---
+

@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/spanner/instance-usage.html"
+redirect_to: "https://googleapis.dev/python/spanner/latest/instance-usage.html"
 ---
+

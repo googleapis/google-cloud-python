@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/bigtable/column-family.html"
+redirect_to: "https://googleapis.dev/python/bigtable/latest/column-family.html"
 ---
+

@@ -1,3 +1,4 @@
 ---
-redirect_to: "https://google-cloud-python.readthedocs.io/en/stable/datastore/queries.html"
+redirect_to: "https://googleapis.dev/python/datastore/latest/queries.html"
 ---
+
