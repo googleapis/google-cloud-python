@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud bc9ea52 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud adefce3 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -95,7 +95,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.retry</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">Routine</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.routine</span> <span class="k">import</span> <span class="n">RoutineReference</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_STRUCT_TYPES</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_table_arg_to_table_ref</span>
@@ -1566,28 +1565,14 @@
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-            <span class="n">autodetected_schema</span> <span class="o">=</span> <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">dataframe_to_bq_schema</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
-
-            <span class="c1"># Only use an explicit schema if we were able to determine one</span>
-            <span class="c1"># matching the dataframe. If not, fallback to the pandas to_parquet</span>
-            <span class="c1"># method.</span>
-            <span class="k">if</span> <span class="n">autodetected_schema</span><span class="p">:</span>
-                <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">autodetected_schema</span>
+        <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_pandas_helpers</span><span class="o">.</span><span class="n">dataframe_to_bq_schema</span><span class="p">(</span>
+            <span class="n">dataframe</span><span class="p">,</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span>
+        <span class="p">)</span>
 
         <span class="n">tmpfd</span><span class="p">,</span> <span class="n">tmppath</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;_job_</span><span class="si">{}</span><span class="s2">.parquet&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_id</span><span class="p">[:</span><span class="mi">8</span><span class="p">]))</span>
         <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">tmpfd</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="ow">in</span> <span class="n">_STRUCT_TYPES</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                            <span class="s2">&quot;Uploading dataframes with struct (record) column types &quot;</span>
-                            <span class="s2">&quot;is not supported. See: &quot;</span>
-                            <span class="s2">&quot;https://github.com/googleapis/google-cloud-python/issues/8191&quot;</span>
-                        <span class="p">)</span>
-
             <span class="k">if</span> <span class="n">pyarrow</span> <span class="ow">and</span> <span class="n">job_config</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">parquet_compression</span> <span class="o">==</span> <span class="s2">&quot;snappy&quot;</span><span class="p">:</span>  <span class="c1"># adjust the default value</span>
                     <span class="n">parquet_compression</span> <span class="o">=</span> <span class="n">parquet_compression</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
