@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud 73695e8 documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud bc9ea52 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -382,6 +382,56 @@ completion of the CreateSnapshot request. Format is
 <dt id="google.cloud.pubsub_v1.types.CustomHttpPattern.path">
 <code class="sig-name descname">path</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.CustomHttpPattern.path" title="Permalink to this definition">#</a></dt>
 <dd><p>Field google.api.CustomHttpPattern.path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.DeadLetterPolicy">
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.pubsub_v1.types.</code><code class="sig-name descname">DeadLetterPolicy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeadLetterPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>Dead lettering is done on a best effort basis. The same message might be
+dead lettered multiple times.</p>
+<p>If validation on any of the fields fails at subscription
+creation/updation, the create/update subscription request will fail.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.DeadLetterPolicy.dead_letter_topic">
+<code class="sig-name descname">dead_letter_topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeadLetterPolicy.dead_letter_topic" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the topic to which dead letter messages should be
+published. Format is <code class="docutils literal notranslate"><span class="pre">projects/{project}/topics/{topic}</span></code>.The
+Cloud Pub/Sub service account associated with the enclosing
+subscription’s parent project (i.e.,
+<a class="reference external" href="mailto:service-{project_number}&#37;&#52;&#48;gcp-sa">service-{project_number}<span>&#64;</span>gcp-sa</a>-
+pubsub.iam.gserviceaccount.com) must have permission to
+Publish() to this topic.  The operation will fail if the topic
+does not exist. Users should ensure that there is a
+subscription attached to this topic since messages published
+to a topic with no subscriptions are lost.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.DeadLetterPolicy.max_delivery_attempts">
+<code class="sig-name descname">max_delivery_attempts</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeadLetterPolicy.max_delivery_attempts" title="Permalink to this definition">#</a></dt>
+<dd><p>The maximum number of delivery attempts for any message. The
+value must be between 5 and 100.  The number of delivery
+attempts is defined as 1 + (the sum of number of NACKs and
+number of times the acknowledgement deadline has been exceeded
+for the message).  A NACK is any call to ModifyAckDeadline
+with a 0 deadline. Note that client libraries may
+automatically extend ack_deadlines.  This field will be
+honored on a best effort basis.  If this parameter is 0, a
+default value of 5 is used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">dead_letter_topic</code></dt>
+<dd><p>Field google.pubsub.v1.DeadLetterPolicy.dead_letter_topic</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">max_delivery_attempts</code></dt>
+<dd><p>Field google.pubsub.v1.DeadLetterPolicy.max_delivery_attempts</p>
 </dd></dl>
 
 </dd></dl>
@@ -2229,8 +2279,9 @@ available, rather than returning no messages.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PullRequest.max_messages">
 <code class="sig-name descname">max_messages</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PullRequest.max_messages" title="Permalink to this definition">#</a></dt>
-<dd><p>The maximum number of messages returned for this request. The
-Pub/Sub system may return fewer than the number specified.</p>
+<dd><p>The maximum number of messages to return for this request.
+Must be a positive integer. The Pub/Sub system may return
+fewer than the number specified.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2931,6 +2982,22 @@ If <code class="docutils literal notranslate"><span class="pre">expiration_polic
 <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Subscription.dead_letter_policy">
+<code class="sig-name descname">dead_letter_policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.dead_letter_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>A policy that specifies the conditions for dead lettering
+messages in this subscription. If dead_letter_policy is not
+set, dead lettering is disabled.  The Cloud Pub/Sub service
+account associated with this subscriptions’s parent project
+(i.e., <a class="reference external" href="mailto:service-{project_number}&#37;&#52;&#48;gcp-sa">service-{project_number}<span>&#64;</span>gcp-sa</a>-
+pubsub.iam.gserviceaccount.com) must have permission to
+Acknowledge() messages on this subscription. EXPERIMENTAL:
+This feature is part of a closed alpha release. This API might
+be changed in backward-incompatible ways and is not
+recommended for production use. It is not subject to any SLA
+or deprecation policy.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.types.Subscription.LabelsEntry">
 <em class="property">class </em><code class="sig-name descname">LabelsEntry</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Subscription.LabelsEntry" title="Permalink to this definition">#</a></dt>
@@ -2952,6 +3019,12 @@ If <code class="docutils literal notranslate"><span class="pre">expiration_polic
 <dt>
 <code class="sig-name descname">ack_deadline_seconds</code></dt>
 <dd><p>Field google.pubsub.v1.Subscription.ack_deadline_seconds</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">dead_letter_policy</code></dt>
+<dd><p>Field google.pubsub.v1.Subscription.dead_letter_policy</p>
 </dd></dl>
 
 <dl class="attribute">

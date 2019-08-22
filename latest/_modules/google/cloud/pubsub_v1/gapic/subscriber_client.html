@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud 73695e8 documentation</title>
+    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud bc9ea52 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -280,6 +280,7 @@
         <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_message_ordering</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">expiration_policy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dead_letter_policy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -374,6 +375,20 @@
 
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`</span>
+<span class="sd">            dead_letter_policy (Union[dict, ~google.cloud.pubsub_v1.types.DeadLetterPolicy]): A policy that specifies the conditions for dead lettering messages in</span>
+<span class="sd">                this subscription. If dead\_letter\_policy is not set, dead lettering is</span>
+<span class="sd">                disabled.</span>
+
+<span class="sd">                The Cloud Pub/Sub service account associated with this subscriptions&#39;s</span>
+<span class="sd">                parent project (i.e.,</span>
+<span class="sd">                service-{project\_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must</span>
+<span class="sd">                have permission to Acknowledge() messages on this subscription.</span>
+<span class="sd">                EXPERIMENTAL: This feature is part of a closed alpha release. This API</span>
+<span class="sd">                might be changed in backward-incompatible ways and is not recommended</span>
+<span class="sd">                for production use. It is not subject to any SLA or deprecation policy.</span>
+
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.DeadLetterPolicy`</span>
 <span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
 <span class="sd">                to retry requests. If ``None`` is specified, requests will</span>
 <span class="sd">                be retried using a default configuration.</span>
@@ -414,6 +429,7 @@
             <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
             <span class="n">enable_message_ordering</span><span class="o">=</span><span class="n">enable_message_ordering</span><span class="p">,</span>
             <span class="n">expiration_policy</span><span class="o">=</span><span class="n">expiration_policy</span><span class="p">,</span>
+            <span class="n">dead_letter_policy</span><span class="o">=</span><span class="n">dead_letter_policy</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">[]</span>
@@ -966,8 +982,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            subscription (str): The subscription from which messages should be pulled. Format is</span>
 <span class="sd">                ``projects/{project}/subscriptions/{sub}``.</span>
-<span class="sd">            max_messages (int): The maximum number of messages returned for this request. The Pub/Sub</span>
-<span class="sd">                system may return fewer than the number specified.</span>
+<span class="sd">            max_messages (int): The maximum number of messages to return for this request. Must be a</span>
+<span class="sd">                positive integer. The Pub/Sub system may return fewer than the number</span>
+<span class="sd">                specified.</span>
 <span class="sd">            return_immediately (bool): If this field set to true, the system will respond immediately even if</span>
 <span class="sd">                it there are no messages available to return in the ``Pull`` response.</span>
 <span class="sd">                Otherwise, the system may wait (for a bounded amount of time) until at</span>

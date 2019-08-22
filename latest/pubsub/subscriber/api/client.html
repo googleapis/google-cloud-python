@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Subscriber Client API &#8212; google-cloud 73695e8 documentation</title>
+    <title>Subscriber Client API &#8212; google-cloud bc9ea52 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -195,7 +195,7 @@ that is provided to the method.</p></li>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.client.Client.create_subscription">
-<code class="sig-name descname">create_subscription</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">topic</em>, <em class="sig-param">push_config=None</em>, <em class="sig-param">ack_deadline_seconds=None</em>, <em class="sig-param">retain_acked_messages=None</em>, <em class="sig-param">message_retention_duration=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">enable_message_ordering=None</em>, <em class="sig-param">expiration_policy=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
+<code class="sig-name descname">create_subscription</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">topic</em>, <em class="sig-param">push_config=None</em>, <em class="sig-param">ack_deadline_seconds=None</em>, <em class="sig-param">retain_acked_messages=None</em>, <em class="sig-param">message_retention_duration=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">enable_message_ordering=None</em>, <em class="sig-param">expiration_policy=None</em>, <em class="sig-param">dead_letter_policy=None</em>, <em class="sig-param">retry=&lt;object object&gt;</em>, <em class="sig-param">timeout=&lt;object object&gt;</em>, <em class="sig-param">metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a subscription to a given topic. See the resource name rules. If
 the subscription already exists, returns <code class="docutils literal notranslate"><span class="pre">ALREADY_EXISTS</span></code>. If the
 corresponding topic doesn’t exist, returns <code class="docutils literal notranslate"><span class="pre">NOT_FOUND</span></code>.</p>
@@ -283,6 +283,19 @@ not set, a <em>default policy</em> with <code class="docutils literal notranslat
 minimum allowed value for <code class="docutils literal notranslate"><span class="pre">expiration_policy.ttl</span></code> is 1 day.</p>
 <p>If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.ExpirationPolicy" title="google.cloud.pubsub_v1.types.ExpirationPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpirationPolicy</span></code></a></p>
+</p></li>
+<li><p><strong>dead_letter_policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.DeadLetterPolicy" title="google.cloud.pubsub_v1.types.DeadLetterPolicy"><em>DeadLetterPolicy</em></a><em>]</em>) – <p>A policy that specifies the conditions for dead lettering messages in
+this subscription. If dead_letter_policy is not set, dead lettering is
+disabled.</p>
+<p>The Cloud Pub/Sub service account associated with this subscriptions’s
+parent project (i.e.,
+<a class="reference external" href="mailto:service-{project_number}&#37;&#52;&#48;gcp-sa-pubsub&#46;iam&#46;gserviceaccount&#46;com">service-{project_number}<span>&#64;</span>gcp-sa-pubsub<span>&#46;</span>iam<span>&#46;</span>gserviceaccount<span>&#46;</span>com</a>) must
+have permission to Acknowledge() messages on this subscription.
+EXPERIMENTAL: This feature is part of a closed alpha release. This API
+might be changed in backward-incompatible ways and is not recommended
+for production use. It is not subject to any SLA or deprecation policy.</p>
+<p>If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.DeadLetterPolicy" title="google.cloud.pubsub_v1.types.DeadLetterPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeadLetterPolicy</span></code></a></p>
 </p></li>
 <li><p><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
 to retry requests. If <code class="docutils literal notranslate"><span class="pre">None</span></code> is specified, requests will
@@ -820,8 +833,9 @@ subscription.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>subscription</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The subscription from which messages should be pulled. Format is
 <code class="docutils literal notranslate"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p></li>
-<li><p><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of messages returned for this request. The Pub/Sub
-system may return fewer than the number specified.</p></li>
+<li><p><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of messages to return for this request. Must be a
+positive integer. The Pub/Sub system may return fewer than the number
+specified.</p></li>
 <li><p><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If this field set to true, the system will respond immediately even if
 it there are no messages available to return in the <code class="docutils literal notranslate"><span class="pre">Pull</span></code> response.
 Otherwise, the system may wait (for a bounded amount of time) until at
