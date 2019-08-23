@@ -291,6 +291,10 @@ def _run_query(client, query, job_config=None):
     """
     start_time = time.time()
     query_job = client.query(query, job_config=job_config)
+
+    if job_config and job_config.dry_run:
+        return query_job
+
     print("Executing query with job ID: {}".format(query_job.job_id))
 
     while True:
@@ -322,6 +326,15 @@ def _run_query(client, query, job_config=None):
     help=(
         "maximum_bytes_billed to use for executing this query. Defaults to "
         "the context default_query_job_config.maximum_bytes_billed."
+    ),
+)
+@magic_arguments.argument(
+    "--dry_run",
+    action="store_true",
+    default=False,
+    help=(
+        "Sets query to be a dry run to estimate costs. "
+        "Defaults to executing the query instead of dry run if this argument is not used."
     ),
 )
 @magic_arguments.argument(
@@ -410,6 +423,7 @@ def _cell_magic(line, query):
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
+    job_config.dry_run = args.dry_run
 
     if args.maximum_bytes_billed == "None":
         job_config.maximum_bytes_billed = 0
@@ -427,8 +441,24 @@ def _cell_magic(line, query):
         display.clear_output()
 
     if error:
+        if args.destination_var:
+            print(
+                "Could not save output to variable '{}'.".format(args.destination_var),
+                file=sys.stderr,
+            )
         print("\nERROR:\n", error, file=sys.stderr)
         return
+
+    if args.dry_run and args.destination_var:
+        IPython.get_ipython().push({args.destination_var: query_job})
+        return
+    elif args.dry_run:
+        print(
+            "Query validated. This query will process {} bytes.".format(
+                query_job.total_bytes_processed
+            )
+        )
+        return query_job
 
     result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
     if args.destination_var:
