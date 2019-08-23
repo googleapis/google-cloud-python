@@ -16,7 +16,8 @@
 def copy_table(client, dataset_id, table_id):
 
     # [START bigquery_copy_table]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -28,9 +29,7 @@ def copy_table(client, dataset_id, table_id):
     # table_id = "your-project.your_dataset.your_table_name"
 
     dataset = client.get_dataset(dataset_id)
-
     orig_table = client.get_table(table_id)
-
     dest_table = dataset.table("destination_table")
 
     job = client.copy_table(
@@ -42,10 +41,7 @@ def copy_table(client, dataset_id, table_id):
 
     job.result()  # Waits for job to complete.
 
-    if job.state == "DONE":
-        print("The process completed")
     dest_table = client.get_table(dest_table)
     if dest_table.num_rows == orig_table.num_rows:
         print("A copy of the table created")
-
     # [END bigquery_copy_table]

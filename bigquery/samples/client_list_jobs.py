@@ -16,7 +16,8 @@
 def client_list_jobs(client):
 
     # [START bigquery_list_jobs]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # project = "my_project"  # replace with your project ID
@@ -47,5 +48,4 @@ def client_list_jobs(client):
     print("Last 10 jobs done:")
     for job in client.list_jobs(max_results=10, state_filter="DONE"):
         print("{}".format(job.job_id))
-
     # [END bigquery_list_jobs]

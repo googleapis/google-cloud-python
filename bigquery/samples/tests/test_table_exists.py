@@ -26,9 +26,10 @@ def test_table_exists(capsys, client, random_table_id):
     ]
 
     table_exists.table_exists(client, random_table_id)
+    out, err = capsys.readouterr()
+    assert "Table {} is not found".format(random_table_id) in out
     table = bigquery.Table(random_table_id, schema=schema)
     table = client.create_table(table)
     table_exists.table_exists(client, random_table_id)
     out, err = capsys.readouterr()
-    assert "Table {} is not found".format(random_table_id) in out
     assert "Table {} already exists".format(random_table_id) in out

@@ -79,6 +79,13 @@ def table_id(client, dataset_id):
 
 
 @pytest.fixture
+def table_with_data_id(client):
+    dataset = client.get_dataset("bigquery-public-data.samples")
+    table = dataset.table("shakespeare")
+    return "{}.{}.{}".format(table.project, table.dataset_id, table.table_id)
+
+
+@pytest.fixture
 def routine_id(client, dataset_id):
     now = datetime.datetime.now()
     routine_id = "python_samples_{}_{}".format(

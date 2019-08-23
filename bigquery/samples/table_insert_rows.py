@@ -16,7 +16,8 @@
 def table_insert_rows(client, table_id):
 
     # [START bigquery_table_insert_rows]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -31,5 +32,4 @@ def table_insert_rows(client, table_id):
     errors = client.insert_rows(table, rows_to_insert)
     if errors == []:
         print("New rows have been added")
-
     # [END bigquery_table_insert_rows]

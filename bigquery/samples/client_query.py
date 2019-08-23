@@ -16,7 +16,8 @@
 def client_query(client):
 
     # [START bigquery_query]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -31,13 +32,11 @@ def client_query(client):
         query,
         # Location must match that of the dataset(s) referenced in the query.
         location="US",
-    )  # API request - starts the query
+    )
 
-    if query_job.state == "RUNNING":
-        print("The query data:")
-        for row in query_job:  # API request - fetches results
-            # Row values can be accessed by field name or index
-            if row[0] == row.name == row["name"]:
-                print(row)
-
+    print("The query data:")
+    for row in query_job:  # API request - fetches results
+        # Row values can be accessed by field name or index
+        if row[0] == row.name == row["name"]:
+            print(row)
     # [END bigquery_query]

@@ -16,9 +16,8 @@
 from .. import copy_table
 
 
-def test_copy_table(capsys, client, dataset_id, table_w_data):
+def test_copy_table(capsys, client, dataset_id, table_with_data_id):
 
-    copy_table.copy_table(client, dataset_id, table_w_data)
+    copy_table.copy_table(client, dataset_id, table_with_data_id)
     out, err = capsys.readouterr()
-    assert "The process completed" in out
     assert "A copy of the table created" in out
