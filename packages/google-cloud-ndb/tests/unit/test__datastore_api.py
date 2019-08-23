@@ -717,6 +717,21 @@ class Test_put_WithGlobalCache:
 
         assert global_cache.get([cache_key]) == [cache_value]
 
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_no_datastore_incomplete_key(Batch, global_cache):
+        class SomeKind(model.Model):
+            pass
+
+        key = key_module.Key("SomeKind", None)
+        entity = SomeKind(key=key)
+        future = _api.put(
+            model._entity_to_ds_entity(entity),
+            _options.Options(use_datastore=False),
+        )
+        with pytest.raises(TypeError):
+            future.result()
+
 
 class Test_delete:
     @staticmethod
