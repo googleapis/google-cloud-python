@@ -124,7 +124,7 @@ def from_rfc3339(value):
         therefore truncates such values to microseconds.
 
     Args:
-        value (str): The RFC 3339 string to convert.
+        value (str): The RFC3339 string to convert.
 
     Returns:
         datetime.datetime: The datetime object equivalent to the timestamp
@@ -162,7 +162,7 @@ def from_rfc3339_nanos(value):
         timestamp in UTC.
 
     Raises:
-        ValueError: If the timestamp does not match the RFC 3339
+        ValueError: If the timestamp does not match the RFC3339
             regular expression.
     """
     # Raise deprecation warnings for things we want to go away.
@@ -221,10 +221,10 @@ class DatetimeWithNanoseconds(datetime.datetime):
         return self._nanosecond
 
     def rfc3339(self):
-        """Return an RFC 3339-compliant timestamp.
+        """Return an RFC3339-compliant timestamp.
 
         Returns:
-            (str): Timestamp string according to RFC 3339 spec.
+            (str): Timestamp string according to RFC3339 spec.
         """
         if self._nanosecond == 0:
             return to_rfc3339(self)
@@ -233,10 +233,10 @@ class DatetimeWithNanoseconds(datetime.datetime):
 
     @classmethod
     def from_rfc3339(cls, stamp):
-        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
+        """Parse RFC3339-compliant timestamp, preserving nanoseconds.
 
         Args:
-            stamp (str): RFC 3339 stamp, with up to nanosecond precision
+            stamp (str): RFC3339 stamp, with up to nanosecond precision
 
         Returns:
             :class:`DatetimeWithNanoseconds`:
@@ -286,7 +286,7 @@ class DatetimeWithNanoseconds(datetime.datetime):
 
     @classmethod
     def from_timestamp_pb(cls, stamp):
-        """Parse RFC 3339-compliant timestamp, preserving nanoseconds.
+        """Parse RFC3339-compliant timestamp, preserving nanoseconds.
 
         Args:
             stamp (:class:`~google.protobuf.timestamp_pb2.Timestamp`): timestamp message
