@@ -3617,6 +3617,94 @@ class TestModel:
         assert not entity1 == entity2
 
     @staticmethod
+    def test__eq__expando_w_different_number_of_properties():
+        class SomeKind(model.Expando):
+            foo = model.IntegerProperty()
+
+        entity1 = SomeKind(foo=1)
+        entity2 = SomeKind(foo=1, bar=2)
+
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test__eq__expando_w_different_properties():
+        class SomeKind(model.Expando):
+            foo = model.IntegerProperty()
+
+        entity1 = SomeKind(foo=1, bar=2)
+        entity2 = SomeKind(foo=1, baz=3)
+
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test__eq__expando():
+        class SomeKind(model.Expando):
+            foo = model.IntegerProperty()
+
+        entity1 = SomeKind(foo=1, bar=2)
+        entity2 = SomeKind(foo=1, bar=2)
+
+        assert entity1 == entity2
+
+    @staticmethod
+    def test__eq__structured_property():
+        class OtherKind(model.Model):
+            bar = model.IntegerProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(OtherKind)
+            hi = model.StringProperty()
+
+        entity1 = SomeKind(hi="mom", foo=OtherKind(bar=42))
+        entity2 = SomeKind(hi="mom", foo=OtherKind(bar=42))
+
+        assert entity1 == entity2
+
+    @staticmethod
+    def test__eq__structured_property_differs():
+        class OtherKind(model.Model):
+            bar = model.IntegerProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(OtherKind)
+            hi = model.StringProperty()
+
+        entity1 = SomeKind(hi="mom", foo=OtherKind(bar=42))
+        entity2 = SomeKind(hi="mom", foo=OtherKind(bar=43))
+
+        assert not entity1 == entity2
+
+    @staticmethod
+    def test__eq__repeated_structured_property():
+        class OtherKind(model.Model):
+            bar = model.IntegerProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(OtherKind, repeated=True)
+            hi = model.StringProperty()
+
+        entity1 = SomeKind(hi="mom", foo=[OtherKind(bar=42)])
+        entity2 = SomeKind(hi="mom", foo=[OtherKind(bar=42)])
+
+        assert entity1 == entity2
+
+    @staticmethod
+    def test__eq__repeated_structured_property_differs():
+        class OtherKind(model.Model):
+            bar = model.IntegerProperty()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(OtherKind, repeated=True)
+            hi = model.StringProperty()
+
+        entity1 = SomeKind(hi="mom", foo=[OtherKind(bar=42)])
+        entity2 = SomeKind(
+            hi="mom", foo=[OtherKind(bar=42), OtherKind(bar=43)]
+        )
+
+        assert not entity1 == entity2
+
+    @staticmethod
     def test___ne__():
         class Simple(model.Model):
             pass
