@@ -187,6 +187,28 @@ def bq_to_arrow_array(series, bq_field):
     return pyarrow.array(series, type=arrow_type)
 
 
+def _columns_and_indexes(dataframe):
+    """Return all index and column names with dtypes.
+
+    Returns:
+        Sequence[Tuple[dtype, str]]:
+            Returns a sorted list of indexes and column names with
+            corresponding dtypes.
+    """
+    columns_and_indexes = []
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        for name in dataframe.index.names:
+            if name:
+                values = dataframe.index.get_level_values(name)
+                columns_and_indexes.append((name, values.dtype))
+    else:
+        if dataframe.index.name:
+            columns_and_indexes.append((dataframe.index.name, dataframe.index.dtype))
+
+    columns_and_indexes += zip(dataframe.columns, dataframe.dtypes)
+    return columns_and_indexes
+
+
 def dataframe_to_bq_schema(dataframe, bq_schema):
     """Convert a pandas DataFrame schema to a BigQuery schema.
 
@@ -217,7 +239,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_schema_unused = set()
 
     bq_schema_out = []
-    for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+    for column, dtype in _columns_and_indexes(dataframe):
         # Use provided type from schema, if present.
         bq_field = bq_schema_index.get(column)
         if bq_field:
@@ -245,6 +267,21 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
     return tuple(bq_schema_out)
 
 
+def _column_or_index(dataframe, name):
+    """Return a column or index as a pandas series."""
+    if name in dataframe.columns:
+        return dataframe[name]
+
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        if name in dataframe.index.names:
+            return dataframe.index.get_level_values(name)
+    else:
+        if name == dataframe.index.name:
+            return dataframe.index.to_series()
+
+    raise ValueError("column or index '{}' not found.".format(name))
+
+
 def dataframe_to_arrow(dataframe, bq_schema):
     """Convert pandas dataframe to Arrow table, using BigQuery schema.
 
@@ -261,9 +298,10 @@ def dataframe_to_arrow(dataframe, bq_schema):
             BigQuery schema.
     """
     column_names = set(dataframe.columns)
+    column_and_index_names = set(name for name, _ in _columns_and_indexes(dataframe))
     bq_field_names = set(field.name for field in bq_schema)
 
-    extra_fields = bq_field_names - column_names
+    extra_fields = bq_field_names - column_and_index_names
     if extra_fields:
         raise ValueError(
             "bq_schema contains fields not present in dataframe: {}".format(
@@ -271,6 +309,8 @@ def dataframe_to_arrow(dataframe, bq_schema):
             )
         )
 
+    # It's okay for indexes to be missing from bq_schema, but it's not okay to
+    # be missing columns.
     missing_fields = column_names - bq_field_names
     if missing_fields:
         raise ValueError(
@@ -283,7 +323,9 @@ def dataframe_to_arrow(dataframe, bq_schema):
     for bq_field in bq_schema:
         arrow_fields.append(bq_to_arrow_field(bq_field))
         arrow_names.append(bq_field.name)
-        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
+        arrow_arrays.append(
+            bq_to_arrow_array(_column_or_index(dataframe, bq_field.name), bq_field)
+        )
 
     if all((field is not None for field in arrow_fields)):
         return pyarrow.Table.from_arrays(
