@@ -567,7 +567,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 associated with the job object or``NoneType``
             retry (Optional[google.api_core.retry.Retry]) How to retry the RPC.
 
-        Raises: 
+        Raises:
             `ValueError` if the job has already begun.
         """
         if self.state is not None:
@@ -2887,7 +2887,7 @@ class QueryJob(_AsyncJob):
                 associated with the job object or``NoneType``
             retry (Optional[google.api_core.retry.Retry]) How to retry the RPC.
 
-        Raises: 
+        Raises:
             `ValueError` if the job has already begun.
         """
 
