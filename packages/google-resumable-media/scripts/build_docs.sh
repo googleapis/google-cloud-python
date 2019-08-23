@@ -44,10 +44,11 @@ sphinx-build -W \
   docs/latest/
 echo "Build finished. The HTML pages are in docs/latest."
 
-# If this is a CircleCI build, we want to make sure the docs are already
+# If this is a CI build, we want to make sure the docs are already
 # checked in as is.
-if [[ -n "${CIRCLECI}" ]]; then
-    echo "On a CircleCI build, making sure docs already checked in."
+if [ -n "${CIRCLECI}" ] || ["$1" -eq "kokoro" ]
+then
+    echo "On a CI build, making sure docs already checked in."
     # Pre-emptively ignore changes to the buildinfo file.
     git checkout docs/latest/.buildinfo
     # If anything has changed, raise an error (to fail the build).
