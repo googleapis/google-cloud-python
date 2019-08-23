@@ -16,11 +16,11 @@
 from .. import browse_table_data
 
 
-def test_browse_table_data(capsys, client, table_w_data):
+def test_browse_table_data(capsys, client, table_with_data_id):
 
-    browse_table_data.browse_table_data(client, table_w_data)
+    browse_table_data.browse_table_data(client, table_with_data_id)
     out, err = capsys.readouterr()
-    assert "The amount of rows in the table = " in out
-    assert "First 10 rows of the table are loaded" in out
-    assert "Fields number set to 2" in out
-    assert "Printed data contains 10 rows" in out
+    assert "Downloaded 164656 rows from table {}".format(table_with_data_id) in out
+    assert "Downloaded 10 rows from table {}".format(table_with_data_id) in out
+    assert "Selected 2 columns from table {}".format(table_with_data_id) in out
+    assert "Downloaded 10 rows from table {}".format(table_with_data_id) in out
