@@ -16,7 +16,8 @@
 def list_datasets_by_label(client):
 
     # [START bigquery_list_datasets_by_label]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()

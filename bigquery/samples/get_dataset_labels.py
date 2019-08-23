@@ -16,6 +16,7 @@
 def get_dataset_labels(client, dataset_id):
 
     # [START bigquery_get_dataset_labels]
+    # TODO(developer): Import the client library.
     # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.

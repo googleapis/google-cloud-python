@@ -16,6 +16,7 @@
 def browse_table_data(client, table_id):
 
     # [START bigquery_browse_table]
+    # TODO(developer): Import the client library.
     # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
