@@ -1,11 +1,12 @@
 {
-  "name": "iam",
+  "name": "iamcredentials",
   "name_pretty": "Cloud Identity and Access Management",
   "product_documentation": "https://cloud.google.com/iam/docs/",
-  "client_documentation": "https://googleapis.dev/python/iam/latest",
+  "client_documentation": "https://googleapis.dev/python/iamcredentials/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559761",
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-iam"
+  "distribution_name": "google-cloud-iam",
+  "api_id": "iamcredentials.googleapis.com",
 }
