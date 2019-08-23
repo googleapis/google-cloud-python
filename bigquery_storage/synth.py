@@ -122,13 +122,14 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-extra_deps = [".[fastavro,pandas,pyarrow]"]
+optional_deps = [".[fastavro,pandas,pyarrow]"]
+system_test_deps = optional_deps + ["../bigquery/"]
 templated_files = common.py_library(
     unit_cov_level=79,
     cov_level=79,
     samples_test=True,
-    system_test_dependencies=extra_deps,
-    unit_test_dependencies=extra_deps,
+    system_test_dependencies=system_test_deps,
+    unit_test_dependencies=optional_deps,
 )
 s.move(templated_files)
 
