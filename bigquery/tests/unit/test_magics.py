@@ -684,7 +684,6 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
 
     with run_query_patch as run_query_mock, io.capture_output() as captured_io:
         run_query_mock.return_value = query_job_mock
-        query_job_mock.to_dataframe.return_value = result
         return_value = ip.run_cell_magic("bigquery", "--dry_run", sql)
 
         assert "Query validated. This query will process" in captured_io.stdout
@@ -731,7 +730,7 @@ def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():
     )
 
     sql = "SELECT 17 AS num"
-    
+
     assert "q_job" not in ip.user_ns
 
     with run_query_patch as run_query_mock:
