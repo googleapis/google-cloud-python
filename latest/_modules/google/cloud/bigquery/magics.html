@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.magics &#8212; google-cloud 2631e44 documentation</title>
+    <title>google.cloud.bigquery.magics &#8212; google-cloud 0f6fa6b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -325,6 +325,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">job_config</span> <span class="ow">and</span> <span class="n">job_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">query_job</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Executing query with job ID: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query_job</span><span class="o">.</span><span class="n">job_id</span><span class="p">))</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -356,6 +360,15 @@
     <span class="n">help</span><span class="o">=</span><span class="p">(</span>
         <span class="s2">&quot;maximum_bytes_billed to use for executing this query. Defaults to &quot;</span>
         <span class="s2">&quot;the context default_query_job_config.maximum_bytes_billed.&quot;</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span>
+    <span class="s2">&quot;--dry_run&quot;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;Sets query to be a dry run to estimate costs. &quot;</span>
+        <span class="s2">&quot;Defaults to executing the query instead of dry run if this argument is not used.&quot;</span>
     <span class="p">),</span>
 <span class="p">)</span>
 <span class="nd">@magic_arguments</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span>
@@ -444,6 +457,7 @@
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">params</span>
     <span class="n">job_config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">use_legacy_sql</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dry_run</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">maximum_bytes_billed</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
         <span class="n">job_config</span><span class="o">.</span><span class="n">maximum_bytes_billed</span> <span class="o">=</span> <span class="mi">0</span>
@@ -461,8 +475,24 @@
         <span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">destination_var</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Could not save output to variable &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">destination_var</span><span class="p">),</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dry_run</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">destination_var</span><span class="p">:</span>
+        <span class="n">IPython</span><span class="o">.</span><span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">push</span><span class="p">({</span><span class="n">args</span><span class="o">.</span><span class="n">destination_var</span><span class="p">:</span> <span class="n">query_job</span><span class="p">})</span>
+        <span class="k">return</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Query validated. This query will process </span><span class="si">{}</span><span class="s2"> bytes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">query_job</span><span class="o">.</span><span class="n">total_bytes_processed</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">query_job</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">query_job</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">bqstorage_client</span><span class="o">=</span><span class="n">bqstorage_client</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">destination_var</span><span class="p">:</span>

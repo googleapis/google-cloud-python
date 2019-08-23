@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 2631e44 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 0f6fa6b documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -595,15 +595,16 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            client (Optional[google.cloud.bigquery.client.Client]):</span>
+<span class="sd">                The client to use. If not passed, falls back to the ``client``</span>
+<span class="sd">                associated with the job object or``NoneType``</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):</span>
+<span class="sd">                How to retry the RPC.</span>
 
-<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
-<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
-
-<span class="sd">        :raises: :exc:`ValueError` if the job has already begin.</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the job has already begun.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Job already begun.&quot;</span><span class="p">)</span>
@@ -2913,6 +2914,30 @@
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span> <span class="n">ruler</span><span class="o">=</span><span class="n">ruler</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  begin the job via a POST request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            client (Optional[google.cloud.bigquery.client.Client]):</span>
+<span class="sd">                The client to use. If not passed, falls back to the ``client``</span>
+<span class="sd">                associated with the job object or``NoneType``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):</span>
+<span class="sd">                How to retry the RPC.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError:</span>
+<span class="sd">                If the job has already begun.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleCloudError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">exc</span><span class="o">.</span><span class="n">message</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_for_exception</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="k">raise</span>
 
 <div class="viewcode-block" id="QueryJob.result"><a class="viewcode-back" href="../../../../bigquery/generated/google.cloud.bigquery.job.QueryJob.html#google.cloud.bigquery.job.QueryJob.result">[docs]</a>    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start the job and wait for it to complete and get the result.</span>
