@@ -16,7 +16,7 @@
 def delete_dataset_labels(client, dataset_id):
 
     # [START bigquery_delete_label_dataset]
-    from google.cloud import bigquery
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -30,14 +30,5 @@ def delete_dataset_labels(client, dataset_id):
     dataset.labels["color"] = None
 
     dataset = client.update_dataset(dataset, ["labels"])
-
-    dataset = client.get_dataset(dataset_id)
-
-    print("Dataset ID: {}".format(dataset_id))
-    if dataset.labels:
-        for label, value in dataset.labels.items():
-            print("\t{}: {}".format(label, value))
-    else:
-        print("\tLabels deleted.")
-
+    print("Labels deleted from {}".format(dataset_id))
     # [END bigquery_delete_label_dataset]

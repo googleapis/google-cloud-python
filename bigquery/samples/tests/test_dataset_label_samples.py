@@ -12,12 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+from .. import delete_dataset_labels
+from .. import get_dataset_labels
 from .. import label_dataset
 
 
-def test_label_dataset(capsys, client, dataset_id):
+def test_dataset_label_samples(capsys, client, dataset_id):
 
     label_dataset.label_dataset(client, dataset_id)
     out, err = capsys.readouterr()
+    assert "Labels added to {}".format(dataset_id) in out
+
+    get_dataset_labels.get_dataset_labels(client, dataset_id)
+    out, err = capsys.readouterr()
     assert "color: green" in out
+
+    delete_dataset_labels.delete_dataset_labels(client, dataset_id)
+    out, err = capsys.readouterr()
+    assert "Labels deleted from {}".format(dataset_id) in out

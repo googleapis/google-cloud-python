@@ -16,7 +16,7 @@
 def label_dataset(client, dataset_id):
 
     # [START bigquery_label_dataset]
-    from google.cloud import bigquery
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -25,19 +25,8 @@ def label_dataset(client, dataset_id):
     # dataset_id = "your-project.your_dataset"
 
     dataset = client.get_dataset(dataset_id)
-
     dataset.labels = {"color": "green"}
-
     dataset = client.update_dataset(dataset, ["labels"])
 
-    dataset = client.get_dataset(dataset_id)
-
-    print("Dataset ID: {}".format(dataset_id))
-    print("Added labels:")
-    if dataset.labels:
-        for label, value in dataset.labels.items():
-            print("\t{}: {}".format(label, value))
-    else:
-        print("\tNo labels defined.")
-
+    print("Labels added to {}".format(dataset_id))
     # [END bigquery_label_dataset]
