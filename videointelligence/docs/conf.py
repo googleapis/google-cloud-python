@@ -343,7 +343,7 @@ intersphinx_mapping = {
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": (
-        "https://googleapis.github.io/google-cloud-python/latest",
+        "https://googleapis.dev/python/google-api-core/latest",
         None,
     ),
     "grpc": ("https://grpc.io/grpc/python/", None),
