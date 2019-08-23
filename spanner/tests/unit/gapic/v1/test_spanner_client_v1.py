@@ -105,6 +105,43 @@ class TestSpannerClient(object):
         with pytest.raises(CustomException):
             client.create_session(database)
 
+    def test_batch_create_sessions(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = spanner_pb2.BatchCreateSessionsResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
+
+        # Setup Request
+        database = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+
+        response = client.batch_create_sessions(database)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_pb2.BatchCreateSessionsRequest(database=database)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_batch_create_sessions_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_v1.SpannerClient()
+
+        # Setup request
+        database = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+
+        with pytest.raises(CustomException):
+            client.batch_create_sessions(database)
+
     def test_get_session(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
