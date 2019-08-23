@@ -18,8 +18,6 @@
 import copy
 import datetime as dt
 import decimal
-import json
-import io
 import re
 
 import pytest
@@ -341,8 +339,35 @@ def test_decoding_data_types(
         }
     ]
 
+    # Explicit schema is needed to recognize bytes_field as BYTES, and not STRING.
+    # Until the support for partial schemas is added, all fields need to be listed.
+    # TODO: Retain only the bytes_field item once partial schemas are supported.
+    schema = [
+        bigquery.SchemaField("string_field", "STRING"),
+        bigquery.SchemaField("bytes_field", "BYTES"),
+        bigquery.SchemaField("int64_field", "INT64"),
+        bigquery.SchemaField("float64_field", "FLOAT64"),
+        bigquery.SchemaField("numeric_field", "NUMERIC"),
+        bigquery.SchemaField("bool_field", "BOOL"),
+        bigquery.SchemaField("geography_field", "GEOGRAPHY"),
+        bigquery.SchemaField(
+            "person_struct_field",
+            "STRUCT",
+            fields=(
+                bigquery.SchemaField("name", "STRING"),
+                bigquery.SchemaField("age", "INT64"),
+            ),
+        ),
+        bigquery.SchemaField("timestamp_field", "TIMESTAMP"),
+        bigquery.SchemaField("date_field", "DATE"),
+        bigquery.SchemaField("time_field", "TIME"),
+        bigquery.SchemaField("datetime_field", "DATETIME"),
+        bigquery.SchemaField("string_array_field", "STRING", mode="REPEATED"),
+    ]
+
+    job_config = bigquery.LoadJobConfig(schema=schema)
     destination = _to_bq_table_ref(all_types_table_ref)
-    bq_client.load_table_from_json(data, destination).result()
+    bq_client.load_table_from_json(data, destination, job_config=job_config).result()
 
     session = client.create_read_session(
         all_types_table_ref,
