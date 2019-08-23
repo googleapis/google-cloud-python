@@ -5517,7 +5517,6 @@ class TestClientUpload(object):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_partial_schema_extra_types(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
         from google.cloud.bigquery.schema import SchemaField
 
@@ -5540,31 +5539,17 @@ class TestClientUpload(object):
             SchemaField("unknown_col", "BYTES"),
         )
         job_config = job.LoadJobConfig(schema=schema)
-        with load_patch as load_table_from_file:
+        with load_patch as load_table_from_file, pytest.raises(
+            ValueError
+        ) as exc_context:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
 
-        load_table_from_file.assert_called_once_with(
-            client,
-            mock.ANY,
-            self.TABLE_REF,
-            num_retries=_DEFAULT_NUM_RETRIES,
-            rewind=True,
-            job_id=mock.ANY,
-            job_id_prefix=None,
-            location=self.LOCATION,
-            project=None,
-            job_config=mock.ANY,
-        )
-
-        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-        assert sent_config.source_format == job.SourceFormat.PARQUET
-        assert tuple(sent_config.schema) == (
-            SchemaField("int_col", "INTEGER"),
-            SchemaField("int_as_float_col", "INTEGER"),
-            SchemaField("string_col", "STRING"),
-        )
+        load_table_from_file.assert_not_called()
+        message = str(exc_context.value)
+        assert "bq_schema contains fields not present in dataframe" in message
+        assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
