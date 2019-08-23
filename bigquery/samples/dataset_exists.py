@@ -26,5 +26,4 @@ def dataset_exists(client, dataset_id):
         print("Dataset {} already exists".format(dataset_id))
     except NotFound:
         print("Dataset {} is not found".format(dataset_id))
-
     # [END bigquery_dataset_exists]

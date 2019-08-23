@@ -30,5 +30,4 @@ def list_datasets_by_label(client):
             print("\t{}.{}".format(dataset.project, dataset.dataset_id))
     else:
         print("No datasets found with this filter.")
-
     # [END bigquery_list_datasets_by_label]

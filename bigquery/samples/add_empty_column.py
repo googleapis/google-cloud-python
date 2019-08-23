@@ -37,5 +37,4 @@ def add_empty_column(client, table_id):
         print("A new column has been added.")
     else:
         print("The column has not been added.")
-
     # [END bigquery_add_empty_column]
