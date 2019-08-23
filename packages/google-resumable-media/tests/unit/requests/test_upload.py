@@ -35,6 +35,7 @@ ONE_MB = 1024 * 1024
 BASIC_CONTENT = u'text/plain'
 JSON_TYPE = u'application/json; charset=UTF-8'
 JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
+EXPECTED_TIMEOUT = (61, 60)
 
 
 class TestSimpleUpload(object):
@@ -51,7 +52,8 @@ class TestSimpleUpload(object):
         assert ret_val is transport.request.return_value
         upload_headers = {u'content-type': content_type}
         transport.request.assert_called_once_with(
-            u'POST', SIMPLE_URL, data=data, headers=upload_headers)
+            u'POST', SIMPLE_URL, data=data, headers=upload_headers,
+            timeout=EXPECTED_TIMEOUT)
         assert upload.finished
 
 
@@ -84,7 +86,7 @@ class TestMultipartUpload(object):
         upload_headers = {u'content-type': multipart_type}
         transport.request.assert_called_once_with(
             u'POST', MULTIPART_URL, data=expected_payload,
-            headers=upload_headers)
+            headers=upload_headers, timeout=EXPECTED_TIMEOUT)
         assert upload.finished
         mock_get_boundary.assert_called_once_with()
 
@@ -121,7 +123,8 @@ class TestResumableUpload(object):
             u'x-upload-content-length': u'{:d}'.format(total_bytes),
         }
         transport.request.assert_called_once_with(
-            u'POST', RESUMABLE_URL, data=json_bytes, headers=expected_headers)
+            u'POST', RESUMABLE_URL, data=json_bytes, headers=expected_headers,
+            timeout=EXPECTED_TIMEOUT)
 
     @staticmethod
     def _upload_in_flight(data, headers=None):
@@ -170,7 +173,7 @@ class TestResumableUpload(object):
         }
         transport.request.assert_called_once_with(
             u'PUT', upload.resumable_url, data=payload,
-            headers=expected_headers)
+            headers=expected_headers, timeout=EXPECTED_TIMEOUT)
 
     def test_recover(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -191,7 +194,8 @@ class TestResumableUpload(object):
         upload._stream.seek.assert_called_once_with(end + 1)
         expected_headers = {u'content-range': u'bytes */*'}
         transport.request.assert_called_once_with(
-            u'PUT', upload.resumable_url, data=None, headers=expected_headers)
+            u'PUT', upload.resumable_url, data=None, headers=expected_headers,
+            timeout=EXPECTED_TIMEOUT)
 
 
 def _make_response(status_code=http_client.OK, headers=None):

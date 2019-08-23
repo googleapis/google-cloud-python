@@ -25,6 +25,12 @@ from google.resumable_media import common
 
 
 _DEFAULT_RETRY_STRATEGY = common.RetryStrategy()
+# The number of seconds to wait to establish a connection
+# (connect() call on socket). Avoid setting this to a multiple of 3 to not
+# Align with TCP Retransmission timing. (typically 2.5-3s)
+_DEFAULT_CONNECT_TIMEOUT = 61
+# The number of seconds to wait between bytes sent from the server.
+_DEFAULT_READ_TIMEOUT = 60
 
 
 class RequestsMixin(object):
@@ -94,6 +100,10 @@ def http_request(transport, method, url, data=None, headers=None,
     Returns:
         ~requests.Response: The return value of ``transport.request()``.
     """
+    if "timeout" not in transport_kwargs:
+        transport_kwargs["timeout"] = (
+            _DEFAULT_CONNECT_TIMEOUT, _DEFAULT_READ_TIMEOUT)
+
     func = functools.partial(
         transport.request, method, url, data=data, headers=headers,
         **transport_kwargs)

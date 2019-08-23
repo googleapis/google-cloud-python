@@ -25,6 +25,7 @@ import google.resumable_media.requests.download as download_mod
 EXAMPLE_URL = (
     u'https://www.googleapis.com/download/storage/v1/b/'
     u'{BUCKET}/o/{OBJECT}?alt=media')
+EXPECTED_TIMEOUT = (61, 60)
 
 
 class TestDownload(object):
@@ -149,7 +150,7 @@ class TestDownload(object):
             assert stream is not None
             called_kwargs[u'stream'] = True
         transport.request.assert_called_once_with(
-            u'GET', EXAMPLE_URL, **called_kwargs)
+            u'GET', EXAMPLE_URL, timeout=EXPECTED_TIMEOUT, **called_kwargs)
 
         range_bytes = u'bytes={:d}-{:d}'.format(0, end)
         assert download._headers[u'range'] == range_bytes
@@ -224,7 +225,8 @@ class TestDownload(object):
 
         # Check mocks.
         transport.request.assert_called_once_with(
-            u'GET', EXAMPLE_URL, data=None, headers={}, stream=True)
+            u'GET', EXAMPLE_URL, data=None, headers={}, stream=True,
+            timeout=EXPECTED_TIMEOUT)
 
     def test_consume_with_headers(self):
         headers = {}  # Empty headers
@@ -302,7 +304,8 @@ class TestChunkedDownload(object):
         range_bytes = u'bytes={:d}-{:d}'.format(start, start + chunk_size - 1)
         download_headers = {u'range': range_bytes}
         transport.request.assert_called_once_with(
-            u'GET', EXAMPLE_URL, data=None, headers=download_headers)
+            u'GET', EXAMPLE_URL, data=None, headers=download_headers,
+            timeout=EXPECTED_TIMEOUT)
         assert stream.getvalue() == data
         # Go back and check the internal state after consuming the chunk.
         assert not download.finished

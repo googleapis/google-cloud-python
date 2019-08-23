@@ -17,6 +17,8 @@ from six.moves import http_client
 
 from google.resumable_media.requests import _helpers
 
+EXPECTED_TIMEOUT = (61, 60)
+
 
 class TestRequestsMixin(object):
 
@@ -42,14 +44,27 @@ def test_http_request():
     url = u'http://test.invalid'
     data = mock.sentinel.data
     headers = {u'one': u'fish', u'blue': u'fish'}
+    timeout = mock.sentinel.timeout
     ret_val = _helpers.http_request(
         transport, method, url, data=data, headers=headers,
-        extra1=b'work', extra2=125.5)
+        extra1=b'work', extra2=125.5, timeout=timeout)
 
     assert ret_val is responses[0]
     transport.request.assert_called_once_with(
         method, url, data=data, headers=headers,
-        extra1=b'work', extra2=125.5)
+        extra1=b'work', extra2=125.5, timeout=timeout)
+
+
+def test_http_request_defaults():
+    transport, responses = _make_transport(http_client.OK)
+    method = u'POST'
+    url = u'http://test.invalid'
+    ret_val = _helpers.http_request(transport, method, url)
+
+    assert ret_val is responses[0]
+    transport.request.assert_called_once_with(
+        method, url, data=None, headers=None,
+        timeout=EXPECTED_TIMEOUT)
 
 
 def _make_response(status_code):
