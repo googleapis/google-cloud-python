@@ -2882,7 +2882,10 @@ class QueryJob(_AsyncJob):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                The client to use. If not passed, falls back to the ``client``
+                associated with the job object.
                     ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                     ``client`` stored on the current dataset.
