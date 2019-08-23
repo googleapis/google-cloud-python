@@ -13,7 +13,8 @@
 # limitations under the License.
 
 
-def main(client, routine_id):
+def delete_routine(client, routine_id):
+
     # [START bigquery_delete_routine]
     # TODO(developer): Import the client library.
     # from google.cloud import bigquery
