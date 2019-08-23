@@ -565,10 +565,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             client (Optional[google.cloud.bigquery.client.Client]):
                 The client to use. If not passed, falls back to the ``client``
                 associated with the job object or``NoneType``
-            retry (Optional[google.api_core.retry.Retry]) How to retry the RPC.
+            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
 
         Raises:
-            `ValueError` if the job has already begun.
+            ValueError: If the job has already begun.
         """
         if self.state is not None:
             raise ValueError("Job already begun.")
