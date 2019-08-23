@@ -10,7 +10,7 @@ Python Client for IAM API (`Alpha`_)
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _IAM API: https://cloud.google.com/iam
-.. _Client Library Documentation: https://googleapis.dev/python/iam/latest
+.. _Client Library Documentation: https://googleapis.dev/python/iamcredentials/latest
 .. _Product Documentation:  https://cloud.google.com/iam
 
 Quick Start
