@@ -561,15 +561,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                The client to use. If not passed, falls back to the ``client``
+                associated with the job object or``NoneType``
+            retry (Optional[google.api_core.retry.Retry]) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :raises: :exc:`ValueError` if the job has already begin.
+        Raises: 
+            `ValueError` if the job has already begun.
         """
         if self.state is not None:
             raise ValueError("Job already begun.")
@@ -2885,15 +2884,11 @@ class QueryJob(_AsyncJob):
         Args:
             client (Optional[google.cloud.bigquery.client.Client]):
                 The client to use. If not passed, falls back to the ``client``
-                associated with the job object.
-                    ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                    ``client`` stored on the current dataset.
+                associated with the job object or``NoneType``
+            retry (Optional[google.api_core.retry.Retry]) How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :raises: :exc:`ValueError` if the job has already begin.
+        Raises: 
+            `ValueError` if the job has already begun.
         """
 
         try:
