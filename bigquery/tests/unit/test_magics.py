@@ -292,6 +292,7 @@ def test__run_query_dry_run_without_errors_is_silent():
     assert len(captured.stderr) == 0
     assert len(captured.stdout) == 0
 
+
 def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -643,6 +644,7 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
 
     assert isinstance(return_value, pandas.DataFrame)
 
+
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_sets_job_config():
     ip = IPython.get_ipython()
@@ -662,6 +664,7 @@ def test_bigquery_magic_dryrun_option_sets_job_config():
 
         job_config_used = run_query_mock.call_args_list[0][0][-1]
         assert job_config_used.dry_run is True
+
 
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_returns_query_job():
@@ -687,6 +690,32 @@ def test_bigquery_magic_dryrun_option_returns_query_job():
 
         assert "Query validated. This query will process" in captured_io.stdout
         assert isinstance(return_value, job.QueryJob)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_dryrun_option_variable_error_message():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query",
+        autospec=True,
+        side_effect=exceptions.BadRequest("Syntax error in SQL query"),
+    )
+
+    sql = "SELECT SELECT 17 AS num"
+
+    assert "q_job" not in ip.user_ns
+
+    with run_query_patch, io.capture_output() as captured:
+        ip.run_cell_magic("bigquery", "q_job --dry_run", sql)
+
+    full_text = captured.stderr
+    assert "Could not save output to variable 'q_job'." in full_text
+
 
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():

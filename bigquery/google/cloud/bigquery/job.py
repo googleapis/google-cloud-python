@@ -579,13 +579,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         # jobs.insert is idempotent because we ensure that every new
         # job has an ID.
-        try:
-            api_response = client._call_api(
-                retry, method="POST", path=path, data=self.to_api_repr()
-            )
-        except exceptions.GoogleCloudError as exc:
-            exc.message += self._format_for_exception(self.query, self.job_id)
-            raise
+        api_response = client._call_api(
+            retry, method="POST", path=path, data=self.to_api_repr()
+        )
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY):
@@ -2879,6 +2875,29 @@ class QueryJob(_AsyncJob):
         )
 
         return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
+
+    def _begin(self, client=None, retry=DEFAULT_RETRY):
+        """API call:  begin the job via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
+
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                    ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                    ``client`` stored on the current dataset.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
+        :raises: :exc:`ValueError` if the job has already begin.
+        """
+
+        try:
+            super(QueryJob, self)._begin(client=client, retry=retry)
+        except exceptions.GoogleCloudError as exc:
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
 
     def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
