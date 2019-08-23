@@ -180,7 +180,7 @@ Running System Tests
     ``Editor`` permissions on the project.
 
 - Once you have downloaded your json keys, set the environment variable 
-  GOOGLE_APPLICATION_CREDENTIALS to the absolute path of the json file::
+  `GOOGLE_APPLICATION_CREDENTIALS` to the absolute path of the json file::
 
    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
 
