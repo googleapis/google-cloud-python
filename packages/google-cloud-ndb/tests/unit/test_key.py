@@ -187,6 +187,22 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_project():
+        key = key_module.Key("Kind", 10, project="foo")
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", 10, project="foo"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_project_and_app():
+        with pytest.raises(TypeError):
+            key_module.Key("Kind", 10, project="foo", app="bar")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_namespace():
         key = key_module.Key("Kind", 1337, namespace="foo")
 
@@ -261,8 +277,8 @@ class TestKey:
     @pytest.mark.usefixtures("in_context")
     def test___repr__non_defaults():
         key = key_module.Key("X", 11, app="foo", namespace="bar")
-        assert repr(key) == "Key('X', 11, app='foo', namespace='bar')"
-        assert str(key) == "Key('X', 11, app='foo', namespace='bar')"
+        assert repr(key) == "Key('X', 11, project='foo', namespace='bar')"
+        assert str(key) == "Key('X', 11, project='foo', namespace='bar')"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

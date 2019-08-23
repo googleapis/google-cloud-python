@@ -4252,7 +4252,8 @@ class Model(metaclass=MetaModel):
         parent (Key): The parent model or :data:`None` for a top-level model.
             If ``parent`` is used, ``key`` must be :data:`None`.
         namespace (str): Namespace for the entity key.
-        app (str): Application ID for the entity key.
+        project (str): Project ID for the entity key.
+        app (str): DEPRECATED: Synonym for ``project``.
         kwargs (Dict[str, Any]): Additional keyword arguments. These should map
             to properties of this model.
 
@@ -4292,22 +4293,31 @@ class Model(metaclass=MetaModel):
         self = _self
         key = self._get_arg(kwargs, "key")
         id_ = self._get_arg(kwargs, "id")
+        project = self._get_arg(kwargs, "project")
         app = self._get_arg(kwargs, "app")
         namespace = self._get_arg(kwargs, "namespace")
         parent = self._get_arg(kwargs, "parent")
         projection = self._get_arg(kwargs, "projection")
 
+        if app and project:
+            raise exceptions.BadArgumentError(
+                "Can't specify both 'app' and 'project'. They are synonyms."
+            )
+
+        if not project:
+            project = app
+
         key_parts_unspecified = (
             id_ is None
             and parent is None
-            and app is None
+            and project is None
             and namespace is None
         )
         if key is not None:
             if not key_parts_unspecified:
                 raise exceptions.BadArgumentError(
-                    "Model constructor given ``key`` does not accept "
-                    "``id``, ``app``, ``namespace``, or ``parent``."
+                    "Model constructor given 'key' does not accept "
+                    "'id', 'project', 'app', 'namespace', or 'parent'."
                 )
             self._key = _validate_key(key, entity=self)
         elif not key_parts_unspecified:
@@ -4315,7 +4325,7 @@ class Model(metaclass=MetaModel):
                 self._get_kind(),
                 id_,
                 parent=parent,
-                app=app,
+                project=project,
                 namespace=namespace,
             )
 

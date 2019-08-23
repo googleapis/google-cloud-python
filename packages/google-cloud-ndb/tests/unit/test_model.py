@@ -3394,6 +3394,26 @@ class TestModel:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_app():
+        entity = model.Model(app="thisproject")
+        key = key_module.Key("Model", None, project="thisproject")
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_project():
+        entity = model.Model(project="thisproject")
+        key = key_module.Key("Model", None, project="thisproject")
+        assert entity.__dict__ == {"_values": {}, "_entity_key": key}
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_app_and_project():
+        with pytest.raises(exceptions.BadArgumentError):
+            model.Model(app="foo", project="bar")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_key_and_key_parts():
         key = key_module.Key("Foo", "bar")
         with pytest.raises(exceptions.BadArgumentError):

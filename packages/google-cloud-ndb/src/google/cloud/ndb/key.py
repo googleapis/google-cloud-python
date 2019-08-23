@@ -180,7 +180,7 @@ class Key:
     .. doctest:: key-constructor-urlsafe
 
         >>> ndb.Key(urlsafe=b"agdleGFtcGxlcgsLEgRLaW5kGLkKDA")
-        Key('Kind', 1337, app='example')
+        Key('Kind', 1337, project='example')
 
     For rare use cases the following constructors exist:
 
@@ -207,13 +207,13 @@ class Key:
         }
         <BLANKLINE>
         >>> ndb.Key(reference=reference)
-        Key('Kind', 1337, app='example')
+        Key('Kind', 1337, project='example')
         >>> # Passing in a serialized low-level Reference
         >>> serialized = reference.SerializeToString()
         >>> serialized
         b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
         >>> ndb.Key(serialized=serialized)
-        Key('Kind', 1337, app='example')
+        Key('Kind', 1337, project='example')
         >>> # For unpickling, the same as ndb.Key(**kwargs)
         >>> kwargs = {"pairs": [("Cheese", "Cheddar")], "namespace": "good"}
         >>> ndb.Key(kwargs)
@@ -258,8 +258,9 @@ class Key:
             ``(kind, id)`` pairs but flattened into a single value. For
             example, the pairs ``[("Parent", 1), ("Child", "a")]`` would be
             flattened to ``["Parent", 1, "Child", "a"]``.
-        app (Optional[str]): The Google Cloud Platform project (previously
+        project (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
+        app (Optional[str]): DEPRECATED: Synonym for ``project``.
         namespace (Optional[str]): The namespace for the key.
         parent (Optional[Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
@@ -322,7 +323,7 @@ class Key:
         """String representation used by :class:`str() <str>` and :func:`repr`.
 
         We produce a short string that conveys all relevant information,
-        suppressing app and namespace when they are equal to the default.
+        suppressing project and namespace when they are equal to the default.
         In many cases, this string should be able to be used to invoke the
         constructor.
 
@@ -335,14 +336,14 @@ class Key:
             "Key('hi', 100)"
             >>>
             >>> key = ndb.Key(
-            ...     "bye", "hundred", app="specific", namespace="space"
+            ...     "bye", "hundred", project="specific", namespace="space"
             ... )
             >>> str(key)
-            "Key('bye', 'hundred', app='specific', namespace='space')"
+            "Key('bye', 'hundred', project='specific', namespace='space')"
         """
         args = ["{!r}".format(item) for item in self.flat()]
-        if self.app() != _project_from_app(None):
-            args.append("app={!r}".format(self.app()))
+        if self.project() != _project_from_app(None):
+            args.append("project={!r}".format(self.app()))
         if self.namespace() is not None:
             args.append("namespace={!r}".format(self.namespace()))
 
@@ -533,7 +534,7 @@ class Key:
         """
         return self._key.namespace
 
-    def app(self):
+    def project(self):
         """The project ID for the key.
 
         .. warning::
@@ -546,15 +547,17 @@ class Key:
 
         .. doctest:: key-app
 
-            >>> key = ndb.Key("A", "B", app="s~example")
-            >>> key.app()
+            >>> key = ndb.Key("A", "B", project="s~example")
+            >>> key.project()
             'example'
             >>>
-            >>> key = ndb.Key("A", "B", app="example")
-            >>> key.app()
+            >>> key = ndb.Key("A", "B", project="example")
+            >>> key.project()
             'example'
         """
         return self._key.project
+
+    app = project
 
     def id(self):
         """The string or integer ID in the last ``(kind, id)`` pair, if any.
@@ -669,7 +672,7 @@ class Key:
 
         .. doctest:: key-reference
 
-            >>> key = ndb.Key("Trampoline", 88, app="xy", namespace="zt")
+            >>> key = ndb.Key("Trampoline", 88, project="xy", namespace="zt")
             >>> key.reference()
             app: "xy"
             path {
@@ -694,7 +697,7 @@ class Key:
 
         .. doctest:: key-serialized
 
-            >>> key = ndb.Key("Kind", 1337, app="example")
+            >>> key = ndb.Key("Kind", 1337, project="example")
             >>> key.serialized()
             b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
         """
@@ -706,7 +709,7 @@ class Key:
 
         .. doctest:: key-urlsafe
 
-            >>> key = ndb.Key("Kind", 1337, app="example")
+            >>> key = ndb.Key("Kind", 1337, project="example")
             >>> key.urlsafe()
             b'agdleGFtcGxlcgsLEgRLaW5kGLkKDA'
         """
@@ -1272,7 +1275,7 @@ def _parse_from_ref(
 
 
 def _parse_from_args(
-    pairs=None, flat=None, app=None, namespace=None, parent=None
+    pairs=None, flat=None, project=None, app=None, namespace=None, parent=None
 ):
     """Construct a key the path (and possibly a parent key).
 
@@ -1283,8 +1286,9 @@ def _parse_from_args(
             (kind, ID) pairs but flattened into a single value. For example,
             the pairs ``[("Parent", 1), ("Child", "a")]`` would be flattened to
             ``["Parent", 1, "Child", "a"]``.
-        app (Optional[str]): The Google Cloud Platform project (previously
+        project (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
+        app (Optional[str]): DEPRECATED: Synonym for ``project``.
         namespace (Optional[str]): The namespace for the key.
         parent (Optional[~.ndb.key.Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
@@ -1298,6 +1302,13 @@ def _parse_from_args(
     """
     flat = _get_path(flat, pairs)
     _clean_flat_path(flat)
+
+    if project and app:
+        raise TypeError(
+            "Can't specify both 'project' and 'app'. They are synonyms."
+        )
+    elif not app:
+        app = project
 
     parent_ds_key = None
     if parent is None:

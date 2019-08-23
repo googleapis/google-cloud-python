@@ -1309,7 +1309,7 @@ class TestQuery:
         )
         rep = (
             "Query(project='app', namespace='space', kind='Foo', ancestor="
-            "Key('a', 'b', app='app', namespace='space'), filters="
+            "Key('a', 'b', project='app', namespace='space'), filters="
             "FilterNode('f', None, None), order_by=[], projection=['x'], "
             "distinct_on=['X'], default_options=QueryOptions(kind='Bar'))"
         )
