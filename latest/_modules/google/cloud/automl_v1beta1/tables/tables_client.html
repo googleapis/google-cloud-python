@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.automl_v1beta1.tables.tables_client &#8212; google-cloud cdb4cc4 documentation</title>
+    <title>google.cloud.automl_v1beta1.tables.tables_client &#8212; google-cloud 05e7255 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -150,6 +150,28 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
+
+    <span class="k">def</span> <span class="nf">__lookup_by_display_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">display_name</span><span class="p">):</span>
+        <span class="n">relevant_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">display_name</span> <span class="o">==</span> <span class="n">display_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">relevant_items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span>
+                <span class="s2">&quot;The </span><span class="si">{}</span><span class="s2"> with display_name=&#39;</span><span class="si">{}</span><span class="s2">&#39; was not found.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">object_type</span><span class="p">,</span> <span class="n">display_name</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">relevant_items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relevant_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;Multiple </span><span class="si">{}</span><span class="s2">s match display_name=&#39;</span><span class="si">{}</span><span class="s2">&#39;: </span><span class="si">{}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Please use the `.name` (unique identifier) field instead&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">object_type</span><span class="p">,</span>
+                    <span class="n">display_name</span><span class="p">,</span>
+                    <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">relevant_items</span><span class="p">]),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__location_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -497,23 +519,11 @@
         <span class="k">if</span> <span class="n">dataset_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">d</span>
-                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">display_name</span> <span class="o">==</span> <span class="n">dataset_display_name</span>
-            <span class="p">),</span>
-            <span class="kc">None</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span>
-                <span class="p">(</span><span class="s2">&quot;Dataset with display_name: &#39;</span><span class="si">{}</span><span class="s2">&#39; &quot;</span> <span class="o">+</span> <span class="s2">&quot;not found&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">dataset_display_name</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lookup_by_display_name</span><span class="p">(</span>
+            <span class="s2">&quot;dataset&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">dataset_display_name</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="TablesClient.create_dataset"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.create_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">dataset_display_name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{},</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -2348,22 +2358,9 @@
         <span class="k">if</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">d</span>
-                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">display_name</span> <span class="o">==</span> <span class="n">model_display_name</span>
-            <span class="p">),</span>
-            <span class="kc">None</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span>
-                <span class="s2">&quot;No model with model_diplay_name: &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_display_name</span><span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">model</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lookup_by_display_name</span><span class="p">(</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">model_display_name</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># TODO(jonathanskim): allow deployment from just model ID</span>
 <div class="viewcode-block" id="TablesClient.deploy_model"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.deploy_model">[docs]</a>    <span class="k">def</span> <span class="nf">deploy_model</span><span class="p">(</span>
