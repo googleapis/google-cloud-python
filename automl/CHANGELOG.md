@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.5.0
+
+08-26-2019 16:58 PDT
+
+### Implementation Changes
+- AutoML Tables: Throw a ValueError when an ambiguous display_name is used ([#9089](https://github.com/googleapis/google-cloud-python/pull/9089))
+- Fix synth replace to add TablesClient. ([#9033](https://github.com/googleapis/google-cloud-python/pull/9033))
+- Remove send/recv msg size limit (via synth). ([#8944](https://github.com/googleapis/google-cloud-python/pull/8944))
+
+### New Features
+- AutoML: Add support for documents (via synth). ([#9039](https://github.com/googleapis/google-cloud-python/pull/9039))
+- AutoML: Add a TablesClient for automl-tables specific behavior. ([#8720](https://github.com/googleapis/google-cloud-python/pull/8720))
+- Add 'ClassificationEvaluationMetrics.display_name'/'BatchPredictResult.metadata'/'TableSpec.valid_row_count' (via synth) ([#9004](https://github.com/googleapis/google-cloud-python/pull/9004))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.4.0
 
 07-22-2019 17:39 PDT
