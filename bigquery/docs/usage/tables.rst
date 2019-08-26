@@ -40,7 +40,7 @@ Determine if a table exists with the
 Browse data rows in a table with the
 :func:`~google.cloud.bigquery.client.Client.list_rows` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/browse_table_data.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_browse_table]
