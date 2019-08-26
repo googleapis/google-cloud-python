@@ -47,8 +47,22 @@ _NO_BQSTORAGE_ERROR = (
     "please install google-cloud-bigquery-storage to use bqstorage features."
 )
 
-STRUCT_TYPES = ("RECORD", "STRUCT")
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
+
+_PANDAS_DTYPE_TO_BQ = {
+    "bool": "BOOLEAN",
+    "datetime64[ns, UTC]": "TIMESTAMP",
+    "datetime64[ns]": "DATETIME",
+    "float32": "FLOAT",
+    "float64": "FLOAT",
+    "int8": "INTEGER",
+    "int16": "INTEGER",
+    "int32": "INTEGER",
+    "int64": "INTEGER",
+    "uint8": "INTEGER",
+    "uint16": "INTEGER",
+    "uint32": "INTEGER",
+}
 
 
 class _DownloadState(object):
@@ -126,7 +140,7 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in STRUCT_TYPES:
+    if field.field_type.upper() in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
@@ -168,9 +182,55 @@ def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in STRUCT_TYPES:
+    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
+
+
+def dataframe_to_bq_schema(dataframe, bq_schema):
+    """Convert a pandas DataFrame schema to a BigQuery schema.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame for which the client determines the BigQuery schema.
+        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            A BigQuery schema. Use this argument to override the autodetected
+            type for some or all of the DataFrame columns.
+
+    Returns:
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
+            The automatically determined schema. Returns None if the type of
+            any column cannot be determined.
+    """
+    if bq_schema:
+        for field in bq_schema:
+            if field.field_type in schema._STRUCT_TYPES:
+                raise ValueError(
+                    "Uploading dataframes with struct (record) column types "
+                    "is not supported. See: "
+                    "https://github.com/googleapis/google-cloud-python/issues/8191"
+                )
+        bq_schema_index = {field.name: field for field in bq_schema}
+    else:
+        bq_schema_index = {}
+
+    bq_schema_out = []
+    for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+        # Use provided type from schema, if present.
+        bq_field = bq_schema_index.get(column)
+        if bq_field:
+            bq_schema_out.append(bq_field)
+            continue
+
+        # Otherwise, try to automatically determine the type based on the
+        # pandas dtype.
+        bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
+        if not bq_type:
+            warnings.warn("Unable to determine type of column '{}'.".format(column))
+            return None
+        bq_field = schema.SchemaField(column, bq_type)
+        bq_schema_out.append(bq_field)
+    return tuple(bq_schema_out)
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
@@ -178,7 +238,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Arrow table.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -216,7 +276,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Parquet file.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.

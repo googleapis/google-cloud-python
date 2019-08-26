@@ -1504,6 +1504,19 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )
 
+    def test_schema_setter_unsetting_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        config = self._get_target_class()()
+        config._properties["load"]["schema"] = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        config.schema = None
+        self.assertNotIn("schema", config._properties["load"])
+        config.schema = None  # no error, idempotent operation
+
     def test_schema_update_options_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.schema_update_options)
@@ -4280,6 +4293,39 @@ class TestQueryJob(unittest.TestCase, _Base):
         job._set_future_result()
 
         with self.assertRaises(exceptions.GoogleCloudError) as exc_info:
+            job.result()
+
+        self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
+        self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
+
+        full_text = str(exc_info.exception)
+
+        assert job.job_id in full_text
+        assert "Query Job SQL Follows" in full_text
+
+        for i, line in enumerate(query.splitlines(), start=1):
+            expected_line = "{}:{}".format(i, line)
+            assert expected_line in full_text
+
+    def test__begin_error(self):
+        from google.cloud import exceptions
+
+        query = textwrap.dedent(
+            """
+            SELECT foo, bar
+            FROM table_baz
+            WHERE foo == bar"""
+        )
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, query, client)
+        call_api_patch = mock.patch(
+            "google.cloud.bigquery.client.Client._call_api",
+            autospec=True,
+            side_effect=exceptions.BadRequest("Syntax error in SQL query"),
+        )
+
+        with call_api_patch, self.assertRaises(exceptions.GoogleCloudError) as exc_info:
             job.result()
 
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)

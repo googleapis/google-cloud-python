@@ -169,8 +169,7 @@ Running System Tests
   authentication to your project:
 
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
-    see ``system_tests/app_credentials.json.sample`` as an example. Such a file
-    can be downloaded directly from the developer's console by clicking
+    Such a file can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
@@ -180,11 +179,10 @@ Running System Tests
     "IAM & Admin". Additionally, ``cloud-logs@google.com`` must be given
     ``Editor`` permissions on the project.
 
-- Examples of these can be found in ``system_tests/local_test_setup.sample``. We
-  recommend copying this to ``system_tests/local_test_setup``, editing the
-  values and sourcing them into your environment::
+- Once you have downloaded your json keys, set the environment variable 
+  ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
 
-   $ source system_tests/local_test_setup
+   $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
 
 - For datastore tests, you'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__

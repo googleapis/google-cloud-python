@@ -561,15 +561,16 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                The client to use. If not passed, falls back to the ``client``
+                associated with the job object or``NoneType``
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :raises: :exc:`ValueError` if the job has already begin.
+        Raises:
+            ValueError:
+                If the job has already begun.
         """
         if self.state is not None:
             raise ValueError("Job already begun.")
@@ -1160,6 +1161,10 @@ class LoadJobConfig(_JobConfig):
 
     @schema.setter
     def schema(self, value):
+        if value is None:
+            self._del_sub_prop("schema")
+            return
+
         if not all(hasattr(field, "to_api_repr") for field in value):
             raise ValueError("Schema items must be fields")
         _helpers._set_sub_prop(
@@ -2875,6 +2880,30 @@ class QueryJob(_AsyncJob):
         )
 
         return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
+
+    def _begin(self, client=None, retry=DEFAULT_RETRY):
+        """API call:  begin the job via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
+
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                The client to use. If not passed, falls back to the ``client``
+                associated with the job object or``NoneType``.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
+
+        Raises:
+            ValueError:
+                If the job has already begun.
+        """
+
+        try:
+            super(QueryJob, self)._begin(client=client, retry=retry)
+        except exceptions.GoogleCloudError as exc:
+            exc.message += self._format_for_exception(self.query, self.job_id)
+            raise
 
     def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.

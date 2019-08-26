@@ -1,7 +1,7 @@
 Python Client for Google Cloud Natural Language
 ===============================================
 
-|GA| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|GA| |pypi| |versions| 
 
 The `Google Cloud Natural Language`_ API can be used to reveal the
 structure and meaning of text via powerful machine
@@ -22,10 +22,6 @@ with your document storage on Google Cloud Storage.
    :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-language
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-language
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlanguage
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dlanguage
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 .. _Product Documentation:  https://cloud.google.com/language/docs
 .. _Client Library Documentation: https://googleapis.dev/python/language/latest
