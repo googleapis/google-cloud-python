@@ -790,9 +790,9 @@ class ProfileServiceClient(object):
 
                 -  "relevance desc": By descending relevance, as determined by the API
                    algorithms.
-                -  "update\_time desc": Sort by ``Profile.update_time`` in descending
+                -  "update\_date desc": Sort by ``Profile.update_time`` in descending
                    order (recently updated profiles first).
-                -  "create\_time desc": Sort by ``Profile.create_time`` in descending
+                -  "create\_date desc": Sort by ``Profile.create_time`` in descending
                    order (recently created profiles first).
                 -  "first\_name": Sort by ``PersonName.PersonStructuredName.given_name``
                    in ascending order.

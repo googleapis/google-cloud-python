@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import collections
 import concurrent.futures
 import csv
 import datetime
@@ -636,6 +637,81 @@ class TestBigQuery(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_automatic_schema(self):
+        """Test that a DataFrame with dtypes that map well to BigQuery types
+        can be uploaded without specifying a schema.
+
+        https://github.com/googleapis/google-cloud-python/issues/9044
+        """
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", pandas.Series([True, False, True], dtype="bool")),
+                (
+                    "ts_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ).dt.tz_localize(pytz.utc),
+                ),
+                (
+                    "dt_col",
+                    pandas.Series(
+                        [
+                            datetime.datetime(2010, 1, 2, 3, 44, 50),
+                            datetime.datetime(2011, 2, 3, 14, 50, 59),
+                            datetime.datetime(2012, 3, 14, 15, 16),
+                        ],
+                        dtype="datetime64[ns]",
+                    ),
+                ),
+                ("float32_col", pandas.Series([1.0, 2.0, 3.0], dtype="float32")),
+                ("float64_col", pandas.Series([4.0, 5.0, 6.0], dtype="float64")),
+                ("int8_col", pandas.Series([-12, -11, -10], dtype="int8")),
+                ("int16_col", pandas.Series([-9, -8, -7], dtype="int16")),
+                ("int32_col", pandas.Series([-6, -5, -4], dtype="int32")),
+                ("int64_col", pandas.Series([-3, -2, -1], dtype="int64")),
+                ("uint8_col", pandas.Series([0, 1, 2], dtype="uint8")),
+                ("uint16_col", pandas.Series([3, 4, 5], dtype="uint16")),
+                ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
+
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_automatic_schema".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        load_job = Config.CLIENT.load_table_from_dataframe(dataframe, table_id)
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(
+            tuple(table.schema),
+            (
+                bigquery.SchemaField("bool_col", "BOOLEAN"),
+                bigquery.SchemaField("ts_col", "TIMESTAMP"),
+                bigquery.SchemaField("dt_col", "DATETIME"),
+                bigquery.SchemaField("float32_col", "FLOAT"),
+                bigquery.SchemaField("float64_col", "FLOAT"),
+                bigquery.SchemaField("int8_col", "INTEGER"),
+                bigquery.SchemaField("int16_col", "INTEGER"),
+                bigquery.SchemaField("int32_col", "INTEGER"),
+                bigquery.SchemaField("int64_col", "INTEGER"),
+                bigquery.SchemaField("uint8_col", "INTEGER"),
+                bigquery.SchemaField("uint16_col", "INTEGER"),
+                bigquery.SchemaField("uint32_col", "INTEGER"),
+            ),
+        )
+        self.assertEqual(table.num_rows, 3)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_nulls(self):
         """Test that a DataFrame with null columns can be uploaded if a
         BigQuery schema is specified.
@@ -667,21 +743,22 @@ class TestBigQuery(unittest.TestCase):
         )
         num_rows = 100
         nulls = [None] * num_rows
-        dataframe = pandas.DataFrame(
-            {
-                "bool_col": nulls,
-                "bytes_col": nulls,
-                "date_col": nulls,
-                "dt_col": nulls,
-                "float_col": nulls,
-                "geo_col": nulls,
-                "int_col": nulls,
-                "num_col": nulls,
-                "str_col": nulls,
-                "time_col": nulls,
-                "ts_col": nulls,
-            }
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", nulls),
+                ("bytes_col", nulls),
+                ("date_col", nulls),
+                ("dt_col", nulls),
+                ("float_col", nulls),
+                ("geo_col", nulls),
+                ("int_col", nulls),
+                ("num_col", nulls),
+                ("str_col", nulls),
+                ("time_col", nulls),
+                ("ts_col", nulls),
+            ]
         )
+        dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
@@ -720,7 +797,7 @@ class TestBigQuery(unittest.TestCase):
         )
 
         records = [{"name": "Chip", "age": 2}, {"name": "Dale", "age": 3}]
-        dataframe = pandas.DataFrame(records)
+        dataframe = pandas.DataFrame(records, columns=["name", "age"])
         job_config = bigquery.LoadJobConfig(schema=table_schema)
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
@@ -771,44 +848,58 @@ class TestBigQuery(unittest.TestCase):
             #       https://jira.apache.org/jira/browse/ARROW-2587
             # bigquery.SchemaField("struct_col", "RECORD", fields=scalars_schema),
         )
-        dataframe = pandas.DataFrame(
-            {
-                "bool_col": [True, None, False],
-                "bytes_col": [b"abc", None, b"def"],
-                "date_col": [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
-                "dt_col": [
-                    datetime.datetime(1, 1, 1, 0, 0, 0),
-                    None,
-                    datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-                ],
-                "float_col": [float("-inf"), float("nan"), float("inf")],
-                "geo_col": [
-                    "POINT(30 10)",
-                    None,
-                    "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
-                ],
-                "int_col": [-9223372036854775808, None, 9223372036854775807],
-                "num_col": [
-                    decimal.Decimal("-99999999999999999999999999999.999999999"),
-                    None,
-                    decimal.Decimal("99999999999999999999999999999.999999999"),
-                ],
-                "str_col": ["abc", None, "def"],
-                "time_col": [
-                    datetime.time(0, 0, 0),
-                    None,
-                    datetime.time(23, 59, 59, 999999),
-                ],
-                "ts_col": [
-                    datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
-                    None,
-                    datetime.datetime(
-                        9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
-                    ),
-                ],
-            },
-            dtype="object",
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", [True, None, False]),
+                ("bytes_col", [b"abc", None, b"def"]),
+                (
+                    "date_col",
+                    [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
+                ),
+                (
+                    "dt_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0),
+                        None,
+                        datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                    ],
+                ),
+                ("float_col", [float("-inf"), float("nan"), float("inf")]),
+                (
+                    "geo_col",
+                    [
+                        "POINT(30 10)",
+                        None,
+                        "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+                    ],
+                ),
+                ("int_col", [-9223372036854775808, None, 9223372036854775807]),
+                (
+                    "num_col",
+                    [
+                        decimal.Decimal("-99999999999999999999999999999.999999999"),
+                        None,
+                        decimal.Decimal("99999999999999999999999999999.999999999"),
+                    ],
+                ),
+                ("str_col", [u"abc", None, u"def"]),
+                (
+                    "time_col",
+                    [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
+                ),
+                (
+                    "ts_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                        None,
+                        datetime.datetime(
+                            9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
+                        ),
+                    ],
+                ),
+            ]
         )
+        dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
         self.temp_dataset(dataset_id)
@@ -825,6 +916,76 @@ class TestBigQuery(unittest.TestCase):
         table = Config.CLIENT.get_table(table_id)
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 3)
+
+    def test_load_table_from_json_basic_use(self):
+        table_schema = (
+            bigquery.SchemaField("name", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+            bigquery.SchemaField("birthday", "DATE", mode="REQUIRED"),
+            bigquery.SchemaField("is_awesome", "BOOLEAN", mode="REQUIRED"),
+        )
+
+        json_rows = [
+            {"name": "John", "age": 18, "birthday": "2001-10-15", "is_awesome": False},
+            {"name": "Chuck", "age": 79, "birthday": "1940-03-10", "is_awesome": True},
+        ]
+
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_json_basic_use".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        # Create the table before loading so that schema mismatch errors are
+        # identified.
+        table = retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        job_config = bigquery.LoadJobConfig(schema=table_schema)
+        load_job = Config.CLIENT.load_table_from_json(
+            json_rows, table_id, job_config=job_config
+        )
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 2)
+
+    def test_load_table_from_json_schema_autodetect(self):
+        json_rows = [
+            {"name": "John", "age": 18, "birthday": "2001-10-15", "is_awesome": False},
+            {"name": "Chuck", "age": 79, "birthday": "1940-03-10", "is_awesome": True},
+        ]
+
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_json_basic_use".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        # Use schema with NULLABLE fields, because schema autodetection
+        # defaults to field mode NULLABLE.
+        table_schema = (
+            bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
+            bigquery.SchemaField("birthday", "DATE", mode="NULLABLE"),
+            bigquery.SchemaField("is_awesome", "BOOLEAN", mode="NULLABLE"),
+        )
+        # create the table before loading so that the column order is predictable
+        table = retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        # do not pass an explicit job config to trigger automatic schema detection
+        load_job = Config.CLIENT.load_table_from_json(json_rows, table_id)
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 2)
 
     def test_load_avro_from_uri_then_dump_table(self):
         from google.cloud.bigquery.job import CreateDisposition

@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|beta| |pypi| |versions| 
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -25,10 +25,6 @@ independently written applications.
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-pubsub
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-pubsub
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
 .. _Product Documentation: https://cloud.google.com/pubsub/docs
 .. _Client Library Documentation: https://googleapis.dev/python/pubsub/latest

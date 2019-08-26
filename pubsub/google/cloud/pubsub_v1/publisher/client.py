@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2019, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,14 +53,45 @@ class Client(object):
             settings for batch publishing.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
-            :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
-            Generally, you should not need to set additional keyword arguments.
-            Before being passed along to the GAPIC constructor, a channel may
-            be added if ``credentials`` are passed explicitly or if the
-            Pub / Sub emulator is detected as running.
-            Regional endpoints can be set via ``client_options`` that takes a
-            single key-value pair that defines the endpoint, i.e.
-            ``client_options={"api_endpoint": REGIONAL_ENDPOINT}``.
+            :class:`~google.cloud.pubsub_v1.gapic.publisher_client.PublisherClient`.
+            Generally you should not need to set additional keyword
+            arguments. Optionally, publish retry settings can be set via
+            ``client_config`` where user-provided retry configurations are
+            applied to default retry settings. And regional endpoints can be
+            set via ``client_options`` that takes a single key-value pair that
+            defines the endpoint.
+
+    Example:
+
+    .. code-block:: python
+
+        from google.cloud import pubsub_v1
+
+        publisher_client = pubsub_v1.PublisherClient(
+            # Optional
+            batch_settings = pubsub_v1.types.BatchSettings(
+                max_bytes=1024,  # One kilobyte
+                max_latency=1,   # One second
+            ),
+
+            # Optional
+            client_config = {
+                "interfaces": {
+                    "google.pubsub.v1.Publisher": {
+                        "retry_params": {
+                            "messaging": {
+                                'total_timeout_millis': 650000,  # default: 600000
+                            }
+                        }
+                    }
+                }
+            },
+
+            # Optional
+            client_options = {
+                "api_endpoint": REGIONAL_ENDPOINT
+            }
+        )
     """
 
     _batch_class = thread.Batch
@@ -117,7 +148,8 @@ class Client(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PublisherClient: The constructed client.
+            A Publisher :class:`~google.cloud.pubsub_v1.publisher.client.Client`
+            instance that is the constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -206,9 +238,10 @@ class Client(object):
                 sent as metadata. (These may be text strings or byte strings.)
 
         Returns:
-            ~google.api_core.future.Future: An object conforming to the
-            ``concurrent.futures.Future`` interface (but not an instance
-            of that class).
+            A :class:`~google.cloud.pubsub_v1.publisher.futures.Future`
+            instance that conforms to Python Standard library's
+            :class:`~concurrent.futures.Future` interface (but not an
+            instance of that class).
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
