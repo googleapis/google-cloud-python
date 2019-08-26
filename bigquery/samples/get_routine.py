@@ -35,6 +35,5 @@ def get_routine(client, routine_id):
     for argument in routine.arguments:
         print("    Name: '{}'".format(argument.name))
         print("    Type: '{}'".format(argument.type_))
-
     # [END bigquery_get_routine]
     return routine

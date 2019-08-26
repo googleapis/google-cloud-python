@@ -53,5 +53,4 @@ def get_dataset(client, dataset_id):
             print("\t{}".format(table.table_id))
     else:
         print("\tThis dataset does not contain any tables.")
-
     # [END bigquery_get_dataset]
