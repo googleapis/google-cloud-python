@@ -2079,7 +2079,7 @@ class Query:
         options = _options.copy(limit=1)
         results = yield _datastore_query.fetch(options)
         if results:
-            return results[0]
+            raise tasklets.Return(results[0])
 
     @_query_options
     def count(
@@ -2192,7 +2192,7 @@ class Query:
 
             results.next()
 
-        return count
+        raise tasklets.Return(count)
 
     @_query_options
     def fetch_page(
@@ -2312,7 +2312,7 @@ class Query:
         more = results and (
             iterator._more_results_after_limit or iterator.probably_has_next()
         )
-        return results, cursor, more
+        raise tasklets.Return(results, cursor, more)
 
 
 def gql(query_string, *args, **kwds):

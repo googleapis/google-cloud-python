@@ -171,7 +171,7 @@ def test_nested_tasklet(ds_entity):
     @ndb.tasklet
     def get_foo(key):
         entity = yield key.get_async()
-        return entity.foo
+        raise ndb.Return(entity.foo)
 
     key = ndb.Key(KIND, entity_id)
     assert get_foo(key).result() == 42
@@ -194,7 +194,7 @@ def test_retrieve_two_entities_in_parallel(ds_entity):
     @ndb.tasklet
     def get_two_entities():
         entity1, entity2 = yield key1.get_async(), key2.get_async()
-        return entity1, entity2
+        raise ndb.Return(entity1, entity2)
 
     entity1, entity2 = get_two_entities().result()
 
@@ -471,7 +471,7 @@ def test_parallel_transactions():
             transaction = ndb.get_context().transaction
             yield ndb.sleep(delay)
             assert ndb.get_context().transaction == transaction
-            return transaction
+            raise ndb.Return(transaction)
 
         return callback
 

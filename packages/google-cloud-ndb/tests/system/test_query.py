@@ -84,7 +84,7 @@ def test_fetch_lots_of_a_kind(dispose_of):
     def make_entities():
         entities = [SomeKind(foo=i) for i in range(n_entities)]
         keys = yield [entity.put_async() for entity in entities]
-        return keys
+        raise ndb.Return(keys)
 
     for key in make_entities():
         dispose_of(key._key)
@@ -502,7 +502,7 @@ def test_fetch_page(dispose_of):
     def make_entities():
         entities = [SomeKind(foo=i) for i in range(n_entities)]
         keys = yield [entity.put_async() for entity in entities]
-        return keys
+        raise ndb.Return(keys)
 
     for key in make_entities():
         dispose_of(key._key)
@@ -609,7 +609,7 @@ def test_query_structured_property(dispose_of):
             entity2.put_async(),
             entity3.put_async(),
         )
-        return keys
+        raise ndb.Return(keys)
 
     keys = make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))
@@ -708,7 +708,7 @@ def test_query_structured_property_with_projection(dispose_of):
             entity2.put_async(),
             entity3.put_async(),
         )
-        return keys
+        raise ndb.Return(keys)
 
     keys = make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))
@@ -777,7 +777,7 @@ def test_query_repeated_structured_property_with_properties(dispose_of):
             entity2.put_async(),
             entity3.put_async(),
         )
-        return keys
+        raise ndb.Return(keys)
 
     keys = make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))
@@ -836,7 +836,7 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
             entity2.put_async(),
             entity3.put_async(),
         )
-        return keys
+        raise ndb.Return(keys)
 
     keys = make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))
@@ -897,7 +897,7 @@ def test_query_repeated_structured_property_with_projection(dispose_of):
             entity2.put_async(),
             entity3.put_async(),
         )
-        return keys
+        raise ndb.Return(keys)
 
     keys = make_entities()
     eventually(SomeKind.query().fetch, _length_equals(3))

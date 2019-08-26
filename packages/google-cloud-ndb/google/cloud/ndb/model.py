@@ -4796,7 +4796,7 @@ class Model(metaclass=MetaModel):
             if context._use_cache(self._key, _options):
                 context.cache[self._key] = self
 
-            return self._key
+            raise tasklets.Return(self._key)
 
         self._prepare_for_put()
         future = put(self)
@@ -5024,7 +5024,7 @@ class Model(metaclass=MetaModel):
                     for key_pb in key_pbs
                 )
             )
-            return keys
+            raise tasklets.Return(keys)
 
         future = allocate_ids()
         future.add_done_callback(
@@ -5424,13 +5424,13 @@ class Model(metaclass=MetaModel):
                 entity._key = key
                 yield entity.put_async(_options=_options)
 
-                return entity
+                raise tasklets.Return(entity)
 
             # We don't need to start a transaction just to check if the entity
             # exists already
             entity = yield key.get_async(_options=_options)
             if entity is not None:
-                return entity
+                raise tasklets.Return(entity)
 
             if _transaction.in_transaction():
                 entity = yield insert()
@@ -5438,7 +5438,7 @@ class Model(metaclass=MetaModel):
             else:
                 entity = yield _transaction.transaction_async(insert)
 
-            return entity
+            raise tasklets.Return(entity)
 
         return get_or_insert()
 

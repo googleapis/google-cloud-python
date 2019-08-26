@@ -62,12 +62,13 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
                 result = callback(*args, **kwargs)
                 if isinstance(result, tasklets.Future):
                     result = yield result
-                return result
             except Exception as e:
                 # `e` is removed from locals at end of block
                 error = e  # See: https://goo.gl/5J8BMK
                 if not is_transient_error(error):
                     raise
+            else:
+                raise tasklets.Return(result)
 
             yield tasklets.sleep(sleep_time)
 

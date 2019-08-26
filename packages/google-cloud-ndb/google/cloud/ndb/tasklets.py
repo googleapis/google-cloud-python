@@ -301,6 +301,12 @@ class _TaskletFuture(Future):
             self.set_result(_get_return_value(stop))
             return
 
+        except Return as stop:
+            # Tasklet has raised Return to return a result. This tasklet has
+            # finished.
+            self.set_result(_get_return_value(stop))
+            return
+
         except Exception as error:
             # An error has occurred in the tasklet. This tasklet has finished.
             self.set_exception(error)
@@ -421,11 +427,10 @@ def tasklet(wrapped):
 
         try:
             returned = wrapped(*args, **kwargs)
-        except StopIteration as stop:
-            # If wrapped  is a regular function and the function uses the
-            # deprecated "raise Return(result)" pattern rather than just
-            # returning the result, then we'll extract the result from the
-            # StopIteration exception.
+        except Return as stop:
+            # If wrapped  is a regular function and the function uses "raise
+            # Return(result)" pattern rather than just returning the result,
+            # then we'll extract the result from the StopIteration exception.
             returned = _get_return_value(stop)
 
         if isinstance(returned, types.GeneratorType):
@@ -476,16 +481,33 @@ def wait_all(futures):
         future.wait()
 
 
-class Return(StopIteration):
-    """Alias for `StopIteration`.
+class Return(Exception):
+    """Return from a tasklet in Python 2.
 
-    Older programs written with NDB may ``raise Return(result)`` in a tasklet.
-    This is no longer necessary, but it is included for backwards
-    compatibility. Tasklets should simply ``return`` their result.
+    In Python 2, generators may not return a value. In order to return a value
+    from a tasklet, then, it is necessary to raise an instance of this
+    exception with the return value::
+
+        from google.cloud import ndb
+
+        @ndb.tasklet
+        def get_some_stuff():
+            future1 = get_something_async()
+            future2 = get_something_else_async()
+            thing1, thing2 = yield future1, future2
+            result = compute_result(thing1, thing2)
+            raise ndb.Return(result)
+
+    In Python 3, you can simply return the result::
+
+        @ndb.tasklet
+        def get_some_stuff():
+            future1 = get_something_async()
+            future2 = get_something_else_async()
+            thing1, thing2 = yield future1, future2
+            result = compute_result(thing1, thing2)
+            return result
     """
-
-    # For reasons I don't entirely understand, Sphinx pukes if we just assign:
-    # Return = StopIteration
 
 
 def sleep(seconds):

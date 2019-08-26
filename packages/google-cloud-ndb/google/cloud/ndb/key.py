@@ -852,9 +852,11 @@ class Key:
             if use_cache:
                 try:
                     # This result may be None, if None is cached for this key.
-                    return context.cache.get_and_validate(self)
+                    result = context.cache.get_and_validate(self)
                 except KeyError:
                     pass
+                else:
+                    raise tasklets.Return(result)
 
             entity_pb = yield _datastore_api.lookup(self._key, _options)
             if entity_pb is not _datastore_api._NOT_FOUND:
@@ -865,7 +867,7 @@ class Key:
             if use_cache:
                 context.cache[self] = result
 
-            return result
+            raise tasklets.Return(result)
 
         future = get()
         if cls:
@@ -981,7 +983,7 @@ class Key:
             if context._use_cache(self, _options):
                 context.cache[self] = None
 
-            return result
+            raise tasklets.Return(result)
 
         future = delete()
 

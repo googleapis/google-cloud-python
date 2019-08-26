@@ -122,7 +122,7 @@ def _transaction_async(context, callback, read_only=False):
         for callback in on_commit_callbacks:
             callback()
 
-        return result
+        raise tasklets.Return(result)
 
 
 def transactional(

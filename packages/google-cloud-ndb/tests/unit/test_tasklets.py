@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 from unittest import mock
 
 import pytest
@@ -263,7 +265,7 @@ class Test_TaskletFuture:
     def test__advance_tasklet_return(in_context):
         def generator_function():
             yield
-            return 42
+            raise tasklets.Return(42)
 
         generator = generator_function()
         next(generator)  # skip ahead to return
@@ -299,7 +301,7 @@ class Test_TaskletFuture:
     def test__advance_tasklet_dependency_returns(in_context):
         def generator_function(dependency):
             some_value = yield dependency
-            return some_value + 42
+            raise tasklets.Return(some_value + 42)
 
         dependency = tasklets.Future()
         generator = generator_function(dependency)
@@ -327,7 +329,7 @@ class Test_TaskletFuture:
     def test__advance_tasklet_yields_rpc(in_context):
         def generator_function(dependency):
             value = yield dependency
-            return value + 3
+            raise tasklets.Return(value + 3)
 
         dependency = mock.Mock(spec=_remote.RemoteCall)
         dependency.exception.return_value = None
@@ -345,7 +347,7 @@ class Test_TaskletFuture:
     def test__advance_tasklet_parallel_yield(in_context):
         def generator_function(dependencies):
             one, two = yield dependencies
-            return one + two
+            raise tasklets.Return(one + two)
 
         dependencies = (tasklets.Future(), tasklets.Future())
         generator = generator_function(dependencies)
@@ -411,6 +413,21 @@ class Test_tasklet:
         @tasklets.tasklet
         def generator(dependency):
             value = yield dependency
+            raise tasklets.Return(value + 3)
+
+        dependency = tasklets.Future()
+        future = generator(dependency)
+        assert isinstance(future, tasklets._TaskletFuture)
+        dependency.set_result(8)
+        assert future.result() == 11
+
+    @staticmethod
+    @pytest.mark.skipif(sys.version_info[0] == 2, reason="requires python3")
+    @pytest.mark.usefixtures("in_context")
+    def test_generator_using_return():
+        @tasklets.tasklet
+        def generator(dependency):
+            value = yield dependency
             return value + 3
 
         dependency = tasklets.Future()
@@ -447,7 +464,7 @@ class Test_tasklet:
         def some_task(transaction, future):
             assert context_module.get_context().transaction == transaction
             yield future
-            return context_module.get_context().transaction
+            raise tasklets.Return(context_module.get_context().transaction)
 
         future_foo = tasklets.Future("foo")
         with in_context.new(transaction="foo").use():
@@ -578,7 +595,8 @@ class TestReducingFuture:
 
 
 def test_Return():
-    assert issubclass(tasklets.Return, StopIteration)
+    assert not issubclass(tasklets.Return, StopIteration)
+    assert issubclass(tasklets.Return, Exception)
 
 
 class TestSerialQueueFuture:
@@ -600,7 +618,7 @@ def test_synctasklet():
         future = tasklets.Future(value)
         future.set_result(value)
         x = yield future
-        return x + 3
+        raise tasklets.Return(x + 3)
 
     result = generator_function(8)
     assert result == 11
@@ -613,7 +631,7 @@ def test_toplevel():
         future = tasklets.Future(value)
         future.set_result(value)
         x = yield future
-        return x + 3
+        raise tasklets.Return(x + 3)
 
     idle = mock.Mock(__name__="idle", return_value=None)
     _eventloop.add_idle(idle)

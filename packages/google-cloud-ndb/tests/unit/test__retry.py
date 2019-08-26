@@ -42,7 +42,7 @@ class Test_retry:
         @tasklets.tasklet
         def callback():
             result = yield tasklet_future
-            return result
+            raise tasklets.Return(result)
 
         retry = _retry.retry_async(callback)
         tasklet_future.set_result("foo")

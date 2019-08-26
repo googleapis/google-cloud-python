@@ -104,7 +104,7 @@ def fetch(query):
     while (yield results.has_next_async()):
         entities.append(results.next())
 
-    return entities
+    raise tasklets.Return(entities)
 
 
 def iterate(query, raw=False):
@@ -263,13 +263,13 @@ class _QueryIteratorImpl(QueryIterator):
             yield self._next_batch()  # First time
 
         if self._index < len(self._batch):
-            return True
+            raise tasklets.Return(True)
 
         elif self._has_next_batch:
             yield self._next_batch()
-            return self._index < len(self._batch)
+            raise tasklets.Return(self._index < len(self._batch))
 
-        return False
+        raise tasklets.Return(False)
 
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
@@ -407,17 +407,17 @@ class _PostFilterQueryIteratorImpl(QueryIterator):
     def has_next_async(self):
         """Implements :meth:`QueryIterator.has_next_async`."""
         if self._next_result:
-            return True
+            raise tasklets.Return(True)
 
         if self._limit == 0:
-            return False
+            raise tasklets.Return(False)
 
         # Actually get the next result and load it into memory, or else we
         # can't really know
         while True:
             has_next = yield self._result_set.has_next_async()
             if not has_next:
-                return False
+                raise tasklets.Return(False)
 
             next_result = self._result_set.next()
 
@@ -442,7 +442,7 @@ class _PostFilterQueryIteratorImpl(QueryIterator):
             self._cursor_before = self._cursor_after
             self._cursor_after = next_result.cursor
 
-            return True
+            raise tasklets.Return(True)
 
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
@@ -519,13 +519,13 @@ class _MultiQueryIteratorImpl(QueryIterator):
     def has_next_async(self):
         """Implements :meth:`QueryIterator.has_next_async`."""
         if self._next_result:
-            return True
+            raise tasklets.Return(True)
 
         if not self._result_sets:
-            return False
+            raise tasklets.Return(False)
 
         if self._limit == 0:
-            return False
+            raise tasklets.Return(False)
 
         # Actually get the next result and load it into memory, or else we
         # can't really know
@@ -541,7 +541,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
             ]
 
             if not result_sets:
-                return False
+                raise tasklets.Return(False)
 
             # If sorting, peek at the next values from all result sets and take
             # the mininum.
@@ -579,7 +579,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
             self._next_result = next_result
 
-            return True
+            raise tasklets.Return(True)
 
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
@@ -844,7 +844,7 @@ def _datastore_run_query(query):
         "RunQuery", request, timeout=query.timeout
     )
     log.debug(response)
-    return response
+    raise tasklets.Return(response)
 
 
 class Cursor:

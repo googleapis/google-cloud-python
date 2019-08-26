@@ -305,7 +305,7 @@ def test_transactional_tasklet(_datastore_api):
     @_transaction.transactional_tasklet()
     def generator_function(dependency):
         value = yield dependency
-        return value + 42
+        raise tasklets.Return(value + 42)
 
     begin_future = tasklets.Future("begin transaction")
     _datastore_api.begin_transaction.return_value = begin_future
