@@ -20,8 +20,6 @@ import os
 import pandas
 import time
 
-import google.auth
-
 from google.cloud import storage
 
 
