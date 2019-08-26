@@ -26,7 +26,7 @@ from google.cloud import storage
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, client=None, credentials=None, project=None, **kwargs):
+    def __init__(self, client=None, credentials=None, **kwargs):
         """Constructor.
         
         Args:
