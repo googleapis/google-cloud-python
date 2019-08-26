@@ -81,7 +81,8 @@ On the gVisor Google App Engine runtime (e.g. Python 3.7), the namespace
 manager is not available so the default is to have an unset or empty
 namespace. To explicitly select the empty namespace pass ``namespace=""``.
 
-.. _overview: https://cloud.google.com/appengine/docs/standard/python/multitenancy/
+.. _overview:
+  https://cloud.google.com/appengine/docs/standard/python/multitenancy/
 """
 
 
@@ -626,7 +627,7 @@ class Key:
         flat = self.flat()
         pairs = []
         for i in range(0, len(flat), 2):
-            pairs.append(flat[i : i + 2])
+            pairs.append(flat[i : i + 2])  # noqa: E203
         return tuple(pairs)
 
     def flat(self):

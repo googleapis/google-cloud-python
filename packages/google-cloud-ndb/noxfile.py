@@ -79,7 +79,7 @@ def run_black(session, use_check=False):
             "--line-length=79",
             get_path("docs"),
             get_path("noxfile.py"),
-            get_path("src"),
+            get_path("google"),
             get_path("tests"),
         ]
     )

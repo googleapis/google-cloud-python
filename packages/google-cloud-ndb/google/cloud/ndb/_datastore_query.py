@@ -555,7 +555,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
                 next_result = result_sets[min_index].next()
 
-            # If not sorting, just take the next result from the first result set.
+            # If not sorting, take the next result from the first result set.
             # Will exhaust each result set in turn.
             else:
                 next_result = result_sets[0].next()

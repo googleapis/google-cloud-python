@@ -156,7 +156,8 @@ class GQL(object):
         return self._orderings
 
     def is_keys_only(self):
-        """Returns True if this query returns Keys, False if it returns Entities."""
+        """Returns True if this query returns Keys, False if it returns
+        Entities."""
         return self._keys_only
 
     def projection(self):
@@ -210,7 +211,8 @@ class GQL(object):
             )
 
     def _Accept(self, symbol_string):
-        """Advance the symbol and return true if the next symbol matches input."""
+        """Advance the symbol and return true if the next symbol matches input.
+        """
         if self._next_symbol < len(self._symbols):
             if self._symbols[self._next_symbol].upper() == symbol_string:
                 self._next_symbol += 1
@@ -224,7 +226,8 @@ class GQL(object):
             symbol_string (str): next symbol expected by the caller
 
         Raises:
-            BadQueryError if the next symbol doesn't match the parameter passed in.
+            BadQueryError if the next symbol doesn't match the parameter passed
+                in.
         """
         if not self._Accept(symbol_string):
             self._Error("Unexpected Symbol: %s" % symbol_string)
@@ -237,8 +240,8 @@ class GQL(object):
 
         Returns:
             The first group in the expression to allow for convenient access
-                to simple matches. Requires () around some objects in the regex.
-                None if no match is found.
+                to simple matches. Requires () around some objects in the
+                regex. None if no match is found.
         """
         if self._next_symbol < len(self._symbols):
             match_symbol = self._symbols[self._next_symbol]
@@ -464,8 +467,8 @@ class GQL(object):
     def _Reference(self):
         """Consume a parameter reference and return it.
 
-        Consumes a reference to a positional parameter (:1) or a named parameter
-            (:email). Only consumes a single reference (not lists).
+        Consumes a reference to a positional parameter (:1) or a named
+            parameter (:email). Only consumes a single reference (not lists).
 
         Returns:
             Union[str, int]: The name of the reference (integer for positional

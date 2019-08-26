@@ -2043,8 +2043,8 @@ class Query:
                 values for some of these arguments.
 
         Returns:
-            Optional[Union[google.cloud.datastore.entity.Entity, key.Key]]: A single result, or
-                :data:`None` if there are no results.
+            Optional[Union[google.cloud.datastore.entity.Entity, key.Key]]:
+                A single result, or :data:`None` if there are no results.
         """
         return self.get_async(_options=_options).result()
 
@@ -2149,8 +2149,8 @@ class Query:
                 values for some of these arguments.
 
         Returns:
-            Optional[Union[google.cloud.datastore.entity.Entity, key.Key]]: A single result, or
-                :data:`None` if there are no results.
+            Optional[Union[google.cloud.datastore.entity.Entity, key.Key]]:
+                A single result, or :data:`None` if there are no results.
         """
         return self.count_async(_options=_options).result()
 

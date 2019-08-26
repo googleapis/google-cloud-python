@@ -54,8 +54,8 @@ class BaseStatistic(model.Model):
             the statistic instance.
         count (int): attribute is the total number of occurrences of the
             statistic in Cloud Datastore.
-        timestamp (datetime.datetime): the time the statistic instance was written to Cloud
-            Datastore.
+        timestamp (datetime.datetime): the time the statistic instance was
+            written to Cloud Datastore.
     """
 
     __slots__ = ()
@@ -197,7 +197,7 @@ class KindRootEntityStat(BaseKindStatistic):
     """Statistics of the number of root entities in Cloud Datastore by Kind.
 
     There is an instance of the KindRootEntityState for every Kind that is in
-    the application's datastore and has an instance that is a root entity.  This
+    the application's datastore and has an instance that is a root entity. This
     stat contains statistics regarding these root entity instances.
     """
 
@@ -210,8 +210,8 @@ class KindNonRootEntityStat(BaseKindStatistic):
     """Statistics of the number of non root entities in Cloud Datastore by Kind.
 
     There is an instance of the KindNonRootEntityStat for every Kind that is in
-    the application's datastore that is a not a root entity.  This stat contains
-    statistics regarding these non root entity instances.
+    the application's datastore that is a not a root entity.  This stat
+    contains statistics regarding these non root entity instances.
     """
 
     __slots__ = ()
@@ -478,15 +478,15 @@ _DATASTORE_STATS_CLASSES_BY_KIND = {
     PropertyTypeStat.STORED_KIND_NAME: PropertyTypeStat,
     KindPropertyTypeStat.STORED_KIND_NAME: KindPropertyTypeStat,
     KindPropertyNameStat.STORED_KIND_NAME: KindPropertyNameStat,
-    KindPropertyNamePropertyTypeStat.STORED_KIND_NAME: KindPropertyNamePropertyTypeStat,
+    KindPropertyNamePropertyTypeStat.STORED_KIND_NAME: KindPropertyNamePropertyTypeStat,  # noqa: E501
     KindCompositeIndexStat.STORED_KIND_NAME: KindCompositeIndexStat,
     NamespaceGlobalStat.STORED_KIND_NAME: NamespaceGlobalStat,
     NamespaceKindStat.STORED_KIND_NAME: NamespaceKindStat,
     NamespaceKindRootEntityStat.STORED_KIND_NAME: NamespaceKindRootEntityStat,
-    NamespaceKindNonRootEntityStat.STORED_KIND_NAME: NamespaceKindNonRootEntityStat,
+    NamespaceKindNonRootEntityStat.STORED_KIND_NAME: NamespaceKindNonRootEntityStat,  # noqa: E501
     NamespacePropertyTypeStat.STORED_KIND_NAME: NamespacePropertyTypeStat,
-    NamespaceKindPropertyTypeStat.STORED_KIND_NAME: NamespaceKindPropertyTypeStat,
-    NamespaceKindPropertyNameStat.STORED_KIND_NAME: NamespaceKindPropertyNameStat,
-    NamespaceKindPropertyNamePropertyTypeStat.STORED_KIND_NAME: NamespaceKindPropertyNamePropertyTypeStat,
-    NamespaceKindCompositeIndexStat.STORED_KIND_NAME: NamespaceKindCompositeIndexStat,
+    NamespaceKindPropertyTypeStat.STORED_KIND_NAME: NamespaceKindPropertyTypeStat,  # noqa: E501
+    NamespaceKindPropertyNameStat.STORED_KIND_NAME: NamespaceKindPropertyNameStat,  # noqa: E501
+    NamespaceKindPropertyNamePropertyTypeStat.STORED_KIND_NAME: NamespaceKindPropertyNamePropertyTypeStat,  # noqa: E501
+    NamespaceKindCompositeIndexStat.STORED_KIND_NAME: NamespaceKindCompositeIndexStat,  # noqa: E501
 }
