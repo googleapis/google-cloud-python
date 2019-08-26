@@ -20,42 +20,55 @@ import os
 import pandas
 import time
 
+import google.auth
+
 from google.cloud import storage
 
 
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, credentials, client=None, **kwargs):
+    def __init__(self, client=None, credentials=None, project=None, **kwargs):
         """Constructor.
         
         Args:
             client (Optional[storage.Client]): A Google Cloud Storage Client
-                instance.
-            credentials (google.auth.credentials.Credentials): The
+                instance. Either `client` or `credentials` must be provided.
+            credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
-                credentials from the environment.
-        """
-        if client is None:
-            self.client = storage.Client(credentials=credentials)
-        else:
-            self.client = client
+                credentials from the environment. Either `client` or
+                `credentials` must be provided.
 
-    def create_bucket(self, bucket_name=None):
-        """Creates a new bucket and returns the created bucket's name.
+        Raises:
+            ValueError: If required parameters are missing.
+        """
+        if client is None and credentials is None:
+            raise ValueError("One of 'client' or 'credentials' must be set.")
+
+        if client is not None:
+            self.client = client
+        else:
+            self.client = storage.Client(credentials=credentials)
+
+    def ensure_bucket_exists(self, bucket_name=None):
+        """Checks if a bucket with the given name exists.
+
+        Creates this bucket if it doesn't exist and returns its name.
         
         Args:
-            bucket_name (Optional[string]): The name of the bucket to create.
-                If no `bucket_name` was provided, we will set it to
-                'automl-tables-bucket-${timestamp}'. The value of ${timestamp}
-                is an integer UNIX timestamp of when this bucket is created.
-                An example `bucket_name` is 'automl-tables-bucket-1234567890'.
+            bucket_name (Optional[string]): The name of the bucket. We will
+                set this to 'automl-tables-staging' if this parameter is not
+                supplied.
         """
         if bucket_name is None:
-            bucket_name = "automl-tables-bucket-{}".format(int(time.time()))
-        bucket = self.client.create_bucket(bucket_name)
+            bucket_name = "automl-tables-staging"
+
+        try:
+            self.client.get_bucket(bucket_name)
+        except google.cloud.exceptions.NotFound:
+            self.client.create_bucket(bucket_name)
         return bucket_name
 
     def upload_pandas_dataframe(self, bucket_name, dataframe, uploaded_csv_name=None):
@@ -73,12 +86,13 @@ class GcsClient(object):
 
         if uploaded_csv_name is None:
             uploaded_csv_name = "automl-tables-dataframe-{}".format(int(time.time()))
-        local_csv_file = uploaded_csv_name + ".csv"
-        dataframe.to_csv(local_csv_file)
+
+        local_csv_name = uploaded_csv_name + ".csv"
+        dataframe.to_csv(local_csv_name)
         
         bucket = self.client.get_bucket(bucket_name)
         blob = bucket.blob(uploaded_csv_name)
-        blob.upload_from_filename(local_csv_file)
+        blob.upload_from_filename(local_csv_name)
+        os.remove(local_csv_name)
 
-        os.remove(local_csv_file)
         return uploaded_csv_name
