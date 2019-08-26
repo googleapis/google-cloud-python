@@ -117,6 +117,28 @@ class TablesClient(object):
         self.project = project
         self.region = region
 
+    def __lookup_by_display_name(self, object_type, items, display_name):
+        relevant_items = [i for i in items if i.display_name == display_name]
+        if len(relevant_items) == 0:
+            raise exceptions.NotFound(
+                "The {} with display_name='{}' was not found.".format(
+                    object_type, display_name
+                )
+            )
+        elif len(relevant_items) == 1:
+            return relevant_items[0]
+        else:
+            raise ValueError(
+                (
+                    "Multiple {}s match display_name='{}': {}\n\n"
+                    "Please use the `.name` (unique identifier) field instead"
+                ).format(
+                    object_type,
+                    display_name,
+                    ", ".join([str(i) for i in relevant_items]),
+                )
+            )
+
     def __location_path(self, project=None, region=None):
         if project is None:
             if self.project is None:
@@ -463,23 +485,11 @@ class TablesClient(object):
         if dataset_name is not None:
             return self.auto_ml_client.get_dataset(dataset_name, **kwargs)
 
-        result = next(
-            (
-                d
-                for d in self.list_datasets(project, region, **kwargs)
-                if d.display_name == dataset_display_name
-            ),
-            None,
+        return self.__lookup_by_display_name(
+            "dataset",
+            self.list_datasets(project, region, **kwargs),
+            dataset_display_name,
         )
-
-        if result is None:
-            raise exceptions.NotFound(
-                ("Dataset with display_name: '{}' " + "not found").format(
-                    dataset_display_name
-                )
-            )
-
-        return result
 
     def create_dataset(
         self, dataset_display_name, metadata={}, project=None, region=None, **kwargs
@@ -2314,22 +2324,9 @@ class TablesClient(object):
         if model_name is not None:
             return self.auto_ml_client.get_model(model_name, **kwargs)
 
-        model = next(
-            (
-                d
-                for d in self.list_models(project, region, **kwargs)
-                if d.display_name == model_display_name
-            ),
-            None,
+        return self.__lookup_by_display_name(
+            "model", self.list_models(project, region, **kwargs), model_display_name
         )
-
-        if model is None:
-            raise exceptions.NotFound(
-                "No model with model_diplay_name: "
-                + "'{}' found".format(model_display_name)
-            )
-
-        return model
 
     # TODO(jonathanskim): allow deployment from just model ID
     def deploy_model(
