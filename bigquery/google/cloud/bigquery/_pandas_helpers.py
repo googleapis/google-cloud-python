@@ -211,8 +211,10 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
                     "https://github.com/googleapis/google-cloud-python/issues/8191"
                 )
         bq_schema_index = {field.name: field for field in bq_schema}
+        bq_schema_unused = set(bq_schema_index.keys())
     else:
         bq_schema_index = {}
+        bq_schema_unused = set()
 
     bq_schema_out = []
     for column, dtype in zip(dataframe.columns, dataframe.dtypes):
@@ -220,6 +222,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_field = bq_schema_index.get(column)
         if bq_field:
             bq_schema_out.append(bq_field)
+            bq_schema_unused.discard(bq_field.name)
             continue
 
         # Otherwise, try to automatically determine the type based on the
@@ -230,6 +233,15 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
+
+    # Catch any schema mismatch. The developer explicitly asked to serialize a
+    # column, but it was not found.
+    if bq_schema_unused:
+        raise ValueError(
+            "bq_schema contains fields not present in dataframe: {}".format(
+                bq_schema_unused
+            )
+        )
     return tuple(bq_schema_out)
 
 
@@ -248,9 +260,21 @@ def dataframe_to_arrow(dataframe, bq_schema):
             Table containing dataframe data, with schema derived from
             BigQuery schema.
     """
-    if len(bq_schema) != len(dataframe.columns):
+    column_names = set(dataframe.columns)
+    bq_field_names = set(field.name for field in bq_schema)
+
+    extra_fields = bq_field_names - column_names
+    if extra_fields:
         raise ValueError(
-            "Number of columns in schema must match number of columns in dataframe."
+            "bq_schema contains fields not present in dataframe: {}".format(
+                extra_fields
+            )
+        )
+
+    missing_fields = column_names - bq_field_names
+    if missing_fields:
+        raise ValueError(
+            "bq_schema is missing fields from dataframe: {}".format(missing_fields)
         )
 
     arrow_arrays = []
