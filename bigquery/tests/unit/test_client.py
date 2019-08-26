@@ -5228,15 +5228,23 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
-        with load_patch as load_table_from_file:
+        with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
         load_table_from_file.assert_called_once_with(
@@ -5263,15 +5271,23 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_client_location(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client(location=self.LOCATION)
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
-        with load_patch as load_table_from_file:
+        with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
         load_table_from_file.assert_called_once_with(
@@ -5298,16 +5314,24 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_custom_job_config(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
         job_config = job.LoadJobConfig()
 
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
-        with load_patch as load_table_from_file:
+        with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
@@ -5370,7 +5394,20 @@ class TestClientUpload(object):
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
 
-        with load_patch as load_table_from_file:
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[
+                    SchemaField("int_col", "INTEGER"),
+                    SchemaField("float_col", "FLOAT"),
+                    SchemaField("bool_col", "BOOLEAN"),
+                    SchemaField("dt_col", "DATETIME"),
+                    SchemaField("ts_col", "TIMESTAMP"),
+                ]
+            ),
+        )
+        with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, location=self.LOCATION
             )
@@ -5396,6 +5433,67 @@ class TestClientUpload(object):
             SchemaField("bool_col", "BOOLEAN"),
             SchemaField("dt_col", "DATETIME"),
             SchemaField("ts_col", "TIMESTAMP"),
+        )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_unknown_df_columns(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        records = [{"id": 1, "typo_age": 100}, {"id": 2, "typo_age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        with pytest.raises(ValueError) as exc_info, load_patch, get_table_patch:
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        err_msg = str(exc_info.value)
+        assert "Dataframe contains columns that are not present in table" in err_msg
+        assert "typo_age" in err_msg
+        assert "id" not in err_msg
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_unknown_table(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        with load_patch as load_table_from_file, get_table_patch:
+            # there should be no error
+            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=None,
+            project=None,
+            job_config=mock.ANY,
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -5686,10 +5784,19 @@ class TestClientUpload(object):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
+        from google.cloud.bigquery.schema import SchemaField
+
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
 
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
+            ),
+        )
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
@@ -5698,7 +5805,7 @@ class TestClientUpload(object):
             dataframe, "to_parquet", wraps=dataframe.to_parquet
         )
 
-        with load_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
+        with load_patch, get_table_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
             client.load_table_from_dataframe(
                 dataframe,
                 self.TABLE_REF,
