@@ -27,7 +27,6 @@ from google.cloud.automl_v1beta1.tables import tables_client
 class TablesClient(tables_client.TablesClient):
     __doc__ = tables_client.TablesClient.__doc__
 
-
 class AutoMlClient(auto_ml_client.AutoMlClient):
     __doc__ = auto_ml_client.AutoMlClient.__doc__
     enums = enums
