@@ -35,5 +35,4 @@ def get_dataset_labels(client, dataset_id):
             print("\t{}: {}".format(label, value))
     else:
         print("\tDataset has no labels defined.")
-
     # [END bigquery_get_dataset_labels]

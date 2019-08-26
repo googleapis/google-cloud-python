@@ -27,7 +27,7 @@ def list_datasets_by_label(client):
 
     if datasets:
         print("Datasets filtered by {}:".format(label_filter))
-        for dataset in datasets:  # API request(s)
+        for dataset in datasets:
             print("\t{}.{}".format(dataset.project, dataset.dataset_id))
     else:
         print("No datasets found with this filter.")

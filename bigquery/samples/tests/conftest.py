@@ -80,9 +80,7 @@ def table_id(client, dataset_id):
 
 @pytest.fixture
 def table_with_data_id(client):
-    dataset = client.get_dataset("bigquery-public-data.samples")
-    table = dataset.table("shakespeare")
-    return "{}.{}.{}".format(table.project, table.dataset_id, table.table_id)
+    return "bigquery-public-data.samples.shakespeare"
 
 
 @pytest.fixture
