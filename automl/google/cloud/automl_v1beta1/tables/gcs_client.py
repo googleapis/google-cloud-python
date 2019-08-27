@@ -16,6 +16,7 @@
 
 """Wraps the Google Cloud Storage client library for use in tables helper."""
 
+import google
 import os
 import pandas
 import time
@@ -26,7 +27,7 @@ from google.cloud import storage
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, client=None, credentials=None, **kwargs):
+    def __init__(self, client=None, credentials=None):
         """Constructor.
         
         Args:
@@ -50,18 +51,28 @@ class GcsClient(object):
         else:
             self.client = storage.Client(credentials=credentials)
 
-    def ensure_bucket_exists(self, bucket_name=None):
+    def ensure_bucket_exists(self, project=None, bucket_name=None):
         """Checks if a bucket with the given name exists.
 
-        Creates this bucket if it doesn't exist and returns its name.
+        Creates this bucket if it doesn't exist.
         
         Args:
-            bucket_name (Optional[string]): The name of the bucket. We will
-                set this to 'automl-tables-staging' if this parameter is not
-                supplied.
+            project (Optional[string]): The project that stores the bucket.
+                This must be supplied if `bucket_name` is not.
+            bucket_name (Optional[string]): The bucket name to look up. This
+                must be supplied if `project` is not.
+
+        Returns:
+            A string representing the created bucket name.
+
+        Raises:
+            ValueError: If required parameters are missing.
         """
-        if bucket_name is None:
-            bucket_name = "automl-tables-staging"
+        if project is None and bucket_name is None:
+            raise ValueError("One of 'project' or 'bucket_name' must be set.")
+
+        if project is not None:
+            bucket_name = "{}-automl-tables-staging".format(project)
 
         try:
             self.client.get_bucket(bucket_name)
@@ -72,25 +83,24 @@ class GcsClient(object):
     def upload_pandas_dataframe(self, bucket_name, dataframe, uploaded_csv_name=None):
         """Uploads a Pandas DataFrame as CSV to the bucket.
 
-        Returns the uploaded CSV name at the end.
-
         Args:
             bucket_name (string): The bucket name to upload the CSV to.
             dataframe (pandas.DataFrame): The Pandas Dataframe to be uploaded.
-            uploaded_csv_name (Optional[string]): The name for the uploaded CSV file.
+            uploaded_csv_name (Optional[string]): The name for the uploaded CSV.
+
+        Returns:
+            A string representing the GCS URI of the uploaded CSV.
         """
         if not isinstance(dataframe, pandas.DataFrame):
             raise ValueError("'dataframe' must be a pandas.DataFrame instance.")
 
         if uploaded_csv_name is None:
-            uploaded_csv_name = "automl-tables-dataframe-{}".format(int(time.time()))
-
-        local_csv_name = uploaded_csv_name + ".csv"
-        dataframe.to_csv(local_csv_name)
+            uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(int(time.time()))
+        dataframe.to_csv(uploaded_csv_name)
         
         bucket = self.client.get_bucket(bucket_name)
         blob = bucket.blob(uploaded_csv_name)
-        blob.upload_from_filename(local_csv_name)
-        os.remove(local_csv_name)
+        blob.upload_from_filename(uploaded_csv_name)
+        os.remove(uploaded_csv_name)
 
-        return uploaded_csv_name
+        return "gs://{}/{}".format(bucket_name, uploaded_csv_name)
