@@ -30,6 +30,7 @@ MAX_WAIT_TIME_SECONDS = 30
 MAX_SLEEP_TIME_SECONDS = 5
 STATIC_DATASET = "test_dataset_do_not_delete"
 STATIC_MODEL = "test_model_do_not_delete"
+RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower == "true"
 
 ID = "{rand}_{time}".format(
     rand="".join(
@@ -81,6 +82,7 @@ class TestSystemTablesClient(object):
         )
         client.delete_dataset(dataset=dataset)
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_import_data(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         display_name = _id("t_import")
@@ -109,6 +111,7 @@ class TestSystemTablesClient(object):
 
         return dataset
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_list_column_specs(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -123,18 +126,21 @@ class TestSystemTablesClient(object):
             )
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_get_column_spec(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
         name = [d for d in client.list_column_specs(dataset=dataset)][0].name
         assert client.get_column_spec(name).name == name
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_list_table_specs(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
         name = [d for d in client.list_table_specs(dataset=dataset)][0].name
         assert client.get_table_spec(name).name == name
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_set_column_nullable(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -144,6 +150,7 @@ class TestSystemTablesClient(object):
         columns = {c.display_name: c for c in client.list_column_specs(dataset=dataset)}
         assert columns["POutcome"].data_type.nullable == True
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_set_target_column(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -155,6 +162,7 @@ class TestSystemTablesClient(object):
             "/{}".format(metadata.target_column_spec_id)
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_set_weight_column(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -166,6 +174,7 @@ class TestSystemTablesClient(object):
             "/{}".format(metadata.weight_column_spec_id)
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_set_weight_and_target_column(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -181,6 +190,7 @@ class TestSystemTablesClient(object):
             "/{}".format(metadata.target_column_spec_id)
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_create_delete_model(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -192,6 +202,7 @@ class TestSystemTablesClient(object):
         self.cancel_and_wait(op)
         client.delete_model(model_display_name=display_name)
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_list_model_evaluations(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_online(client)
@@ -206,12 +217,14 @@ class TestSystemTablesClient(object):
             )
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_get_model_evaluation(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_online(client)
         name = [m for m in client.list_model_evaluations(model=model)][0].name
         assert client.get_model_evaluation(model_evaluation_name=name).name == name
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_online_predict(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_online(client)
