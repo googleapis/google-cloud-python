@@ -17,6 +17,7 @@
 """A tables helper for the google.cloud.automl_v1beta1 AutoML API"""
 
 import pkg_resources
+import logging
 
 from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
@@ -24,6 +25,7 @@ from google.cloud.automl_v1beta1 import gapic
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+_LOGGER = logging.getLogger(__name__)
 
 
 class TablesClient(object):
@@ -311,6 +313,29 @@ class TablesClient(object):
                 model_name=model_name, project=project, region=region, **kwargs
             )
         return model_name
+
+    def __log_operation_info(self, message, op):
+        name = "UNKNOWN"
+        try:
+            if (
+                op is not None
+                and op.operation is not None
+                and op.operation.name is not None
+            ):
+                name = op.operation.name
+        except AttributeError:
+            pass
+        _LOGGER.info(
+            (
+                "Operation '{}' is running in the background. The returned "
+                "Operation '{}' can be used to query or block on the status "
+                "of this operation. Ending your python session will _not_ "
+                "cancel this operation. Read the documentation here:\n\n"
+                "\thttps://googleapis.dev/python/google-api-core/latest/operation.html\n\n"
+                "for more information on the Operation class."
+            ).format(message, name)
+        )
+        return op
 
     def __column_spec_name_from_args(
         self,
@@ -608,7 +633,9 @@ class TablesClient(object):
         except exceptions.NotFound:
             return None
 
-        return self.auto_ml_client.delete_dataset(dataset_name, **kwargs)
+        op = self.auto_ml_client.delete_dataset(dataset_name, **kwargs)
+        self.__log_operation_info("Delete dataset", op)
+        return op
 
     def import_data(
         self,
@@ -704,7 +731,9 @@ class TablesClient(object):
                 "One of 'gcs_input_uris', or " "'bigquery_input_uri' must be set."
             )
 
-        return self.auto_ml_client.import_data(dataset_name, request, **kwargs)
+        op = self.auto_ml_client.import_data(dataset_name, request, **kwargs)
+        self.__log_operation_info("Data import", op)
+        return op
 
     def export_data(
         self,
@@ -797,7 +826,9 @@ class TablesClient(object):
                 "One of 'gcs_output_uri_prefix', or 'bigquery_output_uri' must be set."
             )
 
-        return self.auto_ml_client.export_data(dataset_name, request, **kwargs)
+        op = self.auto_ml_client.export_data(dataset_name, request, **kwargs)
+        self.__log_operation_info("Export data", op)
+        return op
 
     def get_table_spec(self, table_spec_name, project=None, region=None, **kwargs):
         """Gets a single table spec in a particular project and region.
@@ -2144,9 +2175,11 @@ class TablesClient(object):
             "tables_model_metadata": model_metadata,
         }
 
-        return self.auto_ml_client.create_model(
+        op = self.auto_ml_client.create_model(
             self.__location_path(project=project, region=region), request, **kwargs
         )
+        self.__log_operation_info("Model creation", op)
+        return op
 
     def delete_model(
         self,
@@ -2220,7 +2253,9 @@ class TablesClient(object):
         except exceptions.NotFound:
             return None
 
-        return self.auto_ml_client.delete_model(model_name, **kwargs)
+        op = self.auto_ml_client.delete_model(model_name, **kwargs)
+        self.__log_operation_info("Delete model", op)
+        return op
 
     def get_model_evaluation(
         self, model_evaluation_name, project=None, region=None, **kwargs
@@ -2397,7 +2432,9 @@ class TablesClient(object):
             **kwargs
         )
 
-        return self.auto_ml_client.deploy_model(model_name, **kwargs)
+        op = self.auto_ml_client.deploy_model(model_name, **kwargs)
+        self.__log_operation_info("Deploy model", op)
+        return op
 
     def undeploy_model(
         self,
@@ -2466,7 +2503,9 @@ class TablesClient(object):
             **kwargs
         )
 
-        return self.auto_ml_client.undeploy_model(model_name, **kwargs)
+        op = self.auto_ml_client.undeploy_model(model_name, **kwargs)
+        self.__log_operation_info("Undeploy model", op)
+        return op
 
     ## TODO(lwander): support pandas DataFrame as input type
     def predict(
@@ -2674,6 +2713,8 @@ class TablesClient(object):
                 "One of 'gcs_output_uri_prefix'/'bigquery_output_uri' must be set"
             )
 
-        return self.prediction_client.batch_predict(
+        op = self.prediction_client.batch_predict(
             model_name, input_request, output_request, **kwargs
         )
+        self.__log_operation_info("Batch predict", op)
+        return op
