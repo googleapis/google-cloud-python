@@ -29,7 +29,7 @@ class GcsClient(object):
 
     def __init__(self, client=None, credentials=None):
         """Constructor.
-        
+
         Args:
             client (Optional[storage.Client]): A Google Cloud Storage Client
                 instance. Either `client` or `credentials` must be provided.
@@ -55,7 +55,7 @@ class GcsClient(object):
         """Checks if a bucket with the given name exists.
 
         Creates this bucket if it doesn't exist.
-        
+
         Args:
             project (Optional[string]): The project that stores the bucket.
                 This must be supplied if `bucket_name` is not.
