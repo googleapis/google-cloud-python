@@ -2778,3 +2778,120 @@ class TablesClient(object):
         )
         self.__log_operation_info("Batch predict", op)
         return op
+
+    def get_model_evaluation(self, model=None, model_display_name=None,
+                model_name=None, project=None, region=None):
+        """Displays evaluation. Also Displays graphs of performance.
+        Adopted largely from the python-docs-sample/tables/automl/automl_tables_model.py file in GoogleCloudPlatform."""
+
+        import numpy as np
+        from sklearn import metrics
+        import matplotlib.pyplot as plt
+
+        model_full_id = self.__model_name_from_args(
+                model=model,
+                model_name=model_name,
+                model_display_name=model_display_name,
+                project=project,
+                 region=region
+        )
+
+        response = self.client.list_model_evaluations(model_full_id)
+        model_evaluation_full_id = 0
+
+        for evaluation in response:
+            if not evaluation.annotation_spec_id:
+                model_evaluation_id = evaluation.name.split("/")[-1]
+                model_evaluation_full_id = evaluation.name
+        model_evaluation = self.client.get_model_evaluation(model_evaluation_full_id)
+        model_information = self.client.get_model(model_full_id)
+        classification_metrics = model_evaluation.classification_evaluation_metrics
+                                 #message described in the model_evaluation.proto
+                                                   #message described in the classification.proto
+        table_metrics = model_information.tables_model_metadata
+
+        if str(classification_metrics):
+            confidence_metrics = classification_metrics.confidence_metrics_entry
+            feature_importance = table_metrics.tables_model_column_info
+            precision_values = []
+            recall_values = []
+            false_positive_rate_lst = []
+            confidence_scores = []
+            true_positive_lst = []
+            false_positive_lst = []
+            false_negative_lst = []
+            true_negative_lst = []
+            confusion_matrix = []
+
+            print("Model classification metrics (threshold at 0.5):")
+            for confidence_metrics_entry in confidence_metrics:
+                confidence_scores.append(confidence_metrics_entry.confidence_threshold)
+                precision_values.append(confidence_metrics_entry.precision)
+                recall_values.append(confidence_metrics_entry.recall)
+                false_positive_rate_lst.append(confidence_metrics_entry.false_positive_rate)
+
+                true_positive_lst.append(confidence_metrics_entry.true_positive_count)
+                false_positive_lst.append(confidence_metrics_entry.false_positive_count)
+                false_negative_lst.append(confidence_metrics_entry.false_negative_count)
+                true_negative_lst.append(confidence_metrics_entry.true_negative_count)
+                if confidence_metrics_entry.confidence_threshold == 0.5:
+                    print(
+                        "Model Precision: {}%".format(
+                            round(confidence_metrics_entry.precision * 100, 2)
+                        )
+                    )
+                    print(
+                        "Model Recall: {}%".format(
+                            round(confidence_metrics_entry.recall * 100, 2)
+                        )
+                    )
+                    print(
+                        "Model F1 score: {}%".format(
+                            round(confidence_metrics_entry.f1_score * 100, 2)
+                        )
+                    )    
+                    confusion_matrix.append(confidence_metrics_entry.true_positive_count)
+                    confusion_matrix.append(confidence_metrics_entry.false_positive_count)
+                    confusion_matrix.append(confidence_metrics_entry.false_negative_count)
+                    confusion_matrix.append(confidence_metrics_entry.true_negative_count)
+
+            print(true_positive_lst)
+            print("Model AUPRC: {}".format(classification_metrics.au_prc))
+            print("Model AUROC: {}".format(classification_metrics.au_roc))
+            print("Model log loss: {}".format(classification_metrics.log_loss))
+            print confusion matrix
+            print("      predicted: NO       predicted: YES")
+            print("Actual: NO "+" TN = "+str(confusion_matrix[3]) + "      FP = " + str(confusion_matrix[1]))
+            print("Actual: YES"+" TN = "+str(confusion_matrix[2]) + "      FP = "+ str(confusion_matrix[0]))
+            for feature in feature_importance:
+                print("feature name: "+feature.column_display_name+"  feature importance: "+str(feature.feature_importance))
+            plt.figure()
+            lw = 2
+            plt.plot(recall_values, precision_values, color='darkorange',
+                 lw=lw, label='Precision Recall curve')
+            plt.xlim([0.0, 1.0])
+            plt.ylim([0.0, 1.05])
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.title('Precision Recall Curve')
+            plt.legend(loc="lower right")
+            plt.show()
+            plt.figure()
+            lw = 2
+            plt.plot( false_positive_rate_lst, recall_values, color='darkorange',
+                 lw=lw, label='ROC curve')
+            plt.xlim([0.0, 1.0])
+            plt.ylim([0.0, 1.05])
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.title('ROC Curve')
+            plt.legend(loc="lower right")
+            plt.show()
+        regression_metrics = model_evaluation.regression_evaluation_metrics
+        if str(regression_metrics):
+            print("Model regression metrics:")
+            print("Model RMSE: {}".format(regression_metrics.root_mean_squared_error))
+            print("Model MAE: {}".format(regression_metrics.mean_absolute_error))
+            print("Model MAPE: {}".format(
+                regression_metrics.mean_absolute_percentage_error))
+            print("Model R^2: {}".format(regression_metrics.r_squared))
