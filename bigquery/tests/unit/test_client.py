@@ -3110,6 +3110,7 @@ class TestClient(unittest.TestCase):
             upload_url,
             data=json.dumps(metadata).encode("utf-8"),
             headers=request_headers,
+            timeout=mock.ANY,
         )
 
     def test__initiate_resumable_upload(self):
@@ -3162,7 +3163,7 @@ class TestClient(unittest.TestCase):
         headers = _get_upload_headers(conn.user_agent)
         headers["content-type"] = b'multipart/related; boundary="==0=="'
         fake_transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=headers
+            "POST", upload_url, data=payload, headers=headers, timeout=mock.ANY
         )
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
@@ -5896,6 +5897,7 @@ class TestClientUpload(object):
             mock.ANY,
             data=json.dumps(self.EXPECTED_CONFIGURATION).encode("utf-8"),
             headers=mock.ANY,
+            timeout=mock.ANY,
         )
 
     def test__do_multipart_upload(self):

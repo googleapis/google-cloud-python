@@ -91,9 +91,9 @@ s.replace(
 s.replace(
     "google/cloud/**/io_pb2.py",
     r"""Sample
-     in-line JSON Lines file.*?\}`\n""",
-    "\n",
-    flags=re.DOTALL,
+     in-line JSON Lines.*?(\n\s+-\s+For Text Classification.*\n)""",
+     "\g<1>",
+     flags=re.DOTALL
 )
 
 # Replace docstring with no summary line

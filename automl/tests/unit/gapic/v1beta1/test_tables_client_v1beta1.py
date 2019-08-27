@@ -114,6 +114,20 @@ class TestTablesClient(object):
         dataset = client.get_dataset(dataset_display_name="my_dataset")
         assert dataset.display_name == "my_dataset"
 
+    def test_get_dataset_from_list_ambiguous(self):
+        client = self.tables_client(
+            {
+                "list_datasets.return_value": [
+                    mock.Mock(display_name="my_dataset"),
+                    mock.Mock(display_name="not_my_dataset"),
+                    mock.Mock(display_name="my_dataset"),
+                ]
+            },
+            {},
+        )
+        with pytest.raises(ValueError):
+            client.get_dataset(dataset_display_name="my_dataset")
+
     def test_create_dataset(self):
         client = self.tables_client(
             {
@@ -843,6 +857,20 @@ class TestTablesClient(object):
         )
         model = client.get_model(model_display_name="my_model")
         assert model.display_name == "my_model"
+
+    def test_get_model_from_list_ambiguous(self):
+        client = self.tables_client(
+            {
+                "list_models.return_value": [
+                    mock.Mock(display_name="my_model"),
+                    mock.Mock(display_name="not_my_model"),
+                    mock.Mock(display_name="my_model"),
+                ]
+            },
+            {},
+        )
+        with pytest.raises(ValueError):
+            client.get_model(model_display_name="my_model")
 
     def test_delete_model(self):
         model = mock.Mock()

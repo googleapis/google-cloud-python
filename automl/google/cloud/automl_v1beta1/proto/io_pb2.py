@@ -1029,20 +1029,23 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   -  For Text Extraction: CSV file(s) with each line in format:
      ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL (that is,
      JSON Lines) file which either imports text in-line or as documents.
-     The in-line .JSONL file contains, per line, a proto that wraps a
-     TextSnippet proto (in json representation) followed by one or more
-     AnnotationPayload protos (called annotations), which have
-     display\_name and text\_extraction detail populated. The given text
-     is expected to be annotated exhaustively, for example, if you look
-     for animals and text contains "dolphin" that is not labeled, then
-     "dolphin" is assumed to not be an animal. Any given text snippet
-     content must have 30,000 characters or less, and also be UTF-8 NFC
-     encoded (ASCII already is). The document .JSONL file contains, per
-     line, a proto that wraps a Document proto with input\_config set.
-     Only PDF documents are supported now, and each document may be up to
-     2MB large. Currently annotations on documents cannot be specified at
-     import. Any given .JSONL file must be 100MB or smaller. Three sample
-     CSV rows: TRAIN,gs://folder/file1.jsonl
+     Any given .JSONL file must be 100MB or smaller. The in-line .JSONL
+     file contains, per line, a proto that wraps a TextSnippet proto (in
+     json representation) followed by one or more AnnotationPayload protos
+     (called annotations), which have display\_name and text\_extraction
+     detail populated. The given text is expected to be annotated
+     exhaustively, for example, if you look for animals and text contains
+     "dolphin" that is not labeled, then "dolphin" is assumed to not be an
+     animal. Any given text snippet content must be 10KB or smaller, and
+     also be UTF-8 NFC encoded (ASCII already is). The document .JSONL
+     file contains, per line, a proto that wraps a Document proto. The
+     Document proto must have either document\_text or input\_config set.
+     In document\_text case, the Document proto may also contain the
+     spatial information of the document, including layout, document
+     dimension and page number. In input\_config case, only PDF documents
+     are supported now, and each document may be up to 2MB large.
+     Currently, annotations on documents cannot be specified at import.
+     Three sample CSV rows: TRAIN,gs://folder/file1.jsonl
      VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl 
   
   -  For Text Classification: CSV file(s) with each line in format:
