@@ -522,6 +522,18 @@ def test_get_column_or_index_not_found(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_multiindex_not_found(module_under_test):
+    dataframe = pandas.DataFrame(
+        {"column_name": [1, 2, 3, 4, 5, 6]},
+        index=pandas.MultiIndex.from_tuples(
+            [("a", 0), ("a", 1), ("b", 0), ("b", 1), ("c", 0), ("c", 1)]
+        ),
+    )
+    with pytest.raises(ValueError, match="not_in_df"):
+        module_under_test.get_column_or_index(dataframe, "not_in_df")
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_get_column_or_index_with_both_prefers_column(module_under_test):
     dataframe = pandas.DataFrame(
         {"some_name": [1, 2, 3]}, index=pandas.Index([0, 1, 2], name="some_name")
@@ -704,7 +716,7 @@ def test_dataframe_to_arrow_with_multiindex(module_under_test):
     ]
     arrow_data = arrow_table.to_pydict()
     assert arrow_data["str_index"] == ["a", "a", "a", "b", "b", "b"]
-    assert arrow_data["dt_index"] == [
+    expected_dt_index = [
         pandas.Timestamp(dt)
         for dt in (
             datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
@@ -715,6 +727,7 @@ def test_dataframe_to_arrow_with_multiindex(module_under_test):
             datetime.datetime(2000, 1, 1, 0, 0, 0),
         )
     ]
+    assert arrow_data["dt_index"] == expected_dt_index
     assert arrow_data["int_col"] == [1, 2, 3, 4, 5, 6]
     assert arrow_data["nullable_int_col"] == [6, None, 7, None, 8, 9]
     assert arrow_data["str_col"] == [

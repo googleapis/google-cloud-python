@@ -30,9 +30,17 @@ def load_table_dataframe(client, table_id):
         {"title": u"Life of Brian", "release_year": 1979},
         {"title": u"And Now for Something Completely Different", "release_year": 1971},
     ]
-    # Optionally set explicit indices.
-    index = [u"Q24980", u"Q25043", u"Q24953", u"Q16403"]
-    dataframe = pandas.DataFrame(records, index=pandas.Index(index, name="wikidata_id"))
+    dataframe = pandas.DataFrame(
+        records,
+        # In the loaded table, the column order reflects the order of the
+        # columns in the DataFrame.
+        columns=["title", "release_year"],
+        # Optionally, set a named index, which can also be written to the
+        # BigQuery table.
+        index=pandas.Index(
+            [u"Q24980", u"Q25043", u"Q24953", u"Q16403"], name="wikidata_id"
+        ),
+    )
     job_config = bigquery.LoadJobConfig(
         # Specify a (partial) schema. All columns are always written to the
         # table. The schema is used to assist in data type definitions.
@@ -43,7 +51,11 @@ def load_table_dataframe(client, table_id):
             bigquery.SchemaField("title", bigquery.enums.SqlTypeNames.STRING),
             # Indexes are written if included in the schema by name.
             bigquery.SchemaField("wikidata_id", bigquery.enums.SqlTypeNames.STRING),
-        ]
+        ],
+        # Optionally, set the write disposition. BigQuery appends loaded rows
+        # to an existing table by default, but with WRITE_TRUNCATE write
+        # disposition it replaces the table with the loaded data.
+        write_disposition="WRITE_TRUNCATE",
     )
 
     job = client.load_table_from_dataframe(
@@ -52,12 +64,10 @@ def load_table_dataframe(client, table_id):
     job.result()  # Waits for table load to complete.
 
     table = client.get_table(table_id)
-    print("Wrote {} rows to {}".format(table.num_rows, table_id))
+    print(
+        "Loaded {} rows and {} columns to {}".format(
+            table.num_rows, len(table.schema), table_id
+        )
+    )
     # [END bigquery_load_table_dataframe]
-
-
-if __name__ == "__main__":
-    import sys
-    from google.cloud import bigquery
-
-    load_table_dataframe(bigquery.Client(), sys.argv[1])
+    return table
