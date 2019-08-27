@@ -30,7 +30,7 @@ version = "1.18.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     'enum34; python_version < "3.4"',
-    "google-cloud-core >= 1.0.0, < 2.0dev",
+    "google-cloud-core >= 1.0.3, < 2.0dev",
     "google-resumable-media >= 0.3.1",
     "protobuf >= 3.6.0",
 ]
