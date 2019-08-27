@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Types for Cloud AutoML API Client &#8212; google-cloud 05e7255 documentation</title>
+    <title>Types for Cloud AutoML API Client &#8212; google-cloud 86bb5cf documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -2287,9 +2287,167 @@ set, a blind “overwrite” update happens.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.document_text">
+<code class="sig-name descname">document_text</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.document_text" title="Permalink to this definition">#</a></dt>
+<dd><p>The plain text version of this document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.layout">
+<code class="sig-name descname">layout</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.layout" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes the layout of the document. Sorted by
+[page_number][].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.document_dimensions">
+<code class="sig-name descname">document_dimensions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.document_dimensions" title="Permalink to this definition">#</a></dt>
+<dd><p>The dimensions of the page in the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.page_count">
+<code class="sig-name descname">page_count</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.page_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of pages in the document.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.Document.Layout">
+<em class="property">class </em><code class="sig-name descname">Layout</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.Layout" title="Permalink to this definition">#</a></dt>
+<dd><p>Describes the layout information of a
+[text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment]
+in the document.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.Layout.text_segment">
+<code class="sig-name descname">text_segment</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.Layout.text_segment" title="Permalink to this definition">#</a></dt>
+<dd><p>Text Segment that represents a segment in [document_text][goo
+gle.cloud.automl.v1beta1.Document.document_text].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.Layout.page_number">
+<code class="sig-name descname">page_number</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.Layout.page_number" title="Permalink to this definition">#</a></dt>
+<dd><p>Page number of the [text_segment][google.cloud.automl.v1beta1
+.Document.Layout.text_segment] in the original document,
+starts from 1.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.Layout.bounding_poly">
+<code class="sig-name descname">bounding_poly</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.Layout.bounding_poly" title="Permalink to this definition">#</a></dt>
+<dd><p>The position of the [text_segment][google.cloud.automl.v1beta
+1.Document.Layout.text_segment] in the page. Contains exactly
+4  [normalized_vertices][google.cloud.automl.v1beta1.Bounding
+Poly.normalized_vertices] and they are connected by edges in
+the order provided, which will represent a rectangle parallel
+to the frame. The [NormalizedVertex-s][google.cloud.automl.v1b
+eta1.NormalizedVertex] are relative to the page. Coordinates
+are based on top-left as point (0,0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.Document.Layout.text_segment_type">
+<code class="sig-name descname">text_segment_type</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.Document.Layout.text_segment_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the [text_segment][google.cloud.automl.v1beta1.Do
+cument.Layout.text_segment] in document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">bounding_poly</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.Layout.bounding_poly</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">page_number</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.Layout.page_number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">text_segment</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.Layout.text_segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">text_segment_type</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.Layout.text_segment_type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">document_dimensions</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.document_dimensions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">document_text</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.document_text</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="sig-name descname">input_config</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.Document.input_config</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">layout</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.layout</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">page_count</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.Document.page_count</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.automl_v1beta1.types.DocumentDimensions">
+<em class="property">class </em><code class="sig-prename descclassname">google.cloud.automl_v1beta1.types.</code><code class="sig-name descname">DocumentDimensions</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DocumentDimensions" title="Permalink to this definition">#</a></dt>
+<dd><p>Message that describes dimension of a document.</p>
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DocumentDimensions.unit">
+<code class="sig-name descname">unit</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DocumentDimensions.unit" title="Permalink to this definition">#</a></dt>
+<dd><p>Unit of the dimension.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DocumentDimensions.width">
+<code class="sig-name descname">width</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DocumentDimensions.width" title="Permalink to this definition">#</a></dt>
+<dd><p>Width value of the document, works together with the unit.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.DocumentDimensions.height">
+<code class="sig-name descname">height</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.DocumentDimensions.height" title="Permalink to this definition">#</a></dt>
+<dd><p>Height value of the document, works together with the unit.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">height</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DocumentDimensions.height</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">unit</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DocumentDimensions.unit</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">width</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.DocumentDimensions.width</p>
 </dd></dl>
 
 </dd></dl>
@@ -3576,20 +3734,23 @@ gs://folder/video2.avi,,,,,,,,,,,</p></li>
 <li><p>For Text Extraction: CSV file(s) with each line in format:
 ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .JSONL (that is,
 JSON Lines) file which either imports text in-line or as documents.
-The in-line .JSONL file contains, per line, a proto that wraps a
-TextSnippet proto (in json representation) followed by one or more
-AnnotationPayload protos (called annotations), which have
-display_name and text_extraction detail populated. The given text
-is expected to be annotated exhaustively, for example, if you look
-for animals and text contains “dolphin” that is not labeled, then
-“dolphin” is assumed to not be an animal. Any given text snippet
-content must have 30,000 characters or less, and also be UTF-8 NFC
-encoded (ASCII already is). The document .JSONL file contains, per
-line, a proto that wraps a Document proto with input_config set.
-Only PDF documents are supported now, and each document may be up to
-2MB large. Currently annotations on documents cannot be specified at
-import. Any given .JSONL file must be 100MB or smaller. Three sample
-CSV rows: TRAIN,gs://folder/file1.jsonl
+Any given .JSONL file must be 100MB or smaller. The in-line .JSONL
+file contains, per line, a proto that wraps a TextSnippet proto (in
+json representation) followed by one or more AnnotationPayload protos
+(called annotations), which have display_name and text_extraction
+detail populated. The given text is expected to be annotated
+exhaustively, for example, if you look for animals and text contains
+“dolphin” that is not labeled, then “dolphin” is assumed to not be an
+animal. Any given text snippet content must be 10KB or smaller, and
+also be UTF-8 NFC encoded (ASCII already is). The document .JSONL
+file contains, per line, a proto that wraps a Document proto. The
+Document proto must have either document_text or input_config set.
+In document_text case, the Document proto may also contain the
+spatial information of the document, including layout, document
+dimension and page number. In input_config case, only PDF documents
+are supported now, and each document may be up to 2MB large.
+Currently, annotations on documents cannot be specified at import.
+Three sample CSV rows: TRAIN,gs://folder/file1.jsonl
 VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl</p></li>
 <li><p>For Text Classification: CSV file(s) with each line in format:
 ML_USE,(TEXT_SNIPPET | GCS_FILE_PATH),LABEL,LABEL,…
@@ -5232,6 +5393,16 @@ precisely one payload.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.automl_v1beta1.types.PredictResponse.preprocessed_input">
+<code class="sig-name descname">preprocessed_input</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.preprocessed_input" title="Permalink to this definition">#</a></dt>
+<dd><p>The preprocessed example that AutoML actually makes prediction
+on. Empty if AutoML does not preprocess the input example. *
+For Text Extraction: If the input is a .pdf file, the OCR’ed
+text will be provided in [document_text][google.cloud.automl.
+v1beta1.Document.document_text].</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.automl_v1beta1.types.PredictResponse.metadata">
 <code class="sig-name descname">metadata</code><a class="headerlink" href="#google.cloud.automl_v1beta1.types.PredictResponse.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Additional domain-specific prediction response metadata.  -
@@ -5276,6 +5447,12 @@ Analysis API.</p>
 <dt>
 <code class="sig-name descname">payload</code></dt>
 <dd><p>Field google.cloud.automl.v1beta1.PredictResponse.payload</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">preprocessed_input</code></dt>
+<dd><p>Field google.cloud.automl.v1beta1.PredictResponse.preprocessed_input</p>
 </dd></dl>
 
 </dd></dl>

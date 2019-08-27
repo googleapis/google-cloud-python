@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.automl_v1beta1.proto.io_pb2 &#8212; google-cloud 05e7255 documentation</title>
+    <title>google.cloud.automl_v1beta1.proto.io_pb2 &#8212; google-cloud 86bb5cf documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -1063,20 +1063,23 @@
 <span class="s2">  -  For Text Extraction: CSV file(s) with each line in format:</span>
 <span class="s2">     ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .JSONL (that is,</span>
 <span class="s2">     JSON Lines) file which either imports text in-line or as documents.</span>
-<span class="s2">     The in-line .JSONL file contains, per line, a proto that wraps a</span>
-<span class="s2">     TextSnippet proto (in json representation) followed by one or more</span>
-<span class="s2">     AnnotationPayload protos (called annotations), which have</span>
-<span class="s2">     display\_name and text\_extraction detail populated. The given text</span>
-<span class="s2">     is expected to be annotated exhaustively, for example, if you look</span>
-<span class="s2">     for animals and text contains &quot;dolphin&quot; that is not labeled, then</span>
-<span class="s2">     &quot;dolphin&quot; is assumed to not be an animal. Any given text snippet</span>
-<span class="s2">     content must have 30,000 characters or less, and also be UTF-8 NFC</span>
-<span class="s2">     encoded (ASCII already is). The document .JSONL file contains, per</span>
-<span class="s2">     line, a proto that wraps a Document proto with input\_config set.</span>
-<span class="s2">     Only PDF documents are supported now, and each document may be up to</span>
-<span class="s2">     2MB large. Currently annotations on documents cannot be specified at</span>
-<span class="s2">     import. Any given .JSONL file must be 100MB or smaller. Three sample</span>
-<span class="s2">     CSV rows: TRAIN,gs://folder/file1.jsonl</span>
+<span class="s2">     Any given .JSONL file must be 100MB or smaller. The in-line .JSONL</span>
+<span class="s2">     file contains, per line, a proto that wraps a TextSnippet proto (in</span>
+<span class="s2">     json representation) followed by one or more AnnotationPayload protos</span>
+<span class="s2">     (called annotations), which have display\_name and text\_extraction</span>
+<span class="s2">     detail populated. The given text is expected to be annotated</span>
+<span class="s2">     exhaustively, for example, if you look for animals and text contains</span>
+<span class="s2">     &quot;dolphin&quot; that is not labeled, then &quot;dolphin&quot; is assumed to not be an</span>
+<span class="s2">     animal. Any given text snippet content must be 10KB or smaller, and</span>
+<span class="s2">     also be UTF-8 NFC encoded (ASCII already is). The document .JSONL</span>
+<span class="s2">     file contains, per line, a proto that wraps a Document proto. The</span>
+<span class="s2">     Document proto must have either document\_text or input\_config set.</span>
+<span class="s2">     In document\_text case, the Document proto may also contain the</span>
+<span class="s2">     spatial information of the document, including layout, document</span>
+<span class="s2">     dimension and page number. In input\_config case, only PDF documents</span>
+<span class="s2">     are supported now, and each document may be up to 2MB large.</span>
+<span class="s2">     Currently, annotations on documents cannot be specified at import.</span>
+<span class="s2">     Three sample CSV rows: TRAIN,gs://folder/file1.jsonl</span>
 <span class="s2">     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl </span>
 <span class="s2">  </span>
 <span class="s2">  -  For Text Classification: CSV file(s) with each line in format:</span>
