@@ -30,7 +30,10 @@ except ImportError:  # pragma: NO COVER
     storage = None
 
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
-_STORAGE_REQUIRED = "google.cloud.storage is required to create Google Cloud Storage client."
+_STORAGE_REQUIRED = (
+    "google.cloud.storage is required to create Google Cloud Storage client."
+)
+
 
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""

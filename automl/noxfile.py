@@ -70,6 +70,7 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", ".")
+    session.install("-e", ".[all]")
 
     # Run py.test against the unit tests.
     session.run(
