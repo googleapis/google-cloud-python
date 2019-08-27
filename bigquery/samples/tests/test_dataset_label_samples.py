@@ -30,4 +30,4 @@ def test_dataset_label_samples(capsys, client, dataset_id):
     dataset = delete_dataset_labels.delete_dataset_labels(client, dataset_id)
     out, err = capsys.readouterr()
     assert "Labels deleted from {}".format(dataset_id) in out
-    assert dataset.labels.get("color") == None
+    assert dataset.labels.get("color") is None
