@@ -59,8 +59,8 @@ class GcsClient(object):
         Args:
             project (Optional[string]): The project that stores the bucket.
                 This must be supplied if `bucket_name` is not.
-            bucket_name (Optional[string]): The bucket name to look up. This
-                must be supplied if `project` is not.
+            bucket_name (Optional[string]): The bucket name to look up.
+                This must be supplied if `project` is not.
 
         Returns:
             A string representing the created bucket name.
@@ -95,9 +95,11 @@ class GcsClient(object):
             raise ValueError("'dataframe' must be a pandas.DataFrame instance.")
 
         if uploaded_csv_name is None:
-            uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(int(time.time()))
+            uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(
+                int(time.time())
+            )
         dataframe.to_csv(uploaded_csv_name)
-        
+
         bucket = self.client.get_bucket(bucket_name)
         blob = bucket.blob(uploaded_csv_name)
         blob.upload_from_filename(uploaded_csv_name)

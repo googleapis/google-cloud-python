@@ -23,7 +23,10 @@ version = "0.4.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    'enum34; python_version < "3.4"',
+    "google-auth>=1.6.0",
+    "google-cloud-storage >= 1.18.0",
+    "enum34; python_version < 3.4",
+    "pandas>=0.24.0",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

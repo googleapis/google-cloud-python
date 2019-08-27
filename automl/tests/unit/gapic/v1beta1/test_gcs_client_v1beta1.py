@@ -36,8 +36,12 @@ class TestGcsClient(object):
             {"get_bucket.side_effect": google.cloud.exceptions.NotFound("err")}
         )
         returned_bucket_name = gcs_client.ensure_bucket_exists(project="my-project")
-        gcs_client.client.get_bucket.assert_called_with("my-project-automl-tables-staging")
-        gcs_client.client.create_bucket.assert_called_with("my-project-automl-tables-staging")
+        gcs_client.client.get_bucket.assert_called_with(
+            "my-project-automl-tables-staging"
+        )
+        gcs_client.client.create_bucket.assert_called_with(
+            "my-project-automl-tables-staging"
+        )
         assert returned_bucket_name == "my-project-automl-tables-staging"
 
     def test_ensure_bucket_exists_name(self):
@@ -69,7 +73,9 @@ class TestGcsClient(object):
         gcs_client = self.gcs_client({"get_bucket.return_value": mock_bucket})
         dataframe = pandas.DataFrame({})
 
-        gcs_uri = gcs_client.upload_pandas_dataframe("my-bucket", dataframe, "my-file.csv")
+        gcs_uri = gcs_client.upload_pandas_dataframe(
+            "my-bucket", dataframe, "my-file.csv"
+        )
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with("my-file.csv")
@@ -83,12 +89,12 @@ class TestGcsClient(object):
         dataframe = pandas.DataFrame({})
 
         gcs_uri = gcs_client.upload_pandas_dataframe("my-bucket", dataframe)
-        generated_csv_name = gcs_uri.split('/')[-1]
+        generated_csv_name = gcs_uri.split("/")[-1]
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with(generated_csv_name)
         mock_blob.upload_from_filename.assert_called_with(generated_csv_name)
-        assert re.match('gs://my-bucket/automl-tables-dataframe-([0-9]*).csv', gcs_uri)
+        assert re.match("gs://my-bucket/automl-tables-dataframe-([0-9]*).csv", gcs_uri)
 
     def test_upload_pandas_dataframe_not_type_dataframe(self):
         gcs_client = self.gcs_client()

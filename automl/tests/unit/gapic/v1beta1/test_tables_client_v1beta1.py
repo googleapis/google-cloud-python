@@ -30,7 +30,9 @@ LOCATION_PATH = "projects/{}/locations/{}".format(PROJECT, REGION)
 
 
 class TestTablesClient(object):
-    def tables_client(self, client_attrs={}, prediction_client_attrs={}, gcs_client_attrs={}):
+    def tables_client(
+        self, client_attrs={}, prediction_client_attrs={}, gcs_client_attrs={}
+    ):
         client_mock = mock.Mock(**client_attrs)
         prediction_client_mock = mock.Mock(**prediction_client_attrs)
         gcs_client_mock = mock.Mock(**gcs_client_attrs)
@@ -49,7 +51,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         ds = client.list_datasets()
         client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
@@ -64,7 +66,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         ds = client.list_datasets()
         client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
@@ -81,7 +83,9 @@ class TestTablesClient(object):
 
     def test_get_dataset_name(self):
         dataset_actual = "dataset"
-        client = self.tables_client({"get_dataset.return_value": dataset_actual}, {}, {})
+        client = self.tables_client(
+            {"get_dataset.return_value": dataset_actual}, {}, {}
+        )
         dataset = client.get_dataset(dataset_name="my_dataset")
         client.auto_ml_client.get_dataset.assert_called_with("my_dataset")
         assert dataset == dataset_actual
@@ -115,7 +119,7 @@ class TestTablesClient(object):
                 ]
             },
             {},
-            {}
+            {},
         )
         dataset = client.get_dataset(dataset_display_name="my_dataset")
         assert dataset.display_name == "my_dataset"
@@ -141,7 +145,7 @@ class TestTablesClient(object):
                 "create_dataset.return_value": mock.Mock(display_name="name"),
             },
             {},
-            {}
+            {},
         )
         metadata = {"metadata": "values"}
         dataset = client.create_dataset("name", metadata=metadata)
@@ -197,14 +201,22 @@ class TestTablesClient(object):
         client.auto_ml_client.import_data.assert_not_called()
 
     def test_import_pandas_dataframe(self):
-        client = self.tables_client({}, {}, {
+        client = self.tables_client(
+            {},
+            {},
+            {
                 "ensure_bucket_exists.return_value": "my_bucket",
                 "upload_pandas_dataframe.return_value": "uri",
-                })
+            },
+        )
         dataframe = pandas.DataFrame({})
-        client.import_data(project=PROJECT, dataset_name="name", pandas_dataframe=dataframe)
+        client.import_data(
+            project=PROJECT, dataset_name="name", pandas_dataframe=dataframe
+        )
         client.gcs_client.ensure_bucket_exists.assert_called_with(project=PROJECT)
-        client.gcs_client.upload_pandas_dataframe.assert_called_with("my_bucket", dataframe)
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(
+            "my_bucket", dataframe
+        )
         client.auto_ml_client.import_data.assert_called_with(
             "name", {"gcs_source": {"input_uris": ["uri"]}}
         )
@@ -263,7 +275,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [],
             },
             {},
-            {}
+            {},
         )
         client.list_column_specs(dataset_name="name")
         client.auto_ml_client.list_table_specs.assert_called_with("name")
@@ -284,7 +296,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         with pytest.raises(exceptions.NotFound):
             client.update_column_spec(dataset_name="name", column_spec_name="column2")
@@ -307,7 +319,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         with pytest.raises(exceptions.NotFound):
             client.update_column_spec(
@@ -332,7 +344,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(dataset_name="name", column_spec_name="column/2")
         client.auto_ml_client.list_table_specs.assert_called_with("name")
@@ -356,7 +368,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(
             dataset_name="name", column_spec_display_name="column"
@@ -382,7 +394,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(
             dataset_name="name", column_spec_display_name="column", nullable=True
@@ -411,7 +423,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(
             dataset_name="name",
@@ -439,7 +451,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(
             dataset_name="name",
@@ -471,7 +483,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.update_column_spec(
             dataset_name="name",
@@ -512,7 +524,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         with pytest.raises(exceptions.NotFound):
             client.set_target_column(
@@ -545,7 +557,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.set_target_column(dataset_name="name", column_spec_display_name="column")
         client.auto_ml_client.list_table_specs.assert_called_with("name")
@@ -587,7 +599,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         with pytest.raises(exceptions.NotFound):
             client.set_weight_column(
@@ -620,7 +632,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.set_weight_column(dataset_name="name", column_spec_display_name="column")
         client.auto_ml_client.list_table_specs.assert_called_with("name")
@@ -684,7 +696,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         with pytest.raises(exceptions.NotFound):
             client.set_test_train_column(
@@ -717,7 +729,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.set_test_train_column(
             dataset_name="name", column_spec_display_name="column"
@@ -774,7 +786,7 @@ class TestTablesClient(object):
                 "list_column_specs.return_value": [column_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.set_time_column(dataset_name="name", column_spec_display_name="column")
         client.auto_ml_client.list_table_specs.assert_called_with("name")
@@ -795,7 +807,7 @@ class TestTablesClient(object):
                 "list_table_specs.return_value": [table_spec_mock],
             },
             {},
-            {}
+            {},
         )
         client.clear_time_column(dataset_name="name")
         client.auto_ml_client.update_table_spec.assert_called_with(
@@ -821,7 +833,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         ds = client.list_model_evaluations(model_name="model")
         client.auto_ml_client.list_model_evaluations.assert_called_with("model")
@@ -835,7 +847,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         ds = client.list_models()
         client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
@@ -850,7 +862,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         ds = client.list_models()
         client.auto_ml_client.location_path.assert_called_with(PROJECT, REGION)
@@ -894,7 +906,7 @@ class TestTablesClient(object):
                 ]
             },
             {},
-            {}
+            {},
         )
         model = client.get_model(model_display_name="my_model")
         assert model.display_name == "my_model"
@@ -971,7 +983,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         client.create_model(
             "my_model", dataset_name="my_dataset", train_budget_milli_node_hours=1000
@@ -1003,7 +1015,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         client.create_model(
             "my_model",
@@ -1041,7 +1053,7 @@ class TestTablesClient(object):
                 "location_path.return_value": LOCATION_PATH,
             },
             {},
-            {}
+            {},
         )
         client.create_model(
             "my_model",
@@ -1215,10 +1227,14 @@ class TestTablesClient(object):
         client.prediction_client.predict.assert_not_called()
 
     def test_batch_predict_pandas_dataframe(self):
-        client = self.tables_client({}, {}, {
+        client = self.tables_client(
+            {},
+            {},
+            {
                 "ensure_bucket_exists.return_value": "my_bucket",
-                "upload_pandas_dataframe.return_value": "gs://input"
-                })
+                "upload_pandas_dataframe.return_value": "gs://input",
+            },
+        )
         dataframe = pandas.DataFrame({})
         client.batch_predict(
             project=PROJECT,
@@ -1228,14 +1244,15 @@ class TestTablesClient(object):
         )
 
         client.gcs_client.ensure_bucket_exists.assert_called_with(project=PROJECT)
-        client.gcs_client.upload_pandas_dataframe.assert_called_with("my_bucket", dataframe)
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(
+            "my_bucket", dataframe
+        )
 
         client.prediction_client.batch_predict.assert_called_with(
             "my_model",
             {"gcs_source": {"input_uris": ["gs://input"]}},
             {"gcs_destination": {"output_uri_prefix": "gs://output"}},
         )
-        
 
     def test_batch_predict_gcs(self):
         client = self.tables_client({}, {}, {})
