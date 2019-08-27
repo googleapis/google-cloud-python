@@ -211,9 +211,12 @@ class TestTablesClient(object):
         )
         dataframe = pandas.DataFrame({})
         client.import_data(
-            project=PROJECT, dataset_name="name", pandas_dataframe=dataframe
+            project=PROJECT,
+            region=REGION,
+            dataset_name="name",
+            pandas_dataframe=dataframe,
         )
-        client.gcs_client.ensure_bucket_exists.assert_called_with(project=PROJECT)
+        client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
         client.gcs_client.upload_pandas_dataframe.assert_called_with(
             "my_bucket", dataframe
         )
@@ -1238,12 +1241,13 @@ class TestTablesClient(object):
         dataframe = pandas.DataFrame({})
         client.batch_predict(
             project=PROJECT,
+            region=REGION,
             model_name="my_model",
             pandas_dataframe=dataframe,
             gcs_output_uri_prefix="gs://output",
         )
 
-        client.gcs_client.ensure_bucket_exists.assert_called_with(project=PROJECT)
+        client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
         client.gcs_client.upload_pandas_dataframe.assert_called_with(
             "my_bucket", dataframe
         )

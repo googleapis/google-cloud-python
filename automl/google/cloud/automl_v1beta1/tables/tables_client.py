@@ -407,6 +407,21 @@ class TablesClient(object):
         else:
             raise ValueError("Unknown type_code: {}".format(type_code))
 
+    def __ensure_gcs_client_is_initialized(self, credentials=None):
+        """Checks if GCS client is initialized. Initializes it if not.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+        """
+        if self.gcs_client is None:
+            if credentials is None:
+                credentials, _ = google.auth.default()
+            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
+
     def list_datasets(self, project=None, region=None, **kwargs):
         """List all datasets in a particular project and region.
 
@@ -651,6 +666,7 @@ class TablesClient(object):
         bigquery_input_uri=None,
         project=None,
         region=None,
+        credentials=None,
         **kwargs
     ):
         """Imports data into a dataset.
@@ -684,6 +700,11 @@ class TablesClient(object):
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
             dataset_display_name (Optional[string]):
                 The human-readable name given to the dataset you want to import
                 data into. This must be supplied if `dataset` or `dataset_name`
@@ -697,8 +718,10 @@ class TablesClient(object):
                 be supplied if `dataset_display_name` or `dataset_name` are not
                 supplied.
             pandas_dataframe (Optional[pandas.DataFrame]):
-                A Pandas Dataframe object containing the data to import. This
-                must be supplied if neither `gcs_input_uris` nor
+                A Pandas Dataframe object containing the data to import. The data
+                will be converted to CSV, and this CSV will be staged to GCS in
+                `gs://{project}-automl-tables-staging/{uploaded_csv_name}`
+                This parameter must be supplied if neither `gcs_input_uris` nor
                 `bigquery_input_uri` is supplied.
             gcs_input_uris (Optional[Union[string, Sequence[string]]]):
                 Either a single `gs://..` prefixed URI, or a list of URIs
@@ -732,12 +755,10 @@ class TablesClient(object):
 
         request = {}
 
-        if self.gcs_client is None:
-            credentials, _ = google.auth.default()
-            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
+        self.__ensure_gcs_client_is_initialized(credentials)
 
         if pandas_dataframe is not None:
-            bucket_name = self.gcs_client.ensure_bucket_exists(project=project)
+            bucket_name = self.gcs_client.ensure_bucket_exists(project, region)
             gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
                 bucket_name, pandas_dataframe
             )
@@ -2637,6 +2658,7 @@ class TablesClient(object):
         model_display_name=None,
         project=None,
         region=None,
+        credentials=None,
         inputs=None,
         **kwargs
     ):
@@ -2668,9 +2690,16 @@ class TablesClient(object):
             region (Optional[string]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
             pandas_dataframe (Optional[pandas.DataFrame]):
                 A Pandas Dataframe object containing the data you want to predict
-                off of. This must be supplied if neither `gcs_input_uris` nor
+                off of. The data will be converted to CSV, and this CSV will be
+                staged to GCS in `gs://{project}-automl-tables-staging/{uploaded_csv_name}`
+                This must be supplied if neither `gcs_input_uris` nor
                 `bigquery_input_uri` is supplied.
             gcs_input_uris (Optional(Union[List[string], string]))
                 Either a list of or a single GCS URI containing the data you
@@ -2720,12 +2749,10 @@ class TablesClient(object):
 
         input_request = None
 
-        if self.gcs_client is None:
-            credentials, _ = google.auth.default()
-            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
+        self.__ensure_gcs_client_is_initialized(credentials)
 
         if pandas_dataframe is not None:
-            bucket_name = self.gcs_client.ensure_bucket_exists(project=project)
+            bucket_name = self.gcs_client.ensure_bucket_exists(project, region)
             gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
                 bucket_name, pandas_dataframe
             )

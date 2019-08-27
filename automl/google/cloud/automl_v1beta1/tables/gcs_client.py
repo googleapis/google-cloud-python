@@ -17,7 +17,6 @@
 """Wraps the Google Cloud Storage client library for use in tables helper."""
 
 import google
-import os
 import pandas
 import time
 
@@ -32,52 +31,39 @@ class GcsClient(object):
 
         Args:
             client (Optional[storage.Client]): A Google Cloud Storage Client
-                instance. Either `client` or `credentials` must be provided.
+                instance.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
-                credentials from the environment. Either `client` or
-                `credentials` must be provided.
-
-        Raises:
-            ValueError: If required parameters are missing.
+                credentials from the environment.
         """
-        if client is None and credentials is None:
-            raise ValueError("One of 'client' or 'credentials' must be set.")
-
         if client is not None:
             self.client = client
-        else:
+        elif credentials is not None:
             self.client = storage.Client(credentials=credentials)
+        else:
+            self.client = storage.Client()
 
-    def ensure_bucket_exists(self, project=None, bucket_name=None):
-        """Checks if a bucket with the given name exists.
+    def ensure_bucket_exists(self, project, region):
+        """Checks if a bucket named '{project}-automl-tables-staging' exists.
 
         Creates this bucket if it doesn't exist.
 
         Args:
-            project (Optional[string]): The project that stores the bucket.
-                This must be supplied if `bucket_name` is not.
-            bucket_name (Optional[string]): The bucket name to look up.
-                This must be supplied if `project` is not.
+            project (string): The project that stores the bucket.
+            region (string): The region of the bucket.
 
         Returns:
             A string representing the created bucket name.
-
-        Raises:
-            ValueError: If required parameters are missing.
         """
-        if project is None and bucket_name is None:
-            raise ValueError("One of 'project' or 'bucket_name' must be set.")
-
-        if project is not None:
-            bucket_name = "{}-automl-tables-staging".format(project)
+        bucket_name = "{}-automl-tables-staging".format(project)
 
         try:
             self.client.get_bucket(bucket_name)
         except google.cloud.exceptions.NotFound:
-            self.client.create_bucket(bucket_name)
+            bucket = self.client.Bucket(bucket_name)
+            bucket.create(project=project, location=region)
         return bucket_name
 
     def upload_pandas_dataframe(self, bucket_name, dataframe, uploaded_csv_name=None):
@@ -98,11 +84,10 @@ class GcsClient(object):
             uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(
                 int(time.time())
             )
-        dataframe.to_csv(uploaded_csv_name)
+        csv_string = dataframe.to_csv()
 
         bucket = self.client.get_bucket(bucket_name)
         blob = bucket.blob(uploaded_csv_name)
-        blob.upload_from_filename(uploaded_csv_name)
-        os.remove(uploaded_csv_name)
+        blob.upload_from_string(csv_string)
 
         return "gs://{}/{}".format(bucket_name, uploaded_csv_name)

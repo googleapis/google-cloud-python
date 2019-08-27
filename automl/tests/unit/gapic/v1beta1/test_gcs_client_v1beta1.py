@@ -32,46 +32,42 @@ class TestGcsClient(object):
         return automl_v1beta1.tables.gcs_client.GcsClient(client=client_mock)
 
     def test_ensure_bucket_exists(self):
+        mock_bucket = mock.Mock()
         gcs_client = self.gcs_client(
-            {"get_bucket.side_effect": google.cloud.exceptions.NotFound("err")}
+            {
+                "get_bucket.side_effect": google.cloud.exceptions.NotFound("err"),
+                "Bucket.return_value": mock_bucket,
+            }
         )
-        returned_bucket_name = gcs_client.ensure_bucket_exists(project="my-project")
+        returned_bucket_name = gcs_client.ensure_bucket_exists(
+            "my-project", "us-central1"
+        )
         gcs_client.client.get_bucket.assert_called_with(
             "my-project-automl-tables-staging"
         )
-        gcs_client.client.create_bucket.assert_called_with(
-            "my-project-automl-tables-staging"
+        gcs_client.client.Bucket.assert_called_with("my-project-automl-tables-staging")
+        mock_bucket.create.assert_called_with(
+            project="my-project", location="us-central1"
         )
-        assert returned_bucket_name == "my-project-automl-tables-staging"
 
-    def test_ensure_bucket_exists_name(self):
-        gcs_client = self.gcs_client(
-            {"get_bucket.side_effect": google.cloud.exceptions.NotFound("err")}
-        )
-        returned_bucket_name = gcs_client.ensure_bucket_exists(bucket_name="my-bucket")
-        gcs_client.client.get_bucket.assert_called_with("my-bucket")
-        gcs_client.client.create_bucket.assert_called_with("my-bucket")
-        assert returned_bucket_name == "my-bucket"
+        assert returned_bucket_name == "my-project-automl-tables-staging"
 
     def test_ensure_bucket_exists_bucket_already_exists(self):
         gcs_client = self.gcs_client()
-        returned_bucket_name = gcs_client.ensure_bucket_exists(bucket_name="my-bucket")
-        gcs_client.client.get_bucket.assert_called_with("my-bucket")
-        gcs_client.client.create_bucket.assert_not_called()
-        assert returned_bucket_name == "my-bucket"
-
-    def test_ensure_bucket_exists_no_project_or_bucket_name(self):
-        gcs_client = self.gcs_client()
-        with pytest.raises(ValueError):
-            gcs_client.ensure_bucket_exists()
-        gcs_client.client.get_bucket.assert_not_called()
-        gcs_client.client.create_bucket.assert_not_called()
+        returned_bucket_name = gcs_client.ensure_bucket_exists(
+            "my-project", "us-central1"
+        )
+        gcs_client.client.get_bucket.assert_called_with(
+            "my-project-automl-tables-staging"
+        )
+        gcs_client.client.Bucket.assert_not_called()
+        assert returned_bucket_name == "my-project-automl-tables-staging"
 
     def test_upload_pandas_dataframe(self):
         mock_blob = mock.Mock()
         mock_bucket = mock.Mock(**{"blob.return_value": mock_blob})
         gcs_client = self.gcs_client({"get_bucket.return_value": mock_bucket})
-        dataframe = pandas.DataFrame({})
+        dataframe = pandas.DataFrame({"col1": [1, 2], "col2": [3, 4]})
 
         gcs_uri = gcs_client.upload_pandas_dataframe(
             "my-bucket", dataframe, "my-file.csv"
@@ -79,21 +75,21 @@ class TestGcsClient(object):
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with("my-file.csv")
-        mock_blob.upload_from_filename.assert_called_with("my-file.csv")
+        mock_blob.upload_from_string.assert_called_with(",col1,col2\n0,1,3\n1,2,4\n")
         assert gcs_uri == "gs://my-bucket/my-file.csv"
 
     def test_upload_pandas_dataframe_no_csv_name(self):
         mock_blob = mock.Mock()
         mock_bucket = mock.Mock(**{"blob.return_value": mock_blob})
         gcs_client = self.gcs_client({"get_bucket.return_value": mock_bucket})
-        dataframe = pandas.DataFrame({})
+        dataframe = pandas.DataFrame({"col1": [1, 2], "col2": [3, 4]})
 
         gcs_uri = gcs_client.upload_pandas_dataframe("my-bucket", dataframe)
         generated_csv_name = gcs_uri.split("/")[-1]
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with(generated_csv_name)
-        mock_blob.upload_from_filename.assert_called_with(generated_csv_name)
+        mock_blob.upload_from_string.assert_called_with(",col1,col2\n0,1,3\n1,2,4\n")
         assert re.match("gs://my-bucket/automl-tables-dataframe-([0-9]*).csv", gcs_uri)
 
     def test_upload_pandas_dataframe_not_type_dataframe(self):

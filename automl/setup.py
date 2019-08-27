@@ -23,11 +23,17 @@ version = "0.4.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    "google-auth>=1.6.0",
-    "google-cloud-storage >= 1.18.0",
-    "pandas>=0.24.0",
+    "google-cloud-storage >= 1.18.0,  < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
+extras = {
+    "tables": ["pandas>=0.24.0"],
+    "gcs_client": ["pandas>=0.24.0"],
+    "tables_client": ["pandas>=0.24.0"],
+    "tests": ["pandas>=0.24.0"],
+    "automl_v1beta1": ["pandas>=0.24.0"],
+    "pandas": ["pandas>=0.24.0"],
+}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -70,6 +76,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_require=extras,
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
     include_package_data=True,
     zip_safe=False,
