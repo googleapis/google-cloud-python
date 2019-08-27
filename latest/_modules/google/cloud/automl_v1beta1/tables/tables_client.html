@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>google.cloud.automl_v1beta1.tables.tables_client &#8212; google-cloud fb33c36 documentation</title>
+    <title>google.cloud.automl_v1beta1.tables.tables_client &#8212; google-cloud 1fe824b documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
@@ -51,6 +51,7 @@
 <span class="sd">&quot;&quot;&quot;A tables helper for the google.cloud.automl_v1beta1 AutoML API&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span>
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
@@ -58,6 +59,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.automl_v1beta1.proto</span> <span class="k">import</span> <span class="n">data_types_pb2</span>
 
 <span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;google-cloud-automl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TablesClient"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient">[docs]</a><span class="k">class</span> <span class="nc">TablesClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -345,6 +347,29 @@
                 <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">model_name</span>
+
+    <span class="k">def</span> <span class="nf">__log_operation_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">op</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; is running in the background. The returned &quot;</span>
+                <span class="s2">&quot;Operation &#39;</span><span class="si">{}</span><span class="s2">&#39; can be used to query or block on the status &quot;</span>
+                <span class="s2">&quot;of this operation. Ending your python session will _not_ &quot;</span>
+                <span class="s2">&quot;cancel this operation. Read the documentation here:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">https://googleapis.dev/python/google-api-core/latest/operation.html</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;for more information on the Operation class.&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span>
 
     <span class="k">def</span> <span class="nf">__column_spec_name_from_args</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -642,7 +667,9 @@
         <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Delete dataset&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.import_data"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.import_data">[docs]</a>    <span class="k">def</span> <span class="nf">import_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -738,7 +765,9 @@
                 <span class="s2">&quot;One of &#39;gcs_input_uris&#39;, or &quot;</span> <span class="s2">&quot;&#39;bigquery_input_uri&#39; must be set.&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Data import&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.export_data"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.export_data">[docs]</a>    <span class="k">def</span> <span class="nf">export_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -831,7 +860,9 @@
                 <span class="s2">&quot;One of &#39;gcs_output_uri_prefix&#39;, or &#39;bigquery_output_uri&#39; must be set.&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Export data&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.get_table_spec"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.get_table_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_table_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_spec_name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets a single table spec in a particular project and region.</span>
@@ -2178,9 +2209,11 @@
             <span class="s2">&quot;tables_model_metadata&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__location_path</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">),</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Model creation&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.delete_model"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.delete_model">[docs]</a>    <span class="k">def</span> <span class="nf">delete_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2254,7 +2287,9 @@
         <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">delete_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">delete_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Delete model&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.get_model_evaluation"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.get_model_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">get_model_evaluation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">model_evaluation_name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -2431,7 +2466,9 @@
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">deploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">deploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Deploy model&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
 <div class="viewcode-block" id="TablesClient.undeploy_model"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.undeploy_model">[docs]</a>    <span class="k">def</span> <span class="nf">undeploy_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2500,7 +2537,9 @@
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">undeploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_ml_client</span><span class="o">.</span><span class="n">undeploy_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Undeploy model&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div>
 
     <span class="c1">## TODO(lwander): support pandas DataFrame as input type</span>
 <div class="viewcode-block" id="TablesClient.predict"><a class="viewcode-back" href="../../../../../automl/gapic/v1beta1/tables.html#google.cloud.automl_v1beta1.TablesClient.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
@@ -2708,9 +2747,11 @@
                 <span class="s2">&quot;One of &#39;gcs_output_uri_prefix&#39;/&#39;bigquery_output_uri&#39; must be set&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_client</span><span class="o">.</span><span class="n">batch_predict</span><span class="p">(</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_client</span><span class="o">.</span><span class="n">batch_predict</span><span class="p">(</span>
             <span class="n">model_name</span><span class="p">,</span> <span class="n">input_request</span><span class="p">,</span> <span class="n">output_request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_operation_info</span><span class="p">(</span><span class="s2">&quot;Batch predict&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">op</span></div></div>
 </pre></div>
 
           </div>
