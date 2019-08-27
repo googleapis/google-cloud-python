@@ -516,9 +516,7 @@ def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_get_column_or_index_not_found(module_under_test):
-    dataframe = pandas.DataFrame(
-        {"not_the_column_youre_looking_for": [1, 2, 3]},
-    )
+    dataframe = pandas.DataFrame({"not_the_column_youre_looking_for": [1, 2, 3]})
     with pytest.raises(ValueError, match="col_is_missing"):
         module_under_test.get_column_or_index(dataframe, "col_is_missing")
 
@@ -667,17 +665,66 @@ def test_list_columns_and_indexes_with_multiindex(module_under_test):
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_dataframe_to_arrow_with_multiindex(module_under_test):
     bq_schema = (
-        schema.SchemaField("int_index", "INTEGER"),
-        schema.SchemaField("str_col", "STRING"),
+        schema.SchemaField("str_index", "STRING"),
+        # int_index is intentionally omitted, to verify that it's okay to be
+        # missing indexes from the schema.
+        schema.SchemaField("dt_index", "DATETIME"),
         schema.SchemaField("int_col", "INTEGER"),
         schema.SchemaField("nullable_int_col", "INTEGER"),
-        schema.SchemaField("str_index", "STRING"),
+        schema.SchemaField("str_col", "STRING"),
     )
-    df_data = collections.OrderedDict
-    dataframe = pandas.DataFrame(
+    df_data = collections.OrderedDict(
+        [
+            ("int_col", [1, 2, 3, 4, 5, 6]),
+            ("nullable_int_col", [6.0, float("nan"), 7.0, float("nan"), 8.0, 9.0]),
+            ("str_col", ["apple", "banana", "cherry", "durian", "etrog", "fig"]),
+        ]
+    )
+    df_index = pandas.MultiIndex.from_tuples(
+        [
+            ("a", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("a", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+            ("a", 1, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("b", 1, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+            ("b", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("b", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+        ],
+        names=["str_index", "int_index", "dt_index"],
+    )
+    dataframe = pandas.DataFrame(df_data, index=df_index)
 
-    )
-    assert False
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
+
+    assert arrow_table.schema.names == [
+        "str_index",
+        "dt_index",
+        "int_col",
+        "nullable_int_col",
+        "str_col",
+    ]
+    arrow_data = arrow_table.to_pydict()
+    assert arrow_data["str_index"] == ["a", "a", "a", "b", "b", "b"]
+    assert arrow_data["dt_index"] == [
+        pandas.Timestamp(dt)
+        for dt in (
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+        )
+    ]
+    assert arrow_data["int_col"] == [1, 2, 3, 4, 5, 6]
+    assert arrow_data["nullable_int_col"] == [6, None, 7, None, 8, 9]
+    assert arrow_data["str_col"] == [
+        "apple",
+        "banana",
+        "cherry",
+        "durian",
+        "etrog",
+        "fig",
+    ]
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
