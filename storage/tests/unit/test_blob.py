@@ -3183,6 +3183,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsInstance(blob, Blob)
         self.assertIs(blob.client, client)
         self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "BUCKET_NAME")
 
     def test_from_string_w_invalid_uri(self):
         from google.cloud.storage.blob import Blob
@@ -3194,6 +3195,19 @@ class Test_Blob(unittest.TestCase):
         with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
             with pytest.raises(ValueError, match="URI scheme must be gs"):
                 Blob.from_string("http://bucket_name/b", client)
+
+    def test_from_string_w_domain_name_bucket(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+        uri = "gs://buckets.example.com/b"
+        blob = Blob.from_string(uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "buckets.example.com")
 
 
 class Test__quote(unittest.TestCase):
