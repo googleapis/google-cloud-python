@@ -196,12 +196,10 @@ class TestTablesClient(object):
 
     def test_import_pandas_dataframe(self):
         client = self.tables_client(
-            {},
-            {},
-            {
+            gcs_client_attrs={
                 "ensure_bucket_exists.return_value": "my_bucket",
                 "upload_pandas_dataframe.return_value": "uri",
-            },
+            }
         )
         dataframe = pandas.DataFrame({})
         client.import_data(
@@ -1201,12 +1199,10 @@ class TestTablesClient(object):
 
     def test_batch_predict_pandas_dataframe(self):
         client = self.tables_client(
-            {},
-            {},
-            {
+            gcs_client_attrs={
                 "ensure_bucket_exists.return_value": "my_bucket",
                 "upload_pandas_dataframe.return_value": "gs://input",
-            },
+            }
         )
         dataframe = pandas.DataFrame({})
         client.batch_predict(
