@@ -251,6 +251,7 @@ import functools
 import inspect
 import json
 import pickle
+import six
 import zlib
 
 from google.cloud.datastore import entity as ds_entity_module
@@ -2188,14 +2189,12 @@ class FloatProperty(Property):
         return float(value)
 
 
-class _CompressedValue:
+class _CompressedValue(six.binary_type):
     """A marker object wrapping compressed values.
 
     Args:
         z_val (bytes): A return value of ``zlib.compress``.
     """
-
-    __slots__ = ("z_val",)
 
     def __init__(self, z_val):
         self.z_val = z_val
@@ -2355,6 +2354,9 @@ class BlobProperty(Property):
             indicate that the value didn't need to be unwrapped and
             decompressed.
         """
+        if self._compressed and not isinstance(value, _CompressedValue):
+            value = _CompressedValue(value)
+
         if isinstance(value, _CompressedValue):
             return zlib.decompress(value.z_val)
 

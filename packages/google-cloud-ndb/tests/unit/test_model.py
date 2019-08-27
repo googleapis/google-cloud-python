@@ -1678,6 +1678,16 @@ class TestBlobProperty:
         assert converted == original
 
     @staticmethod
+    def test__from_base_type_no_compressed_value():
+        prop = model.BlobProperty(name="blob")
+        original = b"abc" * 10
+        value = zlib.compress(original)
+        prop._compressed = True
+        converted = prop._from_base_type(value)
+
+        assert converted == original
+
+    @staticmethod
     def test__from_base_type_no_convert():
         prop = model.BlobProperty(name="blob")
         converted = prop._from_base_type(b"abc")

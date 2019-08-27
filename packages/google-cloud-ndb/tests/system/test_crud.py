@@ -286,6 +286,36 @@ def test_large_json_property(dispose_of, ds_client):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_compressed_json_property(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.JsonProperty(compressed=True)
+
+    foo = {str(i): i for i in range(500)}
+    entity = SomeKind(foo=foo)
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == foo
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_compressed_blob_property(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.BlobProperty(compressed=True)
+
+    foo = b"abc" * 100
+    entity = SomeKind(foo=foo)
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == foo
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_large_pickle_property(dispose_of, ds_client):
     class SomeKind(ndb.Model):
         foo = ndb.PickleProperty()
