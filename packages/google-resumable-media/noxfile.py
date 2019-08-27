@@ -25,7 +25,7 @@ REQUESTS = 'requests >= 2.18.0, < 3.0.0dev'
 GOOGLE_AUTH = 'google-auth >= 0.10.0'
 
 
-@nox.session(python=['2,7', '3.4', '3.5', '3.6', '3.7'])
+@nox.session(python=['2.7', '3.4', '3.5', '3.6', '3.7'])
 def unit_tests(session):
     """Run the unit test suite."""
 
