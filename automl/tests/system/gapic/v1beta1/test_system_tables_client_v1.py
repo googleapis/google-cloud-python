@@ -19,6 +19,7 @@ import pytest
 import random
 import string
 import time
+import unittest
 
 from google.cloud import automl_v1beta1
 from google.api_core import exceptions
@@ -30,7 +31,7 @@ MAX_WAIT_TIME_SECONDS = 30
 MAX_SLEEP_TIME_SECONDS = 5
 STATIC_DATASET = "test_dataset_do_not_delete"
 STATIC_MODEL = "test_model_do_not_delete"
-RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower == "true"
+RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower() == "true"
 
 ID = "{rand}_{time}".format(
     rand="".join(
