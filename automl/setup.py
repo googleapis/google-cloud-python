@@ -23,16 +23,11 @@ version = "0.4.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    "google-cloud-storage >= 1.18.0,  < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
 extras = {
-    "tables": ["pandas>=0.24.0"],
-    "gcs_client": ["pandas>=0.24.0"],
-    "tables_client": ["pandas>=0.24.0"],
-    "tests": ["pandas>=0.24.0"],
-    "automl_v1beta1": ["pandas>=0.24.0"],
     "pandas": ["pandas>=0.24.0"],
+    "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))

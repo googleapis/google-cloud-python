@@ -17,10 +17,16 @@
 """Wraps the Google Cloud Storage client library for use in tables helper."""
 
 import google
-import pandas
 import time
 
 from google.cloud import storage
+
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+
+_PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
 
 
 class GcsClient(object):
@@ -77,6 +83,9 @@ class GcsClient(object):
         Returns:
             A string representing the GCS URI of the uploaded CSV.
         """
+        if pandas is None:
+            raise ImportError(_PANDAS_REQUIRED)
+
         if not isinstance(dataframe, pandas.DataFrame):
             raise ValueError("'dataframe' must be a pandas.DataFrame instance.")
 
