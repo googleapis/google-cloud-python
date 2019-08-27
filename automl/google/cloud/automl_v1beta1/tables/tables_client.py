@@ -24,7 +24,7 @@ from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
 from google.cloud.automl_v1beta1 import gapic
 from google.cloud.automl_v1beta1.proto import data_types_pb2
-from google.cloud import automl_v1beta1
+from google.cloud.automl_v1beta1.tables import gcs_client
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 _LOGGER = logging.getLogger(__name__)
@@ -734,9 +734,7 @@ class TablesClient(object):
 
         if self.gcs_client is None:
             credentials, _ = google.auth.default()
-            self.gcs_client = automl_v1beta1.tables.gcs_client.GcsClient(
-                credentials=credentials
-            )
+            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
 
         if pandas_dataframe is not None:
             bucket_name = self.gcs_client.ensure_bucket_exists(project=project)
@@ -2724,9 +2722,7 @@ class TablesClient(object):
 
         if self.gcs_client is None:
             credentials, _ = google.auth.default()
-            self.gcs_client = automl_v1beta1.tables.gcs_client.GcsClient(
-                credentials=credentials
-            )
+            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
 
         if pandas_dataframe is not None:
             bucket_name = self.gcs_client.ensure_bucket_exists(project=project)
