@@ -56,6 +56,7 @@ class TestSystemTablesClient(object):
             sleep_time = min(sleep_time * 2, MAX_SLEEP_TIME_SECONDS)
         assert op.cancelled()
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_list_datasets(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         dataset = self.ensure_dataset_ready(client)
@@ -66,6 +67,7 @@ class TestSystemTablesClient(object):
             )
         )
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_list_models(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         model = self.ensure_model_ready(client)
