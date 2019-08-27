@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Changelog &#8212; google-cloud 98f4269 documentation</title>
+    <title>Changelog &#8212; google-cloud 0782408 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -37,10 +37,28 @@
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://pypi.org/project/google-cloud-error-reporting/#history">PyPI History</a></p>
 <div class="section" id="id1">
-<h2>0.32.0<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
-<p>07-24-2019 16:17 PDT</p>
+<h2>0.32.1<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>08-23-2019 10:12 PDT</p>
 <div class="section" id="implementation-changes">
 <h3>Implementation Changes<a class="headerlink" href="#implementation-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Remove send/recv msg size limit (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8954">#8954</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fix documentation links for iam and error-reporting. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/9073">#9073</a>)</p></li>
+<li><p>Remove compatability badges from READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/9035">#9035</a>)</p></li>
+<li><p>Update intersphinx mapping for requests. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8805">#8805</a>)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>0.32.0<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<p>07-24-2019 16:17 PDT</p>
+<div class="section" id="id3">
+<h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Allow kwargs to be passed to create_channel (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8389">#8389</a>)</p></li>
 <li><p>Fix typo in non-gRPC import. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8028">#8028</a>)</p></li>
@@ -52,8 +70,8 @@
 <li><p>Add ‘client_options’ support, update list method docstrings (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8508">#8508</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id4">
+<h3>Documentation<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fix docs navigation issues. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8723">#8723</a>)</p></li>
 <li><p>Link to googleapis.dev documentation in READMEs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8705">#8705</a>)</p></li>
@@ -74,18 +92,18 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>0.31.0<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id5">
+<h2>0.31.0<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h2>
 <p>05-17-2019 08:23 PDT</p>
-<div class="section" id="id3">
-<h3>Implementation Changes<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id6">
+<h3>Implementation Changes<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add routing header to method metadata (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7594">#7594</a>)</p></li>
 <li><p>Remove classifier for Python 3.4 for end-of-life. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7535">#7535</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h3>New Features<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id7">
+<h3>New Features<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">client_info</span></code> support to Client. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7903">#7903</a>)</p></li>
 </ul>
@@ -96,14 +114,14 @@
 <li><p>Pin <code class="docutils literal notranslate"><span class="pre">google-cloud-logging</span> <span class="pre">&gt;=</span> <span class="pre">1.11.0</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/8015">#8015</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h3>Documentation<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id8">
+<h3>Documentation<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Update client library documentation URLs. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7307">#7307</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h3>Internal / Testing Changes<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id9">
+<h3>Internal / Testing Changes<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add nox session <code class="docutils literal notranslate"><span class="pre">docs</span></code> (via synth). (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7770">#7770</a>)</p></li>
 <li><p>Fix docstring replace in synth (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/7458">#7458</a>)</p></li>
@@ -117,18 +135,18 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>0.30.1<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id10">
+<h2>0.30.1<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h2>
 <p>12-17-2018 18:17 PST</p>
-<div class="section" id="id8">
-<h3>Implementation Changes<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id11">
+<h3>Implementation Changes<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Pick up fixes to GAPIC generator. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6522">#6522</a>)</p></li>
 <li><p>Fix <code class="docutils literal notranslate"><span class="pre">client_info</span></code> bug, update docstrings via synth. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6442">#6442</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id9">
-<h3>Documentation<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id12">
+<h3>Documentation<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Document Python 2 deprecation (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6910">#6910</a>)</p></li>
 <li><p>Fix <a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6321">#6321</a> Update README service links in quickstart guides. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6322">#6322</a>)</p></li>
@@ -136,8 +154,8 @@
 <li><p>Replace links to <code class="docutils literal notranslate"><span class="pre">/stable/</span></code> with <code class="docutils literal notranslate"><span class="pre">/latest/</span></code>. (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/5901">#5901</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id10">
-<h3>Internal / Testing Changes<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id13">
+<h3>Internal / Testing Changes<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Update noxfile.</p></li>
 <li><p>Blacken all gen’d libs (<a class="reference external" href="https://github.com/googleapis/google-cloud-python/pull/6792">#6792</a>)</p></li>
@@ -152,16 +170,16 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id11">
-<h2>0.30.0<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h2>
-<div class="section" id="id12">
-<h3>Implementation Changes<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id14">
+<h2>0.30.0<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id15">
+<h3>Implementation Changes<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Make dependency on logging less restrictive in error_reporting (#5345)</p></li>
 </ul>
 </div>
-<div class="section" id="id13">
-<h3>Internal / Testing Changes<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id16">
+<h3>Internal / Testing Changes<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Modify system tests to use prerelease versions of grpcio (#5304)</p></li>
 <li><p>Add Test runs for Python 3.7 and remove 3.4 (#5295)</p></li>
@@ -169,10 +187,10 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id14">
-<h2>0.29.1<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h2>
-<div class="section" id="id15">
-<h3>Dependencies<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id17">
+<h2>0.29.1<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id18">
+<h3>Dependencies<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Update dependency range for api-core to include v1.0.0 releases (#4944)</p></li>
 <li><p>Fix missing extra in api-core dependency (#4764)</p></li>
@@ -187,8 +205,8 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id16">
-<h2>0.29.0<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id19">
+<h2>0.29.0<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h2>
 <div class="section" id="breaking-changes">
 <h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -198,17 +216,17 @@ methods. (#4695)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id17">
-<h2>0.28.0<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h2>
-<div class="section" id="id18">
-<h3>Documentation<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id20">
+<h2>0.28.0<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h2>
+<div class="section" id="id21">
+<h3>Documentation<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added link to “Python Development Environment Setup Guide” in
 project README (#4187, h/t to &#64;michaelawyu)</p></li>
 </ul>
 </div>
-<div class="section" id="id19">
-<h3>Dependencies<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
+<div class="section" id="id22">
+<h3>Dependencies<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Upgrading to <code class="docutils literal notranslate"><span class="pre">google-cloud-core</span> <span class="pre">&gt;=</span> <span class="pre">0.28.0</span></code> and adding dependency
 on <code class="docutils literal notranslate"><span class="pre">google-api-core</span></code> (#4221, #4280)</p></li>
