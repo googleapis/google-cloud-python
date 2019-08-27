@@ -19,15 +19,18 @@
 import google
 import time
 
-from google.cloud import storage
-
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
     pandas = None
 
-_PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
+try:
+    from google.cloud import storage
+except ImportError:  # pragma: NO COVER
+    storage = None
 
+_PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
+_STORAGE_REQUIRED = "google.cloud.storage is required to create Google Cloud Storage client."
 
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
@@ -44,6 +47,9 @@ class GcsClient(object):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
         """
+        if storage is None:
+            raise ImportError(_STORAGE_REQUIRED)
+
         if client is not None:
             self.client = client
         elif credentials is not None:
