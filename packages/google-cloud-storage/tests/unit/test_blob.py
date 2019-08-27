@@ -274,6 +274,14 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.path, "/b/name/o/Caf%C3%A9")
 
+    def test_bucket_readonly_property(self):
+        blob_name = "BLOB"
+        bucket = _Bucket()
+        other = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        with self.assertRaises(AttributeError):
+            blob.bucket = other
+
     def test_client(self):
         blob_name = "BLOB"
         bucket = _Bucket()
