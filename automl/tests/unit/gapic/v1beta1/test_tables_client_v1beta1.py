@@ -81,9 +81,7 @@ class TestTablesClient(object):
 
     def test_get_dataset_name(self):
         dataset_actual = "dataset"
-        client = self.tables_client(
-            {"get_dataset.return_value": dataset_actual}, {}
-        )
+        client = self.tables_client({"get_dataset.return_value": dataset_actual}, {})
         dataset = client.get_dataset(dataset_name="my_dataset")
         client.auto_ml_client.get_dataset.assert_called_with("my_dataset")
         assert dataset == dataset_actual
@@ -116,7 +114,7 @@ class TestTablesClient(object):
                     mock.Mock(display_name="my_dataset"),
                 ]
             },
-            {}
+            {},
         )
         dataset = client.get_dataset(dataset_display_name="my_dataset")
         assert dataset.display_name == "my_dataset"
