@@ -56,7 +56,13 @@ class TestConnection(unittest.TestCase):
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._make_one(object())
-        URI = "/".join([conn.API_BASE_URL, "storage", conn.API_VERSION, "foo"])
+        URI = "/".join([conn.DEFAULT_API_ENDPOINT, "storage", conn.API_VERSION, "foo"])
+        self.assertEqual(conn.build_api_url("/foo"), URI)
+
+    def test_build_api_url_w_custom_endpoint(self):
+        custom_endpoint = "https://foo-googleapis.com"
+        conn = self._make_one(object(), api_endpoint=custom_endpoint)
+        URI = "/".join([custom_endpoint, "storage", conn.API_VERSION, "foo"])
         self.assertEqual(conn.build_api_url("/foo"), URI)
 
     def test_build_api_url_w_extra_query_params(self):
