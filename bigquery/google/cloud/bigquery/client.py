@@ -1559,19 +1559,11 @@ class Client(ClientWithProject):
             except google.api_core.exceptions.NotFound:
                 table = None
             else:
-                table_col_names = {field.name for field in table.schema}
-                dframe_col_names = set(dataframe.columns)
-
-                in_dframe_only = dframe_col_names - table_col_names
-                if in_dframe_only:
-                    raise ValueError(
-                        "Dataframe contains columns that are not present in "
-                        "table: {}".format(in_dframe_only)
-                    )
-
                 # schema fields not present in the dataframe are not needed
                 job_config.schema = [
-                    field for field in table.schema if field.name in dframe_col_names
+                    field
+                    for field in table.schema
+                    if field.name in set(dataframe.columns)
                 ]
 
         job_config.schema = _pandas_helpers.dataframe_to_bq_schema(

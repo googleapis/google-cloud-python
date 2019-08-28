@@ -5494,33 +5494,6 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_unknown_df_columns(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        client = self._make_client()
-        records = [{"id": 1, "typo_age": 100}, {"id": 2, "typo_age": 60}]
-        dataframe = pandas.DataFrame(records)
-
-        get_table_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.get_table",
-            autospec=True,
-            return_value=mock.Mock(
-                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
-            ),
-        )
-        load_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
-        )
-        with pytest.raises(ValueError) as exc_info, load_patch, get_table_patch:
-            client.load_table_from_dataframe(dataframe, self.TABLE_REF)
-
-        err_msg = str(exc_info.value)
-        assert "Dataframe contains columns that are not present in table" in err_msg
-        assert "typo_age" in err_msg
-        assert "id" not in err_msg
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_unknown_table(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
 
