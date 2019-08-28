@@ -20,7 +20,7 @@
 ### New Features
 - Add `client_options` to constructor. ([#8999](https://github.com/googleapis/google-cloud-python/pull/8999))
 - Add `--dry_run` option to `%%bigquery` magic. ([#9067](https://github.com/googleapis/google-cloud-python/pull/9067))
-- Add load_table_from_json() method to BQ client ([#9076](https://github.com/googleapis/google-cloud-python/pull/9076))
+- Add `load_table_from_json` method to BQ client ([#9076](https://github.com/googleapis/google-cloud-python/pull/9076))
 - Add support for unsetting LoadJobConfig schema ([#9077](https://github.com/googleapis/google-cloud-python/pull/9077))
 - Add enum with SQL type names allowed to be used in SchemaField ([#9040](https://github.com/googleapis/google-cloud-python/pull/9040))
 - Add support to Dataset for project_ids with org prefix. ([#8877](https://github.com/googleapis/google-cloud-python/pull/8877))
