@@ -559,6 +559,25 @@ class TestChunkedDownload(object):
         assert download.total_bytes == 8 * chunk_size
         assert stream.getvalue() == data
 
+    def test__process_response_when_content_range_is_zero(self):
+        chunk_size = 10
+        stream = mock.Mock(spec=[u'write'])
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        _fix_up_virtual(download)
+
+        content_range = _download._ZERO_CONTENT_RANGE_HEADER
+        headers = {u'content-range': content_range}
+        status_code = http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+        response = mock.Mock(headers=headers,
+                             status_code=status_code,
+                             spec=[u'headers', 'status_code'])
+        download._process_response(response)
+        stream.write.assert_not_called()
+        assert download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+
     def test_consume_next_chunk(self):
         download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
         with pytest.raises(NotImplementedError) as exc_info:
@@ -660,6 +679,37 @@ class Test_get_range_info(object):
         callback = mock.Mock(spec=[])
         self._missing_header_helper(callback=callback)
         callback.assert_called_once_with()
+
+
+class Test__check_for_zero_content_range(object):
+
+    @staticmethod
+    def _make_response(content_range, status_code):
+        headers = {u'content-range': content_range}
+        return mock.Mock(headers=headers,
+                         status_code=status_code,
+                         spec=[u'headers', 'status_code'])
+
+    def test_status_code_416_and_test_content_range_zero_both(self):
+        content_range = _download._ZERO_CONTENT_RANGE_HEADER
+        status_code = http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+        response = self._make_response(content_range, status_code)
+        assert _download._check_for_zero_content_range(
+            response, _get_status_code, _get_headers)
+
+    def test_status_code_416_only(self):
+        content_range = u'bytes 2-5/3'
+        status_code = http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+        response = self._make_response(content_range, status_code)
+        assert not _download._check_for_zero_content_range(
+            response, _get_status_code, _get_headers)
+
+    def test_content_range_zero_only(self):
+        content_range = _download._ZERO_CONTENT_RANGE_HEADER
+        status_code = http_client.OK
+        response = self._make_response(content_range, status_code)
+        assert not _download._check_for_zero_content_range(
+            response, _get_status_code, _get_headers)
 
 
 def _get_status_code(response):

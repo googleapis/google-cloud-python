@@ -28,6 +28,7 @@ _CONTENT_RANGE_RE = re.compile(
     flags=re.IGNORECASE)
 _ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
 _GET = u'GET'
+_ZERO_CONTENT_RANGE_HEADER = u'bytes */0'
 
 
 class DownloadBase(object):
@@ -340,6 +341,11 @@ class ChunkedDownload(DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # Verify the response before updating the current instance.
+        if _check_for_zero_content_range(response, self._get_status_code,
+                                         self._get_headers):
+            self._finished = True
+            return
+
         _helpers.require_status_code(
             response, _ACCEPTABLE_STATUS_CODES,
             self._get_status_code, callback=self._make_invalid)
@@ -478,3 +484,28 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
         int(match.group(u'end_byte')),
         int(match.group(u'total_bytes'))
     )
+
+
+def _check_for_zero_content_range(response, get_status_code, get_headers):
+    """ Validate if response status code is 416 and content range is zero.
+
+    This is the special case for handling zero bytes files.
+
+    Args:
+        response (object): An HTTP response object.
+        get_status_code (Callable[Any, int]): Helper to get a status code
+            from a response.
+        get_headers (Callable[Any, Mapping[str, str]]): Helper to get headers
+            from an HTTP response.
+
+    Returns:
+        bool: True if content range total bytes is zero, false otherwise.
+    """
+    if get_status_code(response) == http_client. \
+            REQUESTED_RANGE_NOT_SATISFIABLE:
+        content_range = _helpers.header_required(
+                response, _helpers.CONTENT_RANGE_HEADER,
+                get_headers, callback=_helpers.do_nothing)
+        if content_range == _ZERO_CONTENT_RANGE_HEADER:
+            return True
+    return False
