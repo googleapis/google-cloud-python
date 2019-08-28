@@ -70,6 +70,7 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", ".")
+    session.install("-e", ".[pandas,storage]")
 
     # Run py.test against the unit tests.
     session.run(
@@ -117,6 +118,7 @@ def system(session):
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
+    session.install("-e", ".[pandas,storage]")
 
     # Run py.test against the system tests.
     if system_test_exists:
