@@ -34,7 +34,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\013CommonProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/talent_v4beta1/proto/common.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x18google/type/latlng.proto\x1a\x17google/type/money.proto\x1a google/type/postal_address.proto\x1a\x1bgoogle/type/timeofday.proto"n\n\x0eTimestampRange\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xb7\x03\n\x08Location\x12I\n\rlocation_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.Location.LocationType\x12\x32\n\x0epostal_address\x18\x02 \x01(\x0b\x32\x1a.google.type.PostalAddress\x12$\n\x07lat_lng\x18\x03 \x01(\x0b\x32\x13.google.type.LatLng\x12\x14\n\x0cradius_miles\x18\x04 \x01(\x01"\xef\x01\n\x0cLocationType\x12\x1d\n\x19LOCATION_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43OUNTRY\x10\x01\x12\x17\n\x13\x41\x44MINISTRATIVE_AREA\x10\x02\x12\x1b\n\x17SUB_ADMINISTRATIVE_AREA\x10\x03\x12\x0c\n\x08LOCALITY\x10\x04\x12\x0f\n\x0bPOSTAL_CODE\x10\x05\x12\x10\n\x0cSUB_LOCALITY\x10\x06\x12\x12\n\x0eSUB_LOCALITY_1\x10\x07\x12\x12\n\x0eSUB_LOCALITY_2\x10\x08\x12\x10\n\x0cNEIGHBORHOOD\x10\t\x12\x12\n\x0eSTREET_ADDRESS\x10\n"\x9f\x01\n\x0fRequestMetadata\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x12\n\nsession_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x19\n\x11\x61llow_missing_ids\x18\x04 \x01(\x08\x12<\n\x0b\x64\x65vice_info\x18\x05 \x01(\x0b\x32\'.google.cloud.talent.v4beta1.DeviceInfo"&\n\x10ResponseMetadata\x12\x12\n\nrequest_id\x18\x01 \x01(\t"\xcf\x01\n\nDeviceInfo\x12G\n\x0b\x64\x65vice_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.DeviceInfo.DeviceType\x12\n\n\x02id\x18\x02 \x01(\t"l\n\nDeviceType\x12\x1b\n\x17\x44\x45VICE_TYPE_UNSPECIFIED\x10\x00\x12\x07\n\x03WEB\x10\x01\x12\x0e\n\nMOBILE_WEB\x10\x02\x12\x0b\n\x07\x41NDROID\x10\x03\x12\x07\n\x03IOS\x10\x04\x12\x07\n\x03\x42OT\x10\x05\x12\t\n\x05OTHER\x10\x06"Q\n\x0f\x43ustomAttribute\x12\x15\n\rstring_values\x18\x01 \x03(\t\x12\x13\n\x0blong_values\x18\x02 \x03(\x03\x12\x12\n\nfilterable\x18\x03 \x01(\x08"W\n\x12SpellingCorrection\x12\x11\n\tcorrected\x18\x01 \x01(\x08\x12\x16\n\x0e\x63orrected_text\x18\x02 \x01(\t\x12\x16\n\x0e\x63orrected_html\x18\x03 \x01(\t"\x9c\t\n\x10\x43ompensationInfo\x12P\n\x07\x65ntries\x18\x01 \x03(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry\x12k\n"annualized_base_compensation_range\x18\x02 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x12l\n#annualized_total_compensation_range\x18\x03 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x1a\x92\x03\n\x11\x43ompensationEntry\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationType\x12L\n\x04unit\x18\x02 \x01(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit\x12$\n\x06\x61mount\x18\x03 \x01(\x0b\x32\x12.google.type.MoneyH\x00\x12P\n\x05range\x18\x04 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRangeH\x00\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12=\n\x17\x65xpected_units_per_year\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValueB\x15\n\x13\x63ompensation_amount\x1ao\n\x11\x43ompensationRange\x12,\n\x10max_compensation\x18\x02 \x01(\x0b\x32\x12.google.type.Money\x12,\n\x10min_compensation\x18\x01 \x01(\x0b\x32\x12.google.type.Money"\xb5\x01\n\x10\x43ompensationType\x12!\n\x1d\x43OMPENSATION_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42\x41SE\x10\x01\x12\t\n\x05\x42ONUS\x10\x02\x12\x11\n\rSIGNING_BONUS\x10\x03\x12\n\n\x06\x45QUITY\x10\x04\x12\x12\n\x0ePROFIT_SHARING\x10\x05\x12\x0f\n\x0b\x43OMMISSIONS\x10\x06\x12\x08\n\x04TIPS\x10\x07\x12\x1b\n\x17OTHER_COMPENSATION_TYPE\x10\x08"\x9c\x01\n\x10\x43ompensationUnit\x12!\n\x1d\x43OMPENSATION_UNIT_UNSPECIFIED\x10\x00\x12\n\n\x06HOURLY\x10\x01\x12\t\n\x05\x44\x41ILY\x10\x02\x12\n\n\x06WEEKLY\x10\x03\x12\x0b\n\x07MONTHLY\x10\x04\x12\n\n\x06YEARLY\x10\x05\x12\x0c\n\x08ONE_TIME\x10\x06\x12\x1b\n\x17OTHER_COMPENSATION_UNIT\x10\x07"\x9e\x01\n\rCertification\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\'\n\x0c\x61\x63quire_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12&\n\x0b\x65xpire_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x11\n\tauthority\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t"\xb8\x01\n\x05Skill\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12)\n\x0elast_used_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x41\n\x05level\x18\x03 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.SkillProficiencyLevel\x12\x0f\n\x07\x63ontext\x18\x04 \x01(\t\x12\x1a\n\x12skill_name_snippet\x18\x05 \x01(\t"w\n\tInterview\x12\x33\n\x06rating\x18\x06 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Rating\x12\x35\n\x07outcome\x18\x07 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome"E\n\x06Rating\x12\x0f\n\x07overall\x18\x01 \x01(\x01\x12\x0b\n\x03min\x18\x02 \x01(\x01\x12\x0b\n\x03max\x18\x03 \x01(\x01\x12\x10\n\x08interval\x18\x04 \x01(\x01*y\n\x0b\x43ompanySize\x12\x1c\n\x18\x43OMPANY_SIZE_UNSPECIFIED\x10\x00\x12\x08\n\x04MINI\x10\x01\x12\t\n\x05SMALL\x10\x02\x12\x0b\n\x07SMEDIUM\x10\x03\x12\n\n\x06MEDIUM\x10\x04\x12\x07\n\x03\x42IG\x10\x05\x12\n\n\x06\x42IGGER\x10\x06\x12\t\n\x05GIANT\x10\x07*\xe2\x01\n\nJobBenefit\x12\x1b\n\x17JOB_BENEFIT_UNSPECIFIED\x10\x00\x12\x0e\n\nCHILD_CARE\x10\x01\x12\n\n\x06\x44\x45NTAL\x10\x02\x12\x14\n\x10\x44OMESTIC_PARTNER\x10\x03\x12\x12\n\x0e\x46LEXIBLE_HOURS\x10\x04\x12\x0b\n\x07MEDICAL\x10\x05\x12\x12\n\x0eLIFE_INSURANCE\x10\x06\x12\x12\n\x0ePARENTAL_LEAVE\x10\x07\x12\x13\n\x0fRETIREMENT_PLAN\x10\x08\x12\r\n\tSICK_DAYS\x10\t\x12\x0c\n\x08VACATION\x10\n\x12\n\n\x06VISION\x10\x0b*\x8e\x02\n\nDegreeType\x12\x1b\n\x17\x44\x45GREE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11PRIMARY_EDUCATION\x10\x01\x12\x1d\n\x19LOWER_SECONDARY_EDUCATION\x10\x02\x12\x1d\n\x19UPPER_SECONDARY_EDUCATION\x10\x03\x12\x1c\n\x18\x41\x44ULT_REMEDIAL_EDUCATION\x10\x04\x12\x1c\n\x18\x41SSOCIATES_OR_EQUIVALENT\x10\x05\x12\x1b\n\x17\x42\x41\x43HELORS_OR_EQUIVALENT\x10\x06\x12\x19\n\x15MASTERS_OR_EQUIVALENT\x10\x07\x12\x1a\n\x16\x44OCTORAL_OR_EQUIVALENT\x10\x08*\xdc\x01\n\x0e\x45mploymentType\x12\x1f\n\x1b\x45MPLOYMENT_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tFULL_TIME\x10\x01\x12\r\n\tPART_TIME\x10\x02\x12\x0e\n\nCONTRACTOR\x10\x03\x12\x14\n\x10\x43ONTRACT_TO_HIRE\x10\x04\x12\r\n\tTEMPORARY\x10\x05\x12\n\n\x06INTERN\x10\x06\x12\r\n\tVOLUNTEER\x10\x07\x12\x0c\n\x08PER_DIEM\x10\x08\x12\x12\n\x0e\x46LY_IN_FLY_OUT\x10\t\x12\x19\n\x15OTHER_EMPLOYMENT_TYPE\x10\n*q\n\x08JobLevel\x12\x19\n\x15JOB_LEVEL_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x45NTRY_LEVEL\x10\x01\x12\x0f\n\x0b\x45XPERIENCED\x10\x02\x12\x0b\n\x07MANAGER\x10\x03\x12\x0c\n\x08\x44IRECTOR\x10\x04\x12\r\n\tEXECUTIVE\x10\x05*\xba\x06\n\x0bJobCategory\x12\x1c\n\x18JOB_CATEGORY_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x41\x43\x43OUNTING_AND_FINANCE\x10\x01\x12\x1d\n\x19\x41\x44MINISTRATIVE_AND_OFFICE\x10\x02\x12\x1d\n\x19\x41\x44VERTISING_AND_MARKETING\x10\x03\x12\x0f\n\x0b\x41NIMAL_CARE\x10\x04\x12\x1a\n\x16\x41RT_FASHION_AND_DESIGN\x10\x05\x12\x17\n\x13\x42USINESS_OPERATIONS\x10\x06\x12\x1b\n\x17\x43LEANING_AND_FACILITIES\x10\x07\x12\x13\n\x0f\x43OMPUTER_AND_IT\x10\x08\x12\x10\n\x0c\x43ONSTRUCTION\x10\t\x12\x14\n\x10\x43USTOMER_SERVICE\x10\n\x12\r\n\tEDUCATION\x10\x0b\x12\x1c\n\x18\x45NTERTAINMENT_AND_TRAVEL\x10\x0c\x12\x18\n\x14\x46\x41RMING_AND_OUTDOORS\x10\r\x12\x0e\n\nHEALTHCARE\x10\x0e\x12\x13\n\x0fHUMAN_RESOURCES\x10\x0f\x12\'\n#INSTALLATION_MAINTENANCE_AND_REPAIR\x10\x10\x12\t\n\x05LEGAL\x10\x11\x12\x0e\n\nMANAGEMENT\x10\x12\x12\x1f\n\x1bMANUFACTURING_AND_WAREHOUSE\x10\x13\x12$\n MEDIA_COMMUNICATIONS_AND_WRITING\x10\x14\x12\x16\n\x12OIL_GAS_AND_MINING\x10\x15\x12\x1e\n\x1aPERSONAL_CARE_AND_SERVICES\x10\x16\x12\x17\n\x13PROTECTIVE_SERVICES\x10\x17\x12\x0f\n\x0bREAL_ESTATE\x10\x18\x12\x1e\n\x1aRESTAURANT_AND_HOSPITALITY\x10\x19\x12\x14\n\x10SALES_AND_RETAIL\x10\x1a\x12\x1b\n\x17SCIENCE_AND_ENGINEERING\x10\x1b\x12"\n\x1eSOCIAL_SERVICES_AND_NON_PROFIT\x10\x1c\x12!\n\x1dSPORTS_FITNESS_AND_RECREATION\x10\x1d\x12 \n\x1cTRANSPORTATION_AND_LOGISTICS\x10\x1e*e\n\rPostingRegion\x12\x1e\n\x1aPOSTING_REGION_UNSPECIFIED\x10\x00\x12\x17\n\x13\x41\x44MINISTRATIVE_AREA\x10\x01\x12\n\n\x06NATION\x10\x02\x12\x0f\n\x0bTELECOMMUTE\x10\x03*n\n\nVisibility\x12\x1a\n\x16VISIBILITY_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x41\x43\x43OUNT_ONLY\x10\x01\x12\x16\n\x12SHARED_WITH_GOOGLE\x10\x02\x12\x16\n\x12SHARED_WITH_PUBLIC\x10\x03\x1a\x02\x18\x01*Z\n\x10\x43ontactInfoUsage\x12"\n\x1e\x43ONTACT_INFO_USAGE_UNSPECIFIED\x10\x00\x12\x0c\n\x08PERSONAL\x10\x01\x12\x08\n\x04WORK\x10\x02\x12\n\n\x06SCHOOL\x10\x03*q\n\x10HtmlSanitization\x12!\n\x1dHTML_SANITIZATION_UNSPECIFIED\x10\x00\x12\x1e\n\x1aHTML_SANITIZATION_DISABLED\x10\x01\x12\x1a\n\x16SIMPLE_FORMATTING_ONLY\x10\x02*c\n\rCommuteMethod\x12\x1e\n\x1a\x43OMMUTE_METHOD_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x44RIVING\x10\x01\x12\x0b\n\x07TRANSIT\x10\x02\x12\x0b\n\x07WALKING\x10\x03\x12\x0b\n\x07\x43YCLING\x10\x04*\xa2\x01\n\x15SkillProficiencyLevel\x12\'\n#SKILL_PROFICIENCY_LEVEL_UNSPECIFIED\x10\x00\x12\r\n\tUNSKILLED\x10\x06\x12\x19\n\x15\x46UNDAMENTAL_AWARENESS\x10\x01\x12\n\n\x06NOVICE\x10\x02\x12\x10\n\x0cINTERMEDIATE\x10\x03\x12\x0c\n\x08\x41\x44VANCED\x10\x04\x12\n\n\x06\x45XPERT\x10\x05*f\n\x07Outcome\x12\x17\n\x13OUTCOME_UNSPECIFIED\x10\x00\x12\x0c\n\x08POSITIVE\x10\x01\x12\x0b\n\x07NEUTRAL\x10\x02\x12\x0c\n\x08NEGATIVE\x10\x03\x12\x19\n\x15OUTCOME_NOT_AVAILABLE\x10\x04\x42y\n\x1f\x63om.google.cloud.talent.v4beta1B\x0b\x43ommonProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n.google/cloud/talent_v4beta1/proto/common.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x18google/type/latlng.proto\x1a\x17google/type/money.proto\x1a google/type/postal_address.proto\x1a\x1bgoogle/type/timeofday.proto"n\n\x0eTimestampRange\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xb7\x03\n\x08Location\x12I\n\rlocation_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.Location.LocationType\x12\x32\n\x0epostal_address\x18\x02 \x01(\x0b\x32\x1a.google.type.PostalAddress\x12$\n\x07lat_lng\x18\x03 \x01(\x0b\x32\x13.google.type.LatLng\x12\x14\n\x0cradius_miles\x18\x04 \x01(\x01"\xef\x01\n\x0cLocationType\x12\x1d\n\x19LOCATION_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x43OUNTRY\x10\x01\x12\x17\n\x13\x41\x44MINISTRATIVE_AREA\x10\x02\x12\x1b\n\x17SUB_ADMINISTRATIVE_AREA\x10\x03\x12\x0c\n\x08LOCALITY\x10\x04\x12\x0f\n\x0bPOSTAL_CODE\x10\x05\x12\x10\n\x0cSUB_LOCALITY\x10\x06\x12\x12\n\x0eSUB_LOCALITY_1\x10\x07\x12\x12\n\x0eSUB_LOCALITY_2\x10\x08\x12\x10\n\x0cNEIGHBORHOOD\x10\t\x12\x12\n\x0eSTREET_ADDRESS\x10\n"\x9f\x01\n\x0fRequestMetadata\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x12\n\nsession_id\x18\x02 \x01(\t\x12\x0f\n\x07user_id\x18\x03 \x01(\t\x12\x19\n\x11\x61llow_missing_ids\x18\x04 \x01(\x08\x12<\n\x0b\x64\x65vice_info\x18\x05 \x01(\x0b\x32\'.google.cloud.talent.v4beta1.DeviceInfo"&\n\x10ResponseMetadata\x12\x12\n\nrequest_id\x18\x01 \x01(\t"\xcf\x01\n\nDeviceInfo\x12G\n\x0b\x64\x65vice_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.DeviceInfo.DeviceType\x12\n\n\x02id\x18\x02 \x01(\t"l\n\nDeviceType\x12\x1b\n\x17\x44\x45VICE_TYPE_UNSPECIFIED\x10\x00\x12\x07\n\x03WEB\x10\x01\x12\x0e\n\nMOBILE_WEB\x10\x02\x12\x0b\n\x07\x41NDROID\x10\x03\x12\x07\n\x03IOS\x10\x04\x12\x07\n\x03\x42OT\x10\x05\x12\t\n\x05OTHER\x10\x06"Q\n\x0f\x43ustomAttribute\x12\x15\n\rstring_values\x18\x01 \x03(\t\x12\x13\n\x0blong_values\x18\x02 \x03(\x03\x12\x12\n\nfilterable\x18\x03 \x01(\x08"W\n\x12SpellingCorrection\x12\x11\n\tcorrected\x18\x01 \x01(\x08\x12\x16\n\x0e\x63orrected_text\x18\x02 \x01(\t\x12\x16\n\x0e\x63orrected_html\x18\x03 \x01(\t"\x9c\t\n\x10\x43ompensationInfo\x12P\n\x07\x65ntries\x18\x01 \x03(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry\x12k\n"annualized_base_compensation_range\x18\x02 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x12l\n#annualized_total_compensation_range\x18\x03 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRange\x1a\x92\x03\n\x11\x43ompensationEntry\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationType\x12L\n\x04unit\x18\x02 \x01(\x0e\x32>.google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit\x12$\n\x06\x61mount\x18\x03 \x01(\x0b\x32\x12.google.type.MoneyH\x00\x12P\n\x05range\x18\x04 \x01(\x0b\x32?.google.cloud.talent.v4beta1.CompensationInfo.CompensationRangeH\x00\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12=\n\x17\x65xpected_units_per_year\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValueB\x15\n\x13\x63ompensation_amount\x1ao\n\x11\x43ompensationRange\x12,\n\x10max_compensation\x18\x02 \x01(\x0b\x32\x12.google.type.Money\x12,\n\x10min_compensation\x18\x01 \x01(\x0b\x32\x12.google.type.Money"\xb5\x01\n\x10\x43ompensationType\x12!\n\x1d\x43OMPENSATION_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42\x41SE\x10\x01\x12\t\n\x05\x42ONUS\x10\x02\x12\x11\n\rSIGNING_BONUS\x10\x03\x12\n\n\x06\x45QUITY\x10\x04\x12\x12\n\x0ePROFIT_SHARING\x10\x05\x12\x0f\n\x0b\x43OMMISSIONS\x10\x06\x12\x08\n\x04TIPS\x10\x07\x12\x1b\n\x17OTHER_COMPENSATION_TYPE\x10\x08"\x9c\x01\n\x10\x43ompensationUnit\x12!\n\x1d\x43OMPENSATION_UNIT_UNSPECIFIED\x10\x00\x12\n\n\x06HOURLY\x10\x01\x12\t\n\x05\x44\x41ILY\x10\x02\x12\n\n\x06WEEKLY\x10\x03\x12\x0b\n\x07MONTHLY\x10\x04\x12\n\n\x06YEARLY\x10\x05\x12\x0c\n\x08ONE_TIME\x10\x06\x12\x1b\n\x17OTHER_COMPENSATION_UNIT\x10\x07"\x9e\x01\n\rCertification\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\'\n\x0c\x61\x63quire_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12&\n\x0b\x65xpire_date\x18\x03 \x01(\x0b\x32\x11.google.type.Date\x12\x11\n\tauthority\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t"\xb8\x01\n\x05Skill\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12)\n\x0elast_used_date\x18\x02 \x01(\x0b\x32\x11.google.type.Date\x12\x41\n\x05level\x18\x03 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.SkillProficiencyLevel\x12\x0f\n\x07\x63ontext\x18\x04 \x01(\t\x12\x1a\n\x12skill_name_snippet\x18\x05 \x01(\t"w\n\tInterview\x12\x33\n\x06rating\x18\x06 \x01(\x0b\x32#.google.cloud.talent.v4beta1.Rating\x12\x35\n\x07outcome\x18\x07 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome"E\n\x06Rating\x12\x0f\n\x07overall\x18\x01 \x01(\x01\x12\x0b\n\x03min\x18\x02 \x01(\x01\x12\x0b\n\x03max\x18\x03 \x01(\x01\x12\x10\n\x08interval\x18\x04 \x01(\x01"\xcc\x03\n\x16\x42\x61tchOperationMetadata\x12H\n\x05state\x18\x01 \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.BatchOperationMetadata.State\x12\x19\n\x11state_description\x18\x02 \x01(\t\x12\x15\n\rsuccess_count\x18\x03 \x01(\x05\x12\x15\n\rfailure_count\x18\x04 \x01(\x05\x12\x13\n\x0btotal_count\x18\x05 \x01(\x05\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"z\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x10\n\x0cINITIALIZING\x10\x01\x12\x0e\n\nPROCESSING\x10\x02\x12\r\n\tSUCCEEDED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0e\n\nCANCELLING\x10\x05\x12\r\n\tCANCELLED\x10\x06*y\n\x0b\x43ompanySize\x12\x1c\n\x18\x43OMPANY_SIZE_UNSPECIFIED\x10\x00\x12\x08\n\x04MINI\x10\x01\x12\t\n\x05SMALL\x10\x02\x12\x0b\n\x07SMEDIUM\x10\x03\x12\n\n\x06MEDIUM\x10\x04\x12\x07\n\x03\x42IG\x10\x05\x12\n\n\x06\x42IGGER\x10\x06\x12\t\n\x05GIANT\x10\x07*\xe2\x01\n\nJobBenefit\x12\x1b\n\x17JOB_BENEFIT_UNSPECIFIED\x10\x00\x12\x0e\n\nCHILD_CARE\x10\x01\x12\n\n\x06\x44\x45NTAL\x10\x02\x12\x14\n\x10\x44OMESTIC_PARTNER\x10\x03\x12\x12\n\x0e\x46LEXIBLE_HOURS\x10\x04\x12\x0b\n\x07MEDICAL\x10\x05\x12\x12\n\x0eLIFE_INSURANCE\x10\x06\x12\x12\n\x0ePARENTAL_LEAVE\x10\x07\x12\x13\n\x0fRETIREMENT_PLAN\x10\x08\x12\r\n\tSICK_DAYS\x10\t\x12\x0c\n\x08VACATION\x10\n\x12\n\n\x06VISION\x10\x0b*\x8e\x02\n\nDegreeType\x12\x1b\n\x17\x44\x45GREE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11PRIMARY_EDUCATION\x10\x01\x12\x1d\n\x19LOWER_SECONDARY_EDUCATION\x10\x02\x12\x1d\n\x19UPPER_SECONDARY_EDUCATION\x10\x03\x12\x1c\n\x18\x41\x44ULT_REMEDIAL_EDUCATION\x10\x04\x12\x1c\n\x18\x41SSOCIATES_OR_EQUIVALENT\x10\x05\x12\x1b\n\x17\x42\x41\x43HELORS_OR_EQUIVALENT\x10\x06\x12\x19\n\x15MASTERS_OR_EQUIVALENT\x10\x07\x12\x1a\n\x16\x44OCTORAL_OR_EQUIVALENT\x10\x08*\xdc\x01\n\x0e\x45mploymentType\x12\x1f\n\x1b\x45MPLOYMENT_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tFULL_TIME\x10\x01\x12\r\n\tPART_TIME\x10\x02\x12\x0e\n\nCONTRACTOR\x10\x03\x12\x14\n\x10\x43ONTRACT_TO_HIRE\x10\x04\x12\r\n\tTEMPORARY\x10\x05\x12\n\n\x06INTERN\x10\x06\x12\r\n\tVOLUNTEER\x10\x07\x12\x0c\n\x08PER_DIEM\x10\x08\x12\x12\n\x0e\x46LY_IN_FLY_OUT\x10\t\x12\x19\n\x15OTHER_EMPLOYMENT_TYPE\x10\n*q\n\x08JobLevel\x12\x19\n\x15JOB_LEVEL_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x45NTRY_LEVEL\x10\x01\x12\x0f\n\x0b\x45XPERIENCED\x10\x02\x12\x0b\n\x07MANAGER\x10\x03\x12\x0c\n\x08\x44IRECTOR\x10\x04\x12\r\n\tEXECUTIVE\x10\x05*\xba\x06\n\x0bJobCategory\x12\x1c\n\x18JOB_CATEGORY_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x41\x43\x43OUNTING_AND_FINANCE\x10\x01\x12\x1d\n\x19\x41\x44MINISTRATIVE_AND_OFFICE\x10\x02\x12\x1d\n\x19\x41\x44VERTISING_AND_MARKETING\x10\x03\x12\x0f\n\x0b\x41NIMAL_CARE\x10\x04\x12\x1a\n\x16\x41RT_FASHION_AND_DESIGN\x10\x05\x12\x17\n\x13\x42USINESS_OPERATIONS\x10\x06\x12\x1b\n\x17\x43LEANING_AND_FACILITIES\x10\x07\x12\x13\n\x0f\x43OMPUTER_AND_IT\x10\x08\x12\x10\n\x0c\x43ONSTRUCTION\x10\t\x12\x14\n\x10\x43USTOMER_SERVICE\x10\n\x12\r\n\tEDUCATION\x10\x0b\x12\x1c\n\x18\x45NTERTAINMENT_AND_TRAVEL\x10\x0c\x12\x18\n\x14\x46\x41RMING_AND_OUTDOORS\x10\r\x12\x0e\n\nHEALTHCARE\x10\x0e\x12\x13\n\x0fHUMAN_RESOURCES\x10\x0f\x12\'\n#INSTALLATION_MAINTENANCE_AND_REPAIR\x10\x10\x12\t\n\x05LEGAL\x10\x11\x12\x0e\n\nMANAGEMENT\x10\x12\x12\x1f\n\x1bMANUFACTURING_AND_WAREHOUSE\x10\x13\x12$\n MEDIA_COMMUNICATIONS_AND_WRITING\x10\x14\x12\x16\n\x12OIL_GAS_AND_MINING\x10\x15\x12\x1e\n\x1aPERSONAL_CARE_AND_SERVICES\x10\x16\x12\x17\n\x13PROTECTIVE_SERVICES\x10\x17\x12\x0f\n\x0bREAL_ESTATE\x10\x18\x12\x1e\n\x1aRESTAURANT_AND_HOSPITALITY\x10\x19\x12\x14\n\x10SALES_AND_RETAIL\x10\x1a\x12\x1b\n\x17SCIENCE_AND_ENGINEERING\x10\x1b\x12"\n\x1eSOCIAL_SERVICES_AND_NON_PROFIT\x10\x1c\x12!\n\x1dSPORTS_FITNESS_AND_RECREATION\x10\x1d\x12 \n\x1cTRANSPORTATION_AND_LOGISTICS\x10\x1e*e\n\rPostingRegion\x12\x1e\n\x1aPOSTING_REGION_UNSPECIFIED\x10\x00\x12\x17\n\x13\x41\x44MINISTRATIVE_AREA\x10\x01\x12\n\n\x06NATION\x10\x02\x12\x0f\n\x0bTELECOMMUTE\x10\x03*n\n\nVisibility\x12\x1a\n\x16VISIBILITY_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x41\x43\x43OUNT_ONLY\x10\x01\x12\x16\n\x12SHARED_WITH_GOOGLE\x10\x02\x12\x16\n\x12SHARED_WITH_PUBLIC\x10\x03\x1a\x02\x18\x01*Z\n\x10\x43ontactInfoUsage\x12"\n\x1e\x43ONTACT_INFO_USAGE_UNSPECIFIED\x10\x00\x12\x0c\n\x08PERSONAL\x10\x01\x12\x08\n\x04WORK\x10\x02\x12\n\n\x06SCHOOL\x10\x03*q\n\x10HtmlSanitization\x12!\n\x1dHTML_SANITIZATION_UNSPECIFIED\x10\x00\x12\x1e\n\x1aHTML_SANITIZATION_DISABLED\x10\x01\x12\x1a\n\x16SIMPLE_FORMATTING_ONLY\x10\x02*c\n\rCommuteMethod\x12\x1e\n\x1a\x43OMMUTE_METHOD_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x44RIVING\x10\x01\x12\x0b\n\x07TRANSIT\x10\x02\x12\x0b\n\x07WALKING\x10\x03\x12\x0b\n\x07\x43YCLING\x10\x04*\xa2\x01\n\x15SkillProficiencyLevel\x12\'\n#SKILL_PROFICIENCY_LEVEL_UNSPECIFIED\x10\x00\x12\r\n\tUNSKILLED\x10\x06\x12\x19\n\x15\x46UNDAMENTAL_AWARENESS\x10\x01\x12\n\n\x06NOVICE\x10\x02\x12\x10\n\x0cINTERMEDIATE\x10\x03\x12\x0c\n\x08\x41\x44VANCED\x10\x04\x12\n\n\x06\x45XPERT\x10\x05*f\n\x07Outcome\x12\x17\n\x13OUTCOME_UNSPECIFIED\x10\x00\x12\x0c\n\x08POSITIVE\x10\x01\x12\x0b\n\x07NEUTRAL\x10\x02\x12\x0c\n\x08NEGATIVE\x10\x03\x12\x19\n\x15OUTCOME_NOT_AVAILABLE\x10\x04\x42y\n\x1f\x63om.google.cloud.talent.v4beta1B\x0b\x43ommonProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -85,8 +85,8 @@ _COMPANYSIZE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3173,
-    serialized_end=3294,
+    serialized_start=3636,
+    serialized_end=3757,
 )
 _sym_db.RegisterEnumDescriptor(_COMPANYSIZE)
 
@@ -148,8 +148,8 @@ _JOBBENEFIT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3297,
-    serialized_end=3523,
+    serialized_start=3760,
+    serialized_end=3986,
 )
 _sym_db.RegisterEnumDescriptor(_JOBBENEFIT)
 
@@ -226,8 +226,8 @@ _DEGREETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3526,
-    serialized_end=3796,
+    serialized_start=3989,
+    serialized_end=4259,
 )
 _sym_db.RegisterEnumDescriptor(_DEGREETYPE)
 
@@ -286,8 +286,8 @@ _EMPLOYMENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3799,
-    serialized_end=4019,
+    serialized_start=4262,
+    serialized_end=4482,
 )
 _sym_db.RegisterEnumDescriptor(_EMPLOYMENTTYPE)
 
@@ -323,8 +323,8 @@ _JOBLEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4021,
-    serialized_end=4134,
+    serialized_start=4484,
+    serialized_end=4597,
 )
 _sym_db.RegisterEnumDescriptor(_JOBLEVEL)
 
@@ -527,8 +527,8 @@ _JOBCATEGORY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4137,
-    serialized_end=4963,
+    serialized_start=4600,
+    serialized_end=5426,
 )
 _sym_db.RegisterEnumDescriptor(_JOBCATEGORY)
 
@@ -562,8 +562,8 @@ _POSTINGREGION = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4965,
-    serialized_end=5066,
+    serialized_start=5428,
+    serialized_end=5529,
 )
 _sym_db.RegisterEnumDescriptor(_POSTINGREGION)
 
@@ -601,8 +601,8 @@ _VISIBILITY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=_b("\030\001"),
-    serialized_start=5068,
-    serialized_end=5178,
+    serialized_start=5531,
+    serialized_end=5641,
 )
 _sym_db.RegisterEnumDescriptor(_VISIBILITY)
 
@@ -632,8 +632,8 @@ _CONTACTINFOUSAGE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5180,
-    serialized_end=5270,
+    serialized_start=5643,
+    serialized_end=5733,
 )
 _sym_db.RegisterEnumDescriptor(_CONTACTINFOUSAGE)
 
@@ -668,8 +668,8 @@ _HTMLSANITIZATION = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5272,
-    serialized_end=5385,
+    serialized_start=5735,
+    serialized_end=5848,
 )
 _sym_db.RegisterEnumDescriptor(_HTMLSANITIZATION)
 
@@ -702,8 +702,8 @@ _COMMUTEMETHOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5387,
-    serialized_end=5486,
+    serialized_start=5850,
+    serialized_end=5949,
 )
 _sym_db.RegisterEnumDescriptor(_COMMUTEMETHOD)
 
@@ -746,8 +746,8 @@ _SKILLPROFICIENCYLEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5489,
-    serialized_end=5651,
+    serialized_start=5952,
+    serialized_end=6114,
 )
 _sym_db.RegisterEnumDescriptor(_SKILLPROFICIENCYLEVEL)
 
@@ -784,8 +784,8 @@ _OUTCOME = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5653,
-    serialized_end=5755,
+    serialized_start=6116,
+    serialized_end=6218,
 )
 _sym_db.RegisterEnumDescriptor(_OUTCOME)
 
@@ -1097,6 +1097,45 @@ _COMPENSATIONINFO_COMPENSATIONUNIT = _descriptor.EnumDescriptor(
     serialized_end=2631,
 )
 _sym_db.RegisterEnumDescriptor(_COMPENSATIONINFO_COMPENSATIONUNIT)
+
+_BATCHOPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
+    name="State",
+    full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.State",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INITIALIZING", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PROCESSING", index=2, number=2, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUCCEEDED", index=3, number=3, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FAILED", index=4, number=4, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CANCELLING", index=5, number=5, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CANCELLED", index=6, number=6, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=3512,
+    serialized_end=3634,
+)
+_sym_db.RegisterEnumDescriptor(_BATCHOPERATIONMETADATA_STATE)
 
 
 _TIMESTAMPRANGE = _descriptor.Descriptor(
@@ -2247,6 +2286,171 @@ _RATING = _descriptor.Descriptor(
     serialized_end=3171,
 )
 
+
+_BATCHOPERATIONMETADATA = _descriptor.Descriptor(
+    name="BatchOperationMetadata",
+    full_name="google.cloud.talent.v4beta1.BatchOperationMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="state",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.state",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state_description",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.state_description",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="success_count",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.success_count",
+            index=2,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="failure_count",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.failure_count",
+            index=3,
+            number=4,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="total_count",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.total_count",
+            index=4,
+            number=5,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_time",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.create_time",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.update_time",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_time",
+            full_name="google.cloud.talent.v4beta1.BatchOperationMetadata.end_time",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_BATCHOPERATIONMETADATA_STATE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3174,
+    serialized_end=3634,
+)
+
 _TIMESTAMPRANGE.fields_by_name[
     "start_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -2326,6 +2530,19 @@ _SKILL.fields_by_name[
 _SKILL.fields_by_name["level"].enum_type = _SKILLPROFICIENCYLEVEL
 _INTERVIEW.fields_by_name["rating"].message_type = _RATING
 _INTERVIEW.fields_by_name["outcome"].enum_type = _OUTCOME
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "state"
+].enum_type = _BATCHOPERATIONMETADATA_STATE
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "create_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_BATCHOPERATIONMETADATA.fields_by_name[
+    "end_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_BATCHOPERATIONMETADATA_STATE.containing_type = _BATCHOPERATIONMETADATA
 DESCRIPTOR.message_types_by_name["TimestampRange"] = _TIMESTAMPRANGE
 DESCRIPTOR.message_types_by_name["Location"] = _LOCATION
 DESCRIPTOR.message_types_by_name["RequestMetadata"] = _REQUESTMETADATA
@@ -2338,6 +2555,7 @@ DESCRIPTOR.message_types_by_name["Certification"] = _CERTIFICATION
 DESCRIPTOR.message_types_by_name["Skill"] = _SKILL
 DESCRIPTOR.message_types_by_name["Interview"] = _INTERVIEW
 DESCRIPTOR.message_types_by_name["Rating"] = _RATING
+DESCRIPTOR.message_types_by_name["BatchOperationMetadata"] = _BATCHOPERATIONMETADATA
 DESCRIPTOR.enum_types_by_name["CompanySize"] = _COMPANYSIZE
 DESCRIPTOR.enum_types_by_name["JobBenefit"] = _JOBBENEFIT
 DESCRIPTOR.enum_types_by_name["DegreeType"] = _DEGREETYPE
@@ -2821,6 +3039,47 @@ Rating = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(Rating)
+
+BatchOperationMetadata = _reflection.GeneratedProtocolMessageType(
+    "BatchOperationMetadata",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHOPERATIONMETADATA,
+        __module__="google.cloud.talent_v4beta1.proto.common_pb2",
+        __doc__="""Output only.
+  
+  Metadata used for long running operations returned by CTS batch APIs.
+  It's used to replace
+  [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata].
+  
+  
+  Attributes:
+      state:
+          The state of a long running operation.
+      state_description:
+          More detailed information about operation state.
+      success_count:
+          Count of successful item(s) inside an operation.
+      failure_count:
+          Count of failed item(s) inside an operation.
+      total_count:
+          Count of total item(s) inside an operation.
+      create_time:
+          The time when the batch operation is created.
+      update_time:
+          The time when the batch operation status is updated. The
+          metadata and the [update\_time][google.cloud.talent.v4beta1.Ba
+          tchOperationMetadata.update\_time] is refreshed every minute
+          otherwise cached data is returned.
+      end_time:
+          The time when the batch operation is finished and [google.long
+          running.Operation.done][google.longrunning.Operation.done] is
+          set to ``true``.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.BatchOperationMetadata)
+    ),
+)
+_sym_db.RegisterMessage(BatchOperationMetadata)
 
 
 DESCRIPTOR._options = None
