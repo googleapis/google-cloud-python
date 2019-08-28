@@ -1548,8 +1548,12 @@ class Client(ClientWithProject):
             location = self.location
 
         # If table schema is not provided, we try to fetch the existing table
-        # schema, and check if dataframe schema is compatible with it.
-        if not job_config.schema:
+        # schema, and check if dataframe schema is compatible with it - except
+        # for WRITE_TRUNCATE jobs, the existing schema does not matter then.
+        if (
+            not job_config.schema
+            and job_config.write_disposition != job.WriteDisposition.WRITE_TRUNCATE
+        ):
             try:
                 table = self.get_table(destination)
             except google.api_core.exceptions.NotFound:

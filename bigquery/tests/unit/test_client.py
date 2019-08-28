@@ -5370,7 +5370,9 @@ class TestClientUpload(object):
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
-        job_config = job.LoadJobConfig()
+        job_config = job.LoadJobConfig(
+            write_disposition=job.WriteDisposition.WRITE_TRUNCATE
+        )
 
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table",
@@ -5382,10 +5384,13 @@ class TestClientUpload(object):
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
-        with load_patch as load_table_from_file, get_table_patch:
+        with load_patch as load_table_from_file, get_table_patch as get_table:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
+
+        # no need to fetch and inspect table schema for WRITE_TRUNCATE jobs
+        assert not get_table.called
 
         load_table_from_file.assert_called_once_with(
             client,
@@ -5402,6 +5407,7 @@ class TestClientUpload(object):
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert sent_config.write_disposition == job.WriteDisposition.WRITE_TRUNCATE
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
