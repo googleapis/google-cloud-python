@@ -64,16 +64,28 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         database = "now-db"
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             database=database,
             client_info=client_info,
+            client_options=client_options,
         )
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, database)
         self.assertIs(client._client_info, client_info)
+        self.assertIs(client._client_options, client_options)
+
+    def test_constructor_w_client_options(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            client_options={"api_endpoint": "foo-firestore.googleapis.com"},
+        )
+        self.assertEqual(client._target, "foo-firestore.googleapis.com")
 
     @mock.patch(
         "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
