@@ -18,7 +18,6 @@
 
 import pkg_resources
 import logging
-import google.auth
 
 from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
@@ -418,8 +417,6 @@ class TablesClient(object):
                 credentials from the environment.
         """
         if self.gcs_client is None:
-            if credentials is None:
-                credentials, _ = google.auth.default()
             self.gcs_client = gcs_client.GcsClient(credentials=credentials)
 
     def list_datasets(self, project=None, region=None, **kwargs):

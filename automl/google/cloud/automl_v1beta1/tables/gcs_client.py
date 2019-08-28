@@ -16,6 +16,7 @@
 
 """Wraps the Google Cloud Storage client library for use in tables helper."""
 
+import logging
 import time
 
 from google.api_core import exceptions
@@ -30,9 +31,10 @@ try:
 except ImportError:  # pragma: NO COVER
     storage = None
 
+_LOGGER = logging.getLogger(__name__)
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
 _STORAGE_REQUIRED = (
-    "google-cloud-storage is required to create Google Cloud Storage client."
+    "google-cloud-storage is required to create a Google Cloud Storage client."
 )
 
 
@@ -64,7 +66,12 @@ class GcsClient(object):
     def ensure_bucket_exists(self, project, region):
         """Checks if a bucket named '{project}-automl-tables-staging' exists.
 
-        Creates this bucket if it doesn't exist.
+        If this bucket doesn't exist, creates one.
+        If this bucket already exists in `project`, do nothing.
+        If this bucket exists in a different project that we don't have
+        access to, creates a bucket named
+        '{project}-automl-tables-staging-{create_timestamp}' because bucket's
+        name must be globally unique.
 
         Args:
             project (str): The project that stores the bucket.
@@ -77,9 +84,20 @@ class GcsClient(object):
 
         try:
             self.client.get_bucket(bucket_name)
-        except exceptions.NotFound:
+        except (exceptions.Forbidden, exceptions.NotFound) as e:
+            if isinstance(e, exceptions.Forbidden):
+                used_bucket_name = bucket_name
+                bucket_name = used_bucket_name + "-{}".format(int(time.time()))
+                _LOGGER.warning(
+                    (
+                        "Created a bucket named {} because a bucket named {} "
+                        "already exists in a different project."
+                    ).format(bucket_name, used_bucket_name)
+                )
+
             bucket = self.client.bucket(bucket_name)
             bucket.create(project=project, location=region)
+
         return bucket_name
 
     def upload_pandas_dataframe(self, bucket_name, dataframe, uploaded_csv_name=None):

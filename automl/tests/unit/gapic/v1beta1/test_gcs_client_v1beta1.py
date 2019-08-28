@@ -48,10 +48,32 @@ class TestGcsClient(object):
         mock_bucket.create.assert_called_with(
             project="my-project", location="us-central1"
         )
-
         assert returned_bucket_name == "my-project-automl-tables-staging"
 
-    def test_ensure_bucket_exists_bucket_already_exists(self):
+    def test_ensure_bucket_exists_bucket_already_exists_in_different_project(self):
+        mock_bucket = mock.Mock()
+        gcs_client = self.gcs_client(
+            {
+                "get_bucket.side_effect": exceptions.Forbidden("err"),
+                "bucket.return_value": mock_bucket,
+            }
+        )
+        returned_bucket_name = gcs_client.ensure_bucket_exists(
+            "my-project", "us-central1"
+        )
+        gcs_client.client.get_bucket.assert_called_with(
+            "my-project-automl-tables-staging"
+        )
+        gcs_client.client.bucket.assert_called_with(returned_bucket_name)
+        mock_bucket.create.assert_called_with(
+            project="my-project", location="us-central1"
+        )
+
+        assert re.match(
+            "^my-project-automl-tables-staging-[0-9]*$", returned_bucket_name
+        )
+
+    def test_ensure_bucket_exists_bucket_already_exists_in_current_project(self):
         gcs_client = self.gcs_client()
         returned_bucket_name = gcs_client.ensure_bucket_exists(
             "my-project", "us-central1"
@@ -89,7 +111,7 @@ class TestGcsClient(object):
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with(generated_csv_name)
         mock_blob.upload_from_string.assert_called_with(",col1,col2\n0,1,3\n1,2,4\n")
-        assert re.match("gs://my-bucket/automl-tables-dataframe-([0-9]*).csv", gcs_uri)
+        assert re.match("^gs://my-bucket/automl-tables-dataframe-[0-9]*.csv$", gcs_uri)
 
     def test_upload_pandas_dataframe_not_type_dataframe(self):
         gcs_client = self.gcs_client()
