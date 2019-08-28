@@ -172,7 +172,7 @@ class Blob(_PropertyMixin):
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
-        self.bucket = bucket
+        self._bucket = bucket
         self._acl = ObjectACL(self)
         if encryption_key is not None and kms_key_name is not None:
             raise ValueError(
@@ -186,6 +186,15 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
+    @property
+    def bucket(self):
+        """Bucket which contains the object.
+
+        :rtype: :class:`~google.cloud.storage.bucket.Bucket`
+        :returns: The object's bucket.
+        """
+        return self._bucket
 
     @property
     def chunk_size(self):
