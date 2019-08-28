@@ -31,6 +31,11 @@ class SpannerStub(object):
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.CreateSessionRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.Session.FromString,
         )
+        self.BatchCreateSessions = channel.unary_unary(
+            "/google.spanner.v1.Spanner/BatchCreateSessions",
+            request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.BatchCreateSessionsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.BatchCreateSessionsResponse.FromString,
+        )
         self.GetSession = channel.unary_unary(
             "/google.spanner.v1.Spanner/GetSession",
             request_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.GetSessionRequest.SerializeToString,
@@ -130,6 +135,16 @@ class SpannerServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def BatchCreateSessions(self, request, context):
+        """Creates multiple new sessions.
+
+    This API can be used to initialize a session cache on the clients.
+    See https://goo.gl/TgSFN2 for best practices on session cache management.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def GetSession(self, request, context):
         """Gets a session. Returns `NOT_FOUND` if the session does not exist.
     This is mainly useful for determining whether a session is still
@@ -192,8 +207,9 @@ class SpannerServicer(object):
 
     Statements are executed in order, sequentially.
     [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse] will contain a
-    [ResultSet][google.spanner.v1.ResultSet] for each DML statement that has successfully executed. If a
-    statement fails, its error status will be returned as part of the
+    [ResultSet][google.spanner.v1.ResultSet] for each DML statement that has
+    successfully executed. If a statement fails, its error status will be
+    returned as part of the
     [ExecuteBatchDmlResponse][Spanner.ExecuteBatchDmlResponse]. Execution will
     stop at the first failed statement; the remaining statements will not run.
 
@@ -326,6 +342,11 @@ def add_SpannerServicer_to_server(servicer, server):
             servicer.CreateSession,
             request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.CreateSessionRequest.FromString,
             response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.Session.SerializeToString,
+        ),
+        "BatchCreateSessions": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchCreateSessions,
+            request_deserializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.BatchCreateSessionsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__v1_dot_proto_dot_spanner__pb2.BatchCreateSessionsResponse.SerializeToString,
         ),
         "GetSession": grpc.unary_unary_rpc_method_handler(
             servicer.GetSession,
