@@ -41,6 +41,7 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+import google.api_core.client_options
 import google.api_core.exceptions
 from google.api_core import page_iterator
 import google.cloud._helpers
@@ -142,6 +143,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[~google.api_core.client_options.ClientOptions, dict]):
+            (Optional) Client options used to set user options on the client.
+            API Endpoint should be set through client_options.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -163,11 +167,23 @@ class Client(ClientWithProject):
         location=None,
         default_query_job_config=None,
         client_info=None,
+        client_options=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self, client_info=client_info)
+
+        kw_args = {"client_info": client_info}
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
+
+        self._connection = Connection(self, **kw_args)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
