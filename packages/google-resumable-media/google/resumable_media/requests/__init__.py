@@ -658,10 +658,6 @@ transmitted in chunks until completion:
    >>> json_response[u'name'] == blob_name
    True
 """
-import pkg_resources
-
-pkg_resources.require('google-resumable-media[requests]')  # noqa: E402
-
 from google.resumable_media.requests.download import ChunkedDownload
 from google.resumable_media.requests.download import Download
 from google.resumable_media.requests.upload import MultipartUpload
