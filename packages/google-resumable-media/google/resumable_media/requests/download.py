@@ -154,7 +154,7 @@ class Download(_helpers.RequestsMixin, _download.Download):
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _helpers.http_request(
+        response = _helpers.http_request(
             transport,
             method,
             url,
@@ -164,12 +164,12 @@ class Download(_helpers.RequestsMixin, _download.Download):
             stream=True,
         )
 
-        self._process_response(result)
+        self._process_response(response)
 
         if self._stream is not None:
-            self._write_to_stream(result)
+            self._write_to_stream(response)
 
-        return result
+        return response
 
 
 class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
@@ -215,11 +215,11 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _helpers.http_request(
+        response = _helpers.http_request(
             transport, method, url, data=payload, headers=headers,
             retry_strategy=self._retry_strategy, stream=True)
-        self._process_response(result)
-        return result
+        self._process_response(response)
+        return response
 
 
 def _parse_md5_header(header_value, response):
