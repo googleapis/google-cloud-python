@@ -340,8 +340,8 @@ def test_decoding_data_types(
     ]
 
     # Explicit schema is needed to recognize bytes_field as BYTES, and not STRING.
-    # Until the support for partial schemas is added, all fields need to be listed.
-    # TODO: Retain only the bytes_field item once partial schemas are supported.
+    # Since partial schemas are not supported in load_table_from_json(), a full
+    # schema needs to be specified.
     schema = [
         bigquery.SchemaField("string_field", "STRING"),
         bigquery.SchemaField("bytes_field", "BYTES"),
