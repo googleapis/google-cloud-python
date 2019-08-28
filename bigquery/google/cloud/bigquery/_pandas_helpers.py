@@ -187,6 +187,49 @@ def bq_to_arrow_array(series, bq_field):
     return pyarrow.array(series, type=arrow_type)
 
 
+def get_column_or_index(dataframe, name):
+    """Return a column or index as a pandas series."""
+    if name in dataframe.columns:
+        return dataframe[name].reset_index(drop=True)
+
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        if name in dataframe.index.names:
+            return (
+                dataframe.index.get_level_values(name)
+                .to_series()
+                .reset_index(drop=True)
+            )
+    else:
+        if name == dataframe.index.name:
+            return dataframe.index.to_series().reset_index(drop=True)
+
+    raise ValueError("column or index '{}' not found.".format(name))
+
+
+def list_columns_and_indexes(dataframe):
+    """Return all index and column names with dtypes.
+
+    Returns:
+        Sequence[Tuple[dtype, str]]:
+            Returns a sorted list of indexes and column names with
+            corresponding dtypes. If an index is missing a name or has the
+            same name as a column, the index is omitted.
+    """
+    column_names = frozenset(dataframe.columns)
+    columns_and_indexes = []
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        for name in dataframe.index.names:
+            if name and name not in column_names:
+                values = dataframe.index.get_level_values(name)
+                columns_and_indexes.append((name, values.dtype))
+    else:
+        if dataframe.index.name and dataframe.index.name not in column_names:
+            columns_and_indexes.append((dataframe.index.name, dataframe.index.dtype))
+
+    columns_and_indexes += zip(dataframe.columns, dataframe.dtypes)
+    return columns_and_indexes
+
+
 def dataframe_to_bq_schema(dataframe, bq_schema):
     """Convert a pandas DataFrame schema to a BigQuery schema.
 
@@ -217,7 +260,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_schema_unused = set()
 
     bq_schema_out = []
-    for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+    for column, dtype in list_columns_and_indexes(dataframe):
         # Use provided type from schema, if present.
         bq_field = bq_schema_index.get(column)
         if bq_field:
@@ -229,7 +272,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
-            warnings.warn("Unable to determine type of column '{}'.".format(column))
+            warnings.warn(u"Unable to determine type of column '{}'.".format(column))
             return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
@@ -238,7 +281,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
     # column, but it was not found.
     if bq_schema_unused:
         raise ValueError(
-            "bq_schema contains fields not present in dataframe: {}".format(
+            u"bq_schema contains fields not present in dataframe: {}".format(
                 bq_schema_unused
             )
         )
@@ -261,20 +304,25 @@ def dataframe_to_arrow(dataframe, bq_schema):
             BigQuery schema.
     """
     column_names = set(dataframe.columns)
+    column_and_index_names = set(
+        name for name, _ in list_columns_and_indexes(dataframe)
+    )
     bq_field_names = set(field.name for field in bq_schema)
 
-    extra_fields = bq_field_names - column_names
+    extra_fields = bq_field_names - column_and_index_names
     if extra_fields:
         raise ValueError(
-            "bq_schema contains fields not present in dataframe: {}".format(
+            u"bq_schema contains fields not present in dataframe: {}".format(
                 extra_fields
             )
         )
 
+    # It's okay for indexes to be missing from bq_schema, but it's not okay to
+    # be missing columns.
     missing_fields = column_names - bq_field_names
     if missing_fields:
         raise ValueError(
-            "bq_schema is missing fields from dataframe: {}".format(missing_fields)
+            u"bq_schema is missing fields from dataframe: {}".format(missing_fields)
         )
 
     arrow_arrays = []
@@ -283,7 +331,9 @@ def dataframe_to_arrow(dataframe, bq_schema):
     for bq_field in bq_schema:
         arrow_fields.append(bq_to_arrow_field(bq_field))
         arrow_names.append(bq_field.name)
-        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
+        arrow_arrays.append(
+            bq_to_arrow_array(get_column_or_index(dataframe, bq_field.name), bq_field)
+        )
 
     if all((field is not None for field in arrow_fields)):
         return pyarrow.Table.from_arrays(

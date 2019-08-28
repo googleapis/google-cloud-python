@@ -55,7 +55,7 @@ install the BigQuery python client library with :mod:`pandas` and
 The following example demonstrates how to create a :class:`pandas.DataFrame`
 and load it into a new table:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_dataframe.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_dataframe]
