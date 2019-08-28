@@ -197,7 +197,7 @@ class TestTablesClient(object):
     def test_import_pandas_dataframe(self):
         client = self.tables_client(
             gcs_client_attrs={
-                "ensure_bucket_exists.return_value": "my_bucket",
+                "bucket_name": "my_bucket",
                 "upload_pandas_dataframe.return_value": "uri",
             }
         )
@@ -209,9 +209,7 @@ class TestTablesClient(object):
             pandas_dataframe=dataframe,
         )
         client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
-        client.gcs_client.upload_pandas_dataframe.assert_called_with(
-            "my_bucket", dataframe
-        )
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
         client.auto_ml_client.import_data.assert_called_with(
             "name", {"gcs_source": {"input_uris": ["uri"]}}
         )
@@ -1200,7 +1198,7 @@ class TestTablesClient(object):
     def test_batch_predict_pandas_dataframe(self):
         client = self.tables_client(
             gcs_client_attrs={
-                "ensure_bucket_exists.return_value": "my_bucket",
+                "bucket_name": "my_bucket",
                 "upload_pandas_dataframe.return_value": "gs://input",
             }
         )
@@ -1214,9 +1212,7 @@ class TestTablesClient(object):
         )
 
         client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
-        client.gcs_client.upload_pandas_dataframe.assert_called_with(
-            "my_bucket", dataframe
-        )
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
 
         client.prediction_client.batch_predict.assert_called_with(
             "my_model",
