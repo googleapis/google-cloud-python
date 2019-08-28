@@ -76,6 +76,7 @@ class GcsClient(object):
         access to, creates a bucket named
         '{project}-automl-tables-staging-{create_timestamp}' because bucket's
         name must be globally unique.
+        Save the created bucket's name and reuse this for future requests.
 
         Args:
             project (str): The project that stores the bucket.
@@ -94,10 +95,9 @@ class GcsClient(object):
                 used_bucket_name = self.bucket_name
                 self.bucket_name = used_bucket_name + "-{}".format(int(time.time()))
                 _LOGGER.warning(
-                    (
-                        "Created a bucket named {} because a bucket named {} "
-                        "already exists in a different project."
-                    ).format(self.bucket_name, used_bucket_name)
+                    "Created a bucket named {} because a bucket named {} already exists in a different project.".format(
+                        self.bucket_name, used_bucket_name
+                    )
                 )
 
             bucket = self.client.bucket(self.bucket_name)
