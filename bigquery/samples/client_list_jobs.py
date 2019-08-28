@@ -23,6 +23,8 @@ def client_list_jobs(client):
     # project = "my_project"  # replace with your project ID
     # client = bigquery.Client(project=project)
 
+    import datetime
+
     # List the 10 most recent jobs in reverse chronological order.
     # Omit the max_results parameter to list jobs from the past 6 months.
     print("Last 10 jobs:")
@@ -30,8 +32,6 @@ def client_list_jobs(client):
         print("{}".format(job.job_id))
 
     # The following are examples of additional optional parameters:
-
-    import datetime
 
     # Use min_creation_time and/or max_creation_time to specify a time window.
     print("Jobs from the last ten minutes:")
