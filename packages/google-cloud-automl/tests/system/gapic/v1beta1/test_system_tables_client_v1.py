@@ -98,6 +98,7 @@ class TestSystemTablesClient(object):
         self.cancel_and_wait(op)
         client.delete_dataset(dataset=dataset)
 
+    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
     def test_import_pandas_dataframe(self):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         display_name = _id("t_import_pandas")
