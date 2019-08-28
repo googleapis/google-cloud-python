@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.19.0
+
+08-28-2019 09:35 PDT
+
+### Implementation Changes
+- Deprecate `client.dataset()` part 1 ([#9032](https://github.com/googleapis/google-cloud-python/pull/9032))
+- Raise with extra or missing columns in `load_table_from_dataframe` schema. ([#9096](https://github.com/googleapis/google-cloud-python/pull/9096))
+- Allow subset of schema to be passed into `load_table_from_dataframe`. ([#9064](https://github.com/googleapis/google-cloud-python/pull/9064))
+- Determine the schema in `load_table_from_dataframe` based on dtypes. ([#9049](https://github.com/googleapis/google-cloud-python/pull/9049))
+- Raise helpful error when loading table from dataframe with STRUCT columns ([#9053](https://github.com/googleapis/google-cloud-python/pull/9053))
+- Fix schema recognition of struct field types ([#9001](https://github.com/googleapis/google-cloud-python/pull/9001))
+- Fix deserializing None QueryParameters ([#9029](https://github.com/googleapis/google-cloud-python/pull/9029))
+
+### New Features
+- Add client_options to constructor. ([#8999](https://github.com/googleapis/google-cloud-python/pull/8999))
+- Add `--dry_run` option to `%%bigquery` magic. ([#9067](https://github.com/googleapis/google-cloud-python/pull/9067))
+- Add load_table_from_json() method to BQ client ([#9076](https://github.com/googleapis/google-cloud-python/pull/9076))
+- Add support for unsetting LoadJobConfig schema ([#9077](https://github.com/googleapis/google-cloud-python/pull/9077))
+- Add enum with SQL type names allowed to be used in SchemaField ([#9040](https://github.com/googleapis/google-cloud-python/pull/9040))
+- Add support to Dataset for project_ids with org prefix. ([#8877](https://github.com/googleapis/google-cloud-python/pull/8877))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Fix Pandas DataFrame load example under Python 2.7 ([#9022](https://github.com/googleapis/google-cloud-python/pull/9022))
+
+### Internal / Testing Changes
+- Fix BigQuery client unit test assertions ([#9112](https://github.com/googleapis/google-cloud-python/pull/9112))
+- Replace avro with arrow schemas in test_table.py ([#9056](https://github.com/googleapis/google-cloud-python/pull/9056))
+
 ## 1.18.0
 
 08-08-2019 12:28 PDT
