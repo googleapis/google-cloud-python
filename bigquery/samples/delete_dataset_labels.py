@@ -33,3 +33,4 @@ def delete_dataset_labels(client, dataset_id):
     dataset = client.update_dataset(dataset, ["labels"])
     print("Labels deleted from {}".format(dataset_id))
     # [END bigquery_delete_label_dataset]
+    return dataset
