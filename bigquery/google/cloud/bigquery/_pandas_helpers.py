@@ -273,7 +273,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
-            warnings.warn("Unable to determine type of column '{}'.".format(column))
+            warnings.warn(u"Unable to determine type of column '{}'.".format(column))
             return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
@@ -282,7 +282,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
     # column, but it was not found.
     if bq_schema_unused:
         raise ValueError(
-            "bq_schema contains fields not present in dataframe: {}".format(
+            u"bq_schema contains fields not present in dataframe: {}".format(
                 bq_schema_unused
             )
         )
@@ -313,7 +313,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
     extra_fields = bq_field_names - column_and_index_names
     if extra_fields:
         raise ValueError(
-            "bq_schema contains fields not present in dataframe: {}".format(
+            u"bq_schema contains fields not present in dataframe: {}".format(
                 extra_fields
             )
         )
@@ -323,7 +323,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
     missing_fields = column_names - bq_field_names
     if missing_fields:
         raise ValueError(
-            "bq_schema is missing fields from dataframe: {}".format(missing_fields)
+            u"bq_schema is missing fields from dataframe: {}".format(missing_fields)
         )
 
     arrow_arrays = []
