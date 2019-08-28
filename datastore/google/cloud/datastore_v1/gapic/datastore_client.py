@@ -229,8 +229,8 @@ class DatastoreClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.ReadOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -327,8 +327,8 @@ class DatastoreClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.GqlQuery`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -412,8 +412,8 @@ class DatastoreClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -515,8 +515,8 @@ class DatastoreClient(object):
                 transaction identifier is returned by a call to
                 ``Datastore.BeginTransaction``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -600,8 +600,8 @@ class DatastoreClient(object):
             transaction (bytes): The transaction identifier, returned by a call to
                 ``Datastore.BeginTransaction``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -682,8 +682,8 @@ class DatastoreClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Key`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -764,8 +764,8 @@ class DatastoreClient(object):
                 message :class:`~google.cloud.datastore_v1.types.Key`
             database_id (str): If not empty, the ID of the database against which to make the request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

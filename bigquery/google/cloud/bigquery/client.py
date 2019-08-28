@@ -21,6 +21,7 @@ try:
 except ImportError:  # Python 2.7
     import collections as collections_abc
 
+import copy
 import functools
 import gzip
 import io
@@ -40,6 +41,7 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+import google.api_core.client_options
 import google.api_core.exceptions
 from google.api_core import page_iterator
 import google.cloud._helpers
@@ -141,6 +143,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[~google.api_core.client_options.ClientOptions, dict]):
+            (Optional) Client options used to set user options on the client.
+            API Endpoint should be set through client_options.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -162,11 +167,23 @@ class Client(ClientWithProject):
         location=None,
         default_query_job_config=None,
         client_info=None,
+        client_options=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self, client_info=client_info)
+
+        kw_args = {"client_info": client_info}
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
+
+        self._connection = Connection(self, **kw_args)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
@@ -1449,6 +1466,7 @@ class Client(ClientWithProject):
         location=None,
         project=None,
         job_config=None,
+        parquet_compression="snappy",
     ):
         """Upload the contents of a table from a pandas DataFrame.
 
@@ -1491,6 +1509,20 @@ class Client(ClientWithProject):
                 column names matching those of the dataframe. The BigQuery
                 schema is used to determine the correct data type conversion.
                 Indexes are not loaded. Requires the :mod:`pyarrow` library.
+            parquet_compression (str):
+                 [Beta] The compression method to use if intermittently
+                 serializing ``dataframe`` to a parquet file.
+
+                 If ``pyarrow`` and job config schema are used, the argument
+                 is directly passed as the ``compression`` argument to the
+                 underlying ``pyarrow.parquet.write_table()`` method (the
+                 default value "snappy" gets converted to uppercase).
+                 https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
+
+                 If either ``pyarrow`` or job config schema are missing, the
+                 argument is directly passed as the ``compression`` argument
+                 to the underlying ``DataFrame.to_parquet()`` method.
+                 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
@@ -1505,18 +1537,33 @@ class Client(ClientWithProject):
 
         if job_config is None:
             job_config = job.LoadJobConfig()
+        else:
+            # Make a copy so that the job config isn't modified in-place.
+            job_config_properties = copy.deepcopy(job_config._properties)
+            job_config = job.LoadJobConfig()
+            job_config._properties = job_config_properties
         job_config.source_format = job.SourceFormat.PARQUET
 
         if location is None:
             location = self.location
+
+        job_config.schema = _pandas_helpers.dataframe_to_bq_schema(
+            dataframe, job_config.schema
+        )
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
 
         try:
             if pyarrow and job_config.schema:
+                if parquet_compression == "snappy":  # adjust the default value
+                    parquet_compression = parquet_compression.upper()
+
                 _pandas_helpers.dataframe_to_parquet(
-                    dataframe, job_config.schema, tmppath
+                    dataframe,
+                    job_config.schema,
+                    tmppath,
+                    parquet_compression=parquet_compression,
                 )
             else:
                 if job_config.schema:
@@ -1527,7 +1574,8 @@ class Client(ClientWithProject):
                         PendingDeprecationWarning,
                         stacklevel=2,
                     )
-                dataframe.to_parquet(tmppath)
+
+                dataframe.to_parquet(tmppath, compression=parquet_compression)
 
             with open(tmppath, "rb") as parquet_file:
                 return self.load_table_from_file(
@@ -1544,6 +1592,88 @@ class Client(ClientWithProject):
 
         finally:
             os.remove(tmppath)
+
+    def load_table_from_json(
+        self,
+        json_rows,
+        destination,
+        num_retries=_DEFAULT_NUM_RETRIES,
+        job_id=None,
+        job_id_prefix=None,
+        location=None,
+        project=None,
+        job_config=None,
+    ):
+        """Upload the contents of a table from a JSON string or dict.
+
+        Arguments:
+            json_rows (Iterable[Dict[str, Any]]):
+                Row data to be inserted. Keys must match the table schema fields
+                and values must be JSON-compatible representations.
+            destination (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                Table into which data is to be loaded. If a string is passed
+                in, this method attempts to create a table reference from a
+                string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string`.
+
+        Keyword Arguments:
+            num_retries (int, optional): Number of upload retries.
+            job_id (str): (Optional) Name of the job.
+            job_id_prefix (str):
+                (Optional) the user-provided prefix for a randomly generated
+                job ID. This parameter will be ignored if a ``job_id`` is
+                also given.
+            location (str):
+                Location where to run the job. Must match the location of the
+                destination table.
+            project (str):
+                Project ID of the project of where to run the job. Defaults
+                to the client's project.
+            job_config (google.cloud.bigquery.job.LoadJobConfig):
+                (Optional) Extra configuration options for the job. The
+                ``source_format`` setting is always set to
+                :attr:`~google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON`.
+
+        Returns:
+            google.cloud.bigquery.job.LoadJob: A new load job.
+        """
+        job_id = _make_job_id(job_id, job_id_prefix)
+
+        if job_config is None:
+            job_config = job.LoadJobConfig()
+        else:
+            # Make a copy so that the job config isn't modified in-place.
+            job_config = copy.deepcopy(job_config)
+        job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
+
+        if job_config.schema is None:
+            job_config.autodetect = True
+
+        if project is None:
+            project = self.project
+
+        if location is None:
+            location = self.location
+
+        destination = _table_arg_to_table_ref(destination, default_project=self.project)
+
+        data_str = u"\n".join(json.dumps(item) for item in json_rows)
+        data_file = io.BytesIO(data_str.encode())
+
+        return self.load_table_from_file(
+            data_file,
+            destination,
+            num_retries=num_retries,
+            job_id=job_id,
+            job_id_prefix=job_id_prefix,
+            location=location,
+            project=project,
+            job_config=job_config,
+        )
 
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.

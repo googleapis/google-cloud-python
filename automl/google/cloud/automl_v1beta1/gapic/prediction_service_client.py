@@ -245,6 +245,9 @@ class PredictionServiceClient(object):
 
         ``prediction_type``.
 
+        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+           encoded.
+
         Example:
             >>> from google.cloud import automl_v1beta1
             >>>
@@ -259,8 +262,7 @@ class PredictionServiceClient(object):
 
         Args:
             name (str): Name of the model requested to serve the prediction.
-            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required.
-                Payload to perform a prediction on. The payload must match the
+            payload (Union[dict, ~google.cloud.automl_v1beta1.types.ExamplePayload]): Required. Payload to perform a prediction on. The payload must match the
                 problem type that the model was trained to solve.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -274,6 +276,13 @@ class PredictionServiceClient(object):
                    makes predictions for an image, it will only produce results that
                    have at least this confidence score. The default is 0.5.
 
+                -  For Image Object Detection: ``score_threshold`` - (float) When Model
+                   detects objects on the image, it will only produce bounding boxes
+                   which have at least this confidence score. Value in 0 to 1 range,
+                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
+                   this number of bounding boxes will be returned in the response.
+                   Default is 100, the requested value may be limited by server.
+
                 -  For Tables: ``feature_importance`` - (boolean) Whether
 
                 [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]
@@ -282,8 +291,8 @@ class PredictionServiceClient(object):
                 [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
                 The default is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -349,9 +358,10 @@ class PredictionServiceClient(object):
         done, ``BatchPredictResult`` is returned in the ``response`` field.
         Available for following ML problems:
 
+        -  Image Classification
+        -  Image Object Detection
         -  Video Classification
-        -  Video Object Tracking
-        -  Text Extraction
+        -  Video Object Tracking \* Text Extraction
         -  Tables
 
         Example:
@@ -392,6 +402,27 @@ class PredictionServiceClient(object):
             params (dict[str -> str]): Additional domain-specific parameters for the predictions, any string
                 must be up to 25000 characters long.
 
+                -  For Text Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for a text snippet, it will only produce results
+                   that have at least this confidence score. The default is 0.5.
+
+                -  For Image Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for an image, it will only produce results that
+                   have at least this confidence score. The default is 0.5.
+
+                -  For Image Object Detection:
+
+                   ``score_threshold`` - (float) When Model detects objects on the
+                   image, it will only produce bounding boxes which have at least this
+                   confidence score. Value in 0 to 1 range, default is 0.5.
+                   ``max_bounding_box_count`` - (int64) No more than this number of
+                   bounding boxes will be produced per image. Default is 100, the
+                   requested value may be limited by server.
+
                 -  For Video Classification : ``score_threshold`` - (float) A value from
                    0.0 to 1.0. When the model makes predictions for a video, it will
                    only produce results that have at least this confidence score. The
@@ -427,8 +458,8 @@ class PredictionServiceClient(object):
                    edge at least that long as a relative value of video frame size will
                    be returned. Value in 0 to 1 range. Default is 0.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

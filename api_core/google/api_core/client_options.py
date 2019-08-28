@@ -16,6 +16,27 @@
 
 Client options provide a consistent interface for user options to be defined
 across clients.
+
+You can pass a client options object to a client.
+
+.. code-block:: python
+
+    from google.api_core.client_options import ClientOptions
+    from google.cloud.vision_v1 import ImageAnnotatorClient
+
+    options = ClientOptions(api_endpoint="foo.googleapis.com")
+
+    client = ImageAnnotatorClient(client_options=options)
+
+You can also pass a dictionary.
+
+.. code-block:: python
+
+    from google.cloud.vision_v1 import ImageAnnotatorClient
+
+    client = ImageAnnotatorClient(client_options={"api_endpoint": "foo.googleapis.com"})
+
+
 """
 
 

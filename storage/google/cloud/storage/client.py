@@ -26,6 +26,7 @@ from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 
 _marker = object()
@@ -475,7 +476,7 @@ class Client(ClientWithProject):
             versions=versions,
             projection=projection,
             fields=fields,
-            client=self
+            client=self,
         )
 
     def list_buckets(
@@ -561,6 +562,98 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
+    def create_hmac_key(self, service_account_email, project_id=None):
+        """Create an HMAC key for a service account.
+
+        :type service_account_email: str
+        :param service_account_email: e-mail address of the service account
+
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
+        :rtype:
+            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
+        :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
+        """
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
+        qs_params = {"serviceAccountEmail": service_account_email}
+        api_response = self._connection.api_request(
+            method="POST", path=path, query_params=qs_params
+        )
+        metadata = HMACKeyMetadata(self)
+        metadata._properties = api_response["metadata"]
+        secret = api_response["secret"]
+        return metadata, secret
+
+    def list_hmac_keys(
+        self,
+        max_results=None,
+        service_account_email=None,
+        show_deleted_keys=None,
+        project_id=None,
+    ):
+        """List HMAC keys for a project.
+
+        :type max_results: int
+        :param max_results:
+            (Optional) max number of keys to return in a given page.
+
+        :type service_account_email: str
+        :param service_account_email:
+            (Optional) limit keys to those created by the given service account.
+
+        :type show_deleted_keys: bool
+        :param show_deleted_keys:
+            (Optional) included deleted keys in the list. Default is to
+            exclude them.
+
+        :type project_id: str
+        :param project_id: (Optional) explicit project ID for the key.
+            Defaults to the client's project.
+
+        :rtype:
+            Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
+        :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
+        """
+        if project_id is None:
+            project_id = self.project
+
+        path = "/projects/{}/hmacKeys".format(project_id)
+        extra_params = {}
+
+        if service_account_email is not None:
+            extra_params["serviceAccountEmail"] = service_account_email
+
+        if show_deleted_keys is not None:
+            extra_params["showDeletedKeys"] = show_deleted_keys
+
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_hmac_key_metadata,
+            max_results=max_results,
+            extra_params=extra_params,
+        )
+
+    def get_hmac_key_metadata(self, access_id, project_id=None):
+        """Return a metadata instance for the given HMAC key.
+
+        :type access_id: str
+        :param access_id: Unique ID of an existing key.
+
+        :type project_id: str
+        :param project_id: (Optional) project ID of an existing key.
+            Defaults to client's project.
+        """
+        metadata = HMACKeyMetadata(self, access_id, project_id)
+        metadata.reload()  # raises NotFound for missing key
+        return metadata
+
 
 def _item_to_bucket(iterator, item):
     """Convert a JSON bucket to the native object.
@@ -578,3 +671,20 @@ def _item_to_bucket(iterator, item):
     bucket = Bucket(iterator.client, name)
     bucket._set_properties(item)
     return bucket
+
+
+def _item_to_hmac_key_metadata(iterator, item):
+    """Convert a JSON key metadata resource to the native object.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type item: dict
+    :param item: An item to be converted to a key metadata instance.
+
+    :rtype: :class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`
+    :returns: The next key metadata instance in the page.
+    """
+    metadata = HMACKeyMetadata(iterator.client)
+    metadata._properties = item
+    return metadata

@@ -62,7 +62,14 @@ class ProductSearchGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -465,3 +472,39 @@ class ProductSearchGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["product_search_stub"].ImportProductSets
+
+    @property
+    def purge_products(self):
+        """Return the gRPC stub for :meth:`ProductSearchClient.purge_products`.
+
+        Asynchronous API to delete all Products in a ProductSet or all Products
+        that are in no ProductSet.
+
+        If a Product is a member of the specified ProductSet in addition to
+        other ProductSets, the Product will still be deleted.
+
+        It is recommended to not delete the specified ProductSet until after
+        this operation has completed. It is also recommended to not add any of
+        the Products involved in the batch delete to a new ProductSet while this
+        operation is running because those Products may still end up deleted.
+
+        It's not possible to undo the PurgeProducts operation. Therefore, it is
+        recommended to keep the csv files used in ImportProductSets (if that was
+        how you originally built the Product Set) before starting PurgeProducts,
+        in case you need to re-import the data after deletion.
+
+        If the plan is to purge all of the Products from a ProductSet and then
+        re-use the empty ProductSet to re-import new Products into the empty
+        ProductSet, you must wait until the PurgeProducts operation has finished
+        for that ProductSet.
+
+        The ``google.longrunning.Operation`` API can be used to keep track of
+        the progress and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress)
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["product_search_stub"].PurgeProducts

@@ -268,12 +268,9 @@ class PublisherClient(object):
                 must not start with `"goog"`.
             labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
                 managing labels</a>.
-            message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining how messages published to the topic may be stored. It
-                is determined when the topic is created based on the policy configured at
-                the project level. It must not be set by the caller in the request to
-                CreateTopic or to UpdateTopic. This field will be populated in the
-                responses for GetTopic, CreateTopic, and UpdateTopic: if not present in the
-                response, then no constraints are in effect.
+            message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining the set of Google Cloud Platform regions where messages
+                published to the topic may be stored. If not present, then no constraints
+                are in effect.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.MessageStoragePolicy`
@@ -281,13 +278,10 @@ class PublisherClient(object):
                 access to messages published on this topic.
 
                 The expected format is
-                ``projects/*/locations/*/keyRings/*/cryptoKeys/*``. EXPERIMENTAL: This
-                feature is part of a closed alpha release. This API might be changed in
-                backward-incompatible ways and is not recommended for production use. It
-                is not subject to any SLA or deprecation policy.
+                ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -378,8 +372,8 @@ class PublisherClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -457,8 +451,8 @@ class PublisherClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PubsubMessage`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -527,8 +521,8 @@ class PublisherClient(object):
             topic (str): The name of the topic to get. Format is
                 ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -615,8 +609,8 @@ class PublisherClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -624,7 +618,7 @@ class PublisherClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`~google.cloud.pubsub_v1.types.Topic` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
@@ -717,8 +711,8 @@ class PublisherClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -726,7 +720,7 @@ class PublisherClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`str` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
@@ -808,8 +802,8 @@ class PublisherClient(object):
             topic (str): Name of the topic to delete. Format is
                 ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -887,8 +881,8 @@ class PublisherClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -965,8 +959,8 @@ class PublisherClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1051,8 +1045,8 @@ class PublisherClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

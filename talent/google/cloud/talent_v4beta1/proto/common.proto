@@ -442,8 +442,12 @@ enum PostingRegion {
   TELECOMMUTE = 3;
 }
 
+// Deprecated. All resources are only visible to the owner.
+//
 // An enum that represents who has view access to the resource.
 enum Visibility {
+  option deprecated = true;
+
   // Default value.
   VISIBILITY_UNSPECIFIED = 0;
 
@@ -642,7 +646,7 @@ message CustomAttribute {
   // `CASE_INSENSITIVE_MATCH`) search.
   // For filterable `string_value`s, a maximum total number of 200 values
   // is allowed, with each `string_value` has a byte size of no more than
-  // 255B. For unfilterable `string_values`, the maximum total byte size of
+  // 500B. For unfilterable `string_values`, the maximum total byte size of
   // unfilterable `string_values` is 50KB.
   //
   // Empty string isn't allowed.

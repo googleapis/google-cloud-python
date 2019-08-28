@@ -436,7 +436,7 @@ ModelEvaluation = _reflection.GeneratedProtocolMessageType(
           field is used.
       display_name:
           Output only. The value of [display\_name][google.cloud.automl.
-          v1beta1.AnnotationSpec.dispay\_name] at the moment when the
+          v1beta1.AnnotationSpec.display\_name] at the moment when the
           model was trained. Because this field returns a value at model
           training time, for different models trained from the same
           dataset, the values may differ, since display names could had

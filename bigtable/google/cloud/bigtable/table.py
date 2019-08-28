@@ -190,6 +190,14 @@ class Table(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if both
                  ``filter_`` and ``append`` are used.
         """
+        warnings.warn(
+            "This method will be deprecated in future versions. Please "
+            "use Table.append_row(), Table.conditional_row() "
+            "and Table.direct_row() methods instead.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         if append and filter_ is not None:
             raise ValueError("At most one of filter_ and append can be set")
         if append:
@@ -198,6 +206,60 @@ class Table(object):
             return ConditionalRow(row_key, self, filter_=filter_)
         else:
             return DirectRow(row_key, self)
+
+    def append_row(self, row_key):
+        """Create a :class:`~google.cloud.bigtable.row.AppendRow` associated with this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_append_row]
+            :end-before: [END bigtable_table_append_row]
+
+        Args:
+            row_key (bytes): The key for the row being created.
+
+        Returns:
+            A row owned by this table.
+        """
+        return AppendRow(row_key, self)
+
+    def direct_row(self, row_key):
+        """Create a :class:`~google.cloud.bigtable.row.DirectRow` associated with this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_direct_row]
+            :end-before: [END bigtable_table_direct_row]
+
+        Args:
+            row_key (bytes): The key for the row being created.
+
+        Returns:
+            A row owned by this table.
+        """
+        return DirectRow(row_key, self)
+
+    def conditional_row(self, row_key, filter_):
+        """Create a :class:`~google.cloud.bigtable.row.ConditionalRow` associated with this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_conditional_row]
+            :end-before: [END bigtable_table_conditional_row]
+
+        Args:
+            row_key (bytes): The key for the row being created.
+
+            filter_ (:class:`.RowFilter`): (Optional) Filter to be used for
+                conditional mutations. See :class:`.ConditionalRow` for more details.
+
+        Returns:
+            A row owned by this table.
+        """
+        return ConditionalRow(row_key, self, filter_=filter_)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

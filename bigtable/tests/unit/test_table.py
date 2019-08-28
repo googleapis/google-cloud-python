@@ -180,16 +180,19 @@ class TestTable(unittest.TestCase):
         self.assertIs(table._instance._client, client)
         self.assertEqual(table.name, self.TABLE_NAME)
 
-    def test_row_factory_direct(self):
-        from google.cloud.bigtable.row import DirectRow
-
-        credentials = _make_credentials()
+    def _row_methods_helper(self):
         client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
+            project="project-id", credentials=_make_credentials(), admin=True
         )
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_one(self.TABLE_ID, instance)
         row_key = b"row_key"
+        return table, row_key
+
+    def test_row_factory_direct(self):
+        from google.cloud.bigtable.row import DirectRow
+
+        table, row_key = self._row_methods_helper()
         row = table.row(row_key)
 
         self.assertIsInstance(row, DirectRow)
@@ -199,13 +202,7 @@ class TestTable(unittest.TestCase):
     def test_row_factory_conditional(self):
         from google.cloud.bigtable.row import ConditionalRow
 
-        credentials = _make_credentials()
-        client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
-        )
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-        row_key = b"row_key"
+        table, row_key = self._row_methods_helper()
         filter_ = object()
         row = table.row(row_key, filter_=filter_)
 
@@ -216,28 +213,48 @@ class TestTable(unittest.TestCase):
     def test_row_factory_append(self):
         from google.cloud.bigtable.row import AppendRow
 
-        credentials = _make_credentials()
-        client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
-        )
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
-        row_key = b"row_key"
+        table, row_key = self._row_methods_helper()
         row = table.row(row_key, append=True)
 
         self.assertIsInstance(row, AppendRow)
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
 
+    def test_direct_row(self):
+        from google.cloud.bigtable.row import DirectRow
+
+        table, row_key = self._row_methods_helper()
+        row = table.direct_row(row_key)
+
+        self.assertIsInstance(row, DirectRow)
+        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row._table, table)
+
+    def test_conditional_row(self):
+        from google.cloud.bigtable.row import ConditionalRow
+
+        table, row_key = self._row_methods_helper()
+        filter_ = object()
+        row = table.conditional_row(row_key, filter_=filter_)
+
+        self.assertIsInstance(row, ConditionalRow)
+        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row._table, table)
+
+    def test_append_row(self):
+        from google.cloud.bigtable.row import AppendRow
+
+        table, row_key = self._row_methods_helper()
+        row = table.append_row(row_key)
+
+        self.assertIsInstance(row, AppendRow)
+        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row._table, table)
+
     def test_row_factory_failure(self):
-        credentials = _make_credentials()
-        client = self._make_client(
-            project="project-id", credentials=credentials, admin=True
-        )
-        instance = client.instance(instance_id=self.INSTANCE_ID)
-        table = self._make_one(self.TABLE_ID, instance)
+        table, row_key = self._row_methods_helper()
         with self.assertRaises(ValueError):
-            table.row(b"row_key", filter_=object(), append=True)
+            table.row(row_key, filter_=object(), append=True)
 
     def test___eq__(self):
         credentials = _make_credentials()

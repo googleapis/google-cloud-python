@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.18.0
+
+08-08-2019 12:28 PDT
+
+### New Features
+
+- Add `bqstorage_client` param to `QueryJob.to_arrow()` ([#8693](https://github.com/googleapis/google-cloud-python/pull/8693))
+- Include SQL query and job ID in exception messages. ([#8748](https://github.com/googleapis/google-cloud-python/pull/8748))
+- Allow using TableListItem to construct a Table object. ([#8738](https://github.com/googleapis/google-cloud-python/pull/8738))
+- Add StandardSqlDataTypes enum to BigQuery ([#8782](https://github.com/googleapis/google-cloud-python/pull/8782))
+- Add `to_standard_sql()` method to SchemaField ([#8880](https://github.com/googleapis/google-cloud-python/pull/8880))
+- Add debug logging statements to track when BQ Storage API is used. ([#8838](https://github.com/googleapis/google-cloud-python/pull/8838))
+- Hide error traceback in BigQuery cell magic ([#8808](https://github.com/googleapis/google-cloud-python/pull/8808))
+- Allow choice of compression when loading from dataframe ([#8938](https://github.com/googleapis/google-cloud-python/pull/8938))
+- Additional clustering metrics for BQML K-means models (via synth). ([#8945](https://github.com/googleapis/google-cloud-python/pull/8945))
+
+### Documentation
+
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Remove redundant service account key code sample. ([#8891](https://github.com/googleapis/google-cloud-python/pull/8891))
+
+### Internal / Testing Changes
+
+- Fix several pytest "skip if" markers ([#8694](https://github.com/googleapis/google-cloud-python/pull/8694))
+- Update tests to support conversion of NaN as NULL in pyarrow `0.14.*`. ([#8785](https://github.com/googleapis/google-cloud-python/pull/8785))
+- Mock external calls in one of BigQuery unit tests ([#8727](https://github.com/googleapis/google-cloud-python/pull/8727))
+- Set IPython user agent when running queries with IPython cell magic ([#8713](https://github.com/googleapis/google-cloud-python/pull/8713))
+- Use configurable bucket name for GCS samples data in systems tests. ([#8783](https://github.com/googleapis/google-cloud-python/pull/8783))
+- Move `maybe_fail_import()` to top level test utils ([#8840](https://github.com/googleapis/google-cloud-python/pull/8840))
+- Set BQ Storage client user-agent when in Jupyter cell ([#8734](https://github.com/googleapis/google-cloud-python/pull/8734))
+
 ## 1.17.0
 
 07-12-2019 07:56 PDT

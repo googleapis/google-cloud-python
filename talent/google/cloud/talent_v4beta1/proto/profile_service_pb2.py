@@ -1026,13 +1026,22 @@ UpdateProfileRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           Optional. A field mask to specify the profile fields to
           update.  A full update is performed if it is unset.  Valid
-          values are:  -  external\_id -  source -  uri -  is\_hirable -
-          create\_time -  update\_time -  resume -  person\_names -
-          addresses -  email\_addresses -  phone\_numbers -
-          personal\_uris -  additional\_contact\_info -
-          employment\_records -  education\_records -  skills -
-          projects -  publications -  patents -  certifications -
-          recruiting\_notes -  custom\_attributes -  group\_id
+          values are: \* external\_id \* source \* uri \* is\_hirable \*
+          create\_time \* update\_time \* resume \* person\_names \*
+          addresses \* email\_addresses \* phone\_numbers \*
+          personal\_uris \* additional\_contact\_info \*
+          employment\_records \* education\_records \* skills \*
+          activities \* publications \* patents \* certifications \*
+          recruiting\_notes \* custom\_attributes \* group\_id \*
+          external\_system \* source\_note \* primary\_responsibilities
+          \* citizenships \* work\_authorizations \* employee\_types \*
+          language\_code \* qualification\_summary \*
+          allowed\_contact\_types \* preferred\_contact\_types \*
+          contact\_availability \* language\_fluencies \*
+          work\_preference \* industry\_experiences \*
+          work\_environment\_experiences \* work\_availability \*
+          security\_clearances \* references \* assessments \*
+          interviews
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.UpdateProfileRequest)
     ),
@@ -1117,9 +1126,9 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           sorted. Defaults is "relevance desc" if no value is specified.
           Supported options are:  -  "relevance desc": By descending
           relevance, as determined by the API    algorithms. -
-          "update\_time desc": Sort by    [Profile.update\_time][google.
+          "update\_date desc": Sort by    [Profile.update\_time][google.
           cloud.talent.v4beta1.Profile.update\_time]    in descending
-          order (recently updated profiles first). -  "create\_time
+          order (recently updated profiles first). -  "create\_date
           desc": Sort by    [Profile.create\_time][google.cloud.talent.v
           4beta1.Profile.create\_time]    in descending order (recently
           created profiles first). -  "first\_name": Sort by    [PersonN

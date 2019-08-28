@@ -17,6 +17,8 @@ import decimal
 import functools
 import warnings
 
+import mock
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -607,9 +609,43 @@ def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
+def test_dataframe_to_parquet_w_extra_fields(module_under_test, monkeypatch):
     with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
-            pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
+            pandas.DataFrame(), (schema.SchemaField("not_in_df", "STRING"),), None
         )
-    assert "columns in schema must match" in str(exc_context.value)
+    message = str(exc_context.value)
+    assert "bq_schema contains fields not present in dataframe" in message
+    assert "not_in_df" in message
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_w_missing_fields(module_under_test, monkeypatch):
+    with pytest.raises(ValueError) as exc_context:
+        module_under_test.dataframe_to_parquet(
+            pandas.DataFrame({"not_in_bq": [1, 2, 3]}), (), None
+        )
+    message = str(exc_context.value)
+    assert "bq_schema is missing fields from dataframe" in message
+    assert "not_in_bq" in message
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_compression_method(module_under_test):
+    bq_schema = (schema.SchemaField("field00", "STRING"),)
+    dataframe = pandas.DataFrame({"field00": ["foo", "bar"]})
+
+    write_table_patch = mock.patch.object(
+        module_under_test.pyarrow.parquet, "write_table", autospec=True
+    )
+
+    with write_table_patch as fake_write_table:
+        module_under_test.dataframe_to_parquet(
+            dataframe, bq_schema, None, parquet_compression="ZSTD"
+        )
+
+    call_args = fake_write_table.call_args
+    assert call_args is not None
+    assert call_args.kwargs.get("compression") == "ZSTD"

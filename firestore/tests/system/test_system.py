@@ -611,6 +611,43 @@ def test_query_stream(client, cleanup):
         assert value["b"] == 2
 
 
+def test_query_with_order_dot_key(client, cleanup):
+    db = client
+    collection_id = "collek" + unique_resource_id("-")
+    collection = db.collection(collection_id)
+    for index in range(100, -1, -1):
+        doc = collection.document("test_{:09d}".format(index))
+        data = {"count": 10 * index, "wordcount": {"page1": index * 10 + 100}}
+        doc.set(data)
+        cleanup(doc.delete)
+    query = collection.order_by("wordcount.page1").limit(3)
+    data = [doc.to_dict()["wordcount"]["page1"] for doc in query.stream()]
+    assert [100, 110, 120] == data
+    for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
+        last_value = snapshot.get("wordcount.page1")
+    cursor_with_nested_keys = {"wordcount": {"page1": last_value}}
+    found = list(
+        collection.order_by("wordcount.page1")
+        .start_after(cursor_with_nested_keys)
+        .limit(3)
+        .stream()
+    )
+    found_data = [
+        {u"count": 30, u"wordcount": {u"page1": 130}},
+        {u"count": 40, u"wordcount": {u"page1": 140}},
+        {u"count": 50, u"wordcount": {u"page1": 150}},
+    ]
+    assert found_data == [snap.to_dict() for snap in found]
+    cursor_with_dotted_paths = {"wordcount.page1": last_value}
+    cursor_with_key_data = list(
+        collection.order_by("wordcount.page1")
+        .start_after(cursor_with_dotted_paths)
+        .limit(3)
+        .stream()
+    )
+    assert found_data == [snap.to_dict() for snap in cursor_with_key_data]
+
+
 def test_query_unary(client, cleanup):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_name)

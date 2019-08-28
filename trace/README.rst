@@ -1,7 +1,7 @@
 Python Client for Stackdriver Trace API
 =======================================
 
-|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|alpha| |pypi| |versions| 
 
 The `Stackdriver Trace API`_ sends application trace data to Stackdriver Trace
 for viewing. Trace data is collected for all App Engine applications by
@@ -16,13 +16,10 @@ default. Trace data from other applications can be provided using this API.
    :target: https://pypi.org/project/google-cloud-trace/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-trace
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-trace
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dtrace
 .. _Stackdriver Trace API: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googleapis.dev/python/trace/latest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudtrace/latest
 .. _Product Documentation:  https://cloud.google.com/trace
+
 
 Quick Start
 -----------
@@ -36,6 +33,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the trace API.:  https://cloud.google.com/trace
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
+
 
 Installation
 ~~~~~~~~~~~~
@@ -55,6 +53,7 @@ Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Python >= 3.5
 
+
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
@@ -68,7 +67,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install gapic-google-cloud-trace-v1
+    <your-env>/bin/pip install google-cloud-trace
 
 
 Windows
@@ -79,7 +78,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install gapic-google-cloud-trace-v1
+    <your-env>\Scripts\pip.exe install google-cloud-trace
 
 For more information on setting up your Python development environment,
 such as installing ``pip`` and ``virtualenv`` on your system, please refer
@@ -87,12 +86,13 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
+
 Example Usage
 ~~~~~~~~~~~~~
 
 .. code-block:: python
 
-  from google.cloud.gapic.trace.v1 import trace_service_client
+  from google.cloud.trace import trace_service_client
 
   client = trace_service_client.TraceServiceClient()
   project_id = 'your-project-123'
@@ -101,6 +101,7 @@ Example Usage
   for element in client.list_traces(project_id):
       # process element
       pass
+
 
 Next Steps
 ~~~~~~~~~~

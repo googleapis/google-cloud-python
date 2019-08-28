@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## 1.2.1
+
+08-12-2019 13:53 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8966](https://github.com/googleapis/google-cloud-python/pull/8966))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.2.0
 
 07-24-2019 17:27 PDT

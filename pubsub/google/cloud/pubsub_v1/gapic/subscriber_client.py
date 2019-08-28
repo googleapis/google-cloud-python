@@ -246,6 +246,7 @@ class SubscriberClient(object):
         labels=None,
         enable_message_ordering=None,
         expiration_policy=None,
+        dead_letter_policy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -340,9 +341,23 @@ class SubscriberClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`
+            dead_letter_policy (Union[dict, ~google.cloud.pubsub_v1.types.DeadLetterPolicy]): A policy that specifies the conditions for dead lettering messages in
+                this subscription. If dead\_letter\_policy is not set, dead lettering is
+                disabled.
+
+                The Cloud Pub/Sub service account associated with this subscriptions's
+                parent project (i.e.,
+                service-{project\_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must
+                have permission to Acknowledge() messages on this subscription.
+                EXPERIMENTAL: This feature is part of a closed alpha release. This API
+                might be changed in backward-incompatible ways and is not recommended
+                for production use. It is not subject to any SLA or deprecation policy.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.pubsub_v1.types.DeadLetterPolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -380,6 +395,7 @@ class SubscriberClient(object):
             labels=labels,
             enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
+            dead_letter_policy=dead_letter_policy,
         )
         if metadata is None:
             metadata = []
@@ -421,8 +437,8 @@ class SubscriberClient(object):
             subscription (str): The name of the subscription to get. Format is
                 ``projects/{project}/subscriptions/{sub}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -504,8 +520,8 @@ class SubscriberClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -594,8 +610,8 @@ class SubscriberClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -603,7 +619,7 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`~google.cloud.pubsub_v1.types.Subscription` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
@@ -685,8 +701,8 @@ class SubscriberClient(object):
             subscription (str): The subscription to delete. Format is
                 ``projects/{project}/subscriptions/{sub}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -773,8 +789,8 @@ class SubscriberClient(object):
                 minimum deadline you can specify is 0 seconds. The maximum deadline you
                 can specify is 600 seconds (10 minutes).
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -857,8 +873,8 @@ class SubscriberClient(object):
                 returned by the Pub/Sub system in the ``Pull`` response. Must not be
                 empty.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -932,15 +948,16 @@ class SubscriberClient(object):
         Args:
             subscription (str): The subscription from which messages should be pulled. Format is
                 ``projects/{project}/subscriptions/{sub}``.
-            max_messages (int): The maximum number of messages returned for this request. The Pub/Sub
-                system may return fewer than the number specified.
+            max_messages (int): The maximum number of messages to return for this request. Must be a
+                positive integer. The Pub/Sub system may return fewer than the number
+                specified.
             return_immediately (bool): If this field set to true, the system will respond immediately even if
                 it there are no messages available to return in the ``Pull`` response.
                 Otherwise, the system may wait (for a bounded amount of time) until at
                 least one message is available, rather than returning no messages.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1026,8 +1043,8 @@ class SubscriberClient(object):
             requests (iterator[dict|google.cloud.pubsub_v1.proto.pubsub_pb2.StreamingPullRequest]): The input objects. If a dict is provided, it must be of the
                 same form as the protobuf message :class:`~google.cloud.pubsub_v1.types.StreamingPullRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1101,8 +1118,8 @@ class SubscriberClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PushConfig`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1193,8 +1210,8 @@ class SubscriberClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1202,7 +1219,7 @@ class SubscriberClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            A :class:`~google.api_core.page_iterator.GRPCIterator` instance.
             An iterable of :class:`~google.cloud.pubsub_v1.types.Snapshot` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
@@ -1306,8 +1323,8 @@ class SubscriberClient(object):
             labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
                 managing labels</a>.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1396,8 +1413,8 @@ class SubscriberClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1477,8 +1494,8 @@ class SubscriberClient(object):
             snapshot (str): The name of the snapshot to delete. Format is
                 ``projects/{project}/snapshots/{snap}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1568,8 +1585,8 @@ class SubscriberClient(object):
                 of the provided subscription. Format is
                 ``projects/{project}/snapshots/{snap}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1654,8 +1671,8 @@ class SubscriberClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1732,8 +1749,8 @@ class SubscriberClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1818,8 +1835,8 @@ class SubscriberClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

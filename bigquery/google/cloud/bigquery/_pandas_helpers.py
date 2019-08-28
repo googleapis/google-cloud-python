@@ -16,6 +16,7 @@
 
 import concurrent.futures
 import functools
+import logging
 import warnings
 
 from six.moves import queue
@@ -39,13 +40,29 @@ except ImportError:  # pragma: NO COVER
 from google.cloud.bigquery import schema
 
 
+_LOGGER = logging.getLogger(__name__)
+
 _NO_BQSTORAGE_ERROR = (
     "The google-cloud-bigquery-storage library is not installed, "
     "please install google-cloud-bigquery-storage to use bqstorage features."
 )
 
-STRUCT_TYPES = ("RECORD", "STRUCT")
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
+
+_PANDAS_DTYPE_TO_BQ = {
+    "bool": "BOOLEAN",
+    "datetime64[ns, UTC]": "TIMESTAMP",
+    "datetime64[ns]": "DATETIME",
+    "float32": "FLOAT",
+    "float64": "FLOAT",
+    "int8": "INTEGER",
+    "int16": "INTEGER",
+    "int32": "INTEGER",
+    "int64": "INTEGER",
+    "uint8": "INTEGER",
+    "uint16": "INTEGER",
+    "uint32": "INTEGER",
+}
 
 
 class _DownloadState(object):
@@ -123,7 +140,7 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in STRUCT_TYPES:
+    if field.field_type.upper() in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
@@ -165,9 +182,67 @@ def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in STRUCT_TYPES:
+    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
+
+
+def dataframe_to_bq_schema(dataframe, bq_schema):
+    """Convert a pandas DataFrame schema to a BigQuery schema.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame for which the client determines the BigQuery schema.
+        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            A BigQuery schema. Use this argument to override the autodetected
+            type for some or all of the DataFrame columns.
+
+    Returns:
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
+            The automatically determined schema. Returns None if the type of
+            any column cannot be determined.
+    """
+    if bq_schema:
+        for field in bq_schema:
+            if field.field_type in schema._STRUCT_TYPES:
+                raise ValueError(
+                    "Uploading dataframes with struct (record) column types "
+                    "is not supported. See: "
+                    "https://github.com/googleapis/google-cloud-python/issues/8191"
+                )
+        bq_schema_index = {field.name: field for field in bq_schema}
+        bq_schema_unused = set(bq_schema_index.keys())
+    else:
+        bq_schema_index = {}
+        bq_schema_unused = set()
+
+    bq_schema_out = []
+    for column, dtype in zip(dataframe.columns, dataframe.dtypes):
+        # Use provided type from schema, if present.
+        bq_field = bq_schema_index.get(column)
+        if bq_field:
+            bq_schema_out.append(bq_field)
+            bq_schema_unused.discard(bq_field.name)
+            continue
+
+        # Otherwise, try to automatically determine the type based on the
+        # pandas dtype.
+        bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
+        if not bq_type:
+            warnings.warn("Unable to determine type of column '{}'.".format(column))
+            return None
+        bq_field = schema.SchemaField(column, bq_type)
+        bq_schema_out.append(bq_field)
+
+    # Catch any schema mismatch. The developer explicitly asked to serialize a
+    # column, but it was not found.
+    if bq_schema_unused:
+        raise ValueError(
+            "bq_schema contains fields not present in dataframe: {}".format(
+                bq_schema_unused
+            )
+        )
+    return tuple(bq_schema_out)
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
@@ -175,7 +250,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Arrow table.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -185,9 +260,21 @@ def dataframe_to_arrow(dataframe, bq_schema):
             Table containing dataframe data, with schema derived from
             BigQuery schema.
     """
-    if len(bq_schema) != len(dataframe.columns):
+    column_names = set(dataframe.columns)
+    bq_field_names = set(field.name for field in bq_schema)
+
+    extra_fields = bq_field_names - column_names
+    if extra_fields:
         raise ValueError(
-            "Number of columns in schema must match number of columns in dataframe."
+            "bq_schema contains fields not present in dataframe: {}".format(
+                extra_fields
+            )
+        )
+
+    missing_fields = column_names - bq_field_names
+    if missing_fields:
+        raise ValueError(
+            "bq_schema is missing fields from dataframe: {}".format(missing_fields)
         )
 
     arrow_arrays = []
@@ -205,7 +292,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
     return pyarrow.Table.from_arrays(arrow_arrays, names=arrow_names)
 
 
-def dataframe_to_parquet(dataframe, bq_schema, filepath):
+def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SNAPPY"):
     """Write dataframe as a Parquet file, according to the desired BQ schema.
 
     This function requires the :mod:`pyarrow` package. Arrow is used as an
@@ -213,18 +300,23 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath):
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
+            DataFrame to convert to Parquet file.
         bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
         filepath (str):
             Path to write Parquet file to.
+        parquet_compression (str):
+            (optional) The compression codec to use by the the
+            ``pyarrow.parquet.write_table`` serializing method. Defaults to
+            "SNAPPY".
+            https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
     """
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
-    pyarrow.parquet.write_table(arrow_table, filepath)
+    pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
 
 def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
@@ -340,6 +432,11 @@ def _download_table_bqstorage(
         format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
         read_options=read_options,
         requested_streams=requested_streams,
+    )
+    _LOGGER.debug(
+        "Started reading table '{}.{}.{}' with BQ Storage API session '{}'.".format(
+            table.project, table.dataset_id, table.table_id, session.name
+        )
     )
 
     # Avoid reading rows from an empty table.

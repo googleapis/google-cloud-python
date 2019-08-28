@@ -36,6 +36,7 @@ from test_utils.system import unique_resource_id
 from test_utils.retry import RetryErrors
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
+from google.api_core.exceptions import DeadlineExceeded
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
@@ -45,6 +46,7 @@ UNIQUE_SUFFIX = unique_resource_id("-")
 INSTANCE_ID = "snippet-tests" + UNIQUE_SUFFIX
 CLUSTER_ID = "clus-1-" + UNIQUE_SUFFIX
 APP_PROFILE_ID = "app-prof" + UNIQUE_SUFFIX
+TABLE_ID = "tabl-1" + UNIQUE_SUFFIX
 ROUTING_POLICY_TYPE = enums.RoutingPolicyType.ANY
 LOCATION_ID = "us-central1-f"
 ALT_LOCATION_ID = "us-central1-a"
@@ -61,6 +63,7 @@ LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 INSTANCES_TO_DELETE = []
 
 retry_429 = RetryErrors(TooManyRequests, max_tries=9)
+retry_504 = RetryErrors(DeadlineExceeded, max_tries=4)
 
 
 class Config(object):
@@ -72,6 +75,7 @@ class Config(object):
 
     CLIENT = None
     INSTANCE = None
+    TABLE = None
 
 
 def setup_module():
@@ -88,6 +92,8 @@ def setup_module():
     operation = Config.INSTANCE.create(clusters=[cluster])
     # We want to make sure the operation completes.
     operation.result(timeout=100)
+    Config.TABLE = Config.INSTANCE.table(TABLE_ID)
+    retry_504(Config.TABLE.create)()
 
 
 def teardown_module():
@@ -395,6 +401,8 @@ def test_bigtable_update_cluster():
 
 def test_bigtable_create_table():
     # [START bigtable_create_table]
+    from google.api_core import exceptions
+    from google.api_core import retry
     from google.cloud.bigtable import Client
     from google.cloud.bigtable import column_family
 
@@ -403,7 +411,13 @@ def test_bigtable_create_table():
     table = instance.table("table_my")
     # Define the GC policy to retain only the most recent 2 versions.
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={"cf1": max_versions_rule})
+
+    # Could include other retriable exception types
+    # Could configure deadline, etc.
+    predicate_504 = retry.if_exception_type(exceptions.DeadlineExceeded)
+    retry_504 = retry.Retry(predicate_504)
+
+    retry_504(table.create)(column_families={"cf1": max_versions_rule})
     # [END bigtable_create_table]
 
     try:
@@ -413,14 +427,6 @@ def test_bigtable_create_table():
 
 
 def test_bigtable_list_tables():
-    from google.cloud.bigtable import Client
-    from google.cloud.bigtable import column_family
-
-    client = Client(admin=True)
-    instance = client.instance(INSTANCE_ID)
-    table = instance.table("to_list")
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
-    table.create(column_families={"cf1": max_versions_rule})
 
     # [START bigtable_list_tables]
     from google.cloud.bigtable import Client
@@ -430,11 +436,9 @@ def test_bigtable_list_tables():
     tables_list = instance.list_tables()
     # [END bigtable_list_tables]
 
+    # Check if returned list has expected table
     table_names = [table.name for table in tables_list]
-    try:
-        assert table.name in table_names
-    finally:
-        retry_429(table.delete)()
+    assert Config.TABLE.name in table_names
 
 
 def test_bigtable_delete_cluster():
@@ -471,9 +475,10 @@ def test_bigtable_delete_instance():
 
     client = Client(admin=True)
 
-    instance = client.instance("inst-my-123", instance_type=PRODUCTION, labels=LABELS)
+    instance_id = "snipt-inst-del" + UNIQUE_SUFFIX
+    instance = client.instance(instance_id, instance_type=PRODUCTION, labels=LABELS)
     cluster = instance.cluster(
-        "clus-my-123",
+        "clus-to-delete" + UNIQUE_SUFFIX,
         location_id=ALT_LOCATION_ID,
         serve_nodes=1,
         default_storage_type=STORAGE_TYPE,
@@ -491,7 +496,6 @@ def test_bigtable_delete_instance():
 
     client = Client(admin=True)
 
-    instance_id = "inst-my-123"
     instance_to_delete = client.instance(instance_id)
     instance_to_delete.delete()
     # [END bigtable_delete_instance]

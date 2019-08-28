@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.45.0
+
+07-31-2019 02:03 PDT
+
+
+### Implementation Changes
+
+- Remove deprecated methods and settings ([#8836](https://github.com/googleapis/google-cloud-python/pull/8836))
+
+
+### Documentation
+
+- Use double backticks for ReST correctness. ([#8829](https://github.com/googleapis/google-cloud-python/pull/8829))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 0.44.0
+
+07-29-2019 04:28 PDT
+
+
+### Implementation Changes
+
+- PubSub: Deprecate several FlowControl settings and things in Message class ([#8796](https://github.com/googleapis/google-cloud-python/pull/8796))
+
+### Documentation
+
+- Pub/Sub: document regional endpoint ([#8789](https://github.com/googleapis/google-cloud-python/pull/8789))
+
 ## 0.43.0
 
 07-24-2019 17:13 PDT
