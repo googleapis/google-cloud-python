@@ -549,6 +549,9 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
         # subvalue, instead of an array, like you'd expect when just
         # marshalling the entity normally (instead of in a projection query).
         #
+        def new_entity(key):
+            return _BaseValue(ds_entity_module.Entity(key))
+
         if prop is None and "." in name:
             supername, subname = name.split(".", 1)
             structprop = getattr(model_class, supername, None)
@@ -561,27 +564,33 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                     if structprop._repeated:
                         if isinstance(subvalue, list):
                             # Not a projection
-                            value = [
-                                _BaseValue(ds_entity_module.Entity(key._key))
-                                for _ in subvalue
-                            ]
+                            value = [new_entity(key._key) for _ in subvalue]
                         else:
                             # Is a projection, so subvalue is scalar. Only need
                             # one subentity.
-                            value = [
-                                _BaseValue(ds_entity_module.Entity(key._key))
-                            ]
+                            value = [new_entity(key._key)]
                     else:
-                        value = ds_entity_module.Entity(key._key)
-                        value = _BaseValue(value)
+                        value = new_entity(key._key)
 
                     structprop._store_value(entity, value)
 
                 if structprop._repeated:
-                    # Branch coverage bug,
-                    # See: https://github.com/nedbat/coveragepy/issues/817
                     if isinstance(subvalue, list):
                         # Not a projection
+
+                        # In the rare case of using a repeated
+                        # StructuredProperty where the sub-model is an Expando,
+                        # legacy NDB could write repeated properties of
+                        # different lengths for the subproperties, which was a
+                        # bug. We work around this when reading out such values
+                        # by making sure our repeated property is the same
+                        # length as the longest suproperty.
+                        while len(subvalue) > len(value):
+                            # Need to make some more subentities
+                            value.append(new_entity(key._key))
+
+                        # Branch coverage bug,
+                        # See: https://github.com/nedbat/coveragepy/issues/817
                         for subentity, subsubvalue in zip(  # pragma no branch
                             value, subvalue
                         ):

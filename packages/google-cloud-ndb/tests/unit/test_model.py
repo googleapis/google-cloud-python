@@ -4702,6 +4702,39 @@ class Test_entity_from_protobuf:
         assert entity.baz[0].bar == "himom"
         assert entity.copacetic is True
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_legacy_repeated_structured_property_uneven():
+        class OtherKind(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        class ThisKind(model.Model):
+            baz = model.StructuredProperty(OtherKind, repeated=True)
+            copacetic = model.BooleanProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.items = unittest.mock.Mock(
+            return_value=(
+                # Order counts for coverage
+                ("baz.foo", [42, 144]),
+                ("baz.bar", ["himom", "hellodad", "iminjail"]),
+                ("copacetic", True),
+            )
+        )
+
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        assert isinstance(entity, ThisKind)
+        assert entity.baz[0].foo == 42
+        assert entity.baz[0].bar == "himom"
+        assert entity.baz[1].foo == 144
+        assert entity.baz[1].bar == "hellodad"
+        assert entity.baz[2].foo is None
+        assert entity.baz[2].bar == "iminjail"
+        assert entity.copacetic is True
+
 
 class Test_entity_to_protobuf:
     @staticmethod
