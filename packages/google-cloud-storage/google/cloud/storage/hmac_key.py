@@ -63,7 +63,7 @@ class HMACKeyMetadata(object):
 
     @property
     def access_id(self):
-        """ID of the key.
+        """Access ID of the key.
 
         :rtype: str or None
         :returns: unique identifier of the key within a project.
@@ -78,6 +78,15 @@ class HMACKeyMetadata(object):
         :returns: ETag for the version of the key's metadata.
         """
         return self._properties.get("etag")
+
+    @property
+    def id(self):
+        """ID of the key, including the Project ID and the Access ID.
+
+        :rtype: str or None
+        :returns: ID of the key.
+        """
+        return self._properties.get("id")
 
     @property
     def project(self):
