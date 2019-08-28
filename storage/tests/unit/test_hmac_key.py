@@ -36,6 +36,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertEqual(metadata._properties, {})
         self.assertIsNone(metadata.access_id)
         self.assertIsNone(metadata.etag)
+        self.assertIsNone(metadata.id)
         self.assertIsNone(metadata.project)
         self.assertIsNone(metadata.service_account_email)
         self.assertIsNone(metadata.state)
@@ -52,6 +53,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertEqual(metadata._properties, expected)
         self.assertEqual(metadata.access_id, ACCESS_ID)
         self.assertIsNone(metadata.etag)
+        self.assertIsNone(metadata.id)
         self.assertEqual(metadata.project, OTHER_PROJECT)
         self.assertIsNone(metadata.service_account_email)
         self.assertIsNone(metadata.state)
@@ -103,6 +105,12 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected = "ETAG"
         metadata._properties["etag"] = expected
         self.assertEqual(metadata.etag, expected)
+
+    def test_id_getter(self):
+        metadata = self._make_one()
+        expected = "ID"
+        metadata._properties["id"] = expected
+        self.assertEqual(metadata.id, expected)
 
     def test_project_getter(self):
         metadata = self._make_one()
