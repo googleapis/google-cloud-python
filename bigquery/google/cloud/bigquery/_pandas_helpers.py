@@ -223,7 +223,7 @@ def list_columns_and_indexes(dataframe):
                 values = dataframe.index.get_level_values(name)
                 columns_and_indexes.append((name, values.dtype))
     else:
-        if dataframe.index.name:
+        if dataframe.index.name and dataframe.index.name not in column_names:
             columns_and_indexes.append((dataframe.index.name, dataframe.index.dtype))
 
     # Add columns last so that if you iterate over the list, the column values overwrite any indexes with the same name.

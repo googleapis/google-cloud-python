@@ -552,7 +552,7 @@ def test_get_column_or_index_with_column(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_get_column_or_index_with_index(module_under_test):
+def test_get_column_or_index_with_named_index(module_under_test):
     dataframe = pandas.DataFrame(
         {"column_name": [1, 2, 3]}, index=pandas.Index([4, 5, 6], name="index_name")
     )
@@ -617,7 +617,32 @@ def test_list_columns_and_indexes_without_named_index(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_list_columns_and_indexes_with_index(module_under_test):
+def test_list_columns_and_indexes_with_named_index_same_as_column_name(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("a_series", [1, 2, 3, 4]),
+            ("b_series", [0.1, 0.2, 0.3, 0.4]),
+            ("c_series", ["a", "b", "c", "d"]),
+        ]
+    )
+    dataframe = pandas.DataFrame(
+        df_data,
+        # Use same name as an integer column but a different datatype so that
+        # we can verify that the column is listed but the index isn't.
+        index=pandas.Index([0.1, 0.2, 0.3, 0.4], name="a_series")
+    )
+
+    columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
+    expected = [
+        ("a_series", pandas.api.types.pandas_dtype("int64")),
+        ("b_series", pandas.api.types.pandas_dtype("float64")),
+        ("c_series", pandas.api.types.pandas_dtype("object")),
+    ]
+    assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_list_columns_and_indexes_with_named_index(module_under_test):
     df_data = collections.OrderedDict(
         [
             ("a_series", [1, 2, 3, 4]),
