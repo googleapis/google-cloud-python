@@ -423,25 +423,26 @@ class TestResumableUpload(object):
         with pytest.raises(AttributeError):
             upload._prepare_initiate_request(None, {}, BASIC_CONTENT)
 
-    def test__process_initiate_response_bad_response(self):
+    def test__process_initiate_response_non_200(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
-        response = _make_response()
+        response = _make_response(403)
         with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_initiate_response(response)
 
         error = exc_info.value
         assert error.response is response
-        assert len(error.args) == 2
-        assert error.args[1] == u'location'
+        assert len(error.args) == 4
+        assert error.args[1] == 403
+        assert error.args[3] == 200
 
     def test__process_initiate_response(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
         headers = {u'location': u'http://test.invalid?upload_id=kmfeij3234'}
-        response = mock.Mock(headers=headers, spec=[u'headers'])
+        response = _make_response(headers=headers)
         # Check resumable_url before.
         assert upload._resumable_url is None
         # Process the actual headers.

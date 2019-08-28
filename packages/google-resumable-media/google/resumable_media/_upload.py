@@ -446,6 +446,12 @@ class ResumableUpload(UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
+        _helpers.require_status_code(
+            response,
+            (http_client.OK,),
+            self._get_status_code,
+            callback=self._make_invalid,
+        )
         self._resumable_url = _helpers.header_required(
             response, u'location', self._get_headers)
 
