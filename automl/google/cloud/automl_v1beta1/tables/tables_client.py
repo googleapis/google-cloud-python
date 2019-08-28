@@ -754,10 +754,8 @@ class TablesClient(object):
 
         if pandas_dataframe is not None:
             self.__ensure_gcs_client_is_initialized(credentials)
-            bucket_name = self.gcs_client.ensure_bucket_exists(project, region)
-            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
-                bucket_name, pandas_dataframe
-            )
+            self.gcs_client.ensure_bucket_exists(project, region)
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
         elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
@@ -2747,10 +2745,8 @@ class TablesClient(object):
 
         if pandas_dataframe is not None:
             self.__ensure_gcs_client_is_initialized(credentials)
-            bucket_name = self.gcs_client.ensure_bucket_exists(project, region)
-            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
-                bucket_name, pandas_dataframe
-            )
+            self.gcs_client.ensure_bucket_exists(project, region)
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             input_request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
         elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
