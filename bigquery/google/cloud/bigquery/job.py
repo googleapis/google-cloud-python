@@ -2152,6 +2152,19 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop("flattenResults", value)
 
     @property
+    def max_results(self):
+        """int: Maximum number of results to read.
+        
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
+        """
+        return self._properties.get("maxResults")
+
+    @max_results.setter
+    def max_results(self, value):
+        self._properties["maxResults"] = value
+
+    @property
     def maximum_billing_tier(self):
         """int: Deprecated. Changes the billing tier to allow high-compute
         queries.
@@ -2385,6 +2398,7 @@ class QueryJob(_AsyncJob):
 
         if job_config is None:
             job_config = QueryJobConfig()
+
         if job_config.use_legacy_sql is None:
             job_config.use_legacy_sql = False
 
@@ -2450,6 +2464,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.flatten_results`.
         """
         return self._configuration.flatten_results
+
+    @property
+    def max_results(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.max_results`.
+        """
+        return self._configuration.max_results
 
     @property
     def priority(self):
@@ -2837,6 +2858,7 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 timeout_ms=timeout_ms,
                 location=self.location,
+                max_results=self.max_results
             )
 
             # Only reload the job once we know the query is complete.
@@ -2933,13 +2955,25 @@ class QueryJob(_AsyncJob):
             concurrent.futures.TimeoutError:
                 If the job did not complete in the given timeout.
         """
+
+        if not re.search(r"[\s]", self.query):
+            table_id = self.query
+            rows = self._client.list_rows(
+                table_id, page_size=page_size, retry=retry, max_results=self.max_results
+            )
+            return rows
+
         try:
             super(QueryJob, self).result(timeout=timeout)
 
             # Return an iterator instead of returning the job.
             if not self._query_results:
                 self._query_results = self._client._get_query_results(
-                    self.job_id, retry, project=self.project, location=self.location
+                    self.job_id, 
+                    retry, 
+                    project=self.project, 
+                    location=self.location, 
+                    max_results=self.max_results
                 )
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
@@ -2956,7 +2990,12 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
+        rows = self._client.list_rows(
+            dest_table, 
+            page_size=page_size, 
+            retry=retry, 
+            max_results=self.max_results
+        )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 

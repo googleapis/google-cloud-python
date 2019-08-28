@@ -278,6 +278,7 @@ def _run_query(client, query, job_config=None):
         job_config (google.cloud.bigquery.job.QueryJobConfig, optional):
             Extra configuration options for the job.
 
+
     Returns:
         google.cloud.bigquery.job.QueryJob: the query job created
 
@@ -319,6 +320,14 @@ def _run_query(client, query, job_config=None):
     type=str,
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
+)
+@magic_arguments.argument(
+    "--max_results",
+    default=None,
+    help=(
+        "Maximum number of rows in dataframe returned from executing the query."
+        "Defaults to returning all rows."
+    ),
 )
 @magic_arguments.argument(
     "--maximum_bytes_billed",
@@ -409,6 +418,7 @@ def _cell_magic(line, query):
             )
 
     project = args.project or context.project
+
     client = bigquery.Client(
         project=project,
         credentials=context.credentials,
@@ -424,6 +434,11 @@ def _cell_magic(line, query):
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
     job_config.dry_run = args.dry_run
+
+    if args.max_results:
+        job_config.max_results = int(args.max_results)
+    else:
+        job_config.max_results = None
 
     if args.maximum_bytes_billed == "None":
         job_config.maximum_bytes_billed = 0

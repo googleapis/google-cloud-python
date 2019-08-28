@@ -1055,7 +1055,13 @@ class Client(ClientWithProject):
                 raise
 
     def _get_query_results(
-        self, job_id, retry, project=None, timeout_ms=None, location=None
+        self,
+        job_id,
+        retry,
+        project=None,
+        timeout_ms=None,
+        location=None,
+        max_results=None
     ):
         """Get the query results object for a query job.
 
@@ -1070,6 +1076,8 @@ class Client(ClientWithProject):
                 (Optional) number of milliseconds the the API call should
                 wait for the query to complete before the request times out.
             location (str): Location of the query job.
+            max_results (int): 
+                (Optional) Maximum number of results to read.
 
         Returns:
             google.cloud.bigquery.query._QueryResults:
@@ -1089,6 +1097,9 @@ class Client(ClientWithProject):
 
         if location is not None:
             extra_params["location"] = location
+        
+        if max_results is not None:
+            extra_params['maxResults'] = max_results
 
         path = "/projects/{}/queries/{}".format(project, job_id)
 
@@ -1986,6 +1997,7 @@ class Client(ClientWithProject):
                 to the client's project.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
