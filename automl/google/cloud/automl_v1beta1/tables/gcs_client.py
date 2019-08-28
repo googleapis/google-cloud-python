@@ -16,8 +16,9 @@
 
 """Wraps the Google Cloud Storage client library for use in tables helper."""
 
-import google
 import time
+
+from google.api_core import exceptions
 
 try:
     import pandas
@@ -31,7 +32,7 @@ except ImportError:  # pragma: NO COVER
 
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
 _STORAGE_REQUIRED = (
-    "google.cloud.storage is required to create Google Cloud Storage client."
+    "google-cloud-storage is required to create Google Cloud Storage client."
 )
 
 
@@ -66,8 +67,8 @@ class GcsClient(object):
         Creates this bucket if it doesn't exist.
 
         Args:
-            project (string): The project that stores the bucket.
-            region (string): The region of the bucket.
+            project (str): The project that stores the bucket.
+            region (str): The region of the bucket.
 
         Returns:
             A string representing the created bucket name.
@@ -76,8 +77,8 @@ class GcsClient(object):
 
         try:
             self.client.get_bucket(bucket_name)
-        except google.cloud.exceptions.NotFound:
-            bucket = self.client.Bucket(bucket_name)
+        except exceptions.NotFound:
+            bucket = self.client.bucket(bucket_name)
             bucket.create(project=project, location=region)
         return bucket_name
 
@@ -85,9 +86,9 @@ class GcsClient(object):
         """Uploads a Pandas DataFrame as CSV to the bucket.
 
         Args:
-            bucket_name (string): The bucket name to upload the CSV to.
+            bucket_name (str): The bucket name to upload the CSV to.
             dataframe (pandas.DataFrame): The Pandas Dataframe to be uploaded.
-            uploaded_csv_name (Optional[string]): The name for the uploaded CSV.
+            uploaded_csv_name (Optional[str]): The name for the uploaded CSV.
 
         Returns:
             A string representing the GCS URI of the uploaded CSV.

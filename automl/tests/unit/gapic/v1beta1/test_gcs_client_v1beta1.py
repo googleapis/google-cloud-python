@@ -16,7 +16,6 @@
 
 """Unit tests."""
 
-import google
 import mock
 import pandas
 import pytest
@@ -35,8 +34,8 @@ class TestGcsClient(object):
         mock_bucket = mock.Mock()
         gcs_client = self.gcs_client(
             {
-                "get_bucket.side_effect": google.cloud.exceptions.NotFound("err"),
-                "Bucket.return_value": mock_bucket,
+                "get_bucket.side_effect": exceptions.NotFound("err"),
+                "bucket.return_value": mock_bucket,
             }
         )
         returned_bucket_name = gcs_client.ensure_bucket_exists(
@@ -45,7 +44,7 @@ class TestGcsClient(object):
         gcs_client.client.get_bucket.assert_called_with(
             "my-project-automl-tables-staging"
         )
-        gcs_client.client.Bucket.assert_called_with("my-project-automl-tables-staging")
+        gcs_client.client.bucket.assert_called_with("my-project-automl-tables-staging")
         mock_bucket.create.assert_called_with(
             project="my-project", location="us-central1"
         )
@@ -60,7 +59,7 @@ class TestGcsClient(object):
         gcs_client.client.get_bucket.assert_called_with(
             "my-project-automl-tables-staging"
         )
-        gcs_client.client.Bucket.assert_not_called()
+        gcs_client.client.bucket.assert_not_called()
         assert returned_bucket_name == "my-project-automl-tables-staging"
 
     def test_upload_pandas_dataframe(self):

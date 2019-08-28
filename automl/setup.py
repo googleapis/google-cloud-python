@@ -30,13 +30,6 @@ extras = {
     "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
 }
 
-all_extras = []
-
-for extra in extras:
-    all_extras.extend(extras[extra])
-
-extras["all"] = all_extras
-
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")

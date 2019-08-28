@@ -102,7 +102,7 @@ class TestSystemTablesClient(object):
         client = automl_v1beta1.TablesClient(project=PROJECT, region=REGION)
         display_name = _id("t_import_pandas")
         dataset = client.create_dataset(display_name)
-        dataframe = pandas.DataFrame({})
+        dataframe = pandas.DataFrame({"test-col1": [1, 2], "test-col2": [3, 4]})
         op = client.import_data(
             project=PROJECT, dataset=dataset, pandas_dataframe=dataframe
         )
