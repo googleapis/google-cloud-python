@@ -1326,7 +1326,7 @@ class Test__validate_key:
     @pytest.mark.usefixtures("in_context")
     def test_unchecked_model_type():
         value = model.Key("This", 1)
-        entity = object.__new__(model.Model)
+        entity = model.Model()
 
         result = model._validate_key(value, entity=entity)
         assert result is value
@@ -1335,7 +1335,7 @@ class Test__validate_key:
     @pytest.mark.usefixtures("in_context")
     def test_unchecked_expando_type():
         value = model.Key("This", 1)
-        entity = object.__new__(model.Expando)
+        entity = model.Expando()
 
         result = model._validate_key(value, entity=entity)
         assert result is value
@@ -1408,7 +1408,7 @@ class TestModelKey:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test__set_value():
-        entity = object.__new__(model.Model)
+        entity = model.Model()
         value = key_module.Key("Map", 8898)
 
         model.ModelKey._set_value(entity, value)
