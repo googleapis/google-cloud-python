@@ -617,7 +617,9 @@ def test_list_columns_and_indexes_without_named_index(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_list_columns_and_indexes_with_named_index_same_as_column_name(module_under_test):
+def test_list_columns_and_indexes_with_named_index_same_as_column_name(
+    module_under_test
+):
     df_data = collections.OrderedDict(
         [
             ("a_series", [1, 2, 3, 4]),
@@ -629,7 +631,7 @@ def test_list_columns_and_indexes_with_named_index_same_as_column_name(module_un
         df_data,
         # Use same name as an integer column but a different datatype so that
         # we can verify that the column is listed but the index isn't.
-        index=pandas.Index([0.1, 0.2, 0.3, 0.4], name="a_series")
+        index=pandas.Index([0.1, 0.2, 0.3, 0.4], name="a_series"),
     )
 
     columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
