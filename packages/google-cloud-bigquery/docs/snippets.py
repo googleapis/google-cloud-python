@@ -2536,52 +2536,5 @@ def test_list_rows_as_dataframe(client):
     assert len(df) == table.num_rows  # verify the number of rows
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.parametrize("parquet_engine", ["pyarrow", "fastparquet"])
-def test_load_table_from_dataframe(client, to_delete, parquet_engine):
-    if parquet_engine == "pyarrow" and pyarrow is None:
-        pytest.skip("Requires `pyarrow`")
-    if parquet_engine == "fastparquet" and fastparquet is None:
-        pytest.skip("Requires `fastparquet`")
-
-    pandas.set_option("io.parquet.engine", parquet_engine)
-
-    dataset_id = "load_table_from_dataframe_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_load_table_dataframe]
-    # from google.cloud import bigquery
-    # import pandas
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table("monty_python")
-    records = [
-        {"title": u"The Meaning of Life", "release_year": 1983},
-        {"title": u"Monty Python and the Holy Grail", "release_year": 1975},
-        {"title": u"Life of Brian", "release_year": 1979},
-        {"title": u"And Now for Something Completely Different", "release_year": 1971},
-    ]
-    # Optionally set explicit indices.
-    # If indices are not specified, a column will be created for the default
-    # indices created by pandas.
-    index = [u"Q24980", u"Q25043", u"Q24953", u"Q16403"]
-    dataframe = pandas.DataFrame(records, index=pandas.Index(index, name="wikidata_id"))
-
-    job = client.load_table_from_dataframe(dataframe, table_ref, location="US")
-
-    job.result()  # Waits for table load to complete.
-
-    assert job.state == "DONE"
-    table = client.get_table(table_ref)
-    assert table.num_rows == 4
-    # [END bigquery_load_table_dataframe]
-    column_names = [field.name for field in table.schema]
-    assert sorted(column_names) == ["release_year", "title", "wikidata_id"]
-
-
 if __name__ == "__main__":
     pytest.main()
