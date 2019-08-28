@@ -46,7 +46,7 @@ s.replace(
     f"from google.cloud.automl_v1beta1.tables import tables_client"
     f"\n\n"
     f"class TablesClient(tables_client.TablesClient):"
-    f"    __doc__ = tables_client.TablesClient.__doc__"
+    f"    __doc__ = tables_client.TablesClient.__doc__",
 )
 
 s.replace(
@@ -57,7 +57,7 @@ s.replace(
     'AutoMlClient',
     'PredictionServiceClient',
 \)""",
-    f"__all__ = (\"enums\", \"types\", \"AutoMlClient\", \"PredictionServiceClient\", \"TablesClient\")"
+    f'__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient", "TablesClient")',
 )
 
 # Fixup issues in generated code
@@ -92,23 +92,20 @@ s.replace(
     "google/cloud/**/io_pb2.py",
     r"""Sample
      in-line JSON Lines.*?(\n\s+-\s+For Text Classification.*\n)""",
-     "\g<1>",
-     flags=re.DOTALL
+    "\g<1>",
+    flags=re.DOTALL,
 )
 
 # Replace docstring with no summary line
 s.replace(
-"google/cloud/**/io_pb2.py",
-r"""__doc__ = \"\"\"-  For Translation: CSV file ``translation\.csv``, with each """,
-r'''__doc__ = """
+    "google/cloud/**/io_pb2.py",
+    r"""__doc__ = \"\"\"-  For Translation: CSV file ``translation\.csv``, with each """,
+    r'''__doc__ = """
 -  For Translation: CSV file ``translation.csv``, with each ''',
-flags=re.DOTALL,
+    flags=re.DOTALL,
 )
 
-s.replace(
-"google/cloud/**/io_pb2.py",
-r":raw-latex:`\\t `",
-r"\\\\t")
+s.replace("google/cloud/**/io_pb2.py", r":raw-latex:`\\t `", r"\\\\t")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
