@@ -21,7 +21,6 @@ import nox
 SYSTEM_TEST_ENV_VARS = (
     'GOOGLE_APPLICATION_CREDENTIALS',
 )
-REQUESTS = 'requests >= 2.18.0, < 3.0.0dev'
 GOOGLE_AUTH = 'google-auth >= 0.10.0'
 
 
@@ -30,8 +29,8 @@ def unit_tests(session):
     """Run the unit test suite."""
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', REQUESTS)
-    session.install('-e', '.')
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', '.[requests]')
 
     # Run py.test against the unit tests.
     # NOTE: We don't require 100% line coverage for unit test runs since
@@ -60,9 +59,8 @@ def docs(session):
         'Sphinx == 2.1.2',
         'sphinx_rtd_theme == 0.4.3',
         'sphinx-docstring-typing >= 0.0.3',
-        REQUESTS,
     )
-    session.install('-e', '.')
+    session.install('-e', '.[requests]')
 
     # Build the docs!
     session.run('bash', os.path.join('scripts', 'build_docs.sh'))
@@ -79,9 +77,8 @@ def doctest(session):
         'sphinx-docstring-typing >= 0.0.3',
         'mock',
         GOOGLE_AUTH,
-        REQUESTS,
     )
-    session.install('-e', '.')
+    session.install('-e', '.[requests]')
 
     # Run the doctests with Sphinx.
     session.run(
@@ -133,8 +130,8 @@ def system_tests(session):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install('mock', 'pytest', REQUESTS, GOOGLE_AUTH)
-    session.install('-e', '.')
+    session.install('mock', 'pytest', GOOGLE_AUTH)
+    session.install('-e', '.[requests]')
 
     # Run py.test against the system tests.
     session.run(
