@@ -23,7 +23,7 @@
 - Add `load_table_from_json` method to BQ client ([#9076](https://github.com/googleapis/google-cloud-python/pull/9076))
 - Add support for unsetting LoadJobConfig schema ([#9077](https://github.com/googleapis/google-cloud-python/pull/9077))
 - Add enum with SQL type names allowed to be used in SchemaField ([#9040](https://github.com/googleapis/google-cloud-python/pull/9040))
-- Add support to Dataset for project_ids with org prefix. ([#8877](https://github.com/googleapis/google-cloud-python/pull/8877))
+- Add support to Dataset for project ids with org prefix. ([#8877](https://github.com/googleapis/google-cloud-python/pull/8877))
 
 ### Documentation
 - Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
