@@ -20,4 +20,4 @@ def test_copy_table(capsys, client, dataset_id, table_with_data_id):
 
     copy_table.copy_table(client, dataset_id, table_with_data_id)
     out, err = capsys.readouterr()
-    assert "A copy of the table created" in out
+    assert "A copy of the table created." in out

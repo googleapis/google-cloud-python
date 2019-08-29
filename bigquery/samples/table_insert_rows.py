@@ -30,5 +30,5 @@ def table_insert_rows(client, table_id):
 
     errors = client.insert_rows(table, rows_to_insert)
     if errors == []:
-        print("New rows have been added")
+        print("New rows have been added.")
     # [END bigquery_table_insert_rows]

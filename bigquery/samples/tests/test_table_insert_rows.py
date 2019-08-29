@@ -30,4 +30,4 @@ def test_table_insert_rows(capsys, client, random_table_id):
 
     table_insert_rows.table_insert_rows(client, random_table_id)
     out, err = capsys.readouterr()
-    assert "New rows have been added" in out
+    assert "New rows have been added." in out

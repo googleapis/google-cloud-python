@@ -38,10 +38,9 @@ def copy_table(client, dataset_id, table_id):
         # Location must match that of the source and destination tables.
         location="US",
     )
-
-    job.result()  # Waits for job to complete.
+    job.result()
 
     dest_table = client.get_table(dest_table)
     if dest_table.num_rows == orig_table.num_rows:
-        print("A copy of the table created")
+        print("A copy of the table created.")
     # [END bigquery_copy_table]

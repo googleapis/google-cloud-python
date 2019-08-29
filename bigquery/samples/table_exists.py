@@ -23,7 +23,7 @@ def table_exists(client, table_id):
 
     try:
         client.get_table(table_id)
-        print("Table {} already exists".format(table_id))
+        print("Table {} already exists.".format(table_id))
     except NotFound:
-        print("Table {} is not found".format(table_id))
+        print("Table {} is not found.".format(table_id))
     # [END bigquery_table_exists]
