@@ -2154,7 +2154,7 @@ class QueryJobConfig(_JobConfig):
     @property
     def max_results(self):
         """int: Maximum number of results to read.
-        
+
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
         """
@@ -2858,7 +2858,7 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 timeout_ms=timeout_ms,
                 location=self.location,
-                max_results=self.max_results
+                max_results=self.max_results,
             )
 
             # Only reload the job once we know the query is complete.
@@ -2956,24 +2956,17 @@ class QueryJob(_AsyncJob):
                 If the job did not complete in the given timeout.
         """
 
-        if not re.search(r"[\s]", self.query):
-            table_id = self.query
-            rows = self._client.list_rows(
-                table_id, page_size=page_size, retry=retry, max_results=self.max_results
-            )
-            return rows
-
         try:
             super(QueryJob, self).result(timeout=timeout)
 
             # Return an iterator instead of returning the job.
             if not self._query_results:
                 self._query_results = self._client._get_query_results(
-                    self.job_id, 
-                    retry, 
-                    project=self.project, 
-                    location=self.location, 
-                    max_results=self.max_results
+                    self.job_id,
+                    retry,
+                    project=self.project,
+                    location=self.location,
+                    max_results=self.max_results,
                 )
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
@@ -2991,10 +2984,7 @@ class QueryJob(_AsyncJob):
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
         rows = self._client.list_rows(
-            dest_table, 
-            page_size=page_size, 
-            retry=retry, 
-            max_results=self.max_results
+            dest_table, page_size=page_size, retry=retry, max_results=self.max_results
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows

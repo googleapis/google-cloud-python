@@ -129,6 +129,7 @@
 
 from __future__ import print_function
 
+import re
 import ast
 import sys
 import time
@@ -430,15 +431,22 @@ def _cell_magic(line, query):
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
+
+    if args.max_results:
+        max_results = int(args.max_results)
+    else:
+        max_results = None
+
+    if not re.search(r"[\s]", query):
+        table_id = query
+        rows = client.list_rows(table_id, max_results=max_results)
+        return rows.to_dataframe(bqstorage_client=bqstorage_client)
+
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
     job_config.dry_run = args.dry_run
-
-    if args.max_results:
-        job_config.max_results = int(args.max_results)
-    else:
-        job_config.max_results = None
+    job_config.max_results = max_results
 
     if args.maximum_bytes_billed == "None":
         job_config.maximum_bytes_billed = 0
