@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 1.0.0
+
+08-29-2019 09:27 PDT
+
+- Docs: Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Add 'ReceivedMessage.delivery_attempt' field (via synth). ([#9098](https://github.com/googleapis/google-cloud-python/pull/9098))
+- [CHANGE ME] Re-generated pubsub to pick up changes in the API or client library generator. ([#9078](https://github.com/googleapis/google-cloud-python/pull/9078))
+- Pub/Sub: update docstrings for client kwargs and fix return types uris ([#9037](https://github.com/googleapis/google-cloud-python/pull/9037))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+-  Remove send/recv msg size limit, update docstrings (via synth). ([#8964](https://github.com/googleapis/google-cloud-python/pull/8964))
+
+### Implementation Changes
+
+### New Features
+
+### Dependencies
+
+### Documentation
+
+### Internal / Testing Changes
+
 ## 0.45.0
 
 07-31-2019 02:03 PDT
