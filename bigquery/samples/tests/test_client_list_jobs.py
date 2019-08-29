@@ -20,10 +20,14 @@ from .. import create_job
 def test_client_list_jobs(capsys, client):
 
     job = create_job.create_job(client)
+    client.cancel_job(job.job_id)
+    job.cancel()
     client_list_jobs.client_list_jobs(client)
-    client.cancel_job(job.job_id, location="US")
     out, err = capsys.readouterr()
-    assert "Last 10 jobs:\n{}".format(job.job_id) in out
-    assert "Jobs from the last ten minutes:\n{}".format(job.job_id) in out
-    assert "Last 10 jobs run by all users:\n{}".format(job.job_id) in out
-    assert "Last 10 jobs done:\n{}".format(job.job_id) in out
+    print(out)
+    raise ValueError
+    # assert "Started job: {}".format(job.job_id) in out
+    # assert "Last 10 jobs:\n{}".format(job.job_id) in out
+    # assert "Jobs from the last ten minutes:\n{}".format(job.job_id) in out
+    # assert "Last 10 jobs run by all users:\n{}".format(job.job_id) in out
+    # assert "Last 10 jobs done:\n{}".format(job.job_id) in out
