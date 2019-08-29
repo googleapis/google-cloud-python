@@ -20,16 +20,11 @@ from .. import table_exists
 
 def test_table_exists(capsys, client, random_table_id):
 
-    schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-
     table_exists.table_exists(client, random_table_id)
     out, err = capsys.readouterr()
-    assert "Table {} is not found".format(random_table_id) in out
-    table = bigquery.Table(random_table_id, schema=schema)
+    assert "Table {} is not found.".format(random_table_id) in out
+    table = bigquery.Table(random_table_id)
     table = client.create_table(table)
     table_exists.table_exists(client, random_table_id)
     out, err = capsys.readouterr()
-    assert "Table {} already exists".format(random_table_id) in out
+    assert "Table {} already exists.".format(random_table_id) in out
