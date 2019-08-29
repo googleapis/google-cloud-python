@@ -197,20 +197,33 @@ For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ in
 Versioning
 ----------
 
-This library follows [Semantic Versioning](http://semver.org/).
+This library follows `Semantic Versioning`_.
 
-It is currently in major version one (``1.y.z``), which means that the public API should be considered stable.
+It is currently in major version one (1.y.z), which means that the public API should be considered stable.
 
+.. _Semantic Versioning: http://semver.org/
 
 Contributing
 ------------
 
 Contributions to this library are always welcome and highly encouraged.
 
-See `google-cloud`'s [CONTRIBUTING] documentation and the [shared documentation](https://github.com/googleapis/google-cloud-common/blob/master/contributing/readme.md#how-to-contribute-to-gcloud) for more information on how to get started.
+See the `CONTRIBUTING doc`_ for more information on how to get started.
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms. See [Code of Conduct][code-of-conduct] for more information.
+.. _CONTRIBUTING doc: https://github.com/googleapis/google-cloud-python/blob/master/CONTRIBUTING.rst
 
-[CONTRIBUTING]:https://github.com/googleapis/google-cloud-java/blob/master/CONTRIBUTING.md
-[code-of-conduct]:https://github.com/googleapis/google-cloud-java/blob/master/CODE_OF_CONDUCT.md#contributor-code-of-conduct
+Community
+---------
 
+Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
+channel, click here to `get an invitation`_.
+
+.. _Slack: https://googlecloud-community.slack.com
+.. _get an invitation: https://gcp-slack.appspot.com/
+
+License
+-------
+
+Apache 2.0 - See `the LICENSE`_ for more information.
+
+.. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/master/LICENSE
