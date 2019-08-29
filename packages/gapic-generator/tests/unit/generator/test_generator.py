@@ -24,7 +24,7 @@ from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
 from gapic.generator import options
-from gapic.samplegen_utils import yaml
+from gapic.samplegen_utils import (types, yaml)
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
@@ -249,36 +249,22 @@ def test_get_filename_with_proto_and_sub():
 
 
 def test_parse_sample_paths(fs):
-    for fpath in [
-            'sample.yaml',
-            'sampledir/sample.yaml',
-            'other_sampledir/sample.yaml',
-    ]:
-        fs.create_file(
-            fpath,
-            contents=dedent(
-                '''
-                ---
-                type: com.google.api.codegen.SampleConfigProto
-                schema_version: 1.2.0
-                samples:
-                - service: google.cloud.language.v1.LanguageService
-                '''
-            )
+    fpath = 'sampledir/sample.yaml'
+    fs.create_file(
+        fpath,
+        contents=dedent(
+            '''
+            ---
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - service: google.cloud.language.v1.LanguageService
+            '''
         )
-
-    opts = options.Options.build(
-        ("samples=sample.yaml,"
-         "samples=sampledir/,"
-         "samples=other_sampledir"))
-
-    expected_configs = (
-        'sample.yaml',
-        'sampledir/sample.yaml',
-        'other_sampledir/sample.yaml',
     )
 
-    assert opts.sample_configs == expected_configs
+    with pytest.raises(types.InvalidConfig):
+        options.Options.build("samples=sampledir/,")
 
 
 @mock.patch(

@@ -101,11 +101,8 @@ class Options:
             ),
         )
 
-        if sample_paths and not answer.sample_configs:
-            raise types.InvalidConfig(
-                ("No valid sample config found in any of the following: "
-                 "{}".format(", ".join(sample_paths)))
-            )
+        # Note: if we ever need to recursively check directories for sample configs,
+        # check that at least _one_ config is read in.
 
         # If there are any options remaining, then we failed to recognize
         # them -- complain.

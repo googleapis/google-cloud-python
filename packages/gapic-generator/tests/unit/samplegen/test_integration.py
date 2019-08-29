@@ -158,60 +158,6 @@ def test_generate_sample_config_fpaths(fs):
     assert actual_paths == [expected_path]
 
 
-def test_generate_sample_config_fpaths_directories(fs):
-    good_contents = dedent(
-        '''
-        ---
-        type: com.google.api.codegen.SampleConfigProto
-        schema_version: 1.2.0
-        samples:
-        - service: google.cloud.language.v1.LanguageService
-        '''
-    )
-    # We need some invalid configs in the directory as well to verify that
-    # they don't cause spurious failures.
-    bad_contents = 'bad contents'
-    directory = 'sampleconfig'
-    for p in [
-            "config_1.yaml",
-            "config_2.yaml",
-            "config_notes.txt",
-            "subdir/config_3.yaml",
-            "subdir/config_4.yaml",
-            "subdir/nested/config_5.yaml",
-    ]:
-        fs.create_file(path.join(directory, p), contents=good_contents)
-
-    for p in [
-            "bad_config_1.yaml",
-            "subdir/bad_config_2.yaml",
-            "subdir/nested/bad_config_3.yaml",
-    ]:
-        fs.create_file(path.join(directory, p), contents=bad_contents)
-
-    expected_paths = [
-        "sampleconfig/config_1.yaml",
-        "sampleconfig/config_2.yaml",
-        "sampleconfig/subdir/config_3.yaml",
-        "sampleconfig/subdir/config_4.yaml",
-        "sampleconfig/subdir/nested/config_5.yaml",
-    ]
-
-    actual_paths = sorted(gapic_utils.generate_all_sample_fpaths(directory))
-
-    assert actual_paths == expected_paths
-
-
-def test_generate_sample_config_fpaths_directories_no_configs(fs):
-    directory = 'sampleconfig'
-    for f in ['a.yaml', 'b.yaml']:
-        fs.create_file(path.join(directory, f))
-
-    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
-
-    assert not actual_paths
-
-
 def test_generate_sample_config_fpaths_not_yaml(fs):
     expected_path = 'cfgs/sample_config.not_yaml'
     fs.create_file(expected_path)
@@ -292,36 +238,6 @@ def test_generate_sample_config_partial_config(fs):
     expected_paths = [expected_path]
 
     actual_paths = list(gapic_utils.generate_all_sample_fpaths(expected_path))
-
-    assert actual_paths == expected_paths
-
-
-def test_generate_sample_config_partial_config_directory(fs):
-    directory = 'samples'
-    fpath = path.join(directory, 'sample.yaml')
-    fs.create_file(
-        fpath,
-        # Note the typo in the first sample: SampleConfigPronto
-        contents=dedent(
-            '''
-            ---
-            # Note: this one is NOT a valid config
-            type: com.google.api.codegen.SampleConfigPronto
-            schema_version: 1.2.0
-            samples:
-            - service: google.cloud.language.v1.LanguageService
-            ---
-            # Note: this one IS a valid config
-            type: com.google.api.codegen.SampleConfigProto
-            schema_version: 1.2.0
-            samples:
-            - service: google.cloud.language.v1.LanguageService
-            '''
-        )
-    )
-    expected_paths = [fpath]
-
-    actual_paths = list(gapic_utils.generate_all_sample_fpaths(directory))
 
     assert actual_paths == expected_paths
 

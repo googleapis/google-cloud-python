@@ -105,17 +105,7 @@ def generate_all_sample_fpaths(path: str) -> Generator[str, None, None]:
                     f"No valid sample config in file: {path}")
 
             yield path
-
-    elif os.path.isdir(path):
-        yaml_file_generator = (os.path.join(dirpath, fname)
-                               for dirpath, _, fnames in os.walk(path)
-                               for fname in fnames if fname.endswith(".yaml"))
-
-        for fullpath in yaml_file_generator:
-            with open(fullpath) as f:
-                if any(is_valid_sample_cfg(doc)
-                       for doc in yaml.safe_load_all(f.read())):
-                    yield fullpath
-
+    # Note: if we ever need to recursively check directories for sample configs,
+    #       add an "elif os.path.isdir(path)" yielding from os.walk right here.
     else:
-        raise types.InvalidConfig(f"No such file or directory: {path}")
+        raise types.InvalidConfig(f"No such file: {path}")
