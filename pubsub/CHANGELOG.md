@@ -13,12 +13,12 @@
 - Remove send/recv msg size limit, update docstrings (via synth). ([#8964](https://github.com/googleapis/google-cloud-python/pull/8964))
 
 ### Documentation
-- Pub/Sub: update docstrings for client kwargs and fix return types uris ([#9037](https://github.com/googleapis/google-cloud-python/pull/9037))
-- Docs: Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Update docstrings for client kwargs and fix return types uris ([#9037](https://github.com/googleapis/google-cloud-python/pull/9037))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
 - Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
 
 ### Internal / Testing Changes
-- Re-generated pubsub to pick up changes in the API or client library generator. ([#9078](https://github.com/googleapis/google-cloud-python/pull/9078))
+- Add dead-letter-policy field in preparation for its implementation (via synth) ([#9078](https://github.com/googleapis/google-cloud-python/pull/9078))
 
 ## 0.45.0
 
