@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|beta| |pypi| |versions| 
+|GA| |pypi| |versions| 
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -192,3 +192,25 @@ For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ in
 .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
 .. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
 .. _google.auth.jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
+
+
+Versioning
+----------
+
+This library follows [Semantic Versioning](http://semver.org/).
+
+It is currently in major version one (``1.y.z``), which means that the public API should be considered stable.
+
+
+Contributing
+------------
+
+Contributions to this library are always welcome and highly encouraged.
+
+See `google-cloud`'s [CONTRIBUTING] documentation and the [shared documentation](https://github.com/googleapis/google-cloud-common/blob/master/contributing/readme.md#how-to-contribute-to-gcloud) for more information on how to get started.
+
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms. See [Code of Conduct][code-of-conduct] for more information.
+
+[CONTRIBUTING]:https://github.com/googleapis/google-cloud-java/blob/master/CONTRIBUTING.md
+[code-of-conduct]:https://github.com/googleapis/google-cloud-java/blob/master/CODE_OF_CONDUCT.md#contributor-code-of-conduct
+
