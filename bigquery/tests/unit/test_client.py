@@ -5454,15 +5454,7 @@ class TestClientUpload(object):
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table",
             autospec=True,
-            return_value=mock.Mock(
-                schema=[
-                    SchemaField("int_col", "INTEGER"),
-                    SchemaField("float_col", "FLOAT"),
-                    SchemaField("bool_col", "BOOLEAN"),
-                    SchemaField("dt_col", "DATETIME"),
-                    SchemaField("ts_col", "TIMESTAMP"),
-                ]
-            ),
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
         )
         with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_dataframe(
@@ -5814,8 +5806,6 @@ class TestClientUpload(object):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
-        from google.cloud.bigquery.schema import SchemaField
-
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
@@ -5823,9 +5813,7 @@ class TestClientUpload(object):
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table",
             autospec=True,
-            return_value=mock.Mock(
-                schema=[SchemaField("id", "INTEGER"), SchemaField("age", "INTEGER")]
-            ),
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
         )
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
