@@ -758,9 +758,6 @@ def test_bigquery_magic_w_max_results_invalid():
     client_query_patch = mock.patch(
         "google.cloud.bigquery.client.Client.query", autospec=True
     )
-    query_job_mock = mock.create_autospec(
-        google.cloud.bigquery.job.QueryJob, instance=True
-    )
 
     sql = "SELECT 17 AS num"
 
@@ -774,12 +771,6 @@ def test_bigquery_magic_w_max_results_valid_sets_job_config():
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
 
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    default_patch = mock.patch(
-        "google.auth.default", return_value=(credentials_mock, "general-project")
-    )
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics._run_query", autospec=True
     )
@@ -799,19 +790,8 @@ def test_bigquery_magic_w_table_id_instead_of_sql():
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
 
-    credentials_mock = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    default_patch = mock.patch(
-        "google.auth.default", return_value=(credentials_mock, "general-project")
-    )
-
     row_iterator_mock = mock.create_autospec(
         google.cloud.bigquery.table.RowIterator, instance=True
-    )
-
-    query_job_mock = mock.create_autospec(
-        google.cloud.bigquery.job.QueryJob, instance=True
     )
 
     client_patch = mock.patch(
@@ -822,7 +802,7 @@ def test_bigquery_magic_w_table_id_instead_of_sql():
         "google.cloud.bigquery.magics._run_query", autospec=True
     )
 
-    table_id = "12345"
+    table_id = "bigquery-public-data.samples.shakespeare"
     result = pandas.DataFrame([17], columns=["num"])
 
     with client_patch as client_mock, run_query_patch as run_query_mock:

@@ -2158,11 +2158,11 @@ class QueryJobConfig(_JobConfig):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
         """
-        return self._properties.get("maxResults")
+        return _helpers._int_or_none(self._get_sub_prop("maxResults"))
 
     @max_results.setter
     def max_results(self, value):
-        self._properties["maxResults"] = value
+        self._set_sub_prop("maxResults", str(value))
 
     @property
     def maximum_billing_tier(self):

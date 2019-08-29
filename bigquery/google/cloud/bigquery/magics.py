@@ -404,6 +404,7 @@ def _cell_magic(line, query):
     Returns:
         pandas.DataFrame: the query results.
     """
+
     args = magic_arguments.parse_argstring(_cell_magic, line)
 
     params = []
@@ -437,10 +438,15 @@ def _cell_magic(line, query):
     else:
         max_results = None
 
-    if not re.search(r"[\s]", query):
-        table_id = query
+    if not re.search(r"\b\s+\b", query):
+        table_id = query.rstrip()
         rows = client.list_rows(table_id, max_results=max_results)
-        return rows.to_dataframe(bqstorage_client=bqstorage_client)
+        result = rows.to_dataframe(bqstorage_client=bqstorage_client)
+        if args.destination_var:
+            IPython.get_ipython().push({args.destination_var: result})
+            return
+        else:
+            return result
 
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params

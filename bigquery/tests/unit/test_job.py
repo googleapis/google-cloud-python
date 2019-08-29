@@ -3455,6 +3455,11 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertIsInstance(job.maximum_bytes_billed, int)
         else:
             self.assertIsNone(job.maximum_bytes_billed)
+        if "maxResults" in config:
+            self.assertEqual(str(job.max_results), config["maxResults"])
+            self.assertIsInstance(job.max_results, int)
+        else:
+            self.assertIsNone(job.max_results)
 
     def _verify_udf_resources(self, job, config):
         udf_resources = config.get("userDefinedFunctionResources", ())
