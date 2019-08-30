@@ -40,7 +40,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
 
         self.assertIs(logging_api.logging_client, mocked_cls.return_value)
         mocked_cls.assert_called_once_with(
-            self.PROJECT, credentials, _http=None, client_info=None
+            self.PROJECT, credentials, _http=None, client_info=None, client_options=None
         )
 
     @mock.patch("google.cloud.logging.client.Client")
@@ -48,14 +48,23 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
         credentials = _make_credentials()
         http = mock.Mock()
         client_info = mock.Mock()
+        client_options = mock.Mock()
 
         logging_api = self._make_one(
-            self.PROJECT, credentials, _http=http, client_info=client_info
+            self.PROJECT,
+            credentials,
+            _http=http,
+            client_info=client_info,
+            client_options=client_options,
         )
 
         self.assertIs(logging_api.logging_client, mocked_cls.return_value)
         mocked_cls.assert_called_once_with(
-            self.PROJECT, credentials, _http=http, client_info=client_info
+            self.PROJECT,
+            credentials,
+            _http=http,
+            client_info=client_info,
+            client_options=client_options,
         )
 
     @mock.patch("google.cloud.logging.client.Client")

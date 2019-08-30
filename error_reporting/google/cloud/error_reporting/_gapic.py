@@ -29,7 +29,9 @@ def make_report_error_api(client):
     :returns: An Error Reporting API instance.
     """
     gapic_api = report_errors_service_client.ReportErrorsServiceClient(
-        credentials=client._credentials, client_info=client._client_info
+        credentials=client._credentials,
+        client_info=client._client_info,
+        client_options=client._client_options,
     )
     return _ErrorReportingGapicApi(gapic_api, client.project)
 
