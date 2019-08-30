@@ -293,13 +293,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        master_doc,
-        "google-cloud-core",
-        u"google-cloud-core Documentation",
-        [author],
-        1,
-    )
+    (master_doc, "google-cloud-core", u"google-cloud-core Documentation", [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -342,10 +336,7 @@ intersphinx_mapping = {
     "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": (
-        "https://googleapis.github.io/google-cloud-python/latest",
-        None,
-    ),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
     "requests": ("https://2.python-requests.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),

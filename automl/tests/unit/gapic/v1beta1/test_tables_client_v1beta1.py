@@ -17,6 +17,7 @@
 """Unit tests."""
 
 import mock
+import pandas
 import pytest
 
 from google.cloud import automl_v1beta1
@@ -29,12 +30,16 @@ LOCATION_PATH = "projects/{}/locations/{}".format(PROJECT, REGION)
 
 
 class TestTablesClient(object):
-    def tables_client(self, client_attrs={}, prediction_client_attrs={}):
+    def tables_client(
+        self, client_attrs={}, prediction_client_attrs={}, gcs_client_attrs={}
+    ):
         client_mock = mock.Mock(**client_attrs)
         prediction_client_mock = mock.Mock(**prediction_client_attrs)
+        gcs_client_mock = mock.Mock(**gcs_client_attrs)
         return automl_v1beta1.TablesClient(
             client=client_mock,
             prediction_client=prediction_client_mock,
+            gcs_client=gcs_client_mock,
             project=PROJECT,
             region=REGION,
         )
@@ -188,6 +193,26 @@ class TestTablesClient(object):
             client.import_data(dataset_display_name="name", gcs_input_uris="uri")
 
         client.auto_ml_client.import_data.assert_not_called()
+
+    def test_import_pandas_dataframe(self):
+        client = self.tables_client(
+            gcs_client_attrs={
+                "bucket_name": "my_bucket",
+                "upload_pandas_dataframe.return_value": "uri",
+            }
+        )
+        dataframe = pandas.DataFrame({})
+        client.import_data(
+            project=PROJECT,
+            region=REGION,
+            dataset_name="name",
+            pandas_dataframe=dataframe,
+        )
+        client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
+        client.auto_ml_client.import_data.assert_called_with(
+            "name", {"gcs_source": {"input_uris": ["uri"]}}
+        )
 
     def test_import_gcs_uri(self):
         client = self.tables_client({"import_data.return_value": None}, {})
@@ -1169,6 +1194,31 @@ class TestTablesClient(object):
         with pytest.raises(ValueError):
             client.predict([], model_name="my_model")
         client.prediction_client.predict.assert_not_called()
+
+    def test_batch_predict_pandas_dataframe(self):
+        client = self.tables_client(
+            gcs_client_attrs={
+                "bucket_name": "my_bucket",
+                "upload_pandas_dataframe.return_value": "gs://input",
+            }
+        )
+        dataframe = pandas.DataFrame({})
+        client.batch_predict(
+            project=PROJECT,
+            region=REGION,
+            model_name="my_model",
+            pandas_dataframe=dataframe,
+            gcs_output_uri_prefix="gs://output",
+        )
+
+        client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
+        client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
+
+        client.prediction_client.batch_predict.assert_called_with(
+            "my_model",
+            {"gcs_source": {"input_uris": ["gs://input"]}},
+            {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+        )
 
     def test_batch_predict_gcs(self):
         client = self.tables_client({}, {})

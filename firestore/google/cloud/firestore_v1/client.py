@@ -25,6 +25,7 @@ In the hierarchy of API concepts
 """
 import os
 
+import google.api_core.client_options
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -79,6 +80,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+            Client options used to set user options on the client. API Endpoint
+            should be set through client_options.
     """
 
     SCOPE = (
@@ -97,6 +101,7 @@ class Client(ClientWithProject):
         credentials=None,
         database=DEFAULT_DATABASE,
         client_info=_CLIENT_INFO,
+        client_options=None,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
@@ -105,6 +110,13 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+        self._client_options = client_options
+
         self._database = database
         self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
@@ -150,8 +162,10 @@ class Client(ClientWithProject):
         """
         if self._emulator_host is not None:
             return self._emulator_host
-
-        return firestore_client.FirestoreClient.SERVICE_ADDRESS
+        elif self._client_options and self._client_options.api_endpoint:
+            return self._client_options.api_endpoint
+        else:
+            return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):
