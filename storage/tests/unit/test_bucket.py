@@ -2686,11 +2686,9 @@ class Test_Bucket(unittest.TestCase):
 
         connection = _Connection()
         client = _Client(connection)
-        bucket = mock.Mock()
 
-        with mock.patch("google.cloud.storage.client.Bucket", return_value=bucket):
-            with pytest.raises(ValueError, match="URI scheme must be gs"):
-                Bucket.from_string("http://bucket_name", client)
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            Bucket.from_string("http://bucket_name", client)
 
     def test_get_bucket_from_string_w_domain_name_bucket(self):
         from google.cloud.storage.bucket import Bucket
