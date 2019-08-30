@@ -272,7 +272,7 @@ class Test_make_trace_api(unittest.TestCase):
     def test_it(self):
         from google.cloud.trace._gapic import _TraceAPI
 
-        client = mock.Mock(spec=["_credentials", "_client_info"])
+        client = mock.Mock(spec=["_credentials", "_client_info", "_client_options"])
 
         patch_api = mock.patch(
             "google.cloud.trace._gapic.trace_service_client.TraceServiceClient"
@@ -282,7 +282,7 @@ class Test_make_trace_api(unittest.TestCase):
             trace_api = self._call_fut(client)
 
         patched.assert_called_once_with(
-            credentials=client._credentials, client_info=client._client_info
+            credentials=client._credentials, client_info=client._client_info, client_options=client._client_options,
         )
 
         self.assertIsInstance(trace_api, _TraceAPI)

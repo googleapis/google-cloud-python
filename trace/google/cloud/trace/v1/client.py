@@ -41,6 +41,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+            Client options used to set user options on the client. API Endpoint
+            should be set through client_options.
     """
 
     SCOPE = (
@@ -51,9 +54,10 @@ class Client(ClientWithProject):
 
     _trace_api = None
 
-    def __init__(self, project=None, credentials=None, client_info=_CLIENT_INFO):
+    def __init__(self, project=None, credentials=None, client_info=_CLIENT_INFO, client_options=None):
         super(Client, self).__init__(project=project, credentials=credentials)
         self._client_info = client_info
+        self._client_options = client_options
 
     @property
     def trace_api(self):

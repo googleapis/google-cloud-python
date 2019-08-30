@@ -47,11 +47,14 @@ class TestClient(unittest.TestCase):
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
-            project=self.project, credentials=credentials, client_info=client_info
+            project=self.project, credentials=credentials, client_info=client_info,
+            client_options=client_options
         )
         self.assertEqual(client.project, self.project)
         self.assertIs(client._client_info, client_info)
+        self.assertIs(client._client_options, client_options)
 
     def test_trace_api(self):
         clients = []
