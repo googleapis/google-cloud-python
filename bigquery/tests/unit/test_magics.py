@@ -817,6 +817,7 @@ def test_bigquery_magic_w_table_id_and_max_results():
 
     assert isinstance(return_value, pandas.DataFrame)
 
+
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_table_id_and_destination_var():
     ip = IPython.get_ipython()
@@ -838,12 +839,13 @@ def test_bigquery_magic_w_table_id_and_destination_var():
         client_mock().list_rows.return_value = row_iterator_mock
         row_iterator_mock.to_dataframe.return_value = result
 
-        return_value = ip.run_cell_magic("bigquery", "df --max_results=5", table_id)
+        ip.run_cell_magic("bigquery", "df --max_results=5", table_id)
 
     assert "df" in ip.user_ns
-    df = ip.user_ns['df']
+    df = ip.user_ns["df"]
 
     assert isinstance(df, pandas.DataFrame)
+
 
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_table_id_and_bqstorage_client():
@@ -858,7 +860,6 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
     client_patch = mock.patch(
         "google.cloud.bigquery.magics.bigquery.Client", autospec=True
     )
-
 
     bqstorage_mock = mock.create_autospec(
         bigquery_storage_v1beta1.BigQueryStorageClient
@@ -875,10 +876,11 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
 
     with client_patch as client_mock, bqstorage_client_patch:
         client_mock().list_rows.return_value = row_iterator_mock
-    
-        return_value = ip.run_cell_magic("bigquery", "--use_bqstorage_api --max_results=5", table_id)
+
+        ip.run_cell_magic("bigquery", "--use_bqstorage_api --max_results=5", table_id)
         row_iterator_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=bqstorage_instance_mock)
+            bqstorage_client=bqstorage_instance_mock
+        )
 
 
 @pytest.mark.usefixtures("ipython_interactive")
