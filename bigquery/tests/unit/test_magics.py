@@ -817,24 +817,22 @@ def test_bigquery_magic_w_table_id_and_max_results():
 
     assert isinstance(return_value, pandas.DataFrame)
 
+
 def test_bigquery_magic_w_table_id_invalid():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
 
-    
-
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.magics.bigquery.Client.list_rows", 
+        "google.cloud.bigquery.magics.bigquery.Client.list_rows",
         autospec=True,
-        side_effect=exceptions.BadRequest("Not a valid table ID")
+        side_effect=exceptions.BadRequest("Not a valid table ID"),
     )
 
     table_id = "not-a-real-table"
 
-
     with list_rows_patch, io.capture_output() as captured_io:
-        
+
         ip.run_cell_magic("bigquery", "", table_id)
 
     output = captured_io.stderr

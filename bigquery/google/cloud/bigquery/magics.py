@@ -449,12 +449,13 @@ def _cell_magic(line, query):
             if args.destination_var:
                 print(
                     "Could not save output to variable '{}'.".format(
-                        args.destination_var),
+                        args.destination_var
+                    ),
                     file=sys.stderr,
                 )
             print("\nERROR:\n", error, file=sys.stderr)
             return
-            
+
         result = rows.to_dataframe(bqstorage_client=bqstorage_client)
         if args.destination_var:
             IPython.get_ipython().push({args.destination_var: result})
