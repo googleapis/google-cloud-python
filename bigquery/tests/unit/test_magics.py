@@ -785,7 +785,7 @@ def test_bigquery_magic_w_max_results_valid_sets_job_config():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_w_table_id_instead_of_sql():
+def test_bigquery_magic_w_table_id_and_max_results():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
@@ -816,6 +816,69 @@ def test_bigquery_magic_w_table_id_instead_of_sql():
         run_query_mock.assert_not_called()
 
     assert isinstance(return_value, pandas.DataFrame)
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_table_id_and_destination_var():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    row_iterator_mock = mock.create_autospec(
+        google.cloud.bigquery.table.RowIterator, instance=True
+    )
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+    table_id = "bigquery-public-data.samples.shakespeare"
+    result = pandas.DataFrame([17], columns=["num"])
+
+    with client_patch as client_mock:
+        client_mock().list_rows.return_value = row_iterator_mock
+        row_iterator_mock.to_dataframe.return_value = result
+
+        return_value = ip.run_cell_magic("bigquery", "df --max_results=5", table_id)
+
+    assert "df" in ip.user_ns
+    df = ip.user_ns['df']
+
+    assert isinstance(df, pandas.DataFrame)
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_table_id_and_bqstorage_client():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    row_iterator_mock = mock.create_autospec(
+        google.cloud.bigquery.table.RowIterator, instance=True
+    )
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+
+    bqstorage_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
+    )
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", bqstorage_mock
+    )
+
+    table_id = "bigquery-public-data.samples.shakespeare"
+
+    with client_patch as client_mock, bqstorage_client_patch:
+        client_mock().list_rows.return_value = row_iterator_mock
+    
+        return_value = ip.run_cell_magic("bigquery", "--use_bqstorage_api --max_results=5", table_id)
+        row_iterator_mock.to_dataframe.assert_called_once_with(
+            bqstorage_client=bqstorage_instance_mock)
 
 
 @pytest.mark.usefixtures("ipython_interactive")

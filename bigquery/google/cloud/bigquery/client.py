@@ -1098,9 +1098,6 @@ class Client(ClientWithProject):
         if location is not None:
             extra_params["location"] = location
 
-        if max_results is not None:
-            extra_params["maxResults"] = max_results
-
         path = "/projects/{}/queries/{}".format(project, job_id)
 
         # This call is typically made in a polling loop that checks whether the
