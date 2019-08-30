@@ -28,8 +28,8 @@ def copy_table(client, dataset_id, table_id):
     # TODO(developer): Set table_id to the ID of the original table.
     # table_id = "your-project.your_dataset.your_table_name"
 
-    dataset = client.get_dataset(dataset_id)
     orig_table = client.get_table(table_id)
+    dataset = client.get_dataset(dataset_id)
     dest_table = dataset.table("destination_table")
 
     job = client.copy_table(

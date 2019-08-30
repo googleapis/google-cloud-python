@@ -21,3 +21,4 @@ def test_client_query(capsys, client):
     client_query.client_query(client)
     out, err = capsys.readouterr()
     assert "The query data:" in out
+    assert "Row(" in out

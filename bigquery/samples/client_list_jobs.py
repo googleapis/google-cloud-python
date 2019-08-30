@@ -19,11 +19,11 @@ def client_list_jobs(client):
     # TODO(developer): Import the client library.
     # from google.cloud import bigquery
 
+    import datetime
+
     # TODO(developer): Construct a BigQuery client object.
     # project = "my_project"  # replace with your project ID
     # client = bigquery.Client(project=project)
-
-    import datetime
 
     # List the 10 most recent jobs in reverse chronological order.
     # Omit the max_results parameter to list jobs from the past 6 months.
