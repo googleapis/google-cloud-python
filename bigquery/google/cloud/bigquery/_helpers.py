@@ -32,7 +32,7 @@ _TIMEONLY_WO_MICROS = "%H:%M:%S"
 _TIMEONLY_W_MICROS = "%H:%M:%S.%f"
 _PROJECT_PREFIX_PATTERN = re.compile(
     r"""
-    (?P<project_id>\S+\:[^.]+)\.(?P<dataset_id>[^.]+)\.(?P<custom_id>[^.]+)$
+    (?P<project_id>\S+\:[^.]+)\.(?P<dataset_id>[^.]+)(?:$|\.(?P<custom_id>[^.]+)$)
 """,
     re.VERBOSE,
 )
@@ -593,10 +593,7 @@ def _str_or_none(value):
         return str(value)
 
 
-def _parse_3_part_id(full_id, default_project=None, property_name="table_id"):
-    output_project_id = default_project
-    output_dataset_id = None
-    output_resource_id = None
+def _parse_id(full_id):
     with_prefix = _PROJECT_PREFIX_PATTERN.match(full_id)
     if with_prefix is None:
         parts = full_id.split(".")
@@ -605,6 +602,15 @@ def _parse_3_part_id(full_id, default_project=None, property_name="table_id"):
         dataset_id = with_prefix.group("dataset_id")
         custom_id = with_prefix.group("custom_id")
         parts = [project_id, dataset_id, custom_id]
+        parts = [part for part in parts if part]
+    return parts
+
+
+def _parse_3_part_id(full_id, default_project=None, property_name="table_id"):
+    output_project_id = default_project
+    output_dataset_id = None
+    output_resource_id = None
+    parts = _parse_id(full_id)
 
     if len(parts) != 2 and len(parts) != 3:
         raise ValueError(
