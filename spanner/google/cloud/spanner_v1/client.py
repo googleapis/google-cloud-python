@@ -110,6 +110,10 @@ class Client(ClientWithProject):
     :param user_agent:
         (Deprecated) The user agent to be used with API request.
         Not used.
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -124,7 +128,12 @@ class Client(ClientWithProject):
     """The scopes required for Google Cloud Spanner."""
 
     def __init__(
-        self, project=None, credentials=None, client_info=_CLIENT_INFO, user_agent=None
+        self,
+        project=None,
+        credentials=None,
+        client_info=_CLIENT_INFO,
+        user_agent=None,
+        client_options=None,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
@@ -133,6 +142,7 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
+        self._client_options = client_options
 
         if user_agent is not None:
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)
@@ -172,7 +182,9 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials, client_info=self._client_info
+                credentials=self.credentials,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
         return self._instance_admin_api
 
@@ -181,7 +193,9 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials, client_info=self._client_info
+                credentials=self.credentials,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
         return self._database_admin_api
 
