@@ -148,7 +148,7 @@ def snippets(session):
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
     if not os.environ.get('GCLOUD_ORGANIZATION', ''):
-        if 'KOKORO' in os.environ:
+        if 'KOKORO_GFILE_DIR' in os.environ:
             session.env['GCLOUD_ORGANIZATION'] = '1081635000895'
         else:
             session.skip('Credentials must be set via environment variable.')
