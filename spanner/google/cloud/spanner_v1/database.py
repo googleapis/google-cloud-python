@@ -177,8 +177,11 @@ class Database(object):
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             client_info = self._instance._client._client_info
+            client_options = self._instance._client._client_options
             self._spanner_api = SpannerClient(
-                credentials=credentials, client_info=client_info
+                credentials=credentials,
+                client_info=client_info,
+                client_options=client_options,
             )
         return self._spanner_api
 
