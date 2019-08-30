@@ -500,7 +500,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """Update properties from resource in body of ``api_response``
 
         Args:
-            api_response (dict): response returned from an API call.
+            api_response (Dict): response returned from an API call.
         """
         cleaned = api_response.copy()
         self._scrub_local_properties(cleaned)
@@ -2583,7 +2583,7 @@ class QueryJob(_AsyncJob):
         """Update properties from resource in body of ``api_response``
 
         Args:
-            api_response (dict): response returned from an API call.
+            api_response (Dict): response returned from an API call.
         """
 
         # prevent max_results value from being erased
