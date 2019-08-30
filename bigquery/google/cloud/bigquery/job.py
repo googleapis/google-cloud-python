@@ -2162,7 +2162,7 @@ class QueryJobConfig(_JobConfig):
 
     @max_results.setter
     def max_results(self, value):
-        self._set_sub_prop("maxResults", str(value))
+        self._set_sub_prop("maxResults", value)
 
     @property
     def maximum_billing_tier(self):
@@ -2579,6 +2579,18 @@ class QueryJob(_AsyncJob):
 
         return resource
 
+    def _set_properties(self, api_response):
+        """Update properties from resource in body of ``api_response``
+
+        :type api_response: dict
+        :param api_response: response returned from an API call
+        """
+
+        # prevent max_results value from being erased
+        max_results = self.max_results
+        super(QueryJob, self)._set_properties(api_response)
+        self._configuration.max_results = max_results
+
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
         self._configuration._properties = copy.deepcopy(configuration)
@@ -2858,7 +2870,6 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 timeout_ms=timeout_ms,
                 location=self.location,
-                max_results=self.max_results,
             )
 
             # Only reload the job once we know the query is complete.
@@ -2962,11 +2973,7 @@ class QueryJob(_AsyncJob):
             # Return an iterator instead of returning the job.
             if not self._query_results:
                 self._query_results = self._client._get_query_results(
-                    self.job_id,
-                    retry,
-                    project=self.project,
-                    location=self.location,
-                    max_results=self.max_results,
+                    self.job_id, retry, project=self.project, location=self.location
                 )
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)

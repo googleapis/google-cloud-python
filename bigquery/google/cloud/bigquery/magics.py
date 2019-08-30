@@ -438,7 +438,7 @@ def _cell_magic(line, query):
     else:
         max_results = None
 
-    if not re.search(r"\b\s+\b", query):
+    if not re.search(r"\s", query.rstrip()):
         table_id = query.rstrip()
         rows = client.list_rows(table_id, max_results=max_results)
         result = rows.to_dataframe(bqstorage_client=bqstorage_client)
