@@ -30,11 +30,9 @@ from google.cloud.bigquery.dbapi import exceptions
 def scalar_to_query_parameter(value, name=None):
     """Convert a scalar value into a query parameter.
 
-    :type value: any
-    :param value: A scalar value to convert into a query parameter.
+        value (any): A scalar value to convert into a query parameter.
 
-    :type name: str
-    :param name: (Optional) Name of the query parameter.
+        name (str): (Optional) Name of the query parameter.
 
     :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
     :returns:
@@ -75,8 +73,7 @@ def scalar_to_query_parameter(value, name=None):
 def to_query_parameters_list(parameters):
     """Converts a sequence of parameter values into query parameters.
 
-    :type parameters: Sequence[Any]
-    :param parameters: Sequence of query parameter values.
+        parameters (Sequence[Any]): Sequence of query parameter values.
 
     :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of query parameters.
@@ -87,8 +84,7 @@ def to_query_parameters_list(parameters):
 def to_query_parameters_dict(parameters):
     """Converts a dictionary of parameter values into query parameters.
 
-    :type parameters: Mapping[str, Any]
-    :param parameters: Dictionary of query parameter values.
+        parameters (Mapping[str, Any]): Dictionary of query parameter values.
 
     :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of named query parameters.
@@ -102,8 +98,7 @@ def to_query_parameters_dict(parameters):
 def to_query_parameters(parameters):
     """Converts DB-API parameter values into query parameters.
 
-    :type parameters: Mapping[str, Any] or Sequence[Any]
-    :param parameters: A dictionary or sequence of query parameter values.
+        parameters (Mapping[str, Any] or Sequence[Any]): A dictionary or sequence of query parameter values.
 
     :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of query parameters.
