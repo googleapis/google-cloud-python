@@ -54,7 +54,13 @@ class Client(ClientWithProject):
 
     _trace_api = None
 
-    def __init__(self, project=None, credentials=None, client_info=_CLIENT_INFO, client_options=None):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        client_info=_CLIENT_INFO,
+        client_options=None,
+    ):
         super(Client, self).__init__(project=project, credentials=credentials)
         self._client_info = client_info
         self._client_options = client_options

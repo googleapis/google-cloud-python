@@ -237,8 +237,9 @@ class Test_make_trace_api(unittest.TestCase):
             trace_api = self._call_fut(client)
 
         patched.assert_called_once_with(
-            credentials=client._credentials, client_info=client._client_info,
-            client_options=client._client_options
+            credentials=client._credentials,
+            client_info=client._client_info,
+            client_options=client._client_options,
         )
 
         self.assertIsInstance(trace_api, _TraceAPI)

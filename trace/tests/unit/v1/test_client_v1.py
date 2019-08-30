@@ -49,8 +49,10 @@ class TestClient(unittest.TestCase):
         client_info = mock.Mock()
         client_options = mock.Mock()
         client = self._make_one(
-            project=self.project, credentials=credentials, client_info=client_info,
-            client_options=client_options
+            project=self.project,
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
         )
         self.assertEqual(client.project, self.project)
         self.assertIs(client._client_info, client_info)
