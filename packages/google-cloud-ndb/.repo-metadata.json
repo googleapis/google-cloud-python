@@ -6,5 +6,5 @@
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/python-ndb",
-  "distribution_name": "google-cloud-ndb",
+  "distribution_name": "google-cloud-ndb"
 }

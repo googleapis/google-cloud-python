@@ -3,7 +3,9 @@
 ## Introduction
 
 This is a Python 3 version of the `ndb` client library for use with
-[Google Cloud Datastore][0].
+[Google Cloud Datastore][0]. 
+
+* [Client Library Documentation](https://googleapis.dev/python/python-ndb/latest)
 
 The original Python 2 version of `ndb` was designed specifically for the
 [Google App Engine][1] `python27` runtime and can be found at
