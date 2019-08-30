@@ -2088,70 +2088,95 @@ ProfileQuery = _reflection.GeneratedProtocolMessageType(
           example, "software engineer in Palo Alto".
       location_filters:
           Optional. The location filter specifies geo-regions containing
-          the profiles to search against. It filters against all of a
-          profile's [Profile.addresses][google.cloud.talent.v4beta1.Prof
-          ile.addresses] where
+          the profiles to search against.  One of [LocationFilter.addres
+          s][google.cloud.talent.v4beta1.LocationFilter.address] or [Loc
+          ationFilter.lat\_lng][google.cloud.talent.v4beta1.LocationFilt
+          er.lat\_lng] must be provided or an error is thrown. If both [
+          LocationFilter.address][google.cloud.talent.v4beta1.LocationFi
+          lter.address] and [LocationFilter.lat\_lng][google.cloud.talen
+          t.v4beta1.LocationFilter.lat\_lng] are provided, an error is
+          thrown.  The following logic is used to determine which
+          locations in the profile to filter against: 1. All of the
+          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
+          eta1.Profile.addresses] where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
           PERSONAL and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is true. If no such address exists, a fallback logic is
-          applied in an attempt to determine the profile's primary
-          address.  The fallback logic selects an address from a
-          profile's [Profile.addresses][google.cloud.talent.v4beta1.Prof
-          ile.addresses] in the following order of priority: 1.
-          [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
-          PERSONAL and
-          [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is false or not set. 2.
+          is true. 2. If the above set of locations is empty, all of the
+          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
+          eta1.Profile.addresses] where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
           CONTACT\_INFO\_USAGE\_UNSPECIFIED and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is true. 3.
+          is true. 3. If the above set of locations is empty, all of the
+          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
+          eta1.Profile.addresses] where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
-          CONTACT\_INFO\_USAGE\_UNSPECIFIED and
+          PERSONAL or CONTACT\_INFO\_USAGE\_UNSPECIFIED and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is false or not set.  If a location filter isn't specified,
-          profiles fitting the other search criteria are retrieved
-          regardless of where they're located.  If [LocationFilter.negat
-          ed][google.cloud.talent.v4beta1.LocationFilter.negated] is
-          specified, the result doesn't contain profiles from that
-          location.  If [LocationFilter.address][google.cloud.talent.v4b
-          eta1.LocationFilter.address] is provided, the [LocationType][g
-          oogle.cloud.talent.v4beta1.Location.LocationType], center
-          point (latitude and longitude), and radius are automatically
-          detected by the Google Maps Geocoding API and included as
-          well. If [LocationFilter.address][google.cloud.talent.v4beta1.
-          LocationFilter.address] is not recognized as a location, the
-          filter falls back to keyword search.  If the detected [Locatio
-          nType][google.cloud.talent.v4beta1.Location.LocationType] is [
-          LocationType.SUB\_ADMINISTRATIVE\_AREA][google.cloud.talent.v4
-          beta1.Location.LocationType.SUB\_ADMINISTRATIVE\_AREA], [Locat
-          ionType.ADMINISTRATIVE\_AREA][google.cloud.talent.v4beta1.Loca
-          tion.LocationType.ADMINISTRATIVE\_AREA], or [LocationType.COUN
-          TRY][google.cloud.talent.v4beta1.Location.LocationType.COUNTRY
-          ], or location is recognized but a radius can not be
-          determined by the geo-coder, the filter is performed against
-          the detected location name (using exact text matching).
-          Otherwise, the filter is performed against the detected center
-          point and a radius. The largest value from among the following
-          options is automatically set as the radius value: 1. 10 miles.
-          2. Detected location radius + [LocationFilter.distance\_in\_mi
+          is not set.  This means that any profiles without any [Profile
+          .addresses][google.cloud.talent.v4beta1.Profile.addresses]
+          that match any of the above criteria will not be included in a
+          search with location filter. Furthermore, any [Profile.address
+          es][google.cloud.talent.v4beta1.Profile.addresses] where
+          [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
+          WORK or SCHOOL or where
+          [Address.current][google.cloud.talent.v4beta1.Address.current]
+          is false are not considered for location filter.  If a
+          location filter isn't specified, profiles fitting the other
+          search criteria are retrieved regardless of where they're
+          located.  If [LocationFilter.negated][google.cloud.talent.v4be
+          ta1.LocationFilter.negated] is specified, the result doesn't
+          contain profiles from that location.  If [LocationFilter.addre
+          ss][google.cloud.talent.v4beta1.LocationFilter.address] is
+          provided, the [LocationType][google.cloud.talent.v4beta1.Locat
+          ion.LocationType], center point (latitude and longitude), and
+          radius are automatically detected by the Google Maps Geocoding
+          API and included as well. If [LocationFilter.address][google.c
+          loud.talent.v4beta1.LocationFilter.address] cannot be
+          geocoded, the filter falls back to keyword search.  If the
+          detected [LocationType][google.cloud.talent.v4beta1.Location.L
+          ocationType] is [LocationType.SUB\_ADMINISTRATIVE\_AREA][googl
+          e.cloud.talent.v4beta1.Location.LocationType.SUB\_ADMINISTRATI
+          VE\_AREA], [LocationType.ADMINISTRATIVE\_AREA][google.cloud.ta
+          lent.v4beta1.Location.LocationType.ADMINISTRATIVE\_AREA], or [
+          LocationType.COUNTRY][google.cloud.talent.v4beta1.Location.Loc
+          ationType.COUNTRY], the filter is performed against the
+          detected location name (using exact text matching). Otherwise,
+          the filter is performed against the detected center point and
+          a radius of detected location radius + [LocationFilter.distanc
+          e\_in\_miles][google.cloud.talent.v4beta1.LocationFilter.dista
+          nce\_in\_miles].  If [LocationFilter.address][google.cloud.tal
+          ent.v4beta1.LocationFilter.address] is provided, [LocationFilt
+          er.distance\_in\_miles][google.cloud.talent.v4beta1.LocationFi
+          lter.distance\_in\_miles] is the additional radius on top of
+          the radius of the location geocoded from [LocationFilter.addre
+          ss][google.cloud.talent.v4beta1.LocationFilter.address]. If [L
+          ocationFilter.lat\_lng][google.cloud.talent.v4beta1.LocationFi
+          lter.lat\_lng] is provided, [LocationFilter.distance\_in\_mile
+          s][google.cloud.talent.v4beta1.LocationFilter.distance\_in\_mi
+          les] is the only radius that is used.  [LocationFilter.distanc
+          e\_in\_miles][google.cloud.talent.v4beta1.LocationFilter.dista
+          nce\_in\_miles] is 10 by default. Note that the value of [Loca
+          tionFilter.distance\_in\_miles][google.cloud.talent.v4beta1.Lo
+          cationFilter.distance\_in\_miles] is 0 if it is unset, so the
+          server does not differentiate [LocationFilter.distance\_in\_mi
           les][google.cloud.talent.v4beta1.LocationFilter.distance\_in\_
-          miles]. 3. If the detected [LocationType][google.cloud.talent.
-          v4beta1.Location.LocationType] is one of [LocationType.SUB\_LO
-          CALITY][google.cloud.talent.v4beta1.Location.LocationType.SUB\
-          _LOCALITY], [LocationType.SUB\_LOCALITY\_2][google.cloud.talen
-          t.v4beta1.Location.LocationType.SUB\_LOCALITY\_2], [LocationTy
-          pe.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.Location
-          Type.NEIGHBORHOOD], [LocationType.POSTAL\_CODE][google.cloud.t
-          alent.v4beta1.Location.LocationType.POSTAL\_CODE], or [Locatio
-          nType.STREET\_ADDRESS][google.cloud.talent.v4beta1.Location.Lo
-          cationType.STREET\_ADDRESS], the following two values are
-          calculated and the larger of the two is compared to #1 and #2,
-          above: - Calculated radius of the city (from the city center)
-          that contains the geo-coded location. - Distance from the city
-          center (of the city containing the geo-coded location) to the
-          detected location center + 0.5 miles.
+          miles] that is explicitly set to 0 and [LocationFilter.distanc
+          e\_in\_miles][google.cloud.talent.v4beta1.LocationFilter.dista
+          nce\_in\_miles] that is not set. Which means that if [Location
+          Filter.distance\_in\_miles][google.cloud.talent.v4beta1.Locati
+          onFilter.distance\_in\_miles] is explicitly set to 0, the
+          server will use the default value of [LocationFilter.distance\
+          _in\_miles][google.cloud.talent.v4beta1.LocationFilter.distanc
+          e\_in\_miles] which is 10. To work around this and effectively
+          set [LocationFilter.distance\_in\_miles][google.cloud.talent.v
+          4beta1.LocationFilter.distance\_in\_miles] to 0, we recommend
+          setting [LocationFilter.distance\_in\_miles][google.cloud.tale
+          nt.v4beta1.LocationFilter.distance\_in\_miles] to a very small
+          decimal number (such as 0.00001).  If [LocationFilter.distance
+          \_in\_miles][google.cloud.talent.v4beta1.LocationFilter.distan
+          ce\_in\_miles] is negative, an error is thrown.
       job_title_filters:
           Optional. Job title filter specifies job titles of profiles to
           match on.  If a job title isn't specified, profiles with any

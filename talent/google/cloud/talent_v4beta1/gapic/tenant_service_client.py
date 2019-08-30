@@ -37,7 +37,6 @@ from google.cloud.talent_v4beta1.gapic.transports import tenant_service_grpc_tra
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2

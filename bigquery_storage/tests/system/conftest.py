@@ -69,9 +69,9 @@ def table(project_id, dataset, bq_client):
     from google.cloud import bigquery
 
     schema = [
-        bigquery.SchemaField("first_name", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
     ]
 
     table_id = "{}.{}.{}".format(project_id, dataset.dataset_id, "users")
@@ -116,8 +116,8 @@ def col_partition_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
 
     schema = [
-        bigquery.SchemaField("occurred", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("description", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("occurred", "DATE", mode="NULLABLE"),
+        bigquery.SchemaField("description", "STRING", mode="NULLABLE"),
     ]
     time_partitioning = bigquery.table.TimePartitioning(
         type_=bigquery.table.TimePartitioningType.DAY, field="occurred"
@@ -144,8 +144,8 @@ def ingest_partition_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
 
     schema = [
-        bigquery.SchemaField("shape", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("altitude", "INT64", mode="REQUIRED"),
+        bigquery.SchemaField("shape", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("altitude", "INT64", mode="NULLABLE"),
     ]
     time_partitioning = bigquery.table.TimePartitioning(
         type_=bigquery.table.TimePartitioningType.DAY,
