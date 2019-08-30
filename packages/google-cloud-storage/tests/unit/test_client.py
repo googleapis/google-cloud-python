@@ -676,7 +676,9 @@ class TestClient(unittest.TestCase):
         blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+        with mock.patch(
+            "google.cloud.storage.client.Blob.from_string", return_value=blob
+        ):
             client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
 
         blob.download_to_file.assert_called_once_with(
@@ -687,14 +689,10 @@ class TestClient(unittest.TestCase):
         project = "PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
-            with pytest.raises(ValueError, match="URI scheme must be gs"):
-                client.download_blob_to_file(
-                    "http://bucket_name/path/to/object", file_obj
-                )
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            client.download_blob_to_file("http://bucket_name/path/to/object", file_obj)
 
     def test_list_blobs(self):
         from google.cloud.storage.bucket import Bucket
