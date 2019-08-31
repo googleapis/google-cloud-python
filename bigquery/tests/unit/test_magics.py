@@ -832,7 +832,6 @@ def test_bigquery_magic_w_table_id_invalid():
     table_id = "not-a-real-table"
 
     with list_rows_patch, io.capture_output() as captured_io:
-
         ip.run_cell_magic("bigquery", "df", table_id)
 
     output = captured_io.stderr
