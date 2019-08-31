@@ -833,9 +833,10 @@ def test_bigquery_magic_w_table_id_invalid():
 
     with list_rows_patch, io.capture_output() as captured_io:
 
-        ip.run_cell_magic("bigquery", "", table_id)
+        ip.run_cell_magic("bigquery", "df", table_id)
 
     output = captured_io.stderr
+    assert "Could not save output to variable" in output
     assert "400 Not a valid table ID" in output
     assert "Traceback (most recent call last)" not in output
 
