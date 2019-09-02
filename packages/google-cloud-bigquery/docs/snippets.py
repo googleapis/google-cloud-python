@@ -1393,6 +1393,7 @@ def test_copy_table_multiple_source(client, to_delete):
     assert dest_table.num_rows == 2
 
 
+@pytest.mark.skip(reason="Backend responds with a 500 internal error.")
 def test_copy_table_cmek(client, to_delete):
     dataset_id = "copy_table_cmek_{}".format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
