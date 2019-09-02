@@ -16,6 +16,7 @@ import datetime
 import unittest
 
 import mock
+import pytest
 
 
 def _create_signing_credentials():
@@ -2667,6 +2668,39 @@ class Test_Bucket(unittest.TestCase):
             "query_parameters": query_parameters,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
+
+    def test_get_bucket_from_string_w_valid_uri(self):
+        from google.cloud.storage.bucket import Bucket
+
+        connection = _Connection()
+        client = _Client(connection)
+        BUCKET_NAME = "BUCKET_NAME"
+        uri = "gs://" + BUCKET_NAME
+        bucket = Bucket.from_string(uri, client)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertIs(bucket.client, client)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+
+    def test_get_bucket_from_string_w_invalid_uri(self):
+        from google.cloud.storage.bucket import Bucket
+
+        connection = _Connection()
+        client = _Client(connection)
+
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            Bucket.from_string("http://bucket_name", client)
+
+    def test_get_bucket_from_string_w_domain_name_bucket(self):
+        from google.cloud.storage.bucket import Bucket
+
+        connection = _Connection()
+        client = _Client(connection)
+        BUCKET_NAME = "buckets.example.com"
+        uri = "gs://" + BUCKET_NAME
+        bucket = Bucket.from_string(uri, client)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertIs(bucket.client, client)
+        self.assertEqual(bucket.name, BUCKET_NAME)
 
     def test_generate_signed_url_no_version_passed_warning(self):
         self._generate_signed_url_helper()
