@@ -30,6 +30,11 @@ NOW = datetime.datetime.utcnow  # To be replaced by tests.
 MULTIPLE_SPACES_RE = r"\s+"
 MULTIPLE_SPACES = re.compile(MULTIPLE_SPACES_RE)
 
+SERVICE_ACCOUNT_URL = (
+    "https://googleapis.dev/python/google-api-core/latest/"
+    "auth.html#setting-up-a-service-account"
+)
+
 
 def ensure_signed_credentials(credentials):
     """Raise AttributeError if the credentials are unsigned.
@@ -42,16 +47,11 @@ def ensure_signed_credentials(credentials):
             of :class:`google.auth.credentials.Signing`.
     """
     if not isinstance(credentials, google.auth.credentials.Signing):
-        auth_uri = (
-            "https://google-cloud-python.readthedocs.io/en/latest/"
-            "core/auth.html?highlight=authentication#setting-up-"
-            "a-service-account"
-        )
         raise AttributeError(
             "you need a private key to sign credentials."
-            "the credentials you are currently using %s "
-            "just contains a token. see %s for more "
-            "details." % (type(credentials), auth_uri)
+            "the credentials you are currently using {} "
+            "just contains a token. see {} for more "
+            "details.".format(type(credentials), SERVICE_ACCOUNT_URL)
         )
 
 
