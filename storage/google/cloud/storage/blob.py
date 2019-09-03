@@ -310,6 +310,37 @@ class Blob(_PropertyMixin):
             quoted_name=_quote(self.name, safe=b"/~"),
         )
 
+    @classmethod
+    def from_string(cls, uri, client=None):
+        """Get a constructor for blob object by URI.
+
+         :type uri: str
+         :param uri: The blob uri pass to get blob object.
+
+         :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+         :param client: Optional. The client to use.
+
+         :rtype: :class:`google.cloud.storage.blob.Blob`
+         :returns: The blob object created.
+
+         Example:
+            Get a constructor for blob object by URI..
+
+            >>> from google.cloud import storage
+            >>> from google.cloud.storage.blob import Blob
+            >>> client = storage.Client()
+            >>> blob = Blob.from_string("gs://bucket/object")
+         """
+        from google.cloud.storage.bucket import Bucket
+
+        scheme, netloc, path, query, frag = urlsplit(uri)
+        if scheme != "gs":
+            raise ValueError("URI scheme must be gs")
+
+        bucket = Bucket(client, name=netloc)
+        return cls(path[1:], bucket)
+
     def generate_signed_url(
         self,
         expiration=None,
