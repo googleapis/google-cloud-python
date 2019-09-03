@@ -18,7 +18,6 @@ from __future__ import absolute_import
 
 import six
 import copy
-import re
 
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
