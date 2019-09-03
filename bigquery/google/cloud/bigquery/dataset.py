@@ -291,7 +291,7 @@ class DatasetReference(object):
         """
         output_dataset_id = dataset_id
         output_project_id = default_project
-        parts = _helpers._parse_id(dataset_id)
+        parts = _helpers._split_id(dataset_id)
 
         if len(parts) == 1 and not default_project:
             raise ValueError(
