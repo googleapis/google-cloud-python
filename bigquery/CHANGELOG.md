@@ -31,7 +31,7 @@
 
 ### Documentation
 
-- Fix the reference URL for BigQuery create_dataset(). ([#9149](https://github.com/googleapis/google-cloud-python/pull/9149))
+- Fix the reference URL for `Client.create_dataset()`. ([#9149](https://github.com/googleapis/google-cloud-python/pull/9149))
 - Update code samples to use strings for table names instead of `client.dataset()`. ([#9032](https://github.com/googleapis/google-cloud-python/pull/9032))
 - Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
 - Fix Pandas DataFrame load example under Python 2.7. ([#9022](https://github.com/googleapis/google-cloud-python/pull/9022))
