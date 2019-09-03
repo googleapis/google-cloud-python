@@ -38,7 +38,7 @@ class ContainerEngineHandler(logging.StreamHandler):
     """
 
     def __init__(self, name=None, stream=None):
-        super(ContainerEngineHandler, self).__init__()
+        super(ContainerEngineHandler, self).__init__(stream=stream)
         self.name = name
 
     def format(self, record):
