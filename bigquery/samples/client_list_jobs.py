@@ -22,8 +22,7 @@ def client_list_jobs(client):
     import datetime
 
     # TODO(developer): Construct a BigQuery client object.
-    # project = "my_project"  # replace with your project ID
-    # client = bigquery.Client(project=project)
+    # client = bigquery.Client()
 
     # List the 10 most recent jobs in reverse chronological order.
     # Omit the max_results parameter to list jobs from the past 6 months.
