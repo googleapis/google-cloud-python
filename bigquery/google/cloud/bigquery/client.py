@@ -343,7 +343,7 @@ class Client(ClientWithProject):
         """API call: create the dataset via a POST request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/insert
 
         Args:
             dataset (Union[ \
