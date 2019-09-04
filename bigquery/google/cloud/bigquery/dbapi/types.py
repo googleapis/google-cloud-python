@@ -33,7 +33,8 @@ TimestampFromTicks = datetime.datetime.fromtimestamp
 def Binary(string):
     """Contruct a DB-API binary value.
 
-        string (str): A string to encode as a binary value.
+    :type string: str
+    :param string: A string to encode as a binary value.
 
     :rtype: bytes
     :returns: The UTF-8 encoded bytes representing the string.
@@ -44,10 +45,13 @@ def Binary(string):
 def TimeFromTicks(ticks, tz=None):
     """Construct a DB-API time value from the given ticks value.
 
-        ticks (float): a number of seconds since the epoch; see the documentation of the
+    :type ticks: float
+    :param ticks:
+        a number of seconds since the epoch; see the documentation of the
         standard Python time module for details.
 
-        tz (:class:`datetime.tzinfo`): (Optional) time zone to use for conversion
+    :type tz: :class:`datetime.tzinfo`
+    :param tz: (Optional) time zone to use for conversion
 
     :rtype: :class:`datetime.time`
     :returns: time represented by ticks.

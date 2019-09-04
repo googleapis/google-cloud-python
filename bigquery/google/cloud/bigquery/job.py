@@ -349,8 +349,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-                client (:class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``): the client to use.  If not passed, falls back to the
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
         :rtype: :class:`google.cloud.bigquery.client.Client`
@@ -498,7 +499,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-                api_response (dict): response returned from an API call
+        :type api_response: dict
+        :param api_response: response returned from an API call
         """
         cleaned = api_response.copy()
         self._scrub_local_properties(cleaned)
@@ -522,7 +524,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _get_resource_config(cls, resource):
         """Helper for :meth:`from_api_repr`
 
-                resource (dict): resource for the job
+        :type resource: dict
+        :param resource: resource for the job
 
         :rtype: dict
         :returns: tuple (string, dict), where the first element is the
@@ -588,11 +591,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-                client (:class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``): the client to use.  If not passed, falls back to the
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-                retry (:class:`google.api_core.retry.Retry`): (Optional) How to retry the RPC.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: bool
         :returns: Boolean indicating existence of the job.
@@ -618,11 +623,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-                client (:class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``): the client to use.  If not passed, falls back to the
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-                retry (:class:`google.api_core.retry.Retry`): (Optional) How to retry the RPC.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
         """
         client = self._require_client(client)
 
@@ -641,8 +648,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
-                client (:class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``): the client to use.  If not passed, falls back to the
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
         :rtype: bool
@@ -689,7 +697,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
-                retry (:class:`google.api_core.retry.Retry`): (Optional) How to retry the RPC.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: bool
         :returns: True if the job is complete, False otherwise.
@@ -703,10 +712,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
-                timeout (float): How long (in seconds) to wait for job to complete before raising
+        :type timeout: float
+        :param timeout:
+            How long (in seconds) to wait for job to complete before raising
             a :class:`concurrent.futures.TimeoutError`.
 
-                retry (:class:`google.api_core.retry.Retry`): (Optional) How to retry the RPC.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: _AsyncJob
         :returns: This instance.
@@ -887,7 +899,9 @@ class _JobConfig(object):
     def from_api_repr(cls, resource):
         """Factory: construct a job configuration given its API representation
 
-                resource (dict): An extract job configuration in the same representation as is
+        :type resource: dict
+        :param resource:
+            An extract job configuration in the same representation as is
             returned from the API.
 
         :rtype: :class:`google.cloud.bigquery.job._JobConfig`
@@ -1248,15 +1262,20 @@ class LoadJob(_AsyncJob):
 
     Can load from Google Cloud Storage URIs or from a file.
 
-        job_id (str): the job's ID
+    :type job_id: str
+    :param job_id: the job's ID
 
-        source_uris (sequence of string or ``NoneType``): URIs of one or more data files to be loaded.  See
+    :type source_uris: sequence of string or ``NoneType``
+    :param source_uris:
+        URIs of one or more data files to be loaded.  See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
         for supported URI formats. Pass None for jobs that load from a file.
 
-        destination (:class:`google.cloud.bigquery.table.TableReference`): reference to table into which data is to be loaded.
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
+    :param destination: reference to table into which data is to be loaded.
 
-        client (:class:`google.cloud.bigquery.client.Client`): A client which holds credentials and project configuration
+    :type client: :class:`google.cloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
 
@@ -1520,9 +1539,11 @@ class LoadJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-                resource (dict): dataset job representation returned from the API
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
 
-                client (:class:`google.cloud.bigquery.client.Client`): Client which holds credentials and project
+        :type client: :class:`google.cloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
                        configuration for the dataset.
 
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
@@ -1608,16 +1629,22 @@ class CopyJobConfig(_JobConfig):
 class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.
 
-        job_id (str): the job's ID, within the project belonging to ``client``.
+    :type job_id: str
+    :param job_id: the job's ID, within the project belonging to ``client``.
 
-        sources (list of :class:`google.cloud.bigquery.table.TableReference`): Table from which data is to be loaded.
+    :type sources: list of :class:`google.cloud.bigquery.table.TableReference`
+    :param sources: Table from which data is to be loaded.
 
-        destination (:class:`google.cloud.bigquery.table.TableReference`): Table into which data is to be loaded.
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
+    :param destination: Table into which data is to be loaded.
 
-        client (:class:`google.cloud.bigquery.client.Client`): A client which holds credentials and project configuration
+    :type client: :class:`google.cloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-        job_config (:class:`~google.cloud.bigquery.job.CopyJobConfig`): (Optional) Extra configuration options for the copy job.
+    :type job_config: :class:`~google.cloud.bigquery.job.CopyJobConfig`
+    :param job_config:
+        (Optional) Extra configuration options for the copy job.
     """
 
     _JOB_TYPE = "copy"
@@ -1701,9 +1728,11 @@ class CopyJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-                resource (dict): dataset job representation returned from the API
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
 
-                client (:class:`google.cloud.bigquery.client.Client`): Client which holds credentials and project
+        :type client: :class:`google.cloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
                        configuration for the dataset.
 
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
@@ -1797,16 +1826,24 @@ class ExtractJobConfig(_JobConfig):
 class ExtractJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
-        job_id (str): the job's ID
+    :type job_id: str
+    :param job_id: the job's ID
 
-        source (:class:`google.cloud.bigquery.table.TableReference`): Table into which data is to be loaded.
+    :type source: :class:`google.cloud.bigquery.table.TableReference`
+    :param source: Table into which data is to be loaded.
 
-        destination_uris (list of string): URIs describing where the extracted data will be written in Cloud
+    :type destination_uris: list of string
+    :param destination_uris:
+        URIs describing where the extracted data will be written in Cloud
         Storage, using the format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        client (:class:`google.cloud.bigquery.client.Client`): A client which holds credentials and project configuration.
+    :type client: :class:`google.cloud.bigquery.client.Client`
+    :param client:
+        A client which holds credentials and project configuration.
 
-        job_config (:class:`~google.cloud.bigquery.job.ExtractJobConfig`): (Optional) Extra configuration options for the extract job.
+    :type job_config: :class:`~google.cloud.bigquery.job.ExtractJobConfig`
+    :param job_config:
+        (Optional) Extra configuration options for the extract job.
     """
 
     _JOB_TYPE = "extract"
@@ -1901,9 +1938,11 @@ class ExtractJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-                resource (dict): dataset job representation returned from the API
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
 
-                client (:class:`google.cloud.bigquery.client.Client`): Client which holds credentials and project
+        :type client: :class:`google.cloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
                        configuration for the dataset.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
@@ -2323,14 +2362,19 @@ class QueryJobConfig(_JobConfig):
 class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
-        job_id (str): the job's ID, within the project belonging to ``client``.
+    :type job_id: str
+    :param job_id: the job's ID, within the project belonging to ``client``.
 
-        query (str): SQL query string
+    :type query: str
+    :param query: SQL query string
 
-        client (:class:`google.cloud.bigquery.client.Client`): A client which holds credentials and project configuration
+    :type client: :class:`google.cloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-        job_config (:class:`~google.cloud.bigquery.job.QueryJobConfig`): (Optional) Extra configuration options for the query job.
+    :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
+    :param job_config:
+        (Optional) Extra configuration options for the query job.
     """
 
     _JOB_TYPE = "query"
@@ -2522,9 +2566,11 @@ class QueryJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory:  construct a job given its API representation
 
-                resource (dict): dataset job representation returned from the API
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
 
-                client (:class:`google.cloud.bigquery.client.Client`): Client which holds credentials and project
+        :type client: :class:`google.cloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
                        configuration for the dataset.
 
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
@@ -3029,7 +3075,8 @@ class QueryJob(_AsyncJob):
 class QueryPlanEntryStep(object):
     """Map a single step in a query plan entry.
 
-        kind (str): step type
+    :type kind: str
+    :param kind: step type
 
     :type substeps:
     :param substeps: names of substeps
@@ -3043,7 +3090,8 @@ class QueryPlanEntryStep(object):
     def from_api_repr(cls, resource):
         """Factory: construct instance from the JSON repr.
 
-                resource (dict): JSON representation of the entry
+        :type resource: dict
+        :param resource: JSON representation of the entry
 
         :rtype: :class:`QueryPlanEntryStep`
         :return: new instance built from the resource

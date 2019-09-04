@@ -26,9 +26,11 @@ from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
 class UDFResource(object):
     """Describe a single user-defined function (UDF) resource.
 
-        udf_type (str): the type of the resource ('inlineCode' or 'resourceUri')
+    :type udf_type: str
+    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
 
-        value (str): the inline code or resource URI.
+    :type value: str
+    :param value: the inline code or resource URI.
 
     See
     https://cloud.google.com/bigquery/user-defined-functions#api
@@ -55,7 +57,8 @@ class _AbstractQueryParameter(object):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-                resource (dict): JSON mapping of parameter
+        :type resource: dict
+        :param resource: JSON mapping of parameter
 
         :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         """
@@ -72,15 +75,18 @@ class _AbstractQueryParameter(object):
 class ScalarQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for scalar values.
 
-        name (str or None): Parameter name, used via ``@foo`` syntax.  If None, the
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
                  parameter can only be addressed via position (``?``).
 
-        type_ (str): name of parameter type.  One of 'STRING', 'INT64',
+    :type type_: str
+    :param type_: name of parameter type.  One of 'STRING', 'INT64',
                   'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
                   'DATE'.
 
-        value (str, int, float, :class:`decimal.Decimal`, bool,
-                 :class:`datetime.datetime`, or :class:`datetime.date`.): the scalar parameter value.
+    :type value: str, int, float, :class:`decimal.Decimal`, bool,
+                 :class:`datetime.datetime`, or :class:`datetime.date`.
+    :param value: the scalar parameter value.
     """
 
     def __init__(self, name, type_, value):
@@ -92,13 +98,16 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     def positional(cls, type_, value):
         """Factory for positional paramater.
 
-                type_ (str): name of parameter type.  One of 'STRING', 'INT64',
+        :type type_: str
+        :param type_:
+            name of parameter type.  One of 'STRING', 'INT64',
             'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
             'DATE'.
 
-                value (str, int, float, :class:`decimal.Decimal`, bool,
+        :type value: str, int, float, :class:`decimal.Decimal`, bool,
                      :class:`datetime.datetime`, or
-                     :class:`datetime.date`.): the scalar parameter value.
+                     :class:`datetime.date`.
+        :param value: the scalar parameter value.
 
         :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         :returns: instance without name
@@ -109,7 +118,8 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-                resource (dict): JSON mapping of parameter
+        :type resource: dict
+        :param resource: JSON mapping of parameter
 
         :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         :returns: instance
@@ -171,13 +181,17 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 class ArrayQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for array values.
 
-        name (str or None): Parameter name, used via ``@foo`` syntax.  If None, the
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
                  parameter can only be addressed via position (``?``).
 
-        array_type (str): name of type of array elements.  One of `'STRING'`, `'INT64'`,
+    :type array_type: str
+    :param array_type:
+        name of type of array elements.  One of `'STRING'`, `'INT64'`,
         `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-        values (list of appropriate scalar type.): the parameter array values.
+    :type values: list of appropriate scalar type.
+    :param values: the parameter array values.
     """
 
     def __init__(self, name, array_type, values):
@@ -189,10 +203,13 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def positional(cls, array_type, values):
         """Factory for positional parameters.
 
-                array_type (str): name of type of array elements.  One of `'STRING'`, `'INT64'`,
+        :type array_type: str
+        :param array_type:
+            name of type of array elements.  One of `'STRING'`, `'INT64'`,
             `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-                values (list of appropriate scalar type): the parameter array values.
+        :type values: list of appropriate scalar type
+        :param values: the parameter array values.
 
         :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
         :returns: instance without name
@@ -232,7 +249,8 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-                resource (dict): JSON mapping of parameter
+        :type resource: dict
+        :param resource: JSON mapping of parameter
 
         :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
         :returns: instance
@@ -293,12 +311,15 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 class StructQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for struct values.
 
-        name (str or None): Parameter name, used via ``@foo`` syntax.  If None, the
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
                  parameter can only be addressed via position (``?``).
 
-        sub_params (tuple of :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
+    :type sub_params:
+        tuple of :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
         :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
-        :class:`~google.cloud.bigquery.query.StructQueryParameter`): the sub-parameters for the struct
+        :class:`~google.cloud.bigquery.query.StructQueryParameter`
+    :param sub_params: the sub-parameters for the struct
     """
 
     def __init__(self, name, *sub_params):
@@ -320,10 +341,12 @@ class StructQueryParameter(_AbstractQueryParameter):
     def positional(cls, *sub_params):
         """Factory for positional parameters.
 
-                sub_params (tuple of
+        :type sub_params:
+            tuple of
             :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
             :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
-            :class:`~google.cloud.bigquery.query.StructQueryParameter`): the sub-parameters for the struct
+            :class:`~google.cloud.bigquery.query.StructQueryParameter`
+        :param sub_params: the sub-parameters for the struct
 
         :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: instance without name
@@ -334,7 +357,8 @@ class StructQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-                resource (dict): JSON mapping of parameter
+        :type resource: dict
+        :param resource: JSON mapping of parameter
 
         :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: instance
@@ -581,7 +605,8 @@ class _QueryResults(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-                api_response (dict): response returned from an API call
+        :type api_response: dict
+        :param api_response: response returned from an API call
         """
         job_id_present = (
             "jobReference" in api_response

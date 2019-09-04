@@ -210,9 +210,11 @@ def _row_tuple_from_json(row, schema):
 
     Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
 
-        row (dict): A JSON response row to be converted.
+    :type row: dict
+    :param row: A JSON response row to be converted.
 
-        schema (tuple): A tuple of
+    :type schema: tuple
+    :param schema: A tuple of
                    :class:`~google.cloud.bigquery.schema.SchemaField`.
 
     :rtype: tuple

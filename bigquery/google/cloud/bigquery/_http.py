@@ -22,9 +22,11 @@ from google.cloud.bigquery import __version__
 class Connection(_http.JSONConnection):
     """A connection to Google BigQuery via the JSON REST API.
 
-        client (:class:`~google.cloud.bigquery.client.Client`): The client that owns the current connection.
+    :type client: :class:`~google.cloud.bigquery.client.Client`
+    :param client: The client that owns the current connection.
 
-        client_info (:class:`~google.api_core.client_info.ClientInfo`): (Optional) instance used to generate user agent.
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
 
     DEFAULT_API_ENDPOINT = "https://www.googleapis.com"
