@@ -1572,6 +1572,16 @@ class Client(ClientWithProject):
             dataframe, job_config.schema
         )
 
+        if not job_config.schema:
+            # the schema could not be fully detected
+            warnings.warn(
+                "Schema could not be detected for all columns. Loading from a "
+                "dataframe without a schema will be deprecated in the future, "
+                "please provide a schema.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
 
