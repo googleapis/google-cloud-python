@@ -188,7 +188,7 @@ and stored in a file and then and deserialized with
 to use ``oauth2client``'s credentials with this library, you'll need to
 `convert them`_.
 
-.. _oauth2client: https://github.com/Google/oauth2client.
+.. _oauth2client: https://github.com/Google/oauth2client
 .. _client secrets: https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets
 .. _webserver flow: https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow
 .. _convert them: http://google-auth.readthedocs.io/en/stable/user-guide.html#user-credentials

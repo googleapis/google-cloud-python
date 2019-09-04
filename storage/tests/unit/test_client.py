@@ -86,6 +86,53 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
         self.assertIsInstance(client._connection._client_info, ClientInfo)
+        self.assertEqual(
+            client._connection.API_BASE_URL, Connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_ctor_w_empty_client_options(self):
+        from google.api_core.client_options import ClientOptions
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client_options = ClientOptions()
+
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, client_options=client_options
+        )
+
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_ctor_w_client_options_dict(self):
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client_options = {"api_endpoint": "https://www.foo-googleapis.com"}
+
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, client_options=client_options
+        )
+
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
+        )
+
+    def test_ctor_w_client_options_object(self):
+        from google.api_core.client_options import ClientOptions
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client_options = ClientOptions(api_endpoint="https://www.foo-googleapis.com")
+
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, client_options=client_options
+        )
+
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
+        )
 
     def test_ctor_wo_project(self):
         from google.cloud.storage._http import Connection
@@ -629,7 +676,9 @@ class TestClient(unittest.TestCase):
         blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+        with mock.patch(
+            "google.cloud.storage.client.Blob.from_string", return_value=blob
+        ):
             client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
 
         blob.download_to_file.assert_called_once_with(
@@ -640,14 +689,10 @@ class TestClient(unittest.TestCase):
         project = "PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
-            with pytest.raises(ValueError, match="URI scheme must be gs"):
-                client.download_blob_to_file(
-                    "http://bucket_name/path/to/object", file_obj
-                )
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            client.download_blob_to_file("http://bucket_name/path/to/object", file_obj)
 
     def test_list_blobs(self):
         from google.cloud.storage.bucket import Bucket

@@ -1,7 +1,7 @@
 Python Client for Google Cloud Bigtable
 =======================================
 
-|beta| |pypi| |versions| 
+|GA| |pypi| |versions| 
 
 `Google Cloud Bigtable`_ is Google's NoSQL Big Data database service. It's the
 same database that powers many core Google services, including Search,
@@ -10,8 +10,8 @@ Analytics, Maps, and Gmail.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg

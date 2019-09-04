@@ -39,7 +39,6 @@ from google.cloud.talent_v4beta1.gapic.transports import job_service_grpc_transp
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -1621,8 +1620,8 @@ class JobServiceClient(object):
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
-            batch_pb2.JobOperationResult,
-            metadata_type=batch_pb2.BatchOperationMetadata,
+            job_service_pb2.JobOperationResult,
+            metadata_type=common_pb2.BatchOperationMetadata,
         )
 
     def batch_update_jobs(
@@ -1739,6 +1738,6 @@ class JobServiceClient(object):
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
-            batch_pb2.JobOperationResult,
-            metadata_type=batch_pb2.BatchOperationMetadata,
+            job_service_pb2.JobOperationResult,
+            metadata_type=common_pb2.BatchOperationMetadata,
         )

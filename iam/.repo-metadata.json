@@ -8,5 +8,5 @@
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-iam",
-  "api_id": "iamcredentials.googleapis.com",
+  "api_id": "iamcredentials.googleapis.com"
 }

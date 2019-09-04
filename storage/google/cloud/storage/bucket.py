@@ -21,6 +21,7 @@ import json
 import warnings
 
 import six
+from six.moves.urllib.parse import urlsplit
 
 from google.api_core import page_iterator
 from google.api_core import datetime_helpers
@@ -494,6 +495,35 @@ class Bucket(_PropertyMixin):
         :rtype: str
         """
         return self._user_project
+
+    @classmethod
+    def from_string(cls, uri, client=None):
+        """Get a constructor for bucket object by URI.
+
+        :type uri: str
+        :param uri: The bucket uri pass to get bucket object.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.
+
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
+        :returns: The bucket object created.
+
+        Example:
+            Get a constructor for bucket object by URI..
+
+            >>> from google.cloud import storage
+            >>> from google.cloud.storage.bucket import Bucket
+            >>> client = storage.Client()
+            >>> bucket = Bucket.from_string("gs://bucket",client)
+        """
+        scheme, netloc, path, query, frag = urlsplit(uri)
+
+        if scheme != "gs":
+            raise ValueError("URI scheme must be gs")
+
+        return cls(client, name=netloc)
 
     def blob(
         self,
