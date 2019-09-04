@@ -20,6 +20,7 @@ import email
 import gzip
 import io
 import json
+import operator
 import unittest
 import warnings
 
@@ -5483,6 +5484,66 @@ class TestClientUpload(object):
             SchemaField("dt_col", "DATETIME"),
             SchemaField("ts_col", "TIMESTAMP"),
         )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_index_and_auto_schema(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        df_data = collections.OrderedDict(
+            [("int_col", [10, 20, 30]), ("float_col", [1.0, 2.0, 3.0])]
+        )
+        dataframe = pandas.DataFrame(
+            df_data,
+            index=pandas.Index(name="unique_name", data=["one", "two", "three"]),
+        )
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(
+                schema=[
+                    SchemaField("int_col", "INTEGER"),
+                    SchemaField("float_col", "FLOAT"),
+                    SchemaField("unique_name", "STRING"),
+                ]
+            ),
+        )
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+
+        sent_schema = sorted(sent_config.schema, key=operator.attrgetter("name"))
+        expected_sent_schema = [
+            SchemaField("float_col", "FLOAT"),
+            SchemaField("int_col", "INTEGER"),
+            SchemaField("unique_name", "STRING"),
+        ]
+        assert sent_schema == expected_sent_schema
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

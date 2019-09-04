@@ -1559,11 +1559,13 @@ class Client(ClientWithProject):
             except google.api_core.exceptions.NotFound:
                 table = None
             else:
+                columns_and_indexes = frozenset(
+                    name
+                    for name, _ in _pandas_helpers.list_columns_and_indexes(dataframe)
+                )
                 # schema fields not present in the dataframe are not needed
                 job_config.schema = [
-                    field
-                    for field in table.schema
-                    if field.name in set(dataframe.columns)
+                    field for field in table.schema if field.name in columns_and_indexes
                 ]
 
         job_config.schema = _pandas_helpers.dataframe_to_bq_schema(
