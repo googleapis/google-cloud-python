@@ -125,7 +125,7 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python=["2.7", "3.7"])
+@nox.session(python=["3.7"])
 def samples(session):
     """Run the sample test suite."""
     # Sanity check: Only run tests if the environment variable is set.
@@ -137,7 +137,7 @@ def samples(session):
         session.skip("Samples not found.")
 
     session.install("pyyaml")
-    session.install("samples-tester")
+    session.install("sample-tester")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", ".")
