@@ -1951,6 +1951,7 @@ class TestBigQuery(unittest.TestCase):
                     if not row[col] is None:
                         self.assertIsInstance(row[col], exp_datatypes[col])
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe(self):
         SF = bigquery.SchemaField
         schema = [

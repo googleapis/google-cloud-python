@@ -4472,6 +4472,7 @@ class TestClient(unittest.TestCase):
             data=sent,
         )
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe(self):
         from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Table
@@ -4547,6 +4548,7 @@ class TestClient(unittest.TestCase):
             expected_call = mock.call(method="POST", path=API_PATH, data=expected_data)
             assert call == expected_call
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe_many_columns(self):
         from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Table
