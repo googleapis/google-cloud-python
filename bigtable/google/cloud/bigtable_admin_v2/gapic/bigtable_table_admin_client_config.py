@@ -89,6 +89,21 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "idempotent_params",
                 },
+                "GetIamPolicy": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "idempotent_params",
+                },
+                "SetIamPolicy": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
+                },
+                "TestIamPermissions": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "idempotent_params",
+                },
                 "SnapshotTable": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
