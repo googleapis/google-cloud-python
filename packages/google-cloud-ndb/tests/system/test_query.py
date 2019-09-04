@@ -628,6 +628,54 @@ def test_query_structured_property(dispose_of):
     assert results[1].foo == 2
 
 
+def test_query_structured_property_legacy_data(client_context, dispose_of):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1, bar=OtherKind(one="pish", two="posh", three="pash")
+        )
+        entity2 = SomeKind(
+            foo=2, bar=OtherKind(one="pish", two="posh", three="push")
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=OtherKind(one="pish", two="moppish", three="pass the peas"),
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        raise ndb.Return(keys)
+
+    with client_context.new(legacy_data=True).use():
+        keys = make_entities()
+        eventually(SomeKind.query().fetch, _length_equals(3))
+        for key in keys:
+            dispose_of(key._key)
+
+        query = (
+            SomeKind.query()
+            .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
+            .order(SomeKind.foo)
+        )
+
+        results = query.fetch()
+        assert len(results) == 2
+        assert results[0].foo == 1
+        assert results[1].foo == 2
+
+
 @pytest.mark.usefixtures("client_context")
 def test_query_legacy_structured_property(ds_entity):
     class OtherKind(ndb.Model):
@@ -796,6 +844,67 @@ def test_query_repeated_structured_property_with_properties(dispose_of):
     assert results[1].foo == 2
 
 
+def test_query_repeated_structured_property_with_properties_legacy_data(
+    client_context, dispose_of
+):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="pish", two="posh", three="pash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="pish", two="bosh", three="bass"),
+                OtherKind(one="bish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="fish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        raise ndb.Return(keys)
+
+    with client_context.new(legacy_data=True).use():
+        keys = make_entities()
+        eventually(SomeKind.query().fetch, _length_equals(3))
+        for key in keys:
+            dispose_of(key._key)
+
+        query = (
+            SomeKind.query()
+            .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
+            .order(SomeKind.foo)
+        )
+
+        results = query.fetch()
+        assert len(results) == 2
+        assert results[0].foo == 1
+        assert results[1].foo == 2
+
+
 @pytest.mark.usefixtures("client_context")
 def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     class OtherKind(ndb.Model):
@@ -855,6 +964,69 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     results = query.fetch()
     assert len(results) == 1
     assert results[0].foo == 1
+
+
+def test_query_repeated_structured_property_with_entity_twice_legacy_data(
+    client_context, dispose_of
+):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="pish", two="posh", three="pash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="bish", two="bosh", three="bass"),
+                OtherKind(one="pish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="pish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="posh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        raise ndb.Return(keys)
+
+    with client_context.new(legacy_data=True).use():
+        keys = make_entities()
+        eventually(SomeKind.query().fetch, _length_equals(3))
+        for key in keys:
+            dispose_of(key._key)
+
+        query = (
+            SomeKind.query()
+            .filter(
+                SomeKind.bar == OtherKind(one="pish", two="posh"),
+                SomeKind.bar == OtherKind(two="posh", three="pash"),
+            )
+            .order(SomeKind.foo)
+        )
+
+        results = query.fetch()
+        assert len(results) == 1
+        assert results[0].foo == 1
 
 
 @pytest.mark.usefixtures("client_context")
@@ -941,6 +1113,94 @@ def test_query_repeated_structured_property_with_projection(dispose_of):
     assert results[3].bar[0].two == "dangle"
     with pytest.raises(ndb.UnprojectedPropertyError):
         results[3].bar[0].three
+
+
+def test_query_repeated_structured_property_with_projection_legacy_data(
+    client_context, dispose_of
+):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="angle", two="cankle", three="pash"),
+                OtherKind(one="bangle", two="dangle", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="bish", two="bosh", three="bass"),
+                OtherKind(one="pish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="pish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="posh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        raise ndb.Return(keys)
+
+    with client_context.new(legacy_data=True).use():
+        keys = make_entities()
+        eventually(SomeKind.query().fetch, _length_equals(3))
+        for key in keys:
+            dispose_of(key._key)
+
+        query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
+            SomeKind.foo < 2
+        )
+
+        # This counter-intuitive result is consistent with Legacy NDB behavior
+        # and is a result of the odd way Datastore handles projection queries
+        # with array valued properties:
+        #
+        # https://cloud.google.com/datastore/docs/concepts/queries#projections_and_array-valued_properties
+        #
+        results = query.fetch()
+        assert len(results) == 4
+
+        def sort_key(result):
+            return (result.bar[0].one, result.bar[0].two)
+
+        results = sorted(results, key=sort_key)
+
+        assert results[0].bar[0].one == "angle"
+        assert results[0].bar[0].two == "cankle"
+        with pytest.raises(ndb.UnprojectedPropertyError):
+            results[0].bar[0].three
+
+        assert results[1].bar[0].one == "angle"
+        assert results[1].bar[0].two == "dangle"
+        with pytest.raises(ndb.UnprojectedPropertyError):
+            results[1].bar[0].three
+
+        assert results[2].bar[0].one == "bangle"
+        assert results[2].bar[0].two == "cankle"
+        with pytest.raises(ndb.UnprojectedPropertyError):
+            results[2].bar[0].three
+
+        assert results[3].bar[0].one == "bangle"
+        assert results[3].bar[0].two == "dangle"
+        with pytest.raises(ndb.UnprojectedPropertyError):
+            results[3].bar[0].three
 
 
 @pytest.mark.usefixtures("client_context")

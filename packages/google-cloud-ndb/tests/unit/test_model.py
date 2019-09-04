@@ -1308,6 +1308,50 @@ class TestProperty:
         # Cache is untouched.
         assert model.Property._FIND_METHODS_CACHE == {}
 
+    @staticmethod
+    def test__to_datastore():
+        class SomeKind(model.Model):
+            prop = model.Property()
+
+        entity = SomeKind(prop="foo")
+        data = {}
+        assert SomeKind.prop._to_datastore(entity, data) == ("prop",)
+        assert data == {"prop": "foo"}
+
+    @staticmethod
+    def test__to_datastore_prop_is_repeated():
+        class SomeKind(model.Model):
+            prop = model.Property(repeated=True)
+
+        entity = SomeKind(prop=["foo", "bar"])
+        data = {}
+        assert SomeKind.prop._to_datastore(entity, data) == ("prop",)
+        assert data == {"prop": ["foo", "bar"]}
+
+    @staticmethod
+    def test__to_datastore_w_prefix():
+        class SomeKind(model.Model):
+            prop = model.Property()
+
+        entity = SomeKind(prop="foo")
+        data = {}
+        assert SomeKind.prop._to_datastore(entity, data, prefix="pre.") == (
+            "pre.prop",
+        )
+        assert data == {"pre.prop": "foo"}
+
+    @staticmethod
+    def test__to_datastore_w_prefix_ancestor_repeated():
+        class SomeKind(model.Model):
+            prop = model.Property()
+
+        entity = SomeKind(prop="foo")
+        data = {}
+        assert SomeKind.prop._to_datastore(
+            entity, data, prefix="pre.", repeated=True
+        ) == ("pre.prop",)
+        assert data == {"pre.prop": ["foo"]}
+
 
 class Test__validate_key:
     @staticmethod
@@ -3083,6 +3127,63 @@ class TestStructuredProperty:
         value = object()
         assert prop._from_base_type(value) is value
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__to_datastore_non_legacy():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind)
+
+        entity = SomeKind(foo=SubKind(bar="baz"))
+        data = {}
+        assert SomeKind.foo._to_datastore(entity, data) == ("foo",)
+        assert len(data) == 1
+        assert dict(data["foo"]) == {"bar": "baz"}
+
+    @staticmethod
+    def test__to_datastore_legacy(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind)
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind(foo=SubKind(bar="baz"))
+            data = {}
+            assert SomeKind.foo._to_datastore(entity, data) == {"foo.bar"}
+            assert data == {"foo.bar": "baz"}
+
+    @staticmethod
+    def test__to_datastore_legacy_subentity_is_None(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind)
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind()
+            data = {}
+            assert SomeKind.foo._to_datastore(entity, data) == {"foo"}
+            assert data == {"foo": None}
+
+    @staticmethod
+    def test__to_datastore_legacy_repeated(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind(foo=[SubKind(bar="baz"), SubKind(bar="boz")])
+            data = {}
+            assert SomeKind.foo._to_datastore(entity, data) == {"foo.bar"}
+            assert data == {"foo.bar": ["baz", "boz"]}
+
 
 class TestLocalStructuredProperty:
     @staticmethod
@@ -4702,6 +4803,8 @@ class Test_entity_from_protobuf:
         assert entity.baz[0].bar == "himom"
         assert entity.copacetic is True
 
+
+class Test_entity_from_ds_entity:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_legacy_repeated_structured_property_uneven():
@@ -4724,8 +4827,7 @@ class Test_entity_from_protobuf:
             )
         )
 
-        protobuf = helpers.entity_to_protobuf(datastore_entity)
-        entity = model._entity_from_protobuf(protobuf)
+        entity = model._entity_from_ds_entity(datastore_entity)
         assert isinstance(entity, ThisKind)
         assert entity.baz[0].foo == 42
         assert entity.baz[0].bar == "himom"

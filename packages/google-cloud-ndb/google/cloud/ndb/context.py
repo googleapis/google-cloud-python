@@ -144,6 +144,7 @@ _ContextTuple = collections.namedtuple(
         "cache",
         "global_cache",
         "on_commit_callbacks",
+        "legacy_data",
     ],
 )
 
@@ -180,6 +181,7 @@ class _Context(_ContextTuple):
         global_cache_timeout_policy=None,
         datastore_policy=None,
         on_commit_callbacks=None,
+        legacy_data=True,
     ):
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
@@ -210,6 +212,7 @@ class _Context(_ContextTuple):
             cache=new_cache,
             global_cache=global_cache,
             on_commit_callbacks=on_commit_callbacks,
+            legacy_data=legacy_data,
         )
 
         context.set_cache_policy(cache_policy)

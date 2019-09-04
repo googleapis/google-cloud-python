@@ -728,6 +728,36 @@ def test_insert_entity_with_structured_property(dispose_of):
     dispose_of(key._key)
 
 
+def test_insert_entity_with_structured_property_legacy_data(
+    client_context, dispose_of, ds_client
+):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind)
+
+    with client_context.new(legacy_data=True).use():
+        entity = SomeKind(foo=42, bar=OtherKind(one="hi", two="mom"))
+        key = entity.put()
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar.one == "hi"
+        assert retrieved.bar.two == "mom"
+
+        assert isinstance(retrieved.bar, OtherKind)
+
+        ds_entity = ds_client.get(key._key)
+        assert ds_entity["foo"] == 42
+        assert ds_entity["bar.one"] == "hi"
+        assert ds_entity["bar.two"] == "mom"
+
+    dispose_of(key._key)
+
+
 @pytest.mark.usefixtures("client_context")
 def test_retrieve_entity_with_legacy_structured_property(ds_entity):
     class OtherKind(ndb.Model):

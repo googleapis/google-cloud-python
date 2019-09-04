@@ -114,6 +114,7 @@ class Client(google_client.ClientWithProject):
         global_cache=None,
         global_cache_policy=None,
         global_cache_timeout_policy=None,
+        legacy_data=True,
     ):
         """Establish a context for a set of NDB calls.
 
@@ -157,6 +158,8 @@ class Client(google_client.ClientWithProject):
             global_cache_timeout_policy (Optional[Callable[[key.Key], int]]):
                 The global cache timeout to use in this context. See:
                 :meth:`~google.cloud.ndb.context.Context.set_global_cache_timeout_policy`.
+            legacy_data (bool): Set to ``True`` (the default) to write data in
+                a way that can be read by the legacy version of NDB.
         """
         context = context_module.Context(
             self,
@@ -164,6 +167,7 @@ class Client(google_client.ClientWithProject):
             global_cache=global_cache,
             global_cache_policy=global_cache_policy,
             global_cache_timeout_policy=global_cache_timeout_policy,
+            legacy_data=legacy_data,
         )
         with context.use():
             yield context

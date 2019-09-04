@@ -646,6 +646,37 @@ def _entity_from_protobuf(protobuf):
     return _entity_from_ds_entity(ds_entity)
 
 
+def _properties_of(entity):
+    """Get the model properties for an entity.
+
+    Will traverse the entity's MRO (class hierarchy) up from the entity's class
+    through all of its ancestors, collecting an ``Property`` instances defined
+    for those classes.
+
+    Args:
+        entity (model.Model): The entity to get properties for.
+
+    Returns:
+        Iterator[Property]: Iterator over the entity's properties.
+    """
+    seen = set()
+
+    for cls in type(entity).mro():
+        if not hasattr(cls, "_properties"):
+            continue
+
+        for prop in cls._properties.values():
+            if (
+                not isinstance(prop, Property)
+                or isinstance(prop, ModelKey)
+                or prop._name in seen
+            ):
+                continue
+
+            seen.add(prop._name)
+            yield prop
+
+
 def _entity_to_ds_entity(entity, set_key=True):
     """Convert an NDB entity to Datastore entity.
 
@@ -662,33 +693,20 @@ def _entity_to_ds_entity(entity, set_key=True):
     uninitialized = []
     exclude_from_indexes = []
 
-    for cls in type(entity).mro():
-        if not hasattr(cls, "_properties"):
-            continue
+    for prop in _properties_of(entity):
+        if not prop._is_initialized(entity):
+            uninitialized.append(prop._name)
 
-        for prop in cls._properties.values():
-            if (
-                not isinstance(prop, Property)
-                or isinstance(prop, ModelKey)
-                or prop._name in data
-            ):
-                continue
+        names = prop._to_datastore(entity, data)
 
-            if not prop._is_initialized(entity):
-                uninitialized.append(prop._name)
-
-            value = prop._get_base_value_unwrapped_as_list(entity)
-            if not prop._repeated:
-                value = value[0]
-            data[prop._name] = value
-
-            if not prop._indexed:
-                exclude_from_indexes.append(prop._name)
+        if not prop._indexed:
+            for name in names:
+                exclude_from_indexes.append(name)
 
     if uninitialized:
-        names = ", ".join(uninitialized)
+        missing = ", ".join(uninitialized)
         raise exceptions.BadValueError(
-            "Entity has uninitialized properties: {}".format(names)
+            "Entity has uninitialized properties: {}".format(missing)
         )
 
     ds_entity = None
@@ -1983,6 +2001,38 @@ class Property(ModelAttribute):
             Any: The user value stored for the current property.
         """
         return self._get_value(entity)
+
+    def _to_datastore(self, entity, data, prefix="", repeated=False):
+        """Helper to convert property to Datastore serializable data.
+
+        Called to help assemble a Datastore entity prior to serialization for
+        storage. Subclasses (like StructuredProperty) may need to override the
+        default behavior.
+
+        Args:
+            entity (entity.Entity): The NDB entity to convert.
+            data (dict): The data that will eventually be used to construct the
+                Datastore entity. This method works by updating ``data``.
+            prefix (str): Optional name prefix used for StructuredProperty (if
+                present, must end in ".".
+            repeated (bool): `True` if values should be repeated because an
+                ancestor node is repeated property.
+
+        Return:
+            Sequence[str]: Any keys that were set on ``data`` by this method
+                call.
+        """
+        value = self._get_base_value_unwrapped_as_list(entity)
+        if not self._repeated:
+            value = value[0]
+
+        key = prefix + self._name
+        if repeated:
+            data.setdefault(key, []).append(value)
+        else:
+            data[key] = value
+
+        return (key,)
 
 
 def _validate_key(value, entity=None):
@@ -3860,6 +3910,48 @@ class StructuredProperty(Property):
         if not isinstance(values, list):
             values = [values]
         return len(values)
+
+    def _to_datastore(self, entity, data, prefix="", repeated=False):
+        """Override of :method:`Property._to_datastore`.
+
+        If ``legacy_data`` is ``True``, then we need to override the default
+        behavior to store everything in a single Datastore entity that uses
+        dotted attribute names, rather than nesting entities.
+        """
+        context = context_module.get_context()
+
+        # The easy way
+        if not context.legacy_data:
+            return super(StructuredProperty, self)._to_datastore(
+                entity, data, prefix=prefix, repeated=repeated
+            )
+
+        # The hard way
+        next_prefix = prefix + self._name + "."
+        next_repeated = repeated or self._repeated
+        keys = []
+
+        values = self._get_user_value(entity)
+        if not self._repeated:
+            values = (values,)
+
+        for value in values:
+            if value is None:
+                keys.extend(
+                    super(StructuredProperty, self)._to_datastore(
+                        entity, data, prefix=prefix, repeated=repeated
+                    )
+                )
+                continue
+
+            for prop in _properties_of(value):
+                keys.extend(
+                    prop._to_datastore(
+                        value, data, prefix=next_prefix, repeated=next_repeated
+                    )
+                )
+
+        return set(keys)
 
 
 class LocalStructuredProperty(BlobProperty):

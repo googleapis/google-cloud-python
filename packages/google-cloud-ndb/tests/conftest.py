@@ -90,6 +90,7 @@ def context():
         stub=mock.Mock(spec=()),
         eventloop=TestingEventLoop(),
         datastore_policy=True,
+        legacy_data=False,
     )
     return context
 
