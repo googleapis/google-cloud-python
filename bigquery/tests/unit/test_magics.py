@@ -414,11 +414,7 @@ def test_bigquery_magic_with_legacy_sql():
     with run_query_patch as run_query_mock:
         ip.run_cell_magic("bigquery", "--use_legacy_sql", "SELECT 17 AS num")
 
-<<<<<<< HEAD
         job_config_used = run_query_mock.call_args_list[0][1]["job_config"]
-=======
-        job_config_used = run_query_mock.call_args_list[0][1]['job_config']
->>>>>>> d4fa587dacf... added max_results magic option and fixed broken tests
         assert job_config_used.use_legacy_sql is True
 
 
@@ -979,13 +975,10 @@ def test_bigquery_magic_with_string_params():
         run_query_mock.return_value = query_job_mock
 
         ip.run_cell_magic("bigquery", 'params_string_df --params {"num":17}', sql)
-<<<<<<< HEAD
+
         run_query_mock.assert_called_once_with(
             mock.ANY, sql.format(num=17), mock.ANY, max_results=None
         )
-=======
-        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY, max_results=None)
->>>>>>> d4fa587dacf... added max_results magic option and fixed broken tests
 
     assert "params_string_df" in ip.user_ns  # verify that the variable exists
     df = ip.user_ns["params_string_df"]
@@ -1020,13 +1013,10 @@ def test_bigquery_magic_with_dict_params():
         # Insert dictionary into user namespace so that it can be expanded
         ip.user_ns["params"] = params
         ip.run_cell_magic("bigquery", "params_dict_df --params $params", sql)
-<<<<<<< HEAD
+
         run_query_mock.assert_called_once_with(
             mock.ANY, sql.format(num=17), mock.ANY, max_results=None
         )
-=======
-        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY, max_results=None)
->>>>>>> d4fa587dacf... added max_results magic option and fixed broken tests
 
     assert "params_dict_df" in ip.user_ns  # verify that the variable exists
     df = ip.user_ns["params_dict_df"]
