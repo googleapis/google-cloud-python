@@ -266,7 +266,7 @@ class Context(object):
 context = Context()
 
 
-def _run_query(client, query, job_config=None):
+def _run_query(client, query, job_config=None, max_results=None):
     """Runs a query while printing status updates
 
     Args:
@@ -300,7 +300,7 @@ def _run_query(client, query, job_config=None):
     while True:
         print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
         try:
-            query_job.result(timeout=0.5)
+            query_job.result(timeout=0.5, max_results=max_results)
             break
         except futures.TimeoutError:
             continue
@@ -320,6 +320,16 @@ def _run_query(client, query, job_config=None):
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
 )
+
+@magic_arguments.argument(
+    "--max_results",
+    default=None,
+    help=(
+        "Maximum number of rows in dataframe returned from executing the query."
+        "Defaults to returning all rows."
+    ),
+)
+
 @magic_arguments.argument(
     "--maximum_bytes_billed",
     default=None,
@@ -420,6 +430,12 @@ def _cell_magic(line, query):
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
+
+    if args.max_results:
+        max_results = int(args.max_results)
+    else:
+        max_results = None
+
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
@@ -433,7 +449,7 @@ def _cell_magic(line, query):
 
     error = None
     try:
-        query_job = _run_query(client, query, job_config)
+        query_job = _run_query(client, query, job_config=job_config, max_results=max_results)
     except Exception as ex:
         error = str(ex)
 
