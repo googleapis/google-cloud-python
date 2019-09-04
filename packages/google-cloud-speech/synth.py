@@ -28,7 +28,12 @@ versions = ["v1p1beta1", "v1"]
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("speech", version, include_protos=True)
+    library = gapic.py_library(
+        "speech",
+        version,
+        include_protos=True,
+        include_samples=True
+    )
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -37,6 +42,7 @@ for version in versions:
     s.move(library / f"google/cloud/speech_{version}/proto")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
+    s.move(library / f"samples")
 
 
 # Use the highest version library to generate documentation import alias.
