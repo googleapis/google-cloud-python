@@ -216,9 +216,9 @@ Running System Tests
 Running Generated Sample Tests
 ******************************
 
-- To run tests for generated samples for a given library, you can execute::
+- To run system tests for a given package, you can execute::
 
-   $ sample-tester speech/samples/
+   $ nox -f speech/noxfile.py -s samples
 
   .. note::
 
