@@ -693,7 +693,7 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
         client_query_mock.return_value = query_job_mock
         ip.run_cell_magic("bigquery", "--max_results=5", sql)
 
-        query_job_mock.result.assert_called_once_with(timeout=0.5, max_results=5)
+        query_job_mock.result.assert_called_with(max_results=5)
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -976,9 +976,7 @@ def test_bigquery_magic_with_string_params():
 
         ip.run_cell_magic("bigquery", 'params_string_df --params {"num":17}', sql)
 
-        run_query_mock.assert_called_once_with(
-            mock.ANY, sql.format(num=17), mock.ANY, max_results=None
-        )
+        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
     assert "params_string_df" in ip.user_ns  # verify that the variable exists
     df = ip.user_ns["params_string_df"]
@@ -1014,9 +1012,7 @@ def test_bigquery_magic_with_dict_params():
         ip.user_ns["params"] = params
         ip.run_cell_magic("bigquery", "params_dict_df --params $params", sql)
 
-        run_query_mock.assert_called_once_with(
-            mock.ANY, sql.format(num=17), mock.ANY, max_results=None
-        )
+        run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
     assert "params_dict_df" in ip.user_ns  # verify that the variable exists
     df = ip.user_ns["params_dict_df"]

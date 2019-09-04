@@ -266,7 +266,7 @@ class Context(object):
 context = Context()
 
 
-def _run_query(client, query, job_config=None, max_results=None):
+def _run_query(client, query, job_config=None):
     """Runs a query while printing status updates
 
     Args:
@@ -300,7 +300,7 @@ def _run_query(client, query, job_config=None, max_results=None):
     while True:
         print("\rQuery executing: {:0.2f}s".format(time.time() - start_time), end="")
         try:
-            query_job.result(timeout=0.5, max_results=max_results)
+            query_job.result(timeout=0.5)
             break
         except futures.TimeoutError:
             continue
@@ -319,14 +319,6 @@ def _run_query(client, query, job_config=None, max_results=None):
     type=str,
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
-)
-@magic_arguments.argument(
-    "--max_results",
-    default=None,
-    help=(
-        "Maximum number of rows in dataframe returned from executing the query."
-        "Defaults to returning all rows."
-    ),
 )
 @magic_arguments.argument(
     "--max_results",
@@ -455,9 +447,7 @@ def _cell_magic(line, query):
 
     error = None
     try:
-        query_job = _run_query(
-            client, query, job_config=job_config, max_results=max_results
-        )
+        query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
         error = str(ex)
 
@@ -484,7 +474,13 @@ def _cell_magic(line, query):
         )
         return query_job
 
-    result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+    if max_results:
+        result = query_job.result(max_results=max_results).to_dataframe(
+            bqstorage_client=bqstorage_client
+        )
+    else:
+        result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:
