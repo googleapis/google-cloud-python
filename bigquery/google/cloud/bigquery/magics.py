@@ -129,6 +129,7 @@
 
 from __future__ import print_function
 
+import re
 import ast
 import sys
 import time
@@ -264,6 +265,15 @@ class Context(object):
 
 
 context = Context()
+
+
+def _print_error(error, destination_var=None):
+    if destination_var:
+        print(
+            "Could not save output to variable '{}'.".format(destination_var),
+            file=sys.stderr,
+        )
+    print("\nERROR:\n", error, file=sys.stderr)
 
 
 def _run_query(client, query, job_config=None):
@@ -434,6 +444,26 @@ def _cell_magic(line, query):
     else:
         max_results = None
 
+    error = None
+
+    if not re.search(r"\s", query.rstrip()):
+        table_id = query.rstrip()
+
+        try:
+            rows = client.list_rows(table_id, max_results=max_results)
+        except Exception as ex:
+            error = str(ex)
+        if error:
+            _print_error(error, args.destination_var)
+            return
+
+        result = rows.to_dataframe(bqstorage_client=bqstorage_client)
+        if args.destination_var:
+            IPython.get_ipython().push({args.destination_var: result})
+            return
+        else:
+            return result
+
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
@@ -445,7 +475,6 @@ def _cell_magic(line, query):
         value = int(args.maximum_bytes_billed)
         job_config.maximum_bytes_billed = value
 
-    error = None
     try:
         query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
@@ -455,12 +484,7 @@ def _cell_magic(line, query):
         display.clear_output()
 
     if error:
-        if args.destination_var:
-            print(
-                "Could not save output to variable '{}'.".format(args.destination_var),
-                file=sys.stderr,
-            )
-        print("\nERROR:\n", error, file=sys.stderr)
+        _print_error(error, args.destination_var)
         return
 
     if args.dry_run and args.destination_var:
