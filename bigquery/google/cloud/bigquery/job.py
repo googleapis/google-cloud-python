@@ -2905,7 +2905,9 @@ class QueryJob(_AsyncJob):
             exc.message += self._format_for_exception(self.query, self.job_id)
             raise
 
-    def result(self, timeout=None, page_size=None, retry=DEFAULT_RETRY):
+    def result(
+        self, timeout=None, page_size=None, retry=DEFAULT_RETRY, max_results=None
+    ):
         """Start the job and wait for it to complete and get the result.
 
         Args:
@@ -2956,7 +2958,9 @@ class QueryJob(_AsyncJob):
         dest_table_ref = self.destination
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
-        rows = self._client.list_rows(dest_table, page_size=page_size, retry=retry)
+        rows = self._client.list_rows(
+            dest_table, page_size=page_size, retry=retry, max_results=max_results
+        )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
 

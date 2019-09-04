@@ -4133,6 +4133,45 @@ class TestQueryJob(unittest.TestCase, _Base):
         # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
 
+    def test_result_with_max_results(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "5",
+        }
+        tabledata_resource = {
+            "totalRows": "5",
+            "pageToken": None,
+            "rows": [
+                {"f": [{"v": "abc"}]},
+                {"f": [{"v": "def"}]},
+                {"f": [{"v": "ghi"}]},
+            ],
+        }
+        connection = _make_connection(query_resource, tabledata_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        max_results = 3
+
+        result = job.result(max_results=max_results)
+
+        self.assertIsInstance(result, RowIterator)
+        self.assertEqual(result.total_rows, 5)
+
+        rows = list(result)
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(len(connection.api_request.call_args_list), 2)
+        tabledata_list_request = connection.api_request.call_args_list[1]
+        self.assertEqual(
+            tabledata_list_request[1]["query_params"]["maxResults"], max_results
+        )
+
     def test_result_w_empty_schema(self):
         from google.cloud.bigquery.table import _EmptyRowIterator
 
