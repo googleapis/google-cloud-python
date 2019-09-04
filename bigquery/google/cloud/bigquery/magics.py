@@ -320,7 +320,6 @@ def _run_query(client, query, job_config=None, max_results=None):
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
 )
-
 @magic_arguments.argument(
     "--max_results",
     default=None,
@@ -329,7 +328,6 @@ def _run_query(client, query, job_config=None, max_results=None):
         "Defaults to returning all rows."
     ),
 )
-
 @magic_arguments.argument(
     "--maximum_bytes_billed",
     default=None,
@@ -449,7 +447,9 @@ def _cell_magic(line, query):
 
     error = None
     try:
-        query_job = _run_query(client, query, job_config=job_config, max_results=max_results)
+        query_job = _run_query(
+            client, query, job_config=job_config, max_results=max_results
+        )
     except Exception as ex:
         error = str(ex)
 
