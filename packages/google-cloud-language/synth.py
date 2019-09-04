@@ -32,12 +32,14 @@ for version in versions:
         config_path=f"/google/cloud/language/artman_language_{version}.yaml",
         artman_output_name=f"language-{version}",
         include_protos=True,
+        include_samples=True
     )
 
     s.move(library / f"google/cloud/language_{version}/proto")
     s.move(library / f"google/cloud/language_{version}/gapic")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"tests/system/gapic/{version}")
+    s.move(library / f"samples")
 
 # ----------------------------------------------------------------------------
 # Add templated files
