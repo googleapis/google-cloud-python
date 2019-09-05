@@ -29,9 +29,11 @@ priority.
 The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
@@ -42,12 +44,16 @@ The following client libraries have **GA** support:
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
+.. _Bigtable README: https://github.com/googleapis/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
 .. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
+.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
+.. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
 .. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
@@ -72,18 +78,12 @@ against beta libraries are addressed with a higher priority.
 
 The following client libraries have **beta** support:
 
--  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
-.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
-.. _Bigtable README: https://github.com/googleapis/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
-.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
-.. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/google-cloud-python/tree/master/videointelligence
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/

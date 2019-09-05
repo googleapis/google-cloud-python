@@ -14,7 +14,7 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
-from six.moves.urllib.parse import urlsplit
+import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
 
@@ -61,6 +61,9 @@ class Client(ClientWithProject):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options on the client.
+        API Endpoint should be set through client_options.
     """
 
     SCOPE = (
@@ -70,7 +73,14 @@ class Client(ClientWithProject):
     )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=_marker, credentials=None, _http=None, client_info=None):
+    def __init__(
+        self,
+        project=_marker,
+        credentials=None,
+        _http=None,
+        client_info=None,
+        client_options=None,
+    ):
         self._base_connection = None
         if project is None:
             no_project = True
@@ -82,9 +92,20 @@ class Client(ClientWithProject):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
+
+        kw_args = {"client_info": client_info}
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
+
         if no_project:
             self.project = None
-        self._connection = Connection(self, client_info=client_info)
+        self._connection = Connection(self, **kw_args)
         self._batch_stack = _LocalStack()
 
     @classmethod
@@ -397,13 +418,8 @@ class Client(ClientWithProject):
         try:
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
         except AttributeError:
-            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
-            if scheme != "gs":
-                raise ValueError("URI scheme must be gs")
-            bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path[1:], bucket)
-
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+            blob = Blob.from_string(blob_or_uri)
+            blob.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_blobs(
         self,
