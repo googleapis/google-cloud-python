@@ -595,7 +595,7 @@ def _str_or_none(value):
 
 def _split_id(full_id):
     """Helper: split full_id into composite parts.
-    
+
     Args:
         full_id (str): Fully-qualified ID in standard SQL format.
 
