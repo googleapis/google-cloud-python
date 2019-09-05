@@ -92,14 +92,12 @@ _NEED_TABLE_ARGUMENT = (
 class Project(object):
     """Wrapper for resource describing a BigQuery project.
 
-    :type project_id: str
-    :param project_id: Opaque ID of the project
+    Args:
+        project_id (str): Opaque ID of the project
 
-    :type numeric_id: int
-    :param numeric_id: Numeric ID of the project
+        numeric_id (int): Numeric ID of the project
 
-    :type friendly_name: str
-    :param friendly_name: Display name of the project
+        friendly_name (str): Display name of the project
     """
 
     def __init__(self, project_id, numeric_id, friendly_name):
@@ -227,25 +225,25 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list
 
-        :type max_results: int
-        :param max_results: (Optional) maximum number of projects to return,
-                            If not passed, defaults to a value set by the API.
+        Args:
+            max_results (int):
+                (Optional) maximum number of projects to return,
+                If not passed, defaults to a value set by the API.
 
-        :type page_token: str
-        :param page_token:
-            (Optional) Token representing a cursor into the projects. If
-            not passed, the API will return the first page of projects.
-            The token marks the beginning of the iterator to be returned
-            and the value of the ``page_token`` can be accessed at
-            ``next_page_token`` of the
-            :class:`~google.api_core.page_iterator.HTTPIterator`.
+            page_token (str):
+                (Optional) Token representing a cursor into the projects. If
+                not passed, the API will return the first page of projects.
+                The token marks the beginning of the iterator to be returned
+                and the value of the ``page_token`` can be accessed at
+                ``next_page_token`` of the
+                :class:`~google.api_core.page_iterator.HTTPIterator`.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
-                  accessible to the current client.
+        Returns:
+            google.api_core.page_iterator.Iterator:
+                Iterator of :class:`~google.cloud.bigquery.client.Project`
+                accessible to the current client.
         """
         return page_iterator.HTTPIterator(
             client=self,
@@ -324,15 +322,15 @@ class Client(ClientWithProject):
     def dataset(self, dataset_id, project=None):
         """Construct a reference to a dataset.
 
-        :type dataset_id: str
-        :param dataset_id: ID of the dataset.
+        Args:
+            dataset_id (str): ID of the dataset.
 
-        :type project: str
-        :param project: (Optional) project ID for the dataset (defaults to
-                        the project of the client).
+            project (str):
+                (Optional) project ID for the dataset (defaults to
+                the project of the client).
 
-        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
-        :returns: a new ``DatasetReference`` instance
+        Returns:
+            google.cloud.bigquery.dataset.DatasetReference: a new ``DatasetReference`` instance
         """
         if project is None:
             project = self.project
@@ -400,7 +398,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/insert
 
         Args:
-            routine (:class:`~google.cloud.bigquery.routine.Routine`):
+            routine (google.cloud.bigquery.routine.Routine):
                 A :class:`~google.cloud.bigquery.routine.Routine` to create.
                 The dataset that the routine belongs to must already exist.
             exists_ok (bool):
@@ -1103,15 +1101,15 @@ class Client(ClientWithProject):
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
 
-        :type resource: dict
-        :param resource: one job resource from API response
+        Args:
+            resource (Dict): one job resource from API response
 
-        :rtype: One of:
-                :class:`google.cloud.bigquery.job.LoadJob`,
-                :class:`google.cloud.bigquery.job.CopyJob`,
-                :class:`google.cloud.bigquery.job.ExtractJob`,
-                or :class:`google.cloud.bigquery.job.QueryJob`
-        :returns: the job instance, constructed via the resource
+        Returns:
+            One of:
+                google.cloud.bigquery.job.LoadJob,
+                google.cloud.bigquery.job.CopyJob,
+                google.cloud.bigquery.job.ExtractJob,
+                or google.cloud.bigquery.job.QueryJob: the job instance, constructed via the resource
         """
         config = resource.get("configuration", {})
         if "load" in config:
@@ -1678,19 +1676,19 @@ class Client(ClientWithProject):
     def _do_resumable_upload(self, stream, metadata, num_retries):
         """Perform a resumable upload.
 
-        :type stream: IO[bytes]
-        :param stream: A bytes IO object open for reading.
+        Args:
+            stream (IO[bytes]): A bytes IO object open for reading.
 
-        :type metadata: dict
-        :param metadata: The metadata associated with the upload.
+            metadata (Dict): The metadata associated with the upload.
 
-        :type num_retries: int
-        :param num_retries: Number of upload retries. (Deprecated: This
-                            argument will be removed in a future release.)
+            num_retries (int):
+                Number of upload retries. (Deprecated: This
+                argument will be removed in a future release.)
 
-        :rtype: :class:`~requests.Response`
-        :returns: The "200 OK" response object returned after the final chunk
-                  is uploaded.
+        Returns:
+            requests.Response:
+                The "200 OK" response object returned after the final chunk
+                is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
             stream, metadata, num_retries
@@ -1704,23 +1702,22 @@ class Client(ClientWithProject):
     def _initiate_resumable_upload(self, stream, metadata, num_retries):
         """Initiate a resumable upload.
 
-        :type stream: IO[bytes]
-        :param stream: A bytes IO object open for reading.
+        Args:
+            stream (IO[bytes]): A bytes IO object open for reading.
 
-        :type metadata: dict
-        :param metadata: The metadata associated with the upload.
+            metadata (Dict): The metadata associated with the upload.
 
-        :type num_retries: int
-        :param num_retries: Number of upload retries. (Deprecated: This
-                            argument will be removed in a future release.)
+            num_retries (int):
+                Number of upload retries. (Deprecated: This
+                argument will be removed in a future release.)
 
-        :rtype: tuple
-        :returns:
-            Pair of
+        Returns:
+            Tuple:
+                Pair of
 
-            * The :class:`~google.resumable_media.requests.ResumableUpload`
-              that was created
-            * The ``transport`` used to initiate the upload.
+                * The :class:`~google.resumable_media.requests.ResumableUpload`
+                that was created
+                * The ``transport`` used to initiate the upload.
         """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
@@ -1744,26 +1741,29 @@ class Client(ClientWithProject):
     def _do_multipart_upload(self, stream, metadata, size, num_retries):
         """Perform a multipart upload.
 
-        :type stream: IO[bytes]
-        :param stream: A bytes IO object open for reading.
+        Args:
+            stream (IO[bytes]): A bytes IO object open for reading.
 
-        :type metadata: dict
-        :param metadata: The metadata associated with the upload.
+            metadata (Dict): The metadata associated with the upload.
 
-        :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``stream``). If not provided, the upload will be
-                     concluded once ``stream`` is exhausted (or :data:`None`).
+            size (int):
+                The number of bytes to be uploaded (which will be read
+                from ``stream``). If not provided, the upload will be
+                concluded once ``stream`` is exhausted (or :data:`None`).
 
-        :type num_retries: int
-        :param num_retries: Number of upload retries. (Deprecated: This
-                            argument will be removed in a future release.)
+            num_retries (int):
+                Number of upload retries. (Deprecated: This
+                argument will be removed in a future release.)
 
-        :rtype: :class:`~requests.Response`
-        :returns: The "200 OK" response object returned after the multipart
-                  upload request.
-        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``
-                 bytes remaining.
+        Returns:
+            requests.Response:
+                The "200 OK" response object returned after the multipart
+                upload request.
+
+        Raises:
+            ValueError:
+                if the ``stream`` has fewer than ``size``
+                bytes remaining.
         """
         data = stream.read(size)
         if len(data) < size:
@@ -2348,14 +2348,13 @@ class Client(ClientWithProject):
 def _item_to_project(iterator, resource):
     """Convert a JSON project to the native object.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type resource: dict
-    :param resource: An item to be converted to a project.
+        resource (Dict): An item to be converted to a project.
 
-    :rtype: :class:`.Project`
-    :returns: The next project in the page.
+    Returns:
+        google.cloud.bigquery.client.Project: The next project in the page.
     """
     return Project.from_api_repr(resource)
 
@@ -2366,14 +2365,13 @@ def _item_to_project(iterator, resource):
 def _item_to_dataset(iterator, resource):
     """Convert a JSON dataset to the native object.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type resource: dict
-    :param resource: An item to be converted to a dataset.
+        resource (Dict): An item to be converted to a dataset.
 
-    :rtype: :class:`.DatasetListItem`
-    :returns: The next dataset in the page.
+    Returns:
+        google.cloud.bigquery.dataset.DatasetListItem: The next dataset in the page.
     """
     return DatasetListItem(resource)
 
@@ -2381,14 +2379,13 @@ def _item_to_dataset(iterator, resource):
 def _item_to_job(iterator, resource):
     """Convert a JSON job to the native object.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type resource: dict
-    :param resource: An item to be converted to a job.
+        resource (Dict): An item to be converted to a job.
 
-    :rtype: job instance.
-    :returns: The next job in the page.
+    Returns:
+        job instance: The next job in the page.
     """
     return iterator.client.job_from_resource(resource)
 
@@ -2399,7 +2396,7 @@ def _item_to_model(iterator, resource):
     Args:
         iterator (google.api_core.page_iterator.Iterator):
             The iterator that is currently in use.
-        resource (dict):
+        resource (Dict):
             An item to be converted to a model.
 
     Returns:
@@ -2414,7 +2411,7 @@ def _item_to_routine(iterator, resource):
     Args:
         iterator (google.api_core.page_iterator.Iterator):
             The iterator that is currently in use.
-        resource (dict):
+        resource (Dict):
             An item to be converted to a routine.
 
     Returns:
@@ -2426,14 +2423,13 @@ def _item_to_routine(iterator, resource):
 def _item_to_table(iterator, resource):
     """Convert a JSON table to the native object.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type resource: dict
-    :param resource: An item to be converted to a table.
+        resource (Dict): An item to be converted to a table.
 
-    :rtype: :class:`~google.cloud.bigquery.table.Table`
-    :returns: The next table in the page.
+    Returns:
+        google.cloud.bigquery.table.Table: The next table in the page.
     """
     return TableListItem(resource)
 
@@ -2441,14 +2437,13 @@ def _item_to_table(iterator, resource):
 def _make_job_id(job_id, prefix=None):
     """Construct an ID for a new job.
 
-    :type job_id: str or ``NoneType``
-    :param job_id: the user-provided job ID
+    Args:
+        job_id (Union[str, ``NoneType``]): the user-provided job ID
 
-    :type prefix: str or ``NoneType``
-    :param prefix: (Optional) the user-provided prefix for a job ID
+        prefix (Union[str, ``NoneType``]): (Optional) the user-provided prefix for a job ID
 
-    :rtype: str
-    :returns: A job ID
+    Returns:
+        str: A job ID
     """
     if job_id is not None:
         return job_id
@@ -2461,11 +2456,13 @@ def _make_job_id(job_id, prefix=None):
 def _check_mode(stream):
     """Check that a stream was opened in read-binary mode.
 
-    :type stream: IO[bytes]
-    :param stream: A bytes IO object open for reading.
+    Args:
+        stream (IO[bytes]): A bytes IO object open for reading.
 
-    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
-             and is not among ``rb``, ``r+b`` or ``rb+``.
+    Raises:
+        ValueError:
+            if the ``stream.mode`` is a valid attribute
+            and is not among ``rb``, ``r+b`` or ``rb+``.
     """
     mode = getattr(stream, "mode", None)
 
@@ -2486,11 +2483,11 @@ def _check_mode(stream):
 def _get_upload_headers(user_agent):
     """Get the headers for an upload request.
 
-    :type user_agent: str
-    :param user_agent: The user-agent for requests.
+    Args:
+        user_agent (str): The user-agent for requests.
 
-    :rtype: dict
-    :returns: The headers to be used for the request.
+    Returns:
+        Dict: The headers to be used for the request.
     """
     return {
         "Accept": "application/json",

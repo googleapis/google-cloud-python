@@ -560,7 +560,7 @@ class ExternalConfig(object):
     """Description of an external data source.
 
     Args:
-        source_format (:class:`~.external_config.ExternalSourceFormat`):
+        source_format (google.cloud.bigquery.external_config.ExternalSourceFormat):
             See :attr:`source_format`.
     """
 
