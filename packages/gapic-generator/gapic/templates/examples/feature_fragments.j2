@@ -142,7 +142,7 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {# Python is also responsible for verifying that each input parameter is unique,#}
 {# no parameter is a reserved keyword #}
   {% if attr.input_parameter %}
-# {{ attr.input_parameter }} = "{{ attr.value }}"
+# {{ attr.input_parameter }} = {{ attr.value }}
   {% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
     {{ base_name }}["{{ attr.field }}"] = f.read()
@@ -241,14 +241,14 @@ def main():
       {% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
-                        default="{{ attr.value }}")
+                        default={{ attr.value }})
 {% do arg_list.append("args." + attr.input_parameter) -%}
 {% endfor -%}
 {% endfor %}
 {% for request in request_block if request.single and request.single.input_parameter -%}
-    parser.add_argument("-- {{ request.single.input_parameter }}",
+    parser.add_argument("--{{ request.single.input_parameter }}",
                         type=str,
-                        default="{{ request.single.value }}")
+                        default={{ request.single.value }})
 {% endfor %}
     args = parser.parse_args()
 

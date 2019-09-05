@@ -78,11 +78,11 @@ def test_render_attr_input_parameter():
         {{ frags.render_request_attr("squid", request) }}
         ''',
         '''
-        # species = "Humboldt"
+        # species = 'Humboldt'
         squid["species"] = species
         ''',
         request=samplegen.AttributeRequestSetup(field="species",
-                                                value="Humboldt",
+                                                value="'Humboldt'",
                                                 input_parameter="species"))
 
 
@@ -93,12 +93,12 @@ def test_render_attr_file():
         {{ frags.render_request_attr("classify_mollusc_request", request) }}
         ''',
         '''
-        # mollusc_video_path = "path/to/mollusc/video.mkv"
+        # mollusc_video_path = 'path/to/mollusc/video.mkv'
         with open(mollusc_video_path, "rb") as f:
             classify_mollusc_request["mollusc_video"] = f.read()
         ''',
         request=samplegen.AttributeRequestSetup(field="mollusc_video",
-                                                value="path/to/mollusc/video.mkv",
+                                                value="'path/to/mollusc/video.mkv'",
                                                 input_parameter="mollusc_video_path",
                                                 value_is_file=True)
     )
@@ -112,22 +112,22 @@ def test_render_request_basic():
         ''',
         '''
         cephalopod = {}
-        # cephalopod_mass = "10 kg"
+        # cephalopod_mass = '10 kg'
         cephalopod["mantle_mass"] = cephalopod_mass
 
-        # photo_path = "path/to/cephalopod/photo.jpg"
+        # photo_path = 'path/to/cephalopod/photo.jpg'
         with open(photo_path, "rb") as f:
             cephalopod["photo"] = f.read()
 
         cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
 
         gastropod = {}
-        # gastropod_mass = "1 kg"
+        # gastropod_mass = '1 kg'
         gastropod["mantle_mass"] = gastropod_mass
 
         gastropod["order"] = Molluscs.Gastropoda.Pulmonata
 
-        # movie_path = "path/to/gastropod/movie.mkv"
+        # movie_path = 'path/to/gastropod/movie.mkv'
         with open(movie_path, "rb") as f:
             gastropod["movie"] = f.read()
 
@@ -136,12 +136,12 @@ def test_render_request_basic():
                                               body=[
                                                   samplegen.AttributeRequestSetup(
                                                       field="mantle_mass",
-                                                      value="10 kg",
+                                                      value="'10 kg'",
                                                       input_parameter="cephalopod_mass"
                                                   ),
                                                   samplegen.AttributeRequestSetup(
                                                       field="photo",
-                                                      value="path/to/cephalopod/photo.jpg",
+                                                      value="'path/to/cephalopod/photo.jpg'",
                                                       input_parameter="photo_path",
                                                       value_is_file=True
                                                   ),
@@ -154,7 +154,7 @@ def test_render_request_basic():
                                               body=[
                                                   samplegen.AttributeRequestSetup(
                                                       field="mantle_mass",
-                                                      value="1 kg",
+                                                      value="'1 kg'",
                                                       input_parameter="gastropod_mass"
                                                   ),
                                                   samplegen.AttributeRequestSetup(
@@ -163,7 +163,7 @@ def test_render_request_basic():
                                                   ),
                                                   samplegen.AttributeRequestSetup(
                                                       field="movie",
-                                                      value="path/to/gastropod/movie.mkv",
+                                                      value="'path/to/gastropod/movie.mkv'",
                                                       input_parameter="movie_path",
                                                       value_is_file=True
                                                   )
@@ -761,10 +761,10 @@ def test_main_block():
             parser = argparse.ArgumentParser()
             parser.add_argument("--order",
                                 type=str,
-                                default="coleoidea")
+                                default='coleoidea')
             parser.add_argument("--mass",
                                 type=str,
-                                default="60kg")
+                                default='60kg')
             args = parser.parse_args()
 
             sample_list_molluscs(args.order, args.mass)
@@ -778,12 +778,12 @@ def test_main_block():
                                          body=[
                                              samplegen.AttributeRequestSetup(
                                                  field="list_molluscs.order",
-                                                 value="coleoidea",
+                                                 value="'coleoidea'",
                                                  input_parameter="order"
                                              ),
                                              samplegen.AttributeRequestSetup(
                                                  field="list_molluscs.mass",
-                                                 value="60kg",
+                                                 value="'60kg'",
                                                  input_parameter="mass")
                                          ],
                                          single=None),
