@@ -4,9 +4,9 @@
 
    Because the firestore client uses :mod:`grpc` library and the third-party
    :mod:`requests` library, it is safe to share instances across threads.
-   In multiprocessing scenarios, best practice is to create client instances *after*
-   :class:`multiprocessing.Pool` or :class:`multiprocessing.Process` invokes
-   :func:`os.fork`.
+   In multiprocessing scenarios, the best practice is to create client
+   instances *after* the invocation of :func:`os.fork` by
+   :class:`multiprocessing.Pool` or :class:`multiprocessing.Process`.
 
 API Reference
 -------------
