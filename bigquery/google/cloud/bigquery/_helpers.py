@@ -594,6 +594,14 @@ def _str_or_none(value):
 
 
 def _split_id(full_id):
+    """Helper: split full_id into composite parts.
+    
+    Args:
+        full_id (str): Fully-qualified ID in standard SQL format.
+
+    Returns:
+        List[str]: ID's parts separated into components.
+    """
     with_prefix = _PROJECT_PREFIX_PATTERN.match(full_id)
     if with_prefix is None:
         parts = full_id.split(".")
