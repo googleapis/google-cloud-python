@@ -132,6 +132,14 @@ def from_rfc3339(value):
 
     """
     with_nanos = _RFC3339_NANOS.match(value)
+
+    if with_nanos is None:
+        raise ValueError(
+            "Timestamp: {!r}, does not match pattern: {!r}".format(
+                value, _RFC3339_NANOS.pattern
+            )
+        )
+
     bare_seconds = datetime.datetime.strptime(
         with_nanos.group("no_fraction"), _RFC3339_NO_FRACTION
     )
@@ -228,7 +236,7 @@ class DatetimeWithNanoseconds(datetime.datetime):
         """
         if self._nanosecond == 0:
             return to_rfc3339(self)
-        nanos = str(self._nanosecond).rjust(9, '0').rstrip("0")
+        nanos = str(self._nanosecond).rjust(9, "0").rstrip("0")
         return "{}.{}Z".format(self.strftime(_RFC3339_NO_FRACTION), nanos)
 
     @classmethod

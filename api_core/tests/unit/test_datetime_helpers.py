@@ -24,8 +24,9 @@ from google.protobuf import timestamp_pb2
 
 
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
-MESSAGE = ("The `from_rfc3339_nanos` function is deprecated"
-           " use `from_rfc3339` instead.")
+MESSAGE = (
+    "The `from_rfc3339_nanos` function is deprecated" " use `from_rfc3339` instead."
+)
 
 
 def test_utcnow():
@@ -159,6 +160,18 @@ def test_from_rfc3339_nanos_with_truncated_nanos(truncated, micros):
     )
 
 
+def test_from_rfc3339_wo_nanos_raise_exception():
+    value = "2009-12-17T12:44:32"
+    with pytest.raises(ValueError):
+        datetime_helpers.from_rfc3339(value)
+
+
+def test_from_rfc3339_w_nanos_raise_exception():
+    value = "2009-12-17T12:44:32.123456"
+    with pytest.raises(ValueError):
+        datetime_helpers.from_rfc3339(value)
+
+
 def test_to_rfc3339():
     value = datetime.datetime(2016, 4, 5, 13, 30, 0)
     expected = "2016-04-05T13:30:00.000000Z"
@@ -186,10 +199,11 @@ def test_to_rfc3339_with_non_utc_ignore_zone():
 
 
 class Test_DateTimeWithNanos(object):
-
     @staticmethod
     def test_ctor_wo_nanos():
-        stamp = datetime_helpers.DatetimeWithNanoseconds(2016, 12, 20, 21, 13, 47, 123456)
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         assert stamp.year == 2016
         assert stamp.month == 12
         assert stamp.day == 20
@@ -229,7 +243,9 @@ class Test_DateTimeWithNanos(object):
 
     @staticmethod
     def test_rfc3339_wo_nanos():
-        stamp = datetime_helpers.DatetimeWithNanoseconds(2016, 12, 20, 21, 13, 47, 123456)
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         assert stamp.rfc3339() == "2016-12-20T21:13:47.123456Z"
 
     @staticmethod
@@ -314,12 +330,16 @@ class Test_DateTimeWithNanos(object):
     )
     def test_from_rfc3339_test_nanoseconds(fractional, nanos):
         value = "2009-12-17T12:44:32.{}Z".format(fractional)
-        assert datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(value).nanosecond == nanos
+        assert (
+            datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(value).nanosecond
+            == nanos
+        )
 
     @staticmethod
     def test_timestamp_pb_wo_nanos_naive():
         stamp = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, 123456)
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         delta = stamp.replace(tzinfo=pytz.UTC) - datetime_helpers._UTC_EPOCH
         seconds = int(delta.total_seconds())
         nanos = 123456000
@@ -333,7 +353,8 @@ class Test_DateTimeWithNanos(object):
         )
         delta = stamp - datetime_helpers._UTC_EPOCH
         timestamp = timestamp_pb2.Timestamp(
-            seconds=int(delta.total_seconds()), nanos=123456789)
+            seconds=int(delta.total_seconds()), nanos=123456789
+        )
         assert stamp.timestamp_pb() == timestamp
 
     @staticmethod
@@ -343,8 +364,7 @@ class Test_DateTimeWithNanos(object):
         seconds = int(delta.total_seconds())
         timestamp = timestamp_pb2.Timestamp(seconds=seconds)
 
-        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
-            timestamp)
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(timestamp)
 
         assert _to_seconds(when) == _to_seconds(stamp)
         assert stamp.microsecond == 0
@@ -358,8 +378,7 @@ class Test_DateTimeWithNanos(object):
         seconds = int(delta.total_seconds())
         timestamp = timestamp_pb2.Timestamp(seconds=seconds, nanos=123456789)
 
-        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
-            timestamp)
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(timestamp)
 
         assert _to_seconds(when) == _to_seconds(stamp)
         assert stamp.microsecond == 123456
