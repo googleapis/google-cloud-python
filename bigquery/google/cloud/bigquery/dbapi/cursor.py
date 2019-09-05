@@ -49,8 +49,8 @@ Column = collections.namedtuple(
 class Cursor(object):
     """DB-API Cursor to Google BigQuery.
 
-    :type connection: :class:`~google.cloud.bigquery.dbapi.Connection`
-    :param connection: A DB-API connection to Google BigQuery.
+    Args:
+        connection (google.cloud.bigquery.dbapi.Connection): A DB-API connection to Google BigQuery.
     """
 
     def __init__(self, connection):
@@ -72,8 +72,8 @@ class Cursor(object):
     def _set_description(self, schema):
         """Set description from schema.
 
-        :type schema: Sequence[google.cloud.bigquery.schema.SchemaField]
-        :param schema: A description of fields in the schema.
+        Args:
+            schema (Sequence[google.cloud.bigquery.schema.SchemaField]): A description of fields in the schema.
         """
         if schema is None:
             self.description = None
@@ -101,9 +101,8 @@ class Cursor(object):
         query, but if it was a DML statement, it sets rowcount to the number
         of modified rows.
 
-        :type query_results:
-            :class:`~google.cloud.bigquery.query._QueryResults`
-        :param query_results: results of a query
+        Args:
+            query_results (google.cloud.bigquery.query._QueryResults): results of a query
         """
         total_rows = 0
         num_dml_affected_rows = query_results.num_dml_affected_rows
@@ -136,16 +135,15 @@ class Cursor(object):
             yet supported. See:
             https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3524
 
-        :type operation: str
-        :param operation: A Google BigQuery query string.
+        Args:
+            operation (str): A Google BigQuery query string.
 
-        :type parameters: Mapping[str, Any] or Sequence[Any]
-        :param parameters:
-            (Optional) dictionary or sequence of parameter values.
+            parameters (Mapping[str, Any] or Sequence[Any]):
+                (Optional) dictionary or sequence of parameter values.
 
-        :type job_id: str
-        :param job_id: (Optional) The job_id to use. If not set, a job ID
-            is generated at random.
+            job_id (str):
+                (Optional) The job_id to use. If not set, a job ID
+                is generated at random.
         """
         self._query_data = None
         self._query_job = None
@@ -178,11 +176,10 @@ class Cursor(object):
     def executemany(self, operation, seq_of_parameters):
         """Prepare and execute a database operation multiple times.
 
-        :type operation: str
-        :param operation: A Google BigQuery query string.
+        Args:
+            operation (str): A Google BigQuery query string.
 
-        :type seq_of_parameters: Sequence[Mapping[str, Any] or Sequence[Any]]
-        :param parameters: Sequence of many sets of parameter values.
+            seq_of_parameters (Sequence[Mapping[str, Any] or Sequence[Any]]): Sequence of many sets of parameter values.
         """
         for parameters in seq_of_parameters:
             self.execute(operation, parameters)
@@ -217,12 +214,13 @@ class Cursor(object):
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.
 
-        :rtype: tuple
-        :returns:
-            A tuple representing a row or ``None`` if no more data is
-            available.
-        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
-            if called before ``execute()``.
+        Returns:
+            Tuple:
+                A tuple representing a row or ``None`` if no more data is
+                available.
+
+        Raises:
+            google.cloud.bigquery.dbapi.InterfaceError: if called before ``execute()``.
         """
         self._try_fetch()
         try:
@@ -238,15 +236,16 @@ class Cursor(object):
             Set the ``arraysize`` attribute before calling ``execute()`` to
             set the batch size.
 
-        :type size: int
-        :param size:
-            (Optional) Maximum number of rows to return. Defaults to the
-            ``arraysize`` property value.
+        Args:
+            size (int):
+                (Optional) Maximum number of rows to return. Defaults to the
+                ``arraysize`` property value.
 
-        :rtype: List[tuple]
-        :returns: A list of rows.
-        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
-            if called before ``execute()``.
+        Returns:
+            List[Tuple]: A list of rows.
+
+        Raises:
+            google.cloud.bigquery.dbapi.InterfaceError: if called before ``execute()``.
         """
         if size is None:
             size = self.arraysize
@@ -264,10 +263,11 @@ class Cursor(object):
     def fetchall(self):
         """Fetch all remaining results from the last ``execute*()`` call.
 
-        :rtype: List[tuple]
-        :returns: A list of all the rows in the results.
-        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
-            if called before ``execute()``.
+        Returns:
+            List[Tuple]: A list of all the rows in the results.
+
+        Raises:
+            google.cloud.bigquery.dbapi.InterfaceError: if called before ``execute()``.
         """
         self._try_fetch()
         return list(self._query_data)
@@ -285,17 +285,18 @@ def _format_operation_list(operation, parameters):
     The input operation will be a query like ``SELECT %s`` and the output
     will be a query like ``SELECT ?``.
 
-    :type operation: str
-    :param operation: A Google BigQuery query string.
+    Args:
+        operation (str): A Google BigQuery query string.
 
-    :type parameters: Sequence[Any]
-    :param parameters: Sequence of parameter values.
+        parameters (Sequence[Any]): Sequence of parameter values.
 
-    :rtype: str
-    :returns: A formatted query string.
-    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`
-        if a parameter used in the operation is not found in the
-        ``parameters`` argument.
+    Returns:
+        str: A formatted query string.
+
+    Raises:
+        google.cloud.bigquery.dbapi.ProgrammingError:
+            if a parameter used in the operation is not found in the
+            ``parameters`` argument.
     """
     formatted_params = ["?" for _ in parameters]
 
@@ -311,17 +312,18 @@ def _format_operation_dict(operation, parameters):
     The input operation will be a query like ``SELECT %(namedparam)s`` and
     the output will be a query like ``SELECT @namedparam``.
 
-    :type operation: str
-    :param operation: A Google BigQuery query string.
+    Args:
+        operation (str): A Google BigQuery query string.
 
-    :type parameters: Mapping[str, Any]
-    :param parameters: Dictionary of parameter values.
+        parameters (Mapping[str, Any]): Dictionary of parameter values.
 
-    :rtype: str
-    :returns: A formatted query string.
-    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`
-        if a parameter used in the operation is not found in the
-        ``parameters`` argument.
+    Returns:
+        str: A formatted query string.
+
+    Raises:
+        google.cloud.bigquery.dbapi.ProgrammingError:
+            if a parameter used in the operation is not found in the
+            ``parameters`` argument.
     """
     formatted_params = {}
     for name in parameters:
@@ -343,11 +345,13 @@ def _format_operation(operation, parameters=None):
     :type: Mapping[str, Any] or Sequence[Any]
     :param parameters: Optional parameter values.
 
-    :rtype: str
-    :returns: A formatted query string.
-    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`
-        if a parameter used in the operation is not found in the
-        ``parameters`` argument.
+    Returns:
+        str: A formatted query string.
+
+    Raises:
+        google.cloud.bigquery.dbapi.ProgrammingError:
+            if a parameter used in the operation is not found in the
+            ``parameters`` argument.
     """
     if parameters is None:
         return operation
