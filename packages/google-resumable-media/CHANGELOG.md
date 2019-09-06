@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## 0.4.0
+
+09-05-2019 11:59 PDT
+
+### Backward-Compatibility Note
+
+The change to use raw response data (PR
+[#87](https://github.com/googleapis/google-resumable-media-python/pull/87))
+might break the hypothetical usecase of downloading a blob marked with
+`Content-Encoding: gzip` and expecting to get the expanded data.
+
+### Implementation Changes
+- Require 200 response for initial resumable upload request. ([#95](https://github.com/googleapis/google-resumable-media-python/pull/95))
+- Use `response` as variable for object returned from `http_request`. ([#98](https://github.com/googleapis/google-resumable-media-python/pull/98))
+- Further DRY request dependency pins. ([#96](https://github.com/googleapis/google-resumable-media-python/pull/96))
+- Finish download on seeing 416 response with zero byte range. ([#86](https://github.com/googleapis/google-resumable-media-python/pull/86))
+- Always use raw response data. ([#87](https://github.com/googleapis/google-resumable-media-python/pull/87))
+
+### Dependencies
+- Drop runtime dependency check on `requests`. ([#97](https://github.com/googleapis/google-resumable-media-python/pull/97))
+
+### Documentation
+- Update docs after release ([#93](https://github.com/googleapis/google-resumable-media-python/pull/93))
+
 ## 0.3.3
 
 08-23-2019 14:15 PDT
