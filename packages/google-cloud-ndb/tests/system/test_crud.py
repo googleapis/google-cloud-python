@@ -20,6 +20,7 @@ import functools
 import operator
 import os
 import threading
+import zlib
 
 from unittest import mock
 
@@ -313,6 +314,28 @@ def test_compressed_blob_property(dispose_of, ds_client):
     assert retrieved.foo == foo
 
     dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_retrieve_entity_with_legacy_compressed_property(
+    ds_entity_with_meanings
+):
+    class SomeKind(ndb.Model):
+        blob = ndb.BlobProperty()
+
+    value = b"abc" * 1000
+    compressed_value = zlib.compress(value)
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity_with_meanings(
+        {"blob": (22, compressed_value)},
+        KIND,
+        entity_id,
+        **{"blob": compressed_value}
+    )
+
+    key = ndb.Key(KIND, entity_id)
+    retrieved = key.get()
+    assert retrieved.blob == value
 
 
 @pytest.mark.usefixtures("client_context")

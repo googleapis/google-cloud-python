@@ -92,6 +92,23 @@ def ds_entity(with_ds_client, dispose_of):
 
 
 @pytest.fixture
+def ds_entity_with_meanings(with_ds_client, dispose_of):
+    def make_entity(*key_args, **entity_kwargs):
+        meanings = key_args[0]
+        key = with_ds_client.key(*key_args[1:])
+        assert with_ds_client.get(key) is None
+        entity = datastore.Entity(key=key, exclude_from_indexes=("blob",))
+        entity._meanings = meanings
+        entity.update(entity_kwargs)
+        with_ds_client.put(entity)
+        dispose_of(key)
+
+        return entity
+
+    yield make_entity
+
+
+@pytest.fixture
 def dispose_of(with_ds_client, to_delete):
     def delete_entity(ds_key):
         to_delete.append(ds_key)
