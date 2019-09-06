@@ -321,6 +321,14 @@ def _run_query(client, query, job_config=None):
     help=("Project to use for executing this query. Defaults to the context project."),
 )
 @magic_arguments.argument(
+    "--max_results",
+    default=None,
+    help=(
+        "Maximum number of rows in dataframe returned from executing the query."
+        "Defaults to returning all rows."
+    ),
+)
+@magic_arguments.argument(
     "--maximum_bytes_billed",
     default=None,
     help=(
@@ -420,6 +428,12 @@ def _cell_magic(line, query):
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
+
+    if args.max_results:
+        max_results = int(args.max_results)
+    else:
+        max_results = None
+
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
@@ -433,7 +447,7 @@ def _cell_magic(line, query):
 
     error = None
     try:
-        query_job = _run_query(client, query, job_config)
+        query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
         error = str(ex)
 
@@ -460,7 +474,13 @@ def _cell_magic(line, query):
         )
         return query_job
 
-    result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+    if max_results:
+        result = query_job.result(max_results=max_results).to_dataframe(
+            bqstorage_client=bqstorage_client
+        )
+    else:
+        result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:
