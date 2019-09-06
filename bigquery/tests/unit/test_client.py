@@ -5581,6 +5581,41 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_no_schema_warning(self):
+        client = self._make_client()
+
+        # Pick at least one column type that translates to Pandas dtype
+        # "object". A string column matches that.
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with get_table_patch, load_patch, pyarrow_patch, catch_warnings as warned:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
+            and "could not be detected" in str(warning)
+            and "please provide a schema" in str(warning)
+        ]
+        assert matches, "A missing schema deprecation warning was not raised."
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_struct_fields_error(self):
         from google.cloud.bigquery import job
         from google.cloud.bigquery.schema import SchemaField
