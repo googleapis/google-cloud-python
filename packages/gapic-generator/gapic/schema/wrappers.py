@@ -69,6 +69,11 @@ class Field:
         """Return True if the field is a primitive, False otherwise."""
         return isinstance(self.type, PrimitiveType)
 
+    @property
+    def map(self) -> bool:
+        """Return True if this field is a map, False otherwise."""
+        return bool(self.repeated and self.message and self.message.map)
+
     @utils.cached_property
     def mock_value(self) -> str:
         """Return a repr of a valid, usually truthy mock value."""
@@ -212,6 +217,11 @@ class MessageType:
             if field.message or field.enum:
                 answer.append(field.type)
         return tuple(answer)
+
+    @property
+    def map(self) -> bool:
+        """Return True if the given message is a map, False otherwise."""
+        return self.message_pb.options.map_entry
 
     @property
     def ident(self) -> metadata.Address:

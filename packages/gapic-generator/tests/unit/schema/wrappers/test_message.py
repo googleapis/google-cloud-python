@@ -124,12 +124,29 @@ def test_get_field_nonterminal_repeated_error():
         assert outer.get_field('inner', 'one') == inner_fields[1]
 
 
+def test_field_map():
+    # Create an Entry message.
+    entry_msg = make_message(
+        name='FooEntry',
+        fields=(
+            make_field(name='key', type=9),
+            make_field(name='value', type=9),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    entry_field = make_field('foos', message=entry_msg, repeated=True)
+    assert entry_msg.map
+    assert entry_field.map
+
+
 def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
         fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
+        options: descriptor_pb2.MethodOptions = None,
                  ) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,
         field=[i.field_pb for i in fields],
+        options=options,
     )
     return wrappers.MessageType(
         message_pb=message_pb,
