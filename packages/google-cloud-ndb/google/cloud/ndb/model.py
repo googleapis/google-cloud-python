@@ -527,7 +527,13 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     Returns:
         .Model: The deserialized entity.
     """
-    model_class = model_class or Model._lookup_model(ds_entity.kind)
+    class_key = ds_entity.get("class")
+    if class_key:
+        kind = class_key[-1]
+    else:
+        kind = ds_entity.kind
+
+    model_class = model_class or Model._lookup_model(kind)
     entity = model_class()
 
     # Check if we are dealing with a PolyModel, and if so get correct subclass.

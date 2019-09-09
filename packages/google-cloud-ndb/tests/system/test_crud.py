@@ -853,21 +853,24 @@ def test_insert_expando(dispose_of):
 @pytest.mark.usefixtures("client_context")
 def test_insert_polymodel(dispose_of):
     class Animal(ndb.PolyModel):
-        pass
+        one = ndb.StringProperty()
 
     class Feline(Animal):
-        pass
+        two = ndb.StringProperty()
 
     class Cat(Feline):
-        pass
+        three = ndb.StringProperty()
 
-    entity = Cat()
+    entity = Cat(one="hello", two="dad", three="i'm in jail")
     key = entity.put()
 
     retrieved = key.get()
 
     assert isinstance(retrieved, Animal)
     assert isinstance(retrieved, Cat)
+    assert retrieved.one == "hello"
+    assert retrieved.two == "dad"
+    assert retrieved.three == "i'm in jail"
 
     dispose_of(key._key)
 
