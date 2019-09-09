@@ -14,17 +14,21 @@ from .services.{{ service.name|snake_case }} import {{ service.name }}
 {% endfor -%}
 {% endfilter -%}
 
-{#  Import messages from each proto.
+{#  Import messages and enums from each proto.
     It is safe to import all of the messages into the same namespace here,
     because protocol buffers itself enforces selector uniqueness within
     a proto package.
 -#}
 {% filter sort_lines -%}
-{% for proto in api.protos.values()|sort(attribute='module_name')
+{% for proto in api.protos.values()
         if proto.meta.address.subpackage == api.subpackage_view -%}
-{% for message in proto.messages.values()|sort(attribute='name') -%}
+{% for message in proto.messages.values() -%}
 from .types.{{ proto.module_name }} import {{ message.name }}
-{% endfor %}{% endfor -%}
+{% endfor -%}
+{% for enum in proto.enums.values() -%}
+from .types.{{ proto.module_name }} import {{ enum.name }}
+{% endfor -%}
+{% endfor -%}
 {% endfilter %}
 
 {#  Define __all__.
@@ -36,15 +40,19 @@ __all__ = (
     {%- for subpackage in api.subpackages.keys() %}
     '{{ subpackage }}',
     {%- endfor %}
-    {%- for service in api.services.values()|sort(attribute='name')
+    {%- for service in api.services.values()
             if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.name }}',
     {%- endfor %}
-    {%- for proto in api.protos.values()|sort(attribute='module_name')
+    {%- for proto in api.protos.values()
             if proto.meta.address.subpackage == api.subpackage_view %}
-    {%- for message in proto.messages.values()|sort(attribute='name') %}
+    {%- for message in proto.messages.values() %}
     '{{ message.name }}',
-    {%- endfor %}{% endfor %}
+    {%- endfor %}
+    {%- for enum in proto.enums.values() %}
+    '{{ enum.name }}',
+    {%- endfor %}
+    {%- endfor %}
     {%- endfilter %}
 )
 {% endblock %}
