@@ -20,6 +20,7 @@ from six.moves import queue
 from six.moves import xrange
 
 from google.cloud.exceptions import NotFound
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 
 _NOW = datetime.datetime.utcnow  # unit tests may replace
@@ -166,11 +167,22 @@ class FixedSizePool(AbstractSessionPool):
                          when needed.
         """
         self._database = database
+        api = database.spanner_api
+        created_session_count = 0
+        metadata = _metadata_with_prefix(database.name)
 
         while not self._sessions.full():
-            session = self._new_session()
-            session.create()
-            self._sessions.put(session)
+            resp = api.batch_create_sessions(
+                database.name,
+                session_count=self.size - created_session_count,
+                timeout=self.default_timeout,
+                metadata=metadata,
+            )
+            for session_pb in resp.session:
+                session = self._new_session()
+                session._session_id = session_pb.name.split("/")[-1]
+                self._sessions.put(session)
+            created_session_count += len(resp.session)
 
     def get(self, timeout=None):  # pylint: disable=arguments-differ
         """Check a session out from the pool.
@@ -350,11 +362,22 @@ class PingingPool(AbstractSessionPool):
                          when needed.
         """
         self._database = database
+        api = database.spanner_api
+        metadata = _metadata_with_prefix(database.name)
+        created_session_count = 0
 
-        for _ in xrange(self.size):
-            session = self._new_session()
-            session.create()
-            self.put(session)
+        while created_session_count < self.size:
+            resp = api.batch_create_sessions(
+                database.name,
+                session_count=self.size - created_session_count,
+                timeout=self.default_timeout,
+                metadata=metadata,
+            )
+            for session_pb in resp.session:
+                session = self._new_session()
+                session._session_id = session_pb.name.split("/")[-1]
+                self._sessions.put(session)
+            created_session_count += len(resp.session)
 
     def get(self, timeout=None):  # pylint: disable=arguments-differ
         """Check a session out from the pool.
