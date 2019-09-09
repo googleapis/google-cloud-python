@@ -2,9 +2,9 @@ google.auth.crypt package
 =========================
 
 .. automodule:: google.auth.crypt
-    :members:
-    :inherited-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -13,4 +13,3 @@ Submodules
 
    google.auth.crypt.base
    google.auth.crypt.rsa
-

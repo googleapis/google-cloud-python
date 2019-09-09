@@ -2,9 +2,9 @@ google.auth.transport package
 =============================
 
 .. automodule:: google.auth.transport
-    :members:
-    :inherited-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -14,4 +14,3 @@ Submodules
    google.auth.transport.grpc
    google.auth.transport.requests
    google.auth.transport.urllib3
-

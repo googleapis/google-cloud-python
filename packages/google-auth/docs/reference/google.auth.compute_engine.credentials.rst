@@ -1,7 +1,7 @@
-google.auth.compute_engine.credentials module
-=============================================
+google.auth.compute\_engine.credentials module
+==============================================
 
 .. automodule:: google.auth.compute_engine.credentials
-    :members:
-    :inherited-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :show-inheritance:

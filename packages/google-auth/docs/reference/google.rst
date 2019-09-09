@@ -2,15 +2,14 @@ google package
 ==============
 
 .. automodule:: google
-    :members:
-    :inherited-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :show-inheritance:
 
 Subpackages
 -----------
 
 .. toctree::
 
-    google.auth
-    google.oauth2
-
+   google.auth
+   google.oauth2

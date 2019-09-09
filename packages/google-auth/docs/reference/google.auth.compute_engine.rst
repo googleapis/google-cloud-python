@@ -1,10 +1,10 @@
-google.auth.compute_engine package
-==================================
+google.auth.compute\_engine package
+===================================
 
 .. automodule:: google.auth.compute_engine
-    :members:
-    :inherited-members:
-    :show-inheritance:
+   :members:
+   :inherited-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -12,4 +12,3 @@ Submodules
 .. toctree::
 
    google.auth.compute_engine.credentials
-
