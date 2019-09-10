@@ -30,7 +30,7 @@ def main():
 
     setuptools.setup(
         name="google-cloud-ndb",
-        version="0.0.1",
+        version="0.1.0",
         description="NDB library for Google Cloud Datastore",
         long_description=readme,
         long_description_content_type="text/markdown",
@@ -43,7 +43,7 @@ def main():
             'Issue Tracker': 'https://github.com/googleapis/python-ndb/issues'
         },
         classifiers=[
-            "Development Status :: 3 - Alpha",
+            "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
             "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python",

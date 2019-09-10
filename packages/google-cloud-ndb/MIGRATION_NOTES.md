@@ -16,16 +16,17 @@ The primary differences come from:
 ## Bootstrapping
 
 The biggest difference is in establishing a runtime context for your NDB
-application. In the Google App Engine environment, Legacy NDB could just
-shoehorn the runtime context onto the current HTTP request. Decoupling NDB from
-GAE, means we can't assume we're running in the context of a GAE request. 
+application. The Google App Engine Python 2.7 runtime had a strong assumption
+that all code executed inside a web framework request-response cycle, in a
+single thread per request. In order to decouple from that assumption, Cloud NDB
+implements explicit clients and contexts. This is consistent with other Cloud
+client libraries.
 
-To deal with this, the ``Client`` class has been introduced which by and large
-works the same as Datastore's ``Client`` class and uses ``google.auth`` for
-authentication. While this is different from how Legacy NDB worked, this is
-consistent with how APIs in Google Cloud Platform work. You can pass a
-``credentials`` parameter to ``Client`` or use the
-``GOOGLE_APPLICATION_CREDENTIALS`` environment variable (recommended).
+The ``Client`` class has been introduced which by and large works the same as 
+Datastore's ``Client`` class and uses ``google.auth`` for authentication. You
+can pass a ``credentials`` parameter to ``Client`` or use the
+``GOOGLE_APPLICATION_CREDENTIALS`` environment variable (recommended). See
+[https://cloud.google.com/docs/authentication/getting-started] for details.
 
 Once a client has been obtained, you still need to establish a runtime context,
 which you can do using the ``Client.context`` method.
@@ -217,12 +218,11 @@ that are affected are: `memcache_add`, `memcache_cas`, `memcache_decr`,
 
 ## Privatization
 
-One thing legacy NDB didn't do very well, was distinguishing between internal
-private and external public API. A few bits of the nominally public API 
-have been found to be *de facto* private. These are pieces that are omitted
-from public facing documentation and which have no apparent use outside of NDB
-internals. These pieces have been formally renamed and moved to be internally
-facing, private API:
+App Engine NDB exposed some internal utilities as part of the public API. A few
+bits of the nominally public API have been found to be *de facto* private.
+These are pieces that are omitted from public facing documentation and which
+have no apparent use outside of NDB internals. These pieces have been formally
+renamed as part of the private API:
 
 - `eventloop` has been renamed to `_eventloop`.
 - `tasklets.get_return_value` has been renamed to `tasklets._get_return_value`

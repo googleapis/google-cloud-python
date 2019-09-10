@@ -19,7 +19,9 @@ run on other Python 3 platforms as well.
 
 ## Release Status
 
-Alpha
+Beta
 
 ### Supported Python Versions
 Python >= 3.6
+
+Python 2 backwards-compatibility is currently in development.
