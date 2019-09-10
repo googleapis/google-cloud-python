@@ -444,18 +444,13 @@ def _cell_magic(line, query):
     else:
         max_results = None
 
-    error = None
-
     if not re.search(r"\s", query.rstrip()):
         table_id = query.rstrip()
 
         try:
             rows = client.list_rows(table_id, max_results=max_results)
         except Exception as ex:
-            error = str(ex)
-        if error:
-            _print_error(error, args.destination_var)
-            return
+            return _print_error(str(ex), args.destination_var)
 
         result = rows.to_dataframe(bqstorage_client=bqstorage_client)
         if args.destination_var:
@@ -478,14 +473,10 @@ def _cell_magic(line, query):
     try:
         query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
-        error = str(ex)
+        return _print_error(str(ex), args.destination_var)
 
     if not args.verbose:
         display.clear_output()
-
-    if error:
-        _print_error(error, args.destination_var)
-        return
 
     if args.dry_run and args.destination_var:
         IPython.get_ipython().push({args.destination_var: query_job})
