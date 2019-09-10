@@ -212,6 +212,24 @@ Running System Tests
    $ python datastore/tests/system/utils/clear_datastore.py
 
 
+******************************
+Running Generated Sample Tests
+******************************
+
+- To run system tests for a given package, you can execute::
+
+   $ nox -f speech/noxfile.py -s samples
+
+  .. note::
+
+      Generated sample tests require the ``sample-tester`` commamd line
+      `tool <https://sample-tester.readthedocs.io>`.
+
+- Generated sample tests will be run against an actual project and
+  so you'll need to provide some environment variables to facilitate
+  authentication to your project (See: Running System Tests)
+
+
 *************
 Test Coverage
 *************

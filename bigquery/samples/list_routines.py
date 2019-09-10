@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def main(client, dataset_id):
+def list_routines(client, dataset_id):
 
     # [START bigquery_list_routines]
     # TODO(developer): Import the client library.

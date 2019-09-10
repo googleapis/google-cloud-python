@@ -41,6 +41,7 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+import google.api_core.client_options
 import google.api_core.exceptions
 from google.api_core import page_iterator
 import google.cloud._helpers
@@ -142,6 +143,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[~google.api_core.client_options.ClientOptions, dict]):
+            (Optional) Client options used to set user options on the client.
+            API Endpoint should be set through client_options.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -163,11 +167,23 @@ class Client(ClientWithProject):
         location=None,
         default_query_job_config=None,
         client_info=None,
+        client_options=None,
     ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self, client_info=client_info)
+
+        kw_args = {"client_info": client_info}
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+                kw_args["api_endpoint"] = api_endpoint
+
+        self._connection = Connection(self, **kw_args)
         self._location = location
         self._default_query_job_config = default_query_job_config
 
@@ -327,7 +343,7 @@ class Client(ClientWithProject):
         """API call: create the dataset via a POST request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/insert
 
         Args:
             dataset (Union[ \
@@ -1531,9 +1547,40 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        # If table schema is not provided, we try to fetch the existing table
+        # schema, and check if dataframe schema is compatible with it - except
+        # for WRITE_TRUNCATE jobs, the existing schema does not matter then.
+        if (
+            not job_config.schema
+            and job_config.write_disposition != job.WriteDisposition.WRITE_TRUNCATE
+        ):
+            try:
+                table = self.get_table(destination)
+            except google.api_core.exceptions.NotFound:
+                table = None
+            else:
+                columns_and_indexes = frozenset(
+                    name
+                    for name, _ in _pandas_helpers.list_columns_and_indexes(dataframe)
+                )
+                # schema fields not present in the dataframe are not needed
+                job_config.schema = [
+                    field for field in table.schema if field.name in columns_and_indexes
+                ]
+
         job_config.schema = _pandas_helpers.dataframe_to_bq_schema(
             dataframe, job_config.schema
         )
+
+        if not job_config.schema:
+            # the schema could not be fully detected
+            warnings.warn(
+                "Schema could not be detected for all columns. Loading from a "
+                "dataframe without a schema will be deprecated in the future, "
+                "please provide a schema.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)

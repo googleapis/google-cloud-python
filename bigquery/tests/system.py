@@ -2315,6 +2315,27 @@ class TestBigQuery(unittest.TestCase):
         page = next(pages)
         self.assertEqual(page.num_items, num_last_page)
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_list_rows_max_results_w_bqstorage(self):
+        table_ref = DatasetReference("bigquery-public-data", "utility_us").table(
+            "country_code_iso"
+        )
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+
+        row_iterator = Config.CLIENT.list_rows(
+            table_ref,
+            selected_fields=[bigquery.SchemaField("country_name", "STRING")],
+            max_results=100,
+        )
+        dataframe = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        self.assertEqual(len(dataframe.index), 100)
+
     def temp_dataset(self, dataset_id, location=None):
         dataset = Dataset(Config.CLIENT.dataset(dataset_id))
         if location:

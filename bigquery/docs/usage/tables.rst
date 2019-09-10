@@ -31,7 +31,7 @@ Get a table resource with the
 Browse data rows in a table with the
 :func:`~google.cloud.bigquery.client.Client.list_rows` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/browse_table_data.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_browse_table]
@@ -112,6 +112,15 @@ Insert rows into a table's data with the
    :dedent: 4
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
+
+Add an empty column to the existing table with the
+:func:`~google.cloud.bigquery.update_table` method:
+
+.. literalinclude:: ../samples/add_empty_column.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_add_empty_column]
+   :end-before: [END bigquery_add_empty_column]
 
 Copying a Table
 ^^^^^^^^^^^^^^^
