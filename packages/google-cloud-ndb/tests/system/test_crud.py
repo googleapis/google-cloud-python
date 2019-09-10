@@ -229,6 +229,25 @@ def test_insert_entity(dispose_of, ds_client):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_insert_entity_with_stored_name_property(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty()
+        bar = ndb.StringProperty(name="notbar")
+
+    entity = SomeKind(foo="something", bar="or other")
+    key = entity.put()
+
+    retrieved = key.get()
+    assert retrieved.foo == "something"
+    assert retrieved.bar == "or other"
+
+    ds_entity = ds_client.get(key._key)
+    assert ds_entity["notbar"] == "or other"
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_insert_roundtrip_naive_datetime(dispose_of, ds_client):
     class SomeKind(ndb.Model):
         foo = ndb.DateTimeProperty()

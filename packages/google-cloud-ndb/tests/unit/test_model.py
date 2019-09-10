@@ -4717,6 +4717,15 @@ class TestModel:
         entity = Simple(foo=3, bar="baz", projection=("foo",))
         assert entity.to_dict() == {"foo": 3}
 
+    @staticmethod
+    def test__code_name_from_stored_name():
+        class Simple(model.Model):
+            foo = model.StringProperty()
+            bar = model.StringProperty(name="notbar")
+
+        assert Simple._code_name_from_stored_name("foo") == "foo"
+        assert Simple._code_name_from_stored_name("notbar") == "bar"
+
 
 class Test_entity_from_protobuf:
     @staticmethod
