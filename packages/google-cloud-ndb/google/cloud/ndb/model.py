@@ -547,6 +547,10 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
         entity._key = key_module.Key._from_ds_key(ds_entity.key)
 
     for name, value in ds_entity.items():
+        # If ``name`` was used to define the property, ds_entity name will not
+        # match model property name.
+        name = model_class._code_name_from_stored_name(name)
+
         prop = getattr(model_class, name, None)
 
         # Backwards compatibility shim. NDB previously stored structured
@@ -5677,6 +5681,15 @@ class Model(metaclass=MetaModel):
         return values
 
     to_dict = _to_dict
+
+    @classmethod
+    def _code_name_from_stored_name(cls, name):
+        """Return the code name from a property when it's different from the
+        stored name. Used in deserialization from datastore."""
+        if name in cls._properties:
+            if name != cls._properties[name]._code_name:
+                name = cls._properties[name]._code_name
+        return name
 
     @classmethod
     def _pre_allocate_ids_hook(cls, size, max, parent):
