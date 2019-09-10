@@ -1,7 +1,7 @@
 Python Client for Google Cloud Datastore
 ========================================
 
-|GA| |pypi| |versions|
+|GA| |pypi| |versions| 
 
 `Google Cloud Datastore API`_ is a fully managed, schemaless database for
 storing non-relational data. Cloud Datastore automatically scales with your
@@ -20,7 +20,7 @@ all other queries.
    :target: https://pypi.org/project/google-cloud-datastore/
 .. _Google Cloud Datastore API: https://cloud.google.com/datastore/docs
 .. _Product Documentation:  https://cloud.google.com/datastore/docs
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/datastore/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/datastore/latest
 
 Quick Start
 -----------
@@ -35,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Datastore API.:  https://cloud.google.com/datastore
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

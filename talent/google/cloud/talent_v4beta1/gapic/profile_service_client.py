@@ -37,7 +37,6 @@ from google.cloud.talent_v4beta1.gapic.transports import profile_service_grpc_tr
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -280,8 +279,8 @@ class ProfileServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -376,8 +375,8 @@ class ProfileServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Profile`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -451,8 +450,8 @@ class ProfileServiceClient(object):
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
                 for example, "projects/api-test-project/tenants/foo/profiles/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -546,19 +545,39 @@ class ProfileServiceClient(object):
                 -  employment\_records
                 -  education\_records
                 -  skills
-                -  projects
+                -  activities
                 -  publications
                 -  patents
                 -  certifications
                 -  recruiting\_notes
                 -  custom\_attributes
                 -  group\_id
+                -  external\_system
+                -  source\_note
+                -  primary\_responsibilities
+                -  citizenships
+                -  work\_authorizations
+                -  employee\_types
+                -  language\_code
+                -  qualification\_summary
+                -  allowed\_contact\_types
+                -  preferred\_contact\_types
+                -  contact\_availability
+                -  language\_fluencies
+                -  work\_preference
+                -  industry\_experiences
+                -  work\_environment\_experiences
+                -  work\_availability
+                -  security\_clearances
+                -  references
+                -  assessments
+                -  interviews
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -634,8 +653,8 @@ class ProfileServiceClient(object):
                 "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}",
                 for example, "projects/api-test-project/tenants/foo/profiles/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -690,6 +709,7 @@ class ProfileServiceClient(object):
         case_sensitive_sort=None,
         histogram_queries=None,
         result_set_id=None,
+        strict_keywords_search=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -769,9 +789,9 @@ class ProfileServiceClient(object):
 
                 -  "relevance desc": By descending relevance, as determined by the API
                    algorithms.
-                -  "update\_time desc": Sort by ``Profile.update_time`` in descending
+                -  "update\_date desc": Sort by ``Profile.update_time`` in descending
                    order (recently updated profiles first).
-                -  "create\_time desc": Sort by ``Profile.create_time`` in descending
+                -  "create\_date desc": Sort by ``Profile.create_time`` in descending
                    order (recently created profiles first).
                 -  "first\_name": Sort by ``PersonName.PersonStructuredName.given_name``
                    in ascending order.
@@ -878,14 +898,27 @@ class ProfileServiceClient(object):
                 If this field is set, the service will ignore the resource and
                 ``profile_query`` values, and simply retrieve a page of results from the
                 corresponding result set. In this case, one and only one of
-                [page\_token] or [offset] must be set.
+                ``page_token`` or ``offset`` must be set.
 
                 A typical use case is to invoke ``SearchProfilesRequest`` without this
                 field, then use the resulting ``result_set_id`` in
                 ``SearchProfilesResponse`` to page through the results.
+            strict_keywords_search (bool): Optional. This flag is used to indicate whether the service will attempt to
+                understand synonyms and terms related to the search query or treat the
+                query "as is" when it generates a set of results. By default this flag is
+                set to false, thus allowing expanded results to also be returned. For
+                example a search for "software engineer" might also return candidates who
+                have experience in jobs similar to software engineer positions. By setting
+                this flag to true, the service will only attempt to deliver candidates has
+                software engineer in his/her global fields by treating "software engineer"
+                as a keyword.
+
+                It is recommended to provide a feature in the UI (such as a checkbox) to
+                allow recruiters to set this flag to true if they intend to search for
+                longer boolean strings.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -927,6 +960,7 @@ class ProfileServiceClient(object):
             case_sensitive_sort=case_sensitive_sort,
             histogram_queries=histogram_queries,
             result_set_id=result_set_id,
+            strict_keywords_search=strict_keywords_search,
         )
         if metadata is None:
             metadata = []

@@ -125,9 +125,9 @@ def exponential_sleep_generator(initial, maximum, multiplier=_DEFAULT_DELAY_MULT
         https://cloud.google.com/storage/docs/exponential-backoff
 
     Args:
-        initial (float): The minimum about of time to delay. This must
+        initial (float): The minimum amout of time to delay. This must
             be greater than 0.
-        maximum (float): The maximum about of time to delay.
+        maximum (float): The maximum amout of time to delay.
         multiplier (float): The multiplier applied to the delay.
 
     Yields:
@@ -223,9 +223,9 @@ class Retry(object):
     Args:
         predicate (Callable[Exception]): A callable that should return ``True``
             if the given exception is retryable.
-        initial (float): The minimum about of time to delay in seconds. This
+        initial (float): The minimum a,out of time to delay in seconds. This
             must be greater than 0.
-        maximum (float): The maximum about of time to delay in seconds.
+        maximum (float): The maximum amout of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
         deadline (float): How long to keep retrying in seconds.
     """
@@ -237,12 +237,14 @@ class Retry(object):
         maximum=_DEFAULT_MAXIMUM_DELAY,
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
         deadline=_DEFAULT_DEADLINE,
+        on_error=None
     ):
         self._predicate = predicate
         self._initial = initial
         self._multiplier = multiplier
         self._maximum = maximum
         self._deadline = deadline
+        self._on_error = on_error
 
     def __call__(self, func, on_error=None):
         """Wrap a callable with retry behavior.
@@ -257,6 +259,8 @@ class Retry(object):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
+        if self._on_error is not None:
+            on_error = self._on_error
 
         @general_helpers.wraps(func)
         def retry_wrapped_func(*args, **kwargs):
@@ -290,6 +294,7 @@ class Retry(object):
             maximum=self._maximum,
             multiplier=self._multiplier,
             deadline=deadline,
+            on_error=self._on_error,
         )
 
     def with_predicate(self, predicate):
@@ -308,15 +313,16 @@ class Retry(object):
             maximum=self._maximum,
             multiplier=self._multiplier,
             deadline=self._deadline,
+            on_error=self._on_error,
         )
 
     def with_delay(self, initial=None, maximum=None, multiplier=None):
         """Return a copy of this retry with the given delay options.
 
         Args:
-            initial (float): The minimum about of time to delay. This must
+            initial (float): The minimum amout of time to delay. This must
                 be greater than 0.
-            maximum (float): The maximum about of time to delay.
+            maximum (float): The maximum amout of time to delay.
             multiplier (float): The multiplier applied to the delay.
 
         Returns:
@@ -328,16 +334,18 @@ class Retry(object):
             maximum=maximum if maximum is not None else self._maximum,
             multiplier=multiplier if maximum is not None else self._multiplier,
             deadline=self._deadline,
+            on_error=self._on_error,
         )
 
     def __str__(self):
         return (
             "<Retry predicate={}, initial={:.1f}, maximum={:.1f}, "
-            "multiplier={:.1f}, deadline={:.1f}>".format(
+            "multiplier={:.1f}, deadline={:.1f}, on_error={}>".format(
                 self._predicate,
                 self._initial,
                 self._maximum,
                 self._multiplier,
                 self._deadline,
+                self._on_error,
             )
         )

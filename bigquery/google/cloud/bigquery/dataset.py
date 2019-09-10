@@ -269,7 +269,7 @@ class DatasetReference(object):
         Args:
             dataset_id (str):
                 A dataset ID in standard SQL format. If ``default_project``
-                is not specified, this must included both the project ID and
+                is not specified, this must include both the project ID and
                 the dataset ID, separated by ``.``.
             default_project (str):
                 Optional. The project ID to use when ``dataset_id`` does not
@@ -290,13 +290,13 @@ class DatasetReference(object):
         """
         output_dataset_id = dataset_id
         output_project_id = default_project
-        parts = dataset_id.split(".")
+        parts = _helpers._split_id(dataset_id)
 
         if len(parts) == 1 and not default_project:
             raise ValueError(
                 "When default_project is not set, dataset_id must be a "
-                "fully-qualified dataset ID in standard SQL format. "
-                'e.g. "project.dataset_id", got {}'.format(dataset_id)
+                "fully-qualified dataset ID in standard SQL format, "
+                'e.g., "project.dataset_id" got {}'.format(dataset_id)
             )
         elif len(parts) == 2:
             output_project_id, output_dataset_id = parts
@@ -554,7 +554,7 @@ class Dataset(object):
         Args:
             full_dataset_id (str):
                 A fully-qualified dataset ID in standard SQL format. Must
-                included both the project ID and the dataset ID, separated by
+                include both the project ID and the dataset ID, separated by
                 ``.``.
 
         Returns:

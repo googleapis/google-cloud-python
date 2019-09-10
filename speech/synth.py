@@ -28,7 +28,12 @@ versions = ["v1p1beta1", "v1"]
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("speech", version, include_protos=True)
+    library = gapic.py_library(
+        "speech",
+        version,
+        include_protos=True,
+        include_samples=True
+    )
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
@@ -37,6 +42,7 @@ for version in versions:
     s.move(library / f"google/cloud/speech_{version}/proto")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
+    s.move(library / f"samples")
 
 
 # Use the highest version library to generate documentation import alias.
@@ -49,15 +55,6 @@ s.replace(
     "tests/unit/**/test*client*.py",
     r"from google\.cloud import speech_(.+?)$",
     r"from google.cloud.speech_\1.gapic import speech_client as speech_\1",
-)
-
-# Set the maximum received message size to 256 MiB, the default of 4 MiB is
-# often insufficient in practice.
-s.replace(
-    "google/cloud/speech_v1/gapic/transports/speech_grpc_transport.py",
-    "^(\s+)scopes=cls\._OAUTH_SCOPES,",
-    "\g<1>scopes=cls._OAUTH_SCOPES,\n"
-    "\g<1>options={\"grpc.max_receive_message_length\": 256 * 1024 * 1024}.items(),"
 )
 
 # ----------------------------------------------------------------------------

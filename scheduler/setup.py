@@ -21,14 +21,14 @@ import setuptools
 
 name = "google-cloud-scheduler"
 description = "Cloud Scheduler API API client library"
-version = "1.1.0"
+version = "1.2.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.6.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
 

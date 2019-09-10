@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.22.1
+
+08-12-2019 13:51 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8973](https://github.com/googleapis/google-cloud-python/pull/8973))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Fix pip / usage examples in README.rst. ([#8833](https://github.com/googleapis/google-cloud-python/pull/8833))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 0.22.0
+
+07-24-2019 17:50 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8408](https://github.com/googleapis/google-cloud-python/pull/8408))
+
+### New Features
+- Add 'client_options' support, update list method docstrings (via synth). ([#8526](https://github.com/googleapis/google-cloud-python/pull/8526))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8368](https://github.com/googleapis/google-cloud-python/pull/8368))
+- Add disclaimer to auto-generated template files (via synth). ([#8332](https://github.com/googleapis/google-cloud-python/pull/8332))
+- Fix coverage in 'types.py' (via synth). ([#8167](https://github.com/googleapis/google-cloud-python/pull/8167))
+- Add empty lines (via synth). ([#8075](https://github.com/googleapis/google-cloud-python/pull/8075))
+
 ## 0.21.0
 
 05-16-2019 12:58 PDT

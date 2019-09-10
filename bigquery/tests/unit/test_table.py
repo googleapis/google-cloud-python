@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import itertools
-import json
+import logging
 import time
 import unittest
 import warnings
@@ -215,10 +215,22 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(got.dataset_id, "string_dataset")
         self.assertEqual(got.table_id, "string_table")
 
+    def test_from_string_w_prefix(self):
+        cls = self._get_target_class()
+        got = cls.from_string("google.com:string-project.string_dataset.string_table")
+        self.assertEqual(got.project, "google.com:string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
+        self.assertEqual(got.table_id, "string_table")
+
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
             cls.from_string("string-project:string_dataset.string_table")
+
+    def test_from_string_w_incorrect_prefix(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com.string-project.string_dataset.string_table")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
@@ -525,6 +537,47 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.project, "some-project")
         self.assertEqual(table.dataset_id, "some_dset")
         self.assertEqual(table.table_id, "some_tbl")
+
+    def test_ctor_tablelistitem(self):
+        from google.cloud.bigquery.table import Table, TableListItem
+
+        import datetime
+        from google.cloud._helpers import _millis, UTC
+
+        self.WHEN_TS = 1437767599.125
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+
+        project = "test-project"
+        dataset_id = "test_dataset"
+        table_id = "coffee_table"
+        resource = {
+            "creationTime": self.WHEN_TS * 1000,
+            "expirationTime": _millis(self.EXP_TIME),
+            "kind": "bigquery#table",
+            "id": "{}:{}.{}".format(project, dataset_id, table_id),
+            "tableReference": {
+                "projectId": project,
+                "datasetId": dataset_id,
+                "tableId": table_id,
+            },
+            "friendlyName": "Mahogany Coffee Table",
+            "type": "TABLE",
+            "timePartitioning": {
+                "type": "DAY",
+                "field": "mycolumn",
+                "expirationMs": "10000",
+            },
+            "labels": {"some-stuff": "this-is-a-label"},
+            "clustering": {"fields": ["string"]},
+        }
+
+        table_list_item = TableListItem(resource)
+        table = Table(table_list_item)
+
+        self.assertIsNone(table.created)
+        self.assertEqual(table.reference.project, project)
+        self.assertEqual(table.reference.dataset_id, dataset_id)
+        self.assertEqual(table.reference.table_id, table_id)
 
     def test_ctor_string_wo_project_id(self):
         with pytest.raises(ValueError):
@@ -1404,8 +1457,16 @@ class TestRowIterator(unittest.TestCase):
         return RowIterator
 
     def _make_one(
-        self, client=None, api_request=None, path=None, schema=None, **kwargs
+        self,
+        client=None,
+        api_request=None,
+        path=None,
+        schema=None,
+        table=None,
+        **kwargs
     ):
+        from google.cloud.bigquery.table import TableReference
+
         if client is None:
             client = _mock_client()
 
@@ -1418,7 +1479,12 @@ class TestRowIterator(unittest.TestCase):
         if schema is None:
             schema = []
 
-        return self._class_under_test()(client, api_request, path, schema, **kwargs)
+        if table is None:
+            table = TableReference.from_string("my-project.my_dataset.my_table")
+
+        return self._class_under_test()(
+            client, api_request, path, schema, table=table, **kwargs
+        )
 
     def test_constructor(self):
         from google.cloud.bigquery.table import _item_to_row
@@ -1704,6 +1770,125 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(child_field.type.value_type[1].name, "age")
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_arrow_w_bqstorage(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1beta1 import reader
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        streams = [
+            # Use two streams we want to check frames are read from each stream.
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
+        arrow_schema = pyarrow.schema(
+            [
+                pyarrow.field("colA", pyarrow.int64()),
+                # Not alphabetical to test column order.
+                pyarrow.field("colC", pyarrow.float64()),
+                pyarrow.field("colB", pyarrow.string()),
+            ]
+        )
+        session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+        expected_num_rows = 2
+        expected_num_columns = 3
+        page_items = [
+            pyarrow.array([1, -1]),
+            pyarrow.array([2.0, 4.0]),
+            pyarrow.array(["abc", "def"]),
+        ]
+
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        mock_page.to_arrow.return_value = pyarrow.RecordBatch.from_arrays(
+            page_items, arrow_schema
+        )
+        mock_pages = (mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        schema = [
+            schema.SchemaField("colA", "INTEGER"),
+            schema.SchemaField("colC", "FLOAT"),
+            schema.SchemaField("colB", "STRING"),
+        ]
+
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            None,  # api_request: ignored
+            None,  # path: ignored
+            schema,
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+            selected_fields=schema,
+        )
+
+        actual_tbl = row_iterator.to_arrow(bqstorage_client=bqstorage_client)
+
+        # Are the columns in the expected order?
+        self.assertEqual(actual_tbl.num_columns, expected_num_columns)
+        self.assertEqual(actual_tbl.schema[0].name, "colA")
+        self.assertEqual(actual_tbl.schema[1].name, "colC")
+        self.assertEqual(actual_tbl.schema[2].name, "colB")
+
+        # Have expected number of rows?
+        total_pages = len(streams) * len(mock_pages)
+        total_rows = expected_num_rows * total_pages
+        self.assertEqual(actual_tbl.num_rows, total_rows)
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_arrow_w_bqstorage_no_streams(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        session = bigquery_storage_v1beta1.types.ReadSession()
+        arrow_schema = pyarrow.schema(
+            [
+                pyarrow.field("colA", pyarrow.string()),
+                # Not alphabetical to test column order.
+                pyarrow.field("colC", pyarrow.string()),
+                pyarrow.field("colB", pyarrow.string()),
+            ]
+        )
+        session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
+        bqstorage_client.create_read_session.return_value = session
+
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            None,  # api_request: ignored
+            None,  # path: ignored
+            [
+                schema.SchemaField("colA", "STRING"),
+                schema.SchemaField("colC", "STRING"),
+                schema.SchemaField("colB", "STRING"),
+            ],
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+        )
+
+        actual_table = row_iterator.to_arrow(bqstorage_client=bqstorage_client)
+        self.assertEqual(actual_table.num_columns, 3)
+        self.assertEqual(actual_table.num_rows, 0)
+        self.assertEqual(actual_table.schema[0].name, "colA")
+        self.assertEqual(actual_table.schema[1].name, "colC")
+        self.assertEqual(actual_table.schema[2].name, "colB")
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
     @mock.patch("tqdm.tqdm_notebook")
@@ -1911,15 +2096,31 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("name", "STRING", mode="REQUIRED"),
             SchemaField("age", "INTEGER", mode="REQUIRED"),
         ]
-        path = "/foo"
         api_request = mock.Mock(return_value={"rows": []})
-        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+        row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
 
         df = row_iterator.to_dataframe()
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_logs_tabledata_list(self):
+        from google.cloud.bigquery.table import Table
+
+        mock_logger = mock.create_autospec(logging.Logger)
+        api_request = mock.Mock(return_value={"rows": []})
+        row_iterator = self._make_one(
+            _mock_client(), api_request, table=Table("debug-proj.debug_dset.debug_tbl")
+        )
+
+        with mock.patch("google.cloud.bigquery.table._LOGGER", mock_logger):
+            row_iterator.to_dataframe()
+
+        mock_logger.debug.assert_any_call(
+            "Started reading table 'debug-proj.debug_dset.debug_tbl' with tabledata.list."
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
@@ -2020,6 +2221,42 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_max_results_w_bqstorage_warning(self):
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        bqstorage_client = mock.Mock()
+
+        row_iterator = self._make_one(
+            client=_mock_client(),
+            api_request=api_request,
+            path=path,
+            schema=schema,
+            max_results=42,
+        )
+
+        with warnings.catch_warnings(record=True) as warned:
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category is UserWarning
+            and "cannot use bqstorage_client" in str(warning).lower()
+            and "tabledata.list" in str(warning)
+        ]
+        self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
@@ -2031,23 +2268,13 @@ class TestRowIterator(unittest.TestCase):
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
         session = bigquery_storage_v1beta1.types.ReadSession()
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
-        )
         bqstorage_client.create_read_session.return_value = session
 
         row_iterator = mut.RowIterator(
             _mock_client(),
-            None,  # api_request: ignored
-            None,  # path: ignored
-            [
+            api_request=None,
+            path=None,
+            schema=[
                 schema.SchemaField("colA", "IGNORED"),
                 schema.SchemaField("colC", "IGNORED"),
                 schema.SchemaField("colB", "IGNORED"),
@@ -2060,30 +2287,57 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(got), column_names)
         self.assertTrue(got.empty)
 
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_dataframe_w_bqstorage_logs_session(self):
+        from google.cloud.bigquery.table import Table
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        session = bigquery_storage_v1beta1.types.ReadSession()
+        session.name = "projects/test-proj/locations/us/sessions/SOMESESSION"
+        bqstorage_client.create_read_session.return_value = session
+        mock_logger = mock.create_autospec(logging.Logger)
+        row_iterator = self._make_one(
+            _mock_client(), table=Table("debug-proj.debug_dset.debug_tbl")
+        )
+
+        with mock.patch("google.cloud.bigquery._pandas_helpers._LOGGER", mock_logger):
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        mock_logger.debug.assert_any_call(
+            "Started reading table 'debug-proj.debug_dset.debug_tbl' "
+            "with BQ Storage API session 'projects/test-proj/locations/us/sessions/SOMESESSION'."
+        )
+
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_empty_streams(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
+
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
         session = bigquery_storage_v1beta1.types.ReadSession(
-            streams=[{"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"}]
-        )
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
+            streams=[{"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"}],
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 
@@ -2120,10 +2374,19 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_nonempty(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
+
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2133,16 +2396,9 @@ class TestRowIterator(unittest.TestCase):
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 
@@ -2193,17 +2449,23 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
+        arrow_fields = [pyarrow.field("colA", pyarrow.int64())]
+        arrow_schema = pyarrow.schema(arrow_fields)
+
         streams = [
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps({"fields": [{"name": "colA"}]})
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+        )
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2241,6 +2503,7 @@ class TestRowIterator(unittest.TestCase):
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @mock.patch("tqdm.tqdm")
     def test_to_dataframe_w_bqstorage_updates_progress_bar(self, tqdm_mock):
         from google.cloud.bigquery import schema
@@ -2249,6 +2512,9 @@ class TestRowIterator(unittest.TestCase):
 
         # Speed up testing.
         mut._PROGRESS_INTERVAL = 0.01
+
+        arrow_fields = [pyarrow.field("testcol", pyarrow.int64())]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2259,8 +2525,10 @@ class TestRowIterator(unittest.TestCase):
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps({"fields": [{"name": "testcol"}]})
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+        )
         bqstorage_client.create_read_session.return_value = session
 
         mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
@@ -2314,6 +2582,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_exits_on_keyboardinterrupt(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2321,6 +2590,14 @@ class TestRowIterator(unittest.TestCase):
 
         # Speed up testing.
         mut._PROGRESS_INTERVAL = 0.01
+
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2332,10 +2609,8 @@ class TestRowIterator(unittest.TestCase):
                 # ends early.
                 {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
                 {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
-            ]
-        )
-        session.avro_schema.schema = json.dumps(
-            {"fields": [{"name": "colA"}, {"name": "colB"}, {"name": "colC"}]}
+            ],
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 

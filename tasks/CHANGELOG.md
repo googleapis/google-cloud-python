@@ -4,6 +4,48 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.2.1
+
+08-12-2019 13:50 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8971](https://github.com/googleapis/google-cloud-python/pull/8971))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 1.2.0
+
+07-24-2019 17:41 PDT
+
+
+### Implementation Changes
+- Allow kwargs to be passed to create_channel (via synth). ([#8406](https://github.com/googleapis/google-cloud-python/pull/8406))
+
+### New Features
+- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8660](https://github.com/googleapis/google-cloud-python/pull/8660))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8524](https://github.com/googleapis/google-cloud-python/pull/8524))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for 'grpc-google-iam-v1' to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+
+### Documentation
+
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Fix typo in README. ([#8606](https://github.com/googleapis/google-cloud-python/pull/8606))
+
+### Internal / Testing Changes
+- Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8366](https://github.com/googleapis/google-cloud-python/pull/8366))
+- Add disclaimer to auto-generated template files (via synth).  ([#8330](https://github.com/googleapis/google-cloud-python/pull/8330))
+- Suppress checking 'cov-fail-under' in nox default session (via synth).  ([#8254](https://github.com/googleapis/google-cloud-python/pull/8254))
+- Fix coverage in 'types.py' (via synth). ([#8166](https://github.com/googleapis/google-cloud-python/pull/8166))
+- Blacken noxfile.py, setup.py (via synth). ([#8134](https://github.com/googleapis/google-cloud-python/pull/8134))
+- Add empty lines (via synth). ([#8074](https://github.com/googleapis/google-cloud-python/pull/8074))
+
 ## 1.1.0
 
 05-14-2019 15:30 PDT

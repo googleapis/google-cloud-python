@@ -4,6 +4,59 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 1.0.0
+
+08-28-2019 12:49 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8979](https://github.com/googleapis/google-cloud-python/pull/8979))
+
+### Documentation
+- Avoid creating table in 'list_tables' snippet; harden 'delete_instance' snippet. ([#8879](https://github.com/googleapis/google-cloud-python/pull/8879))
+- Add retry for DeadlineExceeded to 'test_bigtable_create_table' snippet. ([#8889](https://github.com/googleapis/google-cloud-python/pull/8889))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Docs: Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
+## 0.34.0
+
+07-30-2019 10:05 PDT
+
+
+### Implementation Changes
+- Pick up changes to GAPIC client configuration (via synth). ([#8724](https://github.com/googleapis/google-cloud-python/pull/8724))
+- Add `Cell.__repr__`. ([#8683](https://github.com/googleapis/google-cloud-python/pull/8683))
+- Increase timeout for app profile update operation. ([#8417](https://github.com/googleapis/google-cloud-python/pull/8417))
+
+### New Features
+- Add methods returning Separate row types to remove confusion around return types of `row.commit`. ([#8662](https://github.com/googleapis/google-cloud-python/pull/8662))
+- Add `options_` argument to clients' `get_iam_policy` (via synth). ([#8652](https://github.com/googleapis/google-cloud-python/pull/8652))
+-  Add `client_options` support, update list method docstrings (via synth). ([#8500](https://github.com/googleapis/google-cloud-python/pull/8500))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+- Update pin for `grpc-google-iam-v1` to 0.12.3+. ([#8647](https://github.com/googleapis/google-cloud-python/pull/8647))
+- Allow kwargs to be passed to `create_channel` (via synth). ([#8458](https://github.com/googleapis/google-cloud-python/pull/8458))
+- Add `PartialRowsData.cancel`. ([#8176](https://github.com/googleapis/google-cloud-python/pull/8176))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+- Add snppets illustrating use of  application profiles. ([#7033](https://github.com/googleapis/google-cloud-python/pull/7033))
+
+### Internal / Testing Changes
+- Add nox session `docs` to remaining manual clients. ([#8478](https://github.com/googleapis/google-cloud-python/pull/8478))
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+- Force timeout for table creation to 90 seconds (in systests). ([#8450](https://github.com/googleapis/google-cloud-python/pull/8450))
+- Plug systest / snippet instance leaks. ([#8416](https://github.com/googleapis/google-cloud-python/pull/8416))
+- Declare encoding as utf-8 in pb2 files (via synth). ([#8346](https://github.com/googleapis/google-cloud-python/pull/8346))
+- Add disclaimer to auto-generated template files (via synth).  ([#8308](https://github.com/googleapis/google-cloud-python/pull/8308))
+- Fix coverage in `types.py` (via synth). ([#8149](https://github.com/googleapis/google-cloud-python/pull/8149))
+- Integrate docstring / formatting tweaks (via synth). ([#8138](https://github.com/googleapis/google-cloud-python/pull/8138))
+- Use alabaster theme everwhere. ([#8021](https://github.com/googleapis/google-cloud-python/pull/8021))
+
 ## 0.33.0
 
 05-16-2019 11:51 PDT

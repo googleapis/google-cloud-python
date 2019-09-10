@@ -1,9 +1,11 @@
 Python Client for Web Risk API (`Alpha`_)
 =========================================
 
+
+
 **Note:** Cloud Web Risk is not yet publicly available. You must be whitelisted in order to gain access. See `Setting up the Web Risk API`_ in the product documentation for a link to the sign-up form.
 
-.. _Setting up the Web Risk API: 
+.. _Setting up the Web Risk API:
 
 `Web Risk API`: https://cloud.google.com/web-risk/docs/quickstart
 
@@ -11,9 +13,9 @@ Python Client for Web Risk API (`Alpha`_)
 - `Product Documentation`_
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _Web Risk API: https://cloud.google.com/webrisk
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/webrisk/usage.html
-.. _Product Documentation:  https://cloud.google.com/webrisk
+.. _Web Risk API: https://cloud.google.com/web-risk
+.. _Client Library Documentation: https://googleapis.dev/python/webrisk/latest
+.. _Product Documentation:  https://cloud.google.com/web-risk
 
 Quick Start
 -----------
@@ -27,8 +29,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Web Risk API.:  https://cloud.google.com/webrisk
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable the Web Risk API.:  https://cloud.google.com/web-risk
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
@@ -75,5 +77,5 @@ Next Steps
 -  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Web Risk API Product documentation:  https://cloud.google.com/webrisk
+.. _Web Risk API Product documentation:  https://cloud.google.com/web-risk
 .. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

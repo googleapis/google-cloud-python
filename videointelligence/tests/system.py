@@ -41,7 +41,6 @@ def get_access_token():
     creds.refresh(goog_auth_requests.Request(session=session))
   return creds.token
 
-
 class VideoIntelligenceSystemTestBase(unittest.TestCase):
     client = None
 

@@ -33,28 +33,22 @@ PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
-def create_message(data, ack_id="ACKID", autolease=True, **attrs):
-    with mock.patch.object(message.Message, "lease") as lease:
-        with mock.patch.object(time, "time") as time_:
-            time_.return_value = RECEIVED_SECONDS
-            msg = message.Message(
-                types.PubsubMessage(
-                    attributes=attrs,
-                    data=data,
-                    message_id="message_id",
-                    publish_time=timestamp_pb2.Timestamp(
-                        seconds=PUBLISHED_SECONDS, nanos=PUBLISHED_MICROS * 1000
-                    ),
+def create_message(data, ack_id="ACKID", **attrs):
+    with mock.patch.object(time, "time") as time_:
+        time_.return_value = RECEIVED_SECONDS
+        msg = message.Message(
+            types.PubsubMessage(
+                attributes=attrs,
+                data=data,
+                message_id="message_id",
+                publish_time=timestamp_pb2.Timestamp(
+                    seconds=PUBLISHED_SECONDS, nanos=PUBLISHED_MICROS * 1000
                 ),
-                ack_id,
-                queue.Queue(),
-                autolease=autolease,
-            )
-            if autolease:
-                lease.assert_called_once_with()
-            else:
-                lease.assert_not_called()
-            return msg
+            ),
+            ack_id,
+            queue.Queue(),
+        )
+        return msg
 
 
 def test_attributes():
@@ -81,11 +75,6 @@ def test_ack_id():
 def test_publish_time():
     msg = create_message(b"foo")
     assert msg.publish_time == PUBLISHED
-
-
-def test_disable_autolease_on_creation():
-    # the create_message() helper does the actual assertion
-    create_message(b"foo", autolease=False)
 
 
 def check_call_types(mock, *args, **kwargs):
@@ -131,16 +120,6 @@ def test_drop():
             requests.DropRequest(ack_id="bogus_ack_id", byte_size=30)
         )
         check_call_types(put, requests.DropRequest)
-
-
-def test_lease():
-    msg = create_message(b"foo", ack_id="bogus_ack_id")
-    with mock.patch.object(msg._request_queue, "put") as put:
-        msg.lease()
-        put.assert_called_once_with(
-            requests.LeaseRequest(ack_id="bogus_ack_id", byte_size=30)
-        )
-        check_call_types(put, requests.LeaseRequest)
 
 
 def test_modify_ack_deadline():

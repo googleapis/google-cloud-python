@@ -1,7 +1,7 @@
 Python Client for Cloud Text-to-Speech API
 ==========================================
 
-|alpha| |pypi| |versions|
+|alpha| |pypi| |versions| 
 
 `Cloud Text-to-Speech API`_: Synthesizes natural-sounding speech by applying
 powerful neural network models.
@@ -16,7 +16,7 @@ powerful neural network models.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-texttospeech.svg
    :target: https://pypi.org/project/google-cloud-texttospeech/
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/texttospeech/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/texttospeech/latest
 .. _Product Documentation: https://cloud.google.com/texttospeech
 
 Quick Start
@@ -32,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Cloud Text-to-Speech API.:  https://cloud.google.com/texttospeech
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

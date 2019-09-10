@@ -260,8 +260,8 @@ class SpannerClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Session`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -307,6 +307,92 @@ class SpannerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def batch_create_sessions(
+        self,
+        database,
+        session_template=None,
+        session_count=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates multiple new sessions.
+
+        This API can be used to initialize a session cache on the clients.
+        See https://goo.gl/TgSFN2 for best practices on session cache management.
+
+        Example:
+            >>> from google.cloud import spanner_v1
+            >>>
+            >>> client = spanner_v1.SpannerClient()
+            >>>
+            >>> database = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>>
+            >>> response = client.batch_create_sessions(database)
+
+        Args:
+            database (str): Required. The database in which the new sessions are created.
+            session_template (Union[dict, ~google.cloud.spanner_v1.types.Session]): Parameters to be applied to each created session.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.Session`
+            session_count (int): Required. The number of sessions to be created in this batch call. The
+                API may return fewer than the requested number of sessions. If a
+                specific number of sessions are desired, the client can make additional
+                calls to BatchCreateSessions (adjusting ``session_count`` as necessary).
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.spanner_v1.types.BatchCreateSessionsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_create_sessions" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_create_sessions"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_create_sessions,
+                default_retry=self._method_configs["BatchCreateSessions"].retry,
+                default_timeout=self._method_configs["BatchCreateSessions"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_pb2.BatchCreateSessionsRequest(
+            database=database,
+            session_template=session_template,
+            session_count=session_count,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("database", database)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["batch_create_sessions"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_session(
         self,
         name,
@@ -330,8 +416,8 @@ class SpannerClient(object):
         Args:
             name (str): Required. The name of the session to retrieve.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -428,8 +514,8 @@ class SpannerClient(object):
                 -  ``labels.env:dev`` --> The session has the label "env" and the value
                    of the label contains the string "dev".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -515,8 +601,8 @@ class SpannerClient(object):
         Args:
             name (str): Required. The name of the session to delete.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -602,10 +688,7 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the SQL query should be performed.
             sql (str): Required. The SQL string.
-            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
-                temporary read-only transaction with strong concurrency.
-
-                The transaction to use.
+            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use.
 
                 For queries, if none is provided, the default is a temporary read-only
                 transaction with strong concurrency.
@@ -669,8 +752,8 @@ class SpannerClient(object):
 
                 Required for DML statements. Ignored for queries.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -764,10 +847,7 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the SQL query should be performed.
             sql (str): Required. The SQL string.
-            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. If none is provided, the default is a
-                temporary read-only transaction with strong concurrency.
-
-                The transaction to use.
+            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use.
 
                 For queries, if none is provided, the default is a temporary read-only
                 transaction with strong concurrency.
@@ -831,8 +911,8 @@ class SpannerClient(object):
 
                 Required for DML statements. Ignored for queries.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -957,8 +1037,8 @@ class SpannerClient(object):
                 used in the same space as the seqno in ``ExecuteSqlRequest``. See more
                 details in ``ExecuteSqlRequest``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1093,8 +1173,8 @@ class SpannerClient(object):
                 for the values of fields common to this message and the
                 PartitionReadRequest message used to create this partition\_token.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1230,8 +1310,8 @@ class SpannerClient(object):
                 for the values of fields common to this message and the
                 PartitionReadRequest message used to create this partition\_token.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1319,8 +1399,8 @@ class SpannerClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1418,8 +1498,8 @@ class SpannerClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1509,8 +1589,8 @@ class SpannerClient(object):
             session (str): Required. The session in which the transaction to roll back is running.
             transaction_id (bytes): Required. The transaction to roll back.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1641,8 +1721,8 @@ class SpannerClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.PartitionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1767,8 +1847,8 @@ class SpannerClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.PartitionOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

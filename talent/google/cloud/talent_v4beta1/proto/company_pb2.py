@@ -385,7 +385,7 @@ Company = _reflection.GeneratedProtocolMessageType(
           example, "projects/api-test-project/companies/bar".
       display_name:
           Required. The display name of the company, for example,
-          "Google, LLC".
+          "Google LLC".
       external_id:
           Required. Client side company identifier, used to uniquely
           identify the company.  The maximum number of allowed

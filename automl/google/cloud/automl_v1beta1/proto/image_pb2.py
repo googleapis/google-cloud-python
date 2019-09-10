@@ -541,10 +541,17 @@ ImageObjectDetectionModelMetadata = _reflection.GeneratedProtocolMessageType(
           value. If further model training ceases to provide any
           improvements, it will stop without using full budget and the
           stop\_reason will be ``MODEL_CONVERGED``. Note, node\_hour =
-          actual\_hour \* number\_of\_nodes\_invovled. The train budget
-          must be between 20,000 and 2,000,000 milli node hours,
-          inclusive. The default value is 216, 000 which represents one
-          day in wall time.
+          actual\_hour \* number\_of\_nodes\_invovled. For model type
+          ``cloud-high-accuracy-1``\ (default) and ``cloud-low-
+          latency-1``, the train budget must be between 20,000 and
+          2,000,000 milli node hours, inclusive. The default value is
+          216, 000 which represents one day in wall time. For model type
+          ``mobile-low-latency-1``, ``mobile-versatile-1``, ``mobile-
+          high-accuracy-1``, ``mobile-core-ml-low-latency-1``, ``mobile-
+          core-ml-versatile-1``, ``mobile-core-ml-high-accuracy-1``, the
+          train budget must be between 1,000 and 100,000 milli node
+          hours, inclusive. The default value is 24, 000 which
+          represents one day in wall time.
       train_cost_milli_node_hours:
           Output only. The actual train cost of creating this model,
           expressed in milli node hours, i.e. 1,000 value in this field

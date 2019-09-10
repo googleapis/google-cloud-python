@@ -1,6 +1,8 @@
 Python Client for BigQuery Storage API (`Beta`_)
 =================================================
 
+
+
 `BigQuery Storage API`_:
 
 - `Client Library Documentation`_
@@ -8,7 +10,7 @@ Python Client for BigQuery Storage API (`Beta`_)
 
 .. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _BigQuery Storage API: https://cloud.google.com/bigquery/docs/reference/storage/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/bigquery_storage/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/bigquerystorage/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/storage/
 
 Quick Start
@@ -24,7 +26,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the BigQuery Storage API.: https://console.cloud.google.com/apis/library/bigquerystorage.googleapis.com
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

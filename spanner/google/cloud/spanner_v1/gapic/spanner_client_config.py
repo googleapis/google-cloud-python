@@ -41,6 +41,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "BatchCreateSessions": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetSession": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",

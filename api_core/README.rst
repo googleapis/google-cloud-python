@@ -1,7 +1,7 @@
 Core Library for Google Client Libraries
 ========================================
 
-|pypi| |versions|
+|pypi| |versions| 
 
 This library is not meant to stand-alone. Instead it defines
 common helpers used by all Google API clients. For more information, see the
@@ -11,7 +11,7 @@ common helpers used by all Google API clients. For more information, see the
    :target: https://pypi.org/project/google-api_core/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-api_core.svg
    :target: https://pypi.org/project/google-api_core/
-.. _documentation: https://googleapis.github.io/google-cloud-python/latest/core/
+.. _documentation: https://googleapis.dev/python/google-api-core/latest
 
 
 Supported Python Versions

@@ -47,24 +47,48 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
         self.assertIs(client._client_info, _CLIENT_INFO)
+        self.assertIsNone(client._emulator_host)
+
+    def test_constructor_with_emulator_host(self):
+        from google.cloud.firestore_v1.client import _FIRESTORE_EMULATOR_HOST
+
+        credentials = _make_credentials()
+        emulator_host = "localhost:8081"
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+            client = self._make_one(project=self.PROJECT, credentials=credentials)
+            self.assertEqual(client._emulator_host, emulator_host)
+            getenv.assert_called_once_with(_FIRESTORE_EMULATOR_HOST)
 
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         database = "now-db"
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             database=database,
             client_info=client_info,
+            client_options=client_options,
         )
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, database)
         self.assertIs(client._client_info, client_info)
+        self.assertIs(client._client_options, client_options)
+
+    def test_constructor_w_client_options(self):
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            client_options={"api_endpoint": "foo-firestore.googleapis.com"},
+        )
+        self.assertEqual(client._target, "foo-firestore.googleapis.com")
 
     @mock.patch(
-        "google.cloud.firestore_v1.gapic.firestore_client." "FirestoreClient",
+        "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
         autospec=True,
         return_value=mock.sentinel.firestore_api,
     )
@@ -79,6 +103,34 @@ class TestClient(unittest.TestCase):
         mock_client.assert_called_once_with(
             transport=client._transport, client_info=client_info
         )
+
+        # Call again to show that it is cached, but call count is still 1.
+        self.assertIs(client._firestore_api, mock_client.return_value)
+        self.assertEqual(mock_client.call_count, 1)
+
+    @mock.patch(
+        "google.cloud.firestore_v1.gapic.firestore_client.FirestoreClient",
+        autospec=True,
+        return_value=mock.sentinel.firestore_api,
+    )
+    @mock.patch(
+        "google.cloud.firestore_v1.gapic.transports.firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel",
+        autospec=True,
+    )
+    def test__firestore_api_property_with_emulator(
+        self, mock_insecure_channel, mock_client
+    ):
+        emulator_host = "localhost:8081"
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+            client = self._make_default_one()
+
+        self.assertIsNone(client._firestore_api_internal)
+        firestore_api = client._firestore_api
+        self.assertIs(firestore_api, mock_client.return_value)
+        self.assertIs(firestore_api, client._firestore_api_internal)
+
+        mock_insecure_channel.assert_called_once_with(emulator_host)
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)
@@ -110,6 +162,25 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             client._rpc_metadata,
             [("google-cloud-resource-prefix", client._database_string)],
+        )
+
+    def test__rpc_metadata_property_with_emulator(self):
+        emulator_host = "localhost:8081"
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+
+            credentials = _make_credentials()
+            database = "quanta"
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
+
+        self.assertEqual(
+            client._rpc_metadata,
+            [
+                ("google-cloud-resource-prefix", client._database_string),
+                ("authorization", "Bearer owner"),
+            ],
         )
 
     def test_collection_factory(self):
@@ -292,8 +363,9 @@ class TestClient(unittest.TestCase):
             self.assertEqual(collection.parent, None)
             self.assertEqual(collection.id, collection_id)
 
+        base_path = client._database_string + "/documents"
         firestore_api.list_collection_ids.assert_called_once_with(
-            client._database_string, metadata=client._rpc_metadata
+            base_path, metadata=client._rpc_metadata
         )
 
     def _get_all_helper(self, client, references, document_pbs, **kwargs):

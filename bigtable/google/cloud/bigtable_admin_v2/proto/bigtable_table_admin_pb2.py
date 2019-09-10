@@ -19,6 +19,8 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_table__pb2,
 )
+from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
+from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -35,11 +37,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.bigtable.admin.v2B\027BigtableTableAdminProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2"
     ),
     serialized_pb=_b(
-        '\n?google/cloud/bigtable/admin_v2/proto/bigtable_table_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x30google/cloud/bigtable/admin_v2/proto/table.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc8\x01\n\x12\x43reateTableRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12.\n\x05table\x18\x03 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12J\n\x0einitial_splits\x18\x04 \x03(\x0b\x32\x32.google.bigtable.admin.v2.CreateTableRequest.Split\x1a\x14\n\x05Split\x12\x0b\n\x03key\x18\x01 \x01(\x0c"[\n\x1e\x43reateTableFromSnapshotRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12\x17\n\x0fsource_snapshot\x18\x03 \x01(\t"m\n\x13\x44ropRowRangeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0erow_key_prefix\x18\x02 \x01(\x0cH\x00\x12$\n\x1a\x64\x65lete_all_data_from_table\x18\x03 \x01(\x08H\x00\x42\x08\n\x06target"~\n\x11ListTablesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"^\n\x12ListTablesResponse\x12/\n\x06tables\x18\x01 \x03(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"S\n\x0fGetTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View""\n\x12\x44\x65leteTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xae\x02\n\x1bModifyColumnFamiliesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Y\n\rmodifications\x18\x02 \x03(\x0b\x32\x42.google.bigtable.admin.v2.ModifyColumnFamiliesRequest.Modification\x1a\xa5\x01\n\x0cModification\x12\n\n\x02id\x18\x01 \x01(\t\x12\x38\n\x06\x63reate\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x38\n\x06update\x18\x03 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x0e\n\x04\x64rop\x18\x04 \x01(\x08H\x00\x42\x05\n\x03mod"/\n\x1fGenerateConsistencyTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"=\n GenerateConsistencyTokenResponse\x12\x19\n\x11\x63onsistency_token\x18\x01 \x01(\t"B\n\x17\x43heckConsistencyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x63onsistency_token\x18\x02 \x01(\t".\n\x18\x43heckConsistencyResponse\x12\x12\n\nconsistent\x18\x01 \x01(\x08"\x87\x01\n\x14SnapshotTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63luster\x18\x02 \x01(\t\x12\x13\n\x0bsnapshot_id\x18\x03 \x01(\t\x12&\n\x03ttl\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t""\n\x12GetSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"M\n\x14ListSnapshotsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"g\n\x15ListSnapshotsResponse\x12\x35\n\tsnapshots\x18\x01 \x03(\x0b\x32".google.bigtable.admin.v2.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"%\n\x15\x44\x65leteSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xc4\x01\n\x15SnapshotTableMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.SnapshotTableRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xd8\x01\n\x1f\x43reateTableFromSnapshotMetadata\x12R\n\x10original_request\x18\x01 \x01(\x0b\x32\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xb7\x11\n\x12\x42igtableTableAdmin\x12\x93\x01\n\x0b\x43reateTable\x12,.google.bigtable.admin.v2.CreateTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"5\x82\xd3\xe4\x93\x02/"*/v2/{parent=projects/*/instances/*}/tables:\x01*\x12\xbc\x01\n\x17\x43reateTableFromSnapshot\x12\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42"=/v2/{parent=projects/*/instances/*}/tables:createFromSnapshot:\x01*\x12\x9b\x01\n\nListTables\x12+.google.bigtable.admin.v2.ListTablesRequest\x1a,.google.bigtable.admin.v2.ListTablesResponse"2\x82\xd3\xe4\x93\x02,\x12*/v2/{parent=projects/*/instances/*}/tables\x12\x8a\x01\n\x08GetTable\x12).google.bigtable.admin.v2.GetTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"2\x82\xd3\xe4\x93\x02,\x12*/v2/{name=projects/*/instances/*/tables/*}\x12\x87\x01\n\x0b\x44\x65leteTable\x12,.google.bigtable.admin.v2.DeleteTableRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v2/{name=projects/*/instances/*/tables/*}\x12\xba\x01\n\x14ModifyColumnFamilies\x12\x35.google.bigtable.admin.v2.ModifyColumnFamiliesRequest\x1a\x1f.google.bigtable.admin.v2.Table"J\x82\xd3\xe4\x93\x02\x44"?/v2/{name=projects/*/instances/*/tables/*}:modifyColumnFamilies:\x01*\x12\x99\x01\n\x0c\x44ropRowRange\x12-.google.bigtable.admin.v2.DropRowRangeRequest\x1a\x16.google.protobuf.Empty"B\x82\xd3\xe4\x93\x02<"7/v2/{name=projects/*/instances/*/tables/*}:dropRowRange:\x01*\x12\xe1\x01\n\x18GenerateConsistencyToken\x12\x39.google.bigtable.admin.v2.GenerateConsistencyTokenRequest\x1a:.google.bigtable.admin.v2.GenerateConsistencyTokenResponse"N\x82\xd3\xe4\x93\x02H"C/v2/{name=projects/*/instances/*/tables/*}:generateConsistencyToken:\x01*\x12\xc1\x01\n\x10\x43heckConsistency\x12\x31.google.bigtable.admin.v2.CheckConsistencyRequest\x1a\x32.google.bigtable.admin.v2.CheckConsistencyResponse"F\x82\xd3\xe4\x93\x02@";/v2/{name=projects/*/instances/*/tables/*}:checkConsistency:\x01*\x12\x9e\x01\n\rSnapshotTable\x12..google.bigtable.admin.v2.SnapshotTableRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v2/{name=projects/*/instances/*/tables/*}:snapshot:\x01*\x12\xa1\x01\n\x0bGetSnapshot\x12,.google.bigtable.admin.v2.GetSnapshotRequest\x1a".google.bigtable.admin.v2.Snapshot"@\x82\xd3\xe4\x93\x02:\x12\x38/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\x12\xb2\x01\n\rListSnapshots\x12..google.bigtable.admin.v2.ListSnapshotsRequest\x1a/.google.bigtable.admin.v2.ListSnapshotsResponse"@\x82\xd3\xe4\x93\x02:\x12\x38/v2/{parent=projects/*/instances/*/clusters/*}/snapshots\x12\x9b\x01\n\x0e\x44\x65leteSnapshot\x12/.google.bigtable.admin.v2.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}B\xba\x01\n\x1c\x63om.google.bigtable.admin.v2B\x17\x42igtableTableAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3'
+        '\n?google/cloud/bigtable/admin_v2/proto/bigtable_table_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x30google/cloud/bigtable/admin_v2/proto/table.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc8\x01\n\x12\x43reateTableRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12.\n\x05table\x18\x03 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12J\n\x0einitial_splits\x18\x04 \x03(\x0b\x32\x32.google.bigtable.admin.v2.CreateTableRequest.Split\x1a\x14\n\x05Split\x12\x0b\n\x03key\x18\x01 \x01(\x0c"[\n\x1e\x43reateTableFromSnapshotRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12\x17\n\x0fsource_snapshot\x18\x03 \x01(\t"m\n\x13\x44ropRowRangeRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0erow_key_prefix\x18\x02 \x01(\x0cH\x00\x12$\n\x1a\x64\x65lete_all_data_from_table\x18\x03 \x01(\x08H\x00\x42\x08\n\x06target"~\n\x11ListTablesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"^\n\x12ListTablesResponse\x12/\n\x06tables\x18\x01 \x03(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"S\n\x0fGetTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View""\n\x12\x44\x65leteTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xae\x02\n\x1bModifyColumnFamiliesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Y\n\rmodifications\x18\x02 \x03(\x0b\x32\x42.google.bigtable.admin.v2.ModifyColumnFamiliesRequest.Modification\x1a\xa5\x01\n\x0cModification\x12\n\n\x02id\x18\x01 \x01(\t\x12\x38\n\x06\x63reate\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x38\n\x06update\x18\x03 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x0e\n\x04\x64rop\x18\x04 \x01(\x08H\x00\x42\x05\n\x03mod"/\n\x1fGenerateConsistencyTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"=\n GenerateConsistencyTokenResponse\x12\x19\n\x11\x63onsistency_token\x18\x01 \x01(\t"B\n\x17\x43heckConsistencyRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x63onsistency_token\x18\x02 \x01(\t".\n\x18\x43heckConsistencyResponse\x12\x12\n\nconsistent\x18\x01 \x01(\x08"\x87\x01\n\x14SnapshotTableRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63luster\x18\x02 \x01(\t\x12\x13\n\x0bsnapshot_id\x18\x03 \x01(\t\x12&\n\x03ttl\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t""\n\x12GetSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"M\n\x14ListSnapshotsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"g\n\x15ListSnapshotsResponse\x12\x35\n\tsnapshots\x18\x01 \x03(\x0b\x32".google.bigtable.admin.v2.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"%\n\x15\x44\x65leteSnapshotRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xc4\x01\n\x15SnapshotTableMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.SnapshotTableRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xd8\x01\n\x1f\x43reateTableFromSnapshotMetadata\x12R\n\x10original_request\x18\x01 \x01(\x0b\x32\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\x99\x15\n\x12\x42igtableTableAdmin\x12\x93\x01\n\x0b\x43reateTable\x12,.google.bigtable.admin.v2.CreateTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"5\x82\xd3\xe4\x93\x02/"*/v2/{parent=projects/*/instances/*}/tables:\x01*\x12\xbc\x01\n\x17\x43reateTableFromSnapshot\x12\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x1a\x1d.google.longrunning.Operation"H\x82\xd3\xe4\x93\x02\x42"=/v2/{parent=projects/*/instances/*}/tables:createFromSnapshot:\x01*\x12\x9b\x01\n\nListTables\x12+.google.bigtable.admin.v2.ListTablesRequest\x1a,.google.bigtable.admin.v2.ListTablesResponse"2\x82\xd3\xe4\x93\x02,\x12*/v2/{parent=projects/*/instances/*}/tables\x12\x8a\x01\n\x08GetTable\x12).google.bigtable.admin.v2.GetTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"2\x82\xd3\xe4\x93\x02,\x12*/v2/{name=projects/*/instances/*/tables/*}\x12\x87\x01\n\x0b\x44\x65leteTable\x12,.google.bigtable.admin.v2.DeleteTableRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v2/{name=projects/*/instances/*/tables/*}\x12\xba\x01\n\x14ModifyColumnFamilies\x12\x35.google.bigtable.admin.v2.ModifyColumnFamiliesRequest\x1a\x1f.google.bigtable.admin.v2.Table"J\x82\xd3\xe4\x93\x02\x44"?/v2/{name=projects/*/instances/*/tables/*}:modifyColumnFamilies:\x01*\x12\x99\x01\n\x0c\x44ropRowRange\x12-.google.bigtable.admin.v2.DropRowRangeRequest\x1a\x16.google.protobuf.Empty"B\x82\xd3\xe4\x93\x02<"7/v2/{name=projects/*/instances/*/tables/*}:dropRowRange:\x01*\x12\xe1\x01\n\x18GenerateConsistencyToken\x12\x39.google.bigtable.admin.v2.GenerateConsistencyTokenRequest\x1a:.google.bigtable.admin.v2.GenerateConsistencyTokenResponse"N\x82\xd3\xe4\x93\x02H"C/v2/{name=projects/*/instances/*/tables/*}:generateConsistencyToken:\x01*\x12\xc1\x01\n\x10\x43heckConsistency\x12\x31.google.bigtable.admin.v2.CheckConsistencyRequest\x1a\x32.google.bigtable.admin.v2.CheckConsistencyResponse"F\x82\xd3\xe4\x93\x02@";/v2/{name=projects/*/instances/*/tables/*}:checkConsistency:\x01*\x12\x9e\x01\n\rSnapshotTable\x12..google.bigtable.admin.v2.SnapshotTableRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v2/{name=projects/*/instances/*/tables/*}:snapshot:\x01*\x12\xa1\x01\n\x0bGetSnapshot\x12,.google.bigtable.admin.v2.GetSnapshotRequest\x1a".google.bigtable.admin.v2.Snapshot"@\x82\xd3\xe4\x93\x02:\x12\x38/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\x12\xb2\x01\n\rListSnapshots\x12..google.bigtable.admin.v2.ListSnapshotsRequest\x1a/.google.bigtable.admin.v2.ListSnapshotsResponse"@\x82\xd3\xe4\x93\x02:\x12\x38/v2/{parent=projects/*/instances/*/clusters/*}/snapshots\x12\x9b\x01\n\x0e\x44\x65leteSnapshot\x12/.google.bigtable.admin.v2.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\x12\x91\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"F\x82\xd3\xe4\x93\x02@";/v2/{resource=projects/*/instances/*/tables/*}:getIamPolicy:\x01*\x12\x91\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"F\x82\xd3\xe4\x93\x02@";/v2/{resource=projects/*/instances/*/tables/*}:setIamPolicy:\x01*\x12\xb7\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"L\x82\xd3\xe4\x93\x02\x46"A/v2/{resource=projects/*/instances/*/tables/*}:testIamPermissions:\x01*B\xba\x01\n\x1c\x63om.google.bigtable.admin.v2B\x17\x42igtableTableAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_table__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
+        google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
@@ -82,8 +86,8 @@ _CREATETABLEREQUEST_SPLIT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=485,
-    serialized_end=505,
+    serialized_start=545,
+    serialized_end=565,
 )
 
 _CREATETABLEREQUEST = _descriptor.Descriptor(
@@ -174,8 +178,8 @@ _CREATETABLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=305,
-    serialized_end=505,
+    serialized_start=365,
+    serialized_end=565,
 )
 
 
@@ -249,8 +253,8 @@ _CREATETABLEFROMSNAPSHOTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=507,
-    serialized_end=598,
+    serialized_start=567,
+    serialized_end=658,
 )
 
 
@@ -332,8 +336,8 @@ _DROPROWRANGEREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=600,
-    serialized_end=709,
+    serialized_start=660,
+    serialized_end=769,
 )
 
 
@@ -425,8 +429,8 @@ _LISTTABLESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=711,
-    serialized_end=837,
+    serialized_start=771,
+    serialized_end=897,
 )
 
 
@@ -482,8 +486,8 @@ _LISTTABLESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=839,
-    serialized_end=933,
+    serialized_start=899,
+    serialized_end=993,
 )
 
 
@@ -539,8 +543,8 @@ _GETTABLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=935,
-    serialized_end=1018,
+    serialized_start=995,
+    serialized_end=1078,
 )
 
 
@@ -578,8 +582,8 @@ _DELETETABLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1020,
-    serialized_end=1054,
+    serialized_start=1080,
+    serialized_end=1114,
 )
 
 
@@ -679,8 +683,8 @@ _MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1194,
-    serialized_end=1359,
+    serialized_start=1254,
+    serialized_end=1419,
 )
 
 _MODIFYCOLUMNFAMILIESREQUEST = _descriptor.Descriptor(
@@ -735,8 +739,8 @@ _MODIFYCOLUMNFAMILIESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1057,
-    serialized_end=1359,
+    serialized_start=1117,
+    serialized_end=1419,
 )
 
 
@@ -774,8 +778,8 @@ _GENERATECONSISTENCYTOKENREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1361,
-    serialized_end=1408,
+    serialized_start=1421,
+    serialized_end=1468,
 )
 
 
@@ -813,8 +817,8 @@ _GENERATECONSISTENCYTOKENRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1410,
-    serialized_end=1471,
+    serialized_start=1470,
+    serialized_end=1531,
 )
 
 
@@ -870,8 +874,8 @@ _CHECKCONSISTENCYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1473,
-    serialized_end=1539,
+    serialized_start=1533,
+    serialized_end=1599,
 )
 
 
@@ -909,8 +913,8 @@ _CHECKCONSISTENCYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1541,
-    serialized_end=1587,
+    serialized_start=1601,
+    serialized_end=1647,
 )
 
 
@@ -1020,8 +1024,8 @@ _SNAPSHOTTABLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1590,
-    serialized_end=1725,
+    serialized_start=1650,
+    serialized_end=1785,
 )
 
 
@@ -1059,8 +1063,8 @@ _GETSNAPSHOTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1727,
-    serialized_end=1761,
+    serialized_start=1787,
+    serialized_end=1821,
 )
 
 
@@ -1134,8 +1138,8 @@ _LISTSNAPSHOTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1763,
-    serialized_end=1840,
+    serialized_start=1823,
+    serialized_end=1900,
 )
 
 
@@ -1191,8 +1195,8 @@ _LISTSNAPSHOTSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1842,
-    serialized_end=1945,
+    serialized_start=1902,
+    serialized_end=2005,
 )
 
 
@@ -1230,8 +1234,8 @@ _DELETESNAPSHOTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1947,
-    serialized_end=1984,
+    serialized_start=2007,
+    serialized_end=2044,
 )
 
 
@@ -1305,8 +1309,8 @@ _SNAPSHOTTABLEMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1987,
-    serialized_end=2183,
+    serialized_start=2047,
+    serialized_end=2243,
 )
 
 
@@ -1380,8 +1384,8 @@ _CREATETABLEFROMSNAPSHOTMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2186,
-    serialized_end=2402,
+    serialized_start=2246,
+    serialized_end=2462,
 )
 
 _CREATETABLEREQUEST_SPLIT.containing_type = _CREATETABLEREQUEST
@@ -2098,8 +2102,8 @@ _BIGTABLETABLEADMIN = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=2405,
-    serialized_end=4636,
+    serialized_start=2465,
+    serialized_end=5178,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateTable",
@@ -2242,6 +2246,39 @@ _BIGTABLETABLEADMIN = _descriptor.ServiceDescriptor(
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
                 "\202\323\344\223\002:*8/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetIamPolicy",
+            full_name="google.bigtable.admin.v2.BigtableTableAdmin.GetIamPolicy",
+            index=13,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            serialized_options=_b(
+                '\202\323\344\223\002@";/v2/{resource=projects/*/instances/*/tables/*}:getIamPolicy:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="SetIamPolicy",
+            full_name="google.bigtable.admin.v2.BigtableTableAdmin.SetIamPolicy",
+            index=14,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+            serialized_options=_b(
+                '\202\323\344\223\002@";/v2/{resource=projects/*/instances/*/tables/*}:setIamPolicy:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="TestIamPermissions",
+            full_name="google.bigtable.admin.v2.BigtableTableAdmin.TestIamPermissions",
+            index=15,
+            containing_service=None,
+            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+            output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+            serialized_options=_b(
+                '\202\323\344\223\002F"A/v2/{resource=projects/*/instances/*/tables/*}:testIamPermissions:\001*'
             ),
         ),
     ],

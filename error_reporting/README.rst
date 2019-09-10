@@ -1,7 +1,7 @@
 Python Client for Stackdriver Error Reporting
 =============================================
 
-|pypi| |versions|
+|pypi| |versions| 
 
 The Stackdriver `Error Reporting`_ API counts, analyzes and aggregates the
 crashes in your running cloud services.  A centralized error management
@@ -14,7 +14,7 @@ to receive email and mobile alerts on new errors.
 - `Product Documentation`_
 
 .. _Error Reporting: https://cloud.google.com/error-reporting/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/error-reporting/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/clouderrorreporting/latest
 .. _Product Documentation: https://cloud.google.com/error-reporting/reference/
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/
@@ -34,7 +34,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Error Reporting API.:  https://cloud.google.com/error-reporting
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

@@ -23,6 +23,9 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+import os
+
+import google.api_core.client_options
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -51,6 +54,7 @@ _BAD_DOC_TEMPLATE = (
 _ACTIVE_TXN = "There is already an active transaction."
 _INACTIVE_TXN = "There is no active transaction."
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+_FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
 
 
 class Client(ClientWithProject):
@@ -76,6 +80,9 @@ class Client(ClientWithProject):
             requests. If ``None``, then default info will be used. Generally,
             you only need to set this if you're developing your own library
             or partner tool.
+        client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+            Client options used to set user options on the client. API Endpoint
+            should be set through client_options.
     """
 
     SCOPE = (
@@ -94,6 +101,7 @@ class Client(ClientWithProject):
         credentials=None,
         database=DEFAULT_DATABASE,
         client_info=_CLIENT_INFO,
+        client_options=None,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
@@ -102,7 +110,15 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+        self._client_options = client_options
+
         self._database = database
+        self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
     @property
     def _firestore_api(self):
@@ -115,11 +131,17 @@ class Client(ClientWithProject):
         if self._firestore_api_internal is None:
             # Use a custom channel.
             # We need this in order to set appropriate keepalive options.
-            channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
-                self._target,
-                credentials=self._credentials,
-                options={"grpc.keepalive_time_ms": 30000}.items(),
-            )
+
+            if self._emulator_host is not None:
+                channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
+                    self._emulator_host
+                )
+            else:
+                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                    self._target,
+                    credentials=self._credentials,
+                    options={"grpc.keepalive_time_ms": 30000}.items(),
+                )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
                 address=self._target, channel=channel
@@ -138,7 +160,12 @@ class Client(ClientWithProject):
         Returns:
             str: The location of the API.
         """
-        return firestore_client.FirestoreClient.SERVICE_ADDRESS
+        if self._emulator_host is not None:
+            return self._emulator_host
+        elif self._client_options and self._client_options.api_endpoint:
+            return self._client_options.api_endpoint
+        else:
+            return firestore_client.FirestoreClient.SERVICE_ADDRESS
 
     @property
     def _database_string(self):
@@ -178,6 +205,10 @@ class Client(ClientWithProject):
             self._rpc_metadata_internal = _helpers.metadata_with_prefix(
                 self._database_string
             )
+
+            if self._emulator_host is not None:
+                # The emulator requires additional metadata to be set.
+                self._rpc_metadata_internal.append(("authorization", "Bearer owner"))
 
         return self._rpc_metadata_internal
 
@@ -421,7 +452,7 @@ class Client(ClientWithProject):
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
-            self._database_string, metadata=self._rpc_metadata
+            "{}/documents".format(self._database_string), metadata=self._rpc_metadata
         )
         iterator.client = self
         iterator.item_to_value = _item_to_collection_ref

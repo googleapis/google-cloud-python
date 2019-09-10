@@ -23,6 +23,7 @@ import unittest
 
 import google.cloud.storage.blob
 import mock
+import pytest
 import six
 from six.moves import http_client
 
@@ -274,6 +275,14 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.path, "/b/name/o/Caf%C3%A9")
 
+    def test_bucket_readonly_property(self):
+        blob_name = "BLOB"
+        bucket = _Bucket()
+        other = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        with self.assertRaises(AttributeError):
+            blob.bucket = other
+
     def test_client(self):
         blob_name = "BLOB"
         bucket = _Bucket()
@@ -348,9 +357,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "foo~bar"
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
-        self.assertEqual(
-            blob.public_url, "https://storage.googleapis.com/name/foo~bar"
-        )
+        self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
 
     def test_public_url_with_non_ascii(self):
         blob_name = u"winter \N{snowman}"
@@ -806,7 +813,9 @@ class Test_Blob(unittest.TestCase):
         #       second request.
         headers["range"] = "bytes=3-5"
         headers["accept-encoding"] = "gzip"
-        call = mock.call("GET", expected_url, data=None, headers=headers)
+        call = mock.call(
+            "GET", expected_url, data=None, headers=headers, timeout=mock.ANY
+        )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
     def test__do_download_simple(self):
@@ -834,7 +843,12 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(file_obj.getvalue(), b"abcdef")
 
         transport.request.assert_called_once_with(
-            "GET", download_url, data=None, headers=headers, stream=True
+            "GET",
+            download_url,
+            data=None,
+            headers=headers,
+            stream=True,
+            timeout=mock.ANY,
         )
 
     def test__do_download_simple_with_range(self):
@@ -863,7 +877,12 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(headers["range"], "bytes=1-3")
 
         transport.request.assert_called_once_with(
-            "GET", download_url, data=None, headers=headers, stream=True
+            "GET",
+            download_url,
+            data=None,
+            headers=headers,
+            stream=True,
+            timeout=mock.ANY,
         )
 
     def test__do_download_chunked(self):
@@ -889,7 +908,9 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(transport.request.call_count, 2)
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-5"})
-        call = mock.call("GET", download_url, data=None, headers=headers)
+        call = mock.call(
+            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
+        )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
     def test__do_download_chunked_with_range(self):
@@ -915,7 +936,9 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(transport.request.call_count, 2)
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-4"})
-        call = mock.call("GET", download_url, data=None, headers=headers)
+        call = mock.call(
+            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
+        )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
     def test_download_to_file_with_failure(self):
@@ -949,6 +972,7 @@ class Test_Blob(unittest.TestCase):
             data=None,
             headers={"accept-encoding": "gzip"},
             stream=True,
+            timeout=mock.ANY,
         )
 
     def test_download_to_file_wo_media_link(self):
@@ -1010,6 +1034,7 @@ class Test_Blob(unittest.TestCase):
                 data=None,
                 headers={"accept-encoding": "gzip"},
                 stream=True,
+                timeout=mock.ANY,
             )
 
     def test_download_to_file_default(self):
@@ -1130,6 +1155,7 @@ class Test_Blob(unittest.TestCase):
             data=None,
             headers={"accept-encoding": "gzip"},
             stream=True,
+            timeout=mock.ANY,
         )
 
     def test_download_to_filename_w_key(self):
@@ -1348,7 +1374,7 @@ class Test_Blob(unittest.TestCase):
         )
         headers = {"content-type": b'multipart/related; boundary="==0=="'}
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=headers
+            "POST", upload_url, data=payload, headers=headers, timeout=mock.ANY
         )
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
@@ -1507,7 +1533,7 @@ class Test_Blob(unittest.TestCase):
         if extra_headers is not None:
             expected_headers.update(extra_headers)
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=expected_headers
+            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
         )
 
     def test__initiate_resumable_upload_no_size(self):
@@ -1581,7 +1607,9 @@ class Test_Blob(unittest.TestCase):
         if size is not None:
             expected_headers["x-upload-content-length"] = str(size)
         payload = json.dumps({"name": blob.name}).encode("utf-8")
-        return mock.call("POST", upload_url, data=payload, headers=expected_headers)
+        return mock.call(
+            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
+        )
 
     @staticmethod
     def _do_resumable_upload_call1(
@@ -1598,7 +1626,13 @@ class Test_Blob(unittest.TestCase):
             "content-range": content_range,
         }
         payload = data[: blob.chunk_size]
-        return mock.call("PUT", resumable_url, data=payload, headers=expected_headers)
+        return mock.call(
+            "PUT",
+            resumable_url,
+            data=payload,
+            headers=expected_headers,
+            timeout=mock.ANY,
+        )
 
     @staticmethod
     def _do_resumable_upload_call2(
@@ -1613,7 +1647,13 @@ class Test_Blob(unittest.TestCase):
             "content-range": content_range,
         }
         payload = data[blob.chunk_size :]
-        return mock.call("PUT", resumable_url, data=payload, headers=expected_headers)
+        return mock.call(
+            "PUT",
+            resumable_url,
+            data=payload,
+            headers=expected_headers,
+            timeout=mock.ANY,
+        )
 
     def _do_resumable_helper(
         self, use_size=False, num_retries=None, predefined_acl=None
@@ -1926,7 +1966,7 @@ class Test_Blob(unittest.TestCase):
         if origin is not None:
             expected_headers["Origin"] = origin
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=expected_headers
+            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
         )
 
     def test_create_resumable_upload_session(self):
@@ -3131,6 +3171,41 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         blob = self._make_one("blob-name", bucket=BUCKET)
         self.assertIsNone(blob.updated)
+
+    def test_from_string_w_valid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+        uri = "gs://BUCKET_NAME/b"
+        blob = Blob.from_string(uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "BUCKET_NAME")
+
+    def test_from_string_w_invalid_uri(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            Blob.from_string("http://bucket_name/b", client)
+
+    def test_from_string_w_domain_name_bucket(self):
+        from google.cloud.storage.blob import Blob
+
+        connection = _Connection()
+        client = _Client(connection)
+        uri = "gs://buckets.example.com/b"
+        blob = Blob.from_string(uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "b")
+        self.assertEqual(blob.bucket.name, "buckets.example.com")
 
 
 class Test__quote(unittest.TestCase):

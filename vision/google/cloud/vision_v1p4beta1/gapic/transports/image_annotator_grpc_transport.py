@@ -62,7 +62,14 @@ class ImageAnnotatorGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -131,9 +138,10 @@ class ImageAnnotatorGrpcTransport(object):
         Service that performs image detection and annotation for a batch of files.
         Now only "application/pdf", "image/tiff" and "image/gif" are supported.
 
-        This service will extract at most the first 10 frames (gif) or pages
-        (pdf or tiff) from each file provided and perform detection and annotation
-        for each image extracted.
+        This service will extract at most 5 (customers can specify which 5 in
+        AnnotateFileRequest.pages) frames (gif) or pages (pdf or tiff) from each
+        file provided and perform detection and annotation for each image
+        extracted.
 
         Returns:
             Callable: A callable which accepts the appropriate

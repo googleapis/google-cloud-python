@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.39.0
+
+08-12-2019 13:57 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8976](https://github.com/googleapis/google-cloud-python/pull/8976))
+
+### New Features
+- Add 'parent' argument to annotation requests; add 'ProductSearchClient.purge_products' method; add 'object_annotations' field to product search results (via synth). ([#8988](https://github.com/googleapis/google-cloud-python/pull/8988))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 0.38.1
+
+07-24-2019 17:54 PDT
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
 ## 0.38.0
 
 07-09-2019 10:05 PDT

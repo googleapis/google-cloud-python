@@ -16,7 +16,6 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -27,12 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\016HistogramProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n1google/cloud/talent_v4beta1/proto/histogram.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/wrappers.proto")\n\x0eHistogramQuery\x12\x17\n\x0fhistogram_query\x18\x01 \x01(\t"\xb6\x01\n\x14HistogramQueryResult\x12\x17\n\x0fhistogram_query\x18\x01 \x01(\t\x12S\n\thistogram\x18\x02 \x03(\x0b\x32@.google.cloud.talent.v4beta1.HistogramQueryResult.HistogramEntry\x1a\x30\n\x0eHistogramEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x42|\n\x1f\x63om.google.cloud.talent.v4beta1B\x0eHistogramProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n1google/cloud/talent_v4beta1/proto/histogram.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto")\n\x0eHistogramQuery\x12\x17\n\x0fhistogram_query\x18\x01 \x01(\t"\xb6\x01\n\x14HistogramQueryResult\x12\x17\n\x0fhistogram_query\x18\x01 \x01(\t\x12S\n\thistogram\x18\x02 \x03(\x0b\x32@.google.cloud.talent.v4beta1.HistogramQueryResult.HistogramEntry\x1a\x30\n\x0eHistogramEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x42|\n\x1f\x63om.google.cloud.talent.v4beta1B\x0eHistogramProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
-    dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
-    ],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -70,8 +66,8 @@ _HISTOGRAMQUERY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=144,
-    serialized_end=185,
+    serialized_start=112,
+    serialized_end=153,
 )
 
 
@@ -127,8 +123,8 @@ _HISTOGRAMQUERYRESULT_HISTOGRAMENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=322,
-    serialized_end=370,
+    serialized_start=290,
+    serialized_end=338,
 )
 
 _HISTOGRAMQUERYRESULT = _descriptor.Descriptor(
@@ -183,8 +179,8 @@ _HISTOGRAMQUERYRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=188,
-    serialized_end=370,
+    serialized_start=156,
+    serialized_end=338,
 )
 
 _HISTOGRAMQUERYRESULT_HISTOGRAMENTRY.containing_type = _HISTOGRAMQUERYRESULT

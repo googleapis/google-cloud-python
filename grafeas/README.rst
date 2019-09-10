@@ -9,7 +9,7 @@ retrieval of critical metadata about all of your software artifacts.
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Grafeas API: https://grafeas.io/
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/grafeas/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/grafeas/latest
 .. _Product Documentation:  https://grafeas.io/
 
 Installation

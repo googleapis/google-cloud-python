@@ -5,14 +5,6 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
--  `Homepage`_
--  `API Documentation`_
--  `Read The Docs Documentation`_
-
-.. _Homepage: https://googleapis.github.io/google-cloud-python/
-.. _API Documentation: https://googleapis.github.io/google-cloud-python/latest/
-.. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
-
 **Heads up**! These libraries are supported on App Engine standard's `Python 3 runtime`_ but are *not* supported on App Engine's `Python 2 runtime`_.
 
 .. _Python 3 runtime: https://cloud.google.com/appengine/docs/standard/python3
@@ -37,9 +29,11 @@ priority.
 The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Google Cloud KMS`_ (`KMS README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
@@ -50,12 +44,16 @@ The following client libraries have **GA** support:
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
+.. _Bigtable README: https://github.com/googleapis/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
 .. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
+.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
+.. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
 .. _Google Cloud Speech: https://pypi.org/project/google-cloud-speech/
@@ -80,18 +78,12 @@ against beta libraries are addressed with a higher priority.
 
 The following client libraries have **beta** support:
 
--  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
-.. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
-.. _Bigtable README: https://github.com/googleapis/google-cloud-python/tree/master/bigtable
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
-.. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
-.. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/google-cloud-python/tree/master/videointelligence
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
@@ -121,10 +113,9 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
--  `Google Cloud Tasks`_ (`Tasks README`_)
 -  `Google Cloud Trace`_ (`Trace README`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_)
--  `Grafeas_ (`Grafeas README`_)
+-  `Grafeas`_ (`Grafeas README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
@@ -194,7 +185,7 @@ Check out the `Authentication section`_ in our documentation to learn more.
 You may also find the `authentication document`_ shared by all the
 ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
+.. _Authentication section: https://googleapis.dev/python/google-api-core/latest/auth.html
 .. _authentication document: https://github.com/googleapis/google-cloud-common/tree/master/authentication
 
 Contributing

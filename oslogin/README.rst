@@ -1,7 +1,7 @@
 Python Client for Google Cloud OS Login API (unreleased)
 ========================================================
 
-|pypi| |versions|
+|pypi| |versions| 
 
 `Google Cloud OS Login API`_: Manages OS login configuration for Google account users.
 
@@ -14,7 +14,7 @@ Python Client for Google Cloud OS Login API (unreleased)
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/oslogin/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/oslogin/latest
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud OS Login API.:  https://cloud.google.com/os-login
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

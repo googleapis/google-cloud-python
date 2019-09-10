@@ -67,7 +67,14 @@ class SpannerGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -139,6 +146,22 @@ class SpannerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["spanner_stub"].CreateSession
+
+    @property
+    def batch_create_sessions(self):
+        """Return the gRPC stub for :meth:`SpannerClient.batch_create_sessions`.
+
+        Creates multiple new sessions.
+
+        This API can be used to initialize a session cache on the clients.
+        See https://goo.gl/TgSFN2 for best practices on session cache management.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["spanner_stub"].BatchCreateSessions
 
     @property
     def get_session(self):

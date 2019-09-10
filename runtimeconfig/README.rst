@@ -1,7 +1,7 @@
 Python Client for Google Cloud RuntimeConfig
 ============================================
 
-|alpha| |pypi| |versions|
+|alpha| |pypi| |versions| 
 
 The `Google Cloud RuntimeConfig`_ API enables developers to dynamically
 configure and expose variables through Google Cloud Platform. In addition, you
@@ -18,7 +18,7 @@ return based on certain conditions.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
    :target: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
-.. _Client Library Documentation: http://googleapis.github.io/google-cloud-python/runtimeconfig/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/runtimeconfig/latest
 .. _Product Documentation: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
 
 **This client library is currently in alpha and may be subject to change.**
@@ -35,8 +35,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud RuntimeConfig API.:  https://cloud.google.com/runtimeconfig
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Enable the Google Cloud RuntimeConfig API.:  https://cloud.google.com/deployment-manager/
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

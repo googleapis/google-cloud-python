@@ -209,10 +209,10 @@ class LanguageServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Document`
-            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate sentence offsets.
+            encoding_type (~google.cloud.language_v1.enums.EncodingType): The encoding type used by the API to calculate sentence offsets.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -275,10 +275,10 @@ class LanguageServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Document`
-            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate offsets.
+            encoding_type (~google.cloud.language_v1.enums.EncodingType): The encoding type used by the API to calculate offsets.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -340,10 +340,10 @@ class LanguageServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Document`
-            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate offsets.
+            encoding_type (~google.cloud.language_v1.enums.EncodingType): The encoding type used by the API to calculate offsets.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -406,10 +406,10 @@ class LanguageServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Document`
-            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate offsets.
+            encoding_type (~google.cloud.language_v1.enums.EncodingType): The encoding type used by the API to calculate offsets.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -470,8 +470,8 @@ class LanguageServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Document`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -539,10 +539,10 @@ class LanguageServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1.types.Features`
-            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate offsets.
+            encoding_type (~google.cloud.language_v1.enums.EncodingType): The encoding type used by the API to calculate offsets.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

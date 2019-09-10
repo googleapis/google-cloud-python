@@ -1,7 +1,7 @@
 Python Client for Stackdriver Monitoring API (`Alpha`_)
 =======================================================
 
-|pypi| |versions|
+|pypi| |versions| 
 
 `Stackdriver Monitoring API`_: Manages your Stackdriver Monitoring data and
 configurations. Most projects must be associated with a Stackdriver account,
@@ -16,7 +16,7 @@ with a few exceptions as noted on the individual method pages.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
-.. _Client Library Documentation: https://google-cloud-python.readthedocs.io/en/latest/monitoring/
+.. _Client Library Documentation: https://googleapis.dev/python/monitoring/latest
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
@@ -32,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring/api/enable-api
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~

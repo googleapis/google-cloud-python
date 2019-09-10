@@ -42,6 +42,7 @@ from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2_grpc
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
@@ -302,8 +303,8 @@ class BigtableInstanceAdminClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Cluster`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -380,8 +381,8 @@ class BigtableInstanceAdminClient(object):
             name (str): The unique name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -452,8 +453,8 @@ class BigtableInstanceAdminClient(object):
                 requested. Values are of the form ``projects/<project>``.
             page_token (str): DEPRECATED: This field is unused and ignored.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -555,8 +556,8 @@ class BigtableInstanceAdminClient(object):
                 -  Keys and values must both be under 128 bytes.
             state (~google.cloud.bigtable_admin_v2.types.State): (``OutputOnly``) The current state of the instance.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -648,8 +649,8 @@ class BigtableInstanceAdminClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -726,8 +727,8 @@ class BigtableInstanceAdminClient(object):
             name (str): The unique name of the instance to be deleted. Values are of the form
                 ``projects/<project>/instances/<instance>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -818,8 +819,8 @@ class BigtableInstanceAdminClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Cluster`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -896,8 +897,8 @@ class BigtableInstanceAdminClient(object):
             name (str): The unique name of the requested cluster. Values are of the form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -971,8 +972,8 @@ class BigtableInstanceAdminClient(object):
                 ``projects/myproject/instances/-``.
             page_token (str): DEPRECATED: This field is unused and ignored.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1068,8 +1069,8 @@ class BigtableInstanceAdminClient(object):
             default_storage_type (~google.cloud.bigtable_admin_v2.types.StorageType): (``CreationOnly``) The type of storage used by this cluster to serve its
                 parent instance's tables, unless explicitly overridden.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1150,8 +1151,8 @@ class BigtableInstanceAdminClient(object):
             name (str): The unique name of the cluster to be deleted. Values are of the form
                 ``projects/<project>/instances/<instance>/clusters/<cluster>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1235,8 +1236,8 @@ class BigtableInstanceAdminClient(object):
                 message :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
             ignore_warnings (bool): If true, ignore safety checks when creating the app profile.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1310,8 +1311,8 @@ class BigtableInstanceAdminClient(object):
             name (str): The unique name of the requested app profile. Values are of the form
                 ``projects/<project>/instances/<instance>/appProfiles/<app_profile>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1398,8 +1399,8 @@ class BigtableInstanceAdminClient(object):
             page_size (int): Maximum number of results per page.
                 CURRENTLY UNIMPLEMENTED AND IGNORED.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1507,8 +1508,8 @@ class BigtableInstanceAdminClient(object):
                 message :class:`~google.cloud.bigtable_admin_v2.types.FieldMask`
             ignore_warnings (bool): If true, ignore safety checks when updating the app profile.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1592,8 +1593,8 @@ class BigtableInstanceAdminClient(object):
                 ``projects/<project>/instances/<instance>/appProfiles/<app_profile>``.
             ignore_warnings (bool): If true, ignore safety checks when deleting the app profile.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1641,6 +1642,7 @@ class BigtableInstanceAdminClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1661,9 +1663,14 @@ class BigtableInstanceAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.bigtable_admin_v2.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.bigtable_admin_v2.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1691,7 +1698,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1744,8 +1753,8 @@ class BigtableInstanceAdminClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1822,8 +1831,8 @@ class BigtableInstanceAdminClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

@@ -4,6 +4,52 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.5.0
+
+08-28-2019 14:07 PDT
+
+### Implementation Changes
+- Catch exceptions in GcsClient when a same name bucket already exists in a different project ([#9139](https://github.com/googleapis/google-cloud-python/pull/9139))
+- Log when LROs are kicked off. ([#9058](https://github.com/googleapis/google-cloud-python/pull/9058))
+- Throw a ValueError when an ambiguous display_name is used ([#9089](https://github.com/googleapis/google-cloud-python/pull/9089))
+- Remove send/recv msg size limit (via synth). ([#8944](https://github.com/googleapis/google-cloud-python/pull/8944))
+
+### New Features
+- Enable users to pass in Pandas Dataframe when calling import_data() and batch_predict() from AutoML Tables client ([#9116](https://github.com/googleapis/google-cloud-python/pull/9116))
+- Add support for documents (via synth). ([#9039](https://github.com/googleapis/google-cloud-python/pull/9039))
+- Add a TablesClient for automl-tables specific behavior. ([#8720](https://github.com/googleapis/google-cloud-python/pull/8720))
+- Add 'ClassificationEvaluationMetrics.display_name'/'BatchPredictResult.metadata'/'TableSpec.valid_row_count' (via synth) ([#9004](https://github.com/googleapis/google-cloud-python/pull/9004))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Skip relevant system tests if in VPCSC ([#9111](https://github.com/googleapis/google-cloud-python/pull/9111))
+- Fix synth replace to add TablesClient. ([#9033](https://github.com/googleapis/google-cloud-python/pull/9033))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+## 0.4.0
+
+07-22-2019 17:39 PDT
+
+
+### New Features
+- Add support for 'TablesModelMetadata.{optimization_objective_recall_value,optimization_objective_precision_value}' (via synth). ([#8643](https://github.com/googleapis/google-cloud-python/pull/8643))
+- Add 'client_options' support, update list method docstrings (via synth). ([#8533](https://github.com/googleapis/google-cloud-python/pull/8533))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- Pin black version (via synth). ([#8573](https://github.com/googleapis/google-cloud-python/pull/8573))
+- Update Ruby package name (via synth). ([#8485](https://github.com/googleapis/google-cloud-python/pull/8485))
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
 ## 0.3.0
 
 06-20-2019 14:47 PDT

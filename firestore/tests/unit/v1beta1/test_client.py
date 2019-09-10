@@ -17,6 +17,7 @@ import types
 import unittest
 
 import mock
+import pytest
 
 
 class TestClient(unittest.TestCase):
@@ -41,7 +42,10 @@ class TestClient(unittest.TestCase):
         from google.cloud.firestore_v1beta1.client import DEFAULT_DATABASE
 
         credentials = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=credentials)
+
+        with pytest.deprecated_call():
+            client = self._make_one(project=self.PROJECT, credentials=credentials)
+
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
@@ -49,9 +53,12 @@ class TestClient(unittest.TestCase):
     def test_constructor_explicit(self):
         credentials = _make_credentials()
         database = "now-db"
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
-        )
+
+        with pytest.deprecated_call():
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
+
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, database)
@@ -63,7 +70,10 @@ class TestClient(unittest.TestCase):
     )
     def test__firestore_api_property(self, mock_client):
         mock_client.SERVICE_ADDRESS = "endpoint"
-        client = self._make_default_one()
+
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         self.assertIsNone(client._firestore_api_internal)
         firestore_api = client._firestore_api
         self.assertIs(firestore_api, mock_client.return_value)
@@ -77,9 +87,12 @@ class TestClient(unittest.TestCase):
     def test___database_string_property(self):
         credentials = _make_credentials()
         database = "cheeeeez"
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
-        )
+
+        with pytest.deprecated_call():
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
+
         self.assertIsNone(client._database_string_internal)
         database_string = client._database_string
         expected = "projects/{}/databases/{}".format(client.project, client._database)
@@ -93,9 +106,11 @@ class TestClient(unittest.TestCase):
     def test___rpc_metadata_property(self):
         credentials = _make_credentials()
         database = "quanta"
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
-        )
+
+        with pytest.deprecated_call():
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
 
         self.assertEqual(
             client._rpc_metadata,
@@ -106,7 +121,10 @@ class TestClient(unittest.TestCase):
         from google.cloud.firestore_v1beta1.collection import CollectionReference
 
         collection_id = "users"
-        client = self._make_default_one()
+
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         collection = client.collection(collection_id)
 
         self.assertEqual(collection._path, (collection_id,))
@@ -116,7 +134,9 @@ class TestClient(unittest.TestCase):
     def test_collection_factory_nested(self):
         from google.cloud.firestore_v1beta1.collection import CollectionReference
 
-        client = self._make_default_one()
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         parts = ("users", "alovelace", "beep")
         collection_path = "/".join(parts)
         collection1 = client.collection(collection_path)
@@ -135,7 +155,10 @@ class TestClient(unittest.TestCase):
         from google.cloud.firestore_v1beta1.document import DocumentReference
 
         parts = ("rooms", "roomA")
-        client = self._make_default_one()
+
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         doc_path = "/".join(parts)
         document1 = client.document(doc_path)
 
@@ -152,7 +175,9 @@ class TestClient(unittest.TestCase):
     def test_document_factory_nested(self):
         from google.cloud.firestore_v1beta1.document import DocumentReference
 
-        client = self._make_default_one()
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         parts = ("rooms", "roomA", "shoes", "dressy")
         doc_path = "/".join(parts)
         document1 = client.document(doc_path)
@@ -229,7 +254,10 @@ class TestClient(unittest.TestCase):
         from google.cloud.firestore_v1beta1.collection import CollectionReference
 
         collection_ids = ["users", "projects"]
-        client = self._make_default_one()
+
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         firestore_api = mock.Mock(spec=["list_collection_ids"])
         client._firestore_api_internal = firestore_api
 
@@ -274,7 +302,10 @@ class TestClient(unittest.TestCase):
         return list(snapshots)
 
     def _info_for_get_all(self, data1, data2):
-        client = self._make_default_one()
+
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         document1 = client.document("pineapple", "lamp1")
         document2 = client.document("pineapple", "lamp2")
 
@@ -427,7 +458,9 @@ class TestClient(unittest.TestCase):
     def test_batch(self):
         from google.cloud.firestore_v1beta1.batch import WriteBatch
 
-        client = self._make_default_one()
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         batch = client.batch()
         self.assertIsInstance(batch, WriteBatch)
         self.assertIs(batch._client, client)
@@ -436,7 +469,9 @@ class TestClient(unittest.TestCase):
     def test_transaction(self):
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
-        client = self._make_default_one()
+        with pytest.deprecated_call():
+            client = self._make_default_one()
+
         transaction = client.transaction(max_attempts=3, read_only=True)
         self.assertIsInstance(transaction, Transaction)
         self.assertEqual(transaction._write_pbs, [])
@@ -456,7 +491,9 @@ class Test__reference_info(unittest.TestCase):
         from google.cloud.firestore_v1beta1.client import Client
 
         credentials = _make_credentials()
-        client = Client(project="hi-projject", credentials=credentials)
+
+        with pytest.deprecated_call():
+            client = Client(project="hi-projject", credentials=credentials)
 
         reference1 = client.document("a", "b")
         reference2 = client.document("a", "b", "c", "d")

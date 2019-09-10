@@ -172,7 +172,7 @@ class Blob(_PropertyMixin):
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
-        self.bucket = bucket
+        self._bucket = bucket
         self._acl = ObjectACL(self)
         if encryption_key is not None and kms_key_name is not None:
             raise ValueError(
@@ -186,6 +186,15 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
+    @property
+    def bucket(self):
+        """Bucket which contains the object.
+
+        :rtype: :class:`~google.cloud.storage.bucket.Bucket`
+        :returns: The object's bucket.
+        """
+        return self._bucket
 
     @property
     def chunk_size(self):
@@ -301,6 +310,37 @@ class Blob(_PropertyMixin):
             quoted_name=_quote(self.name, safe=b"/~"),
         )
 
+    @classmethod
+    def from_string(cls, uri, client=None):
+        """Get a constructor for blob object by URI.
+
+         :type uri: str
+         :param uri: The blob uri pass to get blob object.
+
+         :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+         :param client: Optional. The client to use.
+
+         :rtype: :class:`google.cloud.storage.blob.Blob`
+         :returns: The blob object created.
+
+         Example:
+            Get a constructor for blob object by URI..
+
+            >>> from google.cloud import storage
+            >>> from google.cloud.storage.blob import Blob
+            >>> client = storage.Client()
+            >>> blob = Blob.from_string("gs://bucket/object")
+         """
+        from google.cloud.storage.bucket import Bucket
+
+        scheme, netloc, path, query, frag = urlsplit(uri)
+        if scheme != "gs":
+            raise ValueError("URI scheme must be gs")
+
+        bucket = Bucket(client, name=netloc)
+        return cls(path[1:], bucket)
+
     def generate_signed_url(
         self,
         expiration=None,
@@ -365,8 +405,8 @@ class Blob(_PropertyMixin):
 
         :type response_type: str
         :param response_type: (Optional) Content type of responses to requests
-                              for the signed URL. Used to over-ride the content
-                              type of the underlying blob/object.
+                              for the signed URL. Ignored if content_type is
+                              set on object/blob metadata.
 
         :type generation: str
         :param generation: (Optional) A value that indicates which generation

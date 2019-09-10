@@ -4,6 +4,44 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.14.2
+
+07-30-2019 14:08 PDT
+
+
+### Documentation
+- Add client_options documentation. ([#8834](https://github.com/googleapis/google-cloud-python/pull/8834))
+
+## 1.14.1
+
+07-30-2019 12:24 PDT
+
+
+### Implementation Changes
+- Remove error log entry on clean BiDi shutdown. ([#8806](https://github.com/googleapis/google-cloud-python/pull/8806))
+- Forward 'timeout' arg from 'exception' to `_blocking_poll`. ([#8735](https://github.com/googleapis/google-cloud-python/pull/8735))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
+## 1.14.0
+
+07-17-2019 13:16 PDT
+
+
+### New Features
+- Firestore: Add `should_terminate` predicate for clean BiDi shutdown. ([#8650](https://github.com/googleapis/google-cloud-python/pull/8650))
+
+### Dependencies
+- Update pins of 'googleapis-common-protos. ([#8688](https://github.com/googleapis/google-cloud-python/pull/8688))
+
+### Documentation
+- Add compatibility check badges to READMEs. ([#8288](https://github.com/googleapis/google-cloud-python/pull/8288))
+
+### Internal / Testing Changes
+- All: Add docs job to publish to googleapis.dev. ([#8464](https://github.com/googleapis/google-cloud-python/pull/8464))
+
 ## 1.13.0
 
 06-24-2019 10:34 PDT

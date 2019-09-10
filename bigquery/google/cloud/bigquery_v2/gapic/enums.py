@@ -91,7 +91,7 @@ class Model(object):
           MODEL_TYPE_UNSPECIFIED (int)
           LINEAR_REGRESSION (int): Linear regression model.
           LOGISTIC_REGRESSION (int): Logistic regression based classification model.
-          KMEANS (int): [Beta] K-means clustering model.
+          KMEANS (int): K-means clustering model.
           TENSORFLOW (int): [Beta] An imported TensorFlow model.
         """
 
@@ -114,6 +114,23 @@ class Model(object):
         OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
         BATCH_GRADIENT_DESCENT = 1
         NORMAL_EQUATION = 2
+
+    class KmeansEnums(object):
+        class KmeansInitializationMethod(enum.IntEnum):
+            """
+            Indicates the method used to initialize the centroids for KMeans
+            clustering algorithm.
+
+            Attributes:
+              KMEANS_INITIALIZATION_METHOD_UNSPECIFIED (int)
+              RANDOM (int): Initializes the centroids randomly.
+              CUSTOM (int): Initializes the centroids using data specified in
+              kmeans\_initialization\_column.
+            """
+
+            KMEANS_INITIALIZATION_METHOD_UNSPECIFIED = 0
+            RANDOM = 1
+            CUSTOM = 2
 
 
 class StandardSqlDataType(object):

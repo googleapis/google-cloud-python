@@ -41,6 +41,7 @@ from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2_grpc
 from google.cloud.datacatalog_v1beta1.proto import tags_pb2
 from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -339,8 +340,8 @@ class DataCatalogClient(object):
                       specified. </li>
                     </ul>
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -431,8 +432,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -503,8 +504,8 @@ class DataCatalogClient(object):
             name (str): Required. The name of the entry. For example,
                 "projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -594,8 +595,8 @@ class DataCatalogClient(object):
                     *_ids shoud satisfy the standard SQL rules for identifiers.
                     https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -674,8 +675,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.TagTemplate`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -746,8 +747,8 @@ class DataCatalogClient(object):
             name (str): Required. The name of the tag template. For example,
                 "projects/{project\_id}/locations/{location}/tagTemplates/{tag\_template\_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -834,8 +835,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -913,8 +914,8 @@ class DataCatalogClient(object):
                 This confirms the deletion of any possible tags using this template.
                 <code>force = false</code> will be supported in the future.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -999,8 +1000,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.TagTemplateField`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1098,8 +1099,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1176,8 +1177,8 @@ class DataCatalogClient(object):
             new_tag_template_field_id (str): Required. The new ID of this tag template field. For example,
                 "my\_new\_field".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1255,8 +1256,8 @@ class DataCatalogClient(object):
                 This confirms the deletion of this field from any tags using this field.
                 <code>force = false</code> will be supported in the future.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1333,8 +1334,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Tag`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1413,8 +1414,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1483,8 +1484,8 @@ class DataCatalogClient(object):
             name (str): Required. The name of the tag to delete. For example,
                 "projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}/tags/{tag\_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1568,8 +1569,8 @@ class DataCatalogClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1672,8 +1673,8 @@ class DataCatalogClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1722,6 +1723,7 @@ class DataCatalogClient(object):
     def get_iam_policy(
         self,
         resource,
+        options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1753,9 +1755,14 @@ class DataCatalogClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1783,7 +1790,9 @@ class DataCatalogClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1843,8 +1852,8 @@ class DataCatalogClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
