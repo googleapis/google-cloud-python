@@ -47,13 +47,13 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
             self._make_one()
 
     def test_ctor_w_age_and_matches_storage_class(self):
-        conditions = self._make_one(age=10, matches_storage_class=["REGIONAL"])
-        expected = {"age": 10, "matchesStorageClass": ["REGIONAL"]}
+        conditions = self._make_one(age=10, matches_storage_class=["COLDLINE"])
+        expected = {"age": 10, "matchesStorageClass": ["COLDLINE"]}
         self.assertEqual(dict(conditions), expected)
         self.assertEqual(conditions.age, 10)
         self.assertIsNone(conditions.created_before)
         self.assertIsNone(conditions.is_live)
-        self.assertEqual(conditions.matches_storage_class, ["REGIONAL"])
+        self.assertEqual(conditions.matches_storage_class, ["COLDLINE"])
         self.assertIsNone(conditions.number_of_newer_versions)
 
     def test_ctor_w_created_before_and_is_live(self):
@@ -88,14 +88,14 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
             "age": 10,
             "createdBefore": "2018-08-01",
             "isLive": True,
-            "matchesStorageClass": ["REGIONAL"],
+            "matchesStorageClass": ["COLDLINE"],
             "numNewerVersions": 3,
         }
         conditions = klass.from_api_repr(resource)
         self.assertEqual(conditions.age, 10)
         self.assertEqual(conditions.created_before, before)
         self.assertEqual(conditions.is_live, True)
-        self.assertEqual(conditions.matches_storage_class, ["REGIONAL"])
+        self.assertEqual(conditions.matches_storage_class, ["COLDLINE"])
         self.assertEqual(conditions.number_of_newer_versions, 3)
 
 
@@ -114,10 +114,10 @@ class Test_LifecycleRuleDelete(unittest.TestCase):
             self._make_one()
 
     def test_ctor_w_condition(self):
-        rule = self._make_one(age=10, matches_storage_class=["REGIONAL"])
+        rule = self._make_one(age=10, matches_storage_class=["COLDLINE"])
         expected = {
             "action": {"type": "Delete"},
-            "condition": {"age": 10, "matchesStorageClass": ["REGIONAL"]},
+            "condition": {"age": 10, "matchesStorageClass": ["COLDLINE"]},
         }
         self.assertEqual(dict(rule), expected)
 
@@ -127,7 +127,7 @@ class Test_LifecycleRuleDelete(unittest.TestCase):
             "age": 10,
             "createdBefore": "2018-08-01",
             "isLive": True,
-            "matchesStorageClass": ["REGIONAL"],
+            "matchesStorageClass": ["COLDLINE"],
             "numNewerVersions": 3,
         }
         resource = {"action": {"type": "Delete"}, "condition": conditions}
@@ -147,15 +147,15 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
 
     def test_ctor_wo_conditions(self):
         with self.assertRaises(ValueError):
-            self._make_one(storage_class="REGIONAL")
+            self._make_one(storage_class="COLDLINE")
 
     def test_ctor_w_condition(self):
         rule = self._make_one(
-            storage_class="NEARLINE", age=10, matches_storage_class=["REGIONAL"]
+            storage_class="COLDLINE", age=10, matches_storage_class=["NEARLINE"]
         )
         expected = {
-            "action": {"type": "SetStorageClass", "storageClass": "NEARLINE"},
-            "condition": {"age": 10, "matchesStorageClass": ["REGIONAL"]},
+            "action": {"type": "SetStorageClass", "storageClass": "COLDLINE"},
+            "condition": {"age": 10, "matchesStorageClass": ["NEARLINE"]},
         }
         self.assertEqual(dict(rule), expected)
 
@@ -165,11 +165,11 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
             "age": 10,
             "createdBefore": "2018-08-01",
             "isLive": True,
-            "matchesStorageClass": ["REGIONAL"],
+            "matchesStorageClass": ["NEARLINE"],
             "numNewerVersions": 3,
         }
         resource = {
-            "action": {"type": "SetStorageClass", "storageClass": "NEARLINE"},
+            "action": {"type": "SetStorageClass", "storageClass": "COLDLINE"},
             "condition": conditions,
         }
         rule = klass.from_api_repr(resource)
