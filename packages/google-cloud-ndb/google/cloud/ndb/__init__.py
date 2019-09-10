@@ -126,7 +126,7 @@ from google.cloud.ndb._transaction import transactional_tasklet
 from google.cloud.ndb._transaction import non_transactional
 
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 """Current ``ndb`` version."""
 __all__ = [
     "AutoBatcher",
