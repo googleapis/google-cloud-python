@@ -8,7 +8,6 @@
 
 09-10-2019 13:43 PDT
 
-
 ### Deprecations
 - Deprecate `max_memcache_items`, memcache options, `force_rewrites`, `Query.map()`, `Query.mapi_async()`, `blobstore`. ([#168](https://github.com/googleapis/python-ndb/pull/168))
 
