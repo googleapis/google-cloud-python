@@ -755,13 +755,15 @@ class Test_Blob(unittest.TestCase):
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b"", stream=False):
         import requests
+        from urllib3.response import HTTPResponse
 
         response = requests.Response()
         response.status_code = status_code
         response.headers.update(headers)
         if stream:
-            raw = io.BytesIO(content)
+            raw = mock.create_autospec(HTTPResponse, instance=True)
             raw.headers = headers
+            raw.stream.return_value = iter([content])
             response.raw = raw
             response._content = False
         else:
@@ -814,7 +816,12 @@ class Test_Blob(unittest.TestCase):
         headers["range"] = "bytes=3-5"
         headers["accept-encoding"] = "gzip"
         call = mock.call(
-            "GET", expected_url, data=None, headers=headers, timeout=mock.ANY
+            "GET",
+            expected_url,
+            data=None,
+            headers=headers,
+            stream=True,
+            timeout=mock.ANY,
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -909,7 +916,12 @@ class Test_Blob(unittest.TestCase):
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-5"})
         call = mock.call(
-            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
+            "GET",
+            download_url,
+            data=None,
+            headers=headers,
+            stream=True,
+            timeout=mock.ANY,
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -937,7 +949,12 @@ class Test_Blob(unittest.TestCase):
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-4"})
         call = mock.call(
-            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
+            "GET",
+            download_url,
+            data=None,
+            headers=headers,
+            stream=True,
+            timeout=mock.ANY,
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -1086,6 +1103,7 @@ class Test_Blob(unittest.TestCase):
         self._download_to_filename_helper()
 
     def test_download_to_filename_corrupted(self):
+        from urllib3.response import HTTPResponse
         from google.resumable_media import DataCorruption
         from google.resumable_media.requests.download import _CHECKSUM_MISMATCH
 
@@ -1093,25 +1111,19 @@ class Test_Blob(unittest.TestCase):
         transport = mock.Mock(spec=["request"])
         empty_hash = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
         headers = {"x-goog-hash": "md5=" + empty_hash}
-        mock_raw = mock.Mock(headers=headers, spec=["headers"])
+        chunks = (b"noms1", b"coooookies2")
+        mock_raw = mock.create_autospec(HTTPResponse, instance=True)
+        mock_raw.headers = headers
+        mock_raw.stream.return_value = iter(chunks)
         response = mock.MagicMock(
             headers=headers,
             status_code=http_client.OK,
             raw=mock_raw,
-            spec=[
-                "__enter__",
-                "__exit__",
-                "headers",
-                "iter_content",
-                "status_code",
-                "raw",
-            ],
+            spec=["__enter__", "__exit__", "headers", "status_code", "raw"],
         )
         # i.e. context manager returns ``self``.
         response.__enter__.return_value = response
         response.__exit__.return_value = None
-        chunks = (b"noms1", b"coooookies2")
-        response.iter_content.return_value = iter(chunks)
 
         transport.request.return_value = response
         # Create a fake client/bucket and use them in the Blob() constructor.
@@ -1146,9 +1158,7 @@ class Test_Blob(unittest.TestCase):
         # Check the mocks.
         response.__enter__.assert_called_once_with()
         response.__exit__.assert_called_once_with(None, None, None)
-        response.iter_content.assert_called_once_with(
-            chunk_size=8192, decode_unicode=False
-        )
+        mock_raw.stream.assert_called_once_with(8192, decode_content=False)
         transport.request.assert_called_once_with(
             "GET",
             media_link,
