@@ -264,6 +264,10 @@ class Cursor(object):
     def fetchall(self):
         """Fetch all remaining results from the last ``execute*()`` call.
 
+        .. note::
+            The ``arraysize`` attribute can affect the performance of this
+            operation. Make sure to set it to appropriate batch size beforehand.
+
         :rtype: List[tuple]
         :returns: A list of all the rows in the results.
         :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
