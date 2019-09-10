@@ -9,7 +9,7 @@
 09-10-2019 13:43 PDT
 
 ### Deprecations
-- Deprecate `max_memcache_items`, memcache options, `force_rewrites`, `Query.map()`, `Query.mapi_async()`, `blobstore`. ([#168](https://github.com/googleapis/python-ndb/pull/168))
+- Deprecate `max_memcache_items`, memcache options, `force_rewrites`, `Query.map()`, `Query.map_async()`, `blobstore`. ([#168](https://github.com/googleapis/python-ndb/pull/168))
 
 ### Implementation Changes
 - Fix error retrieving values for properties with different stored name ([#187](https://github.com/googleapis/python-ndb/pull/187))
@@ -34,8 +34,8 @@
 - Implement ``Context.flush`` ([#158](https://github.com/googleapis/python-ndb/pull/158))
 - Implement ``use_datastore`` flag. ([#155](https://github.com/googleapis/python-ndb/pull/155))
 - Implement ``tasklets.toplevel``. ([#157](https://github.com/googleapis/python-ndb/pull/157))
-- RedisCache ([#150](https://github.com/googleapis/python-ndb/pull/150))
-- Implement Global Cache (memcache) ([#148](https://github.com/googleapis/python-ndb/pull/148))
+- Add RedisCache implementation of global cache ([#150](https://github.com/googleapis/python-ndb/pull/150))
+- Implement Global Cache ([#148](https://github.com/googleapis/python-ndb/pull/148))
 - ndb.Expando properties load and save ([#117](https://github.com/googleapis/python-ndb/pull/117))
 - Implement cache policy. ([#116](https://github.com/googleapis/python-ndb/pull/116))
 
@@ -49,14 +49,13 @@
 - Add spellcheck sphinx extension to docs build process ([#123](https://github.com/googleapis/python-ndb/pull/123))
 
 ### Internal / Testing Changes
-- Clean up usage of object.__new__ and mocks for `Model` in unit tests ([#177](https://github.com/googleapis/python-ndb/pull/177))
+- Clean up usage of `object.__new__` and mocks for `Model` in unit tests ([#177](https://github.com/googleapis/python-ndb/pull/177))
 - Prove tasklets can be Python 2.7 and 3.7 compatible. ([#174](https://github.com/googleapis/python-ndb/pull/174))
 - Discard src directory and fix flake8 failures ([#173](https://github.com/googleapis/python-ndb/pull/173))
-- Some additional tests for `Model.__eq__()` ([#169](https://github.com/googleapis/python-ndb/pull/169))
+- Add tests for `Model.__eq__()` ([#169](https://github.com/googleapis/python-ndb/pull/169))
 - Remove skip flag accidentally left over ([#154](https://github.com/googleapis/python-ndb/pull/154))
 - Try to get kokoro to add indexes for system tests ([#145](https://github.com/googleapis/python-ndb/pull/145))
 - Add system test for PolyModel ([#133](https://github.com/googleapis/python-ndb/pull/133))
-- Ask for feature development coordination via issues
 - Fix system test under Datastore Emulator. (Fixes [#118](https://github.com/googleapis/python-ndb/pull/118)) ([#119](https://github.com/googleapis/python-ndb/pull/119))
 - Add unit tests for `_entity_from_ds_entity` expando support ([#120](https://github.com/googleapis/python-ndb/pull/120))
 
