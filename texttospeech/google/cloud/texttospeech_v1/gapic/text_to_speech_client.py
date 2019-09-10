@@ -200,7 +200,7 @@ class TextToSpeechClient(object):
             >>> response = client.list_voices()
 
         Args:
-            language_code (str): Optional (but recommended)
+            language_code (str): Optional. Recommended.
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__ language tag.
                 If specified, the ListVoices call will only return voices that can be
                 used to synthesize this language\_code. E.g. when specifying "en-NZ",
