@@ -43,7 +43,7 @@ def main():
             'Issue Tracker': 'https://github.com/googleapis/python-ndb/issues'
         },
         classifiers=[
-            "Development Status :: 3 - Alpha",
+            "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
             "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python",
