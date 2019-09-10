@@ -148,6 +148,12 @@ class TestQueryParameters(unittest.TestCase):
         self.assertEqual(param.array_type, "INT64")
         self.assertEqual(param.values, [10, 20])
 
+    def test_to_query_parameters_w_dict_dict_param(self):
+        parameters = {"my_param": {"foo": "bar"}}
+
+        with self.assertRaises(NotImplementedError):
+            _helpers.to_query_parameters(parameters)
+
     def test_to_query_parameters_w_list(self):
         parameters = [True, u"a-string-value"]
         query_parameters = _helpers.to_query_parameters(parameters)
@@ -169,6 +175,12 @@ class TestQueryParameters(unittest.TestCase):
         self.assertIsNone(param.name)
         self.assertEqual(param.array_type, "INT64")
         self.assertEqual(param.values, [10, 20])
+
+    def test_to_query_parameters_w_list_dict_param(self):
+        parameters = [{"foo": "bar"}]
+
+        with self.assertRaises(NotImplementedError):
+            _helpers.to_query_parameters(parameters)
 
     def test_to_query_parameters_none_argument(self):
         query_parameters = _helpers.to_query_parameters(None)

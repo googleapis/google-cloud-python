@@ -106,7 +106,9 @@ def to_query_parameters_list(parameters):
     result = []
 
     for value in parameters:
-        if array_like(value):
+        if isinstance(value, collections_abc.Mapping):
+            raise NotImplementedError("STRUCT-like parameter values are not supported.")
+        elif array_like(value):
             param = array_to_query_parameter(value)
         else:
             param = scalar_to_query_parameter(value)
@@ -127,7 +129,12 @@ def to_query_parameters_dict(parameters):
     result = []
 
     for name, value in six.iteritems(parameters):
-        if array_like(value):
+        if isinstance(value, collections_abc.Mapping):
+            raise NotImplementedError(
+                "STRUCT-like parameter values are not supported "
+                "(parameter {}).".format(name)
+            )
+        elif array_like(value):
             param = array_to_query_parameter(value, name=name)
         else:
             param = scalar_to_query_parameter(value, name=name)
