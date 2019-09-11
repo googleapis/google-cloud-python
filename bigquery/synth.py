@@ -35,6 +35,7 @@ s.move(
         library / "google/cloud/bigquery_v2/gapic/enums.py",
         library / "google/cloud/bigquery_v2/types.py",
         library / "google/cloud/bigquery_v2/proto/location*",
+        library / "google/cloud/bigquery_v2/proto/encryption_config*",
         library / "google/cloud/bigquery_v2/proto/model*",
         library / "google/cloud/bigquery_v2/proto/standard_sql*",
     ],
