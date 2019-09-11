@@ -43,6 +43,7 @@ DOCUMENT_EXISTS = "Document already exists: "
 UNIQUE_RESOURCE_ID = unique_resource_id("-")
 FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
 
+
 @pytest.fixture(scope=u"module")
 def client():
     firestore_emulator = os.getenv(FIRESTORE_EMULATOR_HOST)
@@ -50,7 +51,9 @@ def client():
         credentials = EmulatorCreds()
         project = "emulatorproject"
     else:
-        credentials = service_account.Credentials.from_service_account_file(FIRESTORE_CREDS)
+        credentials = service_account.Credentials.from_service_account_file(
+            FIRESTORE_CREDS
+        )
         project = FIRESTORE_PROJECT or credentials.project_id
     yield firestore.Client(project=project, credentials=credentials)
 
