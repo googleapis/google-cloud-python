@@ -168,13 +168,12 @@ class FixedSizePool(AbstractSessionPool):
         """
         self._database = database
         api = database.spanner_api
-        created_session_count = 0
         metadata = _metadata_with_prefix(database.name)
 
         while not self._sessions.full():
             resp = api.batch_create_sessions(
                 database.name,
-                session_count=self.size - created_session_count,
+                session_count=self.size - self._sessions.qsize(),
                 timeout=self.default_timeout,
                 metadata=metadata,
             )
@@ -182,7 +181,6 @@ class FixedSizePool(AbstractSessionPool):
                 session = self._new_session()
                 session._session_id = session_pb.name.split("/")[-1]
                 self._sessions.put(session)
-            created_session_count += len(resp.session)
 
     def get(self, timeout=None):  # pylint: disable=arguments-differ
         """Check a session out from the pool.
