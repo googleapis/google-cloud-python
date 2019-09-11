@@ -137,7 +137,7 @@ class TestNotificationChannelServiceClient(object):
 
         # Setup Request
         name = client.notification_channel_descriptor_path(
-            "[PROJECT]", "[CHANNEL_DESCRIPTOR]"
+            "[PROJECT]", "[NOTIFICATION_CHANNEL_DESCRIPTOR]"
         )
 
         response = client.get_notification_channel_descriptor(name)
@@ -160,7 +160,7 @@ class TestNotificationChannelServiceClient(object):
 
         # Setup request
         name = client.notification_channel_descriptor_path(
-            "[PROJECT]", "[CHANNEL_DESCRIPTOR]"
+            "[PROJECT]", "[NOTIFICATION_CHANNEL_DESCRIPTOR]"
         )
 
         with pytest.raises(CustomException):

@@ -21,6 +21,7 @@ from google.cloud.monitoring_v3.proto import (
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,13 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\021AlertServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/monitoring_v3/proto/alert_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"a\n\x18\x43reateAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x0c\x61lert_policy\x18\x02 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"%\n\x15GetAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"q\n\x18ListAlertPoliciesRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"o\n\x19ListAlertPoliciesResponse\x12\x39\n\x0e\x61lert_policies\x18\x03 \x03(\x0b\x32!.google.monitoring.v3.AlertPolicy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x18UpdateAlertPolicyRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x37\n\x0c\x61lert_policy\x18\x03 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"(\n\x18\x44\x65leteAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t2\xae\x06\n\x12\x41lertPolicyService\x12\xa1\x01\n\x11ListAlertPolicies\x12..google.monitoring.v3.ListAlertPoliciesRequest\x1a/.google.monitoring.v3.ListAlertPoliciesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v3/{name=projects/*}/alertPolicies\x12\x8f\x01\n\x0eGetAlertPolicy\x12+.google.monitoring.v3.GetAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"-\x82\xd3\xe4\x93\x02\'\x12%/v3/{name=projects/*/alertPolicies/*}\x12\xa1\x01\n\x11\x43reateAlertPolicy\x12..google.monitoring.v3.CreateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"9\x82\xd3\xe4\x93\x02\x33"#/v3/{name=projects/*}/alertPolicies:\x0c\x61lert_policy\x12\x8a\x01\n\x11\x44\x65leteAlertPolicy\x12..google.monitoring.v3.DeleteAlertPolicyRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v3/{name=projects/*/alertPolicies/*}\x12\xb0\x01\n\x11UpdateAlertPolicy\x12..google.monitoring.v3.UpdateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"H\x82\xd3\xe4\x93\x02\x42\x32\x32/v3/{alert_policy.name=projects/*/alertPolicies/*}:\x0c\x61lert_policyB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11\x41lertServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n4google/cloud/monitoring_v3/proto/alert_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x17google/api/client.proto"a\n\x18\x43reateAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x0c\x61lert_policy\x18\x02 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"%\n\x15GetAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"q\n\x18ListAlertPoliciesRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"o\n\x19ListAlertPoliciesResponse\x12\x39\n\x0e\x61lert_policies\x18\x03 \x03(\x0b\x32!.google.monitoring.v3.AlertPolicy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x18UpdateAlertPolicyRequest\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x37\n\x0c\x61lert_policy\x18\x03 \x01(\x0b\x32!.google.monitoring.v3.AlertPolicy"(\n\x18\x44\x65leteAlertPolicyRequest\x12\x0c\n\x04name\x18\x03 \x01(\t2\xda\x07\n\x12\x41lertPolicyService\x12\xa1\x01\n\x11ListAlertPolicies\x12..google.monitoring.v3.ListAlertPoliciesRequest\x1a/.google.monitoring.v3.ListAlertPoliciesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v3/{name=projects/*}/alertPolicies\x12\x8f\x01\n\x0eGetAlertPolicy\x12+.google.monitoring.v3.GetAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"-\x82\xd3\xe4\x93\x02\'\x12%/v3/{name=projects/*/alertPolicies/*}\x12\xa1\x01\n\x11\x43reateAlertPolicy\x12..google.monitoring.v3.CreateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"9\x82\xd3\xe4\x93\x02\x33"#/v3/{name=projects/*}/alertPolicies:\x0c\x61lert_policy\x12\x8a\x01\n\x11\x44\x65leteAlertPolicy\x12..google.monitoring.v3.DeleteAlertPolicyRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v3/{name=projects/*/alertPolicies/*}\x12\xb0\x01\n\x11UpdateAlertPolicy\x12..google.monitoring.v3.UpdateAlertPolicyRequest\x1a!.google.monitoring.v3.AlertPolicy"H\x82\xd3\xe4\x93\x02\x42\x32\x32/v3/{alert_policy.name=projects/*/alertPolicies/*}:\x0c\x61lert_policy\x1a\xa9\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\x89\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.readB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11\x41lertServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_alert__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -94,8 +96,8 @@ _CREATEALERTPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=217,
-    serialized_end=314,
+    serialized_start=242,
+    serialized_end=339,
 )
 
 
@@ -133,8 +135,8 @@ _GETALERTPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=316,
-    serialized_end=353,
+    serialized_start=341,
+    serialized_end=378,
 )
 
 
@@ -244,8 +246,8 @@ _LISTALERTPOLICIESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=355,
-    serialized_end=468,
+    serialized_start=380,
+    serialized_end=493,
 )
 
 
@@ -301,8 +303,8 @@ _LISTALERTPOLICIESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=470,
-    serialized_end=581,
+    serialized_start=495,
+    serialized_end=606,
 )
 
 
@@ -358,8 +360,8 @@ _UPDATEALERTPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=584,
-    serialized_end=716,
+    serialized_start=609,
+    serialized_end=741,
 )
 
 
@@ -397,8 +399,8 @@ _DELETEALERTPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=718,
-    serialized_end=758,
+    serialized_start=743,
+    serialized_end=783,
 )
 
 _CREATEALERTPOLICYREQUEST.fields_by_name[
@@ -612,9 +614,11 @@ _ALERTPOLICYSERVICE = _descriptor.ServiceDescriptor(
     full_name="google.monitoring.v3.AlertPolicyService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=761,
-    serialized_end=1575,
+    serialized_options=_b(
+        "\312A\031monitoring.googleapis.com\322A\211\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read"
+    ),
+    serialized_start=786,
+    serialized_end=1772,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListAlertPolicies",

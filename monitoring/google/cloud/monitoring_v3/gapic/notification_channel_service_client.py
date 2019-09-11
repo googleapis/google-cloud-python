@@ -104,12 +104,14 @@ class NotificationChannelServiceClient(object):
         )
 
     @classmethod
-    def notification_channel_descriptor_path(cls, project, channel_descriptor):
+    def notification_channel_descriptor_path(
+        cls, project, notification_channel_descriptor
+    ):
         """Return a fully-qualified notification_channel_descriptor string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/notificationChannelDescriptors/{channel_descriptor}",
+            "projects/{project}/notificationChannelDescriptors/{notification_channel_descriptor}",
             project=project,
-            channel_descriptor=channel_descriptor,
+            notification_channel_descriptor=notification_channel_descriptor,
         )
 
     @classmethod
@@ -368,7 +370,7 @@ class NotificationChannelServiceClient(object):
             >>>
             >>> client = monitoring_v3.NotificationChannelServiceClient()
             >>>
-            >>> name = client.notification_channel_descriptor_path('[PROJECT]', '[CHANNEL_DESCRIPTOR]')
+            >>> name = client.notification_channel_descriptor_path('[PROJECT]', '[NOTIFICATION_CHANNEL_DESCRIPTOR]')
             >>>
             >>> response = client.get_notification_channel_descriptor(name)
 
