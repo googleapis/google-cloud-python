@@ -376,7 +376,7 @@ class PingingPool(AbstractSessionPool):
             for session_pb in resp.session:
                 session = self._new_session()
                 session._session_id = session_pb.name.split("/")[-1]
-                self._sessions.put(session)
+                self.put(session)
             created_session_count += len(resp.session)
 
     def get(self, timeout=None):  # pylint: disable=arguments-differ
