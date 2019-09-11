@@ -28,19 +28,18 @@ def copy_table(client, dataset_id, table_id):
     # TODO(developer): Set table_id to the ID of the original table.
     # table_id = "your-project.your_dataset.your_table_name"
 
-    orig_table = client.get_table(table_id)
-    dataset = client.get_dataset(dataset_id)
+    orig_table = client.get_table(table_id)  # API request.
+    dataset = client.get_dataset(dataset_id)  # API request.
     dest_table = dataset.table("destination_table")
 
     job = client.copy_table(
         orig_table,
         dest_table,
-        # Location must match that of the source and destination tables.
-        location="US",
+        location="US",  # Must match the source and destination tables location.
     )
-    job.result()
+    job.result()  # Waits for job to complete.
 
-    dest_table = client.get_table(dest_table)
+    dest_table = client.get_table(table_id)  # API request.
     if dest_table.num_rows == orig_table.num_rows:
         print("A copy of the table created.")
     # [END bigquery_copy_table]

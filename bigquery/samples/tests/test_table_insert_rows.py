@@ -27,6 +27,7 @@ def test_table_insert_rows(capsys, client, random_table_id):
 
     table = bigquery.Table(random_table_id, schema=schema)
     table = client.create_table(table)
+
     table_insert_rows.table_insert_rows(client, random_table_id)
     out, err = capsys.readouterr()
     assert "New rows have been added." in out
