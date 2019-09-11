@@ -1,0 +1,12 @@
+{
+  "updateTime": "2019-09-11T18:11:13.700572Z",
+  "sources": [
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ]
+}
