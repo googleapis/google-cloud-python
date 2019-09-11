@@ -1902,6 +1902,11 @@ class Bucket(_PropertyMixin):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
+        # Automatically set Policy version to 3, since it's backwards compatible
+        # with older versions.
+        if policy.version < 3:
+            policy.version = 3
+
         resource = policy.to_api_repr()
         resource["resourceId"] = self.path
         info = client._connection.api_request(
