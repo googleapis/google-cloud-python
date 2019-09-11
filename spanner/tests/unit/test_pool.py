@@ -156,8 +156,10 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertEqual(pool.default_timeout, 10)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
 
     def test_get_non_expired(self):
         pool = self._make_one(size=4)
@@ -183,7 +185,7 @@ class TestFixedSizePool(unittest.TestCase):
         session = pool.get()
 
         self.assertIs(session, SESSIONS[4])
-        self.assertTrue(session._created)
+        session.create.assert_called()
         self.assertTrue(SESSIONS[0]._exists_checked)
         self.assertFalse(pool._sessions.full())
 
@@ -243,8 +245,10 @@ class TestFixedSizePool(unittest.TestCase):
         pool.bind(database)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
 
         pool.clear()
 
@@ -286,7 +290,7 @@ class TestBurstyPool(unittest.TestCase):
 
         self.assertIsInstance(session, _Session)
         self.assertIs(session._database, database)
-        self.assertTrue(session._created)
+        session.create.assert_called()
         self.assertTrue(pool._sessions.empty())
 
     def test_get_non_empty_session_exists(self):
@@ -299,7 +303,7 @@ class TestBurstyPool(unittest.TestCase):
         session = pool.get()
 
         self.assertIs(session, previous)
-        self.assertFalse(session._created)
+        session.create.assert_not_called()
         self.assertTrue(session._exists_checked)
         self.assertTrue(pool._sessions.empty())
 
@@ -316,7 +320,7 @@ class TestBurstyPool(unittest.TestCase):
 
         self.assertTrue(previous._exists_checked)
         self.assertIs(session, newborn)
-        self.assertTrue(session._created)
+        session.create.assert_called()
         self.assertFalse(session._exists_checked)
         self.assertTrue(pool._sessions.empty())
 
@@ -405,7 +409,6 @@ class TestPingingPool(unittest.TestCase):
         database = _Database("name")
         SESSIONS = [_Session(database)] * 10
         database._sessions.extend(SESSIONS)
-
         pool.bind(database)
 
         self.assertIs(pool._database, database)
@@ -414,8 +417,10 @@ class TestPingingPool(unittest.TestCase):
         self.assertEqual(pool._delta.seconds, 3000)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
 
     def test_get_hit_no_ping(self):
         pool = self._make_one(size=4)
@@ -470,7 +475,7 @@ class TestPingingPool(unittest.TestCase):
         session = pool.get()
 
         self.assertIs(session, SESSIONS[4])
-        self.assertTrue(session._created)
+        session.create.assert_called()
         self.assertTrue(SESSIONS[0]._exists_checked)
         self.assertFalse(pool._sessions.full())
 
@@ -522,6 +527,7 @@ class TestPingingPool(unittest.TestCase):
         database = _Database("name")
         session = _Session(database)
 
+
         with _Monkey(MUT, _NOW=lambda: now):
             pool.put(session)
 
@@ -538,8 +544,10 @@ class TestPingingPool(unittest.TestCase):
         pool.bind(database)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
 
         pool.clear()
 
@@ -595,7 +603,7 @@ class TestPingingPool(unittest.TestCase):
             pool.ping()
 
         self.assertTrue(SESSIONS[0]._exists_checked)
-        self.assertTrue(SESSIONS[1]._created)
+        SESSIONS[1].create.assert_called()
 
 
 class TestTransactionPingingPool(unittest.TestCase):
@@ -635,7 +643,6 @@ class TestTransactionPingingPool(unittest.TestCase):
         database = _Database("name")
         SESSIONS = [_Session(database) for _ in range(10)]
         database._sessions.extend(SESSIONS)
-
         pool.bind(database)
 
         self.assertIs(pool._database, database)
@@ -644,8 +651,10 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertEqual(pool._delta.seconds, 3000)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
             txn = session._transaction
             self.assertTrue(txn._begun)
 
@@ -671,8 +680,10 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertEqual(pool._delta.seconds, 3000)
         self.assertTrue(pool._sessions.full())
 
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
         for session in SESSIONS:
-            self.assertTrue(session._created)
+            session.create.assert_not_called()
             txn = session._transaction
             self.assertTrue(txn._begun)
 
@@ -843,15 +854,12 @@ class _Session(object):
         self._database = database
         self._exists = exists
         self._exists_checked = False
-        self._created = False
+        self.create = mock.Mock()
         self._deleted = False
         self._transaction = transaction
 
     def __lt__(self, other):
         return id(self) < id(other)
-
-    def create(self):
-        self._created = True
 
     def exists(self):
         self._exists_checked = True
@@ -873,6 +881,20 @@ class _Database(object):
     def __init__(self, name):
         self.name = name
         self._sessions = []
+
+        def mock_batch_create_sessions(db, session_count=10, timeout=10, metadata=[]):
+             from google.cloud.spanner_v1.proto import spanner_pb2
+             response = spanner_pb2.BatchCreateSessionsResponse()
+             if session_count < 2:
+                 response.session.add()
+             else:
+                 response.session.add()
+                 response.session.add()
+             return response
+
+        from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
+        self.spanner_api = mock.create_autospec(SpannerClient, instance=True)
+        self.spanner_api.batch_create_sessions.side_effect = mock_batch_create_sessions
 
     def session(self):
         return self._sessions.pop()
