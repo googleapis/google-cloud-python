@@ -29,7 +29,7 @@ from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
-from google.api_core.iam import PolicyV2
+from google.api_core.iam import PolicyV3
 from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
@@ -1788,10 +1788,10 @@ class Bucket(_PropertyMixin):
         )
         return Policy.from_api_repr(info)
 
-    def get_iam_policy_v2(self, requested_version=None, client=None):
-        """Retrieve the IAM policy for the bucket as a PolicyV2 object.
+    def get_iam_policy_v3(self, requested_version=None, client=None):
+        """Retrieve the IAM policy for the bucket as a PolicyV3 object.
 
-        `get_iam_policy_v2` supports all policy versions while the legacy
+        `get_iam_policy_v3` supports all policy versions while the legacy
         `get_iam_policy` only support retrieving a Policy with version 1.
 
         See
@@ -1811,7 +1811,7 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`google.api_core.iam.PolicyV2`
+        :rtype: :class:`google.api_core.iam.PolicyV3`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
         """
@@ -1830,7 +1830,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=None,
         )
-        return PolicyV2.from_api_repr(info)
+        return PolicyV3.from_api_repr(info)
 
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
@@ -1869,10 +1869,10 @@ class Bucket(_PropertyMixin):
         )
         return Policy.from_api_repr(info)
 
-    def set_iam_policy_v2(self, policy, client=None):
-        """Update the IAM policy for the bucket with a PolicyV2 object.
+    def set_iam_policy_v3(self, policy, client=None):
+        """Update the IAM policy for the bucket with a PolicyV3 object.
 
-        `set_iam_policy_v2` supports all policy versions while the legacy
+        `set_iam_policy_v3` supports all policy versions while the legacy
         `set_iam_policy` only support retrieving a Policy with version 1.
 
         See
@@ -1880,21 +1880,21 @@ class Bucket(_PropertyMixin):
 
         If :attr:`user_project` is set, bills the API request to that project.
 
-        :type policy: :class:`google.api_core.iam.PolicyV2`
-        :param policy: PolicyV2 instance used to update bucket's IAM policy.
+        :type policy: :class:`google.api_core.iam.PolicyV3`
+        :param policy: PolicyV3 instance used to update bucket's IAM policy.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`google.api_core.iam.PolicyV2`
-        :returns: the PolicyV2 instance, based on the resource returned from
+        :rtype: :class:`google.api_core.iam.PolicyV3`
+        :returns: the PolicyV3 instance, based on the resource returned from
                   the ``setIamPolicy`` API request.
         """
-        if not isinstance(policy, PolicyV2):
-            raise TypeError("policy argument to set_iam_policy_v2 must be "
-                            "an instance of google.api_core.iam.PolicyV2.")
+        if not isinstance(policy, PolicyV3):
+            raise TypeError("policy argument to set_iam_policy_v3 must be "
+                            "an instance of google.api_core.iam.PolicyV3.")
 
         client = self._require_client(client)
         query_params = {}
@@ -1911,7 +1911,7 @@ class Bucket(_PropertyMixin):
             data=resource,
             _target_object=None,
         )
-        return PolicyV2.from_api_repr(info)
+        return PolicyV3.from_api_repr(info)
 
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions

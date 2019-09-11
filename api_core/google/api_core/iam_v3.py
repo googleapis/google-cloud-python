@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Non-API-specific IAM policy v2 definitions
+"""Non-API-specific IAM policy v3 definitions
 
 For allowed roles / permissions, see:
 https://cloud.google.com/iam/docs/understanding-roles
@@ -20,8 +20,8 @@ Example usage:
 
 .. code-block:: python
 
-   # ``get_iam_policy_v2`` returns a :class:'~google.api_core.iam.PolicyV2`.
-   policy = resource.get_iam_policy_v2()
+   # ``get_iam_policy_v3`` returns a :class:'~google.api_core.iam.PolicyV3`.
+   policy = resource.get_iam_policy_v3()
 
    phred = policy.user("phred@example.com")
    admin_group = policy.group("admins@groups.example.com")
@@ -31,12 +31,12 @@ Example usage:
        "members": [phred, admin_group, account]
    })
 
-   resource.set_iam_policy_v2(policy)
+   resource.set_iam_policy_v3(policy)
 """
 
-class PolicyV2():
-    """IAM Policy v2
-    The PolicyV2 class supports all version values of Policy, where the legacy
+class PolicyV3():
+    """IAM Policy v3
+    The PolicyV3 class supports all version values of Policy, while the legacy
     Policy class only supports a Policy version of 1.
 
     See <insert versioning doc>
