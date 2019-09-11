@@ -73,7 +73,7 @@ def _make_job_resource(
     started=False,
     ended=False,
     etag="abc-def-hjk",
-    endpoint="https://www.googleapis.com",
+    endpoint="https://bigquery.googleapis.com",
     job_type="load",
     job_id="a-random-id",
     project_id="some-project",
@@ -1022,7 +1022,7 @@ class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
 
-    ENDPOINT = "https://www.googleapis.com"
+    ENDPOINT = "https://bigquery.googleapis.com"
     PROJECT = "project"
     SOURCE1 = "http://example.com/source1.csv"
     DS_ID = "dataset_id"

@@ -3127,7 +3127,7 @@ class TestClient(unittest.TestCase):
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
         upload_url = (
-            "https://www.googleapis.com/upload/bigquery/v2/projects/"
+            "https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
             + self.PROJECT
             + "/jobs?uploadType=resumable"
         )
@@ -3196,7 +3196,7 @@ class TestClient(unittest.TestCase):
         get_boundary.assert_called_once_with()
 
         upload_url = (
-            "https://www.googleapis.com/upload/bigquery/v2/projects/"
+            "https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
             + self.PROJECT
             + "/jobs?uploadType=multipart"
         )
