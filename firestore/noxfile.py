@@ -98,9 +98,8 @@ def system(session):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
     # Sanity check: Only run tests if the environment variable is set.
-    if not os.getenv("FIRESTORE_EMULATOR_HOST"):
-        if not os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS", ""):
-            session.skip("Credentials must be set via environment variable")
+    if not os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable")
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
