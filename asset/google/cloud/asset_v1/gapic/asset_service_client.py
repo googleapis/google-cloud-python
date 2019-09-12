@@ -28,7 +28,6 @@ import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
-import google.api_core.path_template
 import grpc
 
 from google.cloud.asset_v1.gapic import asset_service_client_config
@@ -73,13 +72,6 @@ class AssetServiceClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
-
-    @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
 
     def __init__(
         self,

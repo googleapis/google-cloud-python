@@ -15,11 +15,23 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.cloud.orgpolicy_v1.proto import (
+    orgpolicy_pb2 as google_dot_cloud_dot_orgpolicy__v1_dot_proto_dot_orgpolicy__pb2,
+)
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
+from google.cloud.identity.accesscontextmanager_v1.proto import (
+    access_level_pb2 as google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__level__pb2,
+)
+from google.cloud.identity.accesscontextmanager_v1.proto import (
+    access_policy_pb2 as google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__policy__pb2,
+)
+from google.cloud.identity.accesscontextmanager_v1.proto import (
+    service_perimeter_pb2 as google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_service__perimeter__pb2,
+)
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -27,17 +39,21 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\031com.google.cloud.asset.v1B\nAssetProtoP\001Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\252\002\025Google.Cloud.Asset.V1\312\002\025Google\\Cloud\\Asset\\V1"
+        "\n\031com.google.cloud.asset.v1B\nAssetProtoP\001Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\370\001\001\252\002\025Google.Cloud.Asset.V1\312\002\025Google\\Cloud\\Asset\\V1"
     ),
     serialized_pb=_b(
-        '\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x80\x01\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x87\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\x95\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3'
+        '\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a/google/cloud/orgpolicy_v1/proto/orgpolicy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x46google/cloud/identity/accesscontextmanager_v1/proto/access_level.proto\x1aGgoogle/cloud/identity/accesscontextmanager_v1/proto/access_policy.proto\x1aKgoogle/cloud/identity/accesscontextmanager_v1/proto/service_perimeter.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x80\x01\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xcd\x03\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x35\n\norg_policy\x18\x06 \x03(\x0b\x32!.google.cloud.orgpolicy.v1.Policy\x12N\n\raccess_policy\x18\x07 \x01(\x0b\x32\x35.google.identity.accesscontextmanager.v1.AccessPolicyH\x00\x12L\n\x0c\x61\x63\x63\x65ss_level\x18\x08 \x01(\x0b\x32\x34.google.identity.accesscontextmanager.v1.AccessLevelH\x00\x12V\n\x11service_perimeter\x18\t \x01(\x0b\x32\x39.google.identity.accesscontextmanager.v1.ServicePerimeterH\x00\x42\x17\n\x15\x61\x63\x63\x65ss_context_policy"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\x98\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xf8\x01\x01\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_orgpolicy__v1_dot_proto_dot_orgpolicy__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__level__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__policy__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_service__perimeter__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -112,8 +128,8 @@ _TEMPORALASSET = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=216,
-    serialized_end=344,
+    serialized_start=487,
+    serialized_end=615,
 )
 
 
@@ -169,8 +185,8 @@ _TIMEWINDOW = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=346,
-    serialized_end=452,
+    serialized_start=617,
+    serialized_end=723,
 )
 
 
@@ -253,6 +269,78 @@ _ASSET = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="org_policy",
+            full_name="google.cloud.asset.v1.Asset.org_policy",
+            index=4,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="access_policy",
+            full_name="google.cloud.asset.v1.Asset.access_policy",
+            index=5,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="access_level",
+            full_name="google.cloud.asset.v1.Asset.access_level",
+            index=6,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="service_perimeter",
+            full_name="google.cloud.asset.v1.Asset.service_perimeter",
+            index=7,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -261,9 +349,17 @@ _ASSET = _descriptor.Descriptor(
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
-    oneofs=[],
-    serialized_start=455,
-    serialized_end=590,
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="access_context_policy",
+            full_name="google.cloud.asset.v1.Asset.access_context_policy",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=726,
+    serialized_end=1187,
 )
 
 
@@ -391,8 +487,8 @@ _RESOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=593,
-    serialized_end=753,
+    serialized_start=1190,
+    serialized_end=1350,
 )
 
 _TEMPORALASSET.fields_by_name["window"].message_type = _TIMEWINDOW
@@ -409,6 +505,42 @@ _ASSET.fields_by_name[
 ].message_type = (
     google_dot_iam_dot_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY
 )
+_ASSET.fields_by_name[
+    "org_policy"
+].message_type = google_dot_cloud_dot_orgpolicy__v1_dot_proto_dot_orgpolicy__pb2._POLICY
+_ASSET.fields_by_name[
+    "access_policy"
+].message_type = (
+    google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__policy__pb2._ACCESSPOLICY
+)
+_ASSET.fields_by_name[
+    "access_level"
+].message_type = (
+    google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_access__level__pb2._ACCESSLEVEL
+)
+_ASSET.fields_by_name[
+    "service_perimeter"
+].message_type = (
+    google_dot_cloud_dot_identity_dot_accesscontextmanager__v1_dot_proto_dot_service__perimeter__pb2._SERVICEPERIMETER
+)
+_ASSET.oneofs_by_name["access_context_policy"].fields.append(
+    _ASSET.fields_by_name["access_policy"]
+)
+_ASSET.fields_by_name["access_policy"].containing_oneof = _ASSET.oneofs_by_name[
+    "access_context_policy"
+]
+_ASSET.oneofs_by_name["access_context_policy"].fields.append(
+    _ASSET.fields_by_name["access_level"]
+)
+_ASSET.fields_by_name["access_level"].containing_oneof = _ASSET.oneofs_by_name[
+    "access_context_policy"
+]
+_ASSET.oneofs_by_name["access_context_policy"].fields.append(
+    _ASSET.fields_by_name["service_perimeter"]
+)
+_ASSET.fields_by_name["service_perimeter"].containing_oneof = _ASSET.oneofs_by_name[
+    "access_context_policy"
+]
 _RESOURCE.fields_by_name[
     "data"
 ].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
@@ -487,6 +619,12 @@ Asset = _reflection.GeneratedProtocolMessageType(
           Representation of the actual Cloud IAM policy set on a cloud
           resource. For each resource, there must be at most one Cloud
           IAM policy set on it.
+      org_policy:
+          Representation of the Cloud Organization Policy set on an
+          asset. For each asset, there could be multiple Organization
+          policies with different constraints.
+      access_context_policy:
+          Representation of the Cloud Organization access policy.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.Asset)
     ),
