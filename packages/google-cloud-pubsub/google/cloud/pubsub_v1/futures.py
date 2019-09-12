@@ -94,7 +94,7 @@ class Future(google.api_core.future.Future):
                 times out and raises TimeoutError.
 
         Raises:
-            ~.pubsub_v1.TimeoutError: If the request times out.
+            concurrent.futures.TimeoutError: If the request times out.
             Exception: For undefined exceptions in the underlying
                 call execution.
         """
@@ -114,7 +114,7 @@ class Future(google.api_core.future.Future):
                 times out and raises TimeoutError.
 
         Raises:
-            TimeoutError: If the request times out.
+            concurrent.futures.TimeoutError: If the request times out.
 
         Returns:
             Exception: The exception raised by the call, if any.

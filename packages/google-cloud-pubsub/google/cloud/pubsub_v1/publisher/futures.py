@@ -39,7 +39,7 @@ class Future(futures.Future):
             str: The message ID.
 
         Raises:
-            ~.pubsub_v1.TimeoutError: If the request times out.
+            concurrent.futures.TimeoutError: If the request times out.
             Exception: For undefined exceptions in the underlying
                 call execution.
         """
