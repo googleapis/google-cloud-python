@@ -14,6 +14,8 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+import os
+
 import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
@@ -94,6 +96,10 @@ class Client(ClientWithProject):
         )
 
         kw_args = {"client_info": client_info}
+
+        if os.environ.get("STORAGE_EMULATOR_HOST"):
+            kw_args["api_endpoint"] = os.environ.get("STORAGE_EMULATOR_HOST")
+
         if client_options:
             if type(client_options) == dict:
                 client_options = google.api_core.client_options.from_dict(

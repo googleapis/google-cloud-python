@@ -30,6 +30,9 @@ PUBSUB_EMULATOR = "PUBSUB_EMULATOR_HOST"
 BIGTABLE_EMULATOR = "BIGTABLE_EMULATOR_HOST"
 """Environment variable defining host for Bigtable emulator."""
 
+STORAGE_EMULATOR = "STORAGE_EMULATOR_HOST"
+"""Environment variable defining host for Storage emulator."""
+
 DISABLE_GRPC = "GOOGLE_CLOUD_DISABLE_GRPC"
 """Environment variable acting as flag to disable gRPC.
 
