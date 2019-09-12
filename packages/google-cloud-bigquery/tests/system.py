@@ -1951,6 +1951,73 @@ class TestBigQuery(unittest.TestCase):
                     if not row[col] is None:
                         self.assertIsInstance(row[col], exp_datatypes[col])
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_insert_rows_from_dataframe(self):
+        SF = bigquery.SchemaField
+        schema = [
+            SF("float_col", "FLOAT", mode="REQUIRED"),
+            SF("int_col", "INTEGER", mode="REQUIRED"),
+            SF("bool_col", "BOOLEAN", mode="REQUIRED"),
+            SF("string_col", "STRING", mode="NULLABLE"),
+        ]
+
+        dataframe = pandas.DataFrame(
+            [
+                {
+                    "float_col": 1.11,
+                    "bool_col": True,
+                    "string_col": "my string",
+                    "int_col": 10,
+                },
+                {
+                    "float_col": 2.22,
+                    "bool_col": False,
+                    "string_col": "another string",
+                    "int_col": 20,
+                },
+                {
+                    "float_col": 3.33,
+                    "bool_col": False,
+                    "string_col": "another string",
+                    "int_col": 30,
+                },
+                {
+                    "float_col": 4.44,
+                    "bool_col": True,
+                    "string_col": "another string",
+                    "int_col": 40,
+                },
+                {
+                    "float_col": 5.55,
+                    "bool_col": False,
+                    "string_col": "another string",
+                    "int_col": 50,
+                },
+            ]
+        )
+
+        table_id = "test_table"
+        dataset = self.temp_dataset(_make_dataset_id("issue_7553"))
+        table_arg = Table(dataset.table(table_id), schema=schema)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        Config.CLIENT.insert_rows_from_dataframe(table, dataframe, chunk_size=3)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        rows = retry(self._fetch_single_page)(table)
+
+        sorted_rows = sorted(rows, key=operator.attrgetter("int_col"))
+        row_tuples = [r.values() for r in sorted_rows]
+        expected = [tuple(data_row) for data_row in dataframe.itertuples(index=False)]
+
+        assert len(row_tuples) == len(expected)
+
+        for row, expected_row in zip(row_tuples, expected):
+            six.assertCountEqual(
+                self, row, expected_row
+            )  # column order does not matter
+
     def test_insert_rows_nested_nested(self):
         # See #2951
         SF = bigquery.SchemaField
