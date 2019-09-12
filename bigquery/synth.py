@@ -47,6 +47,11 @@ s.replace(
     '"""Attributes:',
     '"""Protocol buffer.\n\n  Attributes:',
 )
+s.replace(
+    "google/cloud/bigquery_v2/proto/encryption_config_pb2.py",
+    '"""Attributes:',
+    '"""Encryption configuration.\n\n  Attributes:',
+)
 
 # Remove non-ascii characters from docstrings for Python 2.7.
 # Format quoted strings as plain text.
