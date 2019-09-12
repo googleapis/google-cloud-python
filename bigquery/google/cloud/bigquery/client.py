@@ -15,6 +15,7 @@
 """Client for interacting with the Google BigQuery API."""
 
 from __future__ import absolute_import
+from __future__ import division
 
 try:
     from collections import abc as collections_abc
@@ -25,7 +26,9 @@ import copy
 import functools
 import gzip
 import io
+import itertools
 import json
+import math
 import os
 import tempfile
 import uuid
@@ -2110,6 +2113,57 @@ class Client(ClientWithProject):
         json_rows = [_record_field_to_json(schema, row) for row in rows]
 
         return self.insert_rows_json(table, json_rows, **kwargs)
+
+    def insert_rows_from_dataframe(
+        self, table, dataframe, selected_fields=None, chunk_size=500, **kwargs
+    ):
+        """Insert rows into a table from a dataframe via the streaming API.
+
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                The destination table for the row data, or a reference to it.
+            dataframe (pandas.DataFrame):
+                A :class:`~pandas.DataFrame` containing the data to load.
+            selected_fields (Sequence[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            ]):
+                The fields to return. Required if ``table`` is a
+                :class:`~google.cloud.bigquery.table.TableReference`.
+            chunk_size (int):
+                The number of rows to stream in a single chunk. Must be positive.
+            kwargs (dict):
+                Keyword arguments to
+                :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`.
+
+        Returns:
+            Sequence[Sequence[Mappings]]:
+                A list with insert errors for each insert chunk. Each element
+                is a list containing one mapping per row with insert errors:
+                the "index" key identifies the row, and the "errors" key
+                contains a list of the mappings describing one or more problems
+                with the row.
+
+        Raises:
+            ValueError: if table's schema is not set
+        """
+        insert_results = []
+
+        chunk_count = int(math.ceil(len(dataframe) / chunk_size))
+        rows_iter = (
+            dict(six.moves.zip(dataframe.columns, row))
+            for row in dataframe.itertuples(index=False, name=None)
+        )
+
+        for _ in range(chunk_count):
+            rows_chunk = itertools.islice(rows_iter, chunk_size)
+            result = self.insert_rows(table, rows_chunk, selected_fields, **kwargs)
+            insert_results.append(result)
+
+        return insert_results
 
     def insert_rows_json(
         self,
