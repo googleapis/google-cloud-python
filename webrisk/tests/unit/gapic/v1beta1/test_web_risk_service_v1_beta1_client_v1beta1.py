@@ -158,11 +158,14 @@ class TestWebRiskServiceV1Beta1Client(object):
             create_channel.return_value = channel
             client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
 
-        response = client.search_hashes()
+        # Setup Request
+        threat_types = []
+
+        response = client.search_hashes(threat_types)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = webrisk_pb2.SearchHashesRequest()
+        expected_request = webrisk_pb2.SearchHashesRequest(threat_types=threat_types)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -174,5 +177,8 @@ class TestWebRiskServiceV1Beta1Client(object):
             create_channel.return_value = channel
             client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
 
+        # Setup request
+        threat_types = []
+
         with pytest.raises(CustomException):
-            client.search_hashes()
+            client.search_hashes(threat_types)

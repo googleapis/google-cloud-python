@@ -4473,6 +4473,130 @@ class TestClient(unittest.TestCase):
             data=sent,
         )
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_insert_rows_from_dataframe(self):
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
+            self.PROJECT, self.DS_ID, self.TABLE_REF.table_id
+        )
+
+        dataframe = pandas.DataFrame(
+            [
+                {"name": u"Little One", "age": 10, "adult": False},
+                {"name": u"Young Gun", "age": 20, "adult": True},
+                {"name": u"Dad", "age": 30, "adult": True},
+                {"name": u"Stranger", "age": 40, "adult": True},
+            ]
+        )
+
+        # create client
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({}, {})
+
+        # create table
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+            SchemaField("adult", "BOOLEAN", mode="REQUIRED"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        with mock.patch("uuid.uuid4", side_effect=map(str, range(len(dataframe)))):
+            error_info = client.insert_rows_from_dataframe(
+                table, dataframe, chunk_size=3
+            )
+
+        self.assertEqual(len(error_info), 2)
+        for chunk_errors in error_info:
+            assert chunk_errors == []
+
+        EXPECTED_SENT_DATA = [
+            {
+                "rows": [
+                    {
+                        "insertId": "0",
+                        "json": {"name": "Little One", "age": "10", "adult": "false"},
+                    },
+                    {
+                        "insertId": "1",
+                        "json": {"name": "Young Gun", "age": "20", "adult": "true"},
+                    },
+                    {
+                        "insertId": "2",
+                        "json": {"name": "Dad", "age": "30", "adult": "true"},
+                    },
+                ]
+            },
+            {
+                "rows": [
+                    {
+                        "insertId": "3",
+                        "json": {"name": "Stranger", "age": "40", "adult": "true"},
+                    }
+                ]
+            },
+        ]
+
+        actual_calls = conn.api_request.call_args_list
+
+        for call, expected_data in six.moves.zip_longest(
+            actual_calls, EXPECTED_SENT_DATA
+        ):
+            expected_call = mock.call(method="POST", path=API_PATH, data=expected_data)
+            assert call == expected_call
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_insert_rows_from_dataframe_many_columns(self):
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
+            self.PROJECT, self.DS_ID, self.TABLE_REF.table_id
+        )
+        N_COLUMNS = 256  # should be >= 256
+
+        dataframe = pandas.DataFrame(
+            [{"foo_{}".format(i): "bar_{}".format(i) for i in range(N_COLUMNS)}]
+        )
+
+        # create client
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({}, {})
+
+        # create table
+        schema = [SchemaField("foo_{}".format(i), "STRING") for i in range(N_COLUMNS)]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        with mock.patch("uuid.uuid4", side_effect=map(str, range(len(dataframe)))):
+            error_info = client.insert_rows_from_dataframe(
+                table, dataframe, chunk_size=3
+            )
+
+        assert len(error_info) == 1
+        assert error_info[0] == []
+
+        EXPECTED_SENT_DATA = {
+            "rows": [
+                {
+                    "insertId": "0",
+                    "json": {
+                        "foo_{}".format(i): "bar_{}".format(i) for i in range(N_COLUMNS)
+                    },
+                }
+            ]
+        }
+        expected_call = mock.call(method="POST", path=API_PATH, data=EXPECTED_SENT_DATA)
+
+        actual_calls = conn.api_request.call_args_list
+        assert len(actual_calls) == 1
+        assert actual_calls[0] == expected_call
+
     def test_insert_rows_json(self):
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference

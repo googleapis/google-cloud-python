@@ -43,33 +43,55 @@ def scalar_to_query_parameter(value, name=None):
     :raises: :class:`~google.cloud.bigquery.dbapi.exceptions.ProgrammingError`
         if the type cannot be determined.
     """
-    parameter_type = None
+    parameter_type = bigquery_scalar_type(value)
 
-    if isinstance(value, bool):
-        parameter_type = "BOOL"
-    elif isinstance(value, numbers.Integral):
-        parameter_type = "INT64"
-    elif isinstance(value, numbers.Real):
-        parameter_type = "FLOAT64"
-    elif isinstance(value, decimal.Decimal):
-        parameter_type = "NUMERIC"
-    elif isinstance(value, six.text_type):
-        parameter_type = "STRING"
-    elif isinstance(value, six.binary_type):
-        parameter_type = "BYTES"
-    elif isinstance(value, datetime.datetime):
-        parameter_type = "DATETIME" if value.tzinfo is None else "TIMESTAMP"
-    elif isinstance(value, datetime.date):
-        parameter_type = "DATE"
-    elif isinstance(value, datetime.time):
-        parameter_type = "TIME"
-    else:
+    if parameter_type is None:
         raise exceptions.ProgrammingError(
             "encountered parameter {} with value {} of unexpected type".format(
                 name, value
             )
         )
     return bigquery.ScalarQueryParameter(name, parameter_type, value)
+
+
+def array_to_query_parameter(value, name=None):
+    """Convert an array-like value into a query parameter.
+
+    Args:
+        value (Sequence[Any]): The elements of the array (should not be a
+            string-like Sequence).
+        name (Optional[str]): Name of the query parameter.
+
+    Returns:
+        A query parameter corresponding with the type and value of the plain
+        Python object.
+
+    Raises:
+        :class:`~google.cloud.bigquery.dbapi.exceptions.ProgrammingError`
+        if the type of array elements cannot be determined.
+    """
+    if not array_like(value):
+        raise exceptions.ProgrammingError(
+            "The value of parameter {} must be a sequence that is "
+            "not string-like.".format(name)
+        )
+
+    if not value:
+        raise exceptions.ProgrammingError(
+            "Encountered an empty array-like value of parameter {}, cannot "
+            "determine array elements type.".format(name)
+        )
+
+    # Assume that all elements are of the same type, and let the backend handle
+    # any type incompatibilities among the array elements
+    array_type = bigquery_scalar_type(value[0])
+    if array_type is None:
+        raise exceptions.ProgrammingError(
+            "Encountered unexpected first array element of parameter {}, "
+            "cannot determine array elements type.".format(name)
+        )
+
+    return bigquery.ArrayQueryParameter(name, array_type, value)
 
 
 def to_query_parameters_list(parameters):
@@ -81,7 +103,18 @@ def to_query_parameters_list(parameters):
     :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of query parameters.
     """
-    return [scalar_to_query_parameter(value) for value in parameters]
+    result = []
+
+    for value in parameters:
+        if isinstance(value, collections_abc.Mapping):
+            raise NotImplementedError("STRUCT-like parameter values are not supported.")
+        elif array_like(value):
+            param = array_to_query_parameter(value)
+        else:
+            param = scalar_to_query_parameter(value)
+        result.append(param)
+
+    return result
 
 
 def to_query_parameters_dict(parameters):
@@ -93,10 +126,21 @@ def to_query_parameters_dict(parameters):
     :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of named query parameters.
     """
-    return [
-        scalar_to_query_parameter(value, name=name)
-        for name, value in six.iteritems(parameters)
-    ]
+    result = []
+
+    for name, value in six.iteritems(parameters):
+        if isinstance(value, collections_abc.Mapping):
+            raise NotImplementedError(
+                "STRUCT-like parameter values are not supported "
+                "(parameter {}).".format(name)
+            )
+        elif array_like(value):
+            param = array_to_query_parameter(value, name=name)
+        else:
+            param = scalar_to_query_parameter(value, name=name)
+        result.append(param)
+
+    return result
 
 
 def to_query_parameters(parameters):
@@ -115,3 +159,55 @@ def to_query_parameters(parameters):
         return to_query_parameters_dict(parameters)
 
     return to_query_parameters_list(parameters)
+
+
+def bigquery_scalar_type(value):
+    """Return a BigQuery name of the scalar type that matches the given value.
+
+    If the scalar type name could not be determined (e.g. for non-scalar
+    values), ``None`` is returned.
+
+    Args:
+        value (Any)
+
+    Returns:
+        Optional[str]: The BigQuery scalar type name.
+    """
+    if isinstance(value, bool):
+        return "BOOL"
+    elif isinstance(value, numbers.Integral):
+        return "INT64"
+    elif isinstance(value, numbers.Real):
+        return "FLOAT64"
+    elif isinstance(value, decimal.Decimal):
+        return "NUMERIC"
+    elif isinstance(value, six.text_type):
+        return "STRING"
+    elif isinstance(value, six.binary_type):
+        return "BYTES"
+    elif isinstance(value, datetime.datetime):
+        return "DATETIME" if value.tzinfo is None else "TIMESTAMP"
+    elif isinstance(value, datetime.date):
+        return "DATE"
+    elif isinstance(value, datetime.time):
+        return "TIME"
+
+    return None
+
+
+def array_like(value):
+    """Determine if the given value is array-like.
+
+    Examples of array-like values (as interpreted by this function) are
+    sequences such as ``list`` and ``tuple``, but not strings and other
+    iterables such as sets.
+
+    Args:
+        value (Any)
+
+    Returns:
+        bool: ``True`` if the value is considered array-like, ``False`` otherwise.
+    """
+    return isinstance(value, collections_abc.Sequence) and not isinstance(
+        value, (six.text_type, six.binary_type, bytearray)
+    )
