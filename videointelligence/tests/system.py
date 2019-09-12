@@ -29,6 +29,7 @@ CLOUD_PLATFORM_SCOPE = 'https://www.googleapis.com/auth/cloud-platform'
 CREDENTIALS_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 OUTSIDE_IP = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_IP")
 INSIDE_IP = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_IP")
+IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC")
 
 def get_access_token():
   """Returns an access token.
@@ -100,6 +101,9 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
 
     @unittest.skipUnless(
         OUTSIDE_IP, "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_IP not set in environment."
+    )
+    @unittest.skipUnless(
+        IS_INSIDE_VPCSC, "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment."
     )
     def test_outside_ip_address_blocked(self):
         headers = {
