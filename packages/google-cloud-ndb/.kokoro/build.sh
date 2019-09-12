@@ -23,6 +23,11 @@ sudo apt-get update
 sudo apt-get -y install dictionaries-common aspell aspell-en \
                         hunspell-en-us libenchant1c2a enchant
 
+# Need enchant for spell check
+sudo apt-get update
+sudo apt-get -y install dictionaries-common aspell aspell-en \
+                        hunspell-en-us libenchant1c2a enchant
+
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
@@ -34,6 +39,11 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
 # Setup project id.
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+
+# Some system tests require indexes. Use gcloud to create them.
+gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
+gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
+
 
 # Some system tests require indexes. Use gcloud to create them.
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
