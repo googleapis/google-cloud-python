@@ -17,7 +17,7 @@
 
 ### New Features
 - Add 'Model.encryption_config' (via synth) ([#9214](https://github.com/googleapis/google-cloud-python/pull/9214))
-- Add client.insert_rows_from_dataframe() method ([#9162](https://github.com/googleapis/google-cloud-python/pull/9162))
+- Add `Client.insert_rows_from_dataframe()` method ([#9162](https://github.com/googleapis/google-cloud-python/pull/9162))
 - Add support for array parameters to Cursor.execute() ([#9189](https://github.com/googleapis/google-cloud-python/pull/9189))
 - Add support of the project ID with org prefix to the Table.from_string() method ([#9161](https://github.com/googleapis/google-cloud-python/pull/9161))
 - Add `--max_results` option to Jupyter magics ([#9169](https://github.com/googleapis/google-cloud-python/pull/9169))
