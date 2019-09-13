@@ -197,9 +197,7 @@ HistogramQuery = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HISTOGRAMQUERY,
         __module__="google.cloud.talent_v4beta1.proto.histogram_pb2",
-        __doc__="""Input Only.
-  
-  The histogram request.
+        __doc__="""The histogram request.
   
   
   Attributes:
@@ -231,9 +229,7 @@ HistogramQueryResult = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_HISTOGRAMQUERYRESULT,
         __module__="google.cloud.talent_v4beta1.proto.histogram_pb2",
-        __doc__="""Output only.
-  
-  Histogram result that matches
+        __doc__="""Histogram result that matches
   [HistogramQuery][google.cloud.talent.v4beta1.HistogramQuery] specified
   in searches.
   

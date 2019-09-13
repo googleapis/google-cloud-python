@@ -249,10 +249,8 @@ class CompanyServiceClient(object):
                 created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and a default tenant is created if unspecified,
-                for example, "projects/api-test-project".
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created, for example, "projects/foo".
             company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required. The company to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -333,8 +331,8 @@ class CompanyServiceClient(object):
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
                 for example, "projects/api-test-project/tenants/foo/companies/bar".
 
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/companies/bar".
+                If tenant id is unspecified, the default tenant is used, for example,
+                "projects/api-test-project/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -410,7 +408,7 @@ class CompanyServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Company`
-            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended for the best service experience.
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Strongly recommended for the best service experience.
 
                 If ``update_mask`` is provided, only the specified fields in ``company``
                 are updated. Otherwise all the fields are updated.
@@ -495,10 +493,10 @@ class CompanyServiceClient(object):
 
                 The format is
                 "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
-                for example, "projects/api-test-project/tenants/foo/companies/bar".
+                for example, "projects/foo/tenants/bar/companies/baz".
 
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/companies/bar".
+                If tenant id is unspecified, the default tenant is used, for example,
+                "projects/foo/companies/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -582,16 +580,16 @@ class CompanyServiceClient(object):
                 created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
+                example, "projects/foo/tenant/bar".
 
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                If tenant id is unspecified, the default tenant will be used, for
+                example, "projects/foo".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            require_open_jobs (bool): Optional. Set to true if the companies requested must have open jobs.
+            require_open_jobs (bool): Set to true if the companies requested must have open jobs.
 
                 Defaults to false.
 

@@ -282,11 +282,9 @@ class JobServiceClient(object):
             parent (str): Required. The resource name of the tenant under which the job is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and a default tenant is created if unspecified,
-                for example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified a
+                default tenant is created. For example, "projects/foo".
             job (Union[dict, ~google.cloud.talent_v4beta1.types.Job]): Required. The Job to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -363,11 +361,11 @@ class JobServiceClient(object):
             name (str): Required. The resource name of the job to retrieve.
 
                 The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
-                example, "projects/api-test-project/tenants/foo/jobs/1234".
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}". For
+                example, "projects/foo/tenants/bar/jobs/baz".
 
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/jobs/1234".
+                If tenant id is unspecified, the default tenant is used. For example,
+                "projects/foo/jobs/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -445,8 +443,7 @@ class JobServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Job`
-            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended to be provided for the best service
-                experience.
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Strongly recommended for the best service experience.
 
                 If ``update_mask`` is provided, only the specified fields in ``job`` are
                 updated. Otherwise all the fields are updated.
@@ -530,11 +527,11 @@ class JobServiceClient(object):
             name (str): Required. The resource name of the job to be deleted.
 
                 The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}", for
-                example, "projects/api-test-project/tenants/foo/jobs/1234".
+                "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}". For
+                example, "projects/foo/tenants/bar/jobs/baz".
 
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project/jobs/1234".
+                If tenant id is unspecified, the default tenant is used. For example,
+                "projects/foo/jobs/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -621,11 +618,9 @@ class JobServiceClient(object):
             parent (str): Required. The resource name of the tenant under which the job is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
             filter_ (str): Required. The filter string specifies the jobs to be enumerated.
 
                 Supported operator: =, AND
@@ -633,25 +628,24 @@ class JobServiceClient(object):
                 The fields eligible for filtering are:
 
                 -  ``companyName`` (Required)
-                -  ``requisitionId`` (Optional)
-                -  ``status`` (Optional) Available values: OPEN, EXPIRED, ALL. Defaults
-                   to OPEN if no value is specified.
+                -  ``requisitionId``
+                -  ``status`` Available values: OPEN, EXPIRED, ALL. Defaults to OPEN if
+                   no value is specified.
 
                 Sample Query:
 
-                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
-                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
-                   AND requisitionId = "req-1"
-                -  companyName = "projects/api-test-project/tenants/foo/companies/bar"
-                   AND status = "EXPIRED"
+                -  companyName = "projects/foo/tenants/bar/companies/baz"
+                -  companyName = "projects/foo/tenants/bar/companies/baz" AND
+                   requisitionId = "req-1"
+                -  companyName = "projects/foo/tenants/bar/companies/baz" AND status =
+                   "EXPIRED"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search
-                response. Defaults to ``JobView.JOB_VIEW_FULL`` if no value is
-                specified.
+            job_view (~google.cloud.talent_v4beta1.types.JobView): The desired job attributes returned for jobs in the search response.
+                Defaults to ``JobView.JOB_VIEW_FULL`` if no value is specified.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -743,11 +737,9 @@ class JobServiceClient(object):
             parent (str): Required. The resource name of the tenant under which the job is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
             filter_ (str): Required. The filter string specifies the jobs to be deleted.
 
                 Supported operator: =, AND
@@ -757,8 +749,8 @@ class JobServiceClient(object):
                 -  ``companyName`` (Required)
                 -  ``requisitionId`` (Required)
 
-                Sample Query: companyName = "projects/api-test-project/companies/123"
-                AND requisitionId = "req-1"
+                Sample Query: companyName = "projects/foo/companies/bar" AND
+                requisitionId = "req-1"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -857,32 +849,29 @@ class JobServiceClient(object):
         Args:
             parent (str): Required. The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the job searcher, used to
                 improve the search quality of the service. The identifiers (such as
                 ``user_id``) are provided by users, and must be unique and consistent.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`
-            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional. Mode of a search.
+            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Mode of a search.
 
                 Defaults to ``SearchMode.JOB_SEARCH``.
-            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional. Query used to search against jobs, such as keyword, location
-                filters, etc.
+            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Query used to search against jobs, such as keyword, location filters, etc.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.JobQuery`
-            enable_broadening (bool): Optional. Controls whether to broaden the search when it produces sparse
-                results. Broadened queries append results to the end of the matching
-                results list.
+            enable_broadening (bool): Controls whether to broaden the search when it produces sparse results.
+                Broadened queries append results to the end of the matching results
+                list.
 
                 Defaults to false.
-            require_precise_result_size (bool): Optional. Controls if the search job request requires the return of a
-                precise count of the first 300 results. Setting this to ``true`` ensures
+            require_precise_result_size (bool): Controls if the search job request requires the return of a precise
+                count of the first 300 results. Setting this to ``true`` ensures
                 consistency in the number of results per page. Best practice is to set
                 this value to true if a client allows users to jump directly to a
                 non-sequential search results page.
@@ -890,8 +879,7 @@ class JobServiceClient(object):
                 Enabling this flag may adversely impact performance.
 
                 Defaults to false.
-            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional. An expression specifies a histogram request against matching
-                jobs.
+            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): An expression specifies a histogram request against matching jobs.
 
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
@@ -985,13 +973,11 @@ class JobServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
-            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search
-                response. Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is
-                specified.
-            offset (int): Optional. An integer that specifies the current offset (that is,
-                starting result location, amongst the jobs deemed by the API as
-                relevant) in search results. This field is only considered if
-                ``page_token`` is unset.
+            job_view (~google.cloud.talent_v4beta1.types.JobView): The desired job attributes returned for jobs in the search response.
+                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.
+            offset (int): An integer that specifies the current offset (that is, starting result
+                location, amongst the jobs deemed by the API as relevant) in search
+                results. This field is only considered if ``page_token`` is unset.
 
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for
@@ -1002,8 +988,8 @@ class JobServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional. The criteria determining how search results are sorted.
-                Default is ``"relevance desc"``.
+            order_by (str): The criteria determining how search results are sorted. Default is
+                ``"relevance desc"``.
 
                 Supported options are:
 
@@ -1052,28 +1038,27 @@ class JobServiceClient(object):
                    will be ranked at the bottom. Distance is calculated with a precision
                    of 11.3 meters (37.4 feet). Diversification strategy is still applied
                    unless explicitly disabled in ``diversification_level``.
-            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional. Controls whether highly similar jobs are returned next to each
-                other in the search results. Jobs are identified as highly similar based
-                on their titles, job categories, and locations. Highly similar results
-                are clustered so that only one representative job of the cluster is
+            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Controls whether highly similar jobs are returned next to each other in
+                the search results. Jobs are identified as highly similar based on their
+                titles, job categories, and locations. Highly similar results are
+                clustered so that only one representative job of the cluster is
                 displayed to the job seeker higher up in the results, with the other
                 jobs being displayed lower down in the results.
 
                 Defaults to ``DiversificationLevel.SIMPLE`` if no value is specified.
-            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional. Controls over how job documents get ranked on top of existing
-                relevance score (determined by API algorithm).
+            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Controls over how job documents get ranked on top of existing relevance
+                score (determined by API algorithm).
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`
-            disable_keyword_match (bool): Optional. Controls whether to disable exact keyword match on
-                ``Job.title``, ``Job.description``, ``Job.company_display_name``,
-                ``Job.addresses``, ``Job.qualifications``. When disable keyword match is
-                turned off, a keyword match returns jobs that do not match given
-                category filters when there are matching keywords. For example, for the
-                query "program manager," a result is returned even if the job posting
-                has the title "software developer," which doesn't fall into "program
-                manager" ontology, but does have "program manager" appearing in its
-                description.
+            disable_keyword_match (bool): Controls whether to disable exact keyword match on ``Job.title``,
+                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,
+                ``Job.qualifications``. When disable keyword match is turned off, a
+                keyword match returns jobs that do not match given category filters when
+                there are matching keywords. For example, for the query "program
+                manager," a result is returned even if the job posting has the title
+                "software developer," which doesn't fall into "program manager"
+                ontology, but does have "program manager" appearing in its description.
 
                 For queries like "cloud" that don't contain title or location specific
                 ontology, jobs with "cloud" keyword matches are returned regardless of
@@ -1220,32 +1205,29 @@ class JobServiceClient(object):
         Args:
             parent (str): Required. The resource name of the tenant to search within.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
             request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the job searcher, used to
                 improve the search quality of the service. The identifiers (such as
                 ``user_id``) are provided by users, and must be unique and consistent.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`
-            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Optional. Mode of a search.
+            search_mode (~google.cloud.talent_v4beta1.types.SearchMode): Mode of a search.
 
                 Defaults to ``SearchMode.JOB_SEARCH``.
-            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Optional. Query used to search against jobs, such as keyword, location
-                filters, etc.
+            job_query (Union[dict, ~google.cloud.talent_v4beta1.types.JobQuery]): Query used to search against jobs, such as keyword, location filters, etc.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.JobQuery`
-            enable_broadening (bool): Optional. Controls whether to broaden the search when it produces sparse
-                results. Broadened queries append results to the end of the matching
-                results list.
+            enable_broadening (bool): Controls whether to broaden the search when it produces sparse results.
+                Broadened queries append results to the end of the matching results
+                list.
 
                 Defaults to false.
-            require_precise_result_size (bool): Optional. Controls if the search job request requires the return of a
-                precise count of the first 300 results. Setting this to ``true`` ensures
+            require_precise_result_size (bool): Controls if the search job request requires the return of a precise
+                count of the first 300 results. Setting this to ``true`` ensures
                 consistency in the number of results per page. Best practice is to set
                 this value to true if a client allows users to jump directly to a
                 non-sequential search results page.
@@ -1253,8 +1235,7 @@ class JobServiceClient(object):
                 Enabling this flag may adversely impact performance.
 
                 Defaults to false.
-            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): Optional. An expression specifies a histogram request against matching
-                jobs.
+            histogram_queries (list[Union[dict, ~google.cloud.talent_v4beta1.types.HistogramQuery]]): An expression specifies a histogram request against matching jobs.
 
                 Expression syntax is an aggregation function call with histogram facets
                 and other options.
@@ -1348,13 +1329,11 @@ class JobServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.HistogramQuery`
-            job_view (~google.cloud.talent_v4beta1.types.JobView): Optional. The desired job attributes returned for jobs in the search
-                response. Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is
-                specified.
-            offset (int): Optional. An integer that specifies the current offset (that is,
-                starting result location, amongst the jobs deemed by the API as
-                relevant) in search results. This field is only considered if
-                ``page_token`` is unset.
+            job_view (~google.cloud.talent_v4beta1.types.JobView): The desired job attributes returned for jobs in the search response.
+                Defaults to ``JobView.JOB_VIEW_SMALL`` if no value is specified.
+            offset (int): An integer that specifies the current offset (that is, starting result
+                location, amongst the jobs deemed by the API as relevant) in search
+                results. This field is only considered if ``page_token`` is unset.
 
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for
@@ -1365,8 +1344,8 @@ class JobServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional. The criteria determining how search results are sorted.
-                Default is ``"relevance desc"``.
+            order_by (str): The criteria determining how search results are sorted. Default is
+                ``"relevance desc"``.
 
                 Supported options are:
 
@@ -1415,28 +1394,27 @@ class JobServiceClient(object):
                    will be ranked at the bottom. Distance is calculated with a precision
                    of 11.3 meters (37.4 feet). Diversification strategy is still applied
                    unless explicitly disabled in ``diversification_level``.
-            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Optional. Controls whether highly similar jobs are returned next to each
-                other in the search results. Jobs are identified as highly similar based
-                on their titles, job categories, and locations. Highly similar results
-                are clustered so that only one representative job of the cluster is
+            diversification_level (~google.cloud.talent_v4beta1.types.DiversificationLevel): Controls whether highly similar jobs are returned next to each other in
+                the search results. Jobs are identified as highly similar based on their
+                titles, job categories, and locations. Highly similar results are
+                clustered so that only one representative job of the cluster is
                 displayed to the job seeker higher up in the results, with the other
                 jobs being displayed lower down in the results.
 
                 Defaults to ``DiversificationLevel.SIMPLE`` if no value is specified.
-            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Optional. Controls over how job documents get ranked on top of existing
-                relevance score (determined by API algorithm).
+            custom_ranking_info (Union[dict, ~google.cloud.talent_v4beta1.types.CustomRankingInfo]): Controls over how job documents get ranked on top of existing relevance
+                score (determined by API algorithm).
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.CustomRankingInfo`
-            disable_keyword_match (bool): Optional. Controls whether to disable exact keyword match on
-                ``Job.title``, ``Job.description``, ``Job.company_display_name``,
-                ``Job.addresses``, ``Job.qualifications``. When disable keyword match is
-                turned off, a keyword match returns jobs that do not match given
-                category filters when there are matching keywords. For example, for the
-                query "program manager," a result is returned even if the job posting
-                has the title "software developer," which doesn't fall into "program
-                manager" ontology, but does have "program manager" appearing in its
-                description.
+            disable_keyword_match (bool): Controls whether to disable exact keyword match on ``Job.title``,
+                ``Job.description``, ``Job.company_display_name``, ``Job.addresses``,
+                ``Job.qualifications``. When disable keyword match is turned off, a
+                keyword match returns jobs that do not match given category filters when
+                there are matching keywords. For example, for the query "program
+                manager," a result is returned even if the job posting has the title
+                "software developer," which doesn't fall into "program manager"
+                ontology, but does have "program manager" appearing in its description.
 
                 For queries like "cloud" that don't contain title or location specific
                 ontology, jobs with "cloud" keyword matches are returned regardless of
@@ -1561,11 +1539,9 @@ class JobServiceClient(object):
             parent (str): Required. The resource name of the tenant under which the job is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and a default tenant is created if unspecified,
-                for example, "projects/api-test-project".
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
             jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required. The jobs to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1661,17 +1637,15 @@ class JobServiceClient(object):
             parent (str): Required. The resource name of the tenant under which the job is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and the default tenant is used if unspecified, for
-                example, "projects/api-test-project".
-            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required. The jobs to be updated.
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created. For example, "projects/foo".
+            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): The jobs to be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Job`
-            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended to be provided for the best service
-                experience, also increase latency when checking status of batch
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Strongly recommended for the best service experience. Be aware that it
+                will also increase latency when checking the status of a batch
                 operation.
 
                 If ``update_mask`` is provided, only the specified fields in ``Job`` are
