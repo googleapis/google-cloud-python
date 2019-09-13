@@ -13,7 +13,7 @@
 - Change default endpoint to bigquery.googleapis.com ([#9213](https://github.com/googleapis/google-cloud-python/pull/9213))
 - Change the default value of Cursor instances' `arraysize` attribute to None ([#9199](https://github.com/googleapis/google-cloud-python/pull/9199))
 - Deprecate automatic schema conversion. ([#9176](https://github.com/googleapis/google-cloud-python/pull/9176))
-- Fix list_rows() max results with BQ storage client ([#9178](https://github.com/googleapis/google-cloud-python/pull/9178))
+- Fix `list_rows()` max results with BQ storage client ([#9178](https://github.com/googleapis/google-cloud-python/pull/9178))
 
 ### New Features
 - Add `Model.encryption_config`. (via synth) ([#9214](https://github.com/googleapis/google-cloud-python/pull/9214))
