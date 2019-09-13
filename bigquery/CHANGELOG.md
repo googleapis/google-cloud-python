@@ -25,7 +25,7 @@
 - Add `max_results` parameter to `QueryJob.result()` ([#9167](https://github.com/googleapis/google-cloud-python/pull/9167))
 
 ### Documentation
-- Fix doc link ([#9200](https://github.com/googleapis/google-cloud-python/pull/9200))
+- Fix doc link. ([#9200](https://github.com/googleapis/google-cloud-python/pull/9200))
 
 ### Internal / Testing Changes
 - Revert "Disable failing snippets test ([#9156](https://github.com/googleapis/google-cloud-python/pull/9156))." ([#9220](https://github.com/googleapis/google-cloud-python/pull/9220))
