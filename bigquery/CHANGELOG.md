@@ -22,7 +22,7 @@
 - Add support of the project ID with org prefix to the Table.from_string() method ([#9161](https://github.com/googleapis/google-cloud-python/pull/9161))
 - Add `--max_results` option to Jupyter magics ([#9169](https://github.com/googleapis/google-cloud-python/pull/9169))
 - Autofetch table schema on load if not provided ([#9108](https://github.com/googleapis/google-cloud-python/pull/9108))
-- Add `max_results` parameter to `QueryJob.result()` ([#9167](https://github.com/googleapis/google-cloud-python/pull/9167))
+- Add `max_results` parameter to `QueryJob.result()`. ([#9167](https://github.com/googleapis/google-cloud-python/pull/9167))
 
 ### Documentation
 - Fix doc link. ([#9200](https://github.com/googleapis/google-cloud-python/pull/9200))
