@@ -17,7 +17,6 @@
 import datetime
 
 from six.moves import queue
-from six.moves import xrange
 
 from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
