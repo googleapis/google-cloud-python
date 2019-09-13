@@ -2678,7 +2678,7 @@ class QueryJob(_AsyncJob):
             for CREATE/DROP FUNCTION/PROCEDURE  queries.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/JobStatistics
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics
         """
         prop = self._job_statistics().get("ddlTargetRoutine")
         if prop is not None:

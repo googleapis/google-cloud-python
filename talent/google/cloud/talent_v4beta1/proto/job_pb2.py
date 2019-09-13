@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
@@ -31,10 +32,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\020JobResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\"\xab\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x02 \x01(\t\x12\x16\n\x0erequisition_id\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12?\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.VisibilityB\x02\x18\x01\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1c\n\x14\x63ompany_display_name\x18\x1c \x01(\t\x12\x42\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfo\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
+        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\"\xd3\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07\x63ompany\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x1b\n\x0erequisition_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05title\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12?\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.VisibilityB\x02\x18\x01\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12<\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12!\n\x14\x63ompany_display_name\x18\x1c \x01(\tB\x03\xe0\x41\x03\x12G\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfoB\x03\xe0\x41\x03\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_type_dot_postal__address__pb2.DESCRIPTOR,
@@ -112,8 +114,8 @@ _JOB_APPLICATIONINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1607,
-    serialized_end=1675,
+    serialized_start=1680,
+    serialized_end=1748,
 )
 
 _JOB_DERIVEDINFO = _descriptor.Descriptor(
@@ -168,8 +170,8 @@ _JOB_DERIVEDINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1678,
-    serialized_end=1815,
+    serialized_start=1751,
+    serialized_end=1888,
 )
 
 _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
@@ -224,8 +226,8 @@ _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1818,
-    serialized_end=1954,
+    serialized_start=1891,
+    serialized_end=2027,
 )
 
 _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
@@ -280,8 +282,8 @@ _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1956,
-    serialized_end=2057,
+    serialized_start=2029,
+    serialized_end=2130,
 )
 
 _JOB = _descriptor.Descriptor(
@@ -324,7 +326,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,7 +344,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -360,7 +362,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -378,7 +380,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -756,7 +758,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -774,7 +776,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -792,7 +794,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -810,7 +812,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -845,8 +847,8 @@ _JOB = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=222,
-    serialized_end=2057,
+    serialized_start=255,
+    serialized_end=2130,
 )
 
 _JOB_APPLICATIONINFO.containing_type = _JOB
@@ -940,21 +942,20 @@ Job = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         emails:
-            Optional. Use this field to specify email address(es) to which
-            resumes or applications can be sent.  The maximum number of
-            allowed characters for each entry is 255.
+            Use this field to specify email address(es) to which resumes
+            or applications can be sent.  The maximum number of allowed
+            characters for each entry is 255.
         instruction:
-            Optional. Use this field to provide instructions, such as
-            "Mail your application to ...", that a candidate can follow to
-            apply for the job.  This field accepts and sanitizes HTML
-            input, and also accepts bold, italic, ordered list, and
-            unordered list markup tags.  The maximum number of allowed
-            characters is 3,000.
+            Use this field to provide instructions, such as "Mail your
+            application to ...", that a candidate can follow to apply for
+            the job.  This field accepts and sanitizes HTML input, and
+            also accepts bold, italic, ordered list, and unordered list
+            markup tags.  The maximum number of allowed characters is
+            3,000.
         uris:
-            Optional. Use this URI field to direct an applicant to a
-            website, for example to link to an online application form.
-            The maximum number of allowed characters for each entry is
-            2,000.
+            Use this URI field to direct an applicant to a website, for
+            example to link to an online application form.  The maximum
+            number of allowed characters for each entry is 2,000.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Job.ApplicationInfo)
             ),
@@ -965,9 +966,7 @@ Job = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_JOB_DERIVEDINFO,
                 __module__="google.cloud.talent_v4beta1.proto.job_pb2",
-                __doc__="""Output only.
-    
-    Derived details about the job posting.
+                __doc__="""Derived details about the job posting.
     
     
     Attributes:
@@ -992,23 +991,20 @@ Job = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_JOB_PROCESSINGOPTIONS,
                 __module__="google.cloud.talent_v4beta1.proto.job_pb2",
-                __doc__="""Input only.
-    
-    Options for job processing.
+                __doc__="""Options for job processing.
     
     
     Attributes:
         disable_street_address_resolution:
-            Optional. If set to ``true``, the service does not attempt to
-            resolve a more precise address for the job.
+            If set to ``true``, the service does not attempt to resolve a
+            more precise address for the job.
         html_sanitization:
-            Optional. Option for job HTML content sanitization. Applied
-            fields are:  -  description -  applicationInfo.instruction -
-            incentives -  qualifications -  responsibilities  HTML tags in
-            these fields may be stripped if sanitiazation isn't disabled.
-            Defaults to [HtmlSanitization.SIMPLE\_FORMATTING\_ONLY][google
-            .cloud.talent.v4beta1.HtmlSanitization.SIMPLE\_FORMATTING\_ONL
-            Y].
+            Option for job HTML content sanitization. Applied fields are:
+            -  description -  applicationInfo.instruction -  incentives -
+            qualifications -  responsibilities  HTML tags in these fields
+            may be stripped if sanitiazation isn't disabled.  Defaults to 
+            [HtmlSanitization.SIMPLE\_FORMATTING\_ONLY][google.cloud.talen
+            t.v4beta1.HtmlSanitization.SIMPLE\_FORMATTING\_ONLY].
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Job.ProcessingOptions)
             ),
@@ -1035,21 +1031,20 @@ Job = _reflection.GeneratedProtocolMessageType(
           Required during job update.  The resource name for the job.
           This is generated by the service when a job is created.  The
           format is
-          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
-          for example, "projects/api-test-
-          project/tenants/foo/jobs/1234".  Tenant id is optional and the
-          default tenant is used if unspecified, for example,
-          "projects/api-test-project/jobs/1234".  Use of this field in
-          job queries and API calls is preferred over the use of [requis
-          ition\_id][google.cloud.talent.v4beta1.Job.requisition\_id]
-          since this value is unique.
+          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}".
+          For example, "projects/foo/tenants/bar/jobs/baz".  If tenant
+          id is unspecified, the default tenant is used. For example,
+          "projects/foo/jobs/bar".  Use of this field in job queries and
+          API calls is preferred over the use of [requisition\_id][googl
+          e.cloud.talent.v4beta1.Job.requisition\_id] since this value
+          is unique.
       company:
           Required. The resource name of the company listing the job.
           The format is "projects/{project\_id}/tenants/{tenant\_id}/com
-          panies/{company\_id}", for example, "projects/api-test-
-          project/tenants/foo/companies/bar".  Tenant id is optional and
-          the default tenant is used if unspecified, for example,
-          "projects/api-test-project/companies/bar".
+          panies/{company\_id}". For example,
+          "projects/foo/tenants/bar/companies/baz".  If tenant id is
+          unspecified, the default tenant is used. For example,
+          "projects/foo/companies/bar".
       requisition_id:
           Required. The requisition ID, also referred to as the posting
           ID, is assigned by the client to identify a job. This field is
@@ -1075,16 +1070,16 @@ Job = _reflection.GeneratedProtocolMessageType(
           list, and unordered list markup tags.  The maximum number of
           allowed characters is 100,000.
       addresses:
-          Optional but strongly recommended for the best service
-          experience.  Location(s) where the employer is looking to hire
-          for this job posting.  Specifying the full street address(es)
-          of the hiring location enables better API results, especially
-          job searches by commute time.  At most 50 locations are
-          allowed for best search performance. If a job has more
-          locations, it is suggested to split it into multiple jobs with
-          unique [requisition\_id][google.cloud.talent.v4beta1.Job.requi
-          sition\_id]s (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', and so
-          on.) as multiple jobs with the same
+          Strongly recommended for the best service experience.
+          Location(s) where the employer is looking to hire for this job
+          posting.  Specifying the full street address(es) of the hiring
+          location enables better API results, especially job searches
+          by commute time.  At most 50 locations are allowed for best
+          search performance. If a job has more locations, it is
+          suggested to split it into multiple jobs with unique [requisit
+          ion\_id][google.cloud.talent.v4beta1.Job.requisition\_id]s
+          (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', and so on.) as
+          multiple jobs with the same
           [company][google.cloud.talent.v4beta1.Job.company], [language\
           _code][google.cloud.talent.v4beta1.Job.language\_code] and [re
           quisition\_id][google.cloud.talent.v4beta1.Job.requisition\_id
@@ -1095,46 +1090,44 @@ Job = _reflection.GeneratedProtocolMessageType(
           job for better search experience.  The maximum number of
           allowed characters is 500.
       application_info:
-          Optional. Job application information.
+          Job application information.
       job_benefits:
-          Optional. The benefits included with the job.
+          The benefits included with the job.
       compensation_info:
-          Optional. Job compensation information (a.k.a. "pay rate")
-          i.e., the compensation that will paid to the employee.
+          Job compensation information (a.k.a. "pay rate") i.e., the
+          compensation that will paid to the employee.
       custom_attributes:
-          Optional. A map of fields to hold both filterable and non-
-          filterable custom job attributes that are not covered by the
-          provided structured fields.  The keys of the map are strings
-          up to 64 bytes and must match the pattern:
-          [a-zA-Z][a-zA-Z0-9\_]\*. For example, key0LikeThis or
-          KEY\_1\_LIKE\_THIS.  At most 100 filterable and at most 100
-          unfilterable keys are supported. For filterable
-          ``string_values``, across all keys at most 200 values are
-          allowed, with each string no more than 255 characters. For
-          unfilterable ``string_values``, the maximum total size of
-          ``string_values`` across all keys is 50KB.
+          A map of fields to hold both filterable and non-filterable
+          custom job attributes that are not covered by the provided
+          structured fields.  The keys of the map are strings up to 64
+          bytes and must match the pattern: [a-zA-Z][a-zA-Z0-9\_]\*. For
+          example, key0LikeThis or KEY\_1\_LIKE\_THIS.  At most 100
+          filterable and at most 100 unfilterable keys are supported.
+          For filterable ``string_values``, across all keys at most 200
+          values are allowed, with each string no more than 255
+          characters. For unfilterable ``string_values``, the maximum
+          total size of ``string_values`` across all keys is 50KB.
       degree_types:
-          Optional. The desired education degrees for the job, such as
-          Bachelors, Masters.
+          The desired education degrees for the job, such as Bachelors,
+          Masters.
       department:
-          Optional. The department or functional area within the company
-          with the open position.  The maximum number of allowed
-          characters is 255.
+          The department or functional area within the company with the
+          open position.  The maximum number of allowed characters is
+          255.
       employment_types:
-          Optional. The employment type(s) of a job, for example, [full
+          The employment type(s) of a job, for example, [full
           time][google.cloud.talent.v4beta1.EmploymentType.FULL\_TIME]
           or [part
           time][google.cloud.talent.v4beta1.EmploymentType.PART\_TIME].
       incentives:
-          Optional. A description of bonus, commission, and other
-          compensation incentives associated with the job not including
-          salary or pay.  The maximum number of allowed characters is
-          10,000.
+          A description of bonus, commission, and other compensation
+          incentives associated with the job not including salary or
+          pay.  The maximum number of allowed characters is 10,000.
       language_code:
-          Optional. The language of the posting. This field is distinct
-          from any requirements for fluency that are associated with the
-          job.  Language codes must be in BCP-47 format, such as "en-US"
-          or "sr-Latn". For more information, see `Tags for Identifying
+          The language of the posting. This field is distinct from any
+          requirements for fluency that are associated with the job.
+          Language codes must be in BCP-47 format, such as "en-US" or
+          "sr-Latn". For more information, see `Tags for Identifying
           Languages <https://tools.ietf.org/html/bcp47>`__\ {:
           class="external" target="\_blank" }.  If this field is
           unspecified and
@@ -1143,35 +1136,33 @@ Job = _reflection.GeneratedProtocolMessageType(
           [Job.description][google.cloud.talent.v4beta1.Job.description]
           is assigned, otherwise defaults to 'en\_US'.
       job_level:
-          Optional. The experience level associated with the job, such
-          as "Entry Level".
+          The experience level associated with the job, such as "Entry
+          Level".
       promotion_value:
-          Optional. A promotion value of the job, as determined by the
-          client. The value determines the sort order of the jobs
-          returned when searching for jobs using the featured jobs
-          search call, with higher promotional values being returned
-          first and ties being resolved by relevance sort. Only the jobs
-          with a promotionValue >0 are returned in a
-          FEATURED\_JOB\_SEARCH.  Default value is 0, and negative
-          values are treated as 0.
+          A promotion value of the job, as determined by the client. The
+          value determines the sort order of the jobs returned when
+          searching for jobs using the featured jobs search call, with
+          higher promotional values being returned first and ties being
+          resolved by relevance sort. Only the jobs with a
+          promotionValue >0 are returned in a FEATURED\_JOB\_SEARCH.
+          Default value is 0, and negative values are treated as 0.
       qualifications:
-          Optional. A description of the qualifications required to
-          perform the job. The use of this field is recommended as an
-          alternative to using the more general
+          A description of the qualifications required to perform the
+          job. The use of this field is recommended as an alternative to
+          using the more general
           [description][google.cloud.talent.v4beta1.Job.description]
           field.  This field accepts and sanitizes HTML input, and also
           accepts bold, italic, ordered list, and unordered list markup
           tags.  The maximum number of allowed characters is 10,000.
       responsibilities:
-          Optional. A description of job responsibilities. The use of
-          this field is recommended as an alternative to using the more
-          general
+          A description of job responsibilities. The use of this field
+          is recommended as an alternative to using the more general
           [description][google.cloud.talent.v4beta1.Job.description]
           field.  This field accepts and sanitizes HTML input, and also
           accepts bold, italic, ordered list, and unordered list markup
           tags.  The maximum number of allowed characters is 10,000.
       posting_region:
-          Optional. The job
+          The job
           [PostingRegion][google.cloud.talent.v4beta1.PostingRegion]
           (for example, state, country) throughout which the job is
           available. If this field is set, a
@@ -1190,23 +1181,21 @@ Job = _reflection.GeneratedProtocolMessageType(
           [google.cloud.talent.v4beta1.Visibility.ACCOUNT\_ONLY] if not
           specified.
       job_start_time:
-          Optional. The start timestamp of the job in UTC time zone.
-          Typically this field is used for contracting engagements.
-          Invalid timestamps are ignored.
+          The start timestamp of the job in UTC time zone. Typically
+          this field is used for contracting engagements. Invalid
+          timestamps are ignored.
       job_end_time:
-          Optional. The end timestamp of the job. Typically this field
-          is used for contracting engagements. Invalid timestamps are
-          ignored.
+          The end timestamp of the job. Typically this field is used for
+          contracting engagements. Invalid timestamps are ignored.
       posting_publish_time:
-          Optional. The timestamp this job posting was most recently
-          published. The default value is the time the request arrives
-          at the server. Invalid timestamps are ignored.
+          The timestamp this job posting was most recently published.
+          The default value is the time the request arrives at the
+          server. Invalid timestamps are ignored.
       posting_expire_time:
-          Optional but strongly recommended for the best service
-          experience.  The expiration timestamp of the job. After this
-          timestamp, the job is marked as expired, and it no longer
-          appears in search results. The expired job can't be listed by
-          the
+          Strongly recommended for the best service experience.  The
+          expiration timestamp of the job. After this timestamp, the job
+          is marked as expired, and it no longer appears in search
+          results. The expired job can't be listed by the
           [ListJobs][google.cloud.talent.v4beta1.JobService.ListJobs]
           API, but it can be retrieved with the
           [GetJob][google.cloud.talent.v4beta1.JobService.GetJob] API or
@@ -1260,7 +1249,7 @@ Job = _reflection.GeneratedProtocolMessageType(
       derived_info:
           Output only. Derived details about the job posting.
       processing_options:
-          Optional. Options for job processing.
+          Options for job processing.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.Job)
     ),
@@ -1274,5 +1263,13 @@ _sym_db.RegisterMessage(Job.CustomAttributesEntry)
 
 DESCRIPTOR._options = None
 _JOB_CUSTOMATTRIBUTESENTRY._options = None
+_JOB.fields_by_name["company"]._options = None
+_JOB.fields_by_name["requisition_id"]._options = None
+_JOB.fields_by_name["title"]._options = None
+_JOB.fields_by_name["description"]._options = None
 _JOB.fields_by_name["visibility"]._options = None
+_JOB.fields_by_name["posting_create_time"]._options = None
+_JOB.fields_by_name["posting_update_time"]._options = None
+_JOB.fields_by_name["company_display_name"]._options = None
+_JOB.fields_by_name["derived_info"]._options = None
 # @@protoc_insertion_point(module_scope)

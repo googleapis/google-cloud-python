@@ -2240,10 +2240,11 @@ Product = _reflection.GeneratedProtocolMessageType(
           at most 4096 characters long.
       product_category:
           The category for the product identified by the reference
-          image. This should be either "homegoods-v2", "apparel-v2", or
-          "toys-v2". The legacy categories "homegoods", "apparel", and
-          "toys" are still supported, but these should not be used for
-          new products.  This field is immutable.
+          image. This should be either "homegoods-v2", "apparel-v2",
+          "toys-v2", "packagedgoods-v1", or "general-v1" The legacy
+          categories "homegoods", "apparel", and "toys" are still
+          supported, but these should not be used for new products.
+          This field is immutable.
       product_labels:
           Key-value pairs that can be attached to a product. At query
           time, constraints can be specified based on the
