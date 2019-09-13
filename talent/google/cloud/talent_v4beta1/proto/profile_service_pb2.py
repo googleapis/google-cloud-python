@@ -17,6 +17,7 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
@@ -29,6 +30,7 @@ from google.cloud.talent_v4beta1.proto import (
 from google.cloud.talent_v4beta1.proto import (
     profile_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_profile__pb2,
 )
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
@@ -41,15 +43,17 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\023ProfileServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/talent_v4beta1/proto/profile_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/filters.proto\x1a\x31google/cloud/talent_v4beta1/proto/histogram.proto\x1a/google/cloud/talent_v4beta1/proto/profile.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"{\n\x13ListProfilesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12-\n\tread_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"g\n\x14ListProfilesResponse\x12\x36\n\x08profiles\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Profile\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"]\n\x14\x43reateProfileRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x35\n\x07profile\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Profile"!\n\x11GetProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"~\n\x14UpdateProfileRequest\x12\x35\n\x07profile\x18\x01 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Profile\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"$\n\x14\x44\x65leteProfileRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xb3\x03\n\x15SearchProfilesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x46\n\x10request_metadata\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.RequestMetadata\x12@\n\rprofile_query\x18\x03 \x01(\x0b\x32).google.cloud.talent.v4beta1.ProfileQuery\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12\x1b\n\x13\x64isable_spell_check\x18\x07 \x01(\x08\x12\x10\n\x08order_by\x18\x08 \x01(\t\x12\x1b\n\x13\x63\x61se_sensitive_sort\x18\t \x01(\x08\x12\x46\n\x11histogram_queries\x18\n \x03(\x0b\x32+.google.cloud.talent.v4beta1.HistogramQuery\x12\x15\n\rresult_set_id\x18\x0c \x01(\t\x12\x1e\n\x16strict_keywords_search\x18\r \x01(\x08"\x93\x03\n\x16SearchProfilesResponse\x12\x1c\n\x14\x65stimated_total_size\x18\x01 \x01(\x03\x12I\n\x10spell_correction\x18\x02 \x01(\x0b\x32/.google.cloud.talent.v4beta1.SpellingCorrection\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x12\x17\n\x0fnext_page_token\x18\x04 \x01(\t\x12R\n\x17histogram_query_results\x18\x05 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.HistogramQueryResult\x12K\n\x13summarized_profiles\x18\x06 \x03(\x0b\x32..google.cloud.talent.v4beta1.SummarizedProfile\x12\x15\n\rresult_set_id\x18\x07 \x01(\t"\x82\x01\n\x11SummarizedProfile\x12\x36\n\x08profiles\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Profile\x12\x35\n\x07summary\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Profile2\xed\x08\n\x0eProfileService\x12\xac\x01\n\x0cListProfiles\x12\x30.google.cloud.talent.v4beta1.ListProfilesRequest\x1a\x31.google.cloud.talent.v4beta1.ListProfilesResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v4beta1/{parent=projects/*/tenants/*}/profiles\x12\xa4\x01\n\rCreateProfile\x12\x31.google.cloud.talent.v4beta1.CreateProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile":\x82\xd3\xe4\x93\x02\x34"//v4beta1/{parent=projects/*/tenants/*}/profiles:\x01*\x12\x9b\x01\n\nGetProfile\x12..google.cloud.talent.v4beta1.GetProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile"7\x82\xd3\xe4\x93\x02\x31\x12//v4beta1/{name=projects/*/tenants/*/profiles/*}\x12\xac\x01\n\rUpdateProfile\x12\x31.google.cloud.talent.v4beta1.UpdateProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile"B\x82\xd3\xe4\x93\x02<27/v4beta1/{profile.name=projects/*/tenants/*/profiles/*}:\x01*\x12\x93\x01\n\rDeleteProfile\x12\x31.google.cloud.talent.v4beta1.DeleteProfileRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v4beta1/{name=projects/*/tenants/*/profiles/*}\x12\xb3\x01\n\x0eSearchProfiles\x12\x32.google.cloud.talent.v4beta1.SearchProfilesRequest\x1a\x33.google.cloud.talent.v4beta1.SearchProfilesResponse"8\x82\xd3\xe4\x93\x02\x32"-/v4beta1/{parent=projects/*/tenants/*}:search:\x01*\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13ProfileServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n7google/cloud/talent_v4beta1/proto/profile_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/filters.proto\x1a\x31google/cloud/talent_v4beta1/proto/histogram.proto\x1a/google/cloud/talent_v4beta1/proto/profile.proto\x1a\x19google/protobuf/any.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x90\x01\n\x13ListProfilesRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12-\n\tread_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"g\n\x14ListProfilesResponse\x12\x36\n\x08profiles\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Profile\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"g\n\x14\x43reateProfileRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12:\n\x07profile\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.ProfileB\x03\xe0\x41\x02"&\n\x11GetProfileRequest\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02"\x83\x01\n\x14UpdateProfileRequest\x12:\n\x07profile\x18\x01 \x01(\x0b\x32$.google.cloud.talent.v4beta1.ProfileB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask")\n\x14\x44\x65leteProfileRequest\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02"\xbd\x03\n\x15SearchProfilesRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12K\n\x10request_metadata\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.RequestMetadataB\x03\xe0\x41\x02\x12@\n\rprofile_query\x18\x03 \x01(\x0b\x32).google.cloud.talent.v4beta1.ProfileQuery\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t\x12\x0e\n\x06offset\x18\x06 \x01(\x05\x12\x1b\n\x13\x64isable_spell_check\x18\x07 \x01(\x08\x12\x10\n\x08order_by\x18\x08 \x01(\t\x12\x1b\n\x13\x63\x61se_sensitive_sort\x18\t \x01(\x08\x12\x46\n\x11histogram_queries\x18\n \x03(\x0b\x32+.google.cloud.talent.v4beta1.HistogramQuery\x12\x15\n\rresult_set_id\x18\x0c \x01(\t\x12\x1e\n\x16strict_keywords_search\x18\r \x01(\x08"\x93\x03\n\x16SearchProfilesResponse\x12\x1c\n\x14\x65stimated_total_size\x18\x01 \x01(\x03\x12I\n\x10spell_correction\x18\x02 \x01(\x0b\x32/.google.cloud.talent.v4beta1.SpellingCorrection\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x12\x17\n\x0fnext_page_token\x18\x04 \x01(\t\x12R\n\x17histogram_query_results\x18\x05 \x03(\x0b\x32\x31.google.cloud.talent.v4beta1.HistogramQueryResult\x12K\n\x13summarized_profiles\x18\x06 \x03(\x0b\x32..google.cloud.talent.v4beta1.SummarizedProfile\x12\x15\n\rresult_set_id\x18\x07 \x01(\t"\x82\x01\n\x11SummarizedProfile\x12\x36\n\x08profiles\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Profile\x12\x35\n\x07summary\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.Profile2\xed\x08\n\x0eProfileService\x12\xac\x01\n\x0cListProfiles\x12\x30.google.cloud.talent.v4beta1.ListProfilesRequest\x1a\x31.google.cloud.talent.v4beta1.ListProfilesResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v4beta1/{parent=projects/*/tenants/*}/profiles\x12\xa4\x01\n\rCreateProfile\x12\x31.google.cloud.talent.v4beta1.CreateProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile":\x82\xd3\xe4\x93\x02\x34"//v4beta1/{parent=projects/*/tenants/*}/profiles:\x01*\x12\x9b\x01\n\nGetProfile\x12..google.cloud.talent.v4beta1.GetProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile"7\x82\xd3\xe4\x93\x02\x31\x12//v4beta1/{name=projects/*/tenants/*/profiles/*}\x12\xac\x01\n\rUpdateProfile\x12\x31.google.cloud.talent.v4beta1.UpdateProfileRequest\x1a$.google.cloud.talent.v4beta1.Profile"B\x82\xd3\xe4\x93\x02<27/v4beta1/{profile.name=projects/*/tenants/*/profiles/*}:\x01*\x12\x93\x01\n\rDeleteProfile\x12\x31.google.cloud.talent.v4beta1.DeleteProfileRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v4beta1/{name=projects/*/tenants/*/profiles/*}\x12\xb3\x01\n\x0eSearchProfiles\x12\x32.google.cloud.talent.v4beta1.SearchProfilesRequest\x1a\x33.google.cloud.talent.v4beta1.SearchProfilesResponse"8\x82\xd3\xe4\x93\x02\x32"-/v4beta1/{parent=projects/*/tenants/*}:search:\x01*\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13ProfileServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_filters__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_histogram__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_profile__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
     ],
@@ -78,13 +82,31 @@ _LISTPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.cloud.talent.v4beta1.ListProfilesRequest.filter",
+            index=1,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
             full_name="google.cloud.talent.v4beta1.ListProfilesRequest.page_token",
-            index=1,
+            index=2,
             number=2,
             type=9,
             cpp_type=9,
@@ -102,7 +124,7 @@ _LISTPROFILESREQUEST = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="page_size",
             full_name="google.cloud.talent.v4beta1.ListProfilesRequest.page_size",
-            index=2,
+            index=3,
             number=3,
             type=5,
             cpp_type=1,
@@ -120,7 +142,7 @@ _LISTPROFILESREQUEST = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="read_mask",
             full_name="google.cloud.talent.v4beta1.ListProfilesRequest.read_mask",
-            index=3,
+            index=4,
             number=4,
             type=11,
             cpp_type=10,
@@ -144,8 +166,8 @@ _LISTPROFILESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=403,
-    serialized_end=526,
+    serialized_start=464,
+    serialized_end=608,
 )
 
 
@@ -201,8 +223,8 @@ _LISTPROFILESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=528,
-    serialized_end=631,
+    serialized_start=610,
+    serialized_end=713,
 )
 
 
@@ -228,7 +250,7 @@ _CREATEPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -246,7 +268,7 @@ _CREATEPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -258,8 +280,8 @@ _CREATEPROFILEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=633,
-    serialized_end=726,
+    serialized_start=715,
+    serialized_end=818,
 )
 
 
@@ -285,7 +307,7 @@ _GETPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -297,8 +319,8 @@ _GETPROFILEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=728,
-    serialized_end=761,
+    serialized_start=820,
+    serialized_end=858,
 )
 
 
@@ -324,7 +346,7 @@ _UPDATEPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -354,8 +376,8 @@ _UPDATEPROFILEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=763,
-    serialized_end=889,
+    serialized_start=861,
+    serialized_end=992,
 )
 
 
@@ -381,7 +403,7 @@ _DELETEPROFILEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -393,8 +415,8 @@ _DELETEPROFILEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=891,
-    serialized_end=927,
+    serialized_start=994,
+    serialized_end=1035,
 )
 
 
@@ -420,7 +442,7 @@ _SEARCHPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -438,7 +460,7 @@ _SEARCHPROFILESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -630,8 +652,8 @@ _SEARCHPROFILESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=930,
-    serialized_end=1365,
+    serialized_start=1038,
+    serialized_end=1483,
 )
 
 
@@ -777,8 +799,8 @@ _SEARCHPROFILESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1368,
-    serialized_end=1771,
+    serialized_start=1486,
+    serialized_end=1889,
 )
 
 
@@ -834,8 +856,8 @@ _SUMMARIZEDPROFILE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1774,
-    serialized_end=1904,
+    serialized_start=1892,
+    serialized_end=2022,
 )
 
 _LISTPROFILESREQUEST.fields_by_name[
@@ -926,21 +948,29 @@ ListProfilesRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The resource name of the tenant under which the
           profile is created.  The format is
-          "projects/{project\_id}/tenants/{tenant\_id}", for example,
-          "projects/api-test-project/tenants/foo".
+          "projects/{project\_id}/tenants/{tenant\_id}". For example,
+          "projects/foo/tenants/bar".
+      filter:
+          The filter string specifies the profiles to be enumerated.
+          Supported operator: =, AND  The field(s) eligible for
+          filtering are:  -  ``externalId`` -  ``groupId``  externalId
+          and groupId cannot be specified at the same time. If both
+          externalId and groupId are provided, the API will return a bad
+          request error.  Sample Query:  -  externalId = "externalId-1"
+          -  groupId = "groupId-1"
       page_token:
-          Optional. The token that specifies the current offset (that
-          is, starting result).  Please set the value to [ListProfilesRe
-          sponse.next\_page\_token][google.cloud.talent.v4beta1.ListProf
-          ilesResponse.next\_page\_token] to continue the list.
+          The token that specifies the current offset (that is, starting
+          result).  Please set the value to [ListProfilesResponse.next\_
+          page\_token][google.cloud.talent.v4beta1.ListProfilesResponse.
+          next\_page\_token] to continue the list.
       page_size:
-          Optional. The maximum number of profiles to be returned, at
-          most 100.  Default is 100 unless a positive number smaller
-          than 100 is specified.
+          The maximum number of profiles to be returned, at most 100.
+          Default is 100 unless a positive number smaller than 100 is
+          specified.
       read_mask:
-          Optional. A field mask to specify the profile fields to be
-          listed in response. All fields are listed if it is unset.
-          Valid values are:  -  name
+          A field mask to specify the profile fields to be listed in
+          response. All fields are listed if it is unset.  Valid values
+          are:  -  name
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.ListProfilesRequest)
     ),
@@ -980,8 +1010,8 @@ CreateProfileRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. The name of the tenant this profile belongs to.  The
-          format is "projects/{project\_id}/tenants/{tenant\_id}", for
-          example, "projects/api-test-project/tenants/foo".
+          format is "projects/{project\_id}/tenants/{tenant\_id}". For
+          example, "projects/foo/tenants/bar".
       profile:
           Required. The profile to be created.
   """,
@@ -1003,8 +1033,7 @@ GetProfileRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Resource name of the profile to get.  The format is 
           "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile
-          \_id}", for example, "projects/api-test-
-          project/tenants/foo/profiles/bar".
+          \_id}". For example, "projects/foo/tenants/bar/profiles/baz".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.GetProfileRequest)
     ),
@@ -1024,24 +1053,23 @@ UpdateProfileRequest = _reflection.GeneratedProtocolMessageType(
       profile:
           Required. Profile to be updated.
       update_mask:
-          Optional. A field mask to specify the profile fields to
-          update.  A full update is performed if it is unset.  Valid
-          values are:  -  external\_id -  source -  uri -  is\_hirable -
-          create\_time -  update\_time -  resume -  person\_names -
-          addresses -  email\_addresses -  phone\_numbers -
-          personal\_uris -  additional\_contact\_info -
-          employment\_records -  education\_records -  skills -
-          activities -  publications -  patents -  certifications -
-          recruiting\_notes -  custom\_attributes -  group\_id -
-          external\_system -  source\_note -  primary\_responsibilities
-          -  citizenships -  work\_authorizations -  employee\_types -
-          language\_code -  qualification\_summary -
-          allowed\_contact\_types -  preferred\_contact\_types -
-          contact\_availability -  language\_fluencies -
-          work\_preference -  industry\_experiences -
-          work\_environment\_experiences -  work\_availability -
-          security\_clearances -  references -  assessments -
-          interviews
+          A field mask to specify the profile fields to update.  A full
+          update is performed if it is unset.  Valid values are:  -
+          external\_id -  source -  uri -  is\_hirable -  create\_time -
+          update\_time -  resume -  person\_names -  addresses -
+          email\_addresses -  phone\_numbers -  personal\_uris -
+          additional\_contact\_info -  employment\_records -
+          education\_records -  skills -  activities -  publications -
+          patents -  certifications -  recruiting\_notes -
+          custom\_attributes -  group\_id -  external\_system -
+          source\_note -  primary\_responsibilities -  citizenships -
+          work\_authorizations -  employee\_types -  language\_code -
+          qualification\_summary -  allowed\_contact\_types -
+          preferred\_contact\_types -  contact\_availability -
+          language\_fluencies -  work\_preference -
+          industry\_experiences -  work\_environment\_experiences -
+          work\_availability -  security\_clearances -  references -
+          assessments -  interviews
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.UpdateProfileRequest)
     ),
@@ -1061,8 +1089,8 @@ DeleteProfileRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Resource name of the profile to be deleted.  The
           format is "projects/{project\_id}/tenants/{tenant\_id}/profile
-          s/{profile\_id}", for example, "projects/api-test-
-          project/tenants/foo/profiles/bar".
+          s/{profile\_id}". For example,
+          "projects/foo/tenants/bar/profiles/baz".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.DeleteProfileRequest)
     ),
@@ -1081,35 +1109,35 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. The resource name of the tenant to search within.
-          The format is "projects/{project\_id}/tenants/{tenant\_id}",
-          for example, "projects/api-test-project/tenants/foo".
+          The format is "projects/{project\_id}/tenants/{tenant\_id}".
+          For example, "projects/foo/tenants/bar".
       request_metadata:
           Required. The meta information collected about the profile
           search user. This is used to improve the search quality of the
           service. These values are provided by users, and must be
           precise and consistent.
       profile_query:
-          Optional. Search query to execute. See
+          Search query to execute. See
           [ProfileQuery][google.cloud.talent.v4beta1.ProfileQuery] for
           more details.
       page_size:
-          Optional. A limit on the number of profiles returned in the
-          search results. A value above the default value 10 can
-          increase search response time.  The maximum value allowed is
-          100. Otherwise an error is thrown.
+          A limit on the number of profiles returned in the search
+          results. A value above the default value 10 can increase
+          search response time.  The maximum value allowed is 100.
+          Otherwise an error is thrown.
       page_token:
-          Optional. The pageToken, similar to offset enables users of
-          the API to paginate through the search results. To retrieve
-          the first page of results, set the pageToken to empty. The
-          search response includes a [nextPageToken][google.cloud.talent
-          .v4beta1.SearchProfilesResponse.next\_page\_token] field that
-          can be used to populate the pageToken field for the next page
-          of results. Using pageToken instead of offset increases the
+          The pageToken, similar to offset enables users of the API to
+          paginate through the search results. To retrieve the first
+          page of results, set the pageToken to empty. The search
+          response includes a [nextPageToken][google.cloud.talent.v4beta
+          1.SearchProfilesResponse.next\_page\_token] field that can be
+          used to populate the pageToken field for the next page of
+          results. Using pageToken instead of offset increases the
           performance of the API, especially compared to larger offset
           values.
       offset:
-          Optional. An integer that specifies the current offset (that
-          is, starting result) in search results. This field is only
+          An integer that specifies the current offset (that is,
+          starting result) in search results. This field is only
           considered if [page\_token][google.cloud.talent.v4beta1.Search
           ProfilesRequest.page\_token] is unset.  The maximum allowed
           value is 5000. Otherwise an error is thrown.  For example, 0
@@ -1118,12 +1146,12 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           example pageSize = 10 and offset = 10 means to search from the
           second page.
       disable_spell_check:
-          Optional. This flag controls the spell-check feature. If
-          ``false``, the service attempts to correct a misspelled query.
-          For example, "enginee" is corrected to "engineer".
+          This flag controls the spell-check feature. If ``false``, the
+          service attempts to correct a misspelled query.  For example,
+          "enginee" is corrected to "engineer".
       order_by:
-          Optional. The criteria that determines how search results are
-          sorted. Defaults is "relevance desc" if no value is specified.
+          The criteria that determines how search results are sorted.
+          Defaults is "relevance desc" if no value is specified.
           Supported options are:  -  "relevance desc": By descending
           relevance, as determined by the API    algorithms. -
           "update\_date desc": Sort by    [Profile.update\_time][google.
@@ -1144,18 +1172,16 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           .family\_name][google.cloud.talent.v4beta1.PersonName.PersonSt
           ructuredName.family\_name]    in ascending order.
       case_sensitive_sort:
-          Optional. When sort by field is based on alphabetical order,
-          sort values case sensitively (based on ASCII) when the value
-          is set to true. Default value is case in-sensitive sort
-          (false).
+          When sort by field is based on alphabetical order, sort values
+          case sensitively (based on ASCII) when the value is set to
+          true. Default value is case in-sensitive sort (false).
       histogram_queries:
-          Optional. A list of expressions specifies histogram requests
-          against matching profiles for [SearchProfilesRequest][google.c
-          loud.talent.v4beta1.SearchProfilesRequest].  The expression
-          syntax looks like a function definition with optional
-          parameters.  Function syntax:
-          function\_name(histogram\_facet[, list of buckets])  Data
-          types:  -  Histogram facet: facet names with format
+          A list of expressions specifies histogram requests against
+          matching profiles for [SearchProfilesRequest][google.cloud.tal
+          ent.v4beta1.SearchProfilesRequest].  The expression syntax
+          looks like a function definition with parameters.  Function
+          syntax: function\_name(histogram\_facet[, list of buckets])
+          Data types:  -  Histogram facet: facet names with format
           [a-zA-Z][a-zA-Z0-9\_]+. -  String: string like "any string
           with backslash escape for quote(")." -  Number: whole number
           and floating point number like 10, -1 and -0.01. -  List: list
@@ -1217,21 +1243,21 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           [bucket(MIN, 0,    "negative"), bucket(0, MAX, "non-
           negative")])
       result_set_id:
-          Optional. An id that uniquely identifies the result set of a [
-          SearchProfiles][google.cloud.talent.v4beta1.ProfileService.Sea
-          rchProfiles] call. The id should be retrieved from the [Search
-          ProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesRe
-          sponse] message returned from a previous invocation of [Search
-          Profiles][google.cloud.talent.v4beta1.ProfileService.SearchPro
-          files].  A result set is an ordered list of search results.
-          If this field is not set, a new result set is computed based
-          on the [profile\_query][google.cloud.talent.v4beta1.SearchProf
-          ilesRequest.profile\_query]. A new [result\_set\_id][google.cl
-          oud.talent.v4beta1.SearchProfilesRequest.result\_set\_id] is
-          returned as a handle to access this result set.  If this field
-          is set, the service will ignore the resource and [profile\_que
-          ry][google.cloud.talent.v4beta1.SearchProfilesRequest.profile\
-          _query] values, and simply retrieve a page of results from the
+          An id that uniquely identifies the result set of a [SearchProf
+          iles][google.cloud.talent.v4beta1.ProfileService.SearchProfile
+          s] call. The id should be retrieved from the [SearchProfilesRe
+          sponse][google.cloud.talent.v4beta1.SearchProfilesResponse]
+          message returned from a previous invocation of [SearchProfiles
+          ][google.cloud.talent.v4beta1.ProfileService.SearchProfiles].
+          A result set is an ordered list of search results.  If this
+          field is not set, a new result set is computed based on the [p
+          rofile\_query][google.cloud.talent.v4beta1.SearchProfilesReque
+          st.profile\_query]. A new [result\_set\_id][google.cloud.talen
+          t.v4beta1.SearchProfilesRequest.result\_set\_id] is returned
+          as a handle to access this result set.  If this field is set,
+          the service will ignore the resource and [profile\_query][goog
+          le.cloud.talent.v4beta1.SearchProfilesRequest.profile\_query]
+          values, and simply retrieve a page of results from the
           corresponding result set. In this case, one and only one of [p
           age\_token][google.cloud.talent.v4beta1.SearchProfilesRequest.
           page\_token] or [offset][google.cloud.talent.v4beta1.SearchPro
@@ -1243,17 +1269,17 @@ SearchProfilesRequest = _reflection.GeneratedProtocolMessageType(
           d.talent.v4beta1.SearchProfilesResponse] to page through the
           results.
       strict_keywords_search:
-          Optional. This flag is used to indicate whether the service
-          will attempt to understand synonyms and terms related to the
-          search query or treat the query "as is" when it generates a
-          set of results. By default this flag is set to false, thus
-          allowing expanded results to also be returned. For example a
-          search for "software engineer" might also return candidates
-          who have experience in jobs similar to software engineer
-          positions. By setting this flag to true, the service will only
-          attempt to deliver candidates has software engineer in his/her
-          global fields by treating "software engineer" as a keyword.
-          It is recommended to provide a feature in the UI (such as a
+          This flag is used to indicate whether the service will attempt
+          to understand synonyms and terms related to the search query
+          or treat the query "as is" when it generates a set of results.
+          By default this flag is set to false, thus allowing expanded
+          results to also be returned. For example a search for
+          "software engineer" might also return candidates who have
+          experience in jobs similar to software engineer positions. By
+          setting this flag to true, the service will only attempt to
+          deliver candidates has software engineer in his/her global
+          fields by treating "software engineer" as a keyword.  It is
+          recommended to provide a feature in the UI (such as a
           checkbox) to allow recruiters to set this flag to true if they
           intend to search for longer boolean strings.
   """,
@@ -1306,9 +1332,7 @@ SummarizedProfile = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SUMMARIZEDPROFILE,
         __module__="google.cloud.talent_v4beta1.proto.profile_service_pb2",
-        __doc__="""Output only.
-  
-  Profile entry with metadata inside
+        __doc__="""Profile entry with metadata inside
   [SearchProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesResponse].
   
   
@@ -1338,6 +1362,14 @@ _sym_db.RegisterMessage(SummarizedProfile)
 
 
 DESCRIPTOR._options = None
+_LISTPROFILESREQUEST.fields_by_name["parent"]._options = None
+_CREATEPROFILEREQUEST.fields_by_name["parent"]._options = None
+_CREATEPROFILEREQUEST.fields_by_name["profile"]._options = None
+_GETPROFILEREQUEST.fields_by_name["name"]._options = None
+_UPDATEPROFILEREQUEST.fields_by_name["profile"]._options = None
+_DELETEPROFILEREQUEST.fields_by_name["name"]._options = None
+_SEARCHPROFILESREQUEST.fields_by_name["parent"]._options = None
+_SEARCHPROFILESREQUEST.fields_by_name["request_metadata"]._options = None
 
 _PROFILESERVICE = _descriptor.ServiceDescriptor(
     name="ProfileService",
@@ -1347,8 +1379,8 @@ _PROFILESERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=1907,
-    serialized_end=3040,
+    serialized_start=2025,
+    serialized_end=3158,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListProfiles",
