@@ -16,7 +16,7 @@
 - Fix list_rows() max results with BQ storage client ([#9178](https://github.com/googleapis/google-cloud-python/pull/9178))
 
 ### New Features
-- Add 'Model.encryption_config' (via synth) ([#9214](https://github.com/googleapis/google-cloud-python/pull/9214))
+- Add `Model.encryption_config`. (via synth) ([#9214](https://github.com/googleapis/google-cloud-python/pull/9214))
 - Add `Client.insert_rows_from_dataframe()` method ([#9162](https://github.com/googleapis/google-cloud-python/pull/9162))
 - Add support for array parameters to `Cursor.execute()`. ([#9189](https://github.com/googleapis/google-cloud-python/pull/9189))
 - Add support for project IDs with org prefix to `Table.from_string()` factory. ([#9161](https://github.com/googleapis/google-cloud-python/pull/9161))
