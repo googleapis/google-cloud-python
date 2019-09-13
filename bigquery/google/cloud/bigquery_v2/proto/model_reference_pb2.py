@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
@@ -26,9 +27,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.bigquery.v2B\023ModelReferenceProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigquery"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/bigquery_v2/proto/model_reference.proto\x12\x18google.cloud.bigquery.v2\x1a\x1cgoogle/api/annotations.proto"J\n\x0eModelReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08model_id\x18\x03 \x01(\tBu\n\x1c\x63om.google.cloud.bigquery.v2B\x13ModelReferenceProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigqueryb\x06proto3'
+        '\n4google/cloud/bigquery_v2/proto/model_reference.proto\x12\x18google.cloud.bigquery.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1cgoogle/api/annotations.proto"Y\n\x0eModelReference\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x42u\n\x1c\x63om.google.cloud.bigquery.v2B\x13ModelReferenceProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigqueryb\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -54,7 +58,7 @@ _MODELREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -72,7 +76,7 @@ _MODELREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -90,7 +94,7 @@ _MODELREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -102,8 +106,8 @@ _MODELREFERENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=112,
-    serialized_end=186,
+    serialized_start=145,
+    serialized_end=234,
 )
 
 DESCRIPTOR.message_types_by_name["ModelReference"] = _MODELREFERENCE
@@ -120,11 +124,11 @@ ModelReference = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          [Required] The ID of the project containing this model.
+          Required. The ID of the project containing this model.
       dataset_id:
-          [Required] The ID of the dataset containing this model.
+          Required. The ID of the dataset containing this model.
       model_id:
-          [Required] The ID of the model. The ID must contain only
+          Required. The ID of the model. The ID must contain only
           letters (a-z, A-Z), numbers (0-9), or underscores (\_). The
           maximum length is 1,024 characters.
   """,
@@ -135,4 +139,7 @@ _sym_db.RegisterMessage(ModelReference)
 
 
 DESCRIPTOR._options = None
+_MODELREFERENCE.fields_by_name["project_id"]._options = None
+_MODELREFERENCE.fields_by_name["dataset_id"]._options = None
+_MODELREFERENCE.fields_by_name["model_id"]._options = None
 # @@protoc_insertion_point(module_scope)

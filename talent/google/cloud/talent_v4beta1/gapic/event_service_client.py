@@ -240,10 +240,8 @@ class EventServiceClient(object):
             parent (str): Required. Resource name of the tenant under which the event is created.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenant/foo".
-
-                Tenant id is optional and a default tenant is created if unspecified,
-                for example, "projects/api-test-project".
+                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
+                default tenant is created, for example, "projects/foo".
             client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application
                 that uses Cloud Talent Solution.
 

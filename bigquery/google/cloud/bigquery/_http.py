@@ -29,7 +29,7 @@ class Connection(_http.JSONConnection):
     :param client_info: (Optional) instance used to generate user agent.
     """
 
-    DEFAULT_API_ENDPOINT = "https://www.googleapis.com"
+    DEFAULT_API_ENDPOINT = "https://bigquery.googleapis.com"
 
     def __init__(self, client, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):
         super(Connection, self).__init__(client, client_info)

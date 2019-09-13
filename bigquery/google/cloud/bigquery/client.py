@@ -78,7 +78,7 @@ _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
 _BASE_UPLOAD_TEMPLATE = (
-    u"https://www.googleapis.com/upload/bigquery/v2/projects/"
+    u"https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
     u"{project}/jobs?uploadType="
 )
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"

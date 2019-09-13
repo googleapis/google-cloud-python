@@ -179,8 +179,6 @@ class EmploymentType(enum.IntEnum):
 
 class HtmlSanitization(enum.IntEnum):
     """
-    Input only.
-
     Option for HTML content sanitization on user input fields, for example, job
     description. By setting this option, user can determine whether and how
     sanitization is performed on these fields.
@@ -999,7 +997,8 @@ class SearchJobsRequest(object):
         operate differently for different modes of service.
 
         Attributes:
-          SEARCH_MODE_UNSPECIFIED (int): The mode of the search method isn't specified.
+          SEARCH_MODE_UNSPECIFIED (int): The mode of the search method isn't specified. The default search
+          behavior is identical to JOB\_SEARCH search behavior.
           JOB_SEARCH (int): The job search matches against all jobs, and featured jobs
           (jobs with promotionValue > 0) are not specially handled.
           FEATURED_JOB_SEARCH (int): The job search matches only against featured jobs (jobs with a
