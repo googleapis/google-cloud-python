@@ -46,7 +46,7 @@ class VideoIntelligenceSystemTestBase(unittest.TestCase):
     client = None
 
     def setUp(self):
-        self.input_uri = "gs://cloud-samples-data/video/cat.mp4"
+        self.input_uri = "gs://videodemomaker/cat.mp4"
 
 
 def setUpModule():
