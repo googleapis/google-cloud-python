@@ -24,6 +24,7 @@ from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
+from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
@@ -97,8 +98,7 @@ class Client(ClientWithProject):
 
         kw_args = {"client_info": client_info}
 
-        if os.environ.get("STORAGE_EMULATOR_HOST"):
-            kw_args["api_endpoint"] = os.environ.get("STORAGE_EMULATOR_HOST")
+        kw_args["api_endpoint"] = _get_storage_host()
 
         if client_options:
             if type(client_options) == dict:

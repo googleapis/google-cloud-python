@@ -47,11 +47,12 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.cloud import exceptions
+from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
+from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._signing import generate_signed_url_v2
@@ -59,9 +60,7 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
-_DEFAULT_STORAGE_HOST = u"https://www.googleapis.com"
-_STORAGE_HOST = os.environ.get(
-    "STORAGE_EMULATOR_HOST", _DEFAULT_STORAGE_HOST)
+_STORAGE_HOST = _get_storage_host()
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 _DEFAULT_CONTENT_TYPE = u"application/octet-stream"
