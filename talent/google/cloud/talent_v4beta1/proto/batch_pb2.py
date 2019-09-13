@@ -15,6 +15,9 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/talent_v4beta1/proto/batch.proto",
     package="google.cloud.talent.v4beta1",
@@ -23,8 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\nBatchProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        "\n-google/cloud/talent_v4beta1/proto/batch.proto\x12\x1bgoogle.cloud.talent.v4beta1Bx\n\x1f\x63om.google.cloud.talent.v4beta1B\nBatchProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
+        "\n-google/cloud/talent_v4beta1/proto/batch.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.protoBx\n\x1f\x63om.google.cloud.talent.v4beta1B\nBatchProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
     ),
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 

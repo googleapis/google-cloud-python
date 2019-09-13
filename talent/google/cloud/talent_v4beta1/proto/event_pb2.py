@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -27,10 +28,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\nEventProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/talent_v4beta1/proto/event.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x82\x02\n\x0b\x43lientEvent\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\tjob_event\x18\x05 \x01(\x0b\x32%.google.cloud.talent.v4beta1.JobEventH\x00\x12\x42\n\rprofile_event\x18\x06 \x01(\x0b\x32).google.cloud.talent.v4beta1.ProfileEventH\x00\x12\x13\n\x0b\x65vent_notes\x18\t \x01(\tB\x07\n\x05\x65vent"\xec\x03\n\x08JobEvent\x12@\n\x04type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.JobEvent.JobEventType\x12\x0c\n\x04jobs\x18\x02 \x03(\t\x12\x0f\n\x07profile\x18\x03 \x01(\t"\xfe\x02\n\x0cJobEventType\x12\x1e\n\x1aJOB_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nIMPRESSION\x10\x01\x12\x08\n\x04VIEW\x10\x02\x12\x11\n\rVIEW_REDIRECT\x10\x03\x12\x15\n\x11\x41PPLICATION_START\x10\x04\x12\x16\n\x12\x41PPLICATION_FINISH\x10\x05\x12 \n\x1c\x41PPLICATION_QUICK_SUBMISSION\x10\x06\x12\x18\n\x14\x41PPLICATION_REDIRECT\x10\x07\x12!\n\x1d\x41PPLICATION_START_FROM_SEARCH\x10\x08\x12$\n APPLICATION_REDIRECT_FROM_SEARCH\x10\t\x12\x1e\n\x1a\x41PPLICATION_COMPANY_SUBMIT\x10\n\x12\x0c\n\x08\x42OOKMARK\x10\x0b\x12\x10\n\x0cNOTIFICATION\x10\x0c\x12\t\n\x05HIRED\x10\r\x12\x0b\n\x07SENT_CV\x10\x0e\x12\x15\n\x11INTERVIEW_GRANTED\x10\x0f"\xd8\x01\n\x0cProfileEvent\x12H\n\x04type\x18\x01 \x01(\x0e\x32:.google.cloud.talent.v4beta1.ProfileEvent.ProfileEventType\x12\x10\n\x08profiles\x18\x02 \x03(\t\x12\x0c\n\x04jobs\x18\x06 \x03(\t"^\n\x10ProfileEventType\x12"\n\x1ePROFILE_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nIMPRESSION\x10\x01\x12\x08\n\x04VIEW\x10\x02\x12\x0c\n\x08\x42OOKMARK\x10\x03\x42x\n\x1f\x63om.google.cloud.talent.v4beta1B\nEventProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n-google/cloud/talent_v4beta1/proto/event.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8c\x02\n\x0b\x43lientEvent\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x15\n\x08\x65vent_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12:\n\tjob_event\x18\x05 \x01(\x0b\x32%.google.cloud.talent.v4beta1.JobEventH\x00\x12\x42\n\rprofile_event\x18\x06 \x01(\x0b\x32).google.cloud.talent.v4beta1.ProfileEventH\x00\x12\x13\n\x0b\x65vent_notes\x18\t \x01(\tB\x07\n\x05\x65vent"\xf6\x03\n\x08JobEvent\x12\x45\n\x04type\x18\x01 \x01(\x0e\x32\x32.google.cloud.talent.v4beta1.JobEvent.JobEventTypeB\x03\xe0\x41\x02\x12\x11\n\x04jobs\x18\x02 \x03(\tB\x03\xe0\x41\x02\x12\x0f\n\x07profile\x18\x03 \x01(\t"\xfe\x02\n\x0cJobEventType\x12\x1e\n\x1aJOB_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nIMPRESSION\x10\x01\x12\x08\n\x04VIEW\x10\x02\x12\x11\n\rVIEW_REDIRECT\x10\x03\x12\x15\n\x11\x41PPLICATION_START\x10\x04\x12\x16\n\x12\x41PPLICATION_FINISH\x10\x05\x12 \n\x1c\x41PPLICATION_QUICK_SUBMISSION\x10\x06\x12\x18\n\x14\x41PPLICATION_REDIRECT\x10\x07\x12!\n\x1d\x41PPLICATION_START_FROM_SEARCH\x10\x08\x12$\n APPLICATION_REDIRECT_FROM_SEARCH\x10\t\x12\x1e\n\x1a\x41PPLICATION_COMPANY_SUBMIT\x10\n\x12\x0c\n\x08\x42OOKMARK\x10\x0b\x12\x10\n\x0cNOTIFICATION\x10\x0c\x12\t\n\x05HIRED\x10\r\x12\x0b\n\x07SENT_CV\x10\x0e\x12\x15\n\x11INTERVIEW_GRANTED\x10\x0f"\xe2\x01\n\x0cProfileEvent\x12M\n\x04type\x18\x01 \x01(\x0e\x32:.google.cloud.talent.v4beta1.ProfileEvent.ProfileEventTypeB\x03\xe0\x41\x02\x12\x15\n\x08profiles\x18\x02 \x03(\tB\x03\xe0\x41\x02\x12\x0c\n\x04jobs\x18\x06 \x03(\t"^\n\x10ProfileEventType\x12"\n\x1ePROFILE_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nIMPRESSION\x10\x01\x12\x08\n\x04VIEW\x10\x02\x12\x0c\n\x08\x42OOKMARK\x10\x03\x42x\n\x1f\x63om.google.cloud.talent.v4beta1B\nEventProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -129,8 +131,8 @@ _JOBEVENT_JOBEVENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=513,
-    serialized_end=895,
+    serialized_start=566,
+    serialized_end=948,
 )
 _sym_db.RegisterEnumDescriptor(_JOBEVENT_JOBEVENTTYPE)
 
@@ -159,8 +161,8 @@ _PROFILEEVENT_PROFILEEVENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1020,
-    serialized_end=1114,
+    serialized_start=1083,
+    serialized_end=1177,
 )
 _sym_db.RegisterEnumDescriptor(_PROFILEEVENT_PROFILEEVENTTYPE)
 
@@ -205,7 +207,7 @@ _CLIENTEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -223,7 +225,7 @@ _CLIENTEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -297,8 +299,8 @@ _CLIENTEVENT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=142,
-    serialized_end=400,
+    serialized_start=175,
+    serialized_end=443,
 )
 
 
@@ -324,7 +326,7 @@ _JOBEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,7 +344,7 @@ _JOBEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -372,8 +374,8 @@ _JOBEVENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=403,
-    serialized_end=895,
+    serialized_start=446,
+    serialized_end=948,
 )
 
 
@@ -399,7 +401,7 @@ _PROFILEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -417,7 +419,7 @@ _PROFILEEVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -447,8 +449,8 @@ _PROFILEEVENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=898,
-    serialized_end=1114,
+    serialized_start=951,
+    serialized_end=1177,
 )
 
 _CLIENTEVENT.fields_by_name[
@@ -492,9 +494,10 @@ ClientEvent = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       request_id:
-          Optional but highly recommended.  A unique ID generated in the
-          API responses. It can be found in [ResponseMetadata.request\_i
-          d][google.cloud.talent.v4beta1.ResponseMetadata.request\_id].
+          Strongly recommended for the best service experience.  A
+          unique ID generated in the API responses. It can be found in [
+          ResponseMetadata.request\_id][google.cloud.talent.v4beta1.Resp
+          onseMetadata.request\_id].
       event_id:
           Required. A unique identifier, generated by the client
           application.
@@ -509,9 +512,8 @@ ClientEvent = _reflection.GeneratedProtocolMessageType(
           An event issued when a profile searcher interacts with the
           application that implements Cloud Talent Solution.
       event_notes:
-          Optional. Notes about the event provided by recruiters or
-          other users, for example, feedback on why a profile was
-          bookmarked.
+          Notes about the event provided by recruiters or other users,
+          for example, feedback on why a profile was bookmarked.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.ClientEvent)
     ),
@@ -543,14 +545,12 @@ JobEvent = _reflection.GeneratedProtocolMessageType(
           event, this field contains the identifier of the viewed job.
           The format is
           "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
-          for example, "projects/api-test-
-          project/tenants/foo/jobs/1234".
+          for example, "projects/foo/tenants/bar/jobs/baz".
       profile:
-          Optional. The [profile
-          name][google.cloud.talent.v4beta1.Profile.name] associated
-          with this client event.  The format is "projects/{project\_id}
-          /tenants/{tenant\_id}/profiles/{profile\_id}", for example,
-          "projects/api-test-project/tenants/foo/profiles/bar".
+          The [profile name][google.cloud.talent.v4beta1.Profile.name]
+          associated with this client event.  The format is "projects/{p
+          roject\_id}/tenants/{tenant\_id}/profiles/{profile\_id}", for
+          example, "projects/foo/tenants/bar/profiles/baz".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.JobEvent)
     ),
@@ -575,15 +575,13 @@ ProfileEvent = _reflection.GeneratedProtocolMessageType(
           name(s)][google.cloud.talent.v4beta1.Profile.name] associated
           with this client event.  The format is "projects/{project\_id}
           /tenants/{tenant\_id}/profiles/{profile\_id}", for example,
-          "projects/api-test-project/tenants/foo/profiles/bar".
+          "projects/foo/tenants/bar/profiles/baz".
       jobs:
-          Optional. The [job
-          name(s)][google.cloud.talent.v4beta1.Job.name] associated with
-          this client event. Leave it empty if the event isn't
-          associated with a job.  The format is
+          The [job name(s)][google.cloud.talent.v4beta1.Job.name]
+          associated with this client event. Leave it empty if the event
+          isn't associated with a job.  The format is
           "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
-          for example, "projects/api-test-
-          project/tenants/foo/jobs/1234".
+          for example, "projects/foo/tenants/bar/jobs/baz".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.ProfileEvent)
     ),
@@ -592,4 +590,10 @@ _sym_db.RegisterMessage(ProfileEvent)
 
 
 DESCRIPTOR._options = None
+_CLIENTEVENT.fields_by_name["event_id"]._options = None
+_CLIENTEVENT.fields_by_name["create_time"]._options = None
+_JOBEVENT.fields_by_name["type"]._options = None
+_JOBEVENT.fields_by_name["jobs"]._options = None
+_PROFILEEVENT.fields_by_name["type"]._options = None
+_PROFILEEVENT.fields_by_name["profiles"]._options = None
 # @@protoc_insertion_point(module_scope)
