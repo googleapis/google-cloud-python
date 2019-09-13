@@ -136,7 +136,7 @@ def test_create_document_w_subcollection(client, cleanup):
     assert sorted(child.id for child in children) == sorted(child_ids)
 
 
-@pytest.mark.skipif(IN_EMULATOR, reason="Not supported in emulator.")
+@pytest.mark.skipif(IN_EMULATOR, reason="Internal Issue b/137866686")
 def test_cannot_use_foreign_key(client, cleanup):
     document_id = "cannot" + UNIQUE_RESOURCE_ID
     document = client.document("foreign-key", document_id)
@@ -291,7 +291,7 @@ def test_document_update_w_int_field(client, cleanup):
     assert snapshot1.to_dict() == expected
 
 
-@pytest.mark.skipif(IN_EMULATOR, reason="Not supported in emulator.")
+@pytest.mark.skipif(IN_EMULATOR, reason="Internal Issue b/137867104")
 def test_update_document(client, cleanup):
     document_id = "for-update" + UNIQUE_RESOURCE_ID
     document = client.document("made", document_id)
@@ -504,7 +504,6 @@ def test_collection_add(client, cleanup):
     assert set(collection3.list_documents()) == {document_ref5}
 
 
-@pytest.mark.skipif(IN_EMULATOR, reason="Not supported in emulator.")
 def test_query_stream(client, cleanup):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -819,7 +818,7 @@ def test_collection_group_queries_filters(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
-@pytest.mark.skipif(IN_EMULATOR, reason="Not supported in emulator.")
+@pytest.mark.skipif(IN_EMULATOR, reason="Internal Issue b/137865992")
 def test_get_all(client, cleanup):
     collection_name = "get-all" + UNIQUE_RESOURCE_ID
 
@@ -871,7 +870,6 @@ def test_get_all(client, cleanup):
     check_snapshot(snapshot3, document3, restricted3, write_result3)
 
 
-@pytest.mark.skipif(IN_EMULATOR, reason="Not supported in emulator.")
 def test_batch(client, cleanup):
     collection_name = "batch" + UNIQUE_RESOURCE_ID
 
