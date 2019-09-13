@@ -153,6 +153,9 @@ class ContainerAnalysisClient(object):
                 should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
+        if credentials:
+            self.credentials = credentials
+            
         if client_config is not None:
             warnings.warn(
                 "The `client_config` argument is deprecated.",
@@ -229,7 +232,7 @@ class ContainerAnalysisClient(object):
             A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.
         """
         grafeas_transport = grafeas_grpc_transport.GrafeasGrpcTransport(
-            self.SERVICE_ADDRESS, self.transport._OAUTH_SCOPES
+            self.SERVICE_ADDRESS, self.transport._OAUTH_SCOPES, credentials = self.credentials
         )
 
         return grafeas_v1.GrafeasClient(grafeas_transport)
