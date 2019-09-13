@@ -1225,7 +1225,7 @@ class CloudTasksClient(object):
         Args:
             parent (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -1328,7 +1328,7 @@ class CloudTasksClient(object):
         Args:
             name (str): Required. The task name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -1454,7 +1454,7 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Task`
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -1655,7 +1655,7 @@ class CloudTasksClient(object):
                 The maximum total size of a ``lease tasks response`` is 32 MB. If the
                 sum of all task sizes requested reaches this limit, fewer tasks than
                 requested are returned.
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -1883,7 +1883,7 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Duration`
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -1985,7 +1985,7 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Timestamp`
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
@@ -2091,7 +2091,7 @@ class CloudTasksClient(object):
         Args:
             name (str): Required. The task name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-            response_view (~google.cloud.tasks_v2beta2.types.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
                 By default response\_view is ``BASIC``; not all information is retrieved
