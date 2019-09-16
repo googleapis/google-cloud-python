@@ -1,1 +1,0 @@
-../../api_core/docs/page_iterator.rst
