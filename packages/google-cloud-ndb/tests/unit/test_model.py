@@ -1784,6 +1784,16 @@ class TestBlobProperty:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test__to_datastore_compressed_uninitialized():
+        class ThisKind(model.Model):
+            foo = model.BlobProperty(compressed=True)
+
+        entity = ThisKind()
+        ds_entity = model._entity_to_ds_entity(entity)
+        assert "foo" not in ds_entity._meanings
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test__to_datastore_uncompressed():
         class ThisKind(model.Model):
             foo = model.BlobProperty(compressed=False)

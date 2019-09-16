@@ -2479,13 +2479,14 @@ class BlobProperty(Property):
             if isinstance(value, _CompressedValue):
                 value = value.z_val
                 data[self._name] = value
-            if not value.startswith(_ZLIB_COMPRESSION_MARKER):
+            if value and not value.startswith(_ZLIB_COMPRESSION_MARKER):
                 value = zlib.compress(value)
                 data[self._name] = value
-            data.setdefault("_meanings", {})[self._name] = (
-                _MEANING_COMPRESSED,
-                value,
-            )
+            if value:
+                data.setdefault("_meanings", {})[self._name] = (
+                    _MEANING_COMPRESSED,
+                    value,
+                )
         return keys
 
     def _from_datastore(self, ds_entity, value):
