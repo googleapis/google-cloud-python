@@ -40,10 +40,9 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 # Setup project id.
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-# Some system tests require indexes. Use gcloud to create them.
-gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
-gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
-
+# Configure Local Redis to be used
+export REDIS_CACHE_URL=redis://localhost
+redis-server &
 
 # Some system tests require indexes. Use gcloud to create them.
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
