@@ -26,7 +26,6 @@ from google.cloud.monitoring_v3.proto import (
     group_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -37,7 +36,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/api/client.proto"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"5\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x11\n\trecursive\x18\x04 \x01(\x08"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xe7\x07\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"+\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/members\x1a\xa9\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\x89\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.readB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08""\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xbb\x06\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"+\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/membersB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -45,7 +44,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -182,8 +180,8 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=293,
-    serialized_end=466,
+    serialized_start=268,
+    serialized_end=441,
 )
 
 
@@ -239,8 +237,8 @@ _LISTGROUPSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=468,
-    serialized_end=557,
+    serialized_start=443,
+    serialized_end=532,
 )
 
 
@@ -278,8 +276,8 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=559,
-    serialized_end=590,
+    serialized_start=534,
+    serialized_end=565,
 )
 
 
@@ -353,8 +351,8 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=592,
-    serialized_end=693,
+    serialized_start=567,
+    serialized_end=668,
 )
 
 
@@ -410,8 +408,8 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=695,
-    serialized_end=782,
+    serialized_start=670,
+    serialized_end=757,
 )
 
 
@@ -439,25 +437,7 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="recursive",
-            full_name="google.monitoring.v3.DeleteGroupRequest.recursive",
-            index=1,
-            number=4,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -467,8 +447,8 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=784,
-    serialized_end=837,
+    serialized_start=759,
+    serialized_end=793,
 )
 
 
@@ -578,8 +558,8 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=840,
-    serialized_end=988,
+    serialized_start=796,
+    serialized_end=944,
 )
 
 
@@ -653,8 +633,8 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=990,
-    serialized_end=1109,
+    serialized_start=946,
+    serialized_end=1065,
 )
 
 _LISTGROUPSREQUEST.oneofs_by_name["filter"].fields.append(
@@ -848,19 +828,14 @@ DeleteGroupRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
-        __doc__="""The ``DeleteGroup`` request. The default behavior is to be able to
-  delete a single group without any descendants.
+        __doc__="""The ``DeleteGroup`` request. You can only delete a group if it has no
+  children.
   
   
   Attributes:
       name:
           The group to delete. The format is
           ``"projects/{project_id_or_number}/groups/{group_id}"``.
-      recursive:
-          If this field is true, then the request means to delete a
-          group with all its descendants. Otherwise, the request means
-          to delete a group only when it has no descendants. The default
-          value is false.
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.DeleteGroupRequest)
     ),
@@ -941,11 +916,9 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
     full_name="google.monitoring.v3.GroupService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=_b(
-        "\312A\031monitoring.googleapis.com\322A\211\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read"
-    ),
-    serialized_start=1112,
-    serialized_end=2111,
+    serialized_options=None,
+    serialized_start=1068,
+    serialized_end=1895,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListGroups",
