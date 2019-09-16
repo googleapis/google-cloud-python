@@ -69,7 +69,8 @@ def default(session):
     session.install("mock", "pytest", "pytest-cov")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
-    session.install("-e", ".[pandas,storage]")
+    session.install("-e", ".")
+    session.install("-e", ".[pandas,storage,matplotlib,scikit-learn]")
 
     # Run py.test against the unit tests.
     session.run(
@@ -116,7 +117,8 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", "../test_utils/")
-    session.install("-e", ".[pandas,storage]")
+    session.install("-e", ".")
+    session.install("-e", ".[pandas,storage,matplotlib,scikit-learn]")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -142,7 +144,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".[pandas,storage]")
+    session.install("-e", ".")
     session.install("sphinx", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
