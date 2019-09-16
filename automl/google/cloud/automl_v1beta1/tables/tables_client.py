@@ -2830,7 +2830,7 @@ class TablesClient(object):
         Args:
             confusion_matrix ([[float]]):
                 This is a numpy array of the confusion matrix.
-            classes ([string]):
+            classes (List[str]):
                 A list of the possible classification values.
             title (Optional[str]):
                 The title of the confusion matrix.
