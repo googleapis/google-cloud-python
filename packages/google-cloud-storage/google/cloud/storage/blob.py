@@ -47,11 +47,12 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.cloud import exceptions
+from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
+from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._signing import generate_signed_url_v2
@@ -59,15 +60,12 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
 
+_STORAGE_HOST = _get_storage_host()
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 _DEFAULT_CONTENT_TYPE = u"application/octet-stream"
-_DOWNLOAD_URL_TEMPLATE = (
-    u"https://www.googleapis.com/download/storage/v1{path}?alt=media"
-)
-_BASE_UPLOAD_TEMPLATE = (
-    u"https://www.googleapis.com/upload/storage/v1{bucket_path}/o?uploadType="
-)
+_DOWNLOAD_URL_TEMPLATE = _STORAGE_HOST + u"/download/storage/v1{path}?alt=media"
+_BASE_UPLOAD_TEMPLATE = _STORAGE_HOST + u"/upload/storage/v1{bucket_path}/o?uploadType="
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
 # NOTE: "acl" is also writeable but we defer ACL management to
