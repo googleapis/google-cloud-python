@@ -1,0 +1,51 @@
+setuptools >= 36.4.0
+sphinx>=1.6.3, <2.2
+ipython >= 4
+recommonmark >= 0.4.0
+grpcio-gcp >= 0.2.2
+
+-e api_core/
+-e core/
+-e storage/
+-e asset/
+-e automl/
+-e bigquery/
+-e bigquery_datatransfer/
+-e bigquery_storage/
+-e bigtable/
+-e container/
+-e containeranalysis/
+-e datacatalog/
+-e datalabeling/
+-e dataproc/
+-e datastore/
+-e dlp/
+-e dns/
+-e firestore/
+-e grafeas/
+-e iam/
+-e iot/
+-e irm/
+-e kms/
+-e language/
+-e logging/
+-e error_reporting/
+-e monitoring/
+-e pubsub/
+-e oslogin/
+-e redis/
+-e resource_manager/
+-e runtimeconfig/
+-e scheduler/
+-e securitycenter/
+-e spanner/
+-e speech/
+-e talent/
+-e tasks/
+-e texttospeech/
+-e trace/
+-e translate/
+-e videointelligence/
+-e vision/
+-e webrisk/
+-e websecurityscanner/
