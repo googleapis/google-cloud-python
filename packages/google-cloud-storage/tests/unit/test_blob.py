@@ -3087,7 +3087,7 @@ class Test_Blob(unittest.TestCase):
     def test_storage_class_getter(self):
         blob_name = "blob-name"
         bucket = _Bucket()
-        storage_class = "MULTI_REGIONAL"
+        storage_class = "COLDLINE"
         properties = {"storageClass": storage_class}
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         self.assertEqual(blob.storage_class, storage_class)
