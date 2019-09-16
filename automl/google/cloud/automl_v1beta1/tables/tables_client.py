@@ -28,6 +28,36 @@ from google.cloud.automl_v1beta1.tables import gcs_client
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 _LOGGER = logging.getLogger(__name__)
 
+try:
+    import numpy as np
+except ImportError:  # pragma: NO COVER
+    numpy = None
+
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+
+try:
+    from sklearn import metrics
+except ImportError:  # pragma: NO COVER
+    sklearn = None
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:  # pragma: NO COVER
+    matplotlib = None
+
+try:
+    from sklearn.metrics import confusion_matrix
+except ImportError:  # pragma: NO COVER
+    sklearn = None
+
+try:
+    from sklearn.utils.multiclass import unique_labels
+except ImportError:  # pragma: NO COVER
+    sklearn = None
+
 
 class TablesClient(object):
     """
@@ -2779,35 +2809,153 @@ class TablesClient(object):
         self.__log_operation_info("Batch predict", op)
         return op
 
-    def get_model_evaluation(self, model=None, model_display_name=None,
-                model_name=None, project=None, region=None):
-        """Displays evaluation. Also Displays graphs of performance.
-        Adopted largely from the python-docs-sample/tables/automl/automl_tables_model.py file in GoogleCloudPlatform."""
+    def plot_confusion_matrix(
+        self, confusion_matrix, classes, normalize=False, title=None, cmap=plt.cm.Blues
+    ):
 
-        import numpy as np
-        from sklearn import metrics
-        import matplotlib.pyplot as plt
+        """Plots a confusion matrix. Largely taken from the sklearn plot_confusion_matrix function.
 
-        model_full_id = self.__model_name_from_args(
-                model=model,
-                model_name=model_name,
-                model_display_name=model_display_name,
-                project=project,
-                 region=region
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.plot_confusion_matrix(cm, ['blue','red','green'])
+            >>>
+
+        Args:
+            confusion_matrix ([[float]]):
+                This is a numpy array of the confusion matrix.
+            classes ([string]):
+                A list of the possible classification values.
+            title (Optional[string]):
+                The title of the confusion matrix.
+            cmap (optional[Color]):
+                The color schema of the graph.
+
+        Returns: A graph of the confusion matrix.
+        """
+        if not title:
+            if normalize:
+                title = "Normalized confusion matrix"
+            else:
+                title = "Confusion matrix, without normalization"
+
+        # Compute confusion matrix
+        cm = confusion_matrix
+        if normalize:
+            cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+            print("Normalized confusion matrix")
+        else:
+            print("Confusion matrix, without normalization")
+
+        fig, ax = plt.subplots()
+        im = ax.imshow(cm, interpolation="nearest", cmap=cmap)
+        ax.figure.colorbar(im, ax=ax)
+        # We want to show all ticks...
+        ax.set(
+            xticks=np.arange(cm.shape[1]),
+            yticks=np.arange(cm.shape[0]),
+            # ... and label them with the respective list entries
+            xticklabels=classes,
+            yticklabels=classes,
+            title=title,
+            ylabel="True label",
+            xlabel="Predicted label",
         )
 
-        response = self.client.list_model_evaluations(model_full_id)
-        model_evaluation_full_id = 0
+        # Rotate the tick labels and set their alignment.
+        plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
+        # Loop over data dimensions and create text annotations.
+        fmt = ".2f" if normalize else "d"
+        thresh = cm.max() / 2.0
+        for i in range(cm.shape[0]):
+            for j in range(cm.shape[1]):
+                ax.text(
+                    j,
+                    i,
+                    format(cm[i, j], fmt),
+                    ha="center",
+                    va="center",
+                    color="white" if cm[i, j] > thresh else "black",
+                )
+        fig.tight_layout()
+        return ax
+
+    def display_model_evaluation(
+        self,
+        model=None,
+        model_display_name=None,
+        model_name=None,
+        project=None,
+        region=None,
+        threshold=0.5,
+    ):
+        """Displays evaluation. Also Displays graphs of performance.
+        Adopted largely from the python-docs-sample/tables/automl/automl_tables_model.py file in GoogleCloudPlatform.
+
+        Example:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     project='my-project', region='us-central1')
+            ...
+            >>> d = client.display_model_evaluation('model')
+            >>>
+
+        Args:
+            model_evaluation_name (string):
+                This is the fully-qualified name generated by the AutoML API
+                for this model evaluation.
+            project (Optional[string]):
+                If you have initialized the client with a value for `project`
+                it will be used if this parameter is not supplied. Keep in
+                mind, the service account this client was initialized with must
+                have access to this project.
+            region (Optional[string]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
+            threshold (Optional[float]):
+              The probability threshold you want the model to use in classification.
+
+        Returns: A graph of the PR and ROC curve, along with the feature importance,
+              confusion matrix, and log loss value.
+            
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                to a retryable error and retry attempts failed.
+            ValueError: If required parameters are missing.
+        """
+        model_full_id = self.__model_name_from_args(
+            model=model,
+            model_name=model_name,
+            model_display_name=model_display_name,
+            project=project,
+            region=region,
+        )
+
+        response = self.auto_ml_client.list_model_evaluations(model_full_id)
+        model_evaluation_full_id = 0
         for evaluation in response:
             if not evaluation.annotation_spec_id:
                 model_evaluation_id = evaluation.name.split("/")[-1]
                 model_evaluation_full_id = evaluation.name
-        model_evaluation = self.client.get_model_evaluation(model_evaluation_full_id)
-        model_information = self.client.get_model(model_full_id)
+        model_evaluation = self.auto_ml_client.get_model_evaluation(
+            model_evaluation_full_id
+        )
+        model_information = self.auto_ml_client.get_model(model_full_id)
         classification_metrics = model_evaluation.classification_evaluation_metrics
-                                 #message described in the model_evaluation.proto
-                                                   #message described in the classification.proto
         table_metrics = model_information.tables_model_metadata
 
         if str(classification_metrics):
@@ -2823,18 +2971,20 @@ class TablesClient(object):
             true_negative_lst = []
             confusion_matrix = []
 
-            print("Model classification metrics (threshold at 0.5):")
+            print("Model classification metrics (threshold at " + str(threshold) + "):")
             for confidence_metrics_entry in confidence_metrics:
                 confidence_scores.append(confidence_metrics_entry.confidence_threshold)
                 precision_values.append(confidence_metrics_entry.precision)
                 recall_values.append(confidence_metrics_entry.recall)
-                false_positive_rate_lst.append(confidence_metrics_entry.false_positive_rate)
+                false_positive_rate_lst.append(
+                    confidence_metrics_entry.false_positive_rate
+                )
 
                 true_positive_lst.append(confidence_metrics_entry.true_positive_count)
                 false_positive_lst.append(confidence_metrics_entry.false_positive_count)
                 false_negative_lst.append(confidence_metrics_entry.false_negative_count)
                 true_negative_lst.append(confidence_metrics_entry.true_negative_count)
-                if confidence_metrics_entry.confidence_threshold == 0.5:
+                if confidence_metrics_entry.confidence_threshold == threshold:
                     print(
                         "Model Precision: {}%".format(
                             round(confidence_metrics_entry.precision * 100, 2)
@@ -2849,42 +2999,54 @@ class TablesClient(object):
                         "Model F1 score: {}%".format(
                             round(confidence_metrics_entry.f1_score * 100, 2)
                         )
-                    )    
-                    confusion_matrix.append(confidence_metrics_entry.true_positive_count)
-                    confusion_matrix.append(confidence_metrics_entry.false_positive_count)
-                    confusion_matrix.append(confidence_metrics_entry.false_negative_count)
-                    confusion_matrix.append(confidence_metrics_entry.true_negative_count)
+                    )
+            cm = []
+            for row in classification_metrics.confusion_matrix.row:
+                cm.append(row.example_count)
+            classes = classification_metrics.confusion_matrix.display_name
+            self.plot_confusion_matrix(np.asarray(cm), classes, True)
 
-            print(true_positive_lst)
-            print("Model AUPRC: {}".format(classification_metrics.au_prc))
-            print("Model AUROC: {}".format(classification_metrics.au_roc))
-            print("Model log loss: {}".format(classification_metrics.log_loss))
-            print confusion matrix
-            print("      predicted: NO       predicted: YES")
-            print("Actual: NO "+" TN = "+str(confusion_matrix[3]) + "      FP = " + str(confusion_matrix[1]))
-            print("Actual: YES"+" TN = "+str(confusion_matrix[2]) + "      FP = "+ str(confusion_matrix[0]))
+            # print(classification_metrics.confusion_matrix.display_name)
+            # print("Model AUPRC: {}".format(classification_metrics.au_prc))
+            # print("Model AUROC: {}".format(classification_metrics.au_roc))
+            # print("Model log loss: {}".format(classification_metrics.log_loss))
             for feature in feature_importance:
-                print("feature name: "+feature.column_display_name+"  feature importance: "+str(feature.feature_importance))
+                print(
+                    "feature name: "
+                    + feature.column_display_name
+                    + "  feature importance: "
+                    + str(feature.feature_importance)
+                )
             plt.figure()
             lw = 2
-            plt.plot(recall_values, precision_values, color='darkorange',
-                 lw=lw, label='Precision Recall curve')
+            plt.plot(
+                recall_values,
+                precision_values,
+                color="darkorange",
+                lw=lw,
+                label="Precision Recall curve",
+            )
             plt.xlim([0.0, 1.0])
             plt.ylim([0.0, 1.05])
-            plt.xlabel('Recall')
-            plt.ylabel('Precision')
-            plt.title('Precision Recall Curve')
+            plt.xlabel("Recall")
+            plt.ylabel("Precision")
+            plt.title("Precision Recall Curve")
             plt.legend(loc="lower right")
             plt.show()
             plt.figure()
             lw = 2
-            plt.plot( false_positive_rate_lst, recall_values, color='darkorange',
-                 lw=lw, label='ROC curve')
+            plt.plot(
+                false_positive_rate_lst,
+                recall_values,
+                color="darkorange",
+                lw=lw,
+                label="ROC curve",
+            )
             plt.xlim([0.0, 1.0])
             plt.ylim([0.0, 1.05])
-            plt.xlabel('False Positive Rate')
-            plt.ylabel('True Positive Rate')
-            plt.title('ROC Curve')
+            plt.xlabel("False Positive Rate")
+            plt.ylabel("True Positive Rate")
+            plt.title("ROC Curve")
             plt.legend(loc="lower right")
             plt.show()
         regression_metrics = model_evaluation.regression_evaluation_metrics
@@ -2892,6 +3054,9 @@ class TablesClient(object):
             print("Model regression metrics:")
             print("Model RMSE: {}".format(regression_metrics.root_mean_squared_error))
             print("Model MAE: {}".format(regression_metrics.mean_absolute_error))
-            print("Model MAPE: {}".format(
-                regression_metrics.mean_absolute_percentage_error))
+            print(
+                "Model MAPE: {}".format(
+                    regression_metrics.mean_absolute_percentage_error
+                )
+            )
             print("Model R^2: {}".format(regression_metrics.r_squared))
