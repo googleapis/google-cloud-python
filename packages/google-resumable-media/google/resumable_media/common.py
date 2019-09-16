@@ -19,8 +19,8 @@ Includes custom exception types, useful constants and shared helpers.
 
 
 _SLEEP_RETRY_ERROR_MSG = (
-    u'At most one of `max_cumulative_retry` and `max_retries` '
-    u'can be specified.')
+    u"At most one of `max_cumulative_retry` and `max_retries` " u"can be specified."
+)
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
@@ -117,8 +117,9 @@ class RetryStrategy(object):
             are passed.
     """
 
-    def __init__(self, max_sleep=MAX_SLEEP, max_cumulative_retry=None,
-                 max_retries=None):
+    def __init__(
+        self, max_sleep=MAX_SLEEP, max_cumulative_retry=None, max_retries=None
+    ):
         if max_cumulative_retry is not None and max_retries is not None:
             raise ValueError(_SLEEP_RETRY_ERROR_MSG)
         if max_cumulative_retry is None and max_retries is None:

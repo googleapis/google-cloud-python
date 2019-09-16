@@ -77,15 +77,22 @@ class RequestsMixin(object):
             bytes: The body of the ``response``.
         """
         if response._content is False:
-            response._content = b''.join(
-                response.raw.stream(
-                    _SINGLE_GET_CHUNK_SIZE, decode_content=False))
+            response._content = b"".join(
+                response.raw.stream(_SINGLE_GET_CHUNK_SIZE, decode_content=False)
+            )
             response._content_consumed = True
         return response._content
 
 
-def http_request(transport, method, url, data=None, headers=None,
-                 retry_strategy=_DEFAULT_RETRY_STRATEGY, **transport_kwargs):
+def http_request(
+    transport,
+    method,
+    url,
+    data=None,
+    headers=None,
+    retry_strategy=_DEFAULT_RETRY_STRATEGY,
+    **transport_kwargs
+):
     """Make an HTTP request.
 
     Args:
@@ -107,11 +114,9 @@ def http_request(transport, method, url, data=None, headers=None,
         ~requests.Response: The return value of ``transport.request()``.
     """
     if "timeout" not in transport_kwargs:
-        transport_kwargs["timeout"] = (
-            _DEFAULT_CONNECT_TIMEOUT, _DEFAULT_READ_TIMEOUT)
+        transport_kwargs["timeout"] = (_DEFAULT_CONNECT_TIMEOUT, _DEFAULT_READ_TIMEOUT)
 
     func = functools.partial(
-        transport.request, method, url, data=data, headers=headers,
-        **transport_kwargs)
-    return _helpers.wait_and_retry(
-        func, RequestsMixin._get_status_code, retry_strategy)
+        transport.request, method, url, data=data, headers=headers, **transport_kwargs
+    )
+    return _helpers.wait_and_retry(func, RequestsMixin._get_status_code, retry_strategy)

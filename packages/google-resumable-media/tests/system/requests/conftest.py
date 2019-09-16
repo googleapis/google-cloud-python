@@ -24,35 +24,32 @@ def ensure_bucket(transport):
     get_response = transport.get(utils.BUCKET_URL)
     if get_response.status_code == 404:
         credentials = transport.credentials
-        query_params = {
-            'project': credentials.project_id,
-        }
-        payload = {
-            'name': utils.BUCKET_NAME,
-        }
+        query_params = {"project": credentials.project_id}
+        payload = {"name": utils.BUCKET_NAME}
         post_response = transport.post(
-            utils.BUCKET_POST_URL, params=query_params, json=payload)
+            utils.BUCKET_POST_URL, params=query_params, json=payload
+        )
 
         if not post_response.ok:
-            raise ValueError("{}: {}".format(
-                post_response.status_code, post_response.reason))
+            raise ValueError(
+                "{}: {}".format(post_response.status_code, post_response.reason)
+            )
 
 
 def cleanup_bucket(transport):
     del_response = transport.delete(utils.BUCKET_URL)
 
     if not del_response.ok:
-        raise ValueError("{}: {}".format(
-            del_response.status_code, del_response.reason))
+        raise ValueError("{}: {}".format(del_response.status_code, del_response.reason))
 
 
-@pytest.fixture(scope=u'session')
+@pytest.fixture(scope=u"session")
 def authorized_transport():
     credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield tr_requests.AuthorizedSession(credentials)
 
 
-@pytest.fixture(scope=u'session')
+@pytest.fixture(scope=u"session")
 def bucket(authorized_transport):
     ensure_bucket(authorized_transport)
 

@@ -23,8 +23,8 @@ from six.moves import http_client
 from google.resumable_media import common
 
 
-RANGE_HEADER = u'range'
-CONTENT_RANGE_HEADER = u'content-range'
+RANGE_HEADER = u"range"
+CONTENT_RANGE_HEADER = u"content-range"
 RETRYABLE = (
     common.TOO_MANY_REQUESTS,
     http_client.INTERNAL_SERVER_ERROR,
@@ -61,13 +61,13 @@ def header_required(response, name, get_headers, callback=do_nothing):
     if name not in headers:
         callback()
         raise common.InvalidResponse(
-            response, u'Response headers must contain header', name)
+            response, u"Response headers must contain header", name
+        )
 
     return headers[name]
 
 
-def require_status_code(response, status_codes, get_status_code,
-                        callback=do_nothing):
+def require_status_code(response, status_codes, get_status_code, callback=do_nothing):
     """Require a response has a status code among a list.
 
     Args:
@@ -89,8 +89,12 @@ def require_status_code(response, status_codes, get_status_code,
     if status_code not in status_codes:
         callback()
         raise common.InvalidResponse(
-            response, u'Request failed with status code',
-            status_code, u'Expected one of', *status_codes)
+            response,
+            u"Request failed with status code",
+            status_code,
+            u"Expected one of",
+            *status_codes
+        )
     return status_code
 
 
@@ -151,8 +155,7 @@ def wait_and_retry(func, get_status_code, retry_strategy):
     num_retries = 0
     base_wait = 0.5  # When doubled will give 1.0
     while retry_strategy.retry_allowed(total_sleep, num_retries):
-        base_wait, wait_time = calculate_retry_wait(
-            base_wait, retry_strategy.max_sleep)
+        base_wait, wait_time = calculate_retry_wait(base_wait, retry_strategy.max_sleep)
         num_retries += 1
         total_sleep += wait_time
         time.sleep(wait_time)

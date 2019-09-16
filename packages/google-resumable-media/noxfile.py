@@ -95,13 +95,14 @@ def lint(session):
     Returns a failure if flake8 finds linting errors or sufficiently
     serious code quality issues.
     """
-    session.install('flake8')
+    session.install('flake8', 'black')
     session.install('-e', '.')
     session.run(
         'flake8',
         os.path.join('google', 'resumable_media'),
         'tests',
     )
+    session.run("black", "--check", os.path.join("google", "resumable_media"), "tests")
 
 
 @nox.session(python='3.6')
@@ -110,6 +111,12 @@ def lint_setup_py(session):
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+
+
+@nox.session(python='3.6')
+def blacken(session):
+    session.install("black")
+    session.run("black", os.path.join("google", "resumable_media"), "tests")
 
 
 @nox.session(python=['2.7', '3.6'])

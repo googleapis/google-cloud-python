@@ -19,23 +19,19 @@ from google.resumable_media import common
 
 
 class TestInvalidResponse(object):
-
     def test_constructor(self):
         response = mock.sentinel.response
-        error = common.InvalidResponse(
-            response, 1, u'a', [b'm'], True)
+        error = common.InvalidResponse(response, 1, u"a", [b"m"], True)
 
         assert error.response is response
-        assert error.args == (1, u'a', [b'm'], True)
+        assert error.args == (1, u"a", [b"m"], True)
 
 
 class TestRetryStrategy(object):
-
     def test_constructor_defaults(self):
         retry_strategy = common.RetryStrategy()
         assert retry_strategy.max_sleep == common.MAX_SLEEP
-        assert (
-            retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY)
+        assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
         assert retry_strategy.max_retries is None
 
     def test_constructor_failure(self):
@@ -48,7 +44,8 @@ class TestRetryStrategy(object):
         max_sleep = 10.0
         max_cumulative_retry = 100.0
         retry_strategy = common.RetryStrategy(
-            max_sleep=max_sleep, max_cumulative_retry=max_cumulative_retry)
+            max_sleep=max_sleep, max_cumulative_retry=max_cumulative_retry
+        )
 
         assert retry_strategy.max_sleep == max_sleep
         assert retry_strategy.max_cumulative_retry == max_cumulative_retry
@@ -58,7 +55,8 @@ class TestRetryStrategy(object):
         max_sleep = 13.75
         max_retries = 14
         retry_strategy = common.RetryStrategy(
-            max_sleep=max_sleep, max_retries=max_retries)
+            max_sleep=max_sleep, max_retries=max_retries
+        )
 
         assert retry_strategy.max_sleep == max_sleep
         assert retry_strategy.max_cumulative_retry is None

@@ -32,53 +32,50 @@ from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, u'..', u'..', u'data')
-PLAIN_TEXT = u'text/plain'
-IMAGE_JPEG = u'image/jpeg'
+DATA_DIR = os.path.join(CURR_DIR, u"..", u"..", u"data")
+PLAIN_TEXT = u"text/plain"
+IMAGE_JPEG = u"image/jpeg"
 ALL_FILES = (
     {
-        u'path': os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
-        u'content_type': IMAGE_JPEG,
-        u'checksum': u'1bsd83IYNug8hd+V1ING3Q==',
-        u'slices': (
+        u"path": os.path.realpath(os.path.join(DATA_DIR, u"image1.jpg")),
+        u"content_type": IMAGE_JPEG,
+        u"checksum": u"1bsd83IYNug8hd+V1ING3Q==",
+        u"slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
             slice(-256, None, None),  # obj[-256:]
             slice(262144, None, None),  # obj[262144:]
         ),
-    }, {
-        u'path': os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
-        u'content_type': IMAGE_JPEG,
-        u'checksum': u'gdLXJltiYAMP9WZZFEQI1Q==',
-        u'slices': (
+    },
+    {
+        u"path": os.path.realpath(os.path.join(DATA_DIR, u"image2.jpg")),
+        u"content_type": IMAGE_JPEG,
+        u"checksum": u"gdLXJltiYAMP9WZZFEQI1Q==",
+        u"slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
             slice(-256, None, None),  # obj[-256:]
             slice(262144, None, None),  # obj[262144:]
         ),
-    }, {
-        u'path': os.path.realpath(os.path.join(DATA_DIR, u'file.txt')),
-        u'content_type': PLAIN_TEXT,
-        u'checksum': u'XHSHAr/SpIeZtZbjgQ4nGw==',
-        u'slices': (),
-    }, {
-        u'path': os.path.realpath(os.path.join(DATA_DIR, u'gzipped.txt.gz')),
-        u'content_type': PLAIN_TEXT,
-        u'checksum': u'KHRs/+ZSrc/FuuR4qz/PZQ==',
-        u'slices': (),
-        u'metadata': {
-            u'contentEncoding': u'gzip',
-        },
+    },
+    {
+        u"path": os.path.realpath(os.path.join(DATA_DIR, u"file.txt")),
+        u"content_type": PLAIN_TEXT,
+        u"checksum": u"XHSHAr/SpIeZtZbjgQ4nGw==",
+        u"slices": (),
+    },
+    {
+        u"path": os.path.realpath(os.path.join(DATA_DIR, u"gzipped.txt.gz")),
+        u"content_type": PLAIN_TEXT,
+        u"checksum": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
+        u"slices": (),
+        u"metadata": {u"contentEncoding": u"gzip"},
     },
 )
-ENCRYPTED_ERR = (
-    b'The target object is encrypted by a customer-supplied encryption key.')
-NO_BODY_ERR = (
-    u'The content for this response was already consumed')
+ENCRYPTED_ERR = b"The target object is encrypted by a customer-supplied encryption key."
+NO_BODY_ERR = u"The content for this response was already consumed"
 NOT_FOUND_ERR = (
-    b'No such object: ' +
-    utils.BUCKET_NAME.encode('utf-8') +
-    b'/does-not-exist.txt'
+    b"No such object: " + utils.BUCKET_NAME.encode("utf-8") + b"/does-not-exist.txt"
 )
 
 
@@ -99,20 +96,19 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
             constructor.
     """
 
-    EMPTY_HASH = base64.b64encode(
-        hashlib.md5(b'').digest()).decode(u'utf-8')
+    EMPTY_HASH = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
 
     def request(self, method, url, data=None, headers=None, **kwargs):
         """Implementation of Requests' request."""
         response = tr_requests.AuthorizedSession.request(
-            self, method, url, data=data, headers=headers, **kwargs)
-        response.headers[download_mod._HASH_HEADER] = (
-            u'md5={}'.format(self.EMPTY_HASH))
+            self, method, url, data=data, headers=headers, **kwargs
+        )
+        response.headers[download_mod._HASH_HEADER] = u"md5={}".format(self.EMPTY_HASH)
         return response
 
 
 # Transport that returns corrupt data, so we can exercise checksum handling.
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def corrupting_transport():
     credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield CorruptingAuthorizedSession(credentials)
@@ -125,22 +121,22 @@ def delete_blob(transport, blob_name):
 
 
 def _get_contents_for_upload(info):
-    with open(info[u'path'], u'rb') as file_obj:
+    with open(info[u"path"], u"rb") as file_obj:
         return file_obj.read()
 
 
 def _get_contents(info):
-    full_path = info[u'path']
-    with open(full_path, u'rb') as file_obj:
+    full_path = info[u"path"]
+    with open(full_path, u"rb") as file_obj:
         return file_obj.read()
 
 
 def _get_blob_name(info):
-    full_path = info[u'path']
+    full_path = info[u"path"]
     return os.path.basename(full_path)
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def add_files(authorized_transport, bucket):
     blob_names = []
     for info in ALL_FILES:
@@ -148,19 +144,19 @@ def add_files(authorized_transport, bucket):
         blob_name = _get_blob_name(info)
 
         blob_names.append(blob_name)
-        if u'metadata' in info:
+        if u"metadata" in info:
             upload = resumable_requests.MultipartUpload(utils.MULTIPART_UPLOAD)
-            metadata = copy.deepcopy(info[u'metadata'])
-            metadata[u'name'] = blob_name
+            metadata = copy.deepcopy(info[u"metadata"])
+            metadata[u"name"] = blob_name
             response = upload.transmit(
-                authorized_transport, to_upload,
-                metadata, info[u'content_type'])
+                authorized_transport, to_upload, metadata, info[u"content_type"]
+            )
         else:
-            upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(
-                blob_name=blob_name)
+            upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
             upload = resumable_requests.SimpleUpload(upload_url)
             response = upload.transmit(
-                authorized_transport, to_upload, info[u'content_type'])
+                authorized_transport, to_upload, info[u"content_type"]
+            )
 
         assert response.status_code == http_client.OK
 
@@ -176,16 +172,17 @@ def check_tombstoned(download, transport):
     if isinstance(download, resumable_requests.Download):
         with pytest.raises(ValueError) as exc_info:
             download.consume(transport)
-        assert exc_info.match(u'A download can only be used once.')
+        assert exc_info.match(u"A download can only be used once.")
     else:
         with pytest.raises(ValueError) as exc_info:
             download.consume_next_chunk(transport)
-        assert exc_info.match(u'Download has finished.')
+        assert exc_info.match(u"Download has finished.")
 
 
 def read_raw_content(response):
-    return b''.join(response.raw.stream(
-        _helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False))
+    return b"".join(
+        response.raw.stream(_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False)
+    )
 
 
 def test_download_full(add_files, authorized_transport):
@@ -216,7 +213,7 @@ def test_download_to_stream(add_files, authorized_transport):
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
         with pytest.raises(RuntimeError) as exc_info:
-            getattr(response, u'content')
+            getattr(response, u"content")
         assert exc_info.value.args == (NO_BODY_ERR,)
         assert response._content is False
         assert response._content_consumed is True
@@ -238,15 +235,17 @@ def test_corrupt_download(add_files, corrupting_transport):
 
         assert download.finished
         msg = download_mod._CHECKSUM_MISMATCH.format(
-            download.media_url, CorruptingAuthorizedSession.EMPTY_HASH,
-            info[u'checksum'])
+            download.media_url,
+            CorruptingAuthorizedSession.EMPTY_HASH,
+            info[u"checksum"],
+        )
         assert exc_info.value.args == (msg,)
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def secret_file(authorized_transport, bucket):
-    blob_name = u'super-seekrit.txt'
-    data = b'Please do not tell anyone my encrypted seekrit.'
+    blob_name = u"super-seekrit.txt"
+    data = b"Please do not tell anyone my encrypted seekrit."
 
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     headers = utils.get_encryption_headers()
@@ -290,7 +289,7 @@ def test_extra_headers(authorized_transport, secret_file):
 
 
 def test_non_existent_file(authorized_transport, bucket):
-    blob_name = u'does-not-exist.txt'
+    blob_name = u"does-not-exist.txt"
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
     download = resumable_requests.Download(media_url)
 
@@ -301,12 +300,12 @@ def test_non_existent_file(authorized_transport, bucket):
     check_tombstoned(download, authorized_transport)
 
 
-@pytest.fixture(scope=u'module')
+@pytest.fixture(scope=u"module")
 def simple_file(authorized_transport, bucket):
-    blob_name = u'basic-file.txt'
+    blob_name = u"basic-file.txt"
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = resumable_requests.SimpleUpload(upload_url)
-    data = b'Simple contents'
+    data = b"Simple contents"
     response = upload.transmit(authorized_transport, data, PLAIN_TEXT)
     assert response.status_code == http_client.OK
 
@@ -330,8 +329,10 @@ def test_bad_range(simple_file, authorized_transport):
         download.consume(authorized_transport)
 
     check_error_response(
-        exc_info, http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
-        b'Request range not satisfiable')
+        exc_info,
+        http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
+        b"Request range not satisfiable",
+    )
     check_tombstoned(download, authorized_transport)
 
 
@@ -342,8 +343,7 @@ def _download_slice(media_url, slice_):
     if slice_.stop is not None:
         end = slice_.stop - 1
 
-    return resumable_requests.Download(
-        media_url, start=slice_.start, end=end)
+    return resumable_requests.Download(media_url, start=slice_.start, end=end)
 
 
 def test_download_partial(add_files, authorized_transport):
@@ -352,7 +352,7 @@ def test_download_partial(add_files, authorized_transport):
         blob_name = _get_blob_name(info)
 
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        for slice_ in info[u'slices']:
+        for slice_ in info[u"slices"]:
             download = _download_slice(media_url, slice_)
             response = download.consume(authorized_transport)
             assert response.status_code == http_client.PARTIAL_CONTENT
@@ -375,8 +375,7 @@ def get_chunk_size(min_chunks, total_bytes):
     return num_chunks, chunk_size
 
 
-def consume_chunks(download, authorized_transport,
-                   total_bytes, actual_contents):
+def consume_chunks(download, authorized_transport, total_bytes, actual_contents):
     start_byte = download.start
     end_byte = download.end
     if end_byte is None:
@@ -407,12 +406,11 @@ def test_chunked_download_full(add_files, authorized_transport):
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         stream = io.BytesIO()
-        download = resumable_requests.ChunkedDownload(
-            media_url, chunk_size, stream)
+        download = resumable_requests.ChunkedDownload(media_url, chunk_size, stream)
         # Consume the resource in chunks.
         num_responses, last_response = consume_chunks(
-            download, authorized_transport,
-            total_bytes, actual_contents)
+            download, authorized_transport, total_bytes, actual_contents
+        )
         # Make sure the combined chunks are the whole object.
         assert stream.getvalue() == actual_contents
         # Check that we have the right number of responses.
@@ -429,7 +427,7 @@ def test_chunked_download_partial(add_files, authorized_transport):
         blob_name = _get_blob_name(info)
 
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        for slice_ in info[u'slices']:
+        for slice_ in info[u"slices"]:
             # Manually replace a missing start with 0.
             start = 0 if slice_.start is None else slice_.start
             # Chunked downloads don't support a negative index.
@@ -448,15 +446,16 @@ def test_chunked_download_partial(add_files, authorized_transport):
                 end_byte = slice_.stop - 1
                 end = end_byte
 
-            num_chunks, chunk_size = get_chunk_size(
-                7, end_byte - start + 1)
+            num_chunks, chunk_size = get_chunk_size(7, end_byte - start + 1)
             # Create the actual download object.
             stream = io.BytesIO()
             download = resumable_requests.ChunkedDownload(
-                media_url, chunk_size, stream, start=start, end=end)
+                media_url, chunk_size, stream, start=start, end=end
+            )
             # Consume the resource in chunks.
             num_responses, last_response = consume_chunks(
-                download, authorized_transport, total_bytes, actual_contents)
+                download, authorized_transport, total_bytes, actual_contents
+            )
 
             # Make sure the combined chunks are the whole slice.
             assert stream.getvalue() == actual_contents[slice_]
@@ -476,10 +475,12 @@ def test_chunked_with_extra_headers(authorized_transport, secret_file):
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
     stream = io.BytesIO()
     download = resumable_requests.ChunkedDownload(
-        media_url, chunk_size, stream, headers=headers)
+        media_url, chunk_size, stream, headers=headers
+    )
     # Consume the resource in chunks.
     num_responses, last_response = consume_chunks(
-        download, authorized_transport, len(data), data)
+        download, authorized_transport, len(data), data
+    )
     # Make sure the combined chunks are the whole object.
     assert stream.getvalue() == data
     # Check that we have the right number of responses.
@@ -489,8 +490,7 @@ def test_chunked_with_extra_headers(authorized_transport, secret_file):
     check_tombstoned(download, authorized_transport)
     # Attempt to consume the resource **without** the headers.
     stream_wo = io.BytesIO()
-    download_wo = resumable_requests.ChunkedDownload(
-        media_url, chunk_size, stream_wo)
+    download_wo = resumable_requests.ChunkedDownload(media_url, chunk_size, stream_wo)
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download_wo.consume_next_chunk(authorized_transport)
 

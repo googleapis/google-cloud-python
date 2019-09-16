@@ -24,7 +24,7 @@ from google.resumable_media.requests import _helpers
 
 
 _LOGGER = logging.getLogger(__name__)
-_HASH_HEADER = u'x-goog-hash'
+_HASH_HEADER = u"x-goog-hash"
 _MISSING_MD5 = u"""\
 No MD5 checksum was returned from the service while downloading {}
 (which happens for composite objects), so client-side content integrity
@@ -81,8 +81,7 @@ class Download(_helpers.RequestsMixin, _download.Download):
             can be detected from the ``X-Goog-Hash`` header.
         """
         headers = self._get_headers(response)
-        expected_md5_hash = _parse_md5_header(
-            headers.get(_HASH_HEADER), response)
+        expected_md5_hash = _parse_md5_header(headers.get(_HASH_HEADER), response)
 
         if expected_md5_hash is None:
             msg = _MISSING_MD5.format(self.media_url)
@@ -115,7 +114,8 @@ class Download(_helpers.RequestsMixin, _download.Download):
             # NOTE: This might "donate" ``md5_hash`` to the decoder and replace
             #       it with a ``_DoNothingHash``.
             body_iter = response.raw.stream(
-                _helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False)
+                _helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False
+            )
             for chunk in body_iter:
                 self._stream.write(chunk)
                 md5_hash.update(chunk)
@@ -127,10 +127,11 @@ class Download(_helpers.RequestsMixin, _download.Download):
         actual_md5_hash = base64.b64encode(md5_hash.digest())
         # NOTE: ``b64encode`` returns ``bytes``, but ``expected_md5_hash``
         #       came from a header, so it will be ``str``.
-        actual_md5_hash = actual_md5_hash.decode(u'utf-8')
+        actual_md5_hash = actual_md5_hash.decode(u"utf-8")
         if actual_md5_hash != expected_md5_hash:
             msg = _CHECKSUM_MISMATCH.format(
-                self.media_url, expected_md5_hash, actual_md5_hash)
+                self.media_url, expected_md5_hash, actual_md5_hash
+            )
             raise common.DataCorruption(response, msg)
 
     def consume(self, transport):
@@ -216,8 +217,14 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         response = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers,
-            retry_strategy=self._retry_strategy, stream=True)
+            transport,
+            method,
+            url,
+            data=payload,
+            headers=headers,
+            retry_strategy=self._retry_strategy,
+            stream=True,
+        )
         self._process_response(response)
         return response
 
@@ -254,9 +261,9 @@ def _parse_md5_header(header_value, response):
         return None
 
     matches = []
-    for checksum in header_value.split(u','):
-        name, value = checksum.split(u'=', 1)
-        if name == u'md5':
+    for checksum in header_value.split(u","):
+        name, value = checksum.split(u"=", 1)
+        if name == u"md5":
             matches.append(value)
 
     if len(matches) == 0:
@@ -266,7 +273,7 @@ def _parse_md5_header(header_value, response):
     else:
         raise common.InvalidResponse(
             response,
-            u'X-Goog-Hash header had multiple ``md5`` values.',
+            u"X-Goog-Hash header had multiple ``md5`` values.",
             header_value,
             matches,
         )
