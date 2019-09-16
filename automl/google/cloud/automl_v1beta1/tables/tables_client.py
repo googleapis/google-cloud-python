@@ -2828,8 +2828,8 @@ class TablesClient(object):
             >>>
 
         Args:
-            confusion_matrix ([[float]]):
-                This is a numpy array of the confusion matrix.
+            confusion_matrix (numpy.array):
+                This is a 2D numpy array of the confusion matrix.
             classes ([string]):
                 A list of the possible classification values.
             title (Optional[string]):
@@ -3005,11 +3005,6 @@ class TablesClient(object):
                 cm.append(row.example_count)
             classes = classification_metrics.confusion_matrix.display_name
             self.plot_confusion_matrix(np.asarray(cm), classes, True)
-
-            # print(classification_metrics.confusion_matrix.display_name)
-            # print("Model AUPRC: {}".format(classification_metrics.au_prc))
-            # print("Model AUROC: {}".format(classification_metrics.au_roc))
-            # print("Model log loss: {}".format(classification_metrics.log_loss))
             for feature in feature_importance:
                 print(
                     "feature name: "
