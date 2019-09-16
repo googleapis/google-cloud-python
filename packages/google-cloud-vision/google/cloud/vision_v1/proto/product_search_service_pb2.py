@@ -17,6 +17,8 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.vision_v1.proto import (
     geometry_pb2 as google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2,
 )
@@ -37,11 +39,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\032com.google.cloud.vision.v1B\031ProductSearchServiceProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001\242\002\004GCVN"
     ),
     serialized_pb=_b(
-        '\n9google/cloud/vision_v1/proto/product_search_service.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xc6\x01\n\x07Product\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x18\n\x10product_category\x18\x04 \x01(\t\x12@\n\x0eproduct_labels\x18\x05 \x03(\x0b\x32(.google.cloud.vision.v1.Product.KeyValue\x1a&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t"\x89\x01\n\nProductSet\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12.\n\nindex_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x0bindex_error\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status"i\n\x0eReferenceImage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x12<\n\x0e\x62ounding_polys\x18\x03 \x03(\x0b\x32$.google.cloud.vision.v1.BoundingPoly"l\n\x14\x43reateProductRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x30\n\x07product\x18\x02 \x01(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\x12\n\nproduct_id\x18\x03 \x01(\t"L\n\x13ListProductsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"b\n\x14ListProductsResponse\x12\x31\n\x08products\x18\x01 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"y\n\x14UpdateProductRequest\x12\x30\n\x07product\x18\x01 \x01(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"$\n\x14\x44\x65leteProductRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"z\n\x17\x43reateProductSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x0bproduct_set\x18\x02 \x01(\x0b\x32".google.cloud.vision.v1.ProductSet\x12\x16\n\x0eproduct_set_id\x18\x03 \x01(\t"O\n\x16ListProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"l\n\x17ListProductSetsResponse\x12\x38\n\x0cproduct_sets\x18\x01 \x03(\x0b\x32".google.cloud.vision.v1.ProductSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x83\x01\n\x17UpdateProductSetRequest\x12\x37\n\x0bproduct_set\x18\x01 \x01(\x0b\x32".google.cloud.vision.v1.ProductSet\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17\x44\x65leteProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8a\x01\n\x1b\x43reateReferenceImageRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12?\n\x0freference_image\x18\x02 \x01(\x0b\x32&.google.cloud.vision.v1.ReferenceImage\x12\x1a\n\x12reference_image_id\x18\x03 \x01(\t"S\n\x1aListReferenceImagesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x8b\x01\n\x1bListReferenceImagesResponse\x12@\n\x10reference_images\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.ReferenceImage\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"(\n\x18GetReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"+\n\x1b\x44\x65leteReferenceImageRequest\x12\x0c\n\x04name\x18\x01 \x01(\t">\n\x1d\x41\x64\x64ProductToProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"C\n"RemoveProductFromProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07product\x18\x02 \x01(\t"V\n\x1fListProductsInProductSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"n\n ListProductsInProductSetResponse\x12\x31\n\x08products\x18\x01 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"2\n\x1aImportProductSetsGcsSource\x12\x14\n\x0c\x63sv_file_uri\x18\x01 \x01(\t"r\n\x1cImportProductSetsInputConfig\x12H\n\ngcs_source\x18\x01 \x01(\x0b\x32\x32.google.cloud.vision.v1.ImportProductSetsGcsSourceH\x00\x42\x08\n\x06source"v\n\x18ImportProductSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12J\n\x0cinput_config\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.ImportProductSetsInputConfig"\x83\x01\n\x19ImportProductSetsResponse\x12@\n\x10reference_images\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.ReferenceImage\x12$\n\x08statuses\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status"\x97\x02\n\x16\x42\x61tchOperationMetadata\x12\x43\n\x05state\x18\x01 \x01(\x0e\x32\x34.google.cloud.vision.v1.BatchOperationMetadata.State\x12/\n\x0bsubmit_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"Y\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nPROCESSING\x10\x01\x12\x0e\n\nSUCCESSFUL\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03\x12\r\n\tCANCELLED\x10\x04"/\n\x15ProductSetPurgeConfig\x12\x16\n\x0eproduct_set_id\x18\x01 \x01(\t"\xb4\x01\n\x14PurgeProductsRequest\x12Q\n\x18product_set_purge_config\x18\x02 \x01(\x0b\x32-.google.cloud.vision.v1.ProductSetPurgeConfigH\x00\x12 \n\x16\x64\x65lete_orphan_products\x18\x03 \x01(\x08H\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\r\n\x05\x66orce\x18\x04 \x01(\x08\x42\x08\n\x06target2\xe5\x1a\n\rProductSearch\x12\xad\x01\n\x10\x43reateProductSet\x12/.google.cloud.vision.v1.CreateProductSetRequest\x1a".google.cloud.vision.v1.ProductSet"D\x82\xd3\xe4\x93\x02>"//v1/{parent=projects/*/locations/*}/productSets:\x0bproduct_set\x12\xab\x01\n\x0fListProductSets\x12..google.cloud.vision.v1.ListProductSetsRequest\x1a/.google.cloud.vision.v1.ListProductSetsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1/{parent=projects/*/locations/*}/productSets\x12\x9a\x01\n\rGetProductSet\x12,.google.cloud.vision.v1.GetProductSetRequest\x1a".google.cloud.vision.v1.ProductSet"7\x82\xd3\xe4\x93\x02\x31\x12//v1/{name=projects/*/locations/*/productSets/*}\x12\xb9\x01\n\x10UpdateProductSet\x12/.google.cloud.vision.v1.UpdateProductSetRequest\x1a".google.cloud.vision.v1.ProductSet"P\x82\xd3\xe4\x93\x02J2;/v1/{product_set.name=projects/*/locations/*/productSets/*}:\x0bproduct_set\x12\x94\x01\n\x10\x44\x65leteProductSet\x12/.google.cloud.vision.v1.DeleteProductSetRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v1/{name=projects/*/locations/*/productSets/*}\x12\x9d\x01\n\rCreateProduct\x12,.google.cloud.vision.v1.CreateProductRequest\x1a\x1f.google.cloud.vision.v1.Product"=\x82\xd3\xe4\x93\x02\x37",/v1/{parent=projects/*/locations/*}/products:\x07product\x12\x9f\x01\n\x0cListProducts\x12+.google.cloud.vision.v1.ListProductsRequest\x1a,.google.cloud.vision.v1.ListProductsResponse"4\x82\xd3\xe4\x93\x02.\x12,/v1/{parent=projects/*/locations/*}/products\x12\x8e\x01\n\nGetProduct\x12).google.cloud.vision.v1.GetProductRequest\x1a\x1f.google.cloud.vision.v1.Product"4\x82\xd3\xe4\x93\x02.\x12,/v1/{name=projects/*/locations/*/products/*}\x12\xa5\x01\n\rUpdateProduct\x12,.google.cloud.vision.v1.UpdateProductRequest\x1a\x1f.google.cloud.vision.v1.Product"E\x82\xd3\xe4\x93\x02?24/v1/{product.name=projects/*/locations/*/products/*}:\x07product\x12\x8b\x01\n\rDeleteProduct\x12,.google.cloud.vision.v1.DeleteProductRequest\x1a\x16.google.protobuf.Empty"4\x82\xd3\xe4\x93\x02.*,/v1/{name=projects/*/locations/*/products/*}\x12\xcc\x01\n\x14\x43reateReferenceImage\x12\x33.google.cloud.vision.v1.CreateReferenceImageRequest\x1a&.google.cloud.vision.v1.ReferenceImage"W\x82\xd3\xe4\x93\x02Q">/v1/{parent=projects/*/locations/*/products/*}/referenceImages:\x0freference_image\x12\xab\x01\n\x14\x44\x65leteReferenceImage\x12\x33.google.cloud.vision.v1.DeleteReferenceImageRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02@*>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xc6\x01\n\x13ListReferenceImages\x12\x32.google.cloud.vision.v1.ListReferenceImagesRequest\x1a\x33.google.cloud.vision.v1.ListReferenceImagesResponse"F\x82\xd3\xe4\x93\x02@\x12>/v1/{parent=projects/*/locations/*/products/*}/referenceImages\x12\xb5\x01\n\x11GetReferenceImage\x12\x30.google.cloud.vision.v1.GetReferenceImageRequest\x1a&.google.cloud.vision.v1.ReferenceImage"F\x82\xd3\xe4\x93\x02@\x12>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xae\x01\n\x16\x41\x64\x64ProductToProductSet\x12\x35.google.cloud.vision.v1.AddProductToProductSetRequest\x1a\x16.google.protobuf.Empty"E\x82\xd3\xe4\x93\x02?":/v1/{name=projects/*/locations/*/productSets/*}:addProduct:\x01*\x12\xbb\x01\n\x1bRemoveProductFromProductSet\x12:.google.cloud.vision.v1.RemoveProductFromProductSetRequest\x1a\x16.google.protobuf.Empty"H\x82\xd3\xe4\x93\x02\x42"=/v1/{name=projects/*/locations/*/productSets/*}:removeProduct:\x01*\x12\xcf\x01\n\x18ListProductsInProductSet\x12\x37.google.cloud.vision.v1.ListProductsInProductSetRequest\x1a\x38.google.cloud.vision.v1.ListProductsInProductSetResponse"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/locations/*/productSets/*}/products\x12\xa7\x01\n\x11ImportProductSets\x12\x30.google.cloud.vision.v1.ImportProductSetsRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v1/{parent=projects/*/locations/*}/productSets:import:\x01*\x12\x9b\x01\n\rPurgeProducts\x12,.google.cloud.vision.v1.PurgeProductsRequest\x1a\x1d.google.longrunning.Operation"=\x82\xd3\xe4\x93\x02\x37"2/v1/{parent=projects/*/locations/*}/products:purge:\x01*\x1av\xca\x41\x15vision.googleapis.com\xd2\x41[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-visionB\x81\x01\n\x1a\x63om.google.cloud.vision.v1B\x19ProductSearchServiceProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3'
+        '\n9google/cloud/vision_v1/proto/product_search_service.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xab\x02\n\x07Product\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x1d\n\x10product_category\x18\x04 \x01(\tB\x03\xe0\x41\x05\x12@\n\x0eproduct_labels\x18\x05 \x03(\x0b\x32(.google.cloud.vision.v1.Product.KeyValue\x1a&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:^\xea\x41[\n\x1dvision.googleapis.com/Product\x12:projects/{project}/locations/{location}/products/{product}"\xfd\x01\n\nProductSet\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x33\n\nindex_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12,\n\x0bindex_error\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusB\x03\xe0\x41\x03:h\xea\x41\x65\n vision.googleapis.com/ProductSet\x12\x41projects/{project}/locations/{location}/productSets/{product_set}"\xfe\x01\n\x0eReferenceImage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x03uri\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x0e\x62ounding_polys\x18\x03 \x03(\x0b\x32$.google.cloud.vision.v1.BoundingPolyB\x03\xe0\x41\x01:\x88\x01\xea\x41\x84\x01\n$vision.googleapis.com/ReferenceImage\x12\\projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}"\x9c\x01\n\x14\x43reateProductRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\x35\n\x07product\x18\x02 \x01(\x0b\x32\x1f.google.cloud.vision.v1.ProductB\x03\xe0\x41\x02\x12\x12\n\nproduct_id\x18\x03 \x01(\t"w\n\x13ListProductsRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"b\n\x14ListProductsResponse\x12\x31\n\x08products\x18\x01 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"H\n\x11GetProductRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product"~\n\x14UpdateProductRequest\x12\x35\n\x07product\x18\x01 \x01(\x0b\x32\x1f.google.cloud.vision.v1.ProductB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"K\n\x14\x44\x65leteProductRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product"\xaa\x01\n\x17\x43reateProductSetRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12<\n\x0bproduct_set\x18\x02 \x01(\x0b\x32".google.cloud.vision.v1.ProductSetB\x03\xe0\x41\x02\x12\x16\n\x0eproduct_set_id\x18\x03 \x01(\t"z\n\x16ListProductSetsRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"l\n\x17ListProductSetsResponse\x12\x38\n\x0cproduct_sets\x18\x01 \x03(\x0b\x32".google.cloud.vision.v1.ProductSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"N\n\x14GetProductSetRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n vision.googleapis.com/ProductSet"\x88\x01\n\x17UpdateProductSetRequest\x12<\n\x0bproduct_set\x18\x01 \x01(\x0b\x32".google.cloud.vision.v1.ProductSetB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"Q\n\x17\x44\x65leteProductSetRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n vision.googleapis.com/ProductSet"\xb6\x01\n\x1b\x43reateReferenceImageRequest\x12\x35\n\x06parent\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product\x12\x44\n\x0freference_image\x18\x02 \x01(\x0b\x32&.google.cloud.vision.v1.ReferenceImageB\x03\xe0\x41\x02\x12\x1a\n\x12reference_image_id\x18\x03 \x01(\t"z\n\x1aListReferenceImagesRequest\x12\x35\n\x06parent\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x8b\x01\n\x1bListReferenceImagesResponse\x12@\n\x10reference_images\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.ReferenceImage\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"V\n\x18GetReferenceImageRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$vision.googleapis.com/ReferenceImage"Y\n\x1b\x44\x65leteReferenceImageRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$vision.googleapis.com/ReferenceImage"\x8f\x01\n\x1d\x41\x64\x64ProductToProductSetRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n vision.googleapis.com/ProductSet\x12\x36\n\x07product\x18\x02 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product"\x94\x01\n"RemoveProductFromProductSetRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n vision.googleapis.com/ProductSet\x12\x36\n\x07product\x18\x02 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dvision.googleapis.com/Product"\x80\x01\n\x1fListProductsInProductSetRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n vision.googleapis.com/ProductSet\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"n\n ListProductsInProductSetResponse\x12\x31\n\x08products\x18\x01 \x03(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"2\n\x1aImportProductSetsGcsSource\x12\x14\n\x0c\x63sv_file_uri\x18\x01 \x01(\t"r\n\x1cImportProductSetsInputConfig\x12H\n\ngcs_source\x18\x01 \x01(\x0b\x32\x32.google.cloud.vision.v1.ImportProductSetsGcsSourceH\x00\x42\x08\n\x06source"\xa6\x01\n\x18ImportProductSetsRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12O\n\x0cinput_config\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.ImportProductSetsInputConfigB\x03\xe0\x41\x02"\x83\x01\n\x19ImportProductSetsResponse\x12@\n\x10reference_images\x18\x01 \x03(\x0b\x32&.google.cloud.vision.v1.ReferenceImage\x12$\n\x08statuses\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status"\x97\x02\n\x16\x42\x61tchOperationMetadata\x12\x43\n\x05state\x18\x01 \x01(\x0e\x32\x34.google.cloud.vision.v1.BatchOperationMetadata.State\x12/\n\x0bsubmit_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"Y\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0e\n\nPROCESSING\x10\x01\x12\x0e\n\nSUCCESSFUL\x10\x02\x12\n\n\x06\x46\x41ILED\x10\x03\x12\r\n\tCANCELLED\x10\x04"/\n\x15ProductSetPurgeConfig\x12\x16\n\x0eproduct_set_id\x18\x01 \x01(\t"\xdf\x01\n\x14PurgeProductsRequest\x12Q\n\x18product_set_purge_config\x18\x02 \x01(\x0b\x32-.google.cloud.vision.v1.ProductSetPurgeConfigH\x00\x12 \n\x16\x64\x65lete_orphan_products\x18\x03 \x01(\x08H\x00\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\r\n\x05\x66orce\x18\x04 \x01(\x08\x42\x08\n\x06target2\xed\x1d\n\rProductSearch\x12\xd1\x01\n\x10\x43reateProductSet\x12/.google.cloud.vision.v1.CreateProductSetRequest\x1a".google.cloud.vision.v1.ProductSet"h\x82\xd3\xe4\x93\x02>"//v1/{parent=projects/*/locations/*}/productSets:\x0bproduct_set\xda\x41!parent,product_set,product_set_id\x12\xb4\x01\n\x0fListProductSets\x12..google.cloud.vision.v1.ListProductSetsRequest\x1a/.google.cloud.vision.v1.ListProductSetsResponse"@\x82\xd3\xe4\x93\x02\x31\x12//v1/{parent=projects/*/locations/*}/productSets\xda\x41\x06parent\x12\xa1\x01\n\rGetProductSet\x12,.google.cloud.vision.v1.GetProductSetRequest\x1a".google.cloud.vision.v1.ProductSet">\x82\xd3\xe4\x93\x02\x31\x12//v1/{name=projects/*/locations/*/productSets/*}\xda\x41\x04name\x12\xd3\x01\n\x10UpdateProductSet\x12/.google.cloud.vision.v1.UpdateProductSetRequest\x1a".google.cloud.vision.v1.ProductSet"j\x82\xd3\xe4\x93\x02J2;/v1/{product_set.name=projects/*/locations/*/productSets/*}:\x0bproduct_set\xda\x41\x17product_set,update_mask\x12\x9b\x01\n\x10\x44\x65leteProductSet\x12/.google.cloud.vision.v1.DeleteProductSetRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x31*//v1/{name=projects/*/locations/*/productSets/*}\xda\x41\x04name\x12\xb9\x01\n\rCreateProduct\x12,.google.cloud.vision.v1.CreateProductRequest\x1a\x1f.google.cloud.vision.v1.Product"Y\x82\xd3\xe4\x93\x02\x37",/v1/{parent=projects/*/locations/*}/products:\x07product\xda\x41\x19parent,product,product_id\x12\xa8\x01\n\x0cListProducts\x12+.google.cloud.vision.v1.ListProductsRequest\x1a,.google.cloud.vision.v1.ListProductsResponse"=\x82\xd3\xe4\x93\x02.\x12,/v1/{parent=projects/*/locations/*}/products\xda\x41\x06parent\x12\x95\x01\n\nGetProduct\x12).google.cloud.vision.v1.GetProductRequest\x1a\x1f.google.cloud.vision.v1.Product";\x82\xd3\xe4\x93\x02.\x12,/v1/{name=projects/*/locations/*/products/*}\xda\x41\x04name\x12\xbb\x01\n\rUpdateProduct\x12,.google.cloud.vision.v1.UpdateProductRequest\x1a\x1f.google.cloud.vision.v1.Product"[\x82\xd3\xe4\x93\x02?24/v1/{product.name=projects/*/locations/*/products/*}:\x07product\xda\x41\x13product,update_mask\x12\x92\x01\n\rDeleteProduct\x12,.google.cloud.vision.v1.DeleteProductRequest\x1a\x16.google.protobuf.Empty";\x82\xd3\xe4\x93\x02.*,/v1/{name=projects/*/locations/*/products/*}\xda\x41\x04name\x12\xf9\x01\n\x14\x43reateReferenceImage\x12\x33.google.cloud.vision.v1.CreateReferenceImageRequest\x1a&.google.cloud.vision.v1.ReferenceImage"\x83\x01\x82\xd3\xe4\x93\x02Q">/v1/{parent=projects/*/locations/*/products/*}/referenceImages:\x0freference_image\xda\x41)parent,reference_image,reference_image_id\x12\xb2\x01\n\x14\x44\x65leteReferenceImage\x12\x33.google.cloud.vision.v1.DeleteReferenceImageRequest\x1a\x16.google.protobuf.Empty"M\x82\xd3\xe4\x93\x02@*>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}\xda\x41\x04name\x12\xcf\x01\n\x13ListReferenceImages\x12\x32.google.cloud.vision.v1.ListReferenceImagesRequest\x1a\x33.google.cloud.vision.v1.ListReferenceImagesResponse"O\x82\xd3\xe4\x93\x02@\x12>/v1/{parent=projects/*/locations/*/products/*}/referenceImages\xda\x41\x06parent\x12\xb5\x01\n\x11GetReferenceImage\x12\x30.google.cloud.vision.v1.GetReferenceImageRequest\x1a&.google.cloud.vision.v1.ReferenceImage"F\x82\xd3\xe4\x93\x02@\x12>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}\x12\xbd\x01\n\x16\x41\x64\x64ProductToProductSet\x12\x35.google.cloud.vision.v1.AddProductToProductSetRequest\x1a\x16.google.protobuf.Empty"T\x82\xd3\xe4\x93\x02?":/v1/{name=projects/*/locations/*/productSets/*}:addProduct:\x01*\xda\x41\x0cname,product\x12\xca\x01\n\x1bRemoveProductFromProductSet\x12:.google.cloud.vision.v1.RemoveProductFromProductSetRequest\x1a\x16.google.protobuf.Empty"W\x82\xd3\xe4\x93\x02\x42"=/v1/{name=projects/*/locations/*/productSets/*}:removeProduct:\x01*\xda\x41\x0cname,product\x12\xd6\x01\n\x18ListProductsInProductSet\x12\x37.google.cloud.vision.v1.ListProductsInProductSetRequest\x1a\x38.google.cloud.vision.v1.ListProductsInProductSetResponse"G\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/locations/*/productSets/*}/products\xda\x41\x04name\x12\xf4\x01\n\x11ImportProductSets\x12\x30.google.cloud.vision.v1.ImportProductSetsRequest\x1a\x1d.google.longrunning.Operation"\x8d\x01\x82\xd3\xe4\x93\x02;"6/v1/{parent=projects/*/locations/*}/productSets:import:\x01*\xda\x41\x13parent,input_config\xca\x41\x33\n\x19ImportProductSetsResponse\x12\x16\x42\x61tchOperationMetadata\x12\xd6\x01\n\rPurgeProducts\x12,.google.cloud.vision.v1.PurgeProductsRequest\x1a\x1d.google.longrunning.Operation"x\x82\xd3\xe4\x93\x02\x37"2/v1/{parent=projects/*/locations/*}/products:purge:\x01*\xda\x41\x06parent\xca\x41/\n\x15google.protobuf.Empty\x12\x16\x42\x61tchOperationMetadata\x1av\xca\x41\x15vision.googleapis.com\xd2\x41[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-visionB\x81\x01\n\x1a\x63om.google.cloud.vision.v1B\x19ProductSearchServiceProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
@@ -80,8 +84,8 @@ _BATCHOPERATIONMETADATA_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3204,
-    serialized_end=3293,
+    serialized_start=4418,
+    serialized_end=4507,
 )
 _sym_db.RegisterEnumDescriptor(_BATCHOPERATIONMETADATA_STATE)
 
@@ -138,8 +142,8 @@ _PRODUCT_KEYVALUE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=504,
-    serialized_end=542,
+    serialized_start=569,
+    serialized_end=607,
 )
 
 _PRODUCT = _descriptor.Descriptor(
@@ -218,7 +222,7 @@ _PRODUCT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\005"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -243,13 +247,15 @@ _PRODUCT = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_PRODUCT_KEYVALUE],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A[\n\035vision.googleapis.com/Product\022:projects/{project}/locations/{location}/products/{product}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=344,
-    serialized_end=542,
+    serialized_start=404,
+    serialized_end=703,
 )
 
 
@@ -311,7 +317,7 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -329,20 +335,22 @@ _PRODUCTSET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ae\n vision.googleapis.com/ProductSet\022Aprojects/{project}/locations/{location}/productSets/{product_set}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=545,
-    serialized_end=682,
+    serialized_start=706,
+    serialized_end=959,
 )
 
 
@@ -386,7 +394,7 @@ _REFERENCEIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -404,20 +412,22 @@ _REFERENCEIMAGE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\204\001\n$vision.googleapis.com/ReferenceImage\022\\projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=684,
-    serialized_end=789,
+    serialized_start=962,
+    serialized_end=1216,
 )
 
 
@@ -443,7 +453,9 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -461,7 +473,7 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -491,8 +503,8 @@ _CREATEPRODUCTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=791,
-    serialized_end=899,
+    serialized_start=1219,
+    serialized_end=1375,
 )
 
 
@@ -518,7 +530,9 @@ _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -566,8 +580,8 @@ _LISTPRODUCTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=901,
-    serialized_end=977,
+    serialized_start=1377,
+    serialized_end=1496,
 )
 
 
@@ -623,8 +637,8 @@ _LISTPRODUCTSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=979,
-    serialized_end=1077,
+    serialized_start=1498,
+    serialized_end=1596,
 )
 
 
@@ -650,7 +664,9 @@ _GETPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -662,8 +678,8 @@ _GETPRODUCTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1079,
-    serialized_end=1112,
+    serialized_start=1598,
+    serialized_end=1670,
 )
 
 
@@ -689,7 +705,7 @@ _UPDATEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -719,8 +735,8 @@ _UPDATEPRODUCTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1114,
-    serialized_end=1235,
+    serialized_start=1672,
+    serialized_end=1798,
 )
 
 
@@ -746,7 +762,9 @@ _DELETEPRODUCTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -758,8 +776,8 @@ _DELETEPRODUCTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1237,
-    serialized_end=1273,
+    serialized_start=1800,
+    serialized_end=1875,
 )
 
 
@@ -785,7 +803,9 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -803,7 +823,7 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -833,8 +853,8 @@ _CREATEPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1275,
-    serialized_end=1397,
+    serialized_start=1878,
+    serialized_end=2048,
 )
 
 
@@ -860,7 +880,9 @@ _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -908,8 +930,8 @@ _LISTPRODUCTSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1399,
-    serialized_end=1478,
+    serialized_start=2050,
+    serialized_end=2172,
 )
 
 
@@ -965,8 +987,8 @@ _LISTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1480,
-    serialized_end=1588,
+    serialized_start=2174,
+    serialized_end=2282,
 )
 
 
@@ -992,7 +1014,7 @@ _GETPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n vision.googleapis.com/ProductSet'),
             file=DESCRIPTOR,
         )
     ],
@@ -1004,8 +1026,8 @@ _GETPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1590,
-    serialized_end=1626,
+    serialized_start=2284,
+    serialized_end=2362,
 )
 
 
@@ -1031,7 +1053,7 @@ _UPDATEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1061,8 +1083,8 @@ _UPDATEPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1629,
-    serialized_end=1760,
+    serialized_start=2365,
+    serialized_end=2501,
 )
 
 
@@ -1088,7 +1110,7 @@ _DELETEPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n vision.googleapis.com/ProductSet'),
             file=DESCRIPTOR,
         )
     ],
@@ -1100,8 +1122,8 @@ _DELETEPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1762,
-    serialized_end=1801,
+    serialized_start=2503,
+    serialized_end=2584,
 )
 
 
@@ -1127,7 +1149,9 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1145,7 +1169,7 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1175,8 +1199,8 @@ _CREATEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1804,
-    serialized_end=1942,
+    serialized_start=2587,
+    serialized_end=2769,
 )
 
 
@@ -1202,7 +1226,9 @@ _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1250,8 +1276,8 @@ _LISTREFERENCEIMAGESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1944,
-    serialized_end=2027,
+    serialized_start=2771,
+    serialized_end=2893,
 )
 
 
@@ -1325,8 +1351,8 @@ _LISTREFERENCEIMAGESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2030,
-    serialized_end=2169,
+    serialized_start=2896,
+    serialized_end=3035,
 )
 
 
@@ -1352,7 +1378,9 @@ _GETREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$vision.googleapis.com/ReferenceImage"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -1364,8 +1392,8 @@ _GETREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2171,
-    serialized_end=2211,
+    serialized_start=3037,
+    serialized_end=3123,
 )
 
 
@@ -1391,7 +1419,9 @@ _DELETEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$vision.googleapis.com/ReferenceImage"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -1403,8 +1433,8 @@ _DELETEREFERENCEIMAGEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2213,
-    serialized_end=2256,
+    serialized_start=3125,
+    serialized_end=3214,
 )
 
 
@@ -1430,7 +1460,7 @@ _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n vision.googleapis.com/ProductSet'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1448,7 +1478,9 @@ _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         ),
     ],
@@ -1460,8 +1492,8 @@ _ADDPRODUCTTOPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2258,
-    serialized_end=2320,
+    serialized_start=3217,
+    serialized_end=3360,
 )
 
 
@@ -1487,7 +1519,7 @@ _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n vision.googleapis.com/ProductSet'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1505,7 +1537,9 @@ _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035vision.googleapis.com/Product"
+            ),
             file=DESCRIPTOR,
         ),
     ],
@@ -1517,8 +1551,8 @@ _REMOVEPRODUCTFROMPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2322,
-    serialized_end=2389,
+    serialized_start=3363,
+    serialized_end=3511,
 )
 
 
@@ -1544,7 +1578,7 @@ _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n vision.googleapis.com/ProductSet'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1592,8 +1626,8 @@ _LISTPRODUCTSINPRODUCTSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2391,
-    serialized_end=2477,
+    serialized_start=3514,
+    serialized_end=3642,
 )
 
 
@@ -1649,8 +1683,8 @@ _LISTPRODUCTSINPRODUCTSETRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2479,
-    serialized_end=2589,
+    serialized_start=3644,
+    serialized_end=3754,
 )
 
 
@@ -1688,8 +1722,8 @@ _IMPORTPRODUCTSETSGCSSOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2591,
-    serialized_end=2641,
+    serialized_start=3756,
+    serialized_end=3806,
 )
 
 
@@ -1735,8 +1769,8 @@ _IMPORTPRODUCTSETSINPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2643,
-    serialized_end=2757,
+    serialized_start=3808,
+    serialized_end=3922,
 )
 
 
@@ -1762,7 +1796,9 @@ _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1780,7 +1816,7 @@ _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1792,8 +1828,8 @@ _IMPORTPRODUCTSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2759,
-    serialized_end=2877,
+    serialized_start=3925,
+    serialized_end=4091,
 )
 
 
@@ -1849,8 +1885,8 @@ _IMPORTPRODUCTSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2880,
-    serialized_end=3011,
+    serialized_start=4094,
+    serialized_end=4225,
 )
 
 
@@ -1924,8 +1960,8 @@ _BATCHOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3014,
-    serialized_end=3293,
+    serialized_start=4228,
+    serialized_end=4507,
 )
 
 
@@ -1963,8 +1999,8 @@ _PRODUCTSETPURGECONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3295,
-    serialized_end=3342,
+    serialized_start=4509,
+    serialized_end=4556,
 )
 
 
@@ -2026,7 +2062,9 @@ _PURGEPRODUCTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2064,8 +2102,8 @@ _PURGEPRODUCTSREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3345,
-    serialized_end=3525,
+    serialized_start=4559,
+    serialized_end=4782,
 )
 
 _PRODUCT_KEYVALUE.containing_type = _PRODUCT
@@ -2239,12 +2277,12 @@ Product = _reflection.GeneratedProtocolMessageType(
           User-provided metadata to be stored with this product. Must be
           at most 4096 characters long.
       product_category:
-          The category for the product identified by the reference
-          image. This should be either "homegoods-v2", "apparel-v2",
-          "toys-v2", "packagedgoods-v1", or "general-v1" The legacy
-          categories "homegoods", "apparel", and "toys" are still
-          supported, but these should not be used for new products.
-          This field is immutable.
+          Immutable. The category for the product identified by the
+          reference image. This should be either "homegoods-v2",
+          "apparel-v2", "toys-v2", "packagedgoods-v1", or "general-v1"
+          The legacy categories "homegoods", "apparel", and "toys" are
+          still supported, but these should not be used for new
+          products.
       product_labels:
           Key-value pairs that can be attached to a product. At query
           time, constraints can be specified based on the
@@ -2315,12 +2353,12 @@ ReferenceImage = _reflection.GeneratedProtocolMessageType(
           mages/IMAGE_ID``.  This field is ignored when creating a
           reference image.
       uri:
-          The Google Cloud Storage URI of the reference image.  The URI
-          must start with ``gs://``.  Required.
+          Required. The Google Cloud Storage URI of the reference image.
+          The URI must start with ``gs://``.
       bounding_polys:
-          Bounding polygons around the areas of interest in the
-          reference image. Optional. If this field is empty, the system
-          will try to detect regions of interest. At most 10 bounding
+          Optional. Bounding polygons around the areas of interest in
+          the reference image. If this field is empty, the system will
+          try to detect regions of interest. At most 10 bounding
           polygons will be used.  The provided shape is converted into a
           non-rotated rectangle. Once converted, the small edge of the
           rectangle must be greater than or equal to 300 pixels. The
@@ -2342,10 +2380,10 @@ CreateProductRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project in which the Product should be created.  Format is
-          ``projects/PROJECT_ID/locations/LOC_ID``.
+          Required. The project in which the Product should be created.
+          Format is ``projects/PROJECT_ID/locations/LOC_ID``.
       product:
-          The product to create.
+          Required. The product to create.
       product_id:
           A user-supplied resource id for this Product. If set, the
           server will attempt to use this value as the resource id. If
@@ -2369,8 +2407,8 @@ ListProductsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project OR ProductSet from which Products should be
-          listed.  Format: ``projects/PROJECT_ID/locations/LOC_ID``
+          Required. The project OR ProductSet from which Products should
+          be listed.  Format: ``projects/PROJECT_ID/locations/LOC_ID``
       page_size:
           The maximum number of items to return. Default 10, maximum
           100.
@@ -2415,7 +2453,7 @@ GetProductRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of the Product to get.  Format is:
+          Required. Resource name of the Product to get.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.GetProductRequest)
@@ -2434,8 +2472,8 @@ UpdateProductRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       product:
-          The Product resource which replaces the one on the server.
-          product.name is immutable.
+          Required. The Product resource which replaces the one on the
+          server. product.name is immutable.
       update_mask:
           The [FieldMask][google.protobuf.FieldMask] that specifies
           which fields to update. If update\_mask isn't specified, all
@@ -2458,7 +2496,7 @@ DeleteProductRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of product to delete.  Format is:
+          Required. Resource name of product to delete.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.DeleteProductRequest)
@@ -2477,10 +2515,10 @@ CreateProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project in which the ProductSet should be created.  Format
-          is ``projects/PROJECT_ID/locations/LOC_ID``.
+          Required. The project in which the ProductSet should be
+          created.  Format is ``projects/PROJECT_ID/locations/LOC_ID``.
       product_set:
-          The ProductSet to create.
+          Required. The ProductSet to create.
       product_set_id:
           A user-supplied resource id for this ProductSet. If set, the
           server will attempt to use this value as the resource id. If
@@ -2504,8 +2542,8 @@ ListProductSetsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project from which ProductSets should be listed.  Format
-          is ``projects/PROJECT_ID/locations/LOC_ID``.
+          Required. The project from which ProductSets should be listed.
+          Format is ``projects/PROJECT_ID/locations/LOC_ID``.
       page_size:
           The maximum number of items to return. Default 10, maximum
           100.
@@ -2550,8 +2588,9 @@ GetProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of the ProductSet to get.  Format is: ``projects
-          /PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID``
+          Required. Resource name of the ProductSet to get.  Format is: 
+          ``projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET
+          _ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.GetProductSetRequest)
     ),
@@ -2569,7 +2608,8 @@ UpdateProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       product_set:
-          The ProductSet resource which replaces the one on the server.
+          Required. The ProductSet resource which replaces the one on
+          the server.
       update_mask:
           The [FieldMask][google.protobuf.FieldMask] that specifies
           which fields to update. If update\_mask isn't specified, all
@@ -2592,8 +2632,9 @@ DeleteProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Resource name of the ProductSet to delete.  Format is: ``proje
-          cts/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+          Required. Resource name of the ProductSet to delete.  Format
+          is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT
+          _SET_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.DeleteProductSetRequest)
     ),
@@ -2611,12 +2652,12 @@ CreateReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Resource name of the product in which to create the reference
-          image.  Format is
+          Required. Resource name of the product in which to create the
+          reference image.  Format is
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
       reference_image:
-          The reference image to create. If an image ID is specified, it
-          is ignored.
+          Required. The reference image to create. If an image ID is
+          specified, it is ignored.
       reference_image_id:
           A user-supplied resource id for the ReferenceImage to be
           added. If set, the server will attempt to use this value as
@@ -2640,8 +2681,8 @@ ListReferenceImagesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Resource name of the product containing the reference images.
-          Format is
+          Required. Resource name of the product containing the
+          reference images.  Format is
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
       page_size:
           The maximum number of items to return. Default 10, maximum
@@ -2692,9 +2733,9 @@ GetReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The resource name of the ReferenceImage to get.  Format is:  `
-          `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/refe
-          renceImages/IMAGE_ID``.
+          Required. The resource name of the ReferenceImage to get.
+          Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PR
+          ODUCT_ID/referenceImages/IMAGE_ID``.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.GetReferenceImageRequest)
     ),
@@ -2712,9 +2753,9 @@ DeleteReferenceImageRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The resource name of the reference image to delete.  Format
-          is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_I
-          D/referenceImages/IMAGE_ID``
+          Required. The resource name of the reference image to delete.
+          Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PR
+          ODUCT_ID/referenceImages/IMAGE_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.DeleteReferenceImageRequest)
     ),
@@ -2732,12 +2773,12 @@ AddProductToProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The resource name for the ProductSet to modify.  Format is: ``
-          projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_I
-          D``
+          Required. The resource name for the ProductSet to modify.
+          Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/
+          PRODUCT_SET_ID``
       product:
-          The resource name for the Product to be added to this
-          ProductSet.  Format is:
+          Required. The resource name for the Product to be added to
+          this ProductSet.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.AddProductToProductSetRequest)
@@ -2756,12 +2797,12 @@ RemoveProductFromProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The resource name for the ProductSet to modify.  Format is: ``
-          projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_I
-          D``
+          Required. The resource name for the ProductSet to modify.
+          Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/
+          PRODUCT_SET_ID``
       product:
-          The resource name for the Product to be removed from this
-          ProductSet.  Format is:
+          Required. The resource name for the Product to be removed from
+          this ProductSet.  Format is:
           ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.RemoveProductFromProductSetRequest)
@@ -2780,9 +2821,9 @@ ListProductsInProductSetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The ProductSet resource for which to retrieve Products.
-          Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/
-          PRODUCT_SET_ID``
+          Required. The ProductSet resource for which to retrieve
+          Products.  Format is: ``projects/PROJECT_ID/locations/LOC_ID/p
+          roductSets/PRODUCT_SET_ID``
       page_size:
           The maximum number of items to return. Default 10, maximum
           100.
@@ -2912,10 +2953,10 @@ ImportProductSetsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project in which the ProductSets should be imported.
-          Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+          Required. The project in which the ProductSets should be
+          imported.  Format is ``projects/PROJECT_ID/locations/LOC_ID``.
       input_config:
-          The input content for the list of requests.
+          Required. The input content for the list of requests.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.ImportProductSetsRequest)
     ),
@@ -3018,8 +3059,9 @@ PurgeProductsRequest = _reflection.GeneratedProtocolMessageType(
           If delete\_orphan\_products is true, all Products that are not
           in any ProductSet will be deleted.
       parent:
-          The project and location in which the Products should be
-          deleted.  Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+          Required. The project and location in which the Products
+          should be deleted.  Format is
+          ``projects/PROJECT_ID/locations/LOC_ID``.
       force:
           The default value is false. Override this value to true to
           actually perform the purge.
@@ -3031,6 +3073,39 @@ _sym_db.RegisterMessage(PurgeProductsRequest)
 
 
 DESCRIPTOR._options = None
+_PRODUCT.fields_by_name["product_category"]._options = None
+_PRODUCT._options = None
+_PRODUCTSET.fields_by_name["index_time"]._options = None
+_PRODUCTSET.fields_by_name["index_error"]._options = None
+_PRODUCTSET._options = None
+_REFERENCEIMAGE.fields_by_name["uri"]._options = None
+_REFERENCEIMAGE.fields_by_name["bounding_polys"]._options = None
+_REFERENCEIMAGE._options = None
+_CREATEPRODUCTREQUEST.fields_by_name["parent"]._options = None
+_CREATEPRODUCTREQUEST.fields_by_name["product"]._options = None
+_LISTPRODUCTSREQUEST.fields_by_name["parent"]._options = None
+_GETPRODUCTREQUEST.fields_by_name["name"]._options = None
+_UPDATEPRODUCTREQUEST.fields_by_name["product"]._options = None
+_DELETEPRODUCTREQUEST.fields_by_name["name"]._options = None
+_CREATEPRODUCTSETREQUEST.fields_by_name["parent"]._options = None
+_CREATEPRODUCTSETREQUEST.fields_by_name["product_set"]._options = None
+_LISTPRODUCTSETSREQUEST.fields_by_name["parent"]._options = None
+_GETPRODUCTSETREQUEST.fields_by_name["name"]._options = None
+_UPDATEPRODUCTSETREQUEST.fields_by_name["product_set"]._options = None
+_DELETEPRODUCTSETREQUEST.fields_by_name["name"]._options = None
+_CREATEREFERENCEIMAGEREQUEST.fields_by_name["parent"]._options = None
+_CREATEREFERENCEIMAGEREQUEST.fields_by_name["reference_image"]._options = None
+_LISTREFERENCEIMAGESREQUEST.fields_by_name["parent"]._options = None
+_GETREFERENCEIMAGEREQUEST.fields_by_name["name"]._options = None
+_DELETEREFERENCEIMAGEREQUEST.fields_by_name["name"]._options = None
+_ADDPRODUCTTOPRODUCTSETREQUEST.fields_by_name["name"]._options = None
+_ADDPRODUCTTOPRODUCTSETREQUEST.fields_by_name["product"]._options = None
+_REMOVEPRODUCTFROMPRODUCTSETREQUEST.fields_by_name["name"]._options = None
+_REMOVEPRODUCTFROMPRODUCTSETREQUEST.fields_by_name["product"]._options = None
+_LISTPRODUCTSINPRODUCTSETREQUEST.fields_by_name["name"]._options = None
+_IMPORTPRODUCTSETSREQUEST.fields_by_name["parent"]._options = None
+_IMPORTPRODUCTSETSREQUEST.fields_by_name["input_config"]._options = None
+_PURGEPRODUCTSREQUEST.fields_by_name["parent"]._options = None
 
 _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
     name="ProductSearch",
@@ -3040,8 +3115,8 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\025vision.googleapis.com\322A[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-vision"
     ),
-    serialized_start=3528,
-    serialized_end=6957,
+    serialized_start=4785,
+    serialized_end=8606,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateProductSet",
@@ -3051,7 +3126,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_CREATEPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
             serialized_options=_b(
-                '\202\323\344\223\002>"//v1/{parent=projects/*/locations/*}/productSets:\013product_set'
+                '\202\323\344\223\002>"//v1/{parent=projects/*/locations/*}/productSets:\013product_set\332A!parent,product_set,product_set_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3062,7 +3137,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_LISTPRODUCTSETSREQUEST,
             output_type=_LISTPRODUCTSETSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1/{parent=projects/*/locations/*}/productSets"
+                "\202\323\344\223\0021\022//v1/{parent=projects/*/locations/*}/productSets\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3073,7 +3148,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_GETPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1/{name=projects/*/locations/*/productSets/*}"
+                "\202\323\344\223\0021\022//v1/{name=projects/*/locations/*/productSets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3084,7 +3159,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_UPDATEPRODUCTSETREQUEST,
             output_type=_PRODUCTSET,
             serialized_options=_b(
-                "\202\323\344\223\002J2;/v1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set"
+                "\202\323\344\223\002J2;/v1/{product_set.name=projects/*/locations/*/productSets/*}:\013product_set\332A\027product_set,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3095,7 +3170,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_DELETEPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\0021*//v1/{name=projects/*/locations/*/productSets/*}"
+                "\202\323\344\223\0021*//v1/{name=projects/*/locations/*/productSets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3106,7 +3181,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_CREATEPRODUCTREQUEST,
             output_type=_PRODUCT,
             serialized_options=_b(
-                '\202\323\344\223\0027",/v1/{parent=projects/*/locations/*}/products:\007product'
+                '\202\323\344\223\0027",/v1/{parent=projects/*/locations/*}/products:\007product\332A\031parent,product,product_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3117,7 +3192,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_LISTPRODUCTSREQUEST,
             output_type=_LISTPRODUCTSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002.\022,/v1/{parent=projects/*/locations/*}/products"
+                "\202\323\344\223\002.\022,/v1/{parent=projects/*/locations/*}/products\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3128,7 +3203,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_GETPRODUCTREQUEST,
             output_type=_PRODUCT,
             serialized_options=_b(
-                "\202\323\344\223\002.\022,/v1/{name=projects/*/locations/*/products/*}"
+                "\202\323\344\223\002.\022,/v1/{name=projects/*/locations/*/products/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3139,7 +3214,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_UPDATEPRODUCTREQUEST,
             output_type=_PRODUCT,
             serialized_options=_b(
-                "\202\323\344\223\002?24/v1/{product.name=projects/*/locations/*/products/*}:\007product"
+                "\202\323\344\223\002?24/v1/{product.name=projects/*/locations/*/products/*}:\007product\332A\023product,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3150,7 +3225,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_DELETEPRODUCTREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002.*,/v1/{name=projects/*/locations/*/products/*}"
+                "\202\323\344\223\002.*,/v1/{name=projects/*/locations/*/products/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3161,7 +3236,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_CREATEREFERENCEIMAGEREQUEST,
             output_type=_REFERENCEIMAGE,
             serialized_options=_b(
-                '\202\323\344\223\002Q">/v1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image'
+                '\202\323\344\223\002Q">/v1/{parent=projects/*/locations/*/products/*}/referenceImages:\017reference_image\332A)parent,reference_image,reference_image_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3172,7 +3247,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_DELETEREFERENCEIMAGEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002@*>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}"
+                "\202\323\344\223\002@*>/v1/{name=projects/*/locations/*/products/*/referenceImages/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3183,7 +3258,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_LISTREFERENCEIMAGESREQUEST,
             output_type=_LISTREFERENCEIMAGESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v1/{parent=projects/*/locations/*/products/*}/referenceImages"
+                "\202\323\344\223\002@\022>/v1/{parent=projects/*/locations/*/products/*}/referenceImages\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3205,7 +3280,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_ADDPRODUCTTOPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*'
+                '\202\323\344\223\002?":/v1/{name=projects/*/locations/*/productSets/*}:addProduct:\001*\332A\014name,product'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3216,7 +3291,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\002B"=/v1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*'
+                '\202\323\344\223\002B"=/v1/{name=projects/*/locations/*/productSets/*}:removeProduct:\001*\332A\014name,product'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3227,7 +3302,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_LISTPRODUCTSINPRODUCTSETREQUEST,
             output_type=_LISTPRODUCTSINPRODUCTSETRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002:\0228/v1/{name=projects/*/locations/*/productSets/*}/products"
+                "\202\323\344\223\002:\0228/v1/{name=projects/*/locations/*/productSets/*}/products\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3238,7 +3313,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_IMPORTPRODUCTSETSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002;"6/v1/{parent=projects/*/locations/*}/productSets:import:\001*'
+                '\202\323\344\223\002;"6/v1/{parent=projects/*/locations/*}/productSets:import:\001*\332A\023parent,input_config\312A3\n\031ImportProductSetsResponse\022\026BatchOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3249,7 +3324,7 @@ _PRODUCTSEARCH = _descriptor.ServiceDescriptor(
             input_type=_PURGEPRODUCTSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0027"2/v1/{parent=projects/*/locations/*}/products:purge:\001*'
+                '\202\323\344\223\0027"2/v1/{parent=projects/*/locations/*}/products:purge:\001*\332A\006parent\312A/\n\025google.protobuf.Empty\022\026BatchOperationMetadata'
             ),
         ),
     ],
