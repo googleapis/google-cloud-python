@@ -2836,7 +2836,7 @@ class TablesClient(object):
                 A list of the possible classification values.
             title (Optional[str]):
                 The title of the confusion matrix.
-            cmap (optional[Color]):
+            cmap (Optional[matpotlib.colors.Colormap]):
                 The color schema of the graph.
 
         Returns: A graph of the confusion matrix.
