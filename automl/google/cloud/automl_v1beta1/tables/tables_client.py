@@ -2832,7 +2832,7 @@ class TablesClient(object):
                 This is a numpy array of the confusion matrix.
             classes ([string]):
                 A list of the possible classification values.
-            title (Optional[string]):
+            title (Optional[str]):
                 The title of the confusion matrix.
             cmap (optional[Color]):
                 The color schema of the graph.
