@@ -38,15 +38,18 @@ s.move(library / f"docs/conf.py")
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/automl.py")
 
-# Add tables client to v1beta1
+# Add TablesClient and GcsClient to v1beta1
 s.replace(
     f"google/cloud/automl_v1beta1/__init__.py",
     f"from google.cloud.automl_v1beta1.gapic import prediction_service_client",
     f"from google.cloud.automl_v1beta1.gapic import prediction_service_client\n"
-    f"from google.cloud.automl_v1beta1.tables import tables_client"
+    f"from google.cloud.automl_v1beta1.tables import tables_client\n"
+    f"from google.cloud.automl_v1beta1.tables import gcs_client"
     f"\n\n"
     f"class TablesClient(tables_client.TablesClient):"
-    f"    __doc__ = tables_client.TablesClient.__doc__",
+    f"    __doc__ = tables_client.TablesClient.__doc__"
+    f"\n\nclass GcsClient(gcs_client.GcsClient):"
+    f"    __doc__ = gcs_client.GcsClient.__doc__"
 )
 
 s.replace(
@@ -57,7 +60,7 @@ s.replace(
     'AutoMlClient',
     'PredictionServiceClient',
 \)""",
-    f'__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient", "TablesClient")',
+    f'__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient", "TablesClient", "GcsClient")',
 )
 
 # Fixup issues in generated code
@@ -110,6 +113,14 @@ s.replace("google/cloud/**/io_pb2.py", r":raw-latex:`\\t `", r"\\\\t")
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=82, cov_level=83)
+
 s.move(templated_files)
+
+# install with extras (pandas, storage)
+s.replace(
+    "noxfile.py",
+    """session\.install\(['"]-e['"], ['"]\.['"]\)""",
+    """session.install("-e", ".[pandas,storage]")"""
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
