@@ -28,6 +28,9 @@ dependencies = [
 extras = {
     "pandas": ["pandas>=0.24.0"],
     "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
+    "matplotlib": ["matplotlib>=3.1.0"],
+    "sklearn": ["scikit-learn>=0.21.0"],
+    "numpy": ["numpy>=1.7.0"],
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))
