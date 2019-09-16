@@ -355,7 +355,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "PUT",
             "path": expected_path,
             "data": {"state": "ACTIVE"},
-            "query_params": {"userProject": user_project}
+            "query_params": {"userProject": user_project},
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -384,7 +384,11 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "DELETE", "path": expected_path, "query_params": {}}
+        expected_kwargs = {
+            "method": "DELETE",
+            "path": expected_path,
+            "query_params": {},
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_delete_hit_w_project_set(self):

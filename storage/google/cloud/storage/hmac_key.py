@@ -197,7 +197,9 @@ class HMACKeyMetadata(object):
             if self.user_project is not None:
                 qs_params["userProject"] = self.user_project
 
-            self._client._connection.api_request(method="GET", path=self.path, query_params=qs_params)
+            self._client._connection.api_request(
+                method="GET", path=self.path, query_params=qs_params
+            )
         except NotFound:
             return False
         else:

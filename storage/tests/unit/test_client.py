@@ -1194,7 +1194,9 @@ class TestClient(unittest.TestCase):
         http = _make_requests_session([_make_json_response(resource)])
         client._http_internal = http
 
-        metadata = client.get_hmac_key_metadata(ACCESS_ID, project_id=OTHER_PROJECT, user_project=USER_PROJECT)
+        metadata = client.get_hmac_key_metadata(
+            ACCESS_ID, project_id=OTHER_PROJECT, user_project=USER_PROJECT
+        )
 
         self.assertIsInstance(metadata, HMACKeyMetadata)
         self.assertIs(metadata._client, client)
