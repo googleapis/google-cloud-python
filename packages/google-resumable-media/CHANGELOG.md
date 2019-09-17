@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## 0.4.1
+
+09-16-2019 17:59 PDT
+
+
+### Implementation Changes
+- Revert "Always use raw response data. ([#87](https://github.com/googleapis/google-resumable-media-python/pull/87))" ([#103](https://github.com/googleapis/google-resumable-media-python/pull/103))
+
+### Internal / Testing Changes
+- Add black. ([#94](https://github.com/googleapis/google-resumable-media-python/pull/94))
+
 ## 0.4.0
 
 09-05-2019 11:59 PDT
