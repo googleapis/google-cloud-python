@@ -25,7 +25,6 @@ from google.resumable_media import common
 
 
 _DEFAULT_RETRY_STRATEGY = common.RetryStrategy()
-_SINGLE_GET_CHUNK_SIZE = 8192
 # The number of seconds to wait to establish a connection
 # (connect() call on socket). Avoid setting this to a multiple of 3 to not
 # Align with TCP Retransmission timing. (typically 2.5-3s)
@@ -76,12 +75,7 @@ class RequestsMixin(object):
         Returns:
             bytes: The body of the ``response``.
         """
-        if response._content is False:
-            response._content = b"".join(
-                response.raw.stream(_SINGLE_GET_CHUNK_SIZE, decode_content=False)
-            )
-            response._content_consumed = True
-        return response._content
+        return response.content
 
 
 def http_request(

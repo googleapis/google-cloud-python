@@ -128,7 +128,7 @@ class TestDownload(object):
 
         # Make sure **not finished** before.
         assert not download.finished
-        response = mock.Mock(status_code=int(http_client.OK), spec=["status_code"])
+        response = mock.Mock(status_code=int(http_client.OK), spec=[u"status_code"])
         ret_val = download._process_response(response)
         assert ret_val is None
         # Make sure **finished** after.
@@ -141,7 +141,7 @@ class TestDownload(object):
         # Make sure **not finished** before.
         assert not download.finished
         response = mock.Mock(
-            status_code=int(http_client.NOT_FOUND), spec=["status_code"]
+            status_code=int(http_client.NOT_FOUND), spec=[u"status_code"]
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
             download._process_response(response)
@@ -263,7 +263,7 @@ class TestChunkedDownload(object):
             content=content,
             headers=response_headers,
             status_code=status_code,
-            spec=["content", "headers", "status_code"],
+            spec=[u"content", u"headers", u"status_code"],
         )
 
     def test__prepare_request_already_finished(self):
@@ -322,8 +322,7 @@ class TestChunkedDownload(object):
         assert download.invalid
 
     def test__process_response(self):
-        data = b"1234xyztL" * 37
-        chunk_size = len(data)
+        chunk_size = 333
         stream = io.BytesIO()
         download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
         _fix_up_virtual(download)
@@ -337,6 +336,7 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == already
         assert download.total_bytes is None
         # Actually call the method to update.
+        data = b"1234xyztL" * 37  # 9 * 37 == 33
         response = self._mock_response(
             already,
             already + chunk_size - 1,
@@ -344,39 +344,6 @@ class TestChunkedDownload(object):
             content=data,
             status_code=int(http_client.PARTIAL_CONTENT),
         )
-        download._process_response(response)
-        # Check internal state after.
-        assert not download.finished
-        assert download.bytes_downloaded == already + chunk_size
-        assert download.total_bytes == total_bytes
-        assert stream.getvalue() == data
-
-    def test__process_response_transfer_encoding(self):
-        data = b"1234xyztL" * 37
-        chunk_size = len(data)
-        stream = io.BytesIO()
-        download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
-        _fix_up_virtual(download)
-
-        already = 22
-        download._bytes_downloaded = already
-        total_bytes = 4444
-
-        # Check internal state before.
-        assert not download.finished
-        assert download.bytes_downloaded == already
-        assert download.total_bytes is None
-        assert not download.invalid
-        # Actually call the method to update.
-        response = self._mock_response(
-            already,
-            already + chunk_size - 1,
-            total_bytes,
-            content=data,
-            status_code=int(http_client.PARTIAL_CONTENT),
-        )
-        response.headers[u"transfer-encoding"] = "chunked"
-        del response.headers[u"content-length"]
         download._process_response(response)
         # Check internal state after.
         assert not download.finished
@@ -386,7 +353,7 @@ class TestChunkedDownload(object):
 
     def test__process_response_bad_status(self):
         chunk_size = 384
-        stream = mock.Mock(spec=["write"])
+        stream = mock.Mock(spec=[u"write"])
         download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
         _fix_up_virtual(download)
 
@@ -426,12 +393,10 @@ class TestChunkedDownload(object):
         assert download.total_bytes is None
         assert not download.invalid
         # Actually call the method to update.
-        headers = {u"content-range": u"bytes 0-99/99"}
         response = mock.Mock(
-            headers=headers,
+            headers={},
             status_code=int(http_client.PARTIAL_CONTENT),
-            content=b"DEADBEEF",
-            spec=["headers", "status_code", "content"],
+            spec=[u"headers", u"status_code"],
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
             download._process_response(response)
@@ -465,7 +430,7 @@ class TestChunkedDownload(object):
             content=data,
             headers=headers,
             status_code=int(http_client.PARTIAL_CONTENT),
-            spec=["content", "headers", "status_code"],
+            spec=[u"content", u"headers", u"status_code"],
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
             download._process_response(response)
@@ -482,7 +447,7 @@ class TestChunkedDownload(object):
 
     def test__process_response_body_wrong_length(self):
         chunk_size = 10
-        stream = mock.Mock(spec=["write"])
+        stream = mock.Mock(spec=[u"write"])
         download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
         _fix_up_virtual(download)
 
@@ -639,7 +604,7 @@ class Test_get_range_info(object):
     @staticmethod
     def _make_response(content_range):
         headers = {u"content-range": content_range}
-        return mock.Mock(headers=headers, spec=["headers"])
+        return mock.Mock(headers=headers, spec=[u"headers"])
 
     def _success_helper(self, **kwargs):
         content_range = u"Bytes 7-11/42"
@@ -679,7 +644,7 @@ class Test_get_range_info(object):
         callback.assert_called_once_with()
 
     def _missing_header_helper(self, **kwargs):
-        response = mock.Mock(headers={}, spec=["headers"])
+        response = mock.Mock(headers={}, spec=[u"headers"])
         with pytest.raises(common.InvalidResponse) as exc_info:
             _download.get_range_info(response, _get_headers, **kwargs)
 

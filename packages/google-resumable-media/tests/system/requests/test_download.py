@@ -25,9 +25,8 @@ from google.resumable_media import common
 from six.moves import http_client
 
 from google import resumable_media
-from google.resumable_media import requests as resumable_requests
-from google.resumable_media.requests import download as download_mod
-from google.resumable_media.requests import _helpers
+import google.resumable_media.requests as resumable_requests
+import google.resumable_media.requests.download as download_mod
 from tests.system import utils
 
 
@@ -61,11 +60,12 @@ ALL_FILES = (
     {
         u"path": os.path.realpath(os.path.join(DATA_DIR, u"file.txt")),
         u"content_type": PLAIN_TEXT,
-        u"checksum": u"XHSHAr/SpIeZtZbjgQ4nGw==",
+        u"checksum": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
         u"slices": (),
     },
     {
         u"path": os.path.realpath(os.path.join(DATA_DIR, u"gzipped.txt.gz")),
+        u"uncompressed": os.path.realpath(os.path.join(DATA_DIR, u"gzipped.txt")),
         u"content_type": PLAIN_TEXT,
         u"checksum": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
         u"slices": (),
@@ -126,13 +126,13 @@ def _get_contents_for_upload(info):
 
 
 def _get_contents(info):
-    full_path = info[u"path"]
+    full_path = info.get(u"uncompressed", info[u"path"])
     with open(full_path, u"rb") as file_obj:
         return file_obj.read()
 
 
 def _get_blob_name(info):
-    full_path = info[u"path"]
+    full_path = info.get(u"uncompressed", info[u"path"])
     return os.path.basename(full_path)
 
 
@@ -179,12 +179,6 @@ def check_tombstoned(download, transport):
         assert exc_info.match(u"Download has finished.")
 
 
-def read_raw_content(response):
-    return b"".join(
-        response.raw.stream(_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False)
-    )
-
-
 def test_download_full(add_files, authorized_transport):
     for info in ALL_FILES:
         actual_contents = _get_contents(info)
@@ -196,7 +190,7 @@ def test_download_full(add_files, authorized_transport):
         # Consume the resource.
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
-        assert read_raw_content(response) == actual_contents
+        assert response.content == actual_contents
         check_tombstoned(download, authorized_transport)
 
 
@@ -221,6 +215,7 @@ def test_download_to_stream(add_files, authorized_transport):
         check_tombstoned(download, authorized_transport)
 
 
+@pytest.mark.xfail  # See: #76
 def test_corrupt_download(add_files, corrupting_transport):
     for info in ALL_FILES:
         blob_name = _get_blob_name(info)
@@ -396,7 +391,8 @@ def consume_chunks(download, authorized_transport, total_bytes, actual_contents)
     return num_responses, response
 
 
-def test_chunked_download_full(add_files, authorized_transport):
+@pytest.mark.xfail  # See issue #56
+def test_chunked_download(add_files, authorized_transport):
     for info in ALL_FILES:
         actual_contents = _get_contents(info)
         blob_name = _get_blob_name(info)
