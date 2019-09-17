@@ -112,3 +112,12 @@ class NoLongerImplementedError(NotImplementedError):
 
     def __init__(self):
         super(NoLongerImplementedError, self).__init__("No longer implemented")
+
+
+class Cancelled(Error):
+    """An operation has been cancelled by user request.
+
+    Raised when trying to get a result from a future that has been cancelled by
+    a call to ``Future.cancel`` (possibly on a future that depends on this
+    future).
+    """

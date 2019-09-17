@@ -20,6 +20,7 @@ import pytest
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import _remote
 from google.cloud.ndb import tasklets
 
@@ -188,10 +189,38 @@ class TestFuture:
         assert _eventloop.run1.call_count == 3
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_cancel():
-        future = tasklets.Future()
-        with pytest.raises(NotImplementedError):
-            future.cancel()
+        # Integration test. Actually test that a cancel propagates properly.
+        rpc = tasklets.Future("Fake RPC")
+        wrapped_rpc = _remote.RemoteCall(rpc, "Wrapped Fake RPC")
+
+        @tasklets.tasklet
+        def inner_tasklet():
+            yield wrapped_rpc
+
+        @tasklets.tasklet
+        def outer_tasklet():
+            yield inner_tasklet()
+
+        future = outer_tasklet()
+        assert not future.cancelled()
+        future.cancel()
+        assert rpc.cancelled()
+
+        with pytest.raises(exceptions.Cancelled):
+            future.result()
+
+        assert future.cancelled()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_cancel_already_done():
+        future = tasklets.Future("testing")
+        future.set_result(42)
+        future.cancel()  # noop
+        assert not future.cancelled()
+        assert future.result() == 42
 
     @staticmethod
     def test_cancelled():
@@ -358,6 +387,31 @@ class Test_TaskletFuture:
         assert future.result() == 11
         assert future.context is in_context
 
+    @staticmethod
+    def test_cancel_not_waiting(in_context):
+        dependency = tasklets.Future()
+        future = tasklets._TaskletFuture(None, in_context)
+        future.cancel()
+
+        assert not dependency.cancelled()
+        with pytest.raises(exceptions.Cancelled):
+            future.result()
+
+    @staticmethod
+    def test_cancel_waiting_on_dependency(in_context):
+        def generator_function(dependency):
+            yield dependency
+
+        dependency = tasklets.Future()
+        generator = generator_function(dependency)
+        future = tasklets._TaskletFuture(generator, in_context)
+        future._advance_tasklet()
+        future.cancel()
+
+        assert dependency.cancelled()
+        with pytest.raises(exceptions.Cancelled):
+            future.result()
+
 
 class Test_MultiFuture:
     @staticmethod
@@ -386,6 +440,16 @@ class Test_MultiFuture:
         dependencies[1].set_result("two")
         assert future.exception() is error
         with pytest.raises(Exception):
+            future.result()
+
+    @staticmethod
+    def test_cancel():
+        dependencies = (tasklets.Future(), tasklets.Future())
+        future = tasklets._MultiFuture(dependencies)
+        future.cancel()
+        assert dependencies[0].cancelled()
+        assert dependencies[1].cancelled()
+        with pytest.raises(exceptions.Cancelled):
             future.result()
 
 

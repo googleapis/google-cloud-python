@@ -16,6 +16,9 @@
 
 # In its own module to avoid circular import between _datastore_api and
 # tasklets modules.
+import grpc
+
+from google.cloud.ndb import exceptions
 
 
 class RemoteCall:
@@ -36,18 +39,47 @@ class RemoteCall:
     def __init__(self, future, info):
         self.future = future
         self.info = info
+        self._callbacks = []
+
+        future.add_done_callback(self._finish)
 
     def __repr__(self):
         return self.info
 
     def exception(self):
         """Calls :meth:`grpc.Future.exception` on attr:`future`."""
-        return self.future.exception()
+        # GRPC will actually raise FutureCancelledError.
+        # We'll translate that to our own Cancelled exception and *return* it,
+        # which is far more polite for a method that *returns exceptions*.
+        try:
+            return self.future.exception()
+        except grpc.FutureCancelledError:
+            return exceptions.Cancelled()
 
     def result(self):
         """Calls :meth:`grpc.Future.result` on attr:`future`."""
         return self.future.result()
 
     def add_done_callback(self, callback):
-        """Calls :meth:`grpc.Future.add_done_callback` on attr:`future`."""
-        return self.future.add_done_callback(callback)
+        """Add a callback function to be run upon task completion. Will run
+        immediately if task has already finished.
+
+        Args:
+            callback (Callable): The function to execute.
+        """
+        if self.future.done():
+            callback(self)
+        else:
+            self._callbacks.append(callback)
+
+    def cancel(self):
+        """Calls :meth:`grpc.Future.cancel` on attr:`cancel`."""
+        return self.future.cancel()
+
+    def _finish(self, rpc):
+        """Called when remote future is finished.
+
+        Used to call our own done callbacks.
+        """
+        for callback in self._callbacks:
+            callback(self)

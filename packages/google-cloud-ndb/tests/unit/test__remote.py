@@ -14,6 +14,10 @@
 
 from unittest import mock
 
+import grpc
+import pytest
+
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import _remote
 from google.cloud.ndb import tasklets
 
@@ -21,13 +25,15 @@ from google.cloud.ndb import tasklets
 class TestRemoteCall:
     @staticmethod
     def test_constructor():
-        call = _remote.RemoteCall("future", "info")
-        assert call.future == "future"
+        future = tasklets.Future()
+        call = _remote.RemoteCall(future, "info")
+        assert call.future is future
         assert call.info == "info"
 
     @staticmethod
     def test_repr():
-        call = _remote.RemoteCall(None, "a remote call")
+        future = tasklets.Future()
+        call = _remote.RemoteCall(future, "a remote call")
         assert repr(call) == "a remote call"
 
     @staticmethod
@@ -37,6 +43,14 @@ class TestRemoteCall:
         future.set_exception(error)
         call = _remote.RemoteCall(future, "testing")
         assert call.exception() is error
+
+    @staticmethod
+    def test_exception_FutureCancelledError():
+        error = grpc.FutureCancelledError()
+        future = tasklets.Future()
+        future.exception = mock.Mock(side_effect=error)
+        call = _remote.RemoteCall(future, "testing")
+        assert isinstance(call.exception(), exceptions.Cancelled)
 
     @staticmethod
     def test_result():
@@ -52,4 +66,22 @@ class TestRemoteCall:
         callback = mock.Mock(spec=())
         call.add_done_callback(callback)
         future.set_result(None)
-        callback.assert_called_once_with(future)
+        callback.assert_called_once_with(call)
+
+    @staticmethod
+    def test_add_done_callback_already_done():
+        future = tasklets.Future()
+        future.set_result(None)
+        call = _remote.RemoteCall(future, "testing")
+        callback = mock.Mock(spec=())
+        call.add_done_callback(callback)
+        callback.assert_called_once_with(call)
+
+    @staticmethod
+    def test_cancel():
+        future = tasklets.Future()
+        call = _remote.RemoteCall(future, "testing")
+        call.cancel()
+        assert future.cancelled()
+        with pytest.raises(exceptions.Cancelled):
+            call.result()

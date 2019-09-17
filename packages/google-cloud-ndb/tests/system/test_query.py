@@ -97,6 +97,31 @@ def test_fetch_lots_of_a_kind(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_fetch_and_immediately_cancel(dispose_of):
+    # Make a lot of entities so the query call won't complete before we get to
+    # call cancel.
+    n_entities = 500
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    @ndb.toplevel
+    def make_entities():
+        entities = [SomeKind(foo=i) for i in range(n_entities)]
+        keys = yield [entity.put_async() for entity in entities]
+        raise ndb.Return(keys)
+
+    for key in make_entities():
+        dispose_of(key._key)
+
+    query = SomeKind.query()
+    future = query.fetch_async()
+    future.cancel()
+    with pytest.raises(ndb.exceptions.Cancelled):
+        future.result()
+
+
+@pytest.mark.usefixtures("client_context")
 def test_ancestor_query(ds_entity):
     root_id = test_utils.system.unique_resource_id()
     ds_entity(KIND, root_id, foo=-1)

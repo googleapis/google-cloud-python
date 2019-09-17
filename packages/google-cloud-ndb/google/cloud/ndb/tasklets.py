@@ -58,6 +58,7 @@ import types
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
+from google.cloud.ndb import exceptions
 from google.cloud.ndb import _remote
 
 __all__ = [
@@ -232,20 +233,26 @@ class Future:
             self._callbacks.append(callback)
 
     def cancel(self):
-        """Cancel the task for this future.
+        """Attempt to cancel the task for this future.
 
-        Raises:
-            NotImplementedError: Always, not supported.
+        If the task has already completed, this call will do nothing.
+        Otherwise, this will attempt to cancel whatever task this future is
+        waiting on. There is no specific guarantee the underlying task will be
+        cancelled.
         """
-        raise NotImplementedError
+        if not self.done():
+            self.set_exception(exceptions.Cancelled())
 
     def cancelled(self):
-        """Get whether task for this future has been canceled.
+        """Get whether the task for this future has been cancelled.
 
         Returns:
-            :data:`False`: Always.
+            :data:`True`: If this future's task has been cancelled, otherwise
+                :data:`False`.
         """
-        return False
+        return self._exception is not None and isinstance(
+            self._exception, exceptions.Cancelled
+        )
 
     @staticmethod
     def wait_any(futures):
@@ -278,6 +285,7 @@ class _TaskletFuture(Future):
         super(_TaskletFuture, self).__init__(info=info)
         self.generator = generator
         self.context = context
+        self.waiting_on = None
 
     def _advance_tasklet(self, send_value=None, error=None):
         """Advance a tasklet one step by sending in a value or error."""
@@ -324,6 +332,8 @@ class _TaskletFuture(Future):
             # in Legacy) directly. Doing so, it has been found, can lead to
             # exceeding the maximum recursion depth. Queing it up to run on the
             # event loop avoids this issue by keeping the call stack shallow.
+            self.waiting_on = None
+
             error = yielded.exception()
             if error:
                 _eventloop.call_soon(self._advance_tasklet, error=error)
@@ -332,18 +342,29 @@ class _TaskletFuture(Future):
 
         if isinstance(yielded, Future):
             yielded.add_done_callback(done_callback)
+            self.waiting_on = yielded
 
         elif isinstance(yielded, _remote.RemoteCall):
             _eventloop.queue_rpc(yielded, done_callback)
+            self.waiting_on = yielded
 
         elif isinstance(yielded, (list, tuple)):
             future = _MultiFuture(yielded)
             future.add_done_callback(done_callback)
+            self.waiting_on = future
 
         else:
             raise RuntimeError(
                 "A tasklet yielded an illegal value: {!r}".format(yielded)
             )
+
+    def cancel(self):
+        """Overrides :meth:`Future.cancel`."""
+        if self.waiting_on:
+            self.waiting_on.cancel()
+
+        else:
+            super(_TaskletFuture, self).cancel()
 
 
 def _get_return_value(stop):
@@ -398,6 +419,11 @@ class _MultiFuture(Future):
         if all_done:
             result = tuple((future.result() for future in self._dependencies))
             self.set_result(result)
+
+    def cancel(self):
+        """Overrides :meth:`Future.cancel`."""
+        for dependency in self._dependencies:
+            dependency.cancel()
 
 
 def tasklet(wrapped):
