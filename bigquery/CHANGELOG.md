@@ -4,6 +4,10 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.10.1
+
+- Restrict version of `google-resumable-media` to be less than 0.5.0.
+
 ## 1.10.0
 
 03-06-2019 15:20 PST
