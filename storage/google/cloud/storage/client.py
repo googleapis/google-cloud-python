@@ -16,14 +16,13 @@
 
 import google.api_core.client_options
 
-from six.moves.urllib.parse import urlsplit
-
 from google.auth.credentials import AnonymousCredentials
 
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
+from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
@@ -96,6 +95,9 @@ class Client(ClientWithProject):
         )
 
         kw_args = {"client_info": client_info}
+
+        kw_args["api_endpoint"] = _get_storage_host()
+
         if client_options:
             if type(client_options) == dict:
                 client_options = google.api_core.client_options.from_dict(
@@ -420,13 +422,8 @@ class Client(ClientWithProject):
         try:
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
         except AttributeError:
-            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
-            if scheme != "gs":
-                raise ValueError("URI scheme must be gs")
-            bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path[1:], bucket)
-
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+            blob = Blob.from_string(blob_or_uri)
+            blob.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_blobs(
         self,

@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/pubsub/docs/",
   "client_documentation": "https://googleapis.dev/python/pubsub/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559741",
-  "release_level": "beta",
+  "release_level": "ga",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-pubsub",

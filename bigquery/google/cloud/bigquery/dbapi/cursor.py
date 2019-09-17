@@ -61,8 +61,10 @@ class Cursor(object):
         # cannot be determined by the interface.
         self.rowcount = -1
         # Per PEP 249: The arraysize attribute defaults to 1, meaning to fetch
-        # a single row at a time.
-        self.arraysize = 1
+        # a single row at a time. However, we deviate from that, and set the
+        # default to None, allowing the backend to automatically determine the
+        # most appropriate size.
+        self.arraysize = None
         self._query_data = None
         self._query_job = None
 
@@ -241,7 +243,8 @@ class Cursor(object):
         :type size: int
         :param size:
             (Optional) Maximum number of rows to return. Defaults to the
-            ``arraysize`` property value.
+            ``arraysize`` property value. If ``arraysize`` is not set, it
+            defaults to ``1``.
 
         :rtype: List[tuple]
         :returns: A list of rows.
@@ -249,7 +252,10 @@ class Cursor(object):
             if called before ``execute()``.
         """
         if size is None:
-            size = self.arraysize
+            # Since self.arraysize can be None (a deviation from PEP 249),
+            # use an actual PEP 249 default of 1 in such case (*some* number
+            # is needed here).
+            size = self.arraysize if self.arraysize else 1
 
         self._try_fetch(size=size)
         rows = []

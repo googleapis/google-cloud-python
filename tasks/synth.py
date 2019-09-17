@@ -82,6 +82,11 @@ s.replace(
     "\g<1>... }\n",
 )
 
+# Fix enum docstring references
+s.replace(
+    "google/cloud/**/cloud_tasks_client.py",
+    "types\.View",
+    "enums.Task.View")
 
 # ----------------------------------------------------------------------------
 # Add templated files
