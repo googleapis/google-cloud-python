@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigquery"
 description = "Google BigQuery API client library"
-version = "1.16.0"
+version = "1.16.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -31,7 +31,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     'enum34; python_version < "3.4"',
     "google-cloud-core >= 1.0.0, < 2.0dev",
-    "google-resumable-media >= 0.3.1",
+    "google-resumable-media >= 0.3.1, < 0.5.0dev",
     "protobuf >= 3.6.0",
 ]
 extras = {
