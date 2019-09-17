@@ -4,6 +4,10 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.19.1
+### Dependencies
+- Restrict version of `google-resumable-media` to be less than 0.5.0.
+
 ## 1.19.0
 
 08-28-2019 09:45 PDT
