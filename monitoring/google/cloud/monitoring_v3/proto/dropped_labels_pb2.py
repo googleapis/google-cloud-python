@@ -15,16 +15,20 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/monitoring_v3/proto/dropped_labels.proto",
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring"
+        "\n\030com.google.monitoring.v3B\022DroppedLabelsProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/monitoring_v3/proto/dropped_labels.proto\x12\x14google.monitoring.v3"|\n\rDroppedLabels\x12=\n\x05label\x18\x01 \x03(\x0b\x32..google.monitoring.v3.DroppedLabels.LabelEntry\x1a,\n\nLabelEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42@Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoringb\x06proto3'
+        '\n5google/cloud/monitoring_v3/proto/dropped_labels.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto"|\n\rDroppedLabels\x12=\n\x05label\x18\x01 \x03(\x0b\x32..google.monitoring.v3.DroppedLabels.LabelEntry\x1a,\n\nLabelEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42p\n\x18\x63om.google.monitoring.v3B\x12\x44roppedLabelsProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoringb\x06proto3'
     ),
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -80,8 +84,8 @@ _DROPPEDLABELS_LABELENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=159,
-    serialized_end=203,
+    serialized_start=189,
+    serialized_end=233,
 )
 
 _DROPPEDLABELS = _descriptor.Descriptor(
@@ -118,8 +122,8 @@ _DROPPEDLABELS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=79,
-    serialized_end=203,
+    serialized_start=109,
+    serialized_end=233,
 )
 
 _DROPPEDLABELS_LABELENTRY.containing_type = _DROPPEDLABELS

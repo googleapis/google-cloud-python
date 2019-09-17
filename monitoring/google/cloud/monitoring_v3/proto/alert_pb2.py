@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.monitoring_v3.proto import (
     common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2,
 )
@@ -23,7 +24,6 @@ from google.cloud.monitoring_v3.proto import (
 )
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
-from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -34,14 +34,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\nAlertProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/monitoring_v3/proto/alert.proto\x12\x14google.monitoring.v3\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x36google/cloud/monitoring_v3/proto/mutation_record.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\x83\r\n\x0b\x41lertPolicy\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x46\n\rdocumentation\x18\r \x01(\x0b\x32/.google.monitoring.v3.AlertPolicy.Documentation\x12\x46\n\x0buser_labels\x18\x10 \x03(\x0b\x32\x31.google.monitoring.v3.AlertPolicy.UserLabelsEntry\x12?\n\nconditions\x18\x0c \x03(\x0b\x32+.google.monitoring.v3.AlertPolicy.Condition\x12I\n\x08\x63ombiner\x18\x06 \x01(\x0e\x32\x37.google.monitoring.v3.AlertPolicy.ConditionCombinerType\x12+\n\x07\x65nabled\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12$\n\x08validity\x18\x12 \x01(\x0b\x32\x12.google.rpc.Status\x12\x1d\n\x15notification_channels\x18\x0e \x03(\t\x12=\n\x0f\x63reation_record\x18\n \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x12=\n\x0fmutation_record\x18\x0b \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x1a\x33\n\rDocumentation\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x1a\xf8\x06\n\tCondition\x12\x0c\n\x04name\x18\x0c \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x06 \x01(\t\x12Z\n\x13\x63ondition_threshold\x18\x01 \x01(\x0b\x32;.google.monitoring.v3.AlertPolicy.Condition.MetricThresholdH\x00\x12U\n\x10\x63ondition_absent\x18\x02 \x01(\x0b\x32\x39.google.monitoring.v3.AlertPolicy.Condition.MetricAbsenceH\x00\x1a\x35\n\x07Trigger\x12\x0f\n\x05\x63ount\x18\x01 \x01(\x05H\x00\x12\x11\n\x07percent\x18\x02 \x01(\x01H\x00\x42\x06\n\x04type\x1a\x81\x03\n\x0fMetricThreshold\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x08 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x1a\n\x12\x64\x65nominator_filter\x18\t \x01(\t\x12\x43\n\x18\x64\x65nominator_aggregations\x18\n \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x38\n\ncomparison\x18\x04 \x01(\x0e\x32$.google.monitoring.v3.ComparisonType\x12\x17\n\x0fthreshold_value\x18\x05 \x01(\x01\x12+\n\x08\x64uration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x07 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\xcb\x01\n\rMetricAbsence\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x05 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x03 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.TriggerB\x0b\n\tcondition\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x15\x43onditionCombinerType\x12\x17\n\x13\x43OMBINE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x1e\n\x1a\x41ND_WITH_MATCHING_RESOURCE\x10\x03\x42\xa2\x01\n\x18\x63om.google.monitoring.v3B\nAlertProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n,google/cloud/monitoring_v3/proto/alert.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x36google/cloud/monitoring_v3/proto/mutation_record.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xdd\x0c\n\x0b\x41lertPolicy\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x46\n\rdocumentation\x18\r \x01(\x0b\x32/.google.monitoring.v3.AlertPolicy.Documentation\x12\x46\n\x0buser_labels\x18\x10 \x03(\x0b\x32\x31.google.monitoring.v3.AlertPolicy.UserLabelsEntry\x12?\n\nconditions\x18\x0c \x03(\x0b\x32+.google.monitoring.v3.AlertPolicy.Condition\x12I\n\x08\x63ombiner\x18\x06 \x01(\x0e\x32\x37.google.monitoring.v3.AlertPolicy.ConditionCombinerType\x12+\n\x07\x65nabled\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1d\n\x15notification_channels\x18\x0e \x03(\t\x12=\n\x0f\x63reation_record\x18\n \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x12=\n\x0fmutation_record\x18\x0b \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x1a\x33\n\rDocumentation\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x1a\xf8\x06\n\tCondition\x12\x0c\n\x04name\x18\x0c \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x06 \x01(\t\x12Z\n\x13\x63ondition_threshold\x18\x01 \x01(\x0b\x32;.google.monitoring.v3.AlertPolicy.Condition.MetricThresholdH\x00\x12U\n\x10\x63ondition_absent\x18\x02 \x01(\x0b\x32\x39.google.monitoring.v3.AlertPolicy.Condition.MetricAbsenceH\x00\x1a\x35\n\x07Trigger\x12\x0f\n\x05\x63ount\x18\x01 \x01(\x05H\x00\x12\x11\n\x07percent\x18\x02 \x01(\x01H\x00\x42\x06\n\x04type\x1a\x81\x03\n\x0fMetricThreshold\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x08 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x1a\n\x12\x64\x65nominator_filter\x18\t \x01(\t\x12\x43\n\x18\x64\x65nominator_aggregations\x18\n \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x38\n\ncomparison\x18\x04 \x01(\x0e\x32$.google.monitoring.v3.ComparisonType\x12\x17\n\x0fthreshold_value\x18\x05 \x01(\x01\x12+\n\x08\x64uration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x07 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\xcb\x01\n\rMetricAbsence\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x05 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x03 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.TriggerB\x0b\n\tcondition\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x15\x43onditionCombinerType\x12\x17\n\x13\x43OMBINE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x1e\n\x1a\x41ND_WITH_MATCHING_RESOURCE\x10\x03\x42\xa2\x01\n\x18\x63om.google.monitoring.v3B\nAlertProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_mutation__record__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
-        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
     ],
 )
 
@@ -75,8 +75,8 @@ _ALERTPOLICY_CONDITIONCOMBINERTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1833,
-    serialized_end=1930,
+    serialized_start=1800,
+    serialized_end=1897,
 )
 _sym_db.RegisterEnumDescriptor(_ALERTPOLICY_CONDITIONCOMBINERTYPE)
 
@@ -133,8 +133,8 @@ _ALERTPOLICY_DOCUMENTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=838,
-    serialized_end=889,
+    serialized_start=805,
+    serialized_end=856,
 )
 
 _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
@@ -197,8 +197,8 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1120,
-    serialized_end=1173,
+    serialized_start=1087,
+    serialized_end=1140,
 )
 
 _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
@@ -361,8 +361,8 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1176,
-    serialized_end=1561,
+    serialized_start=1143,
+    serialized_end=1528,
 )
 
 _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
@@ -453,8 +453,8 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1564,
-    serialized_end=1767,
+    serialized_start=1531,
+    serialized_end=1734,
 )
 
 _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
@@ -557,8 +557,8 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=892,
-    serialized_end=1780,
+    serialized_start=859,
+    serialized_end=1747,
 )
 
 _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
@@ -613,8 +613,8 @@ _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1782,
-    serialized_end=1831,
+    serialized_start=1749,
+    serialized_end=1798,
 )
 
 _ALERTPOLICY = _descriptor.Descriptor(
@@ -751,27 +751,9 @@ _ALERTPOLICY = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="validity",
-            full_name="google.monitoring.v3.AlertPolicy.validity",
-            index=7,
-            number=18,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="notification_channels",
             full_name="google.monitoring.v3.AlertPolicy.notification_channels",
-            index=8,
+            index=7,
             number=14,
             type=9,
             cpp_type=9,
@@ -789,7 +771,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="creation_record",
             full_name="google.monitoring.v3.AlertPolicy.creation_record",
-            index=9,
+            index=8,
             number=10,
             type=11,
             cpp_type=10,
@@ -807,7 +789,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="mutation_record",
             full_name="google.monitoring.v3.AlertPolicy.mutation_record",
-            index=10,
+            index=9,
             number=11,
             type=11,
             cpp_type=10,
@@ -835,8 +817,8 @@ _ALERTPOLICY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=263,
-    serialized_end=1930,
+    serialized_start=268,
+    serialized_end=1897,
 )
 
 _ALERTPOLICY_DOCUMENTATION.containing_type = _ALERTPOLICY
@@ -914,9 +896,6 @@ _ALERTPOLICY.fields_by_name["combiner"].enum_type = _ALERTPOLICY_CONDITIONCOMBIN
 _ALERTPOLICY.fields_by_name[
     "enabled"
 ].message_type = google_dot_protobuf_dot_wrappers__pb2._BOOLVALUE
-_ALERTPOLICY.fields_by_name[
-    "validity"
-].message_type = google_dot_rpc_dot_status__pb2._STATUS
 _ALERTPOLICY.fields_by_name[
     "creation_record"
 ].message_type = (
@@ -1243,10 +1222,6 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
           if it has not been populated. The field should always be
           populated on List and Get operations, unless a field
           projection has been specified that strips it out.
-      validity:
-          Read-only description of how the alert policy is invalid. OK
-          if the alert policy is valid. If not OK, the alert policy will
-          not generate incidents.
       notification_channels:
           Identifies the notification channels to which notifications
           should be sent when incidents are opened or closed or when new
