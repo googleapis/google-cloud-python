@@ -397,6 +397,28 @@ class AlertPolicy(object):
         AND_WITH_MATCHING_RESOURCE = 3
 
 
+class InternalChecker(object):
+    class State(enum.IntEnum):
+        """
+        Operational states for an internal checker.
+
+        Attributes:
+          UNSPECIFIED (int): An internal checker should never be in the unspecified state.
+          CREATING (int): The checker is being created, provisioned, and configured. A checker in
+          this state can be returned by ListInternalCheckers or GetInternalChecker,
+          as well as by examining the longrunning.Operation that created it.
+          RUNNING (int): The checker is running and available for use. A checker in this state
+          can be returned by ListInternalCheckers or GetInternalChecker as well
+          as by examining the longrunning.Operation that created it.
+          If a checker is being torn down, it is neither visible nor usable, so
+          there is no "deleting" or "down" state.
+        """
+
+        UNSPECIFIED = 0
+        CREATING = 1
+        RUNNING = 2
+
+
 class LabelDescriptor(object):
     class ValueType(enum.IntEnum):
         """
@@ -498,3 +520,26 @@ class NotificationChannel(object):
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
+
+
+class UptimeCheckConfig(object):
+    class ContentMatcher(object):
+        class ContentMatcherOption(enum.IntEnum):
+            """
+            Options to perform content matching.
+
+            Attributes:
+              CONTENT_MATCHER_OPTION_UNSPECIFIED (int): No content macher option specified. Treated as CONTAINS\_STRING.
+              CONTAINS_STRING (int): Allows checking substring matching.
+              Default value for previous versions without option.
+              NOT_CONTAINS_STRING (int): Allows checking negation of substring matching (doesn't contain the
+              substring).
+              MATCHES_REGEX (int): Allows checking regular expression matching.
+              NOT_MATCHES_REGEX (int): Allows checking negation of regular expression matching.
+            """
+
+            CONTENT_MATCHER_OPTION_UNSPECIFIED = 0
+            CONTAINS_STRING = 1
+            NOT_CONTAINS_STRING = 2
+            MATCHES_REGEX = 3
+            NOT_MATCHES_REGEX = 4
