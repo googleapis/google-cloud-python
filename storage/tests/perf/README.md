@@ -5,7 +5,7 @@ main.py is a gRPC wrapper around the storage library for benchmarking purposes.
 ## Running
 
 ```bash
-$ export STORAGE_EMULATOR_HOST=localhost:8080
+$ export STORAGE_EMULATOR_HOST=http://localhost:8080
 $ pip install grpcio
 $ cd storage
 $ pip install -e . # install google.cloud.storage locally
