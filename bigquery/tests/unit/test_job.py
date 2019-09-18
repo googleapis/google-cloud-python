@@ -4337,8 +4337,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
-        full_text = str(exc_info.exception)
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
 
+        full_text = str(exc_info.exception)
         assert job.job_id in full_text
         assert "Query Job SQL Follows" in full_text
 
@@ -4370,8 +4372,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
-        full_text = str(exc_info.exception)
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
 
+        full_text = str(exc_info.exception)
         assert job.job_id in full_text
         assert "Query Job SQL Follows" in full_text
 
