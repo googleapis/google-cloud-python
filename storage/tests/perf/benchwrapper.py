@@ -12,17 +12,20 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 parser = argparse.ArgumentParser()
 
-if os.environ.get('STORAGE_EMULATOR_HOST') == None:
-    sys.exit('This benchmarking server only works when connected to an emulator. Please set STORAGE_EMULATOR_HOST.')
+if os.environ.get("STORAGE_EMULATOR_HOST") is None:
+    sys.exit(
+        "This benchmarking server only works when connected to an emulator. Please set STORAGE_EMULATOR_HOST."
+    )
 
-parser.add_argument('--port', help='The port to run on.')
+parser.add_argument("--port", help="The port to run on.")
 
 args = parser.parse_args()
 
-if args.port == None:
-    sys.exit('Usage: python3 main.py --port 8081')
+if args.port is None:
+    sys.exit("Usage: python3 main.py --port 8081")
 
 client = storage.Client()
+
 
 class StorageBenchWrapperServicer(storage_pb2_grpc.StorageBenchWrapperServicer):
     def Write(self, request, context):
@@ -35,11 +38,14 @@ class StorageBenchWrapperServicer(storage_pb2_grpc.StorageBenchWrapperServicer):
         blob.download_as_string()
         return storage_pb2.EmptyResponse()
 
-server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-storage_pb2_grpc.add_StorageBenchWrapperServicer_to_server(StorageBenchWrapperServicer(), server)
 
-print('listening on localhost:'+args.port)
-server.add_insecure_port('[::]:'+args.port)
+server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+storage_pb2_grpc.add_StorageBenchWrapperServicer_to_server(
+    StorageBenchWrapperServicer(), server
+)
+
+print("listening on localhost:" + args.port)
+server.add_insecure_port("[::]:" + args.port)
 server.start()
 try:
     while True:
