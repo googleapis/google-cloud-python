@@ -118,11 +118,16 @@ def system(session):
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
-    env = {
-        "PROJECT_ID": os.environ.get("PROJECT_ID"),
-        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": "vpcsc-dlp-outside",
-        "GOOGLE_CLOUD_TESTS_IN_VPCSC": "false",
-    }
+    # Additional setup for VPCSC system tests
+    if os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC") != "true":
+        # Unset PROJECT_ID, since VPCSC system tests expect this to be a project
+        # within the VPCSC perimeter.
+        env = {
+            "PROJECT_ID": "",
+            "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get(
+                "PROJECT_ID"
+            ),
+        }
 
     # Run py.test against the system tests.
     if system_test_exists:
