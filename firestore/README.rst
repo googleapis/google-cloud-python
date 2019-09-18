@@ -102,9 +102,8 @@ Example Usage
 
     # Then query for documents
     users_ref = db.collection(u'users')
-    docs = users_ref.get()
 
-    for doc in docs:
+    for doc in users_ref.stream():
         print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
 Next Steps
