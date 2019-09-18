@@ -119,9 +119,7 @@ def system(session):
     session.install("-e", ".")
 
     env = {
-        "PROJECT_ID": os.environ.get(
-            "PROJECT_ID"
-        ),
+        "PROJECT_ID": os.environ.get("PROJECT_ID"),
         "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": "vpcsc-dlp-outside",
         "GOOGLE_CLOUD_TESTS_IN_VPCSC": "false",
     }

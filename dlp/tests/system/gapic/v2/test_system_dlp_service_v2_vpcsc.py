@@ -28,6 +28,7 @@ PROJECT_OUTSIDE = os.environ.get(
 )
 IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "true")
 
+
 class TestSystemDlpService(object):
     @staticmethod
     def _is_rejected(call):
@@ -48,15 +49,20 @@ class TestSystemDlpService(object):
 
     @staticmethod
     def _do_test(inspect_inside, inspect_outside):
-      if IS_INSIDE_VPCSC.lower() == "true":
-        assert TestSystemDlpService._is_rejected(inspect_outside)
-        assert not (TestSystemDlpService._is_rejected(inspect_inside))
-      else:
-        assert not (TestSystemDlpService._is_rejected(inspect_outside))
-        assert TestSystemDlpService._is_rejected(inspect_inside)
+        if IS_INSIDE_VPCSC.lower() == "true":
+            assert TestSystemDlpService._is_rejected(inspect_outside)
+            assert not (TestSystemDlpService._is_rejected(inspect_inside))
+        else:
+            assert not (TestSystemDlpService._is_rejected(inspect_outside))
+            assert TestSystemDlpService._is_rejected(inspect_inside)
 
-    @pytest.mark.skipif(PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID")
-    @pytest.mark.skipif(PROJECT_OUTSIDE is None, reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
+    @pytest.mark.skipif(
+        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+    )
+    @pytest.mark.skipif(
+        PROJECT_OUTSIDE is None,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+    )
     def test_inspect_content_vpcsc(self):
         # get project id from json file
         project_id = self._get_project_id()
@@ -70,6 +76,10 @@ class TestSystemDlpService(object):
         project_inside = client.project_path(PROJECT_INSIDE)
         project_outside = client.project_path(PROJECT_OUTSIDE)
 
-        inspect_inside = lambda: client.inspect_content(project_inside, inspect_config, item)
-        inspect_outside = lambda: client.inspect_content(project_outside, inspect_config, item)
+        inspect_inside = lambda: client.inspect_content(
+            project_inside, inspect_config, item
+        )
+        inspect_outside = lambda: client.inspect_content(
+            project_outside, inspect_config, item
+        )
         TestSystemDlpService._do_test(inspect_inside, inspect_outside)
