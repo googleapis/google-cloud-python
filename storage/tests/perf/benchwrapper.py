@@ -12,7 +12,7 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 parser = argparse.ArgumentParser()
 
-if os.environ.get("STORAGE_EMULATOR_HOST") == None:
+if os.environ.get("STORAGE_EMULATOR_HOST") is None:
     sys.exit(
         "This benchmarking server only works when connected to an emulator. Please set STORAGE_EMULATOR_HOST."
     )
@@ -21,7 +21,7 @@ parser.add_argument("--port", help="The port to run on.")
 
 args = parser.parse_args()
 
-if args.port == None:
+if args.port is None:
     sys.exit("Usage: python3 main.py --port 8081")
 
 client = storage.Client()
