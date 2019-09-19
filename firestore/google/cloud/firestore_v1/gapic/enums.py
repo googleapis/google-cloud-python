@@ -109,7 +109,7 @@ class StructuredQuery(object):
             Attributes:
               OPERATOR_UNSPECIFIED (int): Unspecified. This value must not be used.
               IS_NAN (int): Test if a field is equal to NaN.
-              IS_NULL (int): Test if an exprestion evaluates to Null.
+              IS_NULL (int): Test if an expression evaluates to Null.
             """
 
             OPERATOR_UNSPECIFIED = 0
