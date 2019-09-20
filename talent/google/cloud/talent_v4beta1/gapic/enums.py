@@ -19,6 +19,64 @@
 import enum
 
 
+class AvailabilitySignalType(enum.IntEnum):
+    """
+    The type of candidate availability signal.
+
+    Attributes:
+      AVAILABILITY_SIGNAL_TYPE_UNSPECIFIED (int): Default value.
+      JOB_APPLICATION (int): Job application signal.
+
+      In the context of ``Profile.availability_signals``, this signal is
+      related to the candidate's most recent application. ``last_update_time``
+      is calculated from max(\ ``Application.create_time``) from all
+      ``Application`` records where ``Application.source`` is any of the
+      following: ``APPLY_DIRECT_WEB`` ``APPLY_DIRECT_MOBILE_WEB``
+      ``APPLY_DIRECT_MOBILE_APP`` ``APPLY_DIRECT_IN_PERSON``
+      ``APPLY_INDIRECT``
+
+      In the context of ``AvailabilityFilter``, the filter is applied on
+      ``Profile.availability_signals`` where ``type`` is JOB\_APPLICATION.
+      RESUME_UPDATE (int): Resume update signal.
+
+      In the context of ``Profile.availability_signals``, this signal is
+      related to the candidate’s most recent update to their resume. For a
+      ``SummarizedProfile.summary``, ``last_update_time`` is calculated from
+      max(\ ``Profile.resume_update_time``) from all
+      ``SummarizedProfile.profiles``.
+
+      In the context of ``AvailabilityFilter``, the filter is applied on
+      ``Profile.availability_signals`` where ``type`` is RESUME\_UPDATE.
+      CANDIDATE_UPDATE (int): Candidate update signal.
+
+      In the context of ``Profile.availability_signals``, this signal is
+      related to the candidate’s most recent update to their profile. For a
+      ``SummarizedProfile.summary``, ``last_update_time`` is calculated from
+      max(\ ``Profile.candidate_update_time``) from all
+      ``SummarizedProfile.profiles``.
+
+      In the context of ``AvailabilityFilter``, the filter is applied on
+      ``Profile.availability_signals`` where ``type`` is CANDIDATE\_UPDATE.
+      CLIENT_SUBMISSION (int): Client submission signal.
+
+      In the context of ``Profile.availability_signals``, this signal is
+      related to the candidate’s most recent submission. ``last_update_time``
+      is calculated from max(\ ``Application.create_time``) from all
+      ``Application`` records where ``Application.stage`` is any of the
+      following: ``HIRING_MANAGER_REVIEW`` ``INTERVIEW`` ``OFFER_EXTENDED``
+      ``OFFER_ACCEPTED`` ``STARTED``
+
+      In the context of ``AvailabilityFilter``, the filter is applied on
+      ``Profile.availability_signals`` where ``type`` is CLIENT\_SUBMISSION.
+    """
+
+    AVAILABILITY_SIGNAL_TYPE_UNSPECIFIED = 0
+    JOB_APPLICATION = 1
+    RESUME_UPDATE = 2
+    CANDIDATE_UPDATE = 3
+    CLIENT_SUBMISSION = 4
+
+
 class CommuteMethod(enum.IntEnum):
     """
     Method for commute.
