@@ -40,6 +40,11 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.5
+
+
 Mac/Linux
 ^^^^^^^^^
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,13 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-recommender"
-description = "Recommender API API client library"
+description = "Cloud Recommender API client library"
 version = "0.1.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    'enum34; python_version < "3.4"',
 ]
-
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -44,7 +41,6 @@ namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 
-
 setuptools.setup(
     name=name,
     version=version,
@@ -53,18 +49,16 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/google-cloud-python",
+    url="https://github.com/GoogleCloudPlatform/google-cloud-python",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
@@ -72,6 +66,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    python_requires=">=3.5",
     include_package_data=True,
     zip_safe=False,
 )
