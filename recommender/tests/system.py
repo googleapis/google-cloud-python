@@ -22,8 +22,8 @@ from google.cloud import recommender_v1beta1
 class TestRecommender(unittest.TestCase):
     def test_list_recommendations(self):
         client = recommender_v1beta1.RecommenderClient()
-        project_id = os.environ.get('PROJECT_ID')
-        location = 'global'
-        recommender = 'google.iam.policy.RoleRecommender'
+        project_id = os.environ.get("PROJECT_ID")
+        location = "global"
+        recommender = "google.iam.policy.RoleRecommender"
         parent = client.recommender_path(project_id, location, recommender)
         client.list_recommendations(parent)
