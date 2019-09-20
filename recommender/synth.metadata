@@ -1,0 +1,31 @@
+{
+  "updateTime": "2019-09-20T18:07:54.249961Z",
+  "sources": [
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "2e02174cad304dac67a40e1f63885964c4db91b2",
+        "internalRef": "270249401"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "recommender",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic-generator-python"
+      }
+    }
+  ]
+}
