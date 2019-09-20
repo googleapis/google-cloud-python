@@ -549,10 +549,13 @@ class ProfileServiceClient(object):
 
                 -  external\_id
                 -  source
+                -  source\_types
                 -  uri
                 -  is\_hirable
                 -  create\_time
                 -  update\_time
+                -  candidate\_update\_time
+                -  resume\_update\_time
                 -  resume
                 -  person\_names
                 -  addresses
