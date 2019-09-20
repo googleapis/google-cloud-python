@@ -16,16 +16,14 @@
 import os
 import unittest
 
-from google.cloud.recommender_v1beta1.services.recommender import Recommender
-from google.cloud.recommender_v1beta1 import ListRecommendationsRequest
+from google.cloud import recommender_v1beta1
 
 
 class TestRecommender(unittest.TestCase):
     def test_list_recommendations(self):
-        client = Recommender()
-        PROJECT_ID = os.environ.get("PROJECT_ID")
-        RECOMMENDER_ID = "google.compute.instanceGroupManager.MachineTypeRecommender"
-        parent = f"projects/{PROJECT_ID}/locations/global/recommender/{RECOMMENDER_ID}"
-        print(parent)
-        request = ListRecommendationsRequest(parent=parent)
-        client.list_recommendations(request=request)
+        client = recommender_v1beta1.RecommenderClient()
+        project_id = os.environ.get('PROJECT_ID')
+        location = 'global'
+        recommender = 'google.iam.policy.RoleRecommender'
+        parent = client.recommender_path(project_id, location, recommender)
+        client.list_recommendations(parent)
