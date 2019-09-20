@@ -318,7 +318,7 @@ texinfo_documents = [
         u"google-cloud-recommender Documentation",
         author,
         "google-cloud-recommender",
-        "GAPIC library for the {metadata.shortName} v2 service",
+        "GAPIC library for the {metadata.shortName} v1beta1 service",
         "APIs",
     )
 ]
@@ -339,10 +339,14 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
+    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
+    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
     "requests": ("https://2.python-requests.org/en/master/", None),
+    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
 
 

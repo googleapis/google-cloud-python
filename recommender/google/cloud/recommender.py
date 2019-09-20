@@ -17,14 +17,9 @@
 
 from __future__ import absolute_import
 
+from google.cloud.recommender_v1beta1 import RecommenderClient
+from google.cloud.recommender_v1beta1 import enums
 from google.cloud.recommender_v1beta1 import types
-from google.cloud.recommender_v1beta1.gapic import enums
-from google.cloud.recommender_v1beta1.gapic import recommender_client
-
-
-class RecommenderClient(recommender_client.RecommenderClient):
-    __doc__ = recommender_client.RecommenderClient.__doc__
-    enums = enums
 
 
 __all__ = ("enums", "types", "RecommenderClient")

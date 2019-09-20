@@ -86,13 +86,13 @@ def default(session):
     )
 
 
-@nox.session(python=["3.5", "3.6", "3.7"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["3.7"])
+@nox.session(python=["2.7", "3.7"])
 def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")

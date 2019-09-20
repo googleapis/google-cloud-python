@@ -24,6 +24,8 @@ class TestRecommender(unittest.TestCase):
     def test_list_recommendations(self):
         client = Recommender()
         PROJECT_ID = os.environ.get("PROJECT_ID")
-        parent = f"projects/{PROJECT_ID}/locations/global"
+        RECOMMENDER_ID = "google.compute.instanceGroupManager.MachineTypeRecommender"
+        parent = f"projects/{PROJECT_ID}/locations/global/recommender/{RECOMMENDER_ID}"
+        print(parent)
         request = ListRecommendationsRequest(parent=parent)
         client.list_recommendations(request=request)

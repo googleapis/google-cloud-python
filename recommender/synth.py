@@ -18,7 +18,7 @@ import re
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICGenerator()
 versions = ["v1beta1"]
 common = gcp.CommonTemplates()
 
@@ -28,61 +28,14 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "recommender", version, proto_path=f"google/cloud/recommender/{version}",
+        "recommender", version
     )
-    s.move(library, excludes="noxfile.py")
-
-# https://github.com/googleapis/gapic-generator-python/pull/175
-s.replace("google/cloud/**/*.py",
-""",
-(\s+)\) ->""",
-"""
-\g<1>) ->""")
-
-# Fix lint errors about unused variables in tests
-# TODO: Add GitHub issue here
-s.replace("tests/**/test_recommender.py",
-"""(\s+)call\.return_value = recommender_service\.ListRecommendationsResponse\(\)
-(\s+)response = client\.list_recommendations\(request\)""",
-"""\g<1>call.return_value = recommender_service.ListRecommendationsResponse()
-\g<2>client.list_recommendations(request)""")
-
-s.replace("tests/**/test_recommender.py",
-"""(\s+)call\.return_value = recommendation\.Recommendation\(\)
-(\s+)response = client\.get_recommendation\(request\)""",
-"""\g<1>call.return_value = recommendation.Recommendation()
-\g<2>client.get_recomemndation(request)""")
-
-
-s.replace("tests/**/test_recommender.py",
-"""(\s+)with pytest\.raises\(ValueError\):
-(\s+)client = Recommender\(
-(\s+)credentials=credentials\.AnonymousCredentials\(\),
-(\s+)transport=transport,
-(\s+)\)
-""",
-"""\g<1>with pytest.raises(ValueError):
-\g<2>Recommender(
-\g<3>credentials=credentials.AnonymousCredentials(),
-\g<4>transport=transport
-\g<5>)
-""")
-
-s.replace("tests/**/test_recommender.py",
-"""(\s+)client = Recommender\(\)
-(\s+)adc\.assert_called_once_with\(""",
-"""\g<1>Recommender()
-\g<2>adc.assert_called_once_with(""")
-
-# Fix formatting in docstring
-s.replace("google/cloud/**/recommendation.py",
-"""(Example:\s+\{.+?\})""",
-"""``\g<1>``""", flags=re.DOTALL)
+    s.move(library, excludes=['nox.py'])
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files, excludes=["noxfile.py"])
+s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False) 

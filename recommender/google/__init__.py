@@ -14,17 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+try:
+    import pkg_resources
 
-from __future__ import absolute_import
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
 
-from google.cloud.recommender_v1beta1 import types
-from google.cloud.recommender_v1beta1.gapic import enums
-from google.cloud.recommender_v1beta1.gapic import recommender_client
-
-
-class RecommenderClient(recommender_client.RecommenderClient):
-    __doc__ = recommender_client.RecommenderClient.__doc__
-    enums = enums
-
-
-__all__ = ("enums", "types", "RecommenderClient")
+    __path__ = pkgutil.extend_path(__path__, __name__)
