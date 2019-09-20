@@ -1055,8 +1055,9 @@ UpdateProfileRequest = _reflection.GeneratedProtocolMessageType(
       update_mask:
           A field mask to specify the profile fields to update.  A full
           update is performed if it is unset.  Valid values are:  -
-          external\_id -  source -  uri -  is\_hirable -  create\_time -
-          update\_time -  resume -  person\_names -  addresses -
+          external\_id -  source -  source\_types -  uri -  is\_hirable
+          -  create\_time -  update\_time -  candidate\_update\_time -
+          resume\_update\_time -  resume -  person\_names -  addresses -
           email\_addresses -  phone\_numbers -  personal\_uris -
           additional\_contact\_info -  employment\_records -
           education\_records -  skills -  activities -  publications -

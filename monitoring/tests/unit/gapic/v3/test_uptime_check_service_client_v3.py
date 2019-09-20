@@ -118,7 +118,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
-        expected_response = {"name": name_2, "display_name": display_name}
+        is_internal = True
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "is_internal": is_internal,
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
@@ -157,7 +162,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        expected_response = {"name": name, "display_name": display_name}
+        is_internal = True
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "is_internal": is_internal,
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
@@ -200,7 +210,12 @@ class TestUptimeCheckServiceClient(object):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        expected_response = {"name": name, "display_name": display_name}
+        is_internal = True
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "is_internal": is_internal,
+        }
         expected_response = uptime_pb2.UptimeCheckConfig(**expected_response)
 
         # Mock the API response
