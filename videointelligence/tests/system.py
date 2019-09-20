@@ -71,8 +71,8 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
     }
 
   @unittest.skipUnless(
-      INSIDE_BUCKET,
-      "GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET not set in environment."
+      OUTSIDE_BUCKET,
+      "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET not set in environment."
   )
   @unittest.skipUnless(IS_INSIDE_VPCSC,
                        "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment.")
@@ -105,8 +105,8 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
     )
 
   @unittest.skipUnless(
-      OUTSIDE_BUCKET,
-      "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET not set in environment."
+      INSIDE_BUCKET,
+      "GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET not set in environment."
   )
   @unittest.skipUnless(IS_INSIDE_VPCSC,
                        "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment.")
