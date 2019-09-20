@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# flake8: noqa
-
 import os
 import pytest
 
@@ -25,12 +23,10 @@ from google.cloud.dlp_v2.proto import dlp_pb2
 from google.api_core import exceptions
 
 PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-if not PROJECT_INSIDE:
-    PROJECT_INSIDE = None
 PROJECT_OUTSIDE = os.environ.get(
     "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
 )
-IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false")
+IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false").lower() == "true"
 
 
 class TestSystemDlpService(object):
@@ -46,7 +42,7 @@ class TestSystemDlpService(object):
 
     @staticmethod
     def _do_test(delayed_inside, delayed_outside):
-        if IS_INSIDE_VPCSC.lower() == "true":
+        if IS_INSIDE_VPCSC:
             assert TestSystemDlpService._is_rejected(delayed_outside)
             assert not (TestSystemDlpService._is_rejected(delayed_inside))
         else:
@@ -54,7 +50,8 @@ class TestSystemDlpService(object):
             assert TestSystemDlpService._is_rejected(delayed_inside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -69,7 +66,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -84,7 +82,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -99,7 +98,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -114,7 +114,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -129,7 +130,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -144,7 +146,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -160,7 +163,8 @@ class TestSystemDlpService(object):
 
     @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -175,7 +179,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -190,7 +195,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -205,7 +211,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -220,7 +227,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -236,7 +244,8 @@ class TestSystemDlpService(object):
 
     @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -251,7 +260,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -266,7 +276,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -282,7 +293,8 @@ class TestSystemDlpService(object):
 
     @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -297,7 +309,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -312,7 +325,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -327,7 +341,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -343,7 +358,8 @@ class TestSystemDlpService(object):
 
     @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -358,7 +374,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -373,7 +390,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -388,7 +406,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -403,7 +422,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -418,7 +438,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -433,7 +454,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -448,7 +470,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -464,7 +487,8 @@ class TestSystemDlpService(object):
 
     @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
@@ -479,7 +503,8 @@ class TestSystemDlpService(object):
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+        not IS_INSIDE_VPCSC,
+        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     @pytest.mark.skipif(
         PROJECT_OUTSIDE is None,
