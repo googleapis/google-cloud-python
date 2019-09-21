@@ -445,8 +445,8 @@ def _cell_magic(line, query):
         max_results = None
 
     query = query.strip()
-    
-    # Any query that does not contain whitespace (aside from leading and trailing whitespace) 
+
+    # Any query that does not contain whitespace (aside from leading and trailing whitespace)
     # is assumed to be a table id
     if not re.search(r"\s", query):
         try:
