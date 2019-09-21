@@ -444,13 +444,16 @@ def _cell_magic(line, query):
     else:
         max_results = None
 
-    if not re.search(r"\s", query.rstrip()):
-        table_id = query.rstrip()
-
+    query = query.strip()
+    
+    # Any query that does not contain whitespace (aside from leading and trailing whitespace) 
+    # is assumed to be a table id
+    if not re.search(r"\s", query):
         try:
-            rows = client.list_rows(table_id, max_results=max_results)
+            rows = client.list_rows(query, max_results=max_results)
         except Exception as ex:
-            return _print_error(str(ex), args.destination_var)
+            _print_error(str(ex), args.destination_var)
+            return
 
         result = rows.to_dataframe(bqstorage_client=bqstorage_client)
         if args.destination_var:
