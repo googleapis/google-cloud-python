@@ -476,7 +476,8 @@ def _cell_magic(line, query):
     try:
         query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
-        return _print_error(str(ex), args.destination_var)
+        _print_error(str(ex), args.destination_var)
+        return 
 
     if not args.verbose:
         display.clear_output()
