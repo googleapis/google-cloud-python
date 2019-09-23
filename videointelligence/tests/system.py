@@ -76,13 +76,13 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
   )
   @unittest.skipUnless(IS_INSIDE_VPCSC,
                        "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment.")
-  def test_outside_ip_address_blocked(self):
+  def test_outside_perimeter_blocked(self):
     headers = {
         "Authorization": "Bearer " + get_access_token(),
         "Content-Type": "application/json",
     }
     self.body["input_uri"] = "gs://{bucket}/cat.mp4".format(
-        bucket=INSIDE_BUCKET)
+        bucket=OUTSIDE_BUCKET)
     r = requests.post(url=self.url, data=json.dumps(self.body), headers=headers)
     operation = json.loads(r.text)
     print(operation)
@@ -110,13 +110,13 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
   )
   @unittest.skipUnless(IS_INSIDE_VPCSC,
                        "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment.")
-  def test_inside_ip_address_allowed(self):
+  def test_inside_perimeter_allowed(self):
     headers = {
         "Authorization": "Bearer " + get_access_token(),
         "Content-Type": "application/json",
     }
     self.body["input_uri"] = "gs://{bucket}/cat.mp4".format(
-        bucket=OUTSIDE_BUCKET)
+        bucket=INSIDE_BUCKET)
     r = requests.post(url=self.url, data=json.dumps(self.body), headers=headers)
     operation = json.loads(r.text)
     print(operation)
