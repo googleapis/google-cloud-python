@@ -512,7 +512,7 @@ class DocumentReference(object):
             db = firestore_v1.Client()
             collection_ref = db.collection(u'users')
 
-            def on_snapshot(document_snapshot):
+            def on_snapshot(document_snapshot, changes, read_time):
                 doc = document_snapshot
                 print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
