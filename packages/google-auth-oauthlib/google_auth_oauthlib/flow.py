@@ -365,7 +365,7 @@ class InstalledAppFlow(Flow):
     authorization code. Used only by the console strategy."""
 
     _DEFAULT_WEB_SUCCESS_MESSAGE = (
-        'The authentication flow has completed, you may close this window.')
+        'The authentication flow has completed. You may close this window.')
 
     def run_console(
             self,
