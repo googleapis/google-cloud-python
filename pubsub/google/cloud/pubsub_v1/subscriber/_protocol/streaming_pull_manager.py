@@ -208,7 +208,7 @@ class StreamingPullManager(object):
             float: The load value.
         """
         if self._leaser is None:
-            return 0
+            return 0.0
 
         return max(
             [
@@ -384,13 +384,25 @@ class StreamingPullManager(object):
         )
 
         # Create the RPC
+        subscription = self._client.api.get_subscription(self._subscription)
+        stream_ack_deadline_seconds = subscription.ack_deadline_seconds
+
+        get_initial_request = functools.partial(
+            self._get_initial_request, stream_ack_deadline_seconds
+        )
         self._rpc = bidi.ResumableBidiRpc(
             start_rpc=self._client.api.streaming_pull,
-            initial_request=self._get_initial_request,
+            initial_request=get_initial_request,
             should_recover=self._should_recover,
             throttle_reopen=True,
         )
         self._rpc.add_done_callback(self._on_rpc_done)
+
+        _LOGGER.debug(
+            "Creating a stream, default ACK deadline set to {} seconds.".format(
+                stream_ack_deadline_seconds
+            )
+        )
 
         # Create references to threads
         self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
@@ -462,11 +474,15 @@ class StreamingPullManager(object):
             for callback in self._close_callbacks:
                 callback(self, reason)
 
-    def _get_initial_request(self):
+    def _get_initial_request(self, stream_ack_deadline_seconds):
         """Return the initial request for the RPC.
 
         This defines the initial request that must always be sent to Pub/Sub
         immediately upon opening the subscription.
+
+        Args:
+            stream_ack_deadline_seconds (int):
+                The default message acknowledge deadline for the stream.
 
         Returns:
             google.cloud.pubsub_v1.types.StreamingPullRequest: A request
@@ -486,7 +502,7 @@ class StreamingPullManager(object):
         request = types.StreamingPullRequest(
             modify_deadline_ack_ids=list(lease_ids),
             modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
-            stream_ack_deadline_seconds=self.ack_histogram.percentile(99),
+            stream_ack_deadline_seconds=stream_ack_deadline_seconds,
             subscription=self._subscription,
         )
 
@@ -511,14 +527,6 @@ class StreamingPullManager(object):
             self._messages_on_hold.qsize(),
         )
 
-        # Immediately modack the messages we received, as this tells the server
-        # that we've received them.
-        items = [
-            requests.ModAckRequest(message.ack_id, self._ack_histogram.percentile(99))
-            for message in response.received_messages
-        ]
-        self._dispatcher.modify_ack_deadline(items)
-
         invoke_callbacks_for = []
 
         for received_message in response.received_messages:
@@ -534,6 +542,15 @@ class StreamingPullManager(object):
                 self.maybe_pause_consumer()
             else:
                 self._messages_on_hold.put(message)
+
+        # Immediately (i.e. without waiting for the auto lease management)
+        # modack the messages we received and not put on hold, as this tells
+        # the server that we've received them.
+        items = [
+            requests.ModAckRequest(message.ack_id, self._ack_histogram.percentile(99))
+            for message in invoke_callbacks_for
+        ]
+        self._dispatcher.modify_ack_deadline(items)
 
         _LOGGER.debug(
             "Scheduling callbacks for %s new messages, new total on hold %s.",

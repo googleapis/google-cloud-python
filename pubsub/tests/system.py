@@ -381,6 +381,55 @@ class TestStreamingPull(object):
         with pytest.raises(CallbackError):
             future.result(timeout=30)
 
+    def test_streaming_pull_ack_deadline(
+        self, publisher, subscriber, project, topic_path, subscription_path, cleanup
+    ):
+        # Make sure the topic and subscription get deleted.
+        cleanup.append((publisher.delete_topic, topic_path))
+        cleanup.append((subscriber.delete_subscription, subscription_path))
+
+        # Create a topic and a subscription, then subscribe to the topic. This
+        # must happen before the messages are published.
+        publisher.create_topic(topic_path)
+
+        # Subscribe to the topic. This must happen before the messages
+        # are published.
+        subscriber.create_subscription(
+            subscription_path, topic_path, ack_deadline_seconds=60
+        )
+
+        # publish some messages and wait for completion
+        self._publish_messages(publisher, topic_path, batch_sizes=[2])
+
+        # subscribe to the topic
+        callback = StreamingPullCallback(
+            processing_time=15,  # more than the default ACK deadline of 10 seconds
+            resolve_at_msg_count=3,  # one more than the published messages count
+        )
+        flow_control = types.FlowControl(max_messages=1)
+        sub_future = subscriber.subscribe(
+            subscription_path, callback, flow_control=flow_control
+        )
+
+        # We expect to process the first two messages in 2 * 15 seconds, and
+        # any duplicate message that is re-sent by the backend in additional
+        # 15 seconds, totalling 45 seconds (+ overhead) --> if there have been
+        # no duplicates in 60 seconds, we can reasonably assume that there
+        # won't be any.
+        try:
+            callback.done_future.result(timeout=60)
+        except exceptions.TimeoutError:
+            # future timed out, because we received no excessive messages
+            assert sorted(callback.seen_message_ids) == [1, 2]
+        else:
+            pytest.fail(
+                "Expected to receive 2 messages, but got at least {}.".format(
+                    len(callback.seen_message_ids)
+                )
+            )
+        finally:
+            sub_future.cancel()
+
     def test_streaming_pull_max_messages(
         self, publisher, topic_path, subscriber, subscription_path, cleanup
     ):
