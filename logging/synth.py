@@ -34,10 +34,6 @@ s.move(library / "google/cloud/logging_v2/proto")
 s.move(library / "google/cloud/logging_v2/gapic")
 s.move(library / "tests/unit/gapic/v2")
 
-# Issues exist where python files should define the source encoding
-# https://github.com/googleapis/gapic-generator/issues/2097
-s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
