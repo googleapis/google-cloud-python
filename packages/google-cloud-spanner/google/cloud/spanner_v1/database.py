@@ -420,8 +420,11 @@ class Database(object):
                    If passed, "timeout_secs" will be removed and used to
                    override the default timeout.
 
-        :rtype: :class:`datetime.datetime`
-        :returns: timestamp of committed transaction
+        :rtype: Any
+        :returns: The return value of ``func``.
+
+        :raises Exception:
+            reraises any non-ABORT execptions raised by ``func``.
         """
         # Sanity check: Is there a transaction already running?
         # If there is, then raise a red flag. Otherwise, mark that this one
