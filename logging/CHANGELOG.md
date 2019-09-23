@@ -9,7 +9,7 @@
 09-23-2019 10:00 PDT
 
 ### Implementation Changes
-- ContainerEngineHandler: don't swallow stream ([#9166](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9166))
+- Pass 'stream' argument to super in 'ContainerEngineHandler.__init__'. ([#9166](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9166))
 
 ### New Features
 - Add LoggingV2Servicer, LogSinks, logging_metrics, and log_entry. Add LogSeverity and HttpRequest types (via synth). ([#9262](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9262))
