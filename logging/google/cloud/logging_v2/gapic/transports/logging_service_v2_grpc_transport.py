@@ -152,8 +152,9 @@ class LoggingServiceV2GrpcTransport(object):
     def list_log_entries(self):
         """Return the gRPC stub for :meth:`LoggingServiceV2Client.list_log_entries`.
 
-        Lists log entries. Use this method to retrieve log entries from Logging.
-        For ways to export log entries, see `Exporting
+        Lists log entries. Use this method to retrieve log entries that
+        originated from a project/folder/organization/billing account. For ways
+        to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
         Returns:
