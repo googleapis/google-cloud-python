@@ -84,25 +84,11 @@ class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
     self.body["input_uri"] = "gs://{bucket}/cat.mp4".format(
         bucket=OUTSIDE_BUCKET)
     r = requests.post(url=self.url, data=json.dumps(self.body), headers=headers)
-    operation = json.loads(r.text)
-    print(operation)
-
-    get_op_url = "https://videointelligence.googleapis.com/v1/" + operation[
-        "name"]
-    get_op = requests.get(url=get_op_url, headers=headers)
-    get_op_resp = json.loads(get_op.text)
-    print(get_op_resp)
+    resp = json.loads(r.text)
+    print(resp)
     # Assert it returns permission denied from VPC SC
-    self.assertEqual(get_op_resp["error"]["code"], 403)
-    self.assertEqual(get_op_resp["error"]["status"], "PERMISSION_DENIED")
-    self.assertEqual(
-        get_op_resp["error"]["details"][0]["violations"][0]["type"],
-        "VPC_SERVICE_CONTROLS",
-    )
-    self.assertEqual(
-        get_op_resp["error"]["message"],
-        "Request is prohibited by organization's policy",
-    )
+    self.assertEqual(resp["error"]["code"], 403)
+    self.assertEqual(resp["error"]["status"], "PERMISSION_DENIED")
 
   @unittest.skipUnless(
       INSIDE_BUCKET,
