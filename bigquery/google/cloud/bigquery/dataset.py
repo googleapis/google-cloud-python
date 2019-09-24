@@ -24,6 +24,7 @@ from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import EncryptionConfiguration
 
 
 def _get_table_reference(self, table_id):
@@ -361,6 +362,7 @@ class Dataset(object):
         "default_partition_expiration_ms": "defaultPartitionExpirationMs",
         "default_table_expiration_ms": "defaultTableExpirationMs",
         "friendly_name": "friendlyName",
+        "encryption_configuration": "encryptionConfiguration",
     }
 
     def __init__(self, dataset_ref):
@@ -572,6 +574,30 @@ class Dataset(object):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties["labels"] = value
+
+    @property
+    def encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
+        if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
+        """
+        prop = self._properties.get("encryptionConfiguration")
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties["encryptionConfiguration"] = api_repr
 
     @classmethod
     def from_string(cls, full_dataset_id):
