@@ -64,11 +64,15 @@ def _create_gapic_client(client_class):
     def inner(self):
         if self._emulator_host is None:
             return client_class(
-                credentials=self._credentials, client_info=self._client_info
+                credentials=self._credentials,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
         else:
             return client_class(
-                channel=self._emulator_channel, client_info=self._client_info
+                channel=self._emulator_channel,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
 
     return inner
@@ -109,6 +113,11 @@ class Client(ClientWithProject):
         you only need to set this if you're developing your own library
         or partner tool.
 
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
+
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
             A ``Channel`` instance through which to make calls.
@@ -131,6 +140,7 @@ class Client(ClientWithProject):
         admin=False,
         client_info=_CLIENT_INFO,
         channel=None,
+        client_options=None,
     ):
         if read_only and admin:
             raise ValueError(
@@ -144,6 +154,7 @@ class Client(ClientWithProject):
         self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
         self._emulator_channel = None
+        self._client_options = client_options
 
         if self._emulator_host is not None:
             self._emulator_channel = grpc.insecure_channel(self._emulator_host)

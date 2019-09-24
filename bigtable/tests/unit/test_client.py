@@ -27,16 +27,23 @@ class Test__create_gapic_client(unittest.TestCase):
         return _create_gapic_client(client_class)
 
     def test_without_emulator(self):
+        from google.api_core.client_options import ClientOptions
+
         client_class = mock.Mock()
         credentials = _make_credentials()
         client = _Client(credentials)
         client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = ClientOptions(
+            api_endpoint="https://www.foo-googleapis.com"
+        )
 
         result = self._invoke_client_factory(client_class)(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            credentials=client._credentials, client_info=client_info
+            credentials=client._credentials,
+            client_info=client_info,
+            client_options=client_options,
         )
 
     def test_with_emulator(self):
@@ -47,12 +54,17 @@ class Test__create_gapic_client(unittest.TestCase):
             credentials, emulator_host=emulator_host, emulator_channel=emulator_channel
         )
         client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = {
+            "api_endpoint": "https://www.foo-googleapis.com"
+        }
 
         result = self._invoke_client_factory(client_class)(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            channel=client._emulator_channel, client_info=client_info
+            channel=client._emulator_channel,
+            client_info=client_info,
+            client_options=client_options,
         )
 
 
@@ -94,6 +106,7 @@ class TestClient(unittest.TestCase):
         self.assertFalse(client._read_only)
         self.assertFalse(client._admin)
         self.assertIs(client._client_info, _CLIENT_INFO)
+        self.assertIsNone(client._client_options)
         self.assertIsNone(client._channel)
         self.assertIsNone(client._emulator_host)
         self.assertIsNone(client._emulator_channel)
