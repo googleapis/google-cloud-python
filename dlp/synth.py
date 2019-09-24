@@ -253,6 +253,6 @@ s.replace("google/cloud/dlp_v2/gapic/enums.py", ".*:raw-latex:.*\n", "")
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files)
+s.move(templated_files, excludes=['noxfile.py'])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
