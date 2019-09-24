@@ -2217,7 +2217,7 @@ class TestUser:
         with pytest.raises(ValueError):
             model.User.read_from_entity(entity, name)
 
-        # Wrong assocated value.
+        # Wrong associated value.
         entity._meanings[name] = (model._MEANING_PREDEFINED_ENTITY_USER, None)
         with pytest.raises(ValueError):
             model.User.read_from_entity(entity, name)

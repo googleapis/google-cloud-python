@@ -57,7 +57,7 @@ class EventLoop:
     to think of it as running tasks "on demand". Generally, when some piece of
     code needs a result from a future, the future's
     :meth:`~tasklets.Future.wait` method will end up calling
-    :meth:`~EventLoop.run1`, which will attempt to excecute a single task that
+    :meth:`~EventLoop.run1`, which will attempt to execute a single task that
     is queued in the loop. The future will continue to call
     :meth:`~EventLoop.run1` until one of the callbacks ultimately puts that
     future into it's ``done`` state, either by setting the result or setting an
@@ -81,7 +81,7 @@ class EventLoop:
     other futures were waiting on those results and results derived from those
     results.
 
-    Currently, these are the seperate queues used by the event loop in the
+    Currently, these are the separate queues used by the event loop in the
     order they are checked by :meth:`~EventLoop.run1`. For each call to
     :meth:`~EventLoop.run1`, the first thing it finds is called:
 
@@ -112,11 +112,11 @@ class EventLoop:
             :method:`~EventLoop.run1` might block. If the only thing to do is
             wait for a gRPC call to finish, we may as well wait.
 
-    Atrributes:
+    Attributes:
         current (deque): a FIFO list of (callback, args, kwds). These callbacks
             run immediately when the eventloop runs. Used by tasklets to
             schedule calls to :meth:`tasklets.TaskletFuture._advance_tasklet`.
-        idlers (deque): a FIFO list of (callback, args, kwds). Thes callbacks
+        idlers (deque): a FIFO list of (callback, args, kwds). These callbacks
             run only when no other RPCs need to be fired first. Used for
             batching calls to the Datastore back end.
         inactive (int): Number of consecutive idlers that were noops. Reset
@@ -127,7 +127,7 @@ class EventLoop:
             time. Used by :func:`tasklets.sleep`.
         rpcs (dict): a map from RPC to callback. Callback is called when the
             RPC finishes.
-        rpc_results (queue.Queue): A syncrhonized queue used to coordinate with
+        rpc_results (queue.Queue): A synchronized queue used to coordinate with
             gRPC. As gRPC futures that we're waiting on are finished, they will
             get added to this queue and then processed by the event loop.
     """

@@ -862,7 +862,7 @@ class _AllocateIdsBatch:
     """Batch for AllocateIds requests.
 
     Not related to batch used by transactions to allocate ids for upserts
-    before comitting, although they do both eventually call
+    before committing, although they do both eventually call
     ``_datastore_allocate_ids``.
 
     Args:

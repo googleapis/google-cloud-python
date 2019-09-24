@@ -353,7 +353,7 @@ class Context(_Context):
         """
         return self.global_cache_policy
 
-    get_memcache_policy = get_global_cache_policy  # backwards compatability
+    get_memcache_policy = get_global_cache_policy  # backwards compatibility
 
     def get_global_cache_timeout_policy(self):
         """Return the current policy function global cache timeout (expiration).

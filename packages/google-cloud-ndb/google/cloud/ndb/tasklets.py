@@ -330,8 +330,9 @@ class _TaskletFuture(Future):
             #
             # It was tempting to call `_advance_tasklet` (`_help_tasklet_along`
             # in Legacy) directly. Doing so, it has been found, can lead to
-            # exceeding the maximum recursion depth. Queing it up to run on the
-            # event loop avoids this issue by keeping the call stack shallow.
+            # exceeding the maximum recursion depth. Queuing it up to run on
+            # the event loop avoids this issue by keeping the call stack
+            # shallow.
             self.waiting_on = None
 
             error = yielded.exception()

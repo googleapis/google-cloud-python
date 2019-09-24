@@ -169,7 +169,7 @@ def get_changed_packages(file_list):
         if os.path.isdir(abs_file) and os.path.isfile(nox_file):
             all_packages.add(file_)
 
-    # If ther is no file list, send down the full package set.
+    # If there is no file list, send down the full package set.
     if file_list is None:
         return all_packages
 

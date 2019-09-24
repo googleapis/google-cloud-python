@@ -544,7 +544,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
                 raise tasklets.Return(False)
 
             # If sorting, peek at the next values from all result sets and take
-            # the mininum.
+            # the minimum.
             if self._sortable:
                 min_index, min_value = 0, result_sets[0]._peek()
                 for i, result_set in enumerate(result_sets[1:], 1):
