@@ -116,7 +116,7 @@ class Cursor(object):
             total_rows = num_dml_affected_rows
         self.rowcount = total_rows
 
-    def execute(self, operation, parameters=None, job_id=None):
+    def execute(self, operation, parameters=None, job_id=None, config=None):
         """Prepare and execute a database operation.
 
         .. note::
@@ -160,9 +160,8 @@ class Cursor(object):
         formatted_operation = _format_operation(operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
-        config = job.QueryJobConfig()
+        config = config or job.QueryJobConfig(use_legacy_sql=False)
         config.query_parameters = query_parameters
-        config.use_legacy_sql = False
         self._query_job = client.query(
             formatted_operation, job_config=config, job_id=job_id
         )
