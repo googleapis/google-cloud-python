@@ -191,6 +191,20 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(args[0], "SELECT 1;")
         self.assertEqual(kwargs["job_id"], "foo")
 
+    def test_execute_custom_job_config(self):
+        from google.cloud.bigquery.dbapi import connect
+        from google.cloud.bigquery import job
+
+        config = job.QueryJobConfig(use_legacy_sql=True)
+        client = self._mock_client(rows=[], num_dml_affected_rows=0)
+        connection = connect(client)
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1;", job_id="foo", job_config=config)
+        args, kwargs = client.query.call_args
+        self.assertEqual(args[0], "SELECT 1;")
+        self.assertEqual(kwargs["job_id"], "foo")
+        self.assertEqual(kwargs["job_config"], config)
+
     def test_execute_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
 
