@@ -52,6 +52,7 @@ class Model(object):
         # have an exhaustive list of all mutable properties.
         "labels": "labels",
         "description": "description",
+        "encryption_configuration": "encryptionConfiguration",
     }
 
     def __init__(self, model_ref):
