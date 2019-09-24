@@ -119,12 +119,15 @@ class TestSpannerClient(object):
 
         # Setup Request
         database = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        session_count = 185691686
 
-        response = client.batch_create_sessions(database)
+        response = client.batch_create_sessions(database, session_count)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = spanner_pb2.BatchCreateSessionsRequest(database=database)
+        expected_request = spanner_pb2.BatchCreateSessionsRequest(
+            database=database, session_count=session_count
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -138,9 +141,10 @@ class TestSpannerClient(object):
 
         # Setup request
         database = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        session_count = 185691686
 
         with pytest.raises(CustomException):
-            client.batch_create_sessions(database)
+            client.batch_create_sessions(database, session_count)
 
     def test_get_session(self):
         # Setup Expected Response

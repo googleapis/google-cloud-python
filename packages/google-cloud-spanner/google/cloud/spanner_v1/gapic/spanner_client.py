@@ -310,8 +310,8 @@ class SpannerClient(object):
     def batch_create_sessions(
         self,
         database,
+        session_count,
         session_template=None,
-        session_count=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -329,18 +329,21 @@ class SpannerClient(object):
             >>>
             >>> database = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
             >>>
-            >>> response = client.batch_create_sessions(database)
+            >>> # TODO: Initialize `session_count`:
+            >>> session_count = 0
+            >>>
+            >>> response = client.batch_create_sessions(database, session_count)
 
         Args:
             database (str): Required. The database in which the new sessions are created.
-            session_template (Union[dict, ~google.cloud.spanner_v1.types.Session]): Parameters to be applied to each created session.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.types.Session`
             session_count (int): Required. The number of sessions to be created in this batch call. The
                 API may return fewer than the requested number of sessions. If a
                 specific number of sessions are desired, the client can make additional
                 calls to BatchCreateSessions (adjusting ``session_count`` as necessary).
+            session_template (Union[dict, ~google.cloud.spanner_v1.types.Session]): Parameters to be applied to each created session.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.Session`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -373,8 +376,8 @@ class SpannerClient(object):
 
         request = spanner_pb2.BatchCreateSessionsRequest(
             database=database,
-            session_template=session_template,
             session_count=session_count,
+            session_template=session_template,
         )
         if metadata is None:
             metadata = []
