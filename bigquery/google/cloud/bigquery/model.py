@@ -25,6 +25,7 @@ import google.cloud._helpers
 from google.api_core import datetime_helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery_v2 import types
+from google.cloud.bigquery.table import EncryptionConfiguration
 
 
 class Model(object):
@@ -255,6 +256,30 @@ class Model(object):
         if value is None:
             value = {}
         self._properties["labels"] = value
+
+    @property
+    def encryption_configuration(self):
+        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        encryption configuration for the table.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
+        if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
+        """
+        prop = self._properties.get("encryptionConfiguration")
+        if prop is not None:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        api_repr = value
+        if value is not None:
+            api_repr = value.to_api_repr()
+        self._properties["encryptionConfiguration"] = api_repr
 
     @classmethod
     def from_api_repr(cls, resource):
