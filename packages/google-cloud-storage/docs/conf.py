@@ -342,7 +342,7 @@ intersphinx_mapping = {
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://2.python-requests.org/en/master/", None),
+    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
 }
 
 
