@@ -25,7 +25,7 @@ def get_routine(client, routine_id):
     # TODO(developer): Set the fully-qualified ID for the routine.
     # routine_id = "my-project.my_dataset.my_routine"
 
-    routine = client.get_routine(routine_id)  # API request.
+    routine = client.get_routine(routine_id)  # Make an API request.
 
     print("Routine '{}':".format(routine.reference))
     print("\tType: '{}'".format(routine.type_))

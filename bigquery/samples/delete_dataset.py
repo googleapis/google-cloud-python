@@ -29,7 +29,7 @@ def delete_dataset(client, dataset_id):
     # Use the not_found_ok parameter to not receive an error if the dataset has already been deleted.
     client.delete_dataset(
         dataset_id, delete_contents=True, not_found_ok=True
-    )  # API request.
+    )  # Make an API request.
 
     print("Deleted dataset '{}'.".format(dataset_id))
     # [END bigquery_delete_dataset]

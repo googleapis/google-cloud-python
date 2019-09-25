@@ -41,6 +41,6 @@ def update_routine(client, routine_id):
             "type_",
             "return_type",
         ],
-    )  # API request.
+    )  # Make an API request.
     # [END bigquery_update_routine]
     return routine
