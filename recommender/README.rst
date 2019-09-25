@@ -9,7 +9,7 @@ Python Client for Recommender API (`Alpha`_)
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Recommender API: https://cloud.google.com/recommender
 .. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/recommender/usage.html
-.. _Product Documentation:  https://cloud.google.com/recommender
+.. _Product Documentation:  https://cloud.google.com/recommender/docs
 
 Quick Start
 -----------
@@ -24,7 +24,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Recommender API.:  https://cloud.google.com/recommender
-.. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
