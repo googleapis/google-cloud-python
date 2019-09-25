@@ -338,7 +338,7 @@ intersphinx_mapping = {
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://2.python-requests.org/en/master/", None),
+    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
