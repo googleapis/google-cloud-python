@@ -905,3 +905,69 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
     call_args = fake_write_table.call_args
     assert call_args is not None
     assert call_args.kwargs.get("compression") == "ZSTD"
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_fallback_needed_wo_pyarrow(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": "FOO", "execution_date": datetime.date(2019, 5, 10)},
+            {"id": 20, "status": "BAR", "created_at": datetime.date(2018, 9, 12)},
+        ]
+    )
+
+    no_pyarrow_patch = mock.patch(module_under_test.__name__ + ".pyarrow", None)
+
+    with no_pyarrow_patch:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    assert detected_schema is None
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_bq_schema_fallback_needed_w_pyarrow(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": "FOO", "created_at": datetime.date(2019, 5, 10)},
+            {"id": 20, "status": "BAR", "created_at": datetime.date(2018, 9, 12)},
+        ]
+    )
+
+    detected_schema = module_under_test.dataframe_to_bq_schema(dataframe, bq_schema=[])
+    expected_schema = (
+        schema.SchemaField("id", "INTEGER", mode="NULLABLE"),
+        schema.SchemaField("status", "STRING", mode="NULLABLE"),
+        schema.SchemaField("created_at", "DATE", mode="NULLABLE"),
+    )
+    assert detected_schema == expected_schema
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_bq_schema_pyarrow_fallback_fails(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": "FOO", "all_items": [10.1, 10.2]},
+            {"id": 20, "status": "BAR", "all_items": [20.1, 20.2]},
+        ]
+    )
+
+    with warnings.catch_warnings(record=True) as warned:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    assert detected_schema is None
+
+    expected_warnings = []
+    for warning in warned:
+        if "Pyarrow could not" in str(warning):
+            expected_warnings.append(warning)
+
+    assert len(expected_warnings) == 1
+    warning_msg = str(expected_warnings[0])
+    assert "all_items" in warning_msg
+    assert "could not determine the type" in warning_msg

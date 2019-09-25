@@ -5724,8 +5724,7 @@ class TestClientUpload(object):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_no_schema_warning(self):
+    def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
         client = self._make_client()
 
         # Pick at least one column type that translates to Pandas dtype
@@ -5742,9 +5741,12 @@ class TestClientUpload(object):
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
         pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        pyarrow_patch_helpers = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.pyarrow", None
+        )
         catch_warnings = warnings.catch_warnings(record=True)
 
-        with get_table_patch, load_patch, pyarrow_patch, catch_warnings as warned:
+        with get_table_patch, load_patch, pyarrow_patch, pyarrow_patch_helpers, catch_warnings as warned:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, location=self.LOCATION
             )
@@ -5912,7 +5914,6 @@ class TestClientUpload(object):
         assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -5929,10 +5930,13 @@ class TestClientUpload(object):
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
+        pyarrow_patch = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.pyarrow", None
+        )
 
         schema = (SchemaField("string_col", "STRING"),)
         job_config = job.LoadJobConfig(schema=schema)
-        with load_patch as load_table_from_file, warnings.catch_warnings(
+        with pyarrow_patch, load_patch as load_table_from_file, warnings.catch_warnings(
             record=True
         ) as warned:
             client.load_table_from_dataframe(

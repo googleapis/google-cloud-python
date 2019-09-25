@@ -110,8 +110,13 @@ if pyarrow:
         "TIME": pyarrow_time,
         "TIMESTAMP": pyarrow_timestamp,
     }
+    ARROW_SCALARS_TO_BQ = {
+        arrow_type(): bq_type  # TODO: explain wht calling arrow_type()
+        for bq_type, arrow_type in BQ_TO_ARROW_SCALARS.items()
+    }
 else:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
+    ARROW_SCALARS_TO_BQ = {}  # pragma: NO_COVER
 
 
 def bq_to_arrow_struct_data_type(field):
@@ -140,10 +145,11 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in schema._STRUCT_TYPES:
+    field_type_upper = field.field_type.upper() if field.field_type else ""
+    if field_type_upper in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
-    data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
+    data_type_constructor = BQ_TO_ARROW_SCALARS.get(field_type_upper)
     if data_type_constructor is None:
         return None
     return data_type_constructor()
@@ -180,9 +186,12 @@ def bq_to_arrow_schema(bq_schema):
 
 def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
+
+    field_type_upper = bq_field.field_type.upper() if bq_field.field_type else ""
+
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
+    if field_type_upper in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
 
@@ -273,7 +282,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if not bq_type:
             warnings.warn(u"Unable to determine type of column '{}'.".format(column))
-            return None
+
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
 
@@ -285,6 +294,44 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
                 bq_schema_unused
             )
         )
+
+    # If schema detection was not successful for all columns, also try with
+    # pyarrow, if available.
+    if any(field.field_type is None for field in bq_schema_out):
+        if not pyarrow:
+            return None  # We cannot detect the schema in full.
+
+        arrow_table = dataframe_to_arrow(dataframe, bq_schema_out)
+        arrow_schema_index = {field.name: field.type for field in arrow_table}
+
+        currated_schema = []
+        for schema_field in bq_schema_out:
+            if schema_field.field_type is not None:
+                currated_schema.append(schema_field)
+                continue
+
+            detected_type = ARROW_SCALARS_TO_BQ.get(
+                arrow_schema_index.get(schema_field.name)
+            )
+            if detected_type is None:
+                warnings.warn(
+                    u"Pyarrow could not determine the type of column '{}'.".format(
+                        schema_field.name
+                    )
+                )
+                return None
+
+            new_field = schema.SchemaField(
+                name=schema_field.name,
+                field_type=detected_type,
+                mode=schema_field.mode,
+                description=schema_field.description,
+                fields=schema_field.fields,
+            )
+            currated_schema.append(new_field)
+
+        bq_schema_out = currated_schema
+
     return tuple(bq_schema_out)
 
 
