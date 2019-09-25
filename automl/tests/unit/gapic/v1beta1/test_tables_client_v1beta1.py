@@ -20,8 +20,9 @@ import mock
 import pandas
 import pytest
 
-from google.cloud import automl_v1beta1
 from google.api_core import exceptions
+from google.auth.credentials import AnonymousCredentials
+from google.cloud import automl_v1beta1
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 
 PROJECT = "project"
@@ -213,6 +214,33 @@ class TestTablesClient(object):
         client.auto_ml_client.import_data.assert_called_with(
             "name", {"gcs_source": {"input_uris": ["uri"]}}
         )
+
+    def test_import_pandas_dataframe_init_gcs(self):
+        client = automl_v1beta1.TablesClient(
+            client=mock.Mock(),
+            prediction_client=mock.Mock(),
+            project=PROJECT,
+            region=REGION,
+            credentials=AnonymousCredentials(),
+        )
+
+        dataframe = pandas.DataFrame({})
+        patch = mock.patch(
+            "google.cloud.automl_v1beta1.tables.tables_client.gcs_client.GcsClient",
+            bucket_name="my_bucket",
+        )
+        with patch as MockGcsClient:
+            mockInstance = MockGcsClient.return_value
+            mockInstance.upload_pandas_dataframe.return_value = "uri"
+
+            client.import_data(dataset_name="name", pandas_dataframe=dataframe)
+
+            assert client.gcs_client is mockInstance
+            client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
+            client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
+            client.auto_ml_client.import_data.assert_called_with(
+                "name", {"gcs_source": {"input_uris": ["uri"]}}
+            )
 
     def test_import_gcs_uri(self):
         client = self.tables_client({"import_data.return_value": None}, {})
@@ -1219,6 +1247,40 @@ class TestTablesClient(object):
             {"gcs_source": {"input_uris": ["gs://input"]}},
             {"gcs_destination": {"output_uri_prefix": "gs://output"}},
         )
+
+    def test_batch_predict_pandas_dataframe_init_gcs(self):
+        client = automl_v1beta1.TablesClient(
+            client=mock.Mock(),
+            prediction_client=mock.Mock(),
+            project=PROJECT,
+            region=REGION,
+            credentials=AnonymousCredentials(),
+        )
+
+        dataframe = pandas.DataFrame({})
+        patch = mock.patch(
+            "google.cloud.automl_v1beta1.tables.tables_client.gcs_client.GcsClient",
+            bucket_name="my_bucket",
+        )
+        with patch as MockGcsClient:
+            mockInstance = MockGcsClient.return_value
+            mockInstance.upload_pandas_dataframe.return_value = "gs://input"
+
+            dataframe = pandas.DataFrame({})
+            client.batch_predict(
+                model_name="my_model",
+                pandas_dataframe=dataframe,
+                gcs_output_uri_prefix="gs://output",
+            )
+
+            client.gcs_client.ensure_bucket_exists.assert_called_with(PROJECT, REGION)
+            client.gcs_client.upload_pandas_dataframe.assert_called_with(dataframe)
+
+            client.prediction_client.batch_predict.assert_called_with(
+                "my_model",
+                {"gcs_source": {"input_uris": ["gs://input"]}},
+                {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+            )
 
     def test_batch_predict_gcs(self):
         client = self.tables_client({}, {})
