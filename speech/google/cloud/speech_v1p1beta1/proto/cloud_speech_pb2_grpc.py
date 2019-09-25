@@ -53,6 +53,8 @@ class SpeechServicer(object):
     google.longrunning.Operations interface. Returns either an
     `Operation.error` or an `Operation.response` which contains
     a `LongRunningRecognizeResponse` message.
+    For more information on asynchronous speech recognition, see the
+    [how-to](https://cloud.google.com/speech-to-text/docs/async-recognize).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
