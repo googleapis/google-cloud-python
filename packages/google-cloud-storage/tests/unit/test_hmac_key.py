@@ -46,12 +46,19 @@ class TestHMACKeyMetadata(unittest.TestCase):
     def test_ctor_explicit(self):
         OTHER_PROJECT = "other-project-456"
         ACCESS_ID = "access-id-123456789"
+        USER_PROJECT = "billed-project"
         client = _Client()
-        metadata = self._make_one(client, access_id=ACCESS_ID, project_id=OTHER_PROJECT)
+        metadata = self._make_one(
+            client,
+            access_id=ACCESS_ID,
+            project_id=OTHER_PROJECT,
+            user_project=USER_PROJECT,
+        )
         self.assertIs(metadata._client, client)
         expected = {"accessId": ACCESS_ID, "projectId": OTHER_PROJECT}
         self.assertEqual(metadata._properties, expected)
         self.assertEqual(metadata.access_id, ACCESS_ID)
+        self.assertEqual(metadata.user_project, USER_PROJECT)
         self.assertIsNone(metadata.etag)
         self.assertIsNone(metadata.id)
         self.assertEqual(metadata.project, OTHER_PROJECT)
@@ -217,12 +224,13 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "GET", "path": expected_path}
+        expected_kwargs = {"method": "GET", "path": expected_path, "query_params": {}}
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_exists_hit_w_project_set(self):
         project = "PROJECT-ID"
         access_id = "ACCESS-ID"
+        user_project = "billed-project"
         email = "service-account@example.com"
         resource = {
             "kind": "storage#hmacKeyMetadata",
@@ -232,14 +240,18 @@ class TestHMACKeyMetadata(unittest.TestCase):
         connection = mock.Mock(spec=["api_request"])
         connection.api_request.return_value = resource
         client = _Client(connection)
-        metadata = self._make_one(client)
+        metadata = self._make_one(client, user_project=user_project)
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
 
         self.assertTrue(metadata.exists())
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
-        expected_kwargs = {"method": "GET", "path": expected_path}
+        expected_kwargs = {
+            "method": "GET",
+            "path": expected_path,
+            "query_params": {"userProject": user_project},
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_reload_miss_no_project_set(self):
@@ -258,12 +270,13 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "GET", "path": expected_path}
+        expected_kwargs = {"method": "GET", "path": expected_path, "query_params": {}}
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_reload_hit_w_project_set(self):
         project = "PROJECT-ID"
         access_id = "ACCESS-ID"
+        user_project = "billed-project"
         email = "service-account@example.com"
         resource = {
             "kind": "storage#hmacKeyMetadata",
@@ -273,7 +286,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         connection = mock.Mock(spec=["api_request"])
         connection.api_request.return_value = resource
         client = _Client(connection)
-        metadata = self._make_one(client)
+        metadata = self._make_one(client, user_project=user_project)
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
 
@@ -282,7 +295,11 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertEqual(metadata._properties, resource)
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
-        expected_kwargs = {"method": "GET", "path": expected_path}
+        expected_kwargs = {
+            "method": "GET",
+            "path": expected_path,
+            "query_params": {"userProject": user_project},
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_update_miss_no_project_set(self):
@@ -306,12 +323,14 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "PUT",
             "path": expected_path,
             "data": {"state": "INACTIVE"},
+            "query_params": {},
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_update_hit_w_project_set(self):
         project = "PROJECT-ID"
         access_id = "ACCESS-ID"
+        user_project = "billed-project"
         email = "service-account@example.com"
         resource = {
             "kind": "storage#hmacKeyMetadata",
@@ -322,7 +341,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         connection = mock.Mock(spec=["api_request"])
         connection.api_request.return_value = resource
         client = _Client(connection)
-        metadata = self._make_one(client)
+        metadata = self._make_one(client, user_project=user_project)
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
         metadata.state = "ACTIVE"
@@ -336,6 +355,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "PUT",
             "path": expected_path,
             "data": {"state": "ACTIVE"},
+            "query_params": {"userProject": user_project},
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -364,16 +384,21 @@ class TestHMACKeyMetadata(unittest.TestCase):
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "DELETE", "path": expected_path}
+        expected_kwargs = {
+            "method": "DELETE",
+            "path": expected_path,
+            "query_params": {},
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_delete_hit_w_project_set(self):
         project = "PROJECT-ID"
         access_id = "ACCESS-ID"
+        user_project = "billed-project"
         connection = mock.Mock(spec=["api_request"])
         connection.api_request.return_value = {}
         client = _Client(connection)
-        metadata = self._make_one(client)
+        metadata = self._make_one(client, user_project=user_project)
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
         metadata.state = "INACTIVE"
@@ -381,7 +406,11 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata.delete()
 
         expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
-        expected_kwargs = {"method": "DELETE", "path": expected_path}
+        expected_kwargs = {
+            "method": "DELETE",
+            "path": expected_path,
+            "query_params": {"userProject": user_project},
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
 
