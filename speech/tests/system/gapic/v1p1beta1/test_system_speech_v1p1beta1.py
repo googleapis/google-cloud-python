@@ -18,7 +18,6 @@ import io
 import requests
 
 from google.cloud import speech_v1p1beta1
-from google.cloud import storage
 
 class TestSystemSpeech(object):
 
