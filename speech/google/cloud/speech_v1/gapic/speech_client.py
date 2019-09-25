@@ -212,12 +212,12 @@ class SpeechClient(object):
             >>> response = client.recognize(config, audio)
 
         Args:
-            config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to
+            config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): Required. Provides information to the recognizer that specifies how to
                 process the request.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionConfig`
-            audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): *Required* The audio data to be recognized.
+            audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): Required. The audio data to be recognized.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionAudio`
@@ -268,7 +268,9 @@ class SpeechClient(object):
         Performs asynchronous speech recognition: receive results via the
         google.longrunning.Operations interface. Returns either an
         ``Operation.error`` or an ``Operation.response`` which contains a
-        ``LongRunningRecognizeResponse`` message.
+        ``LongRunningRecognizeResponse`` message. For more information on
+        asynchronous speech recognition, see the
+        `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
         Example:
             >>> from google.cloud import speech_v1
@@ -295,12 +297,12 @@ class SpeechClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): *Required* Provides information to the recognizer that specifies how to
+            config (Union[dict, ~google.cloud.speech_v1.types.RecognitionConfig]): Required. Provides information to the recognizer that specifies how to
                 process the request.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionConfig`
-            audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): *Required* The audio data to be recognized.
+            audio (Union[dict, ~google.cloud.speech_v1.types.RecognitionAudio]): Required. The audio data to be recognized.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.speech_v1.types.RecognitionAudio`
