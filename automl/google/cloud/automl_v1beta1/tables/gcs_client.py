@@ -41,7 +41,7 @@ _STORAGE_REQUIRED = (
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, bucket_name=None, client=None, credentials=None):
+    def __init__(self, bucket_name=None, client=None, credentials=None, project=None):
         """Constructor.
 
         Args:
@@ -54,6 +54,11 @@ class GcsClient(object):
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            project (Optional[string]): The project all future calls will
+                default to. Most methods take `project` as an optional
+                parameter, and can override your choice of `project` supplied
+                here.
+
         """
         if storage is None:
             raise ImportError(_STORAGE_REQUIRED)
@@ -61,11 +66,12 @@ class GcsClient(object):
         if client is not None:
             self.client = client
         elif credentials is not None:
-            self.client = storage.Client(credentials=credentials)
+            self.client = storage.Client(credentials=credentials, project=project)
         else:
             self.client = storage.Client()
 
         self.bucket_name = bucket_name
+        self.project = project
 
     def ensure_bucket_exists(self, project, region):
         """Checks if a bucket named '{project}-automl-tables-staging' exists.

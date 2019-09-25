@@ -42,6 +42,7 @@ class TablesClient(object):
         self,
         project=None,
         region="us-central1",
+        credentials=None,
         client=None,
         prediction_client=None,
         gcs_client=None,
@@ -120,6 +121,7 @@ class TablesClient(object):
 
         self.project = project
         self.region = region
+        self.credentials = credentials
         self.gcs_client = gcs_client
 
     def __lookup_by_display_name(self, object_type, items, display_name):
@@ -406,7 +408,7 @@ class TablesClient(object):
         else:
             raise ValueError("Unknown type_code: {}".format(type_code))
 
-    def __ensure_gcs_client_is_initialized(self, credentials=None):
+    def __ensure_gcs_client_is_initialized(self, credentials, project):
         """Checks if GCS client is initialized. Initializes it if not.
 
         Args:
@@ -415,9 +417,14 @@ class TablesClient(object):
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            project (string): The name of the project to use with the GCS
+                client. If none is specified, the client will attempt to
+                ascertain the credentials from the environment.
         """
         if self.gcs_client is None:
-            self.gcs_client = gcs_client.GcsClient(credentials=credentials)
+            self.gcs_client = gcs_client.GcsClient(
+                project=project, credentials=credentials
+            )
 
     def list_datasets(self, project=None, region=None, **kwargs):
         """List all datasets in a particular project and region.
@@ -753,7 +760,10 @@ class TablesClient(object):
         request = {}
 
         if pandas_dataframe is not None:
-            self.__ensure_gcs_client_is_initialized(credentials)
+            project = project or self.project
+            region = region or self.region
+            credentials = credentials or self.credentials
+            self.__ensure_gcs_client_is_initialized(credentials, project)
             self.gcs_client.ensure_bucket_exists(project, region)
             gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
@@ -2744,7 +2754,10 @@ class TablesClient(object):
         input_request = None
 
         if pandas_dataframe is not None:
-            self.__ensure_gcs_client_is_initialized(credentials)
+            project = project or self.project
+            region = region or self.region
+            credentials = credentials or self.credentials
+            self.__ensure_gcs_client_is_initialized(credentials, project)
             self.gcs_client.ensure_bucket_exists(project, region)
             gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             input_request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
