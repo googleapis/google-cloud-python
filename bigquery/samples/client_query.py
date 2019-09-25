@@ -29,7 +29,7 @@ def client_query(client):
     )
     query_job = client.query(
         query, location="US"  # Must match the destination dataset(s) location.
-    )  # API request.
+    )  # Make an API request.
 
     print("The query data:")
     for row in query_job:

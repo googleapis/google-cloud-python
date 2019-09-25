@@ -22,7 +22,7 @@ def table_exists(client, table_id):
     # table_id = "your-project.your_dataset.your_table"
 
     try:
-        client.get_table(table_id)  # API request.
+        client.get_table(table_id)  # Make an API request.
         print("Table {} already exists.".format(table_id))
     except NotFound:
         print("Table {} is not found.".format(table_id))
