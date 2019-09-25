@@ -26,7 +26,7 @@ def browse_table_data(client, table_id):
     # table_id = "your-project.your_dataset.your_table_name"
 
     # Download all rows from a table.
-    rows_iter = client.list_rows(table_id)  # API request.
+    rows_iter = client.list_rows(table_id)  # Make an API request.
 
     # Iterate over rows to make the API requests to fetch row data.
     rows = list(rows_iter)
@@ -38,7 +38,7 @@ def browse_table_data(client, table_id):
     print("Downloaded {} rows from table {}".format(len(rows), table_id))
 
     # Specify selected fields to limit the results to certain columns.
-    table = client.get_table(table_id)  # API request.
+    table = client.get_table(table_id)  # Make an API request.
     fields = table.schema[:2]  # first two columns
     rows_iter = client.list_rows(table_id, selected_fields=fields, max_results=10)
     rows = list(rows_iter)

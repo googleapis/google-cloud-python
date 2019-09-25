@@ -22,7 +22,7 @@ def list_datasets(client):
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    datasets = list(client.list_datasets())  # API request.
+    datasets = list(client.list_datasets())  # Make an API request.
     project = client.project
 
     if datasets:
