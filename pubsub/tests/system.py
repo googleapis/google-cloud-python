@@ -407,7 +407,7 @@ class TestStreamingPull(object):
             resolve_at_msg_count=3,  # one more than the published messages count
         )
         flow_control = types.FlowControl(max_messages=1)
-        sub_future = subscriber.subscribe(
+        subscription_future = subscriber.subscribe(
             subscription_path, callback, flow_control=flow_control
         )
 
@@ -428,7 +428,7 @@ class TestStreamingPull(object):
                 )
             )
         finally:
-            sub_future.cancel()
+            subscription_future.cancel()
 
     def test_streaming_pull_max_messages(
         self, publisher, topic_path, subscriber, subscription_path, cleanup
