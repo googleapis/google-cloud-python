@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import os
 import io
 import requests
 
 from google.cloud import speech_v1
-
 
 class TestSystemSpeech(object):
     def test_recognize(self):
