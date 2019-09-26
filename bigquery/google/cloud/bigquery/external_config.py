@@ -26,6 +26,7 @@ import copy
 from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _int_or_none
+from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery.schema import SchemaField
 
 
@@ -523,6 +524,19 @@ class GoogleSheetsOptions(object):
     @skip_leading_rows.setter
     def skip_leading_rows(self, value):
         self._properties["skipLeadingRows"] = str(value)
+
+    @property
+    def range(self):
+        """str: The range of a sheet that BigQuery will query from.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#GoogleSheetsOptions
+        """
+        return _str_or_none(self._properties.get("range"))
+
+    @range.setter
+    def range(self, value):
+        self._properties["range"] = value
 
     def to_api_repr(self):
         """Build an API representation of this object.
