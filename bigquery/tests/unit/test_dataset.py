@@ -373,11 +373,11 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.location, resource.get("location"))
         if "defaultEncryptionConfiguration" in resource:
             self.assertEqual(
-                dataset.encryption_configuration.kms_key_name,
+                dataset.default_encryption_configuration.kms_key_name,
                 resource.get("defaultEncryptionConfiguration")["kmsKeyName"],
             )
         else:
-            self.assertIsNone(dataset.encryption_configuration)
+            self.assertIsNone(dataset.default_encryption_configuration)
 
         if "access" in resource:
             self._verify_access_entry(dataset.access_entries, resource)
@@ -567,19 +567,19 @@ class TestDataset(unittest.TestCase):
         }
         self.assertEqual(resource, exp_resource)
 
-    def test_encryption_configuration_setter(self):
+    def test_default_encryption_configuration_setter(self):
         from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = self._make_one(self.DS_REF)
         encryption_configuration = EncryptionConfiguration(
             kms_key_name=self.KMS_KEY_NAME
         )
-        dataset.encryption_configuration = encryption_configuration
+        dataset.default_encryption_configuration = encryption_configuration
         self.assertEqual(
-            dataset.encryption_configuration.kms_key_name, self.KMS_KEY_NAME
+            dataset.default_encryption_configuration.kms_key_name, self.KMS_KEY_NAME
         )
-        dataset.encryption_configuration = None
-        self.assertIsNone(dataset.encryption_configuration)
+        dataset.default_encryption_configuration = None
+        self.assertIsNone(dataset.default_encryption_configuration)
 
     def test_from_string(self):
         cls = self._get_target_class()

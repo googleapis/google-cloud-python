@@ -362,7 +362,7 @@ class Dataset(object):
         "default_partition_expiration_ms": "defaultPartitionExpirationMs",
         "default_table_expiration_ms": "defaultTableExpirationMs",
         "friendly_name": "friendlyName",
-        "encryption_configuration": "defaultEncryptionConfiguration",
+        "default_encryption_configuration": "defaultEncryptionConfiguration",
     }
 
     def __init__(self, dataset_ref):
@@ -576,9 +576,9 @@ class Dataset(object):
         self._properties["labels"] = value
 
     @property
-    def encryption_configuration(self):
+    def default_encryption_configuration(self):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
-        encryption configuration for the table.
+        encryption configuration for all tables in the dataset.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
@@ -592,8 +592,8 @@ class Dataset(object):
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
 
-    @encryption_configuration.setter
-    def encryption_configuration(self, value):
+    @default_encryption_configuration.setter
+    def default_encryption_configuration(self, value):
         api_repr = value
         if value:
             api_repr = value.to_api_repr()
