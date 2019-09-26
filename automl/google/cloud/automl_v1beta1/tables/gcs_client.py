@@ -54,10 +54,9 @@ class GcsClient(object):
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            project (Optional[string]): The project all future calls will
-                default to. Most methods take `project` as an optional
-                parameter, and can override your choice of `project` supplied
-                here.
+            project (Optional[string]): The project to attach to the underlying
+                storage client. If none is specified, the client will attempt to
+                ascertain the credentials from the environment.
 
         """
         if storage is None:
@@ -71,7 +70,6 @@ class GcsClient(object):
             self.client = storage.Client()
 
         self.bucket_name = bucket_name
-        self.project = project
 
     def ensure_bucket_exists(self, project, region):
         """Checks if a bucket named '{project}-automl-tables-staging' exists.
