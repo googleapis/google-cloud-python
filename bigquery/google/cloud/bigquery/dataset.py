@@ -362,7 +362,7 @@ class Dataset(object):
         "default_partition_expiration_ms": "defaultPartitionExpirationMs",
         "default_table_expiration_ms": "defaultTableExpirationMs",
         "friendly_name": "friendlyName",
-        "encryption_configuration": "encryptionConfiguration",
+        "encryption_configuration": "defaultEncryptionConfiguration",
     }
 
     def __init__(self, dataset_ref):
@@ -587,7 +587,7 @@ class Dataset(object):
         <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
         in the BigQuery documentation.
         """
-        prop = self._properties.get("encryptionConfiguration")
+        prop = self._properties.get("defaultEncryptionConfiguration")
         if prop:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
@@ -597,7 +597,7 @@ class Dataset(object):
         api_repr = value
         if value:
             api_repr = value.to_api_repr()
-        self._properties["encryptionConfiguration"] = api_repr
+        self._properties["defaultEncryptionConfiguration"] = api_repr
 
     @classmethod
     def from_string(cls, full_dataset_id):

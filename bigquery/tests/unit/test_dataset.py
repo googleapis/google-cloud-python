@@ -315,7 +315,7 @@ class TestDataset(unittest.TestCase):
                 {"role": "WRITER", "specialGroup": "projectWriters"},
                 {"role": "READER", "specialGroup": "projectReaders"},
             ],
-            "encryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
+            "defaultEncryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
         }
 
     def _verify_access_entry(self, access_entries, resource):
@@ -371,10 +371,10 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.description, resource.get("description"))
         self.assertEqual(dataset.friendly_name, resource.get("friendlyName"))
         self.assertEqual(dataset.location, resource.get("location"))
-        if "encryptionConfiguration" in resource:
+        if "defaultEncryptionConfiguration" in resource:
             self.assertEqual(
                 dataset.encryption_configuration.kms_key_name,
-                resource.get("encryptionConfiguration")["kmsKeyName"],
+                resource.get("defaultEncryptionConfiguration")["kmsKeyName"],
             )
         else:
             self.assertIsNone(dataset.encryption_configuration)
