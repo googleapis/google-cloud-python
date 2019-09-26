@@ -261,7 +261,7 @@ class Model(object):
     @property
     def encryption_configuration(self):
         """google.cloud.bigquery.table.EncryptionConfiguration: Custom
-        encryption configuration for the table.
+        encryption configuration for the model.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.

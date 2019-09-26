@@ -308,7 +308,7 @@ def test_set_encryption_configuration(object_under_test):
     )
     assert object_under_test.encryption_configuration.kms_key_name == KMS_KEY_NAME
     object_under_test.encryption_configuration = None
-    assert not object_under_test.friendly_name
+    assert not object_under_test.encryption_configuration
 
 
 def test_repr(target_class):
