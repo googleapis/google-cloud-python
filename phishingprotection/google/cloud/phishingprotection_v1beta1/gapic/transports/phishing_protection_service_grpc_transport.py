@@ -117,9 +117,10 @@ class PhishingProtectionServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`PhishingProtectionServiceClient.report_phishing`.
 
         Reports a URI suspected of containing phishing content to be reviewed.
-        Once the report review is completed, if its result verifies the
-        existince of malicious phishing content, the site will be added the to
-        `Google's Social Engineering
+        Once the report review is complete, its result can be found in the Cloud
+        Security Command Center findings dashboard for Phishing Protection. If
+        the result verifies the existence of malicious phishing content, the
+        site will be added the to `Google's Social Engineering
         lists <https://support.google.com/webmasters/answer/6350487/>`__ in
         order to protect users that could get exposed to this threat in the
         future.
