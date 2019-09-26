@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.3.0
+
+09-26-2019 13:30 PDT
+
+
+### Implementation Changes
+- Remove gRPC send/recv msg size limit (via synth). ([#8969](https://github.com/googleapis/google-cloud-python/pull/8969))
+
+### New Features
+- Add speaker diarization configuration support to VI (via synth). ([#9202](https://github.com/googleapis/google-cloud-python/pull/9202))
+- Add `SpeakerDiarizationConfig` to V1p1beta1, deprecate `enable_speaker_diarization` and `diarization_speaker_count` (via synth). ([#8795](https://github.com/googleapis/google-cloud-python/pull/8795))
+
+### Dependencies
+
+### Documentation
+- Update docstrings (via synth). ([#9292](https://github.com/googleapis/google-cloud-python/pull/9292))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Reorder samples (via synth). ([#9313](https://github.com/googleapis/google-cloud-python/pull/9313))
+- Update samples manifest (via synth). ([#9211](https://github.com/googleapis/google-cloud-python/pull/9211))
+- Add generated code samples. ([#9153](https://github.com/googleapis/google-cloud-python/pull/9153))
+
 ## 1.2.0
 
 07-24-2019 17:35 PDT

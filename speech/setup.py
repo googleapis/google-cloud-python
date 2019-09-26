@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-speech"
 description = "Google Cloud Speech API client library"
-version = "1.2.0"
+version = "1.3.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
