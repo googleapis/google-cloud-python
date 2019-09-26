@@ -2903,6 +2903,7 @@ class QueryJob(_AsyncJob):
             super(QueryJob, self)._begin(client=client, retry=retry)
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.query_job = self
             raise
 
     def result(
@@ -2945,6 +2946,7 @@ class QueryJob(_AsyncJob):
                 )
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.query_job = self
             raise
 
         # If the query job is complete but there are no query results, this was

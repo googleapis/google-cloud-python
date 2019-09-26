@@ -903,6 +903,37 @@ def test_bigquery_magic_dryrun_option_saves_query_job_to_variable():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_saves_query_job_to_variable_on_error():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    client_query_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.query", autospec=True
+    )
+
+    query_job = mock.create_autospec(job.QueryJob, instance=True)
+    exception = Exception("Unexpected SELECT")
+    exception.query_job = query_job
+    query_job.result.side_effect = exception
+
+    sql = "SELECT SELECT 17 AS num"
+
+    assert "result" not in ip.user_ns
+
+    with client_query_patch as client_query_mock:
+        client_query_mock.return_value = query_job
+        return_value = ip.run_cell_magic("bigquery", "result", sql)
+
+    assert return_value is None
+    assert "result" in ip.user_ns
+    result = ip.user_ns["result"]
+    assert isinstance(result, job.QueryJob)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")

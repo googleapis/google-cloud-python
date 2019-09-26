@@ -28,7 +28,9 @@
 
     * ``<destination_var>`` (optional, line argument):
         variable to store the query results. The results are not displayed if
-        this parameter is used.
+        this parameter is used. If an error occurs during the query execution,
+        the corresponding ``QueryJob`` instance (if available) is stored in
+        the variable instead.
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
@@ -267,13 +269,29 @@ class Context(object):
 context = Context()
 
 
-def _print_error(error, destination_var=None):
+def _handle_error(error, destination_var=None):
+    """Process a query execution error.
+
+    Args:
+        error (Exception):
+            An exception that ocurred during the query exectution.
+        destination_var (Optional[str]):
+            The name of the IPython session variable to store the query job.
+    """
     if destination_var:
-        print(
-            "Could not save output to variable '{}'.".format(destination_var),
-            file=sys.stderr,
-        )
-    print("\nERROR:\n", error, file=sys.stderr)
+        query_job = getattr(error, "query_job", None)
+
+        if query_job is not None:
+            IPython.get_ipython().push({destination_var: query_job})
+        else:
+            # this is the case when previewing table rows by providing just
+            # table ID to cell magic
+            print(
+                "Could not save output to variable '{}'.".format(destination_var),
+                file=sys.stderr,
+            )
+
+    print("\nERROR:\n", str(error), file=sys.stderr)
 
 
 def _run_query(client, query, job_config=None):
@@ -452,7 +470,7 @@ def _cell_magic(line, query):
         try:
             rows = client.list_rows(query, max_results=max_results)
         except Exception as ex:
-            _print_error(str(ex), args.destination_var)
+            _handle_error(ex, args.destination_var)
             return
 
         result = rows.to_dataframe(bqstorage_client=bqstorage_client)
@@ -476,7 +494,7 @@ def _cell_magic(line, query):
     try:
         query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
-        _print_error(str(ex), args.destination_var)
+        _handle_error(ex, args.destination_var)
         return
 
     if not args.verbose:
