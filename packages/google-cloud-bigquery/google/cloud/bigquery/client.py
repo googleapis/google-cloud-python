@@ -1644,6 +1644,22 @@ class Client(ClientWithProject):
             json_rows (Iterable[Dict[str, Any]]):
                 Row data to be inserted. Keys must match the table schema fields
                 and values must be JSON-compatible representations.
+
+                .. note::
+
+                    If your data is already a newline-delimited JSON string,
+                    it is best to wrap it into a file-like object and pass it
+                    to :meth:`~google.cloud.bigquery.client.Client.load_table_from_file`::
+
+                        import io
+                        from google.cloud import bigquery
+
+                        data = u'{"foo": "bar"}'
+                        data_as_file = io.StringIO(data)
+
+                        client = bigquery.Client()
+                        client.load_table_from_file(data_as_file, ...)
+
             destination (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
