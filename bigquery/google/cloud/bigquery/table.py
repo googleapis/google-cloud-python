@@ -1864,14 +1864,13 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type resource: dict
-    :param resource: An item to be converted to a row.
+        resource (Dict): An item to be converted to a row.
 
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
+    Returns:
+        google.cloud.bigquery.table.Row: The next row in the page.
     """
     return Row(
         _helpers._row_tuple_from_json(resource, iterator.schema),
@@ -1902,14 +1901,12 @@ def _tabledata_list_page_columns(schema, response):
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
 
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
+        page (google.api_core.page_iterator.Page): The page that was just created.
 
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
+        response (Dict): The JSON API response for a page of rows in a table.
     """
     # Make a (lazy) copy of the page in column-oriented format for use in data
     # science packages.
