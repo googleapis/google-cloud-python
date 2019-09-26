@@ -31,7 +31,7 @@ def scalar_to_query_parameter(value, name=None):
     """Convert a scalar value into a query parameter.
 
     Args:
-        value (Any): A scalar value to convert into a query parameter.
+        value (any): A scalar value to convert into a query parameter.
 
         name (str): (Optional) Name of the query parameter.
 
