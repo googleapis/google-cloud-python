@@ -15,7 +15,6 @@ manage DNS for your applications.
    :target: https://pypi.org/project/google-cloud-dns/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg
 .. _Google Cloud DNS: https://cloud.google.com/dns/
-   :target: https://pypi.org/project/google-cloud-dns/
 .. _Client Library Documentation: https://googleapis.dev/python/dns/latest
 .. _Product Documentation: https://cloud.google.com/dns/docs/
 

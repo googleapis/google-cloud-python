@@ -31,15 +31,11 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.api import monitored_resource_pb2
 from google.cloud.logging_v2.gapic import config_service_v2_client_config
 from google.cloud.logging_v2.gapic import enums
 from google.cloud.logging_v2.gapic.transports import config_service_v2_grpc_transport
-from google.cloud.logging_v2.proto import log_entry_pb2
 from google.cloud.logging_v2.proto import logging_config_pb2
 from google.cloud.logging_v2.proto import logging_config_pb2_grpc
-from google.cloud.logging_v2.proto import logging_pb2
-from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -48,10 +44,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").
 
 
 class ConfigServiceV2Client(object):
-    """
-    Service for configuring sinks used to export log entries out of
-    Logging.
-    """
+    """Service for configuring sinks used to route log entries."""
 
     SERVICE_ADDRESS = "logging.googleapis.com:443"
     """The default address of the service."""
@@ -593,8 +586,10 @@ class ConfigServiceV2Client(object):
         """
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
-        ``filter``. The updated sink might also have a new ``writer_identity``;
-        see the ``unique_writer_identity`` field.
+        ``filter``.
+
+        The updated sink might also have a new ``writer_identity``; see the
+        ``unique_writer_identity`` field.
 
         Example:
             >>> from google.cloud import logging_v2
@@ -625,11 +620,10 @@ class ConfigServiceV2Client(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogSink`
-            unique_writer_identity (bool): Optional. See
-                `sinks.create <https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create>`__
-                for a description of this field. When updating a sink, the effect of
-                this field on the value of ``writer_identity`` in the updated sink
-                depends on both the old and new values of this field:
+            unique_writer_identity (bool): Optional. See ``sinks.create`` for a description of this field. When
+                updating a sink, the effect of this field on the value of
+                ``writer_identity`` in the updated sink depends on both the old and new
+                values of this field:
 
                 -  If the old and new values of this field are both false or both true,
                    then there is no change to the sink's ``writer_identity``.
@@ -1106,10 +1100,11 @@ class ConfigServiceV2Client(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogExclusion`
-            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Required. A nonempty list of fields to change in the existing exclusion.
-                New values for the fields are taken from the corresponding fields in the
-                ``LogExclusion`` included in this request. Fields not mentioned in
-                ``update_mask`` are not changed and are ignored in the request.
+            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Required. A non-empty list of fields to change in the existing
+                exclusion. New values for the fields are taken from the corresponding
+                fields in the ``LogExclusion`` included in this request. Fields not
+                mentioned in ``update_mask`` are not changed and are ignored in the
+                request.
 
                 For example, to change the filter and description of an exclusion,
                 specify an ``update_mask`` of ``"filter,description"``.

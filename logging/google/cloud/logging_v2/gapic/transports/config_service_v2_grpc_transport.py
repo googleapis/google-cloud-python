@@ -163,8 +163,10 @@ class ConfigServiceV2GrpcTransport(object):
 
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
-        ``filter``. The updated sink might also have a new ``writer_identity``;
-        see the ``unique_writer_identity`` field.
+        ``filter``.
+
+        The updated sink might also have a new ``writer_identity``; see the
+        ``unique_writer_identity`` field.
 
         Returns:
             Callable: A callable which accepts the appropriate

@@ -414,7 +414,7 @@ def test_bigquery_magic_with_legacy_sql():
     with run_query_patch as run_query_mock:
         ip.run_cell_magic("bigquery", "--use_legacy_sql", "SELECT 17 AS num")
 
-        job_config_used = run_query_mock.call_args_list[0][0][-1]
+        job_config_used = run_query_mock.call_args_list[0][1]["job_config"]
         assert job_config_used.use_legacy_sql is True
 
 
@@ -646,6 +646,165 @@ def test_bigquery_magic_without_bqstorage(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_max_results_invalid():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    client_query_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+
+    with pytest.raises(ValueError), default_patch, client_query_patch:
+        ip.run_cell_magic("bigquery", "--max_results=abc", sql)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    client_query_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.query", autospec=True
+    )
+
+    sql = "SELECT 17 AS num"
+
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+
+    with client_query_patch as client_query_mock, default_patch:
+        client_query_mock.return_value = query_job_mock
+        ip.run_cell_magic("bigquery", "--max_results=5", sql)
+
+        query_job_mock.result.assert_called_with(max_results=5)
+
+
+def test_bigquery_magic_w_table_id_invalid():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
+    list_rows_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client.list_rows",
+        autospec=True,
+        side_effect=exceptions.BadRequest("Not a valid table ID"),
+    )
+
+    table_id = "not-a-real-table"
+
+    with list_rows_patch, default_patch, io.capture_output() as captured_io:
+        ip.run_cell_magic("bigquery", "df", table_id)
+
+    output = captured_io.stderr
+    assert "Could not save output to variable" in output
+    assert "400 Not a valid table ID" in output
+    assert "Traceback (most recent call last)" not in output
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_table_id_and_destination_var():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
+    row_iterator_mock = mock.create_autospec(
+        google.cloud.bigquery.table.RowIterator, instance=True
+    )
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+    table_id = "bigquery-public-data.samples.shakespeare"
+    result = pandas.DataFrame([17], columns=["num"])
+
+    with client_patch as client_mock, default_patch:
+        client_mock().list_rows.return_value = row_iterator_mock
+        row_iterator_mock.to_dataframe.return_value = result
+
+        ip.run_cell_magic("bigquery", "df", table_id)
+
+    assert "df" in ip.user_ns
+    df = ip.user_ns["df"]
+
+    assert isinstance(df, pandas.DataFrame)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_table_id_and_bqstorage_client():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
+    row_iterator_mock = mock.create_autospec(
+        google.cloud.bigquery.table.RowIterator, instance=True
+    )
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+    bqstorage_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient
+    )
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
+    )
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", bqstorage_mock
+    )
+
+    table_id = "bigquery-public-data.samples.shakespeare"
+
+    with default_patch, client_patch as client_mock, bqstorage_client_patch:
+        client_mock().list_rows.return_value = row_iterator_mock
+
+        ip.run_cell_magic("bigquery", "--use_bqstorage_api --max_results=5", table_id)
+        row_iterator_mock.to_dataframe.assert_called_once_with(
+            bqstorage_client=bqstorage_instance_mock
+        )
+
+
+@pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic_dryrun_option_sets_job_config():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -662,7 +821,7 @@ def test_bigquery_magic_dryrun_option_sets_job_config():
     with run_query_patch as run_query_mock:
         ip.run_cell_magic("bigquery", "--dry_run", sql)
 
-        job_config_used = run_query_mock.call_args_list[0][0][-1]
+        job_config_used = run_query_mock.call_args_list[0][1]["job_config"]
         assert job_config_used.dry_run is True
 
 
@@ -924,6 +1083,7 @@ def test_bigquery_magic_with_string_params():
         run_query_mock.return_value = query_job_mock
 
         ip.run_cell_magic("bigquery", 'params_string_df --params {"num":17}', sql)
+
         run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
     assert "params_string_df" in ip.user_ns  # verify that the variable exists
@@ -959,6 +1119,7 @@ def test_bigquery_magic_with_dict_params():
         # Insert dictionary into user namespace so that it can be expanded
         ip.user_ns["params"] = params
         ip.run_cell_magic("bigquery", "params_dict_df --params $params", sql)
+
         run_query_mock.assert_called_once_with(mock.ANY, sql.format(num=17), mock.ANY)
 
     assert "params_dict_df" in ip.user_ns  # verify that the variable exists

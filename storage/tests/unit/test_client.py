@@ -676,7 +676,9 @@ class TestClient(unittest.TestCase):
         blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
+        with mock.patch(
+            "google.cloud.storage.client.Blob.from_string", return_value=blob
+        ):
             client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
 
         blob.download_to_file.assert_called_once_with(
@@ -687,14 +689,10 @@ class TestClient(unittest.TestCase):
         project = "PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
         file_obj = io.BytesIO()
 
-        with mock.patch("google.cloud.storage.client.Blob", return_value=blob):
-            with pytest.raises(ValueError, match="URI scheme must be gs"):
-                client.download_blob_to_file(
-                    "http://bucket_name/path/to/object", file_obj
-                )
+        with pytest.raises(ValueError, match="URI scheme must be gs"):
+            client.download_blob_to_file("http://bucket_name/path/to/object", file_obj)
 
     def test_list_blobs(self):
         from google.cloud.storage.bucket import Bucket
@@ -956,7 +954,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
 
-    def _create_hmac_key_helper(self, explicit_project=None):
+    def _create_hmac_key_helper(self, explicit_project=None, user_project=None):
         import datetime
         from pytz import UTC
         from six.moves.urllib.parse import urlencode
@@ -998,6 +996,9 @@ class TestClient(unittest.TestCase):
         if explicit_project is not None:
             kwargs["project_id"] = explicit_project
 
+        if user_project is not None:
+            kwargs["user_project"] = user_project
+
         metadata, secret = client.create_hmac_key(service_account_email=EMAIL, **kwargs)
 
         self.assertIsInstance(metadata, HMACKeyMetadata)
@@ -1015,8 +1016,12 @@ class TestClient(unittest.TestCase):
                 "hmacKeys",
             ]
         )
-        QS_PARAMS = {"serviceAccountEmail": EMAIL}
-        FULL_URI = "{}?{}".format(URI, urlencode(QS_PARAMS))
+        qs_params = {"serviceAccountEmail": EMAIL}
+
+        if user_project is not None:
+            qs_params["userProject"] = user_project
+
+        FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
         http.request.assert_called_once_with(
             method="POST", url=FULL_URI, data=None, headers=mock.ANY
         )
@@ -1026,6 +1031,9 @@ class TestClient(unittest.TestCase):
 
     def test_create_hmac_key_explicit_project(self):
         self._create_hmac_key_helper(explicit_project="other-project-456")
+
+    def test_create_hmac_key_user_project(self):
+        self._create_hmac_key_helper(user_project="billed-project")
 
     def test_list_hmac_keys_defaults_empty(self):
         PROJECT = "PROJECT"
@@ -1062,6 +1070,7 @@ class TestClient(unittest.TestCase):
         MAX_RESULTS = 3
         EMAIL = "storage-user-123@example.com"
         ACCESS_ID = "ACCESS-ID"
+        USER_PROJECT = "billed-project"
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
@@ -1085,6 +1094,7 @@ class TestClient(unittest.TestCase):
                 service_account_email=EMAIL,
                 show_deleted_keys=True,
                 project_id=OTHER_PROJECT,
+                user_project=USER_PROJECT,
             )
         )
 
@@ -1109,6 +1119,7 @@ class TestClient(unittest.TestCase):
             "maxResults": str(MAX_RESULTS),
             "serviceAccountEmail": EMAIL,
             "showDeletedKeys": "True",
+            "userProject": USER_PROJECT,
         }
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, data=None, headers=mock.ANY
@@ -1162,12 +1173,14 @@ class TestClient(unittest.TestCase):
         )
 
     def test_get_hmac_key_metadata_w_project(self):
+        from six.moves.urllib.parse import urlencode
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
         OTHER_PROJECT = "other-project-456"
         EMAIL = "storage-user-123@example.com"
         ACCESS_ID = "ACCESS-ID"
+        USER_PROJECT = "billed-project"
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
@@ -1181,7 +1194,9 @@ class TestClient(unittest.TestCase):
         http = _make_requests_session([_make_json_response(resource)])
         client._http_internal = http
 
-        metadata = client.get_hmac_key_metadata(ACCESS_ID, project_id=OTHER_PROJECT)
+        metadata = client.get_hmac_key_metadata(
+            ACCESS_ID, project_id=OTHER_PROJECT, user_project=USER_PROJECT
+        )
 
         self.assertIsInstance(metadata, HMACKeyMetadata)
         self.assertIs(metadata._client, client)
@@ -1199,6 +1214,10 @@ class TestClient(unittest.TestCase):
                 ACCESS_ID,
             ]
         )
+
+        qs_params = {"userProject": USER_PROJECT}
+        FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
+
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", url=FULL_URI, data=None, headers=mock.ANY
         )

@@ -16,14 +16,13 @@
 
 import google.api_core.client_options
 
-from six.moves.urllib.parse import urlsplit
-
 from google.auth.credentials import AnonymousCredentials
 
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
+from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
@@ -96,6 +95,9 @@ class Client(ClientWithProject):
         )
 
         kw_args = {"client_info": client_info}
+
+        kw_args["api_endpoint"] = _get_storage_host()
+
         if client_options:
             if type(client_options) == dict:
                 client_options = google.api_core.client_options.from_dict(
@@ -420,13 +422,8 @@ class Client(ClientWithProject):
         try:
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
         except AttributeError:
-            scheme, netloc, path, query, frag = urlsplit(blob_or_uri)
-            if scheme != "gs":
-                raise ValueError("URI scheme must be gs")
-            bucket = Bucket(self, name=netloc)
-            blob_or_uri = Blob(path[1:], bucket)
-
-            blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
+            blob = Blob.from_string(blob_or_uri)
+            blob.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_blobs(
         self,
@@ -585,7 +582,9 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
-    def create_hmac_key(self, service_account_email, project_id=None):
+    def create_hmac_key(
+        self, service_account_email, project_id=None, user_project=None
+    ):
         """Create an HMAC key for a service account.
 
         :type service_account_email: str
@@ -594,6 +593,9 @@ class Client(ClientWithProject):
         :type project_id: str
         :param project_id: (Optional) explicit project ID for the key.
             Defaults to the client's project.
+
+        :type user_project: str
+        :param user_project: (Optional) This parameter is currently ignored.
 
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
@@ -604,6 +606,10 @@ class Client(ClientWithProject):
 
         path = "/projects/{}/hmacKeys".format(project_id)
         qs_params = {"serviceAccountEmail": service_account_email}
+
+        if user_project is not None:
+            qs_params["userProject"] = user_project
+
         api_response = self._connection.api_request(
             method="POST", path=path, query_params=qs_params
         )
@@ -618,6 +624,7 @@ class Client(ClientWithProject):
         service_account_email=None,
         show_deleted_keys=None,
         project_id=None,
+        user_project=None,
     ):
         """List HMAC keys for a project.
 
@@ -638,6 +645,9 @@ class Client(ClientWithProject):
         :param project_id: (Optional) explicit project ID for the key.
             Defaults to the client's project.
 
+        :type user_project: str
+        :param user_project: (Optional) This parameter is currently ignored.
+
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
@@ -654,6 +664,9 @@ class Client(ClientWithProject):
         if show_deleted_keys is not None:
             extra_params["showDeletedKeys"] = show_deleted_keys
 
+        if user_project is not None:
+            extra_params["userProject"] = user_project
+
         return page_iterator.HTTPIterator(
             client=self,
             api_request=self._connection.api_request,
@@ -663,7 +676,7 @@ class Client(ClientWithProject):
             extra_params=extra_params,
         )
 
-    def get_hmac_key_metadata(self, access_id, project_id=None):
+    def get_hmac_key_metadata(self, access_id, project_id=None, user_project=None):
         """Return a metadata instance for the given HMAC key.
 
         :type access_id: str
@@ -672,8 +685,11 @@ class Client(ClientWithProject):
         :type project_id: str
         :param project_id: (Optional) project ID of an existing key.
             Defaults to client's project.
+
+        :type user_project: str
+        :param user_project: (Optional) This parameter is currently ignored.
         """
-        metadata = HMACKeyMetadata(self, access_id, project_id)
+        metadata = HMACKeyMetadata(self, access_id, project_id, user_project)
         metadata.reload()  # raises NotFound for missing key
         return metadata
 

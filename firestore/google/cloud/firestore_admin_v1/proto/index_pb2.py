@@ -26,7 +26,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\035com.google.firestore.admin.v1B\nIndexProtoP\001Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\242\002\004GCFS\252\002\037Google.Cloud.Firestore.Admin.V1\312\002\037Google\\Cloud\\Firestore\\Admin\\V1"
     ),
     serialized_pb=_b(
-        '\n1google/cloud/firestore/admin_v1/proto/index.proto\x12\x19google.firestore.admin.v1\x1a\x1cgoogle/api/annotations.proto"\x91\x05\n\x05Index\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bquery_scope\x18\x02 \x01(\x0e\x32+.google.firestore.admin.v1.Index.QueryScope\x12;\n\x06\x66ields\x18\x03 \x03(\x0b\x32+.google.firestore.admin.v1.Index.IndexField\x12\x35\n\x05state\x18\x04 \x01(\x0e\x32&.google.firestore.admin.v1.Index.State\x1a\xbd\x02\n\nIndexField\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x42\n\x05order\x18\x02 \x01(\x0e\x32\x31.google.firestore.admin.v1.Index.IndexField.OrderH\x00\x12O\n\x0c\x61rray_config\x18\x03 \x01(\x0e\x32\x37.google.firestore.admin.v1.Index.IndexField.ArrayConfigH\x00"=\n\x05Order\x12\x15\n\x11ORDER_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02"9\n\x0b\x41rrayConfig\x12\x1c\n\x18\x41RRAY_CONFIG_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43ONTAINS\x10\x01\x42\x0c\n\nvalue_mode"9\n\nQueryScope\x12\x1b\n\x17QUERY_SCOPE_UNSPECIFIED\x10\x00\x12\x0e\n\nCOLLECTION\x10\x01"I\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\x12\x10\n\x0cNEEDS_REPAIR\x10\x03\x42\xb8\x01\n\x1d\x63om.google.firestore.admin.v1B\nIndexProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1b\x06proto3'
+        '\n1google/cloud/firestore/admin_v1/proto/index.proto\x12\x19google.firestore.admin.v1\x1a\x1cgoogle/api/annotations.proto"\xa7\x05\n\x05Index\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bquery_scope\x18\x02 \x01(\x0e\x32+.google.firestore.admin.v1.Index.QueryScope\x12;\n\x06\x66ields\x18\x03 \x03(\x0b\x32+.google.firestore.admin.v1.Index.IndexField\x12\x35\n\x05state\x18\x04 \x01(\x0e\x32&.google.firestore.admin.v1.Index.State\x1a\xbd\x02\n\nIndexField\x12\x12\n\nfield_path\x18\x01 \x01(\t\x12\x42\n\x05order\x18\x02 \x01(\x0e\x32\x31.google.firestore.admin.v1.Index.IndexField.OrderH\x00\x12O\n\x0c\x61rray_config\x18\x03 \x01(\x0e\x32\x37.google.firestore.admin.v1.Index.IndexField.ArrayConfigH\x00"=\n\x05Order\x12\x15\n\x11ORDER_UNSPECIFIED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02"9\n\x0b\x41rrayConfig\x12\x1c\n\x18\x41RRAY_CONFIG_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43ONTAINS\x10\x01\x42\x0c\n\nvalue_mode"O\n\nQueryScope\x12\x1b\n\x17QUERY_SCOPE_UNSPECIFIED\x10\x00\x12\x0e\n\nCOLLECTION\x10\x01\x12\x14\n\x10\x43OLLECTION_GROUP\x10\x02"I\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02\x12\x10\n\x0cNEEDS_REPAIR\x10\x03\x42\xb8\x01\n\x1d\x63om.google.firestore.admin.v1B\nIndexProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
@@ -99,11 +99,18 @@ _INDEX_QUERYSCOPE = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="COLLECTION", index=1, number=1, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="COLLECTION_GROUP",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
     ],
     containing_type=None,
     serialized_options=None,
     serialized_start=636,
-    serialized_end=693,
+    serialized_end=715,
 )
 _sym_db.RegisterEnumDescriptor(_INDEX_QUERYSCOPE)
 
@@ -132,8 +139,8 @@ _INDEX_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=695,
-    serialized_end=768,
+    serialized_start=717,
+    serialized_end=790,
 )
 _sym_db.RegisterEnumDescriptor(_INDEX_STATE)
 
@@ -309,7 +316,7 @@ _INDEX = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=111,
-    serialized_end=768,
+    serialized_end=790,
 )
 
 _INDEX_INDEXFIELD.fields_by_name["order"].enum_type = _INDEX_INDEXFIELD_ORDER

@@ -84,7 +84,7 @@ Building Up Mutations
 ---------------------
 
 In all three cases, a set of mutations (or two sets) are built up
-on a row before they are sent of in a batch via
+on a row before they are sent off in a batch via
 
 .. code:: python
 

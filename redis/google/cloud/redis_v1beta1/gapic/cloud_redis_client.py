@@ -231,190 +231,6 @@ class CloudRedisClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_instances(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Lists all Redis instances owned by a project in either the specified
-        location (region) or all locations.
-
-        The location should have the following format:
-
-        -  ``projects/{project_id}/locations/{location_id}``
-
-        If ``location_id`` is specified as ``-`` (wildcard), then all regions
-        available to the project are queried, and the results are aggregated.
-
-        Example:
-            >>> from google.cloud import redis_v1beta1
-            >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
-            >>>
-            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_instances(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_instances(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            parent (str): Required. The resource name of the instance location using the form:
-                ``projects/{project_id}/locations/{location_id}`` where ``location_id``
-                refers to a GCP region.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.redis_v1beta1.types.Instance` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_instances" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_instances"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_instances,
-                default_retry=self._method_configs["ListInstances"].retry,
-                default_timeout=self._method_configs["ListInstances"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloud_redis_pb2.ListInstancesRequest(
-            parent=parent, page_size=page_size
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_instances"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="instances",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
-    def get_instance(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets the details of a specific Redis instance.
-
-        Example:
-            >>> from google.cloud import redis_v1beta1
-            >>>
-            >>> client = redis_v1beta1.CloudRedisClient()
-            >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
-            >>>
-            >>> response = client.get_instance(name)
-
-        Args:
-            name (str): Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.redis_v1beta1.types.Instance` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_instance,
-                default_retry=self._method_configs["GetInstance"].retry,
-                default_timeout=self._method_configs["GetInstance"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloud_redis_pb2.GetInstanceRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def create_instance(
         self,
         parent,
@@ -646,6 +462,190 @@ class CloudRedisClient(object):
             metadata_type=any_pb2.Any,
         )
 
+    def list_instances(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists all Redis instances owned by a project in either the specified
+        location (region) or all locations.
+
+        The location should have the following format:
+
+        -  ``projects/{project_id}/locations/{location_id}``
+
+        If ``location_id`` is specified as ``-`` (wildcard), then all regions
+        available to the project are queried, and the results are aggregated.
+
+        Example:
+            >>> from google.cloud import redis_v1beta1
+            >>>
+            >>> client = redis_v1beta1.CloudRedisClient()
+            >>>
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_instances(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_instances(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The resource name of the instance location using the form:
+                ``projects/{project_id}/locations/{location_id}`` where ``location_id``
+                refers to a GCP region.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.redis_v1beta1.types.Instance` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_instances" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_instances"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_instances,
+                default_retry=self._method_configs["ListInstances"].retry,
+                default_timeout=self._method_configs["ListInstances"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloud_redis_pb2.ListInstancesRequest(
+            parent=parent, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_instances"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="instances",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def get_instance(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the details of a specific Redis instance.
+
+        Example:
+            >>> from google.cloud import redis_v1beta1
+            >>>
+            >>> client = redis_v1beta1.CloudRedisClient()
+            >>>
+            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>>
+            >>> response = client.get_instance(name)
+
+        Args:
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.redis_v1beta1.types.Instance` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_instance,
+                default_retry=self._method_configs["GetInstance"].retry,
+                default_timeout=self._method_configs["GetInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloud_redis_pb2.GetInstanceRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def import_instance(
         self,
         name,
@@ -669,7 +669,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `input_config`:
             >>> input_config = {}
@@ -770,7 +771,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
@@ -853,7 +855,7 @@ class CloudRedisClient(object):
     def failover_instance(
         self,
         name,
-        data_protection_mode,
+        data_protection_mode=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -864,16 +866,12 @@ class CloudRedisClient(object):
 
         Example:
             >>> from google.cloud import redis_v1beta1
-            >>> from google.cloud.redis_v1beta1 import enums
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize `data_protection_mode`:
-            >>> data_protection_mode = enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
-            >>>
-            >>> response = client.failover_instance(name, data_protection_mode)
+            >>> response = client.failover_instance(name)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.

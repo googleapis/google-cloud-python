@@ -15,6 +15,7 @@
 """Client for interacting with the Google BigQuery API."""
 
 from __future__ import absolute_import
+from __future__ import division
 
 try:
     from collections import abc as collections_abc
@@ -25,7 +26,9 @@ import copy
 import functools
 import gzip
 import io
+import itertools
 import json
+import math
 import os
 import tempfile
 import uuid
@@ -75,7 +78,7 @@ _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
 _BASE_UPLOAD_TEMPLATE = (
-    u"https://www.googleapis.com/upload/bigquery/v2/projects/"
+    u"https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
     u"{project}/jobs?uploadType="
 )
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
@@ -343,7 +346,7 @@ class Client(ClientWithProject):
         """API call: create the dataset via a POST request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/insert
 
         Args:
             dataset (Union[ \
@@ -1547,9 +1550,40 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        # If table schema is not provided, we try to fetch the existing table
+        # schema, and check if dataframe schema is compatible with it - except
+        # for WRITE_TRUNCATE jobs, the existing schema does not matter then.
+        if (
+            not job_config.schema
+            and job_config.write_disposition != job.WriteDisposition.WRITE_TRUNCATE
+        ):
+            try:
+                table = self.get_table(destination)
+            except google.api_core.exceptions.NotFound:
+                table = None
+            else:
+                columns_and_indexes = frozenset(
+                    name
+                    for name, _ in _pandas_helpers.list_columns_and_indexes(dataframe)
+                )
+                # schema fields not present in the dataframe are not needed
+                job_config.schema = [
+                    field for field in table.schema if field.name in columns_and_indexes
+                ]
+
         job_config.schema = _pandas_helpers.dataframe_to_bq_schema(
             dataframe, job_config.schema
         )
+
+        if not job_config.schema:
+            # the schema could not be fully detected
+            warnings.warn(
+                "Schema could not be detected for all columns. Loading from a "
+                "dataframe without a schema will be deprecated in the future, "
+                "please provide a schema.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         tmpfd, tmppath = tempfile.mkstemp(suffix="_job_{}.parquet".format(job_id[:8]))
         os.close(tmpfd)
@@ -2079,6 +2113,57 @@ class Client(ClientWithProject):
         json_rows = [_record_field_to_json(schema, row) for row in rows]
 
         return self.insert_rows_json(table, json_rows, **kwargs)
+
+    def insert_rows_from_dataframe(
+        self, table, dataframe, selected_fields=None, chunk_size=500, **kwargs
+    ):
+        """Insert rows into a table from a dataframe via the streaming API.
+
+        Args:
+            table (Union[ \
+                :class:`~google.cloud.bigquery.table.Table`, \
+                :class:`~google.cloud.bigquery.table.TableReference`, \
+                str, \
+            ]):
+                The destination table for the row data, or a reference to it.
+            dataframe (pandas.DataFrame):
+                A :class:`~pandas.DataFrame` containing the data to load.
+            selected_fields (Sequence[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            ]):
+                The fields to return. Required if ``table`` is a
+                :class:`~google.cloud.bigquery.table.TableReference`.
+            chunk_size (int):
+                The number of rows to stream in a single chunk. Must be positive.
+            kwargs (dict):
+                Keyword arguments to
+                :meth:`~google.cloud.bigquery.client.Client.insert_rows_json`.
+
+        Returns:
+            Sequence[Sequence[Mappings]]:
+                A list with insert errors for each insert chunk. Each element
+                is a list containing one mapping per row with insert errors:
+                the "index" key identifies the row, and the "errors" key
+                contains a list of the mappings describing one or more problems
+                with the row.
+
+        Raises:
+            ValueError: if table's schema is not set
+        """
+        insert_results = []
+
+        chunk_count = int(math.ceil(len(dataframe) / chunk_size))
+        rows_iter = (
+            dict(six.moves.zip(dataframe.columns, row))
+            for row in dataframe.itertuples(index=False, name=None)
+        )
+
+        for _ in range(chunk_count):
+            rows_chunk = itertools.islice(rows_iter, chunk_size)
+            result = self.insert_rows(table, rows_chunk, selected_fields, **kwargs)
+            insert_results.append(result)
+
+        return insert_results
 
     def insert_rows_json(
         self,

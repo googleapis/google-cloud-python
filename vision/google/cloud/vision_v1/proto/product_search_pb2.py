@@ -15,7 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.vision_v1.proto import (
     geometry_pb2 as google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2,
 )
@@ -23,6 +22,7 @@ from google.cloud.vision_v1.proto import (
     product_search_service_pb2 as google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -33,13 +33,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\032com.google.cloud.vision.v1B\022ProductSearchProtoP\001Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\370\001\001\242\002\004GCVN"
     ),
     serialized_pb=_b(
-        '\n1google/cloud/vision_v1/proto/product_search.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a\x39google/cloud/vision_v1/proto/product_search_service.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x93\x01\n\x13ProductSearchParams\x12;\n\rbounding_poly\x18\t \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x13\n\x0bproduct_set\x18\x06 \x01(\t\x12\x1a\n\x12product_categories\x18\x07 \x03(\t\x12\x0e\n\x06\x66ilter\x18\x08 \x01(\t"\x88\x05\n\x14ProductSearchResults\x12.\n\nindex_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x44\n\x07results\x18\x05 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.Result\x12[\n\x17product_grouped_results\x18\x06 \x03(\x0b\x32:.google.cloud.vision.v1.ProductSearchResults.GroupedResult\x1aX\n\x06Result\x12\x30\n\x07product\x18\x01 \x01(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\r\n\x05score\x18\x02 \x01(\x02\x12\r\n\x05image\x18\x03 \x01(\t\x1aS\n\x10ObjectAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x1a\xed\x01\n\rGroupedResult\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x44\n\x07results\x18\x02 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.Result\x12Y\n\x12object_annotations\x18\x03 \x03(\x0b\x32=.google.cloud.vision.v1.ProductSearchResults.ObjectAnnotationBz\n\x1a\x63om.google.cloud.vision.v1B\x12ProductSearchProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3'
+        '\n1google/cloud/vision_v1/proto/product_search.proto\x12\x16google.cloud.vision.v1\x1a+google/cloud/vision_v1/proto/geometry.proto\x1a\x39google/cloud/vision_v1/proto/product_search_service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x93\x01\n\x13ProductSearchParams\x12;\n\rbounding_poly\x18\t \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x13\n\x0bproduct_set\x18\x06 \x01(\t\x12\x1a\n\x12product_categories\x18\x07 \x03(\t\x12\x0e\n\x06\x66ilter\x18\x08 \x01(\t"\x88\x05\n\x14ProductSearchResults\x12.\n\nindex_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x44\n\x07results\x18\x05 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.Result\x12[\n\x17product_grouped_results\x18\x06 \x03(\x0b\x32:.google.cloud.vision.v1.ProductSearchResults.GroupedResult\x1aX\n\x06Result\x12\x30\n\x07product\x18\x01 \x01(\x0b\x32\x1f.google.cloud.vision.v1.Product\x12\r\n\x05score\x18\x02 \x01(\x02\x12\r\n\x05image\x18\x03 \x01(\t\x1aS\n\x10ObjectAnnotation\x12\x0b\n\x03mid\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\r\n\x05score\x18\x04 \x01(\x02\x1a\xed\x01\n\rGroupedResult\x12;\n\rbounding_poly\x18\x01 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x44\n\x07results\x18\x02 \x03(\x0b\x32\x33.google.cloud.vision.v1.ProductSearchResults.Result\x12Y\n\x12object_annotations\x18\x03 \x03(\x0b\x32=.google.cloud.vision.v1.ProductSearchResults.ObjectAnnotationBz\n\x1a\x63om.google.cloud.vision.v1B\x12ProductSearchProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\xa2\x02\x04GCVNb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,
         google_dot_cloud_dot_vision__v1_dot_proto_dot_product__search__service__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -514,12 +514,13 @@ ProductSearchParams = _reflection.GeneratedProtocolMessageType(
       product_categories:
           The list of product categories to search in. Currently, we
           only consider the first category, and either "homegoods-v2",
-          "apparel-v2", or "toys-v2" should be specified. The legacy
-          categories "homegoods", "apparel", and "toys" are still
-          supported but will be deprecated. For new products, please use
-          "homegoods-v2", "apparel-v2", or "toys-v2" for better product
-          search accuracy. It is recommended to migrate existing
-          products to these categories as well.
+          "apparel-v2", "toys-v2", "packagedgoods-v1", or "general-v1"
+          should be specified. The legacy categories "homegoods",
+          "apparel", and "toys" are still supported but will be
+          deprecated. For new products, please use "homegoods-v2",
+          "apparel-v2", or "toys-v2" for better product search accuracy.
+          It is recommended to migrate existing products to these
+          categories as well.
       filter:
           The filtering expression. This can be used to restrict search
           results based on Product labels. We currently support an AND
