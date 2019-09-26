@@ -210,15 +210,15 @@ def _row_tuple_from_json(row, schema):
 
     Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
 
-    Args:
-        row (Dict): A JSON response row to be converted.
+    :type row: dict
+    :param row: A JSON response row to be converted.
 
-        schema (Tuple):
-            A tuple of
-            :class:`~google.cloud.bigquery.schema.SchemaField`.
+    :type schema: tuple
+    :param schema: A tuple of
+                   :class:`~google.cloud.bigquery.schema.SchemaField`.
 
-    Returns:
-        Tuple: A tuple of data converted to native types.
+    :rtype: tuple
+    :returns: A tuple of data converted to native types.
     """
     row_data = []
     for field, cell in zip(schema, row["f"]):
@@ -454,9 +454,9 @@ def _get_sub_prop(container, keys, default=None):
     This method works like ``dict.get(key)``, but for nested values.
 
     Arguments:
-        container (Dict):
+        container (dict):
             A dictionary which may contain other dictionaries as values.
-        keys (Iterable):
+        keys (iterable):
             A sequence of keys to attempt to get the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -497,9 +497,9 @@ def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
     Arguments:
-        container (Dict):
+        container (dict):
             A dictionary which may contain other dictionaries as values.
-        keys (Iterable):
+        keys (iterable):
             A sequence of keys to attempt to set the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -540,9 +540,9 @@ def _del_sub_prop(container, keys):
     """Remove a nested key fro a dictionary.
 
     Arguments:
-        container (Dict):
+        container (dict):
             A dictionary which may contain other dictionaries as values.
-        keys (Iterable):
+        keys (iterable):
             A sequence of keys to attempt to clear the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key

@@ -58,7 +58,7 @@ class SchemaField(object):
 
         description (Optional[str]):description for the field.
 
-        fields (Tuple[google.cloud.bigquery.schema.SchemaField]):
+        fields (Tuple[:class:`~google.cloud.bigquery.schema.SchemaField`]):
             subfields (requires ``field_type`` of 'RECORD').
     """
 
@@ -229,7 +229,7 @@ def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
 
     Args:
-        info: (Mapping[str->Dict]): should contain a "fields" key to be parsed
+        info: (Mapping[str->dict]): should contain a "fields" key to be parsed
 
     Returns:
         (Union[Sequence[:class:`google.cloud.bigquery.schema.SchemaField`],None])
