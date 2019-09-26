@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.requests.upload &mdash; google-resumable-media 0.4.0 documentation</title>
+  <title>google.resumable_media.requests.upload &mdash; google-resumable-media 0.4.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -224,7 +224,7 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
+<li><strong>transport</strong> (<a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</li>
 <li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The resource content to be uploaded.</li>
 <li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> ]) – The resource metadata, such as an
@@ -237,7 +237,7 @@ image has content type <code class="docutils literal notranslate"><span class="p
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
 </td>
 </tr>
 </tbody>
@@ -411,7 +411,7 @@ size, the upload will be concluded.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
+<li><strong>transport</strong> (<a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</li>
 <li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em>) – The stream (i.e. file-like object) that will
 be uploaded. The stream <strong>must</strong> be at the beginning (i.e.
@@ -433,7 +433,7 @@ we determine the upload size from the size of the stream. If
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
 </td>
 </tr>
 </tbody>
@@ -469,12 +469,12 @@ can be used again.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></td>
 </tr>
 </tbody>
 </table>
@@ -541,12 +541,12 @@ failed response:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><strong>InvalidResponse</strong></a> – If the status
     code is not 200 or 308.</td>
@@ -614,7 +614,7 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
+<li><strong>transport</strong> (<a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Session" title="(in Requests v2.22.0)"><em>Session</em></a>) – A <code class="docutils literal notranslate"><span class="pre">requests</span></code> object which can
 make authenticated requests.</li>
 <li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The resource content to be uploaded.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The content type of the resource, e.g. a JPEG
@@ -625,7 +625,7 @@ image has content type <code class="docutils literal notranslate"><span class="p
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal notranslate"><span class="pre">transport</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://2.python-requests.org//en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://requests.kennethreitz.org/en/stable/api/#requests.Response" title="(in Requests v2.22.0)">Response</a></p>
 </td>
 </tr>
 </tbody>
