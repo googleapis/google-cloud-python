@@ -271,14 +271,14 @@ class Model(object):
         in the BigQuery documentation.
         """
         prop = self._properties.get("encryptionConfiguration")
-        if prop is not None:
+        if prop:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
 
     @encryption_configuration.setter
     def encryption_configuration(self, value):
         api_repr = value
-        if value is not None:
+        if value:
             api_repr = value.to_api_repr()
         self._properties["encryptionConfiguration"] = api_repr
 
