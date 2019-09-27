@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 1.0.1
+
+09-27-2019 07:01 PDT
+
+
+### Implementation Changes
+- Set default stream ACK deadline to subscriptions'. ([#9268](https://github.com/googleapis/google-cloud-python/pull/9268))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Link to correct TimeoutError in futures docs. ([#9216](https://github.com/googleapis/google-cloud-python/pull/9216))
+
+### Internal / Testing Changes
+- Adjust messaging RPC timeout settings (via synth). [#9279](https://github.com/googleapis/google-cloud-python/pull/9279)
+
 ## 1.0.0
 
 08-29-2019 09:27 PDT
