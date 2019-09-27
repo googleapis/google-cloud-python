@@ -712,7 +712,11 @@ class Blob(_PropertyMixin):
             os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None, start=None, end=None):
-        """Download the contents of this blob as a string.
+        """Download the contents of this blob as a bytes object.
+
+        .. note::
+            the method name, ``download_as_string`` was chosen for
+            compatibility with the ``boto`` library's API.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
