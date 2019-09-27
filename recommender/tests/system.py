@@ -26,4 +26,4 @@ class TestRecommender(unittest.TestCase):
         location = "global"
         recommender = "google.iam.policy.RoleRecommender"
         parent = client.recommender_path(project_id, location, recommender)
-        client.list_recommendations(parent)
+        list(client.list_recommendations(parent))
