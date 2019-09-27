@@ -215,10 +215,22 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(got.dataset_id, "string_dataset")
         self.assertEqual(got.table_id, "string_table")
 
+    def test_from_string_w_prefix(self):
+        cls = self._get_target_class()
+        got = cls.from_string("google.com:string-project.string_dataset.string_table")
+        self.assertEqual(got.project, "google.com:string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
+        self.assertEqual(got.table_id, "string_table")
+
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
             cls.from_string("string-project:string_dataset.string_table")
+
+    def test_from_string_w_incorrect_prefix(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com.string-project.string_dataset.string_table")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
@@ -2207,6 +2219,42 @@ class TestRowIterator(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_max_results_w_bqstorage_warning(self):
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        bqstorage_client = mock.Mock()
+
+        row_iterator = self._make_one(
+            client=_mock_client(),
+            api_request=api_request,
+            path=path,
+            schema=schema,
+            max_results=42,
+        )
+
+        with warnings.catch_warnings(record=True) as warned:
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category is UserWarning
+            and "cannot use bqstorage_client" in str(warning).lower()
+            and "tabledata.list" in str(warning)
+        ]
+        self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(

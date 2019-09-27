@@ -35,6 +35,7 @@ s.move(
         library / "google/cloud/bigquery_v2/gapic/enums.py",
         library / "google/cloud/bigquery_v2/types.py",
         library / "google/cloud/bigquery_v2/proto/location*",
+        library / "google/cloud/bigquery_v2/proto/encryption_config*",
         library / "google/cloud/bigquery_v2/proto/model*",
         library / "google/cloud/bigquery_v2/proto/standard_sql*",
     ],
@@ -45,6 +46,11 @@ s.replace(
     "google/cloud/bigquery_v2/proto/model_pb2.py",
     '"""Attributes:',
     '"""Protocol buffer.\n\n  Attributes:',
+)
+s.replace(
+    "google/cloud/bigquery_v2/proto/encryption_config_pb2.py",
+    '"""Attributes:',
+    '"""Encryption configuration.\n\n  Attributes:',
 )
 
 # Remove non-ascii characters from docstrings for Python 2.7.

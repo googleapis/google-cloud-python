@@ -1630,6 +1630,14 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
+        if bqstorage_client and self.max_results is not None:
+            warnings.warn(
+                "Cannot use bqstorage_client if max_results is set, "
+                "reverting to fetching data with the tabledata.list endpoint.",
+                stacklevel=2,
+            )
+            bqstorage_client = None
+
         progress_bar = self._get_progress_bar(progress_bar_type)
 
         frames = []

@@ -102,15 +102,14 @@ Example Usage
 
     # Then query for documents
     users_ref = db.collection(u'users')
-    docs = users_ref.get()
 
-    for doc in docs:
+    for doc in users_ref.stream():
         print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
 Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Google Cloud Firestore API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Product Documentation`_ to learn
    more about the product and see How-to Guides.

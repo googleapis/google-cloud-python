@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.20.0
+
+09-13-2019 11:22 PDT
+
+
+### Implementation Changes
+- Change default endpoint to bigquery.googleapis.com ([#9213](https://github.com/googleapis/google-cloud-python/pull/9213))
+- Change the default value of Cursor instances' `arraysize` attribute to None ([#9199](https://github.com/googleapis/google-cloud-python/pull/9199))
+- Deprecate automatic schema conversion. ([#9176](https://github.com/googleapis/google-cloud-python/pull/9176))
+- Fix `list_rows()` max results with BQ storage client ([#9178](https://github.com/googleapis/google-cloud-python/pull/9178))
+
+### New Features
+- Add `Model.encryption_config`. (via synth) ([#9214](https://github.com/googleapis/google-cloud-python/pull/9214))
+- Add `Client.insert_rows_from_dataframe()` method ([#9162](https://github.com/googleapis/google-cloud-python/pull/9162))
+- Add support for array parameters to `Cursor.execute()`. ([#9189](https://github.com/googleapis/google-cloud-python/pull/9189))
+- Add support for project IDs with org prefix to `Table.from_string()` factory. ([#9161](https://github.com/googleapis/google-cloud-python/pull/9161))
+- Add `--max_results` option to Jupyter magics ([#9169](https://github.com/googleapis/google-cloud-python/pull/9169))
+- Autofetch table schema on load if not provided. ([#9108](https://github.com/googleapis/google-cloud-python/pull/9108))
+- Add `max_results` parameter to `QueryJob.result()`. ([#9167](https://github.com/googleapis/google-cloud-python/pull/9167))
+
+### Documentation
+- Fix doc link. ([#9200](https://github.com/googleapis/google-cloud-python/pull/9200))
+
+### Internal / Testing Changes
+- Revert "Disable failing snippets test ([#9156](https://github.com/googleapis/google-cloud-python/pull/9156))." ([#9220](https://github.com/googleapis/google-cloud-python/pull/9220))
+
 ## 1.19.0
 
 09-03-2019 14:33 PDT

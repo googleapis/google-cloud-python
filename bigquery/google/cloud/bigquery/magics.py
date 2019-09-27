@@ -28,7 +28,9 @@
 
     * ``<destination_var>`` (optional, line argument):
         variable to store the query results. The results are not displayed if
-        this parameter is used.
+        this parameter is used. If an error occurs during the query execution,
+        the corresponding ``QueryJob`` instance (if available) is stored in
+        the variable instead.
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
@@ -129,6 +131,7 @@
 
 from __future__ import print_function
 
+import re
 import ast
 import sys
 import time
@@ -266,6 +269,31 @@ class Context(object):
 context = Context()
 
 
+def _handle_error(error, destination_var=None):
+    """Process a query execution error.
+
+    Args:
+        error (Exception):
+            An exception that ocurred during the query exectution.
+        destination_var (Optional[str]):
+            The name of the IPython session variable to store the query job.
+    """
+    if destination_var:
+        query_job = getattr(error, "query_job", None)
+
+        if query_job is not None:
+            IPython.get_ipython().push({destination_var: query_job})
+        else:
+            # this is the case when previewing table rows by providing just
+            # table ID to cell magic
+            print(
+                "Could not save output to variable '{}'.".format(destination_var),
+                file=sys.stderr,
+            )
+
+    print("\nERROR:\n", str(error), file=sys.stderr)
+
+
 def _run_query(client, query, job_config=None):
     """Runs a query while printing status updates
 
@@ -319,6 +347,14 @@ def _run_query(client, query, job_config=None):
     type=str,
     default=None,
     help=("Project to use for executing this query. Defaults to the context project."),
+)
+@magic_arguments.argument(
+    "--max_results",
+    default=None,
+    help=(
+        "Maximum number of rows in dataframe returned from executing the query."
+        "Defaults to returning all rows."
+    ),
 )
 @magic_arguments.argument(
     "--maximum_bytes_billed",
@@ -420,6 +456,30 @@ def _cell_magic(line, query):
     bqstorage_client = _make_bqstorage_client(
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
+
+    if args.max_results:
+        max_results = int(args.max_results)
+    else:
+        max_results = None
+
+    query = query.strip()
+
+    # Any query that does not contain whitespace (aside from leading and trailing whitespace)
+    # is assumed to be a table id
+    if not re.search(r"\s", query):
+        try:
+            rows = client.list_rows(query, max_results=max_results)
+        except Exception as ex:
+            _handle_error(ex, args.destination_var)
+            return
+
+        result = rows.to_dataframe(bqstorage_client=bqstorage_client)
+        if args.destination_var:
+            IPython.get_ipython().push({args.destination_var: result})
+            return
+        else:
+            return result
+
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
@@ -431,23 +491,14 @@ def _cell_magic(line, query):
         value = int(args.maximum_bytes_billed)
         job_config.maximum_bytes_billed = value
 
-    error = None
     try:
-        query_job = _run_query(client, query, job_config)
+        query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
-        error = str(ex)
+        _handle_error(ex, args.destination_var)
+        return
 
     if not args.verbose:
         display.clear_output()
-
-    if error:
-        if args.destination_var:
-            print(
-                "Could not save output to variable '{}'.".format(args.destination_var),
-                file=sys.stderr,
-            )
-        print("\nERROR:\n", error, file=sys.stderr)
-        return
 
     if args.dry_run and args.destination_var:
         IPython.get_ipython().push({args.destination_var: query_job})
@@ -460,7 +511,13 @@ def _cell_magic(line, query):
         )
         return query_job
 
-    result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+    if max_results:
+        result = query_job.result(max_results=max_results).to_dataframe(
+            bqstorage_client=bqstorage_client
+        )
+    else:
+        result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:

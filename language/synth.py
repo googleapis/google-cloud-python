@@ -32,18 +32,20 @@ for version in versions:
         config_path=f"/google/cloud/language/artman_language_{version}.yaml",
         artman_output_name=f"language-{version}",
         include_protos=True,
+        include_samples=True
     )
 
     s.move(library / f"google/cloud/language_{version}/proto")
     s.move(library / f"google/cloud/language_{version}/gapic")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"tests/system/gapic/{version}")
+    s.move(library / f"samples")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files)
+s.move(templated_files, excludes=['noxfile.py'])
 
 s.replace(
     f"google/cloud/**/gapic/language_service_client.py",

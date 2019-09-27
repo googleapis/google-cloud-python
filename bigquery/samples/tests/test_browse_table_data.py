@@ -24,3 +24,5 @@ def test_browse_table_data(capsys, client, table_with_data_id):
     assert "Downloaded 10 rows from table {}".format(table_with_data_id) in out
     assert "Selected 2 columns from table {}".format(table_with_data_id) in out
     assert "Downloaded 10 rows from table {}".format(table_with_data_id) in out
+    assert "word" in out
+    assert "LVII" in out

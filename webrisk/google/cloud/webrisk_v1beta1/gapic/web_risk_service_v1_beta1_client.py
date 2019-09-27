@@ -323,8 +323,8 @@ class WebRiskServiceV1Beta1Client(object):
 
     def search_hashes(
         self,
+        threat_types,
         hash_prefix=None,
-        threat_types=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -338,15 +338,19 @@ class WebRiskServiceV1Beta1Client(object):
 
         Example:
             >>> from google.cloud import webrisk_v1beta1
+            >>> from google.cloud.webrisk_v1beta1 import enums
             >>>
             >>> client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
             >>>
-            >>> response = client.search_hashes()
+            >>> # TODO: Initialize `threat_types`:
+            >>> threat_types = []
+            >>>
+            >>> response = client.search_hashes(threat_types)
 
         Args:
+            threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             hash_prefix (bytes): A hash prefix, consisting of the most significant 4-32 bytes of a SHA256
                 hash. For JSON requests, this field is base64-encoded.
-            threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -378,7 +382,7 @@ class WebRiskServiceV1Beta1Client(object):
             )
 
         request = webrisk_pb2.SearchHashesRequest(
-            hash_prefix=hash_prefix, threat_types=threat_types
+            threat_types=threat_types, hash_prefix=hash_prefix
         )
         return self._inner_api_calls["search_hashes"](
             request, retry=retry, timeout=timeout, metadata=metadata

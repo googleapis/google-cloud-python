@@ -210,7 +210,7 @@ def list_columns_and_indexes(dataframe):
     """Return all index and column names with dtypes.
 
     Returns:
-        Sequence[Tuple[dtype, str]]:
+        Sequence[Tuple[str, dtype]]:
             Returns a sorted list of indexes and column names with
             corresponding dtypes. If an index is missing a name or has the
             same name as a column, the index is omitted.
