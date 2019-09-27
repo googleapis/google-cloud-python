@@ -349,10 +349,7 @@ class Dataset(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
     Args:
-        dataset_ref (Union[ \
-            :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
-            str, \
-        ]):
+        dataset_ref (Union[google.cloud.bigquery.dataset.DatasetReference, str]):
             A pointer to a dataset. If ``dataset_ref`` is a string, it must
             include both the project ID and the dataset ID, separated by
             ``.``.
