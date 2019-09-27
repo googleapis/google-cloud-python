@@ -17,6 +17,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.bigquery_storage_v1beta1.proto import (
     arrow_pb2 as google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_arrow__pb2,
 )
@@ -31,7 +34,6 @@ from google.cloud.bigquery_storage_v1beta1.proto import (
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -42,17 +44,19 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storage"
     ),
     serialized_pb=_b(
-        '\n9google/cloud/bigquery/storage_v1beta1/proto/storage.proto\x12%google.cloud.bigquery.storage.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x37google/cloud/bigquery/storage_v1beta1/proto/arrow.proto\x1a\x36google/cloud/bigquery/storage_v1beta1/proto/avro.proto\x1a>google/cloud/bigquery/storage_v1beta1/proto/read_options.proto\x1a\x41google/cloud/bigquery/storage_v1beta1/proto/table_reference.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/api/client.proto"\x16\n\x06Stream\x12\x0c\n\x04name\x18\x01 \x01(\t"_\n\x0eStreamPosition\x12=\n\x06stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12\x0e\n\x06offset\x18\x02 \x01(\x03"\xa0\x04\n\x0bReadSession\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12H\n\x0b\x61vro_schema\x18\x05 \x01(\x0b\x32\x31.google.cloud.bigquery.storage.v1beta1.AvroSchemaH\x00\x12J\n\x0c\x61rrow_schema\x18\x06 \x01(\x0b\x32\x32.google.cloud.bigquery.storage.v1beta1.ArrowSchemaH\x00\x12>\n\x07streams\x18\x04 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12N\n\x0ftable_reference\x18\x07 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReference\x12N\n\x0ftable_modifiers\x18\x08 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiers\x12R\n\x11sharding_strategy\x18\t \x01(\x0e\x32\x37.google.cloud.bigquery.storage.v1beta1.ShardingStrategyB\x08\n\x06schema"\xcb\x03\n\x18\x43reateReadSessionRequest\x12N\n\x0ftable_reference\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReference\x12\x0e\n\x06parent\x18\x06 \x01(\t\x12N\n\x0ftable_modifiers\x18\x02 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiers\x12\x19\n\x11requested_streams\x18\x03 \x01(\x05\x12M\n\x0cread_options\x18\x04 \x01(\x0b\x32\x37.google.cloud.bigquery.storage.v1beta1.TableReadOptions\x12\x41\n\x06\x66ormat\x18\x05 \x01(\x0e\x32\x31.google.cloud.bigquery.storage.v1beta1.DataFormat\x12R\n\x11sharding_strategy\x18\x07 \x01(\x0e\x32\x37.google.cloud.bigquery.storage.v1beta1.ShardingStrategy"_\n\x0fReadRowsRequest\x12L\n\rread_position\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.StreamPosition"]\n\x0cStreamStatus\x12\x1b\n\x13\x65stimated_row_count\x18\x01 \x01(\x03\x12\x19\n\x11\x66raction_consumed\x18\x02 \x01(\x02\x12\x15\n\ris_splittable\x18\x03 \x01(\x08"*\n\x0eThrottleStatus\x12\x18\n\x10throttle_percent\x18\x01 \x01(\x05"\xdf\x02\n\x10ReadRowsResponse\x12\x44\n\tavro_rows\x18\x03 \x01(\x0b\x32/.google.cloud.bigquery.storage.v1beta1.AvroRowsH\x00\x12U\n\x12\x61rrow_record_batch\x18\x04 \x01(\x0b\x32\x37.google.cloud.bigquery.storage.v1beta1.ArrowRecordBatchH\x00\x12\x11\n\trow_count\x18\x06 \x01(\x03\x12\x43\n\x06status\x18\x02 \x01(\x0b\x32\x33.google.cloud.bigquery.storage.v1beta1.StreamStatus\x12N\n\x0fthrottle_status\x18\x05 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.ThrottleStatusB\x06\n\x04rows"\x86\x01\n$BatchCreateReadSessionStreamsRequest\x12\x43\n\x07session\x18\x01 \x01(\x0b\x32\x32.google.cloud.bigquery.storage.v1beta1.ReadSession\x12\x19\n\x11requested_streams\x18\x02 \x01(\x05"g\n%BatchCreateReadSessionStreamsResponse\x12>\n\x07streams\x18\x01 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"V\n\x15\x46inalizeStreamRequest\x12=\n\x06stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"r\n\x16SplitReadStreamRequest\x12\x46\n\x0foriginal_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12\x10\n\x08\x66raction\x18\x02 \x01(\x02"\xa9\x01\n\x17SplitReadStreamResponse\x12\x45\n\x0eprimary_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12G\n\x10remainder_stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream*>\n\nDataFormat\x12\x1b\n\x17\x44\x41TA_FORMAT_UNSPECIFIED\x10\x00\x12\x08\n\x04\x41VRO\x10\x01\x12\t\n\x05\x41RROW\x10\x03*O\n\x10ShardingStrategy\x12!\n\x1dSHARDING_STRATEGY_UNSPECIFIED\x10\x00\x12\n\n\x06LIQUID\x10\x01\x12\x0c\n\x08\x42\x41LANCED\x10\x02\x32\xc4\t\n\x0f\x42igQueryStorage\x12\x87\x02\n\x11\x43reateReadSession\x12?.google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest\x1a\x32.google.cloud.bigquery.storage.v1beta1.ReadSession"}\x82\xd3\xe4\x93\x02w"0/v1beta1/{table_reference.project_id=projects/*}:\x01*Z@";/v1beta1/{table_reference.dataset_id=projects/*/datasets/*}:\x01*\x12\xc0\x01\n\x08ReadRows\x12\x36.google.cloud.bigquery.storage.v1beta1.ReadRowsRequest\x1a\x37.google.cloud.bigquery.storage.v1beta1.ReadRowsResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{read_position.stream.name=projects/*/streams/*}0\x01\x12\xf4\x01\n\x1d\x42\x61tchCreateReadSessionStreams\x12K.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsRequest\x1aL.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsResponse"8\x82\xd3\xe4\x93\x02\x32"-/v1beta1/{session.name=projects/*/sessions/*}:\x01*\x12\x9e\x01\n\x0e\x46inalizeStream\x12<.google.cloud.bigquery.storage.v1beta1.FinalizeStreamRequest\x1a\x16.google.protobuf.Empty"6\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{stream.name=projects/*/streams/*}:\x01*\x12\xce\x01\n\x0fSplitReadStream\x12=.google.cloud.bigquery.storage.v1beta1.SplitReadStreamRequest\x1a>.google.cloud.bigquery.storage.v1beta1.SplitReadStreamResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{original_stream.name=projects/*/streams/*}\x1a{\xca\x41\x1e\x62igquerystorage.googleapis.com\xd2\x41Whttps://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/cloud-platformBy\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
+        '\n9google/cloud/bigquery/storage_v1beta1/proto/storage.proto\x12%google.cloud.bigquery.storage.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x37google/cloud/bigquery/storage_v1beta1/proto/arrow.proto\x1a\x36google/cloud/bigquery/storage_v1beta1/proto/avro.proto\x1a>google/cloud/bigquery/storage_v1beta1/proto/read_options.proto\x1a\x41google/cloud/bigquery/storage_v1beta1/proto/table_reference.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"|\n\x06Stream\x12\x0c\n\x04name\x18\x01 \x01(\t:d\xea\x41\x61\n%bigquerystorage.googleapis.com/Stream\x12\x38projects/{project}/locations/{location}/streams/{stream}"_\n\x0eStreamPosition\x12=\n\x06stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12\x0e\n\x06offset\x18\x02 \x01(\x03"\x8d\x05\n\x0bReadSession\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12H\n\x0b\x61vro_schema\x18\x05 \x01(\x0b\x32\x31.google.cloud.bigquery.storage.v1beta1.AvroSchemaH\x00\x12J\n\x0c\x61rrow_schema\x18\x06 \x01(\x0b\x32\x32.google.cloud.bigquery.storage.v1beta1.ArrowSchemaH\x00\x12>\n\x07streams\x18\x04 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12N\n\x0ftable_reference\x18\x07 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReference\x12N\n\x0ftable_modifiers\x18\x08 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiers\x12R\n\x11sharding_strategy\x18\t \x01(\x0e\x32\x37.google.cloud.bigquery.storage.v1beta1.ShardingStrategy:k\xea\x41h\n*bigquerystorage.googleapis.com/ReadSession\x12:projects/{project}/locations/{location}/sessions/{session}B\x08\n\x06schema"\xd5\x03\n\x18\x43reateReadSessionRequest\x12S\n\x0ftable_reference\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableReferenceB\x03\xe0\x41\x02\x12\x13\n\x06parent\x18\x06 \x01(\tB\x03\xe0\x41\x02\x12N\n\x0ftable_modifiers\x18\x02 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.TableModifiers\x12\x19\n\x11requested_streams\x18\x03 \x01(\x05\x12M\n\x0cread_options\x18\x04 \x01(\x0b\x32\x37.google.cloud.bigquery.storage.v1beta1.TableReadOptions\x12\x41\n\x06\x66ormat\x18\x05 \x01(\x0e\x32\x31.google.cloud.bigquery.storage.v1beta1.DataFormat\x12R\n\x11sharding_strategy\x18\x07 \x01(\x0e\x32\x37.google.cloud.bigquery.storage.v1beta1.ShardingStrategy"d\n\x0fReadRowsRequest\x12Q\n\rread_position\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.StreamPositionB\x03\xe0\x41\x02"\xa0\x01\n\x0cStreamStatus\x12\x1b\n\x13\x65stimated_row_count\x18\x01 \x01(\x03\x12\x19\n\x11\x66raction_consumed\x18\x02 \x01(\x02\x12\x41\n\x08progress\x18\x04 \x01(\x0b\x32/.google.cloud.bigquery.storage.v1beta1.Progress\x12\x15\n\ris_splittable\x18\x03 \x01(\x08">\n\x08Progress\x12\x19\n\x11\x61t_response_start\x18\x01 \x01(\x02\x12\x17\n\x0f\x61t_response_end\x18\x02 \x01(\x02"*\n\x0eThrottleStatus\x12\x18\n\x10throttle_percent\x18\x01 \x01(\x05"\xdf\x02\n\x10ReadRowsResponse\x12\x44\n\tavro_rows\x18\x03 \x01(\x0b\x32/.google.cloud.bigquery.storage.v1beta1.AvroRowsH\x00\x12U\n\x12\x61rrow_record_batch\x18\x04 \x01(\x0b\x32\x37.google.cloud.bigquery.storage.v1beta1.ArrowRecordBatchH\x00\x12\x11\n\trow_count\x18\x06 \x01(\x03\x12\x43\n\x06status\x18\x02 \x01(\x0b\x32\x33.google.cloud.bigquery.storage.v1beta1.StreamStatus\x12N\n\x0fthrottle_status\x18\x05 \x01(\x0b\x32\x35.google.cloud.bigquery.storage.v1beta1.ThrottleStatusB\x06\n\x04rows"\x90\x01\n$BatchCreateReadSessionStreamsRequest\x12H\n\x07session\x18\x01 \x01(\x0b\x32\x32.google.cloud.bigquery.storage.v1beta1.ReadSessionB\x03\xe0\x41\x02\x12\x1e\n\x11requested_streams\x18\x02 \x01(\x05\x42\x03\xe0\x41\x02"g\n%BatchCreateReadSessionStreamsResponse\x12>\n\x07streams\x18\x01 \x03(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"V\n\x15\x46inalizeStreamRequest\x12=\n\x06stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream"r\n\x16SplitReadStreamRequest\x12\x46\n\x0foriginal_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12\x10\n\x08\x66raction\x18\x02 \x01(\x02"\xa9\x01\n\x17SplitReadStreamResponse\x12\x45\n\x0eprimary_stream\x18\x01 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream\x12G\n\x10remainder_stream\x18\x02 \x01(\x0b\x32-.google.cloud.bigquery.storage.v1beta1.Stream*>\n\nDataFormat\x12\x1b\n\x17\x44\x41TA_FORMAT_UNSPECIFIED\x10\x00\x12\x08\n\x04\x41VRO\x10\x01\x12\t\n\x05\x41RROW\x10\x03*O\n\x10ShardingStrategy\x12!\n\x1dSHARDING_STRATEGY_UNSPECIFIED\x10\x00\x12\n\n\x06LIQUID\x10\x01\x12\x0c\n\x08\x42\x41LANCED\x10\x02\x32\xeb\n\n\x0f\x42igQueryStorage\x12\xb3\x02\n\x11\x43reateReadSession\x12?.google.cloud.bigquery.storage.v1beta1.CreateReadSessionRequest\x1a\x32.google.cloud.bigquery.storage.v1beta1.ReadSession"\xa8\x01\x82\xd3\xe4\x93\x02w"0/v1beta1/{table_reference.project_id=projects/*}:\x01*Z@";/v1beta1/{table_reference.dataset_id=projects/*/datasets/*}:\x01*\xda\x41(table_reference,parent,requested_streams\x12\xd0\x01\n\x08ReadRows\x12\x36.google.cloud.bigquery.storage.v1beta1.ReadRowsRequest\x1a\x37.google.cloud.bigquery.storage.v1beta1.ReadRowsResponse"Q\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{read_position.stream.name=projects/*/streams/*}\xda\x41\rread_position0\x01\x12\x90\x02\n\x1d\x42\x61tchCreateReadSessionStreams\x12K.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsRequest\x1aL.google.cloud.bigquery.storage.v1beta1.BatchCreateReadSessionStreamsResponse"T\x82\xd3\xe4\x93\x02\x32"-/v1beta1/{session.name=projects/*/sessions/*}:\x01*\xda\x41\x19session,requested_streams\x12\xa7\x01\n\x0e\x46inalizeStream\x12<.google.cloud.bigquery.storage.v1beta1.FinalizeStreamRequest\x1a\x16.google.protobuf.Empty"?\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{stream.name=projects/*/streams/*}:\x01*\xda\x41\x06stream\x12\xe0\x01\n\x0fSplitReadStream\x12=.google.cloud.bigquery.storage.v1beta1.SplitReadStreamRequest\x1a>.google.cloud.bigquery.storage.v1beta1.SplitReadStreamResponse"N\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{original_stream.name=projects/*/streams/*}\xda\x41\x0foriginal_stream\x1a\xae\x01\xca\x41\x1e\x62igquerystorage.googleapis.com\xd2\x41\x89\x01https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platformBy\n)com.google.cloud.bigquery.storage.v1beta1ZLgoogle.golang.org/genproto/googleapis/cloud/bigquery/storage/v1beta1;storageb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_arrow__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_avro__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_read__options__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_table__reference__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -78,8 +82,8 @@ _DATAFORMAT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2799,
-    serialized_end=2861,
+    serialized_start=3227,
+    serialized_end=3289,
 )
 _sym_db.RegisterEnumDescriptor(_DATAFORMAT)
 
@@ -106,8 +110,8 @@ _SHARDINGSTRATEGY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2863,
-    serialized_end=2942,
+    serialized_start=3291,
+    serialized_end=3370,
 )
 _sym_db.RegisterEnumDescriptor(_SHARDINGSTRATEGY)
 
@@ -149,13 +153,15 @@ _STREAM = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Aa\n%bigquerystorage.googleapis.com/Stream\0228projects/{project}/locations/{location}/streams/{stream}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=461,
-    serialized_end=483,
+    serialized_start=521,
+    serialized_end=645,
 )
 
 
@@ -211,8 +217,8 @@ _STREAMPOSITION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=485,
-    serialized_end=580,
+    serialized_start=647,
+    serialized_end=742,
 )
 
 
@@ -371,7 +377,9 @@ _READSESSION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ah\n*bigquerystorage.googleapis.com/ReadSession\022:projects/{project}/locations/{location}/sessions/{session}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -384,8 +392,8 @@ _READSESSION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=583,
-    serialized_end=1127,
+    serialized_start=745,
+    serialized_end=1398,
 )
 
 
@@ -411,7 +419,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -429,7 +437,7 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -531,8 +539,8 @@ _CREATEREADSESSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1130,
-    serialized_end=1589,
+    serialized_start=1401,
+    serialized_end=1870,
 )
 
 
@@ -558,7 +566,7 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -570,8 +578,8 @@ _READROWSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1591,
-    serialized_end=1686,
+    serialized_start=1872,
+    serialized_end=1972,
 )
 
 
@@ -619,9 +627,27 @@ _STREAMSTATUS = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="progress",
+            full_name="google.cloud.bigquery.storage.v1beta1.StreamStatus.progress",
+            index=2,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="is_splittable",
             full_name="google.cloud.bigquery.storage.v1beta1.StreamStatus.is_splittable",
-            index=2,
+            index=3,
             number=3,
             type=8,
             cpp_type=7,
@@ -645,8 +671,65 @@ _STREAMSTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1688,
-    serialized_end=1781,
+    serialized_start=1975,
+    serialized_end=2135,
+)
+
+
+_PROGRESS = _descriptor.Descriptor(
+    name="Progress",
+    full_name="google.cloud.bigquery.storage.v1beta1.Progress",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="at_response_start",
+            full_name="google.cloud.bigquery.storage.v1beta1.Progress.at_response_start",
+            index=0,
+            number=1,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="at_response_end",
+            full_name="google.cloud.bigquery.storage.v1beta1.Progress.at_response_end",
+            index=1,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2137,
+    serialized_end=2199,
 )
 
 
@@ -684,8 +767,8 @@ _THROTTLESTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1783,
-    serialized_end=1825,
+    serialized_start=2201,
+    serialized_end=2243,
 )
 
 
@@ -803,8 +886,8 @@ _READROWSRESPONSE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1828,
-    serialized_end=2179,
+    serialized_start=2246,
+    serialized_end=2597,
 )
 
 
@@ -830,7 +913,7 @@ _BATCHCREATEREADSESSIONSTREAMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -848,7 +931,7 @@ _BATCHCREATEREADSESSIONSTREAMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -860,8 +943,8 @@ _BATCHCREATEREADSESSIONSTREAMSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2182,
-    serialized_end=2316,
+    serialized_start=2600,
+    serialized_end=2744,
 )
 
 
@@ -899,8 +982,8 @@ _BATCHCREATEREADSESSIONSTREAMSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2318,
-    serialized_end=2421,
+    serialized_start=2746,
+    serialized_end=2849,
 )
 
 
@@ -938,8 +1021,8 @@ _FINALIZESTREAMREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2423,
-    serialized_end=2509,
+    serialized_start=2851,
+    serialized_end=2937,
 )
 
 
@@ -995,8 +1078,8 @@ _SPLITREADSTREAMREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2511,
-    serialized_end=2625,
+    serialized_start=2939,
+    serialized_end=3053,
 )
 
 
@@ -1052,8 +1135,8 @@ _SPLITREADSTREAMRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2628,
-    serialized_end=2797,
+    serialized_start=3056,
+    serialized_end=3225,
 )
 
 _STREAMPOSITION.fields_by_name["stream"].message_type = _STREAM
@@ -1114,6 +1197,7 @@ _CREATEREADSESSIONREQUEST.fields_by_name[
     "sharding_strategy"
 ].enum_type = _SHARDINGSTRATEGY
 _READROWSREQUEST.fields_by_name["read_position"].message_type = _STREAMPOSITION
+_STREAMSTATUS.fields_by_name["progress"].message_type = _PROGRESS
 _READROWSRESPONSE.fields_by_name[
     "avro_rows"
 ].message_type = (
@@ -1152,6 +1236,7 @@ DESCRIPTOR.message_types_by_name["ReadSession"] = _READSESSION
 DESCRIPTOR.message_types_by_name["CreateReadSessionRequest"] = _CREATEREADSESSIONREQUEST
 DESCRIPTOR.message_types_by_name["ReadRowsRequest"] = _READROWSREQUEST
 DESCRIPTOR.message_types_by_name["StreamStatus"] = _STREAMSTATUS
+DESCRIPTOR.message_types_by_name["Progress"] = _PROGRESS
 DESCRIPTOR.message_types_by_name["ThrottleStatus"] = _THROTTLESTATUS
 DESCRIPTOR.message_types_by_name["ReadRowsResponse"] = _READROWSRESPONSE
 DESCRIPTOR.message_types_by_name[
@@ -1263,19 +1348,18 @@ CreateReadSessionRequest = _reflection.GeneratedProtocolMessageType(
           indicating the project this ReadSession is associated with.
           This is the project that will be billed for usage.
       table_modifiers:
-          Optional. Any modifiers to the Table (e.g. snapshot
-          timestamp).
+          Any modifiers to the Table (e.g. snapshot timestamp).
       requested_streams:
-          Optional. Initial number of streams. If unset or 0, we will
-          provide a value of streams so as to produce reasonable
-          throughput. Must be non-negative. The number of streams may be
-          lower than the requested number, depending on the amount
-          parallelism that is reasonable for the table and the maximum
-          amount of parallelism allowed by the system.  Streams must be
-          read starting from offset 0.
+          Initial number of streams. If unset or 0, we will provide a
+          value of streams so as to produce reasonable throughput. Must
+          be non-negative. The number of streams may be lower than the
+          requested number, depending on the amount parallelism that is
+          reasonable for the table and the maximum amount of parallelism
+          allowed by the system.  Streams must be read starting from
+          offset 0.
       read_options:
-          Optional. Read options for this session (e.g. column
-          selection, filters).
+          Read options for this session (e.g. column selection,
+          filters).
       format:
           Data output format. Currently default to Avro.
       sharding_strategy:
@@ -1331,6 +1415,10 @@ StreamStatus = _reflection.GeneratedProtocolMessageType(
           progress through the pre-filtering rows.  This value is only
           populated for sessions created through the BALANCED sharding
           strategy.
+      progress:
+          Represents the progress of the current stream.  Note: This
+          value is under development and should not be used. Use
+          ``fraction_consumed`` instead.
       is_splittable:
           Whether this stream can be split. For sessions that use the
           LIQUID sharding strategy, this value is always false. For
@@ -1343,6 +1431,36 @@ StreamStatus = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(StreamStatus)
+
+Progress = _reflection.GeneratedProtocolMessageType(
+    "Progress",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PROGRESS,
+        __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
+        __doc__="""Protocol buffer.
+
+  Attributes:
+      at_response_start:
+          The fraction of rows assigned to the stream that have been
+          processed by the server so far, not including the rows in the
+          current response message.  This value, along with
+          ``at_response_end``, can be used to interpolate the progress
+          made as the rows in the message are being processed using the
+          following formula: ``at_response_start + (at_response_end -
+          at_response_start) * rows_processed_from_response /
+          rows_in_response``.  Note that if a filter is provided, the
+          ``at_response_end`` value of the previous response may not
+          necessarily be equal to the ``at_response_start`` value of the
+          current response.
+      at_response_end:
+          Similar to ``at_response_start``, except that this value
+          includes the rows in the current response.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.storage.v1beta1.Progress)
+    ),
+)
+_sym_db.RegisterMessage(Progress)
 
 ThrottleStatus = _reflection.GeneratedProtocolMessageType(
     "ThrottleStatus",
@@ -1513,6 +1631,15 @@ _sym_db.RegisterMessage(SplitReadStreamResponse)
 
 
 DESCRIPTOR._options = None
+_STREAM._options = None
+_READSESSION._options = None
+_CREATEREADSESSIONREQUEST.fields_by_name["table_reference"]._options = None
+_CREATEREADSESSIONREQUEST.fields_by_name["parent"]._options = None
+_READROWSREQUEST.fields_by_name["read_position"]._options = None
+_BATCHCREATEREADSESSIONSTREAMSREQUEST.fields_by_name["session"]._options = None
+_BATCHCREATEREADSESSIONSTREAMSREQUEST.fields_by_name[
+    "requested_streams"
+]._options = None
 
 _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
     name="BigQueryStorage",
@@ -1520,10 +1647,10 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=_b(
-        "\312A\036bigquerystorage.googleapis.com\322AWhttps://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/cloud-platform"
+        "\312A\036bigquerystorage.googleapis.com\322A\211\001https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=2945,
-    serialized_end=4165,
+    serialized_start=3373,
+    serialized_end=4760,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateReadSession",
@@ -1533,7 +1660,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             input_type=_CREATEREADSESSIONREQUEST,
             output_type=_READSESSION,
             serialized_options=_b(
-                '\202\323\344\223\002w"0/v1beta1/{table_reference.project_id=projects/*}:\001*Z@";/v1beta1/{table_reference.dataset_id=projects/*/datasets/*}:\001*'
+                '\202\323\344\223\002w"0/v1beta1/{table_reference.project_id=projects/*}:\001*Z@";/v1beta1/{table_reference.dataset_id=projects/*/datasets/*}:\001*\332A(table_reference,parent,requested_streams'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1544,7 +1671,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             input_type=_READROWSREQUEST,
             output_type=_READROWSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002;\0229/v1beta1/{read_position.stream.name=projects/*/streams/*}"
+                "\202\323\344\223\002;\0229/v1beta1/{read_position.stream.name=projects/*/streams/*}\332A\rread_position"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1555,7 +1682,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             input_type=_BATCHCREATEREADSESSIONSTREAMSREQUEST,
             output_type=_BATCHCREATEREADSESSIONSTREAMSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\0022"-/v1beta1/{session.name=projects/*/sessions/*}:\001*'
+                '\202\323\344\223\0022"-/v1beta1/{session.name=projects/*/sessions/*}:\001*\332A\031session,requested_streams'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1566,7 +1693,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             input_type=_FINALIZESTREAMREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\0020"+/v1beta1/{stream.name=projects/*/streams/*}:\001*'
+                '\202\323\344\223\0020"+/v1beta1/{stream.name=projects/*/streams/*}:\001*\332A\006stream'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1577,7 +1704,7 @@ _BIGQUERYSTORAGE = _descriptor.ServiceDescriptor(
             input_type=_SPLITREADSTREAMREQUEST,
             output_type=_SPLITREADSTREAMRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0026\0224/v1beta1/{original_stream.name=projects/*/streams/*}"
+                "\202\323\344\223\0026\0224/v1beta1/{original_stream.name=projects/*/streams/*}\332A\017original_stream"
             ),
         ),
     ],
