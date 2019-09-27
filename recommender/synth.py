@@ -28,9 +28,10 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "recommender", version
+        "recommender", version,
+        include_protos=True
     )
-    s.move(library, excludes=['nox.py'])
+    s.move(library, excludes=['nox.py', 'docs/index.rst', 'README.rst', 'setup.py'])
 
 # ----------------------------------------------------------------------------
 # Add templated files
