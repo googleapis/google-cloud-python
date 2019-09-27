@@ -10,14 +10,14 @@
 
 
 ### Implementation Changes
-- Set default stream ACK deadline to subscriptions' ([#9268](https://github.com/googleapis/google-cloud-python/pull/9268))
+- Set default stream ACK deadline to subscriptions'. ([#9268](https://github.com/googleapis/google-cloud-python/pull/9268))
 
 ### Documentation
-- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
-- Link to correct TimeoutError in futures docs ([#9216](https://github.com/googleapis/google-cloud-python/pull/9216))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Link to correct TimeoutError in futures docs. ([#9216](https://github.com/googleapis/google-cloud-python/pull/9216))
 
 ### Internal / Testing Changes
-- Adjust messaging RPC timeout settings (via synth)
+- Adjust messaging RPC timeout settings (via synth). [#9279](https://github.com/googleapis/google-cloud-python/pull/9279)
 
 ## 1.0.0
 
