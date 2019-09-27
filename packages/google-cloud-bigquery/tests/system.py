@@ -431,6 +431,54 @@ class TestBigQuery(unittest.TestCase):
         )
         self.assertGreater(len(list(iterator)), 0)
 
+    def test_listing_scripting_jobs(self):
+        # run an SQL script
+        sql_script = """
+            -- Declare a variable to hold names as an array.
+            DECLARE top_names ARRAY<STRING>;
+
+            -- Build an array of the top 100 names from the year 2017.
+            SET top_names = (
+            SELECT ARRAY_AGG(name ORDER BY number DESC LIMIT 100)
+            FROM `bigquery-public-data.usa_names.usa_1910_current`
+            WHERE year = 2017
+            );
+
+            -- Which names appear as words in Shakespeare's plays?
+            SELECT
+            name AS shakespeare_name
+            FROM UNNEST(top_names) AS name
+            WHERE name IN (
+            SELECT word
+            FROM `bigquery-public-data.samples.shakespeare`
+            );
+        """
+        test_start = datetime.datetime.utcnow()
+        query_job = Config.CLIENT.query(sql_script, project=Config.CLIENT.project)
+        query_job.result()
+
+        # fetch jobs created by the SQL script, sort them into parent and
+        # child jobs
+        script_jobs = list(Config.CLIENT.list_jobs(min_creation_time=test_start))
+
+        parent_jobs = []
+        child_jobs = []
+
+        for job in script_jobs:
+            if job.num_child_jobs > 0:
+                parent_jobs.append(job)
+            else:
+                child_jobs.append(job)
+
+        assert len(parent_jobs) == 1  # also implying num_child_jobs > 0
+        assert len(child_jobs) == parent_jobs[0].num_child_jobs
+
+        # fetch jobs using the parent job filter, verify that results are as expected
+        fetched_jobs = list(Config.CLIENT.list_jobs(parent_job=parent_jobs[0]))
+        assert sorted(job.job_id for job in fetched_jobs) == sorted(
+            job.job_id for job in child_jobs
+        )
+
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id("update_table"))
 

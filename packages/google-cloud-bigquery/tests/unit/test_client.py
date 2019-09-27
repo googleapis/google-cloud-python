@@ -2952,6 +2952,24 @@ class TestClient(unittest.TestCase):
             },
         )
 
+    def test_list_jobs_w_parent_job_filter(self):
+        from google.cloud.bigquery import job
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection({}, {})
+
+        parent_job_args = ["parent-job-123", job._AsyncJob("parent-job-123", client)]
+
+        for parent_job in parent_job_args:
+            list(client.list_jobs(parent_job=parent_job))
+            conn.api_request.assert_called_once_with(
+                method="GET",
+                path="/projects/%s/jobs" % self.PROJECT,
+                query_params={"projection": "full", "parentJobId": "parent-job-123"},
+            )
+            conn.api_request.reset_mock()
+
     def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob
 

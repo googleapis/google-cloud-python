@@ -1216,6 +1216,7 @@ class Client(ClientWithProject):
     def list_jobs(
         self,
         project=None,
+        parent_job=None,
         max_results=None,
         page_token=None,
         all_users=None,
@@ -1233,6 +1234,11 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving datasets. Defaults
                 to the client's project.
+            parent_job (Optional[Union[ \
+                :class:`~google.cloud.bigquery.job._AsyncJob`, \
+                str, \
+            ]]):
+                If set, retrieve only child jobs of the specified parent.
             max_results (int, optional):
                 Maximum number of jobs to return.
             page_token (str, optional):
@@ -1265,6 +1271,9 @@ class Client(ClientWithProject):
             google.api_core.page_iterator.Iterator:
                 Iterable of job instances.
         """
+        if isinstance(parent_job, job._AsyncJob):
+            parent_job = parent_job.job_id
+
         extra_params = {
             "allUsers": all_users,
             "stateFilter": state_filter,
@@ -1275,6 +1284,7 @@ class Client(ClientWithProject):
                 google.cloud._helpers._millis_from_datetime(max_creation_time)
             ),
             "projection": "full",
+            "parentJobId": parent_job,
         }
 
         extra_params = {
