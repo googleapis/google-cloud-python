@@ -433,6 +433,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
         start_rpc=manager._client.api.streaming_pull,
         initial_request=mock.ANY,
         should_recover=manager._should_recover,
+        should_terminate=manager._should_terminate,
         throttle_reopen=True,
     )
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
@@ -724,6 +725,23 @@ def test__should_recover_false():
     exc = TypeError("wahhhhhh")
 
     assert manager._should_recover(exc) is False
+
+
+def test__should_terminate_true():
+    manager = make_manager()
+
+    details = "Cancelled. Go away, before I taunt you a second time."
+    exc = exceptions.Cancelled(details)
+
+    assert manager._should_terminate(exc) is True
+
+
+def test__should_terminate_false():
+    manager = make_manager()
+
+    exc = TypeError("wahhhhhh")
+
+    assert manager._should_terminate(exc) is False
 
 
 @mock.patch("threading.Thread", autospec=True)

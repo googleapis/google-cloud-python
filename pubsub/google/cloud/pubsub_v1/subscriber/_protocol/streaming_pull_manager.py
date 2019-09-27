@@ -44,6 +44,7 @@ _RETRYABLE_STREAM_ERRORS = (
     exceptions.GatewayTimeout,
     exceptions.Aborted,
 )
+_TERMINATING_STREAM_ERRORS = (exceptions.Cancelled,)
 _MAX_LOAD = 1.0
 """The load threshold above which to pause the incoming message stream."""
 
@@ -394,6 +395,7 @@ class StreamingPullManager(object):
             start_rpc=self._client.api.streaming_pull,
             initial_request=get_initial_request,
             should_recover=self._should_recover,
+            should_terminate=self._should_terminate,
             throttle_reopen=True,
         )
         self._rpc.add_done_callback(self._on_rpc_done)
@@ -580,6 +582,26 @@ class StreamingPullManager(object):
             _LOGGER.info("Observed recoverable stream error %s", exception)
             return True
         _LOGGER.info("Observed non-recoverable stream error %s", exception)
+        return False
+
+    def _should_terminate(self, exception):
+        """Determine if an error on the RPC stream should be terminated.
+
+        If the exception is one of the terminating exceptions, this will signal
+        to the consumer thread that it should terminate.
+
+        This will cause the stream to exit when it returns :data:`True`.
+
+        Returns:
+            bool: Indicates if the caller should terminate or attempt recovery.
+            Will be :data:`True` if the ``exception`` is "acceptable", i.e.
+            in a list of terminating exceptions.
+        """
+        exception = _maybe_wrap_exception(exception)
+        if isinstance(exception, _TERMINATING_STREAM_ERRORS):
+            _LOGGER.info("Observed terminating stream error %s", exception)
+            return True
+        _LOGGER.info("Observed non-terminating stream error %s", exception)
         return False
 
     def _on_rpc_done(self, future):
