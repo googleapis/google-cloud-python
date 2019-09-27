@@ -561,6 +561,10 @@ class ResumableBidiRpc(BidiRpc):
     def recv(self):
         return self._recoverable(self._recv)
 
+    def close(self):
+        self._finalize(None)
+        super(ResumableBidiRpc, self).close()
+
     @property
     def is_active(self):
         """bool: True if this stream is currently open and active."""
@@ -698,7 +702,9 @@ class BackgroundConsumer(object):
             if self._thread is not None:
                 # Resume the thread to wake it up in case it is sleeping.
                 self.resume()
-                self._thread.join()
+                self._thread.join(1.0)
+                if self._thread.is_alive():
+                    _LOGGER.warning("Background thread did not exit.")
 
             self._thread = None
 
