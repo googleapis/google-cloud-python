@@ -1216,6 +1216,7 @@ class Client(ClientWithProject):
     def list_jobs(
         self,
         project=None,
+        parent_job=None,
         max_results=None,
         page_token=None,
         all_users=None,
@@ -1233,6 +1234,11 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving datasets. Defaults
                 to the client's project.
+            parent_job (Optional[Union[ \
+                :class:`~google.cloud.bigquery.job._AsyncJob`, \
+                str, \
+            ]]):
+                If set, retrieve only child jobs of the specified parent.
             max_results (int, optional):
                 Maximum number of jobs to return.
             page_token (str, optional):
@@ -1265,6 +1271,9 @@ class Client(ClientWithProject):
             google.api_core.page_iterator.Iterator:
                 Iterable of job instances.
         """
+        if isinstance(parent_job, job._AsyncJob):
+            parent_job = parent_job.job_id
+
         extra_params = {
             "allUsers": all_users,
             "stateFilter": state_filter,
@@ -1275,6 +1284,7 @@ class Client(ClientWithProject):
                 google.cloud._helpers._millis_from_datetime(max_creation_time)
             ),
             "projection": "full",
+            "parentJobId": parent_job,
         }
 
         extra_params = {
@@ -1644,6 +1654,22 @@ class Client(ClientWithProject):
             json_rows (Iterable[Dict[str, Any]]):
                 Row data to be inserted. Keys must match the table schema fields
                 and values must be JSON-compatible representations.
+
+                .. note::
+
+                    If your data is already a newline-delimited JSON string,
+                    it is best to wrap it into a file-like object and pass it
+                    to :meth:`~google.cloud.bigquery.client.Client.load_table_from_file`::
+
+                        import io
+                        from google.cloud import bigquery
+
+                        data = u'{"foo": "bar"}'
+                        data_as_file = io.StringIO(data)
+
+                        client = bigquery.Client()
+                        client.load_table_from_file(data_as_file, ...)
+
             destination (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \

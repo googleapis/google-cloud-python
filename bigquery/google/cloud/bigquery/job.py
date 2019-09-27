@@ -333,6 +333,31 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return _helpers._get_sub_prop(self._properties, ["jobReference", "jobId"])
 
     @property
+    def parent_job_id(self):
+        """Return the ID of the parent job.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics.FIELDS.parent_job_id
+
+        Returns:
+            Optional[str]
+        """
+        return _helpers._get_sub_prop(self._properties, ["statistics", "parentJobId"])
+
+    @property
+    def num_child_jobs(self):
+        """The number of child jobs executed.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics.FIELDS.num_child_jobs
+
+        Returns:
+            int
+        """
+        count = _helpers._get_sub_prop(self._properties, ["statistics", "numChildJobs"])
+        return int(count) if count is not None else 0
+
+    @property
     def project(self):
         """Project bound to the job.
 
@@ -2903,6 +2928,7 @@ class QueryJob(_AsyncJob):
             super(QueryJob, self)._begin(client=client, retry=retry)
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.query_job = self
             raise
 
     def result(
@@ -2945,6 +2971,7 @@ class QueryJob(_AsyncJob):
                 )
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.query_job = self
             raise
 
         # If the query job is complete but there are no query results, this was
