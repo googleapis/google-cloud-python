@@ -16,8 +16,6 @@
 - Add speaker diarization configuration support to VI (via synth). ([#9202](https://github.com/googleapis/google-cloud-python/pull/9202))
 - Add `SpeakerDiarizationConfig` to V1p1beta1, deprecate `enable_speaker_diarization` and `diarization_speaker_count` (via synth). ([#8795](https://github.com/googleapis/google-cloud-python/pull/8795))
 
-### Dependencies
-
 ### Documentation
 - Update docstrings (via synth). ([#9292](https://github.com/googleapis/google-cloud-python/pull/9292))
 - Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
