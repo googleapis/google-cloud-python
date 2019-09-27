@@ -8,7 +8,7 @@ Python Client for Recommender API (`Alpha`_)
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Recommender API: https://cloud.google.com/recommender
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/recommender/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/recommender/latest
 .. _Product Documentation:  https://cloud.google.com/recommender/docs
 
 Quick Start
