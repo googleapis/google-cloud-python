@@ -75,7 +75,9 @@ class TestEncryptionConfiguration(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         return EncryptionConfiguration
 
@@ -1118,7 +1120,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)

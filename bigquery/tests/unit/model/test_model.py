@@ -21,7 +21,7 @@ import pytest
 import google.cloud._helpers
 from google.cloud.bigquery_v2.gapic import enums
 
-KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
 
 @pytest.fixture
@@ -300,7 +300,7 @@ def test_replace_labels(object_under_test):
 
 
 def test_set_encryption_configuration(object_under_test):
-    from google.cloud.bigquery.table import EncryptionConfiguration
+    from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
     assert not object_under_test.encryption_configuration
     object_under_test.encryption_configuration = EncryptionConfiguration(

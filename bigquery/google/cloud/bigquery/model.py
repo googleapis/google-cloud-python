@@ -25,7 +25,7 @@ import google.cloud._helpers
 from google.api_core import datetime_helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery_v2 import types
-from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 class Model(object):
@@ -260,7 +260,7 @@ class Model(object):
 
     @property
     def encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the model.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`

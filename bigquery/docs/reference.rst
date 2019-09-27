@@ -88,7 +88,6 @@ Table
     table.TableReference
     table.Row
     table.RowIterator
-    table.EncryptionConfiguration
     table.TimePartitioning
     table.TimePartitioningType
 
@@ -173,6 +172,13 @@ Enums
 
     enums.StandardSqlDataTypes
 
+Encryption Configuration
+========================
+
+.. autosummary::
+    :toctree: generated
+
+    encryption_configuration.EncryptionConfiguration
 
 Additional Types
 ================
