@@ -36,7 +36,9 @@ def update_dataset_access(client, dataset_id):
     entries.append(entry)
     dataset.access_entries = entries
 
-    dataset = client.update_dataset(dataset, ["access_entries"])  # Make an API request.
+    dataset = client.update_dataset(
+        dataset, ["access_entries"]
+    )  # Make an API request.
 
     full_dataset_id = "{}.{}".format(dataset.project, dataset.dataset_id)
     print(
