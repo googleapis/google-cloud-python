@@ -39,7 +39,7 @@ def storage_get_started(client, to_delete):
     bucket = client.get_bucket("bucket-id-here")
     # Then do other things...
     blob = bucket.get_blob("/remote/path/to/file.txt")
-    assert blob.download_as_string() == "My old contents!"
+    assert blob.download_as_string() == b"My old contents!"
     blob.upload_from_string("New contents!")
     blob2 = bucket.blob("/remote/path/storage.txt")
     blob2.upload_from_filename(filename="/local/path.txt")
