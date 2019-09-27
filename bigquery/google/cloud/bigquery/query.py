@@ -26,11 +26,10 @@ from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
 class UDFResource(object):
     """Describe a single user-defined function (UDF) resource.
 
-    :type udf_type: str
-    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
+    Args:
+        udf_type (str): the type of the resource ('inlineCode' or 'resourceUri')
 
-    :type value: str
-    :param value: the inline code or resource URI.
+        value (str): the inline code or resource URI.
 
     See
     https://cloud.google.com/bigquery/user-defined-functions#api
@@ -57,10 +56,11 @@ class _AbstractQueryParameter(object):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-        :type resource: dict
-        :param resource: JSON mapping of parameter
+        Args:
+            resource (Dict): JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
+        Returns:
+            google.cloud.bigquery.query.ScalarQueryParameter
         """
         raise NotImplementedError
 
@@ -75,18 +75,18 @@ class _AbstractQueryParameter(object):
 class ScalarQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for scalar values.
 
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
+    Args:
+        name (Optional[str]):
+            Parameter name, used via ``@foo`` syntax.  If None, the
+            parameter can only be addressed via position (``?``).
 
-    :type type_: str
-    :param type_: name of parameter type.  One of 'STRING', 'INT64',
-                  'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
-                  'DATE'.
+        type_ (str):
+            name of parameter type.  One of 'STRING', 'INT64',
+            'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+            'DATE'.
 
-    :type value: str, int, float, :class:`decimal.Decimal`, bool,
-                 :class:`datetime.datetime`, or :class:`datetime.date`.
-    :param value: the scalar parameter value.
+        value (Union[str, int, float, decimal.Decimal, bool,
+                 datetime.datetime, datetime.date]): the scalar parameter value.
     """
 
     def __init__(self, name, type_, value):
@@ -98,19 +98,18 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     def positional(cls, type_, value):
         """Factory for positional paramater.
 
-        :type type_: str
-        :param type_:
-            name of parameter type.  One of 'STRING', 'INT64',
-            'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
-            'DATE'.
+        Args:
+            type_ (str):
+                name of parameter type.  One of 'STRING', 'INT64',
+                'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+                'DATE'.
 
-        :type value: str, int, float, :class:`decimal.Decimal`, bool,
-                     :class:`datetime.datetime`, or
-                     :class:`datetime.date`.
-        :param value: the scalar parameter value.
+            value (Union[str, int, float, decimal.Decimal, bool,
+                     datetime.datetime,
+                     datetime.date]): the scalar parameter value.
 
-        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
-        :returns: instance without name
+        Returns:
+            google.cloud.bigquery.query.ScalarQueryParameter: instance without name
         """
         return cls(None, type_, value)
 
@@ -118,11 +117,11 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-        :type resource: dict
-        :param resource: JSON mapping of parameter
+        Args:
+            resource (Dict): JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
-        :returns: instance
+        Returns:
+            google.cloud.bigquery.query.ScalarQueryParameter: instance
         """
         name = resource.get("name")
         type_ = resource["parameterType"]["type"]
@@ -140,8 +139,8 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     def to_api_repr(self):
         """Construct JSON API representation for the parameter.
 
-        :rtype: dict
-        :returns: JSON mapping
+        Returns:
+            Dict: JSON mapping
         """
         value = self.value
         converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
@@ -161,8 +160,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this
-                   :class:`~google.cloud.bigquery.query.ScalarQueryParameter`.
+            Tuple: The contents of this :class:`~google.cloud.bigquery.query.ScalarQueryParameter`.
         """
         return (self.name, self.type_.upper(), self.value)
 
@@ -181,17 +179,16 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 class ArrayQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for array values.
 
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
+    Args:
+        name (Optional[str]):
+            Parameter name, used via ``@foo`` syntax.  If None, the
+            parameter can only be addressed via position (``?``).
 
-    :type array_type: str
-    :param array_type:
-        name of type of array elements.  One of `'STRING'`, `'INT64'`,
-        `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+        array_type (str):
+            name of type of array elements.  One of `'STRING'`, `'INT64'`,
+            `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-    :type values: list of appropriate scalar type.
-    :param values: the parameter array values.
+        values (List[appropriate scalar type]): the parameter array values.
     """
 
     def __init__(self, name, array_type, values):
@@ -203,16 +200,15 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def positional(cls, array_type, values):
         """Factory for positional parameters.
 
-        :type array_type: str
-        :param array_type:
-            name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+        Args:
+            array_type (str):
+                name of type of array elements.  One of `'STRING'`, `'INT64'`,
+                `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-        :type values: list of appropriate scalar type
-        :param values: the parameter array values.
+            values (List[appropriate scalar type]): the parameter array values.
 
-        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
-        :returns: instance without name
+        Returns:
+            google.cloud.bigquery.query.ArrayQueryParameter: instance without name
         """
         return cls(None, array_type, values)
 
@@ -249,11 +245,11 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-        :type resource: dict
-        :param resource: JSON mapping of parameter
+        Args:
+            resource (Dict): JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
-        :returns: instance
+        Returns:
+            google.cloud.bigquery.query.ArrayQueryParameter: instance
         """
         array_type = resource["parameterType"]["arrayType"]["type"]
         if array_type == "STRUCT":
@@ -263,8 +259,8 @@ class ArrayQueryParameter(_AbstractQueryParameter):
     def to_api_repr(self):
         """Construct JSON API representation for the parameter.
 
-        :rtype: dict
-        :returns: JSON mapping
+        Returns:
+            Dict: JSON mapping
         """
         values = self.values
         if self.array_type == "RECORD" or self.array_type == "STRUCT":
@@ -291,8 +287,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this
-                   :class:`~google.cloud.bigquery.query.ArrayQueryParameter`.
+            Tuple: The contents of this :class:`~google.cloud.bigquery.query.ArrayQueryParameter`.
         """
         return (self.name, self.array_type.upper(), self.values)
 
@@ -311,15 +306,16 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 class StructQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for struct values.
 
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
+    Args:
+        name (Optional[str]):
+            Parameter name, used via ``@foo`` syntax.  If None, the
+            parameter can only be addressed via position (``?``).
 
-    :type sub_params:
-        tuple of :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
-        :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
-        :class:`~google.cloud.bigquery.query.StructQueryParameter`
-    :param sub_params: the sub-parameters for the struct
+        sub_params (Union[Tuple[
+            google.cloud.bigquery.query.ScalarQueryParameter,
+            google.cloud.bigquery.query.ArrayQueryParameter,
+            google.cloud.bigquery.query.StructQueryParameter
+        ]]): the sub-parameters for the struct
     """
 
     def __init__(self, name, *sub_params):
@@ -341,15 +337,15 @@ class StructQueryParameter(_AbstractQueryParameter):
     def positional(cls, *sub_params):
         """Factory for positional parameters.
 
-        :type sub_params:
-            tuple of
-            :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
-            :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
-            :class:`~google.cloud.bigquery.query.StructQueryParameter`
-        :param sub_params: the sub-parameters for the struct
+        Args:
+            sub_params (Union[Tuple[
+                google.cloud.bigquery.query.ScalarQueryParameter,
+                google.cloud.bigquery.query.ArrayQueryParameter,
+                google.cloud.bigquery.query.StructQueryParameter
+            ]]): the sub-parameters for the struct
 
-        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
-        :returns: instance without name
+        Returns:
+            google.cloud.bigquery.query.StructQueryParameter: instance without name
         """
         return cls(None, *sub_params)
 
@@ -357,11 +353,11 @@ class StructQueryParameter(_AbstractQueryParameter):
     def from_api_repr(cls, resource):
         """Factory: construct parameter from JSON resource.
 
-        :type resource: dict
-        :param resource: JSON mapping of parameter
+        Args:
+            resource (Dict): JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
-        :returns: instance
+        Returns:
+            google.cloud.bigquery.query.StructQueryParameter: instance
         """
         name = resource.get("name")
         instance = cls(name)
@@ -397,8 +393,8 @@ class StructQueryParameter(_AbstractQueryParameter):
     def to_api_repr(self):
         """Construct JSON API representation for the parameter.
 
-        :rtype: dict
-        :returns: JSON mapping
+        Returns:
+            Dict: JSON mapping
         """
         s_types = {}
         values = {}
@@ -432,8 +428,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this
-                   :class:`~google.cloud.biquery.ArrayQueryParameter`.
+            Tuple: The contents of this :class:`~google.cloud.biquery.ArrayQueryParameter`.
         """
         return (self.name, self.struct_types, self.struct_values)
 
@@ -468,8 +463,8 @@ class _QueryResults(object):
     def project(self):
         """Project bound to the query job.
 
-        :rtype: str
-        :returns: the project that the query job is associated with.
+        Returns:
+            str: The project that the query job is associated with.
         """
         return self._properties.get("jobReference", {}).get("projectId")
 
@@ -480,9 +475,10 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#cacheHit
 
-        :rtype: bool or ``NoneType``
-        :returns: True if the query results were served from cache (None
-                  until set by the server).
+        Returns:
+            Optional[bool]:
+                True if the query results were served from cache (None
+                until set by the server).
         """
         return self._properties.get("cacheHit")
 
@@ -493,9 +489,10 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobComplete
 
-        :rtype: bool or ``NoneType``
-        :returns: True if the query completed on the server (None
-                  until set by the server).
+        Returns:
+            Optional[bool]:
+                True if the query completed on the server (None
+                until set by the server).
         """
         return self._properties.get("jobComplete")
 
@@ -506,9 +503,10 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#errors
 
-        :rtype: list of mapping, or ``NoneType``
-        :returns: Mappings describing errors generated on the server (None
-                  until set by the server).
+        Returns:
+            Optional[List[Mapping]]:
+                Mappings describing errors generated on the server (None
+                until set by the server).
         """
         return self._properties.get("errors")
 
@@ -519,8 +517,8 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobReference
 
-        :rtype: string
-        :returns: Job ID of the query job.
+        Returns:
+            str: Job ID of the query job.
         """
         return self._properties.get("jobReference", {}).get("jobId")
 
@@ -531,8 +529,8 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#pageToken
 
-        :rtype: str, or ``NoneType``
-        :returns: Token generated on the server (None until set by the server).
+        Returns:
+            Optional[str]: Token generated on the server (None until set by the server).
         """
         return self._properties.get("pageToken")
 
@@ -543,8 +541,8 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalRows
 
-        :rtype: int, or ``NoneType``
-        :returns: Count generated on the server (None until set by the server).
+        Returns:
+            Optional[int}: Count generated on the server (None until set by the server).
         """
         total_rows = self._properties.get("totalRows")
         if total_rows is not None:
@@ -557,8 +555,8 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalBytesProcessed
 
-        :rtype: int, or ``NoneType``
-        :returns: Count generated on the server (None until set by the server).
+        Returns:
+            Optional[int]: Count generated on the server (None until set by the server).
         """
         total_bytes_processed = self._properties.get("totalBytesProcessed")
         if total_bytes_processed is not None:
@@ -571,8 +569,8 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#numDmlAffectedRows
 
-        :rtype: int, or ``NoneType``
-        :returns: Count generated on the server (None until set by the server).
+        Returns:
+            Optional[int]: Count generated on the server (None until set by the server).
         """
         num_dml_affected_rows = self._properties.get("numDmlAffectedRows")
         if num_dml_affected_rows is not None:
@@ -585,8 +583,9 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows
 
-        :rtype: list of :class:`~google.cloud.bigquery.table.Row`
-        :returns: fields describing the schema (None until set by the server).
+        Returns:
+            Optional[List[google.cloud.bigquery.table.Row]]:
+                Fields describing the schema (None until set by the server).
         """
         return _rows_from_json(self._properties.get("rows", ()), self.schema)
 
@@ -597,16 +596,17 @@ class _QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#schema
 
-        :rtype: list of :class:`SchemaField`, or ``NoneType``
-        :returns: fields describing the schema (None until set by the server).
+        Returns:
+            Optional[List[SchemaField]]:
+                Fields describing the schema (None until set by the server).
         """
         return _parse_schema_resource(self._properties.get("schema", {}))
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: dict
-        :param api_response: response returned from an API call
+        Args:
+            api_response (Dict): response returned from an API call
         """
         job_id_present = (
             "jobReference" in api_response
