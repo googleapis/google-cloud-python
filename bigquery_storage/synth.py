@@ -117,6 +117,13 @@ s.replace(
     r"google.api_core.grpc_helpers.create_channel\(",
     "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",
 )
+
+# Fix up proto docs that are missing summary line.
+s.replace(
+    "google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py",
+    '"""Attributes:',
+    '"""Protocol buffer.\n\n  Attributes:',
+)
 # END: Ignore lint and coverage
 
 # ----------------------------------------------------------------------------
