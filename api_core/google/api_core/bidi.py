@@ -702,6 +702,8 @@ class BackgroundConsumer(object):
             if self._thread is not None:
                 # Resume the thread to wake it up in case it is sleeping.
                 self.resume()
+                # The daemonized thread may itself block, so don't wait
+                # for it longer than a second.
                 self._thread.join(1.0)
                 if self._thread.is_alive():
                     _LOGGER.warning("Background thread did not exit.")
