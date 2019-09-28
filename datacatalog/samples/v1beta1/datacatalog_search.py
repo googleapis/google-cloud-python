@@ -52,9 +52,10 @@ def sample_search_catalog(include_project_id, include_gcp_public_datasets, query
         "include_project_ids": include_project_ids,
         "include_gcp_public_datasets": include_gcp_public_datasets,
     }
+    order_by = ""
 
     # Iterate over all results
-    for response_item in client.search_catalog(scope, query):
+    for response_item in client.search_catalog(scope, query, order_by):
         print(
             u"Result type: {}".format(
                 enums.SearchResultType(response_item.search_result_type).name

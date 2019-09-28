@@ -28,10 +28,35 @@ class DataCatalogStub(object):
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.SearchCatalogRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.SearchCatalogResponse.FromString,
         )
+        self.CreateEntryGroup = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/CreateEntryGroup",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryGroupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.FromString,
+        )
+        self.GetEntryGroup = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/GetEntryGroup",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.GetEntryGroupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.FromString,
+        )
+        self.DeleteEntryGroup = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/DeleteEntryGroup",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryGroupRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.CreateEntry = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/CreateEntry",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.FromString,
+        )
         self.UpdateEntry = channel.unary_unary(
             "/google.cloud.datacatalog.v1beta1.DataCatalog/UpdateEntry",
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.UpdateEntryRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.FromString,
+        )
+        self.DeleteEntry = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/DeleteEntry",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.GetEntry = channel.unary_unary(
             "/google.cloud.datacatalog.v1beta1.DataCatalog/GetEntry",
@@ -132,7 +157,7 @@ class DataCatalogServicer(object):
     This is a custom method
     (https://cloud.google.com/apis/design/custom_methods) and does not return
     the complete resource, only the resource identifier and high level
-    fields. Clients can subsequentally call Get methods.
+    fields. Clients can subsequentally call `Get` methods.
 
     Note that searches do not have full recall. There may be results that match
     your query but are not returned, even in subsequent pages of results. These
@@ -146,8 +171,65 @@ class DataCatalogServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def CreateEntryGroup(self, request, context):
+        """Alpha feature.
+    Creates an EntryGroup.
+    The user should enable the Data Catalog API in the project identified by
+    the `parent` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetEntryGroup(self, request, context):
+        """Alpha feature.
+    Gets an EntryGroup.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteEntryGroup(self, request, context):
+        """Alpha feature.
+    Deletes an EntryGroup. Only entry groups that do not contain entries can be
+    deleted. The user should enable the Data Catalog API in the project
+    identified by the `name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def CreateEntry(self, request, context):
+        """Alpha feature.
+    Creates an entry. Currently only entries of 'FILESET' type can be created.
+    The user should enable the Data Catalog API in the project identified by
+    the `parent` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def UpdateEntry(self, request, context):
         """Updates an existing entry.
+    The user should enable the Data Catalog API in the project identified by
+    the `entry.name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteEntry(self, request, context):
+        """Alpha feature.
+    Deletes an existing entry. Only entries created through
+    [CreateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.CreateEntry]
+    method can be deleted.
+    The user should enable the Data Catalog API in the project identified by
+    the `name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -170,7 +252,10 @@ class DataCatalogServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def CreateTagTemplate(self, request, context):
-        """Creates a tag template.
+        """Creates a tag template. The user should enable the Data Catalog API in
+    the project identified by the `parent` parameter (see [Data Catalog
+    Resource Project](/data-catalog/docs/concepts/resource-project) for more
+    information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -187,6 +272,9 @@ class DataCatalogServicer(object):
         """Updates a tag template. This method cannot be used to update the fields of
     a template. The tag template fields are represented as separate resources
     and should be updated using their own create/update/delete methods.
+    The user should enable the Data Catalog API in the project identified by
+    the `tag_template.name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -194,13 +282,20 @@ class DataCatalogServicer(object):
 
     def DeleteTagTemplate(self, request, context):
         """Deletes a tag template and all tags using the template.
+    The user should enable the Data Catalog API in the project identified by
+    the `name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateTagTemplateField(self, request, context):
-        """Creates a field in a tag template.
+        """Creates a field in a tag template. The user should enable the Data Catalog
+    API in the project identified by the `parent` parameter (see
+    [Data Catalog Resource
+    Project](/data-catalog/docs/concepts/resource-project) for more
+    information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -208,14 +303,19 @@ class DataCatalogServicer(object):
 
     def UpdateTagTemplateField(self, request, context):
         """Updates a field in a tag template. This method cannot be used to update the
-    field type.
+    field type. The user should enable the Data Catalog API in the project
+    identified by the `name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def RenameTagTemplateField(self, request, context):
-        """Renames a field in a tag template.
+        """Renames a field in a tag template. The user should enable the Data Catalog
+    API in the project identified by the `name` parameter (see [Data Catalog
+    Resource Project](/data-catalog/docs/concepts/resource-project) for more
+    information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -223,6 +323,9 @@ class DataCatalogServicer(object):
 
     def DeleteTagTemplateField(self, request, context):
         """Deletes a field in a tag template and all uses of that field.
+    The user should enable the Data Catalog API in the project identified by
+    the `name` parameter (see [Data Catalog Resource Project]
+    (/data-catalog/docs/concepts/resource-project) for more information).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -230,6 +333,12 @@ class DataCatalogServicer(object):
 
     def CreateTag(self, request, context):
         """Creates a tag on an [Entry][google.cloud.datacatalog.v1beta1.Entry].
+    Note: The project identified by the `parent` parameter for the
+    [tag](/data-catalog/docs/reference/rest/v1beta1/projects.locations.entryGroups.entries.tags/create#path-parameters)
+    and the
+    [tag
+    template](/data-catalog/docs/reference/rest/v1beta1/projects.locations.tagTemplates/create#path-parameters)
+    used to create the tag must be from the same organization.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -261,12 +370,17 @@ class DataCatalogServicer(object):
     policy.
     Supported resources are:
     - Tag templates.
+    - Entries.
+    - Entry groups.
     Note, this method cannot be used to manage policies for BigQuery, Cloud
     Pub/Sub and any external Google Cloud Platform resources synced to Cloud
     Data Catalog.
 
     Callers must have following Google IAM permission
-    `datacatalog.tagTemplates.setIamPolicy` to set policies on tag templates.
+    - `datacatalog.tagTemplates.setIamPolicy` to set policies on tag
+    templates.
+    - `datacatalog.entries.setIamPolicy` to set policies on entries.
+    - `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -279,12 +393,17 @@ class DataCatalogServicer(object):
 
     Supported resources are:
     - Tag templates.
+    - Entries.
+    - Entry groups.
     Note, this method cannot be used to manage policies for BigQuery, Cloud
     Pub/Sub and any external Google Cloud Platform resources synced to Cloud
     Data Catalog.
 
     Callers must have following Google IAM permission
-    `datacatalog.tagTemplates.getIamPolicy` to get policies on tag templates.
+    - `datacatalog.tagTemplates.getIamPolicy` to get policies on tag
+    templates.
+    - `datacatalog.entries.getIamPolicy` to get policies on entries.
+    - `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -295,8 +414,10 @@ class DataCatalogServicer(object):
     If the resource does not exist, an empty set of permissions is returned
     (We don't return a `NOT_FOUND` error).
 
-    Supported resource are:
-    - tag templates.
+    Supported resources are:
+    - Tag templates.
+    - Entries.
+    - Entry groups.
     Note, this method cannot be used to manage policies for BigQuery, Cloud
     Pub/Sub and any external Google Cloud Platform resources synced to Cloud
     Data Catalog.
@@ -316,10 +437,35 @@ def add_DataCatalogServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.SearchCatalogRequest.FromString,
             response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.SearchCatalogResponse.SerializeToString,
         ),
+        "CreateEntryGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.CreateEntryGroup,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryGroupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.SerializeToString,
+        ),
+        "GetEntryGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.GetEntryGroup,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.GetEntryGroupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.SerializeToString,
+        ),
+        "DeleteEntryGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteEntryGroup,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryGroupRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "CreateEntry": grpc.unary_unary_rpc_method_handler(
+            servicer.CreateEntry,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.SerializeToString,
+        ),
         "UpdateEntry": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateEntry,
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.UpdateEntryRequest.FromString,
             response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.SerializeToString,
+        ),
+        "DeleteEntry": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteEntry,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "GetEntry": grpc.unary_unary_rpc_method_handler(
             servicer.GetEntry,
