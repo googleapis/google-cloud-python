@@ -599,6 +599,7 @@ class GroupServiceClient(object):
     def delete_group(
         self,
         name,
+        recursive=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -618,6 +619,9 @@ class GroupServiceClient(object):
         Args:
             name (str): The group to delete. The format is
                 ``"projects/{project_id_or_number}/groups/{group_id}"``.
+            recursive (bool): If this field is true, then the request means to delete a group with all
+                its descendants. Otherwise, the request means to delete a group only when
+                it has no descendants. The default value is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -648,7 +652,7 @@ class GroupServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = group_service_pb2.DeleteGroupRequest(name=name)
+        request = group_service_pb2.DeleteGroupRequest(name=name, recursive=recursive)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
