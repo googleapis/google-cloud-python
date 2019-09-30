@@ -50,6 +50,13 @@ _MAX_LOAD = 1.0
 _RESUME_THRESHOLD = 0.8
 """The load threshold below which to resume the incoming message stream."""
 
+_DEFAULT_STREAM_ACK_DEADLINE = 60
+"""The default message acknowledge deadline in seconds for incoming message stream.
+
+This default deadline is dynamically modified for the messages that are added
+to the lease management.
+"""
+
 
 def _maybe_wrap_exception(exception):
     """Wraps a gRPC exception class, if needed."""
@@ -384,8 +391,17 @@ class StreamingPullManager(object):
         )
 
         # Create the RPC
-        subscription = self._client.api.get_subscription(self._subscription)
-        stream_ack_deadline_seconds = subscription.ack_deadline_seconds
+
+        # We must use a fixed value for the ACK deadline, as we cannot read it
+        # from the subscription. The latter would require `pubsub.subscriptions.get`
+        # permission, which is not granted to the default subscriber role
+        # `roles/pubsub.subscriber`.
+        # See also https://github.com/googleapis/google-cloud-python/issues/9339
+        #
+        # When dynamic lease management is enabled for the "on hold" messages,
+        # the default stream ACK deadline should again be set based on the
+        # historic ACK timing data, i.e. `self.ack_histogram.percentile(99)`.
+        stream_ack_deadline_seconds = _DEFAULT_STREAM_ACK_DEADLINE
 
         get_initial_request = functools.partial(
             self._get_initial_request, stream_ack_deadline_seconds

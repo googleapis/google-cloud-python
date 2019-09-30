@@ -381,6 +381,10 @@ class TestStreamingPull(object):
         with pytest.raises(CallbackError):
             future.result(timeout=30)
 
+    @pytest.mark.xfail(
+        reason="The default stream ACK deadline is static and received messages "
+        "exceeding FlowControl.max_messages are currently not lease managed."
+    )
     def test_streaming_pull_ack_deadline(
         self, publisher, subscriber, project, topic_path, subscription_path, cleanup
     ):
@@ -395,7 +399,7 @@ class TestStreamingPull(object):
         # Subscribe to the topic. This must happen before the messages
         # are published.
         subscriber.create_subscription(
-            subscription_path, topic_path, ack_deadline_seconds=60
+            subscription_path, topic_path, ack_deadline_seconds=240
         )
 
         # publish some messages and wait for completion
@@ -403,7 +407,7 @@ class TestStreamingPull(object):
 
         # subscribe to the topic
         callback = StreamingPullCallback(
-            processing_time=15,  # more than the default ACK deadline of 10 seconds
+            processing_time=70,  # more than the default stream ACK deadline (60s)
             resolve_at_msg_count=3,  # one more than the published messages count
         )
         flow_control = types.FlowControl(max_messages=1)
@@ -411,13 +415,13 @@ class TestStreamingPull(object):
             subscription_path, callback, flow_control=flow_control
         )
 
-        # We expect to process the first two messages in 2 * 15 seconds, and
+        # We expect to process the first two messages in 2 * 70 seconds, and
         # any duplicate message that is re-sent by the backend in additional
-        # 15 seconds, totalling 45 seconds (+ overhead) --> if there have been
-        # no duplicates in 60 seconds, we can reasonably assume that there
+        # 70 seconds, totalling 210 seconds (+ overhead) --> if there have been
+        # no duplicates in 240 seconds, we can reasonably assume that there
         # won't be any.
         try:
-            callback.done_future.result(timeout=60)
+            callback.done_future.result(timeout=240)
         except exceptions.TimeoutError:
             # future timed out, because we received no excessive messages
             assert sorted(callback.seen_message_ids) == [1, 2]
