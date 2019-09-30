@@ -18,6 +18,7 @@ import requests
 
 from google.cloud import speech_v1
 
+
 class TestSystemSpeech(object):
     def test_recognize(self):
 
