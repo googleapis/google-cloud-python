@@ -80,13 +80,14 @@ class TestTranslationServiceClient(object):
         # Setup Request
         contents = []
         target_language_code = "targetLanguageCode1323228230"
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
-        response = client.translate_text(contents, target_language_code)
+        response = client.translate_text(contents, target_language_code, parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = translation_service_pb2.TranslateTextRequest(
-            contents=contents, target_language_code=target_language_code
+            contents=contents, target_language_code=target_language_code, parent=parent
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -102,9 +103,10 @@ class TestTranslationServiceClient(object):
         # Setup request
         contents = []
         target_language_code = "targetLanguageCode1323228230"
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
 
         with pytest.raises(CustomException):
-            client.translate_text(contents, target_language_code)
+            client.translate_text(contents, target_language_code, parent)
 
     def test_detect_language(self):
         # Setup Expected Response
@@ -120,11 +122,14 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
-        response = client.detect_language()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.detect_language(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = translation_service_pb2.DetectLanguageRequest()
+        expected_request = translation_service_pb2.DetectLanguageRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -136,8 +141,11 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
         with pytest.raises(CustomException):
-            client.detect_language()
+            client.detect_language(parent)
 
     def test_get_supported_languages(self):
         # Setup Expected Response
@@ -153,11 +161,16 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
-        response = client.get_supported_languages()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.get_supported_languages(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = translation_service_pb2.GetSupportedLanguagesRequest()
+        expected_request = translation_service_pb2.GetSupportedLanguagesRequest(
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -169,8 +182,11 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
         with pytest.raises(CustomException):
-            client.get_supported_languages()
+            client.get_supported_languages(parent)
 
     def test_batch_translate_text(self):
         # Setup Expected Response
@@ -198,19 +214,25 @@ class TestTranslationServiceClient(object):
             client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         source_language_code = "sourceLanguageCode1687263568"
         target_language_codes = []
         input_configs = []
         output_config = {}
 
         response = client.batch_translate_text(
-            source_language_code, target_language_codes, input_configs, output_config
+            parent,
+            source_language_code,
+            target_language_codes,
+            input_configs,
+            output_config,
         )
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = translation_service_pb2.BatchTranslateTextRequest(
+            parent=parent,
             source_language_code=source_language_code,
             target_language_codes=target_language_codes,
             input_configs=input_configs,
@@ -235,13 +257,18 @@ class TestTranslationServiceClient(object):
             client = translate_v3beta1.TranslationServiceClient()
 
         # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
         source_language_code = "sourceLanguageCode1687263568"
         target_language_codes = []
         input_configs = []
         output_config = {}
 
         response = client.batch_translate_text(
-            source_language_code, target_language_codes, input_configs, output_config
+            parent,
+            source_language_code,
+            target_language_codes,
+            input_configs,
+            output_config,
         )
         exception = response.exception()
         assert exception.errors[0] == error
@@ -322,14 +349,17 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
-        paged_list_response = client.list_glossaries()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_glossaries(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
         assert expected_response.glossaries[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = translation_service_pb2.ListGlossariesRequest()
+        expected_request = translation_service_pb2.ListGlossariesRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -340,7 +370,10 @@ class TestTranslationServiceClient(object):
             create_channel.return_value = channel
             client = translate_v3beta1.TranslationServiceClient()
 
-        paged_list_response = client.list_glossaries()
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_glossaries(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
 
