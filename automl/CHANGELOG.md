@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.6.0
+
+09-30-2019 10:40 PDT
+
+### New Features
+- Add 'image_classification_model_deployment_metadata' arg to 'AutoMlClient.deploy_model' (via synth). ([#9291](https://github.com/googleapis/google-cloud-python/pull/9291))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+
+### Internal / Testing Changes
+- Preserve GcsClient, 'pandas' extras in testing (via synth). ([#9179](https://github.com/googleapis/google-cloud-python/pull/9179))
+
 ## 0.5.0
 
 08-28-2019 14:07 PDT
