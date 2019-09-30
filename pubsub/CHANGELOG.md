@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 1.0.2
+
+09-30-2019 11:57 PDT
+
+
+### Implementation Changes
+
+- fix(pubsub): streaming pull shouldn't need subscriptions.get permission ([#9360](https://github.com/googleapis/google-cloud-python/pull/9360))
+
 ## 1.0.1
 
 09-27-2019 07:01 PDT
