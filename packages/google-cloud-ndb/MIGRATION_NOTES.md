@@ -62,7 +62,7 @@ client = ndb.Client()
 # Assume REDIS_CACHE_URL is set in environment (or not).
 # If left unset, this will return `None`, which effectively allows you to turn
 # global cache on or off using the environment.
-global_cache = ndb.RedisCache().from_environment()
+global_cache = ndb.RedisCache.from_environment()
 
 with client.context(global_cache=global_cache) as context:
     do_stuff_with_ndb()
