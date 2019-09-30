@@ -67,16 +67,19 @@ class TestClient(unittest.TestCase):
     def test_ctor_explicit(self):
         credentials = _make_credentials()
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             service=self.SERVICE,
             version=self.VERSION,
             client_info=client_info,
+            client_options=client_options,
         )
         self.assertEqual(client.service, self.SERVICE)
         self.assertEqual(client.version, self.VERSION)
         self.assertIs(client._client_info, client_info)
+        self.assertIs(client._client_options, client_options)
 
     def test_report_errors_api_already(self):
         credentials = _make_credentials()
@@ -87,11 +90,13 @@ class TestClient(unittest.TestCase):
     def test_report_errors_api_wo_grpc(self):
         credentials = _make_credentials()
         client_info = mock.Mock()
+        client_options = mock.Mock()
         http = mock.Mock()
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             client_info=client_info,
+            client_options=client_options,
             _http=http,
             _use_grpc=False,
         )
@@ -103,7 +108,9 @@ class TestClient(unittest.TestCase):
             api = client.report_errors_api
 
         self.assertIs(api, patched.return_value)
-        patched.assert_called_once_with(self.PROJECT, credentials, http, client_info)
+        patched.assert_called_once_with(
+            self.PROJECT, credentials, http, client_info, client_options
+        )
 
     def test_report_errors_api_w_grpc(self):
         credentials = _make_credentials()

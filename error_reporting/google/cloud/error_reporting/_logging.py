@@ -54,11 +54,27 @@ class _ErrorReportingLoggingAPI(object):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
     """
 
-    def __init__(self, project, credentials=None, _http=None, client_info=None):
+    def __init__(
+        self,
+        project,
+        credentials=None,
+        _http=None,
+        client_info=None,
+        client_options=None,
+    ):
         self.logging_client = google.cloud.logging.client.Client(
-            project, credentials, _http=_http, client_info=client_info
+            project,
+            credentials,
+            _http=_http,
+            client_info=client_info,
+            client_options=client_options,
         )
 
     def report_error_event(self, error_report):
