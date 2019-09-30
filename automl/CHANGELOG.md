@@ -9,13 +9,13 @@
 09-30-2019 10:40 PDT
 
 ### New Features
-- add 'image_classification_model_deployment_metadata' arg to 'AutoMlClient.deploy_model' (via synth) ([#9291](https://github.com/googleapis/google-cloud-python/pull/9291))
+- Add 'image_classification_model_deployment_metadata' arg to 'AutoMlClient.deploy_model' (via synth). ([#9291](https://github.com/googleapis/google-cloud-python/pull/9291))
 
 ### Documentation
-- fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
 
 ### Internal / Testing Changes
-- preserve GcsClient, 'pandas' extras in testing (via synth) ([#9179](https://github.com/googleapis/google-cloud-python/pull/9179))
+- Preserve GcsClient, 'pandas' extras in testing (via synth). ([#9179](https://github.com/googleapis/google-cloud-python/pull/9179))
 
 ## 0.5.0
 
