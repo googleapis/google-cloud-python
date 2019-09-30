@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 
-- fix(pubsub): streaming pull shouldn't need subscriptions.get permission ([#9360](https://github.com/googleapis/google-cloud-python/pull/9360))
+- Streaming pull shouldn't need `subscriptions.get` permission ([#9360](https://github.com/googleapis/google-cloud-python/pull/9360)).
 
 ## 1.0.1
 
