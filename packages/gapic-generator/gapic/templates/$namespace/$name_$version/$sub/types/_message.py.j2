@@ -26,11 +26,20 @@ class {{ message.name }}({{ p }}.Message):
 
     {# Iterate over fields. -#}
     {% for field in message.fields.values() -%}
-    {{ field.name }} = {{ p }}.{% if field.map %}Map{% elif field.repeated %}Repeated{% endif %}Field(
-        {%- if field.map %}{{ p }}.{{ field.message.fields['key'].proto_type }}, {% endif %}
+    {% if field.map -%}
+    {% with key_field = field.message.fields['key'], value_field = field.message.fields['value'] -%}
+    {{ field.name }} = {{ p }}.MapField(
+        {{- p }}.{{ key_field.proto_type }}, {{ p }}.{{ value_field.proto_type }}, number={{ field.number }}
+    {%- if value_field.enum or value_field.message %},
+        {{ value_field.proto_type.lower() }}={{ value_field.type.ident.rel(message.ident) }},
+    {% endif %})
+    {% endwith -%}
+    {% else -%}
+    {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field(
         {{- p }}.{{ field.proto_type }}, number={{ field.number }}
     {%- if field.enum or field.message %},
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
     {% endif %})
+    {% endif -%}
     {% endfor -%}
 {{ '\n\n' }}
