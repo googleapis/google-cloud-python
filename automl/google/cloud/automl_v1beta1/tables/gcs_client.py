@@ -57,7 +57,7 @@ class GcsClient(object):
             project (Optional[str]): The project ID of the GCP project to
                 attach to the underlying storage client. If none is specified,
                 the client will attempt to ascertain the credentials from the
-                 environment.
+                environment.
         """
         if storage is None:
             raise ImportError(_STORAGE_REQUIRED)
