@@ -206,9 +206,10 @@ class PhishingProtectionServiceClient(object):
     ):
         """
         Reports a URI suspected of containing phishing content to be reviewed.
-        Once the report review is completed, if its result verifies the
-        existince of malicious phishing content, the site will be added the to
-        `Google's Social Engineering
+        Once the report review is complete, its result can be found in the Cloud
+        Security Command Center findings dashboard for Phishing Protection. If
+        the result verifies the existence of malicious phishing content, the
+        site will be added the to `Google's Social Engineering
         lists <https://support.google.com/webmasters/answer/6350487/>`__ in
         order to protect users that could get exposed to this threat in the
         future.
@@ -228,7 +229,7 @@ class PhishingProtectionServiceClient(object):
         Args:
             parent (str): Required. The name of the project for which the report will be created,
                 in the format "projects/{project\_number}".
-            uri (str): The URI that is being reported for phishing content to be analyzed.
+            uri (str): Required. The URI that is being reported for phishing content to be analyzed.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
