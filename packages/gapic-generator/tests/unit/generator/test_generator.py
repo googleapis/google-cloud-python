@@ -42,12 +42,15 @@ def test_custom_template_directory():
 def test_get_response():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/bar/baz.py.j2']
+        lt.return_value = ['foo/bar/baz.py.j2', 'molluscs/squid/sample.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('I am a template result.')
             cgr = g.get_response(api_schema=make_api())
     lt.assert_called_once()
-    gt.assert_called_once()
+    gt.assert_has_calls([
+        mock.call('foo/bar/baz.py.j2'),
+        mock.call('molluscs/squid/sample.py.j2')
+    ])
     assert len(cgr.file) == 1
     assert cgr.file[0].name == 'foo/bar/baz.py'
     assert cgr.file[0].content == 'I am a template result.\n'
@@ -56,24 +59,34 @@ def test_get_response():
 def test_get_response_ignores_empty_files():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/bar/baz.py.j2']
+        lt.return_value = ['foo/bar/baz.py.j2', 'molluscs/squid/sample.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('# Meaningless comment')
             cgr = g.get_response(api_schema=make_api())
     lt.assert_called_once()
-    gt.assert_called_once()
+    gt.assert_has_calls([
+        mock.call('foo/bar/baz.py.j2'),
+        mock.call('molluscs/squid/sample.py.j2')
+    ])
     assert len(cgr.file) == 0
 
 
 def test_get_response_ignores_private_files():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/bar/baz.py.j2', 'foo/bar/_base.py.j2']
+        lt.return_value = [
+            'foo/bar/baz.py.j2',
+            'foo/bar/_base.py.j2',
+            'molluscs/squid/sample.py.j2',
+        ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('I am a template result.')
             cgr = g.get_response(api_schema=make_api())
     lt.assert_called_once()
-    gt.assert_called_once()
+    gt.assert_has_calls([
+        mock.call('foo/bar/baz.py.j2'),
+        mock.call('molluscs/squid/sample.py.j2')
+    ])
     assert len(cgr.file) == 1
     assert cgr.file[0].name == 'foo/bar/baz.py'
     assert cgr.file[0].content == 'I am a template result.\n'
@@ -82,7 +95,10 @@ def test_get_response_ignores_private_files():
 def test_get_response_fails_invalid_file_paths():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/bar/$service/$proto/baz.py.j2']
+        lt.return_value = [
+            'foo/bar/$service/$proto/baz.py.j2',
+            'molluscs/squid/sample.py.j2',
+        ]
         with pytest.raises(ValueError) as ex:
             g.get_response(api_schema=make_api())
 
@@ -93,7 +109,10 @@ def test_get_response_fails_invalid_file_paths():
 def test_get_response_enumerates_services():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/$service/baz.py.j2']
+        lt.return_value = [
+            'foo/$service/baz.py.j2',
+            'molluscs/squid/sample.py.j2',
+        ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('Service: {{ service.name }}')
             cgr = g.get_response(api_schema=make_api(make_proto(
@@ -112,7 +131,10 @@ def test_get_response_enumerates_services():
 def test_get_response_enumerates_proto():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
-        lt.return_value = ['foo/$proto.py.j2']
+        lt.return_value = [
+            'foo/$proto.py.j2',
+            'molluscs/squid/sample.py.j2',
+        ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('Proto: {{ proto.module_name }}')
             cgr = g.get_response(api_schema=make_api(
@@ -146,6 +168,7 @@ def test_get_response_divides_subpackages():
         lt.return_value = [
             'foo/$sub/types/$proto.py.j2',
             'foo/$sub/services/$service.py.j2',
+            'molluscs/squid/sample.py.j2',
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template("""
@@ -274,7 +297,11 @@ def test_parse_sample_paths(fs):
 @mock.patch(
     'time.gmtime',
 )
-def test_samplegen_config_to_output_files(mock_gmtime, mock_generate_sample, fs):
+def test_samplegen_config_to_output_files(
+        mock_gmtime,
+        mock_generate_sample,
+        fs,
+):
     # These time values are nothing special,
     # they just need to be deterministic.
     returner = mock.MagicMock()
@@ -303,13 +330,14 @@ def test_samplegen_config_to_output_files(mock_gmtime, mock_generate_sample, fs)
         )
     )
 
-    mock_generate_sample
-
     g = generator.Generator(
         options.Options.build(
             'samples=samples.yaml',
         )
     )
+    # Need to have the sample template visible to the generator.
+    g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
+
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
     actual_response = g.get_response(api_schema)
     expected_response = CodeGeneratorResponse(
@@ -393,6 +421,9 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
         )
     )
     g = generator.Generator(options.Options.build('samples=samples.yaml'))
+    # Need to have the sample template visible to the generator.
+    g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
+
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
     actual_response = g.get_response(api_schema)
     expected_response = CodeGeneratorResponse(

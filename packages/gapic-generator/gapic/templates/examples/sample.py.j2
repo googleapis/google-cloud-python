@@ -20,7 +20,7 @@
 {#                   callingFormEnum #}
 {# Note: this sample template is WILDLY INACCURATE AND INCOMPLETE #}
 {# It does not correctly enums, unions, top level attributes, or various other things #}
-{% import "feature_fragments.j2" as frags %}
+{% import "examples/feature_fragments.j2" as frags %}
 {{ frags.sample_header(file_header, sample, calling_form) }}
 
 # [START {{ sample.id }}]
@@ -28,14 +28,16 @@
 {% for import_statement in imports %}
 {{ import_statement }}
 {% endfor %}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.name }}
 
 {# also need calling form #}
 def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input_params(sample.request)|trim -}}):
     """{{ sample.description }}"""
 
-    client = {{ sample.service.split(".")[-3:-1]|
-                map("lower")|
-                join("_") }}.{{ sample.service.split(".")[-1] }}Client()
+    client = {{ service.name }}(
+        credentials=credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
 
     {{ frags.render_request_setup(sample.request)|indent }}
 {% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %}

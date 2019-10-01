@@ -20,6 +20,7 @@ import gapic.utils as utils
 
 from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
+from gapic.schema import (naming, wrappers)
 
 from common_types import (DummyField, DummyMessage, DummyMethod, DummyService,
                           DummyApiSchema, DummyNaming, enum_factory, message_factory)
@@ -32,7 +33,8 @@ env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(
         searchpath=path.realpath(path.join(path.dirname(__file__),
                                            "..", "..", "..",
-                                           "gapic", "templates", "examples"))),
+                                           "gapic", "templates")
+                                 )),
     undefined=jinja2.StrictUndefined,
     extensions=["jinja2.ext.do"],
     trim_blocks=True, lstrip_blocks=True
@@ -65,18 +67,22 @@ def test_generate_sample_basic():
             )
         }
     )
-    schema = DummyApiSchema(
-        {
-            "animalia.mollusca.v1.Mollusc": DummyService(
-                {
-                    "Classify": DummyMethod(
-                        input=input_type,
-                        output=message_factory("$resp.taxonomy")
-                    )
-                }
+
+    api_naming = naming.Naming(
+        name="MolluscClient", namespace=("molluscs", "v1"))
+    service = wrappers.Service(
+        service_pb=namedtuple('service_pb', ['name'])('MolluscClient'),
+        methods={
+            "Classify": DummyMethod(
+                input=input_type,
+                output=message_factory("$resp.taxonomy")
             )
-        },
-        DummyNaming("molluscs-v1-mollusc")
+        }
+    )
+
+    schema = DummyApiSchema(
+        services={"animalia.mollusca.v1.Mollusc": service},
+        naming=api_naming,
     )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
@@ -95,7 +101,10 @@ def test_generate_sample_basic():
               "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
 
     sample_str = samplegen.generate_sample(
-        sample, env, schema)
+        sample,
+        schema,
+        env.get_template('examples/sample.py.j2')
+    )
 
     sample_id = ("mollusc_classify_sync")
     expected_str = '''# TODO: add a copyright
@@ -104,15 +113,21 @@ def test_generate_sample_basic():
 # DO NOT EDIT! This is a generated sample ("request",  "%s")
 #
 # To install the latest published package dependency, execute the following:
-#   pip3 install molluscs-v1-mollusc
+#   pip3 install molluscs-v1-molluscclient
 
 
 # [START %s]
+from google import auth
+from google.auth import credentials
+from molluscs.v1.molluscclient.services.mollusc_client import MolluscClient
 
 def sample_classify(video, location):
     """Determine the full taxonomy of input mollusc"""
 
-    client = mollusca_v1.MolluscClient()
+    client = MolluscClient(
+        credentials=credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
 
     classify_request = {}
     # video = 'path/to/mollusc/video.mkv'
@@ -124,7 +139,6 @@ def sample_classify(video, location):
 
 
     response = client.classify(classify_request)
-
     print("Mollusc is a {}".format(response.taxonomy))
 
 # [END %s]
@@ -156,7 +170,11 @@ def test_generate_sample_service_not_found():
     sample = {"service": "Mollusc"}
 
     with pytest.raises(types.UnknownService):
-        samplegen.generate_sample(sample, env, schema)
+        samplegen.generate_sample(
+            sample,
+            schema,
+            env.get_template('examples/sample.py.j2'),
+        )
 
 
 def test_generate_sample_rpc_not_found():
@@ -165,7 +183,11 @@ def test_generate_sample_rpc_not_found():
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(types.RpcMethodNotFound):
-        list(samplegen.generate_sample(sample, env, schema))
+        list(samplegen.generate_sample(
+            sample,
+            schema,
+            env.get_template('examples/sample.py.j2')),
+        )
 
 
 def test_generate_sample_config_fpaths(fs):

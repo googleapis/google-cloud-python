@@ -191,18 +191,18 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request) }})
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, response_statements ) %}
 {% if calling_form == calling_form_enum.Request %}
-response = {{ method_invocation_text }}
+response = {{ method_invocation_text|trim }}
 {% for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPagedAll %}
-page_result = {{ method_invocation_text }}
+page_result = {{ method_invocation_text|trim }}
 for response in page_result:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPaged %}
-page_result = {{ method_invocation_text}}
+page_result = {{ method_invocation_text|trim }}
 for page in page_result.pages():
     for response in page:
   {% for statement in response_statements %}
@@ -210,13 +210,13 @@ for page in page_result.pages():
   {% endfor %}
 {% elif calling_form in [calling_form_enum.RequestStreamingServer,
                         calling_form_enum.RequestStreamingBidi] %}
-stream = {{ method_invocation_text }}
+stream = {{ method_invocation_text|trim }}
 for response in stream:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.LongRunningRequestPromise %}
-operation = {{ method_invocation_text }}
+operation = {{ method_invocation_text|trim }}
 
 print("Waiting for operation to complete...")
 
@@ -237,8 +237,8 @@ def main():
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] %}
-  {% for request in request_block if request.body -%}
-      {% for attr in request.body if attr.input_parameter %}
+{% for request in request_block if request.body -%}
+{% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default={{ attr.value }})

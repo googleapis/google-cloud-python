@@ -97,14 +97,18 @@ class Generator:
                                                       api_schema=api_schema,
                                                       ))
 
-        output_files.update(self._generate_samples_and_manifest(api_schema))
+        output_files.update(self._generate_samples_and_manifest(
+            api_schema,
+            self._env.get_template(sample_templates[0]),
+        ))
 
         # Return the CodeGeneratorResponse output.
         return CodeGeneratorResponse(file=[i for i in output_files.values()])
 
     def _generate_samples_and_manifest(
-        self,
-        api_schema: api.API
+            self,
+            api_schema: api.API,
+            sample_template: jinja2.Template,
     ) -> Dict[str, CodeGeneratorResponse.File]:
         """Generate samples and samplegen manifest for the API.
 
@@ -152,7 +156,11 @@ class Generator:
                         str(spec).encode('utf8')).hexdigest()[:8]
                     spec["id"] += f"_{spec_hash}"
 
-                sample = samplegen.generate_sample(spec, self._env, api_schema)
+                sample = samplegen.generate_sample(
+                    spec,
+                    api_schema,
+                    sample_template,
+                )
 
                 fpath = spec["id"] + ".py"
                 fpath_to_spec_and_rendered[os.path.join(out_dir, fpath)] = (spec,

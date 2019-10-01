@@ -84,7 +84,7 @@ def generate(
             yaml.Collection(
                 name="samples",
                 elements=[
-                    [  # type: ignore
+                    [
                         # Mypy doesn't correctly intuit the type of the
                         # "region_tag" conditional expression.
                         yaml.Alias(environment.anchor_name or ""),
@@ -92,7 +92,7 @@ def generate(
                         yaml.KeyVal(
                             "path", transform_path(fpath)
                         ),
-                        (yaml.KeyVal("region_tag", sample["region_tag"])
+                        (yaml.KeyVal("region_tag", sample["region_tag"])  # type: ignore
                          if "region_tag" in sample else
                          yaml.Null),
                     ]

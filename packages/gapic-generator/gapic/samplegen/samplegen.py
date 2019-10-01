@@ -21,7 +21,7 @@ import re
 import time
 
 from gapic.samplegen_utils import types
-from gapic.schema import (api, wrappers)
+from gapic.schema import wrappers
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
 from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
@@ -139,8 +139,8 @@ class Validator:
             # and whether it's an enum or a message or a primitive type.
             # The method call response isn't a field, so construct an artificial
             # field that wraps the response.
-            {  # type: ignore
-                "$resp": MockField(response_type, False)
+            {
+                "$resp": MockField(response_type, False)  # type: ignore
             }
         )
 
@@ -481,8 +481,10 @@ class Validator:
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
             raise types.MismatchedFormatSpecifier(
-                "Expected {} expresssions in format string but received {}".format(
-                    num_prints, len(body) - 1
+                "Expected {} expresssions in format string '{}' but found {}".format(
+                    num_prints,
+                    fmt_str,
+                    len(body) - 1
                 )
             )
 
@@ -502,7 +504,7 @@ class Validator:
         """
         # Note: really checking for safety would be equivalent to
         #       re-implementing the python interpreter.
-        m = re.match(r"^([a-zA-Z]\w*)=([^=]+)$", body)
+        m = re.match(r"^([a-zA-Z_]\w*) *= *([^=]+)$", body)
         if not m:
             raise types.BadAssignment(f"Bad assignment statement: {body}")
 
@@ -654,27 +656,23 @@ class Validator:
     }
 
 
-def generate_sample(sample,
-                    env: jinja2.environment.Environment,
-                    api_schema: api.API,
-                    template_name: str = DEFAULT_TEMPLATE_NAME) -> str:
+def generate_sample(
+        sample,
+        api_schema,
+        sample_template: jinja2.Template
+) -> str:
     """Generate a standalone, runnable sample.
 
     Rendering and writing the rendered output is left for the caller.
 
     Args:
         sample (Any): A definition for a single sample generated from parsed yaml.
-        env (jinja2.environment.Environment): The jinja environment used to generate
-                                              the filled template for the sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
-        template_name (str): An optional override for the name of the template
-                             used to generate the sample.
+        sample_template (jinja2.Template): The template representing a generic sample.
 
     Returns:
         str: The rendered sample.
     """
-    sample_template = env.get_template(template_name)
-
     service_name = sample["service"]
     service = api_schema.services.get(service_name)
     if not service:
@@ -701,7 +699,12 @@ def generate_sample(sample,
     return sample_template.render(
         file_header=FILE_HEADER,
         sample=sample,
-        imports=[],
+        imports=[
+            "from google import auth",
+            "from google.auth import credentials",
+        ],
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
+        api=api_schema,
+        service=service,
     )
