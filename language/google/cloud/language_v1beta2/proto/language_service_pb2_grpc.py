@@ -71,10 +71,8 @@ class LanguageServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def AnalyzeEntitySentiment(self, request, context):
-        """Finds entities, similar to
-    [AnalyzeEntities][google.cloud.language.v1beta2.LanguageService.AnalyzeEntities]
-    in the text and analyzes sentiment associated with each entity and its
-    mentions.
+        """Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1beta2.LanguageService.AnalyzeEntities] in the text and analyzes
+    sentiment associated with each entity and its mentions.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
