@@ -705,7 +705,7 @@ class BackgroundConsumer(object):
                 # The daemonized thread may itself block, so don't wait
                 # for it longer than a second.
                 self._thread.join(1.0)
-                if self._thread.is_alive():
+                if self._thread.is_alive():  # pragma: NO COVER
                     _LOGGER.warning("Background thread did not exit.")
 
             self._thread = None
