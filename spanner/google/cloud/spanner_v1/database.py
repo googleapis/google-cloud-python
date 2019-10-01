@@ -418,7 +418,8 @@ class Database(object):
         :type kw: dict
         :param kw: optional keyword arguments to be passed to ``func``.
                    If passed, "timeout_secs" will be removed and used to
-                   override the default timeout.
+                   override the default timeout which defines maximum timestamp
+                   to continue retrying the transaction.
 
         :rtype: Any
         :returns: The return value of ``func``.
