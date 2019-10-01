@@ -110,6 +110,7 @@ The following client libraries have **alpha** support:
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud IoT`_ (`IoT README`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_)
+-  `Google Cloud Recommender`_ (`Recommender README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ )
@@ -141,6 +142,8 @@ The following client libraries have **alpha** support:
 .. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/googleapis/google-cloud-python/tree/master/redis
+.. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
+.. _Recommender README: https://github.com/googleapis/google-cloud-python/tree/master/recommender
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/googleapis/google-cloud-python/tree/master/resource_manager
 .. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/

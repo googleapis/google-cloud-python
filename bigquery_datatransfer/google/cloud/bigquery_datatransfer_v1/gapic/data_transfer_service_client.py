@@ -297,8 +297,8 @@ class DataTransferServiceClient(object):
             >>> response = client.get_data_source(name)
 
         Args:
-            name (str): The field will contain name of the resource requested, for example:
-                ``projects/{project_id}/dataSources/{data_source_id}``
+            name (str): Required. The field will contain name of the resource requested, for
+                example: ``projects/{project_id}/dataSources/{data_source_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -381,8 +381,8 @@ class DataTransferServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): The BigQuery project id for which data sources should be returned. Must
-                be in the form: ``projects/{project_id}``
+            parent (str): Required. The BigQuery project id for which data sources should be
+                returned. Must be in the form: ``projects/{project_id}``
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -478,12 +478,12 @@ class DataTransferServiceClient(object):
             >>> response = client.create_transfer_config(parent, transfer_config)
 
         Args:
-            parent (str): The BigQuery project id where the transfer configuration should be
-                created. Must be in the format
+            parent (str): Required. The BigQuery project id where the transfer configuration
+                should be created. Must be in the format
                 projects/{project\_id}/locations/{location\_id} If specified location
                 and location of the destination bigquery dataset do not match - the
                 request will fail.
-            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Required. Data transfer configuration to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
@@ -591,11 +591,11 @@ class DataTransferServiceClient(object):
             >>> response = client.update_transfer_config(transfer_config, update_mask)
 
         Args:
-            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Required. Data transfer configuration to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
-            update_mask (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.FieldMask]): Required list of fields to be updated in this request.
+            update_mask (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.FieldMask]): Required. Required list of fields to be updated in this request.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.FieldMask`
@@ -696,8 +696,8 @@ class DataTransferServiceClient(object):
             >>> client.delete_transfer_config(name)
 
         Args:
-            name (str): The field will contain name of the resource requested, for example:
-                ``projects/{project_id}/transferConfigs/{config_id}``
+            name (str): Required. The field will contain name of the resource requested, for
+                example: ``projects/{project_id}/transferConfigs/{config_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -763,8 +763,8 @@ class DataTransferServiceClient(object):
             >>> response = client.get_transfer_config(name)
 
         Args:
-            name (str): The field will contain name of the resource requested, for example:
-                ``projects/{project_id}/transferConfigs/{config_id}``
+            name (str): Required. The field will contain name of the resource requested, for
+                example: ``projects/{project_id}/transferConfigs/{config_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -847,8 +847,8 @@ class DataTransferServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): The BigQuery project id for which data sources should be returned:
-                ``projects/{project_id}``.
+            parent (str): Required. The BigQuery project id for which data sources should be
+                returned: ``projects/{project_id}``.
             data_source_ids (list[str]): When specified, only configurations of requested data sources are returned.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -950,14 +950,14 @@ class DataTransferServiceClient(object):
             >>> response = client.schedule_transfer_runs(parent, start_time, end_time)
 
         Args:
-            parent (str): Transfer configuration name in the form:
+            parent (str): Required. Transfer configuration name in the form:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
-            start_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Start time of the range of transfer runs. For example,
+            start_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Required. Start time of the range of transfer runs. For example,
                 ``"2017-05-25T00:00:00+00:00"``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
-            end_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): End time of the range of transfer runs. For example,
+            end_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Required. End time of the range of transfer runs. For example,
                 ``"2017-05-30T00:00:00+00:00"``.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1032,7 +1032,8 @@ class DataTransferServiceClient(object):
             >>> response = client.get_transfer_run(name)
 
         Args:
-            name (str): The field will contain name of the resource requested, for example:
+            name (str): Required. The field will contain name of the resource requested, for
+                example:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1102,7 +1103,8 @@ class DataTransferServiceClient(object):
             >>> client.delete_transfer_run(name)
 
         Args:
-            name (str): The field will contain name of the resource requested, for example:
+            name (str): Required. The field will contain name of the resource requested, for
+                example:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1184,8 +1186,8 @@ class DataTransferServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Name of transfer configuration for which transfer runs should be
-                retrieved. Format of transfer configuration resource name is:
+            parent (str): Required. Name of transfer configuration for which transfer runs should
+                be retrieved. Format of transfer configuration resource name is:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
             states (list[~google.cloud.bigquery_datatransfer_v1.types.TransferState]): When specified, only transfer runs with requested states are returned.
             page_size (int): The maximum number of resources contained in the
@@ -1292,7 +1294,7 @@ class DataTransferServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Transfer run name in the form:
+            parent (str): Required. Transfer run name in the form:
                 ``projects/{project_id}/transferConfigs/{config_Id}/runs/{run_id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -1390,7 +1392,7 @@ class DataTransferServiceClient(object):
             >>> response = client.check_valid_creds(name)
 
         Args:
-            name (str): The data source in the form:
+            name (str): Required. The data source in the form:
                 ``projects/{project_id}/dataSources/{data_source_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

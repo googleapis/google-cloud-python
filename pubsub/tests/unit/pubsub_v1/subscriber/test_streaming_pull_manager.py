@@ -404,12 +404,9 @@ def test_heartbeat_inactive():
     "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
 )
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
+    stream_ack_deadline = streaming_pull_manager._DEFAULT_STREAM_ACK_DEADLINE
+
     manager = make_manager()
-    manager._client.api.get_subscription.return_value = types.Subscription(
-        name="projects/foo/subscriptions/bar",
-        topic="projects/foo/topics/baz",
-        ack_deadline_seconds=123,
-    )
 
     manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
@@ -437,7 +434,8 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     )
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
     assert initial_request_arg.func == manager._get_initial_request
-    assert initial_request_arg.args[0] == 123
+    assert initial_request_arg.args[0] == stream_ack_deadline
+    assert not manager._client.api.get_subscription.called
 
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
         manager._on_rpc_done
