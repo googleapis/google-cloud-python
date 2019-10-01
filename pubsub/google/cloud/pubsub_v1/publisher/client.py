@@ -274,3 +274,22 @@ class Client(object):
                 batch = self._batch(topic, create=True)
 
         return future
+
+    def stop(self):
+        """Immediately publish all outstanding batches.
+
+        This asynchronously pushes all outstanding messages
+        and waits until all futures resolved. Method should be
+        invoked prior to deleting this Client object in order
+        to ensure that no pending messages are lost.
+
+        .. note::
+
+            This method blocks until all futures of all
+            batches resolved.
+        """
+        for topic in self._batches:
+            self._batches[topic].commit()
+
+        for topic in self._batches:
+            self._batches[topic].wait()

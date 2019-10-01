@@ -137,6 +137,17 @@ class Batch(base.Batch):
         """
         return self._status
 
+    def wait(self):
+        """If commit in progress, waits until all of the futures resolved.
+
+        .. note::
+
+            This method blocks until all futures of this batch resolved.
+        """
+        if self._status in (base.BatchStatus.STARTING, base.BatchStatus.IN_PROGRESS):
+            for future in self._futures:
+                future.result()
+
     def commit(self):
         """Actually publish all of the messages on the active batch.
 

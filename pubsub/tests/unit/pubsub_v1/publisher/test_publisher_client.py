@@ -201,6 +201,35 @@ def test_publish_attrs_type_error():
         client.publish(topic, b"foo", answer=42)
 
 
+def test_stop():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    batch = client._batch("topic1", autocommit=False)
+    batch2 = client._batch("topic2", autocommit=False)
+
+    pubsub_msg = types.PubsubMessage(data=b"msg")
+
+    cp = mock.patch.object(batch, "commit")
+    wp = mock.patch.object(batch, "wait")
+    cp2 = mock.patch.object(batch2, "commit")
+    wp2 = mock.patch.object(batch2, "wait")
+
+    with cp as c_mock, cp2 as c_mock2, wp as w_mock, wp2 as w_mock2:
+        batch.publish(pubsub_msg)
+        batch2.publish(pubsub_msg)
+
+        client.stop()
+
+        # check if commit() called
+        c_mock.assert_called()
+        c_mock2.assert_called()
+
+        # check if wait() called
+        w_mock.assert_called()
+        w_mock2.assert_called()
+
+
 def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
