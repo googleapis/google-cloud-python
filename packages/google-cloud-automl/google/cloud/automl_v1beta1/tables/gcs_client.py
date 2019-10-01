@@ -41,7 +41,7 @@ _STORAGE_REQUIRED = (
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, bucket_name=None, client=None, credentials=None):
+    def __init__(self, bucket_name=None, client=None, credentials=None, project=None):
         """Constructor.
 
         Args:
@@ -54,6 +54,10 @@ class GcsClient(object):
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            project (Optional[str]): The project ID of the GCP project to
+                attach to the underlying storage client. If none is specified,
+                the client will attempt to ascertain the credentials from the
+                environment.
         """
         if storage is None:
             raise ImportError(_STORAGE_REQUIRED)
@@ -61,7 +65,7 @@ class GcsClient(object):
         if client is not None:
             self.client = client
         elif credentials is not None:
-            self.client = storage.Client(credentials=credentials)
+            self.client = storage.Client(credentials=credentials, project=project)
         else:
             self.client = storage.Client()
 
@@ -79,7 +83,7 @@ class GcsClient(object):
         Save the created bucket's name and reuse this for future requests.
 
         Args:
-            project (str): The project that stores the bucket.
+            project (str): The ID of the project that stores the bucket.
             region (str): The region of the bucket.
 
         Returns:
