@@ -1,14 +1,23 @@
 .. include:: README.rst
 
 
-Api Reference
--------------
+v1 API Reference
+------------------------
+.. toctree::
+    :maxdepth: 2
+
+    gapic/v1/api
+    gapic/v1/types
+
+v1beta1 API Reference
+----------------------
 .. toctree::
     :maxdepth: 2
 
     gapic/v1beta1/api
     gapic/v1beta1/types
     gapic/v1beta1/tables
+
 
 
 Changelog

@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-09-25T12:11:40.675705Z",
+  "updateTime": "2019-10-02T20:00:15.651230Z",
   "sources": [
     {
       "generator": {
@@ -12,8 +12,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "9dc1d37b6b9e9581c8ab56c6b2d3b49ff3eeb254",
-        "internalRef": "271101725"
+        "sha": "54082ac49c31bb8417cec3227c6f52a8bc35fa0f",
+        "internalRef": "272488384"
       }
     },
     {
@@ -33,6 +33,16 @@
         "language": "python",
         "generator": "gapic",
         "config": "google/cloud/automl/artman_automl_v1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "automl",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/automl/artman_automl_v1.yaml"
       }
     }
   ]
