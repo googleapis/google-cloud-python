@@ -31,9 +31,8 @@ IS_INSIDE_VPCSC = "GOOGLE_CLOUD_TESTS_IN_VPCSC" in os.environ
 
 # If IS_INSIDE_VPCSC is set, these environment variables should also be set
 if IS_INSIDE_VPCSC:
-    PROJECT_INSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_PROJECT"]
+    PROJECT_INSIDE = os.environ["PROJECT_ID"]
     PROJECT_OUTSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT"]
-
 
 class TestVPCServiceControlV3(object):
     @staticmethod
