@@ -141,7 +141,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="master"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``google-cloud-python``. The the suggested remote name ``upstream``
+  version of ``google-cloud-python``. The suggested remote name ``upstream``
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
@@ -231,7 +231,7 @@ Running Generated Sample Tests
   .. note::
 
       Generated sample tests require the ``sample-tester`` commamd line
-      `tool <https://sample-tester.readthedocs.io>`. 
+      `tool <https://sample-tester.readthedocs.io>`.
 
 - Generated sample tests will be run against an actual project and
   so you'll need to provide some environment variables to facilitate
