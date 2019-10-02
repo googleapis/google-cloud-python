@@ -69,10 +69,10 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 You must install nox using Python 3.
 
-- To test your changes, run unit tests with ``nox``::
+- To test your changes, go to the package directory and run ``nox``::
 
-    $ nox -f datastore/noxfile.py -s unit-2.7
-    $ nox -f datastore/noxfile.py -s unit-3.7
+    $ nox -s unit-2.7
+    $ nox -s unit-3.7
     $ ...
 
   .. note::
