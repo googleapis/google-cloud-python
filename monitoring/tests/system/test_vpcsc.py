@@ -53,12 +53,8 @@ class TestVPCServiceControlV3(object):
 
     @staticmethod
     def _do_test(delayed_inside, delayed_outside):
-        if IS_INSIDE_VPCSC:
-            assert TestVPCServiceControlV3._is_rejected(delayed_outside)
-            assert not (TestVPCServiceControlV3._is_rejected(delayed_inside))
-        else:
-            assert not (TestVPCServiceControlV3._is_rejected(delayed_outside))
-            assert TestVPCServiceControlV3._is_rejected(delayed_inside)
+        assert TestVPCServiceControlV3._is_rejected(delayed_outside)
+        assert not (TestVPCServiceControlV3._is_rejected(delayed_inside))
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
