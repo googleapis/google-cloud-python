@@ -43,8 +43,12 @@ Documentation
 
 Google Auth Python Library has usage and reference documentation at `google-auth.readthedocs.io <https://google-auth.readthedocs.io>`_.
 
-Maintainers
------------
+Current Maintainers
+-------------------
+- `@busunkim96 <https://github.com/busunkim96>`_ (Bu Sun Kim)
+
+Authors
+-------
 
 - `@theacodes <https://github.com/theacodes>`_ (Thea Flowers)
 - `@dhermes <https://github.com/dhermes>`_ (Danny Hermes)
