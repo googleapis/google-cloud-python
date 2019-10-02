@@ -27,13 +27,12 @@ from google.api_core import exceptions
 from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import enums
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-if not PROJECT_INSIDE:
-    PROJECT_INSIDE = None
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
-IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false")
+IS_INSIDE_VPCSC = "GOOGLE_CLOUD_TESTS_IN_VPCSC" in os.environ
+
+# If IS_INSIDE_VPCSC is set, these environment variables should also be set
+if IS_INSIDE_VPCSC:
+    PROJECT_INSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_PROJECT"]
+    PROJECT_OUTSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT"]
 
 
 class TestVPCServiceControlV3(object):
@@ -54,7 +53,7 @@ class TestVPCServiceControlV3(object):
 
     @staticmethod
     def _do_test(delayed_inside, delayed_outside):
-        if IS_INSIDE_VPCSC.lower() == "true":
+        if IS_INSIDE_VPCSC:
             assert TestVPCServiceControlV3._is_rejected(delayed_outside)
             assert not (TestVPCServiceControlV3._is_rejected(delayed_inside))
         else:
@@ -62,11 +61,8 @@ class TestVPCServiceControlV3(object):
             assert TestVPCServiceControlV3._is_rejected(delayed_inside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -77,11 +73,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_delete_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -92,11 +85,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -107,11 +97,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_alert_policies(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -122,11 +109,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_update_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -137,11 +121,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -152,11 +133,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_delete_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -167,11 +145,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -182,11 +157,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_group_members(self):
         client = monitoring_v3.GroupServiceClient()
@@ -197,11 +169,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_groups(self):
         client = monitoring_v3.GroupServiceClient()
@@ -212,11 +181,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_update_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -227,11 +193,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -242,11 +205,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_time_series(self):
         client = monitoring_v3.MetricServiceClient()
@@ -257,11 +217,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_delete_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -276,11 +233,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -295,11 +249,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_monitored_resource_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -314,11 +265,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_metric_descriptors(self):
         client = monitoring_v3.MetricServiceClient()
@@ -329,11 +277,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_monitored_resource_descriptors(self):
         client = monitoring_v3.MetricServiceClient()
@@ -346,11 +291,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_time_series(self):
         client = monitoring_v3.MetricServiceClient()
@@ -365,11 +307,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -380,11 +319,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_delete_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -399,11 +335,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -418,11 +351,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_notification_channel_descriptor(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -439,11 +369,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_notification_channel_descriptors(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -458,11 +385,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_notification_channels(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -473,11 +397,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_update_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -496,11 +417,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_create_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -511,11 +429,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_delete_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -530,11 +445,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_get_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -549,11 +461,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_list_uptime_check_configs(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -564,11 +473,8 @@ class TestVPCServiceControlV3(object):
         TestVPCServiceControlV3._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+        not IS_INSIDE_VPCSC,
+        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
     )
     def test_update_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
