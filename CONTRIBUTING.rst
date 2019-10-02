@@ -129,8 +129,8 @@ Coding Style
 
    $ nox -s blacken
 
-- PEP8 compliance, with exceptions defined in the linter configuration.
-  You can test for any non-compliant code via::
+- PEP8 compliance is required, with exceptions defined in the linter configuration.
+  You can test for non-compliant code via::
 
    $ nox -s lint
 
