@@ -1,5 +1,7 @@
 .. include:: README.rst
 
+This package includes clients for multiple versions of the Cloud AutoML API.
+By default, you will get ``v1``, the latest stable version.
 
 v1 API Reference
 ------------------------
@@ -8,6 +10,10 @@ v1 API Reference
 
     gapic/v1/api
     gapic/v1/types
+
+Previous beta release v1beta1 is provided as well.
+
+An API and type reference is provided for ``v1beta1``:
 
 v1beta1 API Reference
 ----------------------
