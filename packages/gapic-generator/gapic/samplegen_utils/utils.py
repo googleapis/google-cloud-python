@@ -67,7 +67,7 @@ def is_valid_sample_cfg(
         # Yaml may return a dict, a list, or a str
         isinstance(doc, dict)
         and doc.get("type") == VALID_CONFIG_TYPE
-        and parse_version(doc.get(version_token, "")) >= MIN_SCHEMA_VERSION
+        and parse_version(doc.get(version_token, "")) >= min_version
         and doc.get("samples")
     )
 

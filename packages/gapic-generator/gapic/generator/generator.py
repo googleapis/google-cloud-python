@@ -21,7 +21,7 @@ from hashlib import sha256
 from collections import (OrderedDict, defaultdict)
 from gapic.samplegen_utils.utils import (
     coerce_response_name, is_valid_sample_cfg)
-from gapic.samplegen_utils.types import InvalidConfig
+from gapic.samplegen_utils.types import (InvalidConfig, DuplicateSample)
 from gapic.samplegen import (manifest, samplegen)
 from gapic.generator import options
 from gapic.generator import formatter
@@ -118,7 +118,12 @@ class Generator:
         Returns:
             Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
         """
-        id_to_samples: DefaultDict[str, List[Any]] = defaultdict(list)
+        # The two-layer data structure lets us do two things:
+        # * detect duplicate samples, which is an error
+        # * detect distinct samples with the same ID, which are disambiguated
+        id_to_hash_to_spec: DefaultDict[str, Dict[str, Any]] = defaultdict(
+            dict)
+
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
                 configs = yaml.safe_load_all(f.read())
@@ -137,23 +142,27 @@ class Generator:
                 #
                 # Ideally the sample author should pick a descriptive, unique ID,
                 # but this may be impractical and can be error-prone.
+                spec_hash = sha256(str(spec).encode('utf8')).hexdigest()[:8]
                 sample_id = (spec.get("id")
                              or spec.get("region_tag")
-                             or sha256(str(spec).encode('utf8')).hexdigest()[:8])
-
+                             or spec_hash)
                 spec["id"] = sample_id
-                id_to_samples[sample_id].append(spec)
+
+                hash_to_spec = id_to_hash_to_spec[sample_id]
+                if spec_hash in hash_to_spec:
+                    raise DuplicateSample(
+                        f"Duplicate samplegen spec found: {spec}")
+
+                hash_to_spec[spec_hash] = spec
 
         out_dir = "samples"
         fpath_to_spec_and_rendered = {}
-        for samples in id_to_samples.values():
-            for spec in samples:
-                id_is_unique = len(samples) == 1
+        for hash_to_spec in id_to_hash_to_spec.values():
+            for spec_hash, spec in hash_to_spec.items():
+                id_is_unique = len(hash_to_spec) == 1
                 # The ID is used to generate the file name and by sample tester
                 # to link filenames to invoked samples. It must be globally unique.
                 if not id_is_unique:
-                    spec_hash = sha256(
-                        str(spec).encode('utf8')).hexdigest()[:8]
                     spec["id"] += f"_{spec_hash}"
 
                 sample = samplegen.generate_sample(

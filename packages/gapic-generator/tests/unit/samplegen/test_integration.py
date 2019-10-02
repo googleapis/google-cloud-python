@@ -273,6 +273,7 @@ def test_generate_sample_config_partial_config(fs):
         contents=dedent(
             '''
             ---
+            # Note: not a valid config because of the type.
             type: com.google.api.codegen.SampleConfigPronto
             schema_version: 1.2.0
             samples:

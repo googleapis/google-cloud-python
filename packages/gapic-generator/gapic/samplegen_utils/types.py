@@ -80,6 +80,10 @@ class InvalidSampleFpath(SampleError):
     pass
 
 
+class DuplicateSample(SampleError):
+    pass
+
+
 class CallingForm(Enum):
     Request = auto()
     RequestPaged = auto()

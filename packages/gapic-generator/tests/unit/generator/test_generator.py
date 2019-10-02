@@ -433,7 +433,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                 content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="samples/squid_sample_c8014108.py",
+                name="samples/squid_sample_55051b38.py",
                 content="\n",
             ),
             CodeGeneratorResponse.File(
@@ -457,8 +457,8 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                   path: '{base_path}/squid_sample_91a465c6.py'
                   region_tag: humboldt_tag
                 - <<: *python
-                  sample: squid_sample_c8014108
-                  path: '{base_path}/squid_sample_c8014108.py'
+                  sample: squid_sample_55051b38
+                  path: '{base_path}/squid_sample_55051b38.py'
                   region_tag: squid_sample
                 - <<: *python
                   sample: 157884ee
@@ -469,6 +469,34 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     )
 
     assert actual_response == expected_response
+
+
+def test_generator_duplicate_samples(fs):
+    config_fpath = "samples.yaml"
+    fs.create_file(
+        config_fpath,
+        contents=dedent(
+            '''
+            # Note: the samples are duplicates.
+            type: com.google.api.codegen.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid
+            - id: squid_sample
+              region_tag: humboldt_tag
+              rpc: get_squid
+            '''
+        )
+    )
+
+    generator = make_generator('samples=samples.yaml')
+    generator._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
+    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+
+    with pytest.raises(types.DuplicateSample):
+        generator.get_response(api_schema=api_schema)
 
 
 def make_generator(opts_str: str = '') -> generator.Generator:
