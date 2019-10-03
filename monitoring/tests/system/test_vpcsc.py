@@ -34,12 +34,12 @@ if IS_INSIDE_VPCSC:
     PROJECT_INSIDE = os.environ["PROJECT_ID"]
     PROJECT_OUTSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT"]
 
+
 class TestVPCServiceControlV3(object):
     @staticmethod
     def _is_rejected(call):
         try:
             responses = call()
-
             # If we reach this line, then call() did not raise. The return
             # result must be either a google.api_core.page_iterator.Iterator
             # instance, or None.
@@ -57,7 +57,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -69,7 +69,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -81,7 +81,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -93,7 +93,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_alert_policies(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -105,7 +105,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_update_alert_policy(self):
         client = monitoring_v3.AlertPolicyServiceClient()
@@ -117,7 +117,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -129,7 +129,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -141,7 +141,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -153,7 +153,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_group_members(self):
         client = monitoring_v3.GroupServiceClient()
@@ -165,7 +165,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_groups(self):
         client = monitoring_v3.GroupServiceClient()
@@ -177,7 +177,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_update_group(self):
         client = monitoring_v3.GroupServiceClient()
@@ -189,7 +189,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -201,7 +201,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_time_series(self):
         client = monitoring_v3.MetricServiceClient()
@@ -213,7 +213,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -229,7 +229,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_metric_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -245,7 +245,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_monitored_resource_descriptor(self):
         client = monitoring_v3.MetricServiceClient()
@@ -261,7 +261,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_metric_descriptors(self):
         client = monitoring_v3.MetricServiceClient()
@@ -273,7 +273,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_monitored_resource_descriptors(self):
         client = monitoring_v3.MetricServiceClient()
@@ -287,7 +287,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_time_series(self):
         client = monitoring_v3.MetricServiceClient()
@@ -303,7 +303,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -315,7 +315,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -331,7 +331,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -347,7 +347,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_notification_channel_descriptor(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -365,7 +365,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_notification_channel_descriptors(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -381,7 +381,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_notification_channels(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -393,7 +393,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_update_notification_channel(self):
         client = monitoring_v3.NotificationChannelServiceClient()
@@ -413,7 +413,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_create_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -425,7 +425,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -441,7 +441,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -457,7 +457,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_list_uptime_check_configs(self):
         client = monitoring_v3.UptimeCheckServiceClient()
@@ -469,7 +469,7 @@ class TestVPCServiceControlV3(object):
 
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_IN_VPCSC",
+        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_update_uptime_check_config(self):
         client = monitoring_v3.UptimeCheckServiceClient()
