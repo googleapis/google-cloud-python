@@ -172,8 +172,8 @@ class Client(google_client.ClientWithProject):
         with context.use():
             yield context
 
-        # Finish up any work left to do on the event loop
-        context.eventloop.run()
+            # Finish up any work left to do on the event loop
+            context.eventloop.run()
 
     @property
     def _http(self):

@@ -23,6 +23,7 @@ from google.cloud.datastore import _http
 
 from google.cloud.ndb import client as client_module
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import _eventloop
 
 
 @contextlib.contextmanager
@@ -95,10 +96,28 @@ class TestClient:
             client._http
 
     @staticmethod
-    def test__context():
+    def test_context():
         with patch_credentials("testing"):
             client = client_module.Client()
 
         with client.context():
             context = context_module.get_context()
             assert context.client is client
+
+    @staticmethod
+    def test_context_unfinished_business():
+        """Regression test for #213.
+
+        Make sure the eventloop is exhausted inside the context.
+
+        https://github.com/googleapis/python-ndb/issues/213
+        """
+        with patch_credentials("testing"):
+            client = client_module.Client()
+
+        def finish_up():
+            context = context_module.get_context()
+            assert context.client is client
+
+        with client.context():
+            _eventloop.call_soon(finish_up)
