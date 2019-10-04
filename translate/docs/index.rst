@@ -5,6 +5,7 @@ v2 Usage Guide
 .. toctree::
   :maxdepth: 2
 
+  usage
 
 
 API Reference
