@@ -34,6 +34,16 @@
         "generator": "gapic",
         "config": "google/cloud/translate/artman_translate_v3beta1.yaml"
       }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "translate",
+        "apiVersion": "v3",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/translate/artman_translate_v3.yaml"
+      }
     }
   ]
 }
