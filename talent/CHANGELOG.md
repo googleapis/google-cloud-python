@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## 0.4.0
+
+10-04-2019 14:29 PDT
+
+### Implementation Changes
+- Move 'BatchOperationMetadata' / 'JobOperationResult' messages to new protobuf files (via synth). ([#9129](https://github.com/googleapis/google-cloud-python/pull/9129))
+- Import batch proto (via synth).  ([#9062](https://github.com/googleapis/google-cloud-python/pull/9062))
+- Remove send/recv msg size limit (via synth). ([#8970](https://github.com/googleapis/google-cloud-python/pull/8970))
+
+### New Features
+- Deprecate `candidate_availability_filter` for `availability_filters`, add `AvailabilitySignalType`, add fields to `update_profile` (via synth). ([#9256](https://github.com/googleapis/google-cloud-python/pull/9256))
+- Add 'applications' / 'assignments' fields to 'Profile' message (via synth). ([#9229](https://github.com/googleapis/google-cloud-python/pull/9229))
+- Add `filter_` arg to `ProfileServiceClient.list_profiles`; docstring updates (via synth). ([#9223](https://github.com/googleapis/google-cloud-python/pull/9223))
+- Deprecate job visibility (via synth). ([#9050](https://github.com/googleapis/google-cloud-python/pull/9050))
+- Add fields to profile update mask (via synth). ([#9000](https://github.com/googleapis/google-cloud-python/pull/9000))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update docstrings (via synth). ([#8986](https://github.com/googleapis/google-cloud-python/pull/8986))
+
+### Internal / Testing Changes
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.3.0
 
 07-24-2019 17:36 PDT
