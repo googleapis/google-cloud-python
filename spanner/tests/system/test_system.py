@@ -781,7 +781,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @staticmethod
     def _check_batch_status(status_code):
         if status_code != code_pb2.OK:
-            raise exceptions.from_grpc_status(status.code, "batch_update failed")
+            raise exceptions.from_grpc_status(status_code, "batch_update failed")
 
     def test_transaction_batch_update_success(self):
         # [START spanner_test_dml_with_mutation]
