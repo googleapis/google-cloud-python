@@ -146,7 +146,13 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
-        instance.reload()
+        def _expected_display_name(instance):
+            return instance.display_name == Config.INSTANCE.display_name
+
+        retry = RetryInstanceState(_expected_display_name)
+
+        retry(instance.reload)()
+
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
     @unittest.skipUnless(CREATE_INSTANCE, "Skipping instance creation")
