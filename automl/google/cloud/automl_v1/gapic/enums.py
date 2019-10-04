@@ -14,13 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Wrappers for protocol buffer enum types."""
 
-from __future__ import absolute_import
-
-from google.cloud.automl_v1 import AutoMlClient
-from google.cloud.automl_v1 import PredictionServiceClient
-from google.cloud.automl_v1 import enums
-from google.cloud.automl_v1 import types
+import enum
 
 
-__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient")
+class Model(object):
+    class DeploymentState(enum.IntEnum):
+        """
+        Deployment state of the model.
+
+        Attributes:
+          DEPLOYMENT_STATE_UNSPECIFIED (int): Should not be used, an un-set enum has this value by default.
+          DEPLOYED (int): Model is deployed.
+          UNDEPLOYED (int): Model is not deployed.
+        """
+
+        DEPLOYMENT_STATE_UNSPECIFIED = 0
+        DEPLOYED = 1
+        UNDEPLOYED = 2
