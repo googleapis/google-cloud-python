@@ -16,6 +16,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -29,10 +31,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.dataproc.v1B\tJobsProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc"
     ),
     serialized_pb=_b(
-        '\n)google/cloud/dataproc_v1/proto/jobs.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc1\x02\n\rLoggingConfig\x12W\n\x11\x64river_log_levels\x18\x02 \x03(\x0b\x32<.google.cloud.dataproc.v1.LoggingConfig.DriverLogLevelsEntry\x1a\x65\n\x14\x44riverLogLevelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0e\x32-.google.cloud.dataproc.v1.LoggingConfig.Level:\x02\x38\x01"p\n\x05Level\x12\x15\n\x11LEVEL_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41LL\x10\x01\x12\t\n\x05TRACE\x10\x02\x12\t\n\x05\x44\x45\x42UG\x10\x03\x12\x08\n\x04INFO\x10\x04\x12\x08\n\x04WARN\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\t\n\x05\x46\x41TAL\x10\x07\x12\x07\n\x03OFF\x10\x08"\xd3\x02\n\tHadoopJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12G\n\nproperties\x18\x07 \x03(\x0b\x32\x33.google.cloud.dataproc.v1.HadoopJob.PropertiesEntry\x12?\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xd1\x02\n\x08SparkJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x0c\n\x04\x61rgs\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12\x46\n\nproperties\x18\x07 \x03(\x0b\x32\x32.google.cloud.dataproc.v1.SparkJob.PropertiesEntry\x12?\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xd0\x02\n\nPySparkJob\x12\x1c\n\x14main_python_file_uri\x18\x01 \x01(\t\x12\x0c\n\x04\x61rgs\x18\x02 \x03(\t\x12\x18\n\x10python_file_uris\x18\x03 \x03(\t\x12\x15\n\rjar_file_uris\x18\x04 \x03(\t\x12\x11\n\tfile_uris\x18\x05 \x03(\t\x12\x14\n\x0c\x61rchive_uris\x18\x06 \x03(\t\x12H\n\nproperties\x18\x07 \x03(\x0b\x32\x34.google.cloud.dataproc.v1.PySparkJob.PropertiesEntry\x12?\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfig\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x1c\n\tQueryList\x12\x0f\n\x07queries\x18\x01 \x03(\t"\xa1\x03\n\x07HiveJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12P\n\x10script_variables\x18\x04 \x03(\x0b\x32\x36.google.cloud.dataproc.v1.HiveJob.ScriptVariablesEntry\x12\x45\n\nproperties\x18\x05 \x03(\x0b\x32\x31.google.cloud.dataproc.v1.HiveJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xd1\x03\n\x0bSparkSqlJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12T\n\x10script_variables\x18\x03 \x03(\x0b\x32:.google.cloud.dataproc.v1.SparkSqlJob.ScriptVariablesEntry\x12I\n\nproperties\x18\x04 \x03(\x0b\x32\x35.google.cloud.dataproc.v1.SparkSqlJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x38 \x03(\t\x12?\n\x0elogging_config\x18\x06 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xdf\x03\n\x06PigJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12\x1b\n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x12O\n\x10script_variables\x18\x04 \x03(\x0b\x32\x35.google.cloud.dataproc.v1.PigJob.ScriptVariablesEntry\x12\x44\n\nproperties\x18\x05 \x03(\x0b\x32\x30.google.cloud.dataproc.v1.PigJob.PropertiesEntry\x12\x15\n\rjar_file_uris\x18\x06 \x03(\t\x12?\n\x0elogging_config\x18\x07 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfig\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries":\n\x0cJobPlacement\x12\x14\n\x0c\x63luster_name\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x02 \x01(\t"\xc2\x03\n\tJobStatus\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).google.cloud.dataproc.v1.JobStatus.State\x12\x0f\n\x07\x64\x65tails\x18\x02 \x01(\t\x12\x34\n\x10state_start_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12>\n\x08substate\x18\x07 \x01(\x0e\x32,.google.cloud.dataproc.v1.JobStatus.Substate"\xa9\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0e\n\nSETUP_DONE\x10\x08\x12\x0b\n\x07RUNNING\x10\x02\x12\x12\n\x0e\x43\x41NCEL_PENDING\x10\x03\x12\x12\n\x0e\x43\x41NCEL_STARTED\x10\x07\x12\r\n\tCANCELLED\x10\x04\x12\x08\n\x04\x44ONE\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\x13\n\x0f\x41TTEMPT_FAILURE\x10\t"H\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUBMITTED\x10\x01\x12\n\n\x06QUEUED\x10\x02\x12\x10\n\x0cSTALE_STATUS\x10\x03"2\n\x0cJobReference\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x91\x02\n\x0fYarnApplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12>\n\x05state\x18\x02 \x01(\x0e\x32/.google.cloud.dataproc.v1.YarnApplication.State\x12\x10\n\x08progress\x18\x03 \x01(\x02\x12\x14\n\x0ctracking_url\x18\x04 \x01(\t"\x87\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\x0e\n\nNEW_SAVING\x10\x02\x12\r\n\tSUBMITTED\x10\x03\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x04\x12\x0b\n\x07RUNNING\x10\x05\x12\x0c\n\x08\x46INISHED\x10\x06\x12\n\n\x06\x46\x41ILED\x10\x07\x12\n\n\x06KILLED\x10\x08"\x9b\x07\n\x03Job\x12\x39\n\treference\x18\x01 \x01(\x0b\x32&.google.cloud.dataproc.v1.JobReference\x12\x39\n\tplacement\x18\x02 \x01(\x0b\x32&.google.cloud.dataproc.v1.JobPlacement\x12\x39\n\nhadoop_job\x18\x03 \x01(\x0b\x32#.google.cloud.dataproc.v1.HadoopJobH\x00\x12\x37\n\tspark_job\x18\x04 \x01(\x0b\x32".google.cloud.dataproc.v1.SparkJobH\x00\x12;\n\x0bpyspark_job\x18\x05 \x01(\x0b\x32$.google.cloud.dataproc.v1.PySparkJobH\x00\x12\x35\n\x08hive_job\x18\x06 \x01(\x0b\x32!.google.cloud.dataproc.v1.HiveJobH\x00\x12\x33\n\x07pig_job\x18\x07 \x01(\x0b\x32 .google.cloud.dataproc.v1.PigJobH\x00\x12>\n\rspark_sql_job\x18\x0c \x01(\x0b\x32%.google.cloud.dataproc.v1.SparkSqlJobH\x00\x12\x33\n\x06status\x18\x08 \x01(\x0b\x32#.google.cloud.dataproc.v1.JobStatus\x12;\n\x0estatus_history\x18\r \x03(\x0b\x32#.google.cloud.dataproc.v1.JobStatus\x12\x44\n\x11yarn_applications\x18\t \x03(\x0b\x32).google.cloud.dataproc.v1.YarnApplication\x12"\n\x1a\x64river_output_resource_uri\x18\x11 \x01(\t\x12 \n\x18\x64river_control_files_uri\x18\x0f \x01(\t\x12\x39\n\x06labels\x18\x12 \x03(\x0b\x32).google.cloud.dataproc.v1.Job.LabelsEntry\x12;\n\nscheduling\x18\x14 \x01(\x0b\x32\'.google.cloud.dataproc.v1.JobScheduling\x12\x10\n\x08job_uuid\x18\x16 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08type_job".\n\rJobScheduling\x12\x1d\n\x15max_failures_per_hour\x18\x01 \x01(\x05"v\n\x10SubmitJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12*\n\x03job\x18\x02 \x01(\x0b\x32\x1d.google.cloud.dataproc.v1.Job\x12\x12\n\nrequest_id\x18\x04 \x01(\t"C\n\rGetJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"\x90\x02\n\x0fListJobsRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x04 \x01(\t\x12T\n\x11job_state_matcher\x18\x05 \x01(\x0e\x32\x39.google.cloud.dataproc.v1.ListJobsRequest.JobStateMatcher\x12\x0e\n\x06\x66ilter\x18\x07 \x01(\t"6\n\x0fJobStateMatcher\x12\x07\n\x03\x41LL\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0e\n\nNON_ACTIVE\x10\x02"\xa3\x01\n\x10UpdateJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x02 \x01(\t\x12\x0e\n\x06job_id\x18\x03 \x01(\t\x12*\n\x03job\x18\x04 \x01(\x0b\x32\x1d.google.cloud.dataproc.v1.Job\x12/\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"X\n\x10ListJobsResponse\x12+\n\x04jobs\x18\x01 \x03(\x0b\x32\x1d.google.cloud.dataproc.v1.Job\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"F\n\x10\x43\x61ncelJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t"F\n\x10\x44\x65leteJobRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x0e\n\x06job_id\x18\x02 \x01(\t2\xb6\x07\n\rJobController\x12\x99\x01\n\tSubmitJob\x12*.google.cloud.dataproc.v1.SubmitJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"A\x82\xd3\xe4\x93\x02;"6/v1/projects/{project_id}/regions/{region}/jobs:submit:\x01*\x12\x92\x01\n\x06GetJob\x12\'.google.cloud.dataproc.v1.GetJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/projects/{project_id}/regions/{region}/jobs/{job_id}\x12\x9a\x01\n\x08ListJobs\x12).google.cloud.dataproc.v1.ListJobsRequest\x1a*.google.cloud.dataproc.v1.ListJobsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1/projects/{project_id}/regions/{region}/jobs\x12\x9d\x01\n\tUpdateJob\x12*.google.cloud.dataproc.v1.UpdateJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"E\x82\xd3\xe4\x93\x02?28/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:\x03job\x12\xa2\x01\n\tCancelJob\x12*.google.cloud.dataproc.v1.CancelJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"J\x82\xd3\xe4\x93\x02\x44"?/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\x01*\x12\x91\x01\n\tDeleteJob\x12*.google.cloud.dataproc.v1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/projects/{project_id}/regions/{region}/jobs/{job_id}Bm\n\x1c\x63om.google.cloud.dataproc.v1B\tJobsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
+        '\n)google/cloud/dataproc_v1/proto/jobs.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc1\x02\n\rLoggingConfig\x12W\n\x11\x64river_log_levels\x18\x02 \x03(\x0b\x32<.google.cloud.dataproc.v1.LoggingConfig.DriverLogLevelsEntry\x1a\x65\n\x14\x44riverLogLevelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0e\x32-.google.cloud.dataproc.v1.LoggingConfig.Level:\x02\x38\x01"p\n\x05Level\x12\x15\n\x11LEVEL_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41LL\x10\x01\x12\t\n\x05TRACE\x10\x02\x12\t\n\x05\x44\x45\x42UG\x10\x03\x12\x08\n\x04INFO\x10\x04\x12\x08\n\x04WARN\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\t\n\x05\x46\x41TAL\x10\x07\x12\x07\n\x03OFF\x10\x08"\xf1\x02\n\tHadoopJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x11\n\x04\x61rgs\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x04 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tfile_uris\x18\x05 \x03(\tB\x03\xe0\x41\x01\x12\x19\n\x0c\x61rchive_uris\x18\x06 \x03(\tB\x03\xe0\x41\x01\x12L\n\nproperties\x18\x07 \x03(\x0b\x32\x33.google.cloud.dataproc.v1.HadoopJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfigB\x03\xe0\x41\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xef\x02\n\x08SparkJob\x12\x1b\n\x11main_jar_file_uri\x18\x01 \x01(\tH\x00\x12\x14\n\nmain_class\x18\x02 \x01(\tH\x00\x12\x11\n\x04\x61rgs\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x04 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tfile_uris\x18\x05 \x03(\tB\x03\xe0\x41\x01\x12\x19\n\x0c\x61rchive_uris\x18\x06 \x03(\tB\x03\xe0\x41\x01\x12K\n\nproperties\x18\x07 \x03(\x0b\x32\x32.google.cloud.dataproc.v1.SparkJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfigB\x03\xe0\x41\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06\x64river"\xf8\x02\n\nPySparkJob\x12!\n\x14main_python_file_uri\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04\x61rgs\x18\x02 \x03(\tB\x03\xe0\x41\x01\x12\x1d\n\x10python_file_uris\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x04 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tfile_uris\x18\x05 \x03(\tB\x03\xe0\x41\x01\x12\x19\n\x0c\x61rchive_uris\x18\x06 \x03(\tB\x03\xe0\x41\x01\x12M\n\nproperties\x18\x07 \x03(\x0b\x32\x34.google.cloud.dataproc.v1.PySparkJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x44\n\x0elogging_config\x18\x08 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfigB\x03\xe0\x41\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"!\n\tQueryList\x12\x14\n\x07queries\x18\x01 \x03(\tB\x03\xe0\x41\x02"\xb5\x03\n\x07HiveJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12 \n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x42\x03\xe0\x41\x01\x12U\n\x10script_variables\x18\x04 \x03(\x0b\x32\x36.google.cloud.dataproc.v1.HiveJob.ScriptVariablesEntryB\x03\xe0\x41\x01\x12J\n\nproperties\x18\x05 \x03(\x0b\x32\x31.google.cloud.dataproc.v1.HiveJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x06 \x03(\tB\x03\xe0\x41\x01\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xe5\x03\n\x0bSparkSqlJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12Y\n\x10script_variables\x18\x03 \x03(\x0b\x32:.google.cloud.dataproc.v1.SparkSqlJob.ScriptVariablesEntryB\x03\xe0\x41\x01\x12N\n\nproperties\x18\x04 \x03(\x0b\x32\x35.google.cloud.dataproc.v1.SparkSqlJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x38 \x03(\tB\x03\xe0\x41\x01\x12\x44\n\x0elogging_config\x18\x06 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfigB\x03\xe0\x41\x01\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"\xf8\x03\n\x06PigJob\x12\x18\n\x0equery_file_uri\x18\x01 \x01(\tH\x00\x12\x39\n\nquery_list\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.QueryListH\x00\x12 \n\x13\x63ontinue_on_failure\x18\x03 \x01(\x08\x42\x03\xe0\x41\x01\x12T\n\x10script_variables\x18\x04 \x03(\x0b\x32\x35.google.cloud.dataproc.v1.PigJob.ScriptVariablesEntryB\x03\xe0\x41\x01\x12I\n\nproperties\x18\x05 \x03(\x0b\x32\x30.google.cloud.dataproc.v1.PigJob.PropertiesEntryB\x03\xe0\x41\x01\x12\x1a\n\rjar_file_uris\x18\x06 \x03(\tB\x03\xe0\x41\x01\x12\x44\n\x0elogging_config\x18\x07 \x01(\x0b\x32\'.google.cloud.dataproc.v1.LoggingConfigB\x03\xe0\x41\x01\x1a\x36\n\x14ScriptVariablesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\t\n\x07queries"D\n\x0cJobPlacement\x12\x19\n\x0c\x63luster_name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_uuid\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xd9\x03\n\tJobStatus\x12=\n\x05state\x18\x01 \x01(\x0e\x32).google.cloud.dataproc.v1.JobStatus.StateB\x03\xe0\x41\x03\x12\x17\n\x07\x64\x65tails\x18\x02 \x01(\tB\x06\xe0\x41\x03\xe0\x41\x01\x12\x39\n\x10state_start_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x43\n\x08substate\x18\x07 \x01(\x0e\x32,.google.cloud.dataproc.v1.JobStatus.SubstateB\x03\xe0\x41\x03"\xa9\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0e\n\nSETUP_DONE\x10\x08\x12\x0b\n\x07RUNNING\x10\x02\x12\x12\n\x0e\x43\x41NCEL_PENDING\x10\x03\x12\x12\n\x0e\x43\x41NCEL_STARTED\x10\x07\x12\r\n\tCANCELLED\x10\x04\x12\x08\n\x04\x44ONE\x10\x05\x12\t\n\x05\x45RROR\x10\x06\x12\x13\n\x0f\x41TTEMPT_FAILURE\x10\t"H\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUBMITTED\x10\x01\x12\n\n\x06QUEUED\x10\x02\x12\x10\n\x0cSTALE_STATUS\x10\x03"<\n\x0cJobReference\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06job_id\x18\x02 \x01(\tB\x03\xe0\x41\x01"\xa5\x02\n\x0fYarnApplication\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x43\n\x05state\x18\x02 \x01(\x0e\x32/.google.cloud.dataproc.v1.YarnApplication.StateB\x03\xe0\x41\x02\x12\x15\n\x08progress\x18\x03 \x01(\x02\x42\x03\xe0\x41\x02\x12\x19\n\x0ctracking_url\x18\x04 \x01(\tB\x03\xe0\x41\x01"\x87\x01\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\x0e\n\nNEW_SAVING\x10\x02\x12\r\n\tSUBMITTED\x10\x03\x12\x0c\n\x08\x41\x43\x43\x45PTED\x10\x04\x12\x0b\n\x07RUNNING\x10\x05\x12\x0c\n\x08\x46INISHED\x10\x06\x12\n\n\x06\x46\x41ILED\x10\x07\x12\n\n\x06KILLED\x10\x08"\xcd\x07\n\x03Job\x12>\n\treference\x18\x01 \x01(\x0b\x32&.google.cloud.dataproc.v1.JobReferenceB\x03\xe0\x41\x01\x12>\n\tplacement\x18\x02 \x01(\x0b\x32&.google.cloud.dataproc.v1.JobPlacementB\x03\xe0\x41\x02\x12\x39\n\nhadoop_job\x18\x03 \x01(\x0b\x32#.google.cloud.dataproc.v1.HadoopJobH\x00\x12\x37\n\tspark_job\x18\x04 \x01(\x0b\x32".google.cloud.dataproc.v1.SparkJobH\x00\x12;\n\x0bpyspark_job\x18\x05 \x01(\x0b\x32$.google.cloud.dataproc.v1.PySparkJobH\x00\x12\x35\n\x08hive_job\x18\x06 \x01(\x0b\x32!.google.cloud.dataproc.v1.HiveJobH\x00\x12\x33\n\x07pig_job\x18\x07 \x01(\x0b\x32 .google.cloud.dataproc.v1.PigJobH\x00\x12>\n\rspark_sql_job\x18\x0c \x01(\x0b\x32%.google.cloud.dataproc.v1.SparkSqlJobH\x00\x12\x38\n\x06status\x18\x08 \x01(\x0b\x32#.google.cloud.dataproc.v1.JobStatusB\x03\xe0\x41\x03\x12@\n\x0estatus_history\x18\r \x03(\x0b\x32#.google.cloud.dataproc.v1.JobStatusB\x03\xe0\x41\x03\x12I\n\x11yarn_applications\x18\t \x03(\x0b\x32).google.cloud.dataproc.v1.YarnApplicationB\x03\xe0\x41\x03\x12\'\n\x1a\x64river_output_resource_uri\x18\x11 \x01(\tB\x03\xe0\x41\x03\x12%\n\x18\x64river_control_files_uri\x18\x0f \x01(\tB\x03\xe0\x41\x03\x12>\n\x06labels\x18\x12 \x03(\x0b\x32).google.cloud.dataproc.v1.Job.LabelsEntryB\x03\xe0\x41\x01\x12@\n\nscheduling\x18\x14 \x01(\x0b\x32\'.google.cloud.dataproc.v1.JobSchedulingB\x03\xe0\x41\x01\x12\x15\n\x08job_uuid\x18\x16 \x01(\tB\x03\xe0\x41\x03\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08type_job"3\n\rJobScheduling\x12"\n\x15max_failures_per_hour\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01"\x8a\x01\n\x10SubmitJobRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12/\n\x03job\x18\x02 \x01(\x0b\x32\x1d.google.cloud.dataproc.v1.JobB\x03\xe0\x41\x02\x12\x17\n\nrequest_id\x18\x04 \x01(\tB\x03\xe0\x41\x01"R\n\rGetJobRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06job_id\x18\x02 \x01(\tB\x03\xe0\x41\x02"\xb3\x02\n\x0fListJobsRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x06 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x19\n\x0c\x63luster_name\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12Y\n\x11job_state_matcher\x18\x05 \x01(\x0e\x32\x39.google.cloud.dataproc.v1.ListJobsRequest.JobStateMatcherB\x03\xe0\x41\x01\x12\x13\n\x06\x66ilter\x18\x07 \x01(\tB\x03\xe0\x41\x01"6\n\x0fJobStateMatcher\x12\x07\n\x03\x41LL\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0e\n\nNON_ACTIVE\x10\x02"\xbc\x01\n\x10UpdateJobRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06job_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12/\n\x03job\x18\x04 \x01(\x0b\x32\x1d.google.cloud.dataproc.v1.JobB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"b\n\x10ListJobsResponse\x12\x30\n\x04jobs\x18\x01 \x03(\x0b\x32\x1d.google.cloud.dataproc.v1.JobB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x01"U\n\x10\x43\x61ncelJobRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06job_id\x18\x02 \x01(\tB\x03\xe0\x41\x02"U\n\x10\x44\x65leteJobRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06job_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x32\x9b\t\n\rJobController\x12\xb1\x01\n\tSubmitJob\x12*.google.cloud.dataproc.v1.SubmitJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"Y\x82\xd3\xe4\x93\x02;"6/v1/projects/{project_id}/regions/{region}/jobs:submit:\x01*\xda\x41\x15project_id,region,job\x12\xad\x01\n\x06GetJob\x12\'.google.cloud.dataproc.v1.GetJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"[\x82\xd3\xe4\x93\x02:\x12\x38/v1/projects/{project_id}/regions/{region}/jobs/{job_id}\xda\x41\x18project_id,region,job_id\x12\xc9\x01\n\x08ListJobs\x12).google.cloud.dataproc.v1.ListJobsRequest\x1a*.google.cloud.dataproc.v1.ListJobsResponse"f\x82\xd3\xe4\x93\x02\x31\x12//v1/projects/{project_id}/regions/{region}/jobs\xda\x41\x11project_id,region\xda\x41\x18project_id,region,filter\x12\x9d\x01\n\tUpdateJob\x12*.google.cloud.dataproc.v1.UpdateJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"E\x82\xd3\xe4\x93\x02?28/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:\x03job\x12\xbd\x01\n\tCancelJob\x12*.google.cloud.dataproc.v1.CancelJobRequest\x1a\x1d.google.cloud.dataproc.v1.Job"e\x82\xd3\xe4\x93\x02\x44"?/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\x01*\xda\x41\x18project_id,region,job_id\x12\xac\x01\n\tDeleteJob\x12*.google.cloud.dataproc.v1.DeleteJobRequest\x1a\x16.google.protobuf.Empty"[\x82\xd3\xe4\x93\x02:*8/v1/projects/{project_id}/regions/{region}/jobs/{job_id}\xda\x41\x18project_id,region,job_id\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBm\n\x1c\x63om.google.cloud.dataproc.v1B\tJobsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -80,8 +84,8 @@ _LOGGINGCONFIG_LEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=407,
-    serialized_end=519,
+    serialized_start=465,
+    serialized_end=577,
 )
 _sym_db.RegisterEnumDescriptor(_LOGGINGCONFIG_LEVEL)
 
@@ -132,8 +136,8 @@ _JOBSTATUS_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3210,
-    serialized_end=3379,
+    serialized_start=3471,
+    serialized_end=3640,
 )
 _sym_db.RegisterEnumDescriptor(_JOBSTATUS_STATE)
 
@@ -158,8 +162,8 @@ _JOBSTATUS_SUBSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3381,
-    serialized_end=3453,
+    serialized_start=3642,
+    serialized_end=3714,
 )
 _sym_db.RegisterEnumDescriptor(_JOBSTATUS_SUBSTATE)
 
@@ -203,8 +207,8 @@ _YARNAPPLICATION_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3646,
-    serialized_end=3781,
+    serialized_start=3937,
+    serialized_end=4072,
 )
 _sym_db.RegisterEnumDescriptor(_YARNAPPLICATION_STATE)
 
@@ -226,8 +230,8 @@ _LISTJOBSREQUEST_JOBSTATEMATCHER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5165,
-    serialized_end=5219,
+    serialized_start=5582,
+    serialized_end=5636,
 )
 _sym_db.RegisterEnumDescriptor(_LISTJOBSREQUEST_JOBSTATEMATCHER)
 
@@ -284,8 +288,8 @@ _LOGGINGCONFIG_DRIVERLOGLEVELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=304,
-    serialized_end=405,
+    serialized_start=362,
+    serialized_end=463,
 )
 
 _LOGGINGCONFIG = _descriptor.Descriptor(
@@ -322,8 +326,8 @@ _LOGGINGCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=198,
-    serialized_end=519,
+    serialized_start=256,
+    serialized_end=577,
 )
 
 
@@ -379,8 +383,8 @@ _HADOOPJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _HADOOPJOB = _descriptor.Descriptor(
@@ -441,7 +445,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -459,7 +463,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -477,7 +481,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -495,7 +499,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -513,7 +517,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -531,7 +535,7 @@ _HADOOPJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -551,8 +555,8 @@ _HADOOPJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=522,
-    serialized_end=861,
+    serialized_start=580,
+    serialized_end=949,
 )
 
 
@@ -608,8 +612,8 @@ _SPARKJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _SPARKJOB = _descriptor.Descriptor(
@@ -670,7 +674,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -688,7 +692,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -706,7 +710,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -724,7 +728,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -742,7 +746,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -760,7 +764,7 @@ _SPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -780,8 +784,8 @@ _SPARKJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=864,
-    serialized_end=1201,
+    serialized_start=952,
+    serialized_end=1319,
 )
 
 
@@ -837,8 +841,8 @@ _PYSPARKJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _PYSPARKJOB = _descriptor.Descriptor(
@@ -863,7 +867,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -881,7 +885,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -899,7 +903,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -917,7 +921,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -935,7 +939,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -953,7 +957,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -971,7 +975,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -989,7 +993,7 @@ _PYSPARKJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1001,8 +1005,8 @@ _PYSPARKJOB = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1204,
-    serialized_end=1540,
+    serialized_start=1322,
+    serialized_end=1698,
 )
 
 
@@ -1028,7 +1032,7 @@ _QUERYLIST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -1040,8 +1044,8 @@ _QUERYLIST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1542,
-    serialized_end=1570,
+    serialized_start=1700,
+    serialized_end=1733,
 )
 
 
@@ -1097,8 +1101,8 @@ _HIVEJOB_SCRIPTVARIABLESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1874,
-    serialized_end=1928,
+    serialized_start=2057,
+    serialized_end=2111,
 )
 
 _HIVEJOB_PROPERTIESENTRY = _descriptor.Descriptor(
@@ -1153,8 +1157,8 @@ _HIVEJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _HIVEJOB = _descriptor.Descriptor(
@@ -1215,7 +1219,7 @@ _HIVEJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1233,7 +1237,7 @@ _HIVEJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1251,7 +1255,7 @@ _HIVEJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1269,7 +1273,7 @@ _HIVEJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1289,8 +1293,8 @@ _HIVEJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1573,
-    serialized_end=1990,
+    serialized_start=1736,
+    serialized_end=2173,
 )
 
 
@@ -1346,8 +1350,8 @@ _SPARKSQLJOB_SCRIPTVARIABLESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1874,
-    serialized_end=1928,
+    serialized_start=2057,
+    serialized_end=2111,
 )
 
 _SPARKSQLJOB_PROPERTIESENTRY = _descriptor.Descriptor(
@@ -1402,8 +1406,8 @@ _SPARKSQLJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _SPARKSQLJOB = _descriptor.Descriptor(
@@ -1464,7 +1468,7 @@ _SPARKSQLJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1482,7 +1486,7 @@ _SPARKSQLJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1500,7 +1504,7 @@ _SPARKSQLJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1518,7 +1522,7 @@ _SPARKSQLJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1538,8 +1542,8 @@ _SPARKSQLJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1993,
-    serialized_end=2458,
+    serialized_start=2176,
+    serialized_end=2661,
 )
 
 
@@ -1595,8 +1599,8 @@ _PIGJOB_SCRIPTVARIABLESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1874,
-    serialized_end=1928,
+    serialized_start=2057,
+    serialized_end=2111,
 )
 
 _PIGJOB_PROPERTIESENTRY = _descriptor.Descriptor(
@@ -1651,8 +1655,8 @@ _PIGJOB_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=802,
-    serialized_end=851,
+    serialized_start=890,
+    serialized_end=939,
 )
 
 _PIGJOB = _descriptor.Descriptor(
@@ -1713,7 +1717,7 @@ _PIGJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1731,7 +1735,7 @@ _PIGJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1749,7 +1753,7 @@ _PIGJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1767,7 +1771,7 @@ _PIGJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1785,7 +1789,7 @@ _PIGJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1805,8 +1809,8 @@ _PIGJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2461,
-    serialized_end=2940,
+    serialized_start=2664,
+    serialized_end=3168,
 )
 
 
@@ -1832,7 +1836,7 @@ _JOBPLACEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1850,7 +1854,7 @@ _JOBPLACEMENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1862,8 +1866,8 @@ _JOBPLACEMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2942,
-    serialized_end=3000,
+    serialized_start=3170,
+    serialized_end=3238,
 )
 
 
@@ -1889,7 +1893,7 @@ _JOBSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1907,7 +1911,7 @@ _JOBSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1925,7 +1929,7 @@ _JOBSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1943,7 +1947,7 @@ _JOBSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1955,8 +1959,8 @@ _JOBSTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3003,
-    serialized_end=3453,
+    serialized_start=3241,
+    serialized_end=3714,
 )
 
 
@@ -1982,7 +1986,7 @@ _JOBREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2000,7 +2004,7 @@ _JOBREFERENCE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2012,8 +2016,8 @@ _JOBREFERENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3455,
-    serialized_end=3505,
+    serialized_start=3716,
+    serialized_end=3776,
 )
 
 
@@ -2039,7 +2043,7 @@ _YARNAPPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2057,7 +2061,7 @@ _YARNAPPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2075,7 +2079,7 @@ _YARNAPPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2093,7 +2097,7 @@ _YARNAPPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2105,8 +2109,8 @@ _YARNAPPLICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3508,
-    serialized_end=3781,
+    serialized_start=3779,
+    serialized_end=4072,
 )
 
 
@@ -2162,8 +2166,8 @@ _JOB_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4650,
-    serialized_end=4695,
+    serialized_start=4991,
+    serialized_end=5036,
 )
 
 _JOB = _descriptor.Descriptor(
@@ -2188,7 +2192,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2206,7 +2210,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2332,7 +2336,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2350,7 +2354,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2368,7 +2372,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2386,7 +2390,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2404,7 +2408,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2422,7 +2426,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2440,7 +2444,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2458,7 +2462,7 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2478,8 +2482,8 @@ _JOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3784,
-    serialized_end=4707,
+    serialized_start=4075,
+    serialized_end=5048,
 )
 
 
@@ -2505,7 +2509,7 @@ _JOBSCHEDULING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         )
     ],
@@ -2517,8 +2521,8 @@ _JOBSCHEDULING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4709,
-    serialized_end=4755,
+    serialized_start=5050,
+    serialized_end=5101,
 )
 
 
@@ -2544,7 +2548,7 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2562,7 +2566,7 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2580,7 +2584,7 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2598,7 +2602,7 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2610,8 +2614,8 @@ _SUBMITJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4757,
-    serialized_end=4875,
+    serialized_start=5104,
+    serialized_end=5242,
 )
 
 
@@ -2637,7 +2641,7 @@ _GETJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2655,7 +2659,7 @@ _GETJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2673,7 +2677,7 @@ _GETJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2685,8 +2689,8 @@ _GETJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4877,
-    serialized_end=4944,
+    serialized_start=5244,
+    serialized_end=5326,
 )
 
 
@@ -2712,7 +2716,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2730,7 +2734,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2748,7 +2752,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2766,7 +2770,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2784,7 +2788,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2802,7 +2806,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2820,7 +2824,7 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2832,8 +2836,8 @@ _LISTJOBSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4947,
-    serialized_end=5219,
+    serialized_start=5329,
+    serialized_end=5636,
 )
 
 
@@ -2859,7 +2863,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2877,7 +2881,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2895,7 +2899,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2913,7 +2917,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2931,7 +2935,7 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2943,8 +2947,8 @@ _UPDATEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5222,
-    serialized_end=5385,
+    serialized_start=5639,
+    serialized_end=5827,
 )
 
 
@@ -2970,7 +2974,7 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2988,7 +2992,7 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -3000,8 +3004,8 @@ _LISTJOBSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5387,
-    serialized_end=5475,
+    serialized_start=5829,
+    serialized_end=5927,
 )
 
 
@@ -3027,7 +3031,7 @@ _CANCELJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3045,7 +3049,7 @@ _CANCELJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3063,7 +3067,7 @@ _CANCELJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -3075,8 +3079,8 @@ _CANCELJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5477,
-    serialized_end=5547,
+    serialized_start=5929,
+    serialized_end=6014,
 )
 
 
@@ -3102,7 +3106,7 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3120,7 +3124,7 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3138,7 +3142,7 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -3150,8 +3154,8 @@ _DELETEJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5549,
-    serialized_end=5619,
+    serialized_start=6016,
+    serialized_end=6101,
 )
 
 _LOGGINGCONFIG_DRIVERLOGLEVELSENTRY.fields_by_name[
@@ -3771,7 +3775,7 @@ JobStatus = _reflection.GeneratedProtocolMessageType(
       state:
           Output only. A state message specifying the overall job state.
       details:
-          Output only. Optional job state details, such as an error
+          Optional. Output only. Job state details, such as an error
           description if the state is ERROR.
       state_start_time:
           Output only. The time when this state was entered.
@@ -4156,24 +4160,110 @@ _sym_db.RegisterMessage(DeleteJobRequest)
 DESCRIPTOR._options = None
 _LOGGINGCONFIG_DRIVERLOGLEVELSENTRY._options = None
 _HADOOPJOB_PROPERTIESENTRY._options = None
+_HADOOPJOB.fields_by_name["args"]._options = None
+_HADOOPJOB.fields_by_name["jar_file_uris"]._options = None
+_HADOOPJOB.fields_by_name["file_uris"]._options = None
+_HADOOPJOB.fields_by_name["archive_uris"]._options = None
+_HADOOPJOB.fields_by_name["properties"]._options = None
+_HADOOPJOB.fields_by_name["logging_config"]._options = None
 _SPARKJOB_PROPERTIESENTRY._options = None
+_SPARKJOB.fields_by_name["args"]._options = None
+_SPARKJOB.fields_by_name["jar_file_uris"]._options = None
+_SPARKJOB.fields_by_name["file_uris"]._options = None
+_SPARKJOB.fields_by_name["archive_uris"]._options = None
+_SPARKJOB.fields_by_name["properties"]._options = None
+_SPARKJOB.fields_by_name["logging_config"]._options = None
 _PYSPARKJOB_PROPERTIESENTRY._options = None
+_PYSPARKJOB.fields_by_name["main_python_file_uri"]._options = None
+_PYSPARKJOB.fields_by_name["args"]._options = None
+_PYSPARKJOB.fields_by_name["python_file_uris"]._options = None
+_PYSPARKJOB.fields_by_name["jar_file_uris"]._options = None
+_PYSPARKJOB.fields_by_name["file_uris"]._options = None
+_PYSPARKJOB.fields_by_name["archive_uris"]._options = None
+_PYSPARKJOB.fields_by_name["properties"]._options = None
+_PYSPARKJOB.fields_by_name["logging_config"]._options = None
+_QUERYLIST.fields_by_name["queries"]._options = None
 _HIVEJOB_SCRIPTVARIABLESENTRY._options = None
 _HIVEJOB_PROPERTIESENTRY._options = None
+_HIVEJOB.fields_by_name["continue_on_failure"]._options = None
+_HIVEJOB.fields_by_name["script_variables"]._options = None
+_HIVEJOB.fields_by_name["properties"]._options = None
+_HIVEJOB.fields_by_name["jar_file_uris"]._options = None
 _SPARKSQLJOB_SCRIPTVARIABLESENTRY._options = None
 _SPARKSQLJOB_PROPERTIESENTRY._options = None
+_SPARKSQLJOB.fields_by_name["script_variables"]._options = None
+_SPARKSQLJOB.fields_by_name["properties"]._options = None
+_SPARKSQLJOB.fields_by_name["jar_file_uris"]._options = None
+_SPARKSQLJOB.fields_by_name["logging_config"]._options = None
 _PIGJOB_SCRIPTVARIABLESENTRY._options = None
 _PIGJOB_PROPERTIESENTRY._options = None
+_PIGJOB.fields_by_name["continue_on_failure"]._options = None
+_PIGJOB.fields_by_name["script_variables"]._options = None
+_PIGJOB.fields_by_name["properties"]._options = None
+_PIGJOB.fields_by_name["jar_file_uris"]._options = None
+_PIGJOB.fields_by_name["logging_config"]._options = None
+_JOBPLACEMENT.fields_by_name["cluster_name"]._options = None
+_JOBPLACEMENT.fields_by_name["cluster_uuid"]._options = None
+_JOBSTATUS.fields_by_name["state"]._options = None
+_JOBSTATUS.fields_by_name["details"]._options = None
+_JOBSTATUS.fields_by_name["state_start_time"]._options = None
+_JOBSTATUS.fields_by_name["substate"]._options = None
+_JOBREFERENCE.fields_by_name["project_id"]._options = None
+_JOBREFERENCE.fields_by_name["job_id"]._options = None
+_YARNAPPLICATION.fields_by_name["name"]._options = None
+_YARNAPPLICATION.fields_by_name["state"]._options = None
+_YARNAPPLICATION.fields_by_name["progress"]._options = None
+_YARNAPPLICATION.fields_by_name["tracking_url"]._options = None
 _JOB_LABELSENTRY._options = None
+_JOB.fields_by_name["reference"]._options = None
+_JOB.fields_by_name["placement"]._options = None
+_JOB.fields_by_name["status"]._options = None
+_JOB.fields_by_name["status_history"]._options = None
+_JOB.fields_by_name["yarn_applications"]._options = None
+_JOB.fields_by_name["driver_output_resource_uri"]._options = None
+_JOB.fields_by_name["driver_control_files_uri"]._options = None
+_JOB.fields_by_name["labels"]._options = None
+_JOB.fields_by_name["scheduling"]._options = None
+_JOB.fields_by_name["job_uuid"]._options = None
+_JOBSCHEDULING.fields_by_name["max_failures_per_hour"]._options = None
+_SUBMITJOBREQUEST.fields_by_name["project_id"]._options = None
+_SUBMITJOBREQUEST.fields_by_name["region"]._options = None
+_SUBMITJOBREQUEST.fields_by_name["job"]._options = None
+_SUBMITJOBREQUEST.fields_by_name["request_id"]._options = None
+_GETJOBREQUEST.fields_by_name["project_id"]._options = None
+_GETJOBREQUEST.fields_by_name["region"]._options = None
+_GETJOBREQUEST.fields_by_name["job_id"]._options = None
+_LISTJOBSREQUEST.fields_by_name["project_id"]._options = None
+_LISTJOBSREQUEST.fields_by_name["region"]._options = None
+_LISTJOBSREQUEST.fields_by_name["page_size"]._options = None
+_LISTJOBSREQUEST.fields_by_name["page_token"]._options = None
+_LISTJOBSREQUEST.fields_by_name["cluster_name"]._options = None
+_LISTJOBSREQUEST.fields_by_name["job_state_matcher"]._options = None
+_LISTJOBSREQUEST.fields_by_name["filter"]._options = None
+_UPDATEJOBREQUEST.fields_by_name["project_id"]._options = None
+_UPDATEJOBREQUEST.fields_by_name["region"]._options = None
+_UPDATEJOBREQUEST.fields_by_name["job_id"]._options = None
+_UPDATEJOBREQUEST.fields_by_name["job"]._options = None
+_UPDATEJOBREQUEST.fields_by_name["update_mask"]._options = None
+_LISTJOBSRESPONSE.fields_by_name["jobs"]._options = None
+_LISTJOBSRESPONSE.fields_by_name["next_page_token"]._options = None
+_CANCELJOBREQUEST.fields_by_name["project_id"]._options = None
+_CANCELJOBREQUEST.fields_by_name["region"]._options = None
+_CANCELJOBREQUEST.fields_by_name["job_id"]._options = None
+_DELETEJOBREQUEST.fields_by_name["project_id"]._options = None
+_DELETEJOBREQUEST.fields_by_name["region"]._options = None
+_DELETEJOBREQUEST.fields_by_name["job_id"]._options = None
 
 _JOBCONTROLLER = _descriptor.ServiceDescriptor(
     name="JobController",
     full_name="google.cloud.dataproc.v1.JobController",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=5622,
-    serialized_end=6572,
+    serialized_options=_b(
+        "\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=6104,
+    serialized_end=7283,
     methods=[
         _descriptor.MethodDescriptor(
             name="SubmitJob",
@@ -4183,7 +4273,7 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_SUBMITJOBREQUEST,
             output_type=_JOB,
             serialized_options=_b(
-                '\202\323\344\223\002;"6/v1/projects/{project_id}/regions/{region}/jobs:submit:\001*'
+                '\202\323\344\223\002;"6/v1/projects/{project_id}/regions/{region}/jobs:submit:\001*\332A\025project_id,region,job'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4194,7 +4284,7 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_GETJOBREQUEST,
             output_type=_JOB,
             serialized_options=_b(
-                "\202\323\344\223\002:\0228/v1/projects/{project_id}/regions/{region}/jobs/{job_id}"
+                "\202\323\344\223\002:\0228/v1/projects/{project_id}/regions/{region}/jobs/{job_id}\332A\030project_id,region,job_id"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4205,7 +4295,7 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_LISTJOBSREQUEST,
             output_type=_LISTJOBSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1/projects/{project_id}/regions/{region}/jobs"
+                "\202\323\344\223\0021\022//v1/projects/{project_id}/regions/{region}/jobs\332A\021project_id,region\332A\030project_id,region,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4227,7 +4317,7 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_CANCELJOBREQUEST,
             output_type=_JOB,
             serialized_options=_b(
-                '\202\323\344\223\002D"?/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\001*'
+                '\202\323\344\223\002D"?/v1/projects/{project_id}/regions/{region}/jobs/{job_id}:cancel:\001*\332A\030project_id,region,job_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4238,7 +4328,7 @@ _JOBCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_DELETEJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002:*8/v1/projects/{project_id}/regions/{region}/jobs/{job_id}"
+                "\202\323\344\223\002:*8/v1/projects/{project_id}/regions/{region}/jobs/{job_id}\332A\030project_id,region,job_id"
             ),
         ),
     ],
