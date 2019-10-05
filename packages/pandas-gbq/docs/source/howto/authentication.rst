@@ -160,7 +160,7 @@ credentials are not found.
        # authorization flow. Note, this doesn't work if you're running from a
        # notebook on a remote sever, such as over SSH or with Google Colab.
        auth_local_webserver=True,
-
+   )
 
    df = pandas_gbq.read_gbq(
        "SELECT my_col FROM `my_dataset.my_table`",
