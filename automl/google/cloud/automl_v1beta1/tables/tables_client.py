@@ -634,7 +634,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -686,7 +687,7 @@ class TablesClient(object):
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
             >>>
-            >>> client.import_data(dataset=d,
+            >>> response = client.import_data(dataset=d,
             ...     gcs_input_uris='gs://cloud-ml-tables-data/bank-marketing.csv')
             ...
             >>> def callback(operation_future):
@@ -739,7 +740,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -806,7 +808,7 @@ class TablesClient(object):
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
             >>>
-            >>> client.export_data(dataset=d,
+            >>> response = client.export_data(dataset=d,
             ...     gcs_output_uri_prefix='gs://cloud-ml-tables-data/bank-marketing.csv')
             ...
             >>> def callback(operation_future):
@@ -845,7 +847,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1172,6 +1175,13 @@ class TablesClient(object):
                 to provide either a way to lookup the source dataset (using one
                 of the `dataset*` kwargs), or the `table_spec_name` of the
                 table this column belongs to.
+            type_code (Optional[str]):
+                The desired 'type_code' of the column. For more information
+                on the available types, please see the proto definition:
+                https://github.com/googleapis/google-cloud-python/blob/bfb4da8542981d2eedffe20f64e87ab528a17592/automl/google/cloud/automl_v1beta1/proto/data_types.proto
+            nullable (Optional[bool]):
+                Set to `True` or `False` to specify if this column's value
+                must expected to be present in all rows or not.
             table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose specs you want to
                 update. If not supplied, the client can determine this name
@@ -1393,7 +1403,7 @@ class TablesClient(object):
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset',
-            ...     column_spec_name='Unix Time')
+            ...     column_spec_display_name='Unix Time')
             ...
 
         Args:
@@ -1505,7 +1515,7 @@ class TablesClient(object):
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
-            >>> client.set_time_column(dataset_display_name='my_dataset')
+            >>> client.clear_time_column(dataset_display_name='my_dataset')
             >>>
 
         Args:
@@ -2106,7 +2116,11 @@ class TablesClient(object):
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
-            >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
+            >>> m = client.create_model(
+            ...     'my_model', 
+            ...     dataset_display_name='my_dataset',
+            ...     train_budget_milli_node_hours=1000
+            ... )
             >>>
             >>> m.result() # blocks on result
             >>>
@@ -2150,7 +2164,9 @@ class TablesClient(object):
                 not train your model on.
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
+
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                 failed for any reason.
@@ -2278,7 +2294,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2461,7 +2478,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2532,7 +2550,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2733,7 +2752,8 @@ class TablesClient(object):
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            instance. See the documentation here:
+            https://googleapis.dev/python/google-api-core/latest/operation.html
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
