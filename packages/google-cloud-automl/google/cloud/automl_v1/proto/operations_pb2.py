@@ -24,12 +24,6 @@ from google.cloud.automl_v1.proto import (
 from google.cloud.automl_v1.proto import (
     model_evaluation_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_model__evaluation__pb2,
 )
-from google.cloud.automl_v1.proto import (
-    prediction_service_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2,
-)
-from google.cloud.automl_v1.proto import (
-    service_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2,
-)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
@@ -44,14 +38,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/automl_v1/proto/operations.proto\x12\x16google.cloud.automl.v1\x1a%google/cloud/automl_v1/proto/io.proto\x1a(google/cloud/automl_v1/proto/model.proto\x1a\x33google/cloud/automl_v1/proto/model_evaluation.proto\x1a\x35google/cloud/automl_v1/proto/prediction_service.proto\x1a*google/cloud/automl_v1/proto/service.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1cgoogle/api/annotations.proto"\xe9\x02\n\x11OperationMetadata\x12I\n\x0e\x64\x65lete_details\x18\x08 \x01(\x0b\x32/.google.cloud.automl.v1.DeleteOperationMetadataH\x00\x12T\n\x14\x63reate_model_details\x18\n \x01(\x0b\x32\x34.google.cloud.automl.v1.CreateModelOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\r \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"\x19\n\x17\x44\x65leteOperationMetadata"\x1e\n\x1c\x43reateModelOperationMetadataB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n-google/cloud/automl_v1/proto/operations.proto\x12\x16google.cloud.automl.v1\x1a%google/cloud/automl_v1/proto/io.proto\x1a(google/cloud/automl_v1/proto/model.proto\x1a\x33google/cloud/automl_v1/proto/model_evaluation.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1cgoogle/api/annotations.proto"\xe9\x02\n\x11OperationMetadata\x12I\n\x0e\x64\x65lete_details\x18\x08 \x01(\x0b\x32/.google.cloud.automl.v1.DeleteOperationMetadataH\x00\x12T\n\x14\x63reate_model_details\x18\n \x01(\x0b\x32\x34.google.cloud.automl.v1.CreateModelOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\r \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"\x19\n\x17\x44\x65leteOperationMetadata"\x1e\n\x1c\x43reateModelOperationMetadataB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_automl__v1_dot_proto_dot_io__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_model__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_model__evaluation__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
@@ -192,8 +184,8 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=424,
-    serialized_end=785,
+    serialized_start=325,
+    serialized_end=686,
 )
 
 
@@ -212,8 +204,8 @@ _DELETEOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=787,
-    serialized_end=812,
+    serialized_start=688,
+    serialized_end=713,
 )
 
 
@@ -232,8 +224,8 @@ _CREATEMODELOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=814,
-    serialized_end=844,
+    serialized_start=715,
+    serialized_end=745,
 )
 
 _OPERATIONMETADATA.fields_by_name[

@@ -318,7 +318,7 @@ texinfo_documents = [
         u"google-cloud-automl Documentation",
         author,
         "google-cloud-automl",
-        "GAPIC library for the {metadata.shortName} v1beta1 service",
+        "GAPIC library for the {metadata.shortName} v1 service",
         "APIs",
     )
 ]
@@ -344,7 +344,7 @@ intersphinx_mapping = {
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
+    "requests": ("https://requests.kennethreitz.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
