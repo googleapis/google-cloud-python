@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.cloud.automl_v1.proto import (
     annotation_payload_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_annotation__payload__pb2,
 )
@@ -25,10 +26,12 @@ from google.cloud.automl_v1.proto import (
 from google.cloud.automl_v1.proto import (
     io_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_io__pb2,
 )
+from google.cloud.automl_v1.proto import (
+    operations_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_operations__pb2,
+)
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -39,15 +42,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\032com.google.cloud.automl.v1B\026PredictionServiceProtoP\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/automl_v1/proto/prediction_service.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/automl_v1/proto/annotation_payload.proto\x1a-google/cloud/automl_v1/proto/data_items.proto\x1a%google/cloud/automl_v1/proto/io.proto\x1a#google/longrunning/operations.proto\x1a\x17google/api/client.proto"\xca\x01\n\x0ePredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x07payload\x18\x02 \x01(\x0b\x32&.google.cloud.automl.v1.ExamplePayload\x12\x42\n\x06params\x18\x03 \x03(\x0b\x32\x32.google.cloud.automl.v1.PredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xc7\x01\n\x0fPredictResponse\x12:\n\x07payload\x18\x01 \x03(\x0b\x32).google.cloud.automl.v1.AnnotationPayload\x12G\n\x08metadata\x18\x02 \x03(\x0b\x32\x35.google.cloud.automl.v1.PredictResponse.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xfa\x01\n\x11PredictionService\x12\x99\x01\n\x07Predict\x12&.google.cloud.automl.v1.PredictRequest\x1a\'.google.cloud.automl.v1.PredictResponse"=\x82\xd3\xe4\x93\x02\x37"2/v1/{name=projects/*/locations/*/models/*}:predict:\x01*\x1aI\xca\x41\x15\x61utoml.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xc2\x01\n\x1a\x63om.google.cloud.automl.v1B\x16PredictionServiceProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n5google/cloud/automl_v1/proto/prediction_service.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x35google/cloud/automl_v1/proto/annotation_payload.proto\x1a-google/cloud/automl_v1/proto/data_items.proto\x1a%google/cloud/automl_v1/proto/io.proto\x1a-google/cloud/automl_v1/proto/operations.proto\x1a#google/longrunning/operations.proto"\xca\x01\n\x0ePredictRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x07payload\x18\x02 \x01(\x0b\x32&.google.cloud.automl.v1.ExamplePayload\x12\x42\n\x06params\x18\x03 \x03(\x0b\x32\x32.google.cloud.automl.v1.PredictRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xc7\x01\n\x0fPredictResponse\x12:\n\x07payload\x18\x01 \x03(\x0b\x32).google.cloud.automl.v1.AnnotationPayload\x12G\n\x08metadata\x18\x02 \x03(\x0b\x32\x35.google.cloud.automl.v1.PredictResponse.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xfa\x01\n\x11PredictionService\x12\x99\x01\n\x07Predict\x12&.google.cloud.automl.v1.PredictRequest\x1a\'.google.cloud.automl.v1.PredictResponse"=\x82\xd3\xe4\x93\x02\x37"2/v1/{name=projects/*/locations/*/models/*}:predict:\x01*\x1aI\xca\x41\x15\x61utoml.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xc2\x01\n\x1a\x63om.google.cloud.automl.v1B\x16PredictionServiceProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_annotation__payload__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_data__items__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_io__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1_dot_proto_dot_operations__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -104,8 +108,8 @@ _PREDICTREQUEST_PARAMSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=472,
-    serialized_end=517,
+    serialized_start=519,
+    serialized_end=564,
 )
 
 _PREDICTREQUEST = _descriptor.Descriptor(
@@ -178,8 +182,8 @@ _PREDICTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=315,
-    serialized_end=517,
+    serialized_start=362,
+    serialized_end=564,
 )
 
 
@@ -235,8 +239,8 @@ _PREDICTRESPONSE_METADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=672,
-    serialized_end=719,
+    serialized_start=719,
+    serialized_end=766,
 )
 
 _PREDICTRESPONSE = _descriptor.Descriptor(
@@ -291,8 +295,8 @@ _PREDICTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=520,
-    serialized_end=719,
+    serialized_start=567,
+    serialized_end=766,
 )
 
 _PREDICTREQUEST_PARAMSENTRY.containing_type = _PREDICTREQUEST
@@ -395,8 +399,8 @@ _PREDICTIONSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\025automl.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=722,
-    serialized_end=972,
+    serialized_start=769,
+    serialized_end=1019,
     methods=[
         _descriptor.MethodDescriptor(
             name="Predict",
