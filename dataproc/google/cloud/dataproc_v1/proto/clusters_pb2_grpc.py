@@ -58,21 +58,27 @@ class ClusterControllerServicer(object):
   """
 
     def CreateCluster(self, request, context):
-        """Creates a cluster in a project.
+        """Creates a cluster in a project. The returned
+    [Operation.metadata][google.longrunning.Operation.metadata] will be
+    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateCluster(self, request, context):
-        """Updates a cluster in a project.
+        """Updates a cluster in a project. The returned
+    [Operation.metadata][google.longrunning.Operation.metadata] will be
+    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteCluster(self, request, context):
-        """Deletes a cluster in a project.
+        """Deletes a cluster in a project. The returned
+    [Operation.metadata][google.longrunning.Operation.metadata] will be
+    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -93,9 +99,13 @@ class ClusterControllerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def DiagnoseCluster(self, request, context):
-        """Gets cluster diagnostic information.
-    After the operation completes, the Operation.response field
-    contains `DiagnoseClusterOutputLocation`.
+        """Gets cluster diagnostic information. The returned
+    [Operation.metadata][google.longrunning.Operation.metadata] will be
+    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
+    After the operation completes,
+    [Operation.response][google.longrunning.Operation.response]
+    contains
+    [DiagnoseClusterResults](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

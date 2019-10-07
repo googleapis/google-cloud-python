@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.dataproc_v1.proto import (
     clusters_pb2 as google_dot_cloud_dot_dataproc__v1_dot_proto_dot_clusters__pb2,
 )
@@ -37,10 +40,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.dataproc.v1B\026WorkflowTemplatesProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/dataproc_v1/proto/workflow_templates.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/dataproc_v1/proto/clusters.proto\x1a)google/cloud/dataproc_v1/proto/jobs.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xd3\x03\n\x10WorkflowTemplate\x12\n\n\x02id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\x05\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x46\n\x06labels\x18\x06 \x03(\x0b\x32\x36.google.cloud.dataproc.v1.WorkflowTemplate.LabelsEntry\x12\x46\n\tplacement\x18\x07 \x01(\x0b\x32\x33.google.cloud.dataproc.v1.WorkflowTemplatePlacement\x12\x32\n\x04jobs\x18\x08 \x03(\x0b\x32$.google.cloud.dataproc.v1.OrderedJob\x12?\n\nparameters\x18\t \x03(\x0b\x32+.google.cloud.dataproc.v1.TemplateParameter\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb4\x01\n\x19WorkflowTemplatePlacement\x12\x43\n\x0fmanaged_cluster\x18\x01 \x01(\x0b\x32(.google.cloud.dataproc.v1.ManagedClusterH\x00\x12\x45\n\x10\x63luster_selector\x18\x02 \x01(\x0b\x32).google.cloud.dataproc.v1.ClusterSelectorH\x00\x42\x0b\n\tplacement"\xd4\x01\n\x0eManagedCluster\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x37\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\'.google.cloud.dataproc.v1.ClusterConfig\x12\x44\n\x06labels\x18\x04 \x03(\x0b\x32\x34.google.cloud.dataproc.v1.ManagedCluster.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xab\x01\n\x0f\x43lusterSelector\x12\x0c\n\x04zone\x18\x01 \x01(\t\x12T\n\x0e\x63luster_labels\x18\x02 \x03(\x0b\x32<.google.cloud.dataproc.v1.ClusterSelector.ClusterLabelsEntry\x1a\x34\n\x12\x43lusterLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd3\x04\n\nOrderedJob\x12\x0f\n\x07step_id\x18\x01 \x01(\t\x12\x39\n\nhadoop_job\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.HadoopJobH\x00\x12\x37\n\tspark_job\x18\x03 \x01(\x0b\x32".google.cloud.dataproc.v1.SparkJobH\x00\x12;\n\x0bpyspark_job\x18\x04 \x01(\x0b\x32$.google.cloud.dataproc.v1.PySparkJobH\x00\x12\x35\n\x08hive_job\x18\x05 \x01(\x0b\x32!.google.cloud.dataproc.v1.HiveJobH\x00\x12\x33\n\x07pig_job\x18\x06 \x01(\x0b\x32 .google.cloud.dataproc.v1.PigJobH\x00\x12>\n\rspark_sql_job\x18\x07 \x01(\x0b\x32%.google.cloud.dataproc.v1.SparkSqlJobH\x00\x12@\n\x06labels\x18\x08 \x03(\x0b\x32\x30.google.cloud.dataproc.v1.OrderedJob.LabelsEntry\x12;\n\nscheduling\x18\t \x01(\x0b\x32\'.google.cloud.dataproc.v1.JobScheduling\x12\x1d\n\x15prerequisite_step_ids\x18\n \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08job_type"\x89\x01\n\x11TemplateParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ields\x18\x02 \x03(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x41\n\nvalidation\x18\x04 \x01(\x0b\x32-.google.cloud.dataproc.v1.ParameterValidation"\xa1\x01\n\x13ParameterValidation\x12:\n\x05regex\x18\x01 \x01(\x0b\x32).google.cloud.dataproc.v1.RegexValidationH\x00\x12;\n\x06values\x18\x02 \x01(\x0b\x32).google.cloud.dataproc.v1.ValueValidationH\x00\x42\x11\n\x0fvalidation_type""\n\x0fRegexValidation\x12\x0f\n\x07regexes\x18\x01 \x03(\t"!\n\x0fValueValidation\x12\x0e\n\x06values\x18\x01 \x03(\t"\xfd\x04\n\x10WorkflowMetadata\x12\x10\n\x08template\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12\x42\n\x0e\x63reate_cluster\x18\x03 \x01(\x0b\x32*.google.cloud.dataproc.v1.ClusterOperation\x12\x36\n\x05graph\x18\x04 \x01(\x0b\x32\'.google.cloud.dataproc.v1.WorkflowGraph\x12\x42\n\x0e\x64\x65lete_cluster\x18\x05 \x01(\x0b\x32*.google.cloud.dataproc.v1.ClusterOperation\x12?\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.cloud.dataproc.v1.WorkflowMetadata.State\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12N\n\nparameters\x18\x08 \x03(\x0b\x32:.google.cloud.dataproc.v1.WorkflowMetadata.ParametersEntry\x12.\n\nstart_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0c\x63luster_uuid\x18\x0b \x01(\t\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"E\n\x10\x43lusterOperation\x12\x14\n\x0coperation_id\x18\x01 \x01(\t\x12\r\n\x05\x65rror\x18\x02 \x01(\t\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08"F\n\rWorkflowGraph\x12\x35\n\x05nodes\x18\x01 \x03(\x0b\x32&.google.cloud.dataproc.v1.WorkflowNode"\x8a\x02\n\x0cWorkflowNode\x12\x0f\n\x07step_id\x18\x01 \x01(\t\x12\x1d\n\x15prerequisite_step_ids\x18\x02 \x03(\t\x12\x0e\n\x06job_id\x18\x03 \x01(\t\x12?\n\x05state\x18\x05 \x01(\x0e\x32\x30.google.cloud.dataproc.v1.WorkflowNode.NodeState\x12\r\n\x05\x65rror\x18\x06 \x01(\t"j\n\tNodeState\x12\x1a\n\x16NODE_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42LOCKED\x10\x01\x12\x0c\n\x08RUNNABLE\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05"m\n\x1d\x43reateWorkflowTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x08template\x18\x02 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplate";\n\x1aGetWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05"\xec\x01\n"InstantiateWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12\x12\n\nrequest_id\x18\x05 \x01(\t\x12`\n\nparameters\x18\x06 \x03(\x0b\x32L.google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x8c\x01\n(InstantiateInlineWorkflowTemplateRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x08template\x18\x02 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplate\x12\x12\n\nrequest_id\x18\x03 \x01(\t"]\n\x1dUpdateWorkflowTemplateRequest\x12<\n\x08template\x18\x01 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplate"U\n\x1cListWorkflowTemplatesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"w\n\x1dListWorkflowTemplatesResponse\x12=\n\ttemplates\x18\x01 \x03(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplate\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t">\n\x1d\x44\x65leteWorkflowTemplateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\x05\x32\xe2\x0e\n\x17WorkflowTemplateService\x12\x89\x02\n\x16\x43reateWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.CreateWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"\x89\x01\x82\xd3\xe4\x93\x02\x82\x01"5/v1/{parent=projects/*/locations/*}/workflowTemplates:\x08templateZ?"3/v1/{parent=projects/*/regions/*}/workflowTemplates:\x08template\x12\xed\x01\n\x13GetWorkflowTemplate\x12\x34.google.cloud.dataproc.v1.GetWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"t\x82\xd3\xe4\x93\x02n\x12\x35/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5\x12\x33/v1/{name=projects/*/regions/*/workflowTemplates/*}\x12\x90\x02\n\x1bInstantiateWorkflowTemplate\x12<.google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\x93\x01\x82\xd3\xe4\x93\x02\x8c\x01"A/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\x01*ZD"?/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\x01*\x12\xb6\x02\n!InstantiateInlineWorkflowTemplate\x12\x42.google.cloud.dataproc.v1.InstantiateInlineWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xad\x01\x82\xd3\xe4\x93\x02\xa6\x01"G/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\x08templateZQ"E/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\x08template\x12\x9b\x02\n\x16UpdateWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.UpdateWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"\x9b\x01\x82\xd3\xe4\x93\x02\x94\x01\x1a>/v1/{template.name=projects/*/locations/*/workflowTemplates/*}:\x08templateZH\x1a</v1/{template.name=projects/*/regions/*/workflowTemplates/*}:\x08template\x12\xfe\x01\n\x15ListWorkflowTemplates\x12\x36.google.cloud.dataproc.v1.ListWorkflowTemplatesRequest\x1a\x37.google.cloud.dataproc.v1.ListWorkflowTemplatesResponse"t\x82\xd3\xe4\x93\x02n\x12\x35/v1/{parent=projects/*/locations/*}/workflowTemplatesZ5\x12\x33/v1/{parent=projects/*/regions/*}/workflowTemplates\x12\xdf\x01\n\x16\x44\x65leteWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.DeleteWorkflowTemplateRequest\x1a\x16.google.protobuf.Empty"t\x82\xd3\xe4\x93\x02n*5/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5*3/v1/{name=projects/*/regions/*/workflowTemplates/*}Bz\n\x1c\x63om.google.cloud.dataproc.v1B\x16WorkflowTemplatesProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
+        '\n7google/cloud/dataproc_v1/proto/workflow_templates.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/dataproc_v1/proto/clusters.proto\x1a)google/cloud/dataproc_v1/proto/jobs.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xcd\x05\n\x10WorkflowTemplate\x12\x0f\n\x02id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07version\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x34\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12K\n\x06labels\x18\x06 \x03(\x0b\x32\x36.google.cloud.dataproc.v1.WorkflowTemplate.LabelsEntryB\x03\xe0\x41\x01\x12K\n\tplacement\x18\x07 \x01(\x0b\x32\x33.google.cloud.dataproc.v1.WorkflowTemplatePlacementB\x03\xe0\x41\x02\x12\x37\n\x04jobs\x18\x08 \x03(\x0b\x32$.google.cloud.dataproc.v1.OrderedJobB\x03\xe0\x41\x02\x12\x44\n\nparameters\x18\t \x03(\x0b\x32+.google.cloud.dataproc.v1.TemplateParameterB\x03\xe0\x41\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01:\xca\x01\xea\x41\xc6\x01\n(dataproc.googleapis.com/WorkflowTemplate\x12Iprojects/{project}/regions/{region}/workflowTemplates/{workflow_template}\x12Mprojects/{project}/locations/{location}/workflowTemplates/{workflow_template} \x01"\xb4\x01\n\x19WorkflowTemplatePlacement\x12\x43\n\x0fmanaged_cluster\x18\x01 \x01(\x0b\x32(.google.cloud.dataproc.v1.ManagedClusterH\x00\x12\x45\n\x10\x63luster_selector\x18\x02 \x01(\x0b\x32).google.cloud.dataproc.v1.ClusterSelectorH\x00\x42\x0b\n\tplacement"\xe3\x01\n\x0eManagedCluster\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12<\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\'.google.cloud.dataproc.v1.ClusterConfigB\x03\xe0\x41\x02\x12I\n\x06labels\x18\x04 \x03(\x0b\x32\x34.google.cloud.dataproc.v1.ManagedCluster.LabelsEntryB\x03\xe0\x41\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb5\x01\n\x0f\x43lusterSelector\x12\x11\n\x04zone\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12Y\n\x0e\x63luster_labels\x18\x02 \x03(\x0b\x32<.google.cloud.dataproc.v1.ClusterSelector.ClusterLabelsEntryB\x03\xe0\x41\x02\x1a\x34\n\x12\x43lusterLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xe7\x04\n\nOrderedJob\x12\x14\n\x07step_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x39\n\nhadoop_job\x18\x02 \x01(\x0b\x32#.google.cloud.dataproc.v1.HadoopJobH\x00\x12\x37\n\tspark_job\x18\x03 \x01(\x0b\x32".google.cloud.dataproc.v1.SparkJobH\x00\x12;\n\x0bpyspark_job\x18\x04 \x01(\x0b\x32$.google.cloud.dataproc.v1.PySparkJobH\x00\x12\x35\n\x08hive_job\x18\x05 \x01(\x0b\x32!.google.cloud.dataproc.v1.HiveJobH\x00\x12\x33\n\x07pig_job\x18\x06 \x01(\x0b\x32 .google.cloud.dataproc.v1.PigJobH\x00\x12>\n\rspark_sql_job\x18\x07 \x01(\x0b\x32%.google.cloud.dataproc.v1.SparkSqlJobH\x00\x12\x45\n\x06labels\x18\x08 \x03(\x0b\x32\x30.google.cloud.dataproc.v1.OrderedJob.LabelsEntryB\x03\xe0\x41\x01\x12@\n\nscheduling\x18\t \x01(\x0b\x32\'.google.cloud.dataproc.v1.JobSchedulingB\x03\xe0\x41\x01\x12"\n\x15prerequisite_step_ids\x18\n \x03(\tB\x03\xe0\x41\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08job_type"\x9d\x01\n\x11TemplateParameter\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06\x66ields\x18\x02 \x03(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x46\n\nvalidation\x18\x04 \x01(\x0b\x32-.google.cloud.dataproc.v1.ParameterValidationB\x03\xe0\x41\x01"\xa1\x01\n\x13ParameterValidation\x12:\n\x05regex\x18\x01 \x01(\x0b\x32).google.cloud.dataproc.v1.RegexValidationH\x00\x12;\n\x06values\x18\x02 \x01(\x0b\x32).google.cloud.dataproc.v1.ValueValidationH\x00\x42\x11\n\x0fvalidation_type"\'\n\x0fRegexValidation\x12\x14\n\x07regexes\x18\x01 \x03(\tB\x03\xe0\x41\x02"&\n\x0fValueValidation\x12\x13\n\x06values\x18\x01 \x03(\tB\x03\xe0\x41\x02"\xaf\x05\n\x10WorkflowMetadata\x12\x15\n\x08template\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07version\x18\x02 \x01(\x05\x42\x03\xe0\x41\x03\x12G\n\x0e\x63reate_cluster\x18\x03 \x01(\x0b\x32*.google.cloud.dataproc.v1.ClusterOperationB\x03\xe0\x41\x03\x12;\n\x05graph\x18\x04 \x01(\x0b\x32\'.google.cloud.dataproc.v1.WorkflowGraphB\x03\xe0\x41\x03\x12G\n\x0e\x64\x65lete_cluster\x18\x05 \x01(\x0b\x32*.google.cloud.dataproc.v1.ClusterOperationB\x03\xe0\x41\x03\x12\x44\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.cloud.dataproc.v1.WorkflowMetadata.StateB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_name\x18\x07 \x01(\tB\x03\xe0\x41\x03\x12N\n\nparameters\x18\x08 \x03(\x0b\x32:.google.cloud.dataproc.v1.WorkflowMetadata.ParametersEntry\x12\x33\n\nstart_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_uuid\x18\x0b \x01(\tB\x03\xe0\x41\x03\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"T\n\x10\x43lusterOperation\x12\x19\n\x0coperation_id\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x12\n\x05\x65rror\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x11\n\x04\x64one\x18\x03 \x01(\x08\x42\x03\xe0\x41\x03"K\n\rWorkflowGraph\x12:\n\x05nodes\x18\x01 \x03(\x0b\x32&.google.cloud.dataproc.v1.WorkflowNodeB\x03\xe0\x41\x03"\xa3\x02\n\x0cWorkflowNode\x12\x14\n\x07step_id\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12"\n\x15prerequisite_step_ids\x18\x02 \x03(\tB\x03\xe0\x41\x03\x12\x13\n\x06job_id\x18\x03 \x01(\tB\x03\xe0\x41\x03\x12\x44\n\x05state\x18\x05 \x01(\x0e\x32\x30.google.cloud.dataproc.v1.WorkflowNode.NodeStateB\x03\xe0\x41\x03\x12\x12\n\x05\x65rror\x18\x06 \x01(\tB\x03\xe0\x41\x03"j\n\tNodeState\x12\x1a\n\x16NODE_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42LOCKED\x10\x01\x12\x0c\n\x08RUNNABLE\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05"\xa4\x01\n\x1d\x43reateWorkflowTemplateRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x41\n\x08template\x18\x02 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplateB\x03\xe0\x41\x02"r\n\x1aGetWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x14\n\x07version\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01"\xad\x02\n"InstantiateWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x14\n\x07version\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\nrequest_id\x18\x05 \x01(\tB\x03\xe0\x41\x01\x12\x65\n\nparameters\x18\x06 \x03(\x0b\x32L.google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest.ParametersEntryB\x03\xe0\x41\x01\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xc8\x01\n(InstantiateInlineWorkflowTemplateRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x41\n\x08template\x18\x02 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplateB\x03\xe0\x41\x02\x12\x17\n\nrequest_id\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x8f\x01\n\x1dUpdateWorkflowTemplateRequest\x12n\n\x08template\x18\x01 \x01(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplateB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate"\x91\x01\n\x1cListWorkflowTemplatesRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x81\x01\n\x1dListWorkflowTemplatesResponse\x12\x42\n\ttemplates\x18\x01 \x03(\x0b\x32*.google.cloud.dataproc.v1.WorkflowTemplateB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"u\n\x1d\x44\x65leteWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x14\n\x07version\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x32\xe6\x10\n\x17WorkflowTemplateService\x12\x9b\x02\n\x16\x43reateWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.CreateWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"\x9b\x01\x82\xd3\xe4\x93\x02\x82\x01"5/v1/{parent=projects/*/locations/*}/workflowTemplates:\x08templateZ?"3/v1/{parent=projects/*/regions/*}/workflowTemplates:\x08template\xda\x41\x0fparent,template\x12\xf4\x01\n\x13GetWorkflowTemplate\x12\x34.google.cloud.dataproc.v1.GetWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"{\x82\xd3\xe4\x93\x02n\x12\x35/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5\x12\x33/v1/{name=projects/*/regions/*/workflowTemplates/*}\xda\x41\x04name\x12\xd5\x02\n\x1bInstantiateWorkflowTemplate\x12<.google.cloud.dataproc.v1.InstantiateWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xd8\x01\x82\xd3\xe4\x93\x02\x8c\x01"A/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\x01*ZD"?/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\x01*\xda\x41\x04name\xda\x41\x0fname,parameters\xca\x41)\n\x15google.protobuf.Empty\x12\x10WorkflowMetadata\x12\xf4\x02\n!InstantiateInlineWorkflowTemplate\x12\x42.google.cloud.dataproc.v1.InstantiateInlineWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xeb\x01\x82\xd3\xe4\x93\x02\xa6\x01"G/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\x08templateZQ"E/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\x08template\xda\x41\x0fparent,template\xca\x41)\n\x15google.protobuf.Empty\x12\x10WorkflowMetadata\x12\xa6\x02\n\x16UpdateWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.UpdateWorkflowTemplateRequest\x1a*.google.cloud.dataproc.v1.WorkflowTemplate"\xa6\x01\x82\xd3\xe4\x93\x02\x94\x01\x1a>/v1/{template.name=projects/*/locations/*/workflowTemplates/*}:\x08templateZH\x1a</v1/{template.name=projects/*/regions/*/workflowTemplates/*}:\x08template\xda\x41\x08template\x12\x87\x02\n\x15ListWorkflowTemplates\x12\x36.google.cloud.dataproc.v1.ListWorkflowTemplatesRequest\x1a\x37.google.cloud.dataproc.v1.ListWorkflowTemplatesResponse"}\x82\xd3\xe4\x93\x02n\x12\x35/v1/{parent=projects/*/locations/*}/workflowTemplatesZ5\x12\x33/v1/{parent=projects/*/regions/*}/workflowTemplates\xda\x41\x06parent\x12\xe6\x01\n\x16\x44\x65leteWorkflowTemplate\x12\x37.google.cloud.dataproc.v1.DeleteWorkflowTemplateRequest\x1a\x16.google.protobuf.Empty"{\x82\xd3\xe4\x93\x02n*5/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5*3/v1/{name=projects/*/regions/*/workflowTemplates/*}\xda\x41\x04name\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBz\n\x1c\x63om.google.cloud.dataproc.v1B\x16WorkflowTemplatesProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_dataproc__v1_dot_proto_dot_clusters__pb2.DESCRIPTOR,
         google_dot_cloud_dot_dataproc__v1_dot_proto_dot_jobs__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
@@ -71,8 +77,8 @@ _WORKFLOWMETADATA_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2901,
-    serialized_end=2957,
+    serialized_start=3361,
+    serialized_end=3417,
 )
 _sym_db.RegisterEnumDescriptor(_WORKFLOWMETADATA_STATE)
 
@@ -107,8 +113,8 @@ _WORKFLOWNODE_NODESTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3263,
-    serialized_end=3369,
+    serialized_start=3768,
+    serialized_end=3874,
 )
 _sym_db.RegisterEnumDescriptor(_WORKFLOWNODE_NODESTATE)
 
@@ -165,8 +171,8 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=727,
-    serialized_end=772,
+    serialized_start=857,
+    serialized_end=902,
 )
 
 _WORKFLOWTEMPLATE = _descriptor.Descriptor(
@@ -191,7 +197,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -209,7 +215,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -227,7 +233,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -245,7 +251,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -263,7 +269,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -281,7 +287,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -299,7 +305,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -317,7 +323,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -335,20 +341,22 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_WORKFLOWTEMPLATE_LABELSENTRY],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\306\001\n(dataproc.googleapis.com/WorkflowTemplate\022Iprojects/{project}/regions/{region}/workflowTemplates/{workflow_template}\022Mprojects/{project}/locations/{location}/workflowTemplates/{workflow_template} \001"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=305,
-    serialized_end=772,
+    serialized_start=390,
+    serialized_end=1107,
 )
 
 
@@ -412,8 +420,8 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=775,
-    serialized_end=955,
+    serialized_start=1110,
+    serialized_end=1290,
 )
 
 
@@ -469,8 +477,8 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=727,
-    serialized_end=772,
+    serialized_start=857,
+    serialized_end=902,
 )
 
 _MANAGEDCLUSTER = _descriptor.Descriptor(
@@ -495,7 +503,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -513,7 +521,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -531,7 +539,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -543,8 +551,8 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=958,
-    serialized_end=1170,
+    serialized_start=1293,
+    serialized_end=1520,
 )
 
 
@@ -600,8 +608,8 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1292,
-    serialized_end=1344,
+    serialized_start=1652,
+    serialized_end=1704,
 )
 
 _CLUSTERSELECTOR = _descriptor.Descriptor(
@@ -626,7 +634,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -644,7 +652,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -656,8 +664,8 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1173,
-    serialized_end=1344,
+    serialized_start=1523,
+    serialized_end=1704,
 )
 
 
@@ -713,8 +721,8 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=727,
-    serialized_end=772,
+    serialized_start=857,
+    serialized_end=902,
 )
 
 _ORDEREDJOB = _descriptor.Descriptor(
@@ -739,7 +747,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -865,7 +873,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -883,7 +891,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -901,7 +909,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -921,8 +929,8 @@ _ORDEREDJOB = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1347,
-    serialized_end=1942,
+    serialized_start=1707,
+    serialized_end=2322,
 )
 
 
@@ -948,7 +956,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -966,7 +974,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -984,7 +992,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1002,7 +1010,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1014,8 +1022,8 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1945,
-    serialized_end=2082,
+    serialized_start=2325,
+    serialized_end=2482,
 )
 
 
@@ -1079,8 +1087,8 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2085,
-    serialized_end=2246,
+    serialized_start=2485,
+    serialized_end=2646,
 )
 
 
@@ -1106,7 +1114,7 @@ _REGEXVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -1118,8 +1126,8 @@ _REGEXVALIDATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2248,
-    serialized_end=2282,
+    serialized_start=2648,
+    serialized_end=2687,
 )
 
 
@@ -1145,7 +1153,7 @@ _VALUEVALIDATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -1157,8 +1165,8 @@ _VALUEVALIDATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2284,
-    serialized_end=2317,
+    serialized_start=2689,
+    serialized_end=2727,
 )
 
 
@@ -1214,8 +1222,8 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2850,
-    serialized_end=2899,
+    serialized_start=3310,
+    serialized_end=3359,
 )
 
 _WORKFLOWMETADATA = _descriptor.Descriptor(
@@ -1240,7 +1248,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1258,7 +1266,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1276,7 +1284,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1294,7 +1302,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1312,7 +1320,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1330,7 +1338,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1348,7 +1356,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1384,7 +1392,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1402,7 +1410,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1420,7 +1428,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1432,8 +1440,8 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2320,
-    serialized_end=2957,
+    serialized_start=2730,
+    serialized_end=3417,
 )
 
 
@@ -1459,7 +1467,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1477,7 +1485,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1495,7 +1503,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1507,8 +1515,8 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2959,
-    serialized_end=3028,
+    serialized_start=3419,
+    serialized_end=3503,
 )
 
 
@@ -1534,7 +1542,7 @@ _WORKFLOWGRAPH = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         )
     ],
@@ -1546,8 +1554,8 @@ _WORKFLOWGRAPH = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3030,
-    serialized_end=3100,
+    serialized_start=3505,
+    serialized_end=3580,
 )
 
 
@@ -1573,7 +1581,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1591,7 +1599,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1609,7 +1617,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1627,7 +1635,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1645,7 +1653,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1657,8 +1665,8 @@ _WORKFLOWNODE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3103,
-    serialized_end=3369,
+    serialized_start=3583,
+    serialized_end=3874,
 )
 
 
@@ -1684,7 +1692,9 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1702,7 +1712,7 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1714,8 +1724,8 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3371,
-    serialized_end=3480,
+    serialized_start=3877,
+    serialized_end=4041,
 )
 
 
@@ -1741,7 +1751,9 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1759,7 +1771,7 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1771,8 +1783,8 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3482,
-    serialized_end=3541,
+    serialized_start=4043,
+    serialized_end=4157,
 )
 
 
@@ -1828,8 +1840,8 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2850,
-    serialized_end=2899,
+    serialized_start=3310,
+    serialized_end=3359,
 )
 
 _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
@@ -1854,7 +1866,9 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1872,7 +1886,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1890,7 +1904,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1908,7 +1922,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1920,8 +1934,8 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3544,
-    serialized_end=3780,
+    serialized_start=4160,
+    serialized_end=4461,
 )
 
 
@@ -1947,7 +1961,9 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1965,7 +1981,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1983,7 +1999,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1995,8 +2011,8 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3783,
-    serialized_end=3923,
+    serialized_start=4464,
+    serialized_end=4664,
 )
 
 
@@ -2022,7 +2038,9 @@ _UPDATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2034,8 +2052,8 @@ _UPDATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3925,
-    serialized_end=4018,
+    serialized_start=4667,
+    serialized_end=4810,
 )
 
 
@@ -2061,7 +2079,9 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2079,7 +2099,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2097,7 +2117,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2109,8 +2129,8 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4020,
-    serialized_end=4105,
+    serialized_start=4813,
+    serialized_end=4958,
 )
 
 
@@ -2136,7 +2156,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2154,7 +2174,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2166,8 +2186,8 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4107,
-    serialized_end=4226,
+    serialized_start=4961,
+    serialized_end=5090,
 )
 
 
@@ -2193,7 +2213,9 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2211,7 +2233,7 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2223,8 +2245,8 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4228,
-    serialized_end=4290,
+    serialized_start=5092,
+    serialized_end=5209,
 )
 
 _WORKFLOWTEMPLATE_LABELSENTRY.containing_type = _WORKFLOWTEMPLATE
@@ -2439,16 +2461,17 @@ WorkflowTemplate = _reflection.GeneratedProtocolMessageType(
   
   
   Attributes:
-      id:
-          Required. The template id.  The id must contain only letters
-          (a-z, A-Z), numbers (0-9), underscores (\_), and hyphens (-).
-          Cannot begin or end with underscore or hyphen. Must consist of
-          between 3 and 50 characters.
       name:
-          Output only. The "resource name" of the template, as described
-          in https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}/workflowTemplate
-          s/{template_id}``
+          Output only. The resource name of the workflow template, as
+          described in
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates``, the resource name of
+          the    template has the following format:    ``projects/{proje
+          ct_id}/regions/{region}/workflowTemplates/{template_id}``  -
+          For ``projects.locations.workflowTemplates``, the resource
+          name of    the template has the following format:    ``project
+          s/{project_id}/locations/{location}/workflowTemplates/{templat
+          e_id}``
       version:
           Optional. Used to perform a consistent read-modify-write.
           This field should be left blank for a
@@ -2479,9 +2502,9 @@ WorkflowTemplate = _reflection.GeneratedProtocolMessageType(
       jobs:
           Required. The Directed Acyclic Graph of Jobs to submit.
       parameters:
-          Optional. Template parameters whose values are substituted
-          into the template. Values for parameters must be provided when
-          the template is instantiated.
+          Optional. emplate parameters whose values are substituted into
+          the template. Values for parameters must be provided when the
+          template is instantiated.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.WorkflowTemplate)
     ),
@@ -2505,7 +2528,7 @@ WorkflowTemplatePlacement = _reflection.GeneratedProtocolMessageType(
           Required. Specifies where workflow executes; either on a
           managed cluster or an existing cluster chosen by labels.
       managed_cluster:
-          Optional. A cluster that is managed by the workflow.
+          A cluster that is managed by the workflow.
       cluster_selector:
           Optional. A selector that chooses target cluster for jobs
           based on metadata.  The selector is evaluated at the time each
@@ -2795,7 +2818,16 @@ WorkflowMetadata = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       template:
-          Output only. The "resource name" of the template.
+          Output only. The resource name of the workflow template as
+          described in
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates``, the resource name of
+          the    template has the following format:    ``projects/{proje
+          ct_id}/regions/{region}/workflowTemplates/{template_id}``  -
+          For ``projects.locations.workflowTemplates``, the resource
+          name of    the template has the following format:    ``project
+          s/{project_id}/locations/{location}/workflowTemplates/{templat
+          e_id}``
       version:
           Output only. The version of template at the time of workflow
           instantiation.
@@ -2903,9 +2935,15 @@ CreateWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. The "resource name" of the region, as described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}``
+          Required. The resource name of the region or location, as
+          described in
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates,create``, the resource
+          name    of the region has the following format:
+          ``projects/{project_id}/regions/{region}``  -  For
+          ``projects.locations.workflowTemplates.create``, the resource
+          name of the location has the following format:
+          ``projects/{project_id}/locations/{location}``
       template:
           Required. The Dataproc workflow template to create.
   """,
@@ -2925,14 +2963,19 @@ GetWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. The "resource name" of the workflow template, as
+          Required. The resource name of the workflow template, as
           described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}/workflowTemplate
-          s/{template_id}``
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates.get``, the resource name
+          of    the template has the following format:    ``projects/{pr
+          oject_id}/regions/{region}/workflowTemplates/{template_id}``
+          -  For ``projects.locations.workflowTemplates.get``, the
+          resource name    of the template has the following format:    
+          ``projects/{project_id}/locations/{location}/workflowTemplates
+          /{template_id}``
       version:
           Optional. The version of workflow template to retrieve. Only
-          previously instatiated versions can be retrieved.  If
+          previously instantiated versions can be retrieved.  If
           unspecified, retrieves the current version.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.GetWorkflowTemplateRequest)
@@ -2960,11 +3003,17 @@ InstantiateWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. The "resource name" of the workflow template, as
+          Required. The resource name of the workflow template, as
           described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}/workflowTemplate
-          s/{template_id}``
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates.instantiate``, the
+          resource    name of the template has the following format:    
+          ``projects/{project_id}/regions/{region}/workflowTemplates/{te
+          mplate_id}``  -  For
+          ``projects.locations.workflowTemplates.instantiate``, the
+          resource name of the template has the following format:    ``p
+          rojects/{project_id}/locations/{location}/workflowTemplates/{t
+          emplate_id}``
       version:
           Optional. The version of workflow template to instantiate. If
           specified, the workflow will be instantiated only if the
@@ -3002,10 +3051,15 @@ InstantiateInlineWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageT
   
   Attributes:
       parent:
-          Required. The "resource name" of the workflow template region,
-          as described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}``
+          Required. The resource name of the region or location, as
+          described in
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates,instantiateinline``, the
+          resource name of the region has the following format:
+          ``projects/{project_id}/regions/{region}``  -  For
+          ``projects.locations.workflowTemplates.instantiateinline``,
+          the    resource name of the location has the following format:
+          ``projects/{project_id}/locations/{location}``
       template:
           Required. The workflow template to instantiate.
       request_id:
@@ -3053,9 +3107,15 @@ ListWorkflowTemplatesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. The "resource name" of the region, as described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}``
+          Required. The resource name of the region or location, as
+          described in
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates,list``, the resource name
+          of    the region has the following format:
+          ``projects/{project_id}/regions/{region}``  -  For
+          ``projects.locations.workflowTemplates.list``, the resource
+          name    of the location has the following format:
+          ``projects/{project_id}/locations/{location}``
       page_size:
           Optional. The maximum number of results to return in each
           response.
@@ -3104,11 +3164,17 @@ DeleteWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. The "resource name" of the workflow template, as
+          Required. The resource name of the workflow template, as
           described in
-          https://cloud.google.com/apis/design/resource\_names of the
-          form ``projects/{project_id}/regions/{region}/workflowTemplate
-          s/{template_id}``
+          https://cloud.google.com/apis/design/resource\_names.  -  For
+          ``projects.regions.workflowTemplates.delete``, the resource
+          name    of the template has the following format:    ``project
+          s/{project_id}/regions/{region}/workflowTemplates/{template_id
+          }``  -  For
+          ``projects.locations.workflowTemplates.instantiate``, the
+          resource name of the template has the following format:    ``p
+          rojects/{project_id}/locations/{location}/workflowTemplates/{t
+          emplate_id}``
       version:
           Optional. The version of workflow template to delete. If
           specified, will only delete the template if the current server
@@ -3122,20 +3188,85 @@ _sym_db.RegisterMessage(DeleteWorkflowTemplateRequest)
 
 DESCRIPTOR._options = None
 _WORKFLOWTEMPLATE_LABELSENTRY._options = None
+_WORKFLOWTEMPLATE.fields_by_name["id"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["name"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["version"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["create_time"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["update_time"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["labels"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["placement"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["jobs"]._options = None
+_WORKFLOWTEMPLATE.fields_by_name["parameters"]._options = None
+_WORKFLOWTEMPLATE._options = None
 _MANAGEDCLUSTER_LABELSENTRY._options = None
+_MANAGEDCLUSTER.fields_by_name["cluster_name"]._options = None
+_MANAGEDCLUSTER.fields_by_name["config"]._options = None
+_MANAGEDCLUSTER.fields_by_name["labels"]._options = None
 _CLUSTERSELECTOR_CLUSTERLABELSENTRY._options = None
+_CLUSTERSELECTOR.fields_by_name["zone"]._options = None
+_CLUSTERSELECTOR.fields_by_name["cluster_labels"]._options = None
 _ORDEREDJOB_LABELSENTRY._options = None
+_ORDEREDJOB.fields_by_name["step_id"]._options = None
+_ORDEREDJOB.fields_by_name["labels"]._options = None
+_ORDEREDJOB.fields_by_name["scheduling"]._options = None
+_ORDEREDJOB.fields_by_name["prerequisite_step_ids"]._options = None
+_TEMPLATEPARAMETER.fields_by_name["name"]._options = None
+_TEMPLATEPARAMETER.fields_by_name["fields"]._options = None
+_TEMPLATEPARAMETER.fields_by_name["description"]._options = None
+_TEMPLATEPARAMETER.fields_by_name["validation"]._options = None
+_REGEXVALIDATION.fields_by_name["regexes"]._options = None
+_VALUEVALIDATION.fields_by_name["values"]._options = None
 _WORKFLOWMETADATA_PARAMETERSENTRY._options = None
+_WORKFLOWMETADATA.fields_by_name["template"]._options = None
+_WORKFLOWMETADATA.fields_by_name["version"]._options = None
+_WORKFLOWMETADATA.fields_by_name["create_cluster"]._options = None
+_WORKFLOWMETADATA.fields_by_name["graph"]._options = None
+_WORKFLOWMETADATA.fields_by_name["delete_cluster"]._options = None
+_WORKFLOWMETADATA.fields_by_name["state"]._options = None
+_WORKFLOWMETADATA.fields_by_name["cluster_name"]._options = None
+_WORKFLOWMETADATA.fields_by_name["start_time"]._options = None
+_WORKFLOWMETADATA.fields_by_name["end_time"]._options = None
+_WORKFLOWMETADATA.fields_by_name["cluster_uuid"]._options = None
+_CLUSTEROPERATION.fields_by_name["operation_id"]._options = None
+_CLUSTEROPERATION.fields_by_name["error"]._options = None
+_CLUSTEROPERATION.fields_by_name["done"]._options = None
+_WORKFLOWGRAPH.fields_by_name["nodes"]._options = None
+_WORKFLOWNODE.fields_by_name["step_id"]._options = None
+_WORKFLOWNODE.fields_by_name["prerequisite_step_ids"]._options = None
+_WORKFLOWNODE.fields_by_name["job_id"]._options = None
+_WORKFLOWNODE.fields_by_name["state"]._options = None
+_WORKFLOWNODE.fields_by_name["error"]._options = None
+_CREATEWORKFLOWTEMPLATEREQUEST.fields_by_name["parent"]._options = None
+_CREATEWORKFLOWTEMPLATEREQUEST.fields_by_name["template"]._options = None
+_GETWORKFLOWTEMPLATEREQUEST.fields_by_name["name"]._options = None
+_GETWORKFLOWTEMPLATEREQUEST.fields_by_name["version"]._options = None
 _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["name"]._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["version"]._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["request_id"]._options = None
+_INSTANTIATEWORKFLOWTEMPLATEREQUEST.fields_by_name["parameters"]._options = None
+_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST.fields_by_name["parent"]._options = None
+_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST.fields_by_name["template"]._options = None
+_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST.fields_by_name["request_id"]._options = None
+_UPDATEWORKFLOWTEMPLATEREQUEST.fields_by_name["template"]._options = None
+_LISTWORKFLOWTEMPLATESREQUEST.fields_by_name["parent"]._options = None
+_LISTWORKFLOWTEMPLATESREQUEST.fields_by_name["page_size"]._options = None
+_LISTWORKFLOWTEMPLATESREQUEST.fields_by_name["page_token"]._options = None
+_LISTWORKFLOWTEMPLATESRESPONSE.fields_by_name["templates"]._options = None
+_LISTWORKFLOWTEMPLATESRESPONSE.fields_by_name["next_page_token"]._options = None
+_DELETEWORKFLOWTEMPLATEREQUEST.fields_by_name["name"]._options = None
+_DELETEWORKFLOWTEMPLATEREQUEST.fields_by_name["version"]._options = None
 
 _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
     name="WorkflowTemplateService",
     full_name="google.cloud.dataproc.v1.WorkflowTemplateService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=4293,
-    serialized_end=6183,
+    serialized_options=_b(
+        "\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=5212,
+    serialized_end=7362,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateWorkflowTemplate",
@@ -3145,7 +3276,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=_b(
-                '\202\323\344\223\002\202\001"5/v1/{parent=projects/*/locations/*}/workflowTemplates:\010templateZ?"3/v1/{parent=projects/*/regions/*}/workflowTemplates:\010template'
+                '\202\323\344\223\002\202\001"5/v1/{parent=projects/*/locations/*}/workflowTemplates:\010templateZ?"3/v1/{parent=projects/*/regions/*}/workflowTemplates:\010template\332A\017parent,template'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3156,7 +3287,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=_b(
-                "\202\323\344\223\002n\0225/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5\0223/v1/{name=projects/*/regions/*/workflowTemplates/*}"
+                "\202\323\344\223\002n\0225/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5\0223/v1/{name=projects/*/regions/*/workflowTemplates/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3167,7 +3298,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_INSTANTIATEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002\214\001"A/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\001*ZD"?/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\001*'
+                '\202\323\344\223\002\214\001"A/v1/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\001*ZD"?/v1/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\001*\332A\004name\332A\017name,parameters\312A)\n\025google.protobuf.Empty\022\020WorkflowMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3178,7 +3309,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002\246\001"G/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\010templateZQ"E/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\010template'
+                '\202\323\344\223\002\246\001"G/v1/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\010templateZQ"E/v1/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\010template\332A\017parent,template\312A)\n\025google.protobuf.Empty\022\020WorkflowMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3189,7 +3320,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=_b(
-                "\202\323\344\223\002\224\001\032>/v1/{template.name=projects/*/locations/*/workflowTemplates/*}:\010templateZH\032</v1/{template.name=projects/*/regions/*/workflowTemplates/*}:\010template"
+                "\202\323\344\223\002\224\001\032>/v1/{template.name=projects/*/locations/*/workflowTemplates/*}:\010templateZH\032</v1/{template.name=projects/*/regions/*/workflowTemplates/*}:\010template\332A\010template"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3200,7 +3331,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTWORKFLOWTEMPLATESREQUEST,
             output_type=_LISTWORKFLOWTEMPLATESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002n\0225/v1/{parent=projects/*/locations/*}/workflowTemplatesZ5\0223/v1/{parent=projects/*/regions/*}/workflowTemplates"
+                "\202\323\344\223\002n\0225/v1/{parent=projects/*/locations/*}/workflowTemplatesZ5\0223/v1/{parent=projects/*/regions/*}/workflowTemplates\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3211,7 +3342,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002n*5/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5*3/v1/{name=projects/*/regions/*/workflowTemplates/*}"
+                "\202\323\344\223\002n*5/v1/{name=projects/*/locations/*/workflowTemplates/*}Z5*3/v1/{name=projects/*/regions/*/workflowTemplates/*}\332A\004name"
             ),
         ),
     ],
