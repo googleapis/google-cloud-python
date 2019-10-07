@@ -9,16 +9,16 @@
 10-04-2019 14:29 PDT
 
 ### Implementation Changes
-- Move 'BatchOperationMetadata' / 'JobOperationResult' messages to new protobuf files (via synth). ([#9129](https://github.com/googleapis/google-cloud-python/pull/9129))
+- Move `BatchOperationMetadata` / `JobOperationResult` messages to new protobuf files (via synth). ([#9129](https://github.com/googleapis/google-cloud-python/pull/9129))
 - Import batch proto (via synth).  ([#9062](https://github.com/googleapis/google-cloud-python/pull/9062))
-- Remove send/recv msg size limit (via synth). ([#8970](https://github.com/googleapis/google-cloud-python/pull/8970))
+- Remove send / receive message size limit (via synth). ([#8970](https://github.com/googleapis/google-cloud-python/pull/8970))
 
 ### New Features
 - Deprecate `candidate_availability_filter` for `availability_filters`, add `AvailabilitySignalType`, add fields to `update_profile` (via synth). ([#9256](https://github.com/googleapis/google-cloud-python/pull/9256))
-- Add 'applications' / 'assignments' fields to 'Profile' message (via synth). ([#9229](https://github.com/googleapis/google-cloud-python/pull/9229))
+- Add `applications` / `assignments` fields to `Profile` message (via synth). ([#9229](https://github.com/googleapis/google-cloud-python/pull/9229))
 - Add `filter_` arg to `ProfileServiceClient.list_profiles`; docstring updates (via synth). ([#9223](https://github.com/googleapis/google-cloud-python/pull/9223))
 - Deprecate job visibility (via synth). ([#9050](https://github.com/googleapis/google-cloud-python/pull/9050))
-- Add fields to profile update mask (via synth). ([#9000](https://github.com/googleapis/google-cloud-python/pull/9000))
+- Document additional fields allowed in profile update mask (via synth). ([#9000](https://github.com/googleapis/google-cloud-python/pull/9000))
 
 ### Documentation
 - Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
