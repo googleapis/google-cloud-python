@@ -72,9 +72,9 @@ class LoggingServiceV2Servicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListLogEntries(self, request, context):
-        """Lists log entries.  Use this method to retrieve log entries from
-    Logging.  For ways to export log entries, see
-    [Exporting Logs](/logging/docs/export).
+        """Lists log entries.  Use this method to retrieve log entries that originated
+    from a project/folder/organization/billing account.  For ways to export log
+    entries, see [Exporting Logs](/logging/docs/export).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
