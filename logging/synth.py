@@ -34,6 +34,7 @@ library = gapic.py_library(
 s.move(library / "google/cloud/logging_v2/proto/cloud/logging_v2/proto", "google/cloud/logging_v2/proto")
 s.move(library / "google/cloud/logging_v2/gapic")
 s.move(library / "tests/unit/gapic/v2")
+s.move(library / "docs/gapic/v2")
 
 # ----------------------------------------------------------------------------
 # Add templated files
