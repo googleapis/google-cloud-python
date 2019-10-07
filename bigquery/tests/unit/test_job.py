@@ -276,6 +276,46 @@ class Test_AsyncJob(unittest.TestCase):
         job._properties["statistics"] = {"parentJobId": "parent-job-123"}
         self.assertEqual(job.parent_job_id, "parent-job-123")
 
+    def test_script_statistics(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.script_statistics)
+        job._properties["statistics"] = {
+            "scriptStatistics": {
+                "evaluationKind": "EXPRESSION",
+                "stackFrames": [
+                    {
+                        "procedureId": "some-procedure",
+                        "startLine": 5,
+                        "startColumn": 29,
+                        "endLine": 9,
+                        "endColumn": 14,
+                        "text": "QUERY TEXT",
+                    },
+                    {},
+                ],
+            }
+        }
+        script_stats = job.script_statistics
+        self.assertEqual(script_stats.evaluation_kind, "EXPRESSION")
+        stack_frames = script_stats.stack_frames
+        self.assertEqual(len(stack_frames), 2)
+        stack_frame = stack_frames[0]
+        self.assertEqual(stack_frame.procedure_id, "some-procedure")
+        self.assertEqual(stack_frame.start_line, 5)
+        self.assertEqual(stack_frame.start_column, 29)
+        self.assertEqual(stack_frame.end_line, 9)
+        self.assertEqual(stack_frame.end_column, 14)
+        self.assertEqual(stack_frame.text, "QUERY TEXT")
+        stack_frame = stack_frames[1]
+        self.assertIsNone(stack_frame.procedure_id)
+        self.assertIsNone(stack_frame.start_line)
+        self.assertIsNone(stack_frame.start_column)
+        self.assertIsNone(stack_frame.end_line)
+        self.assertIsNone(stack_frame.end_column)
+        self.assertIsNone(stack_frame.text)
+
     def test_num_child_jobs(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
