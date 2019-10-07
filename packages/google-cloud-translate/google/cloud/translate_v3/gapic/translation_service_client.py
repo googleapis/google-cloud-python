@@ -34,7 +34,6 @@ import google.api_core.path_template
 import google.api_core.protobuf_helpers
 import grpc
 
-from google.cloud.translate_v3.gapic import enums
 from google.cloud.translate_v3.gapic import translation_service_client_config
 from google.cloud.translate_v3.gapic.transports import (
     translation_service_grpc_transport,
@@ -251,11 +250,12 @@ class TranslationServiceClient(object):
             parent (str): Required. Project or location to make a call. Must refer to a caller's
                 project.
 
-                Format: ``projects/{project-id}`` or
-                ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-number-or-id}`` or
+                ``projects/{project-number-or-id}/locations/{location-id}``.
 
-                For global calls, use ``projects/{project-id}/locations/global`` or
-                ``projects/{project-id}``.
+                For global calls, use
+                ``projects/{project-number-or-id}/locations/global`` or
+                ``projects/{project-number-or-id}``.
 
                 Non-global location is required for requests using AutoML models or
                 custom glossaries.
@@ -274,15 +274,15 @@ class TranslationServiceClient(object):
                 The format depends on model type:
 
                 -  AutoML Translation models:
-                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
                 -  General (built-in) models:
-                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 For global (non-regionalized) requests, use ``location-id`` ``global``.
                 For example,
-                ``projects/{project-id}/locations/global/models/general/nmt``.
+                ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
                 If missing, the system decides which google base model to use.
             glossary_config (Union[dict, ~google.cloud.translate_v3.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary must be within the same
@@ -298,7 +298,7 @@ class TranslationServiceClient(object):
                 characters, underscores and dashes. International characters are allowed.
                 Label values are optional. Label keys must start with a letter.
 
-                See https://goo.gl/xmQnxf for more information on and examples of labels.
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -383,21 +383,22 @@ class TranslationServiceClient(object):
             parent (str): Required. Project or location to make a call. Must refer to a caller's
                 project.
 
-                Format: ``projects/{project-id}/locations/{location-id}`` or
-                ``projects/{project-id}``.
+                Format: ``projects/{project-number-or-id}/locations/{location-id}`` or
+                ``projects/{project-number-or-id}``.
 
-                For global calls, use ``projects/{project-id}/locations/global`` or
-                ``projects/{project-id}``.
+                For global calls, use
+                ``projects/{project-number-or-id}/locations/global`` or
+                ``projects/{project-number-or-id}``.
 
                 Only models within the same region (has same location-id) can be used.
                 Otherwise an INVALID\_ARGUMENT (400) error is returned.
             model (str): Optional. The language detection model to be used.
 
                 Format:
-                ``projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}``
+                ``projects/{project-number-or-id}/locations/{location-id}/models/language-detection/{model-id}``
 
                 Only one language detection model is currently supported:
-                ``projects/{project-id}/locations/{location-id}/models/language-detection/default``.
+                ``projects/{project-number-or-id}/locations/{location-id}/models/language-detection/default``.
 
                 If not specified, the default model is used.
             content (str): The content of the input stored as a string.
@@ -410,7 +411,7 @@ class TranslationServiceClient(object):
                 characters, underscores and dashes. International characters are allowed.
                 Label values are optional. Label keys must start with a letter.
 
-                See https://goo.gl/xmQnxf for more information on and examples of labels.
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -494,11 +495,12 @@ class TranslationServiceClient(object):
             parent (str): Required. Project or location to make a call. Must refer to a caller's
                 project.
 
-                Format: ``projects/{project-id}`` or
-                ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-number-or-id}`` or
+                ``projects/{project-number-or-id}/locations/{location-id}``.
 
-                For global calls, use ``projects/{project-id}/locations/global`` or
-                ``projects/{project-id}``.
+                For global calls, use
+                ``projects/{project-number-or-id}/locations/global`` or
+                ``projects/{project-number-or-id}``.
 
                 Non-global location is required for AutoML models.
 
@@ -512,11 +514,11 @@ class TranslationServiceClient(object):
                 The format depends on model type:
 
                 -  AutoML Translation models:
-                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
                 -  General (built-in) models:
-                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 Returns languages supported by the specified model. If missing, we get
                 supported languages of Google general base (PBMT) model.
@@ -626,7 +628,7 @@ class TranslationServiceClient(object):
         Args:
             parent (str): Required. Location to make a call. Must refer to a caller's project.
 
-                Format: ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-number-or-id}/locations/{location-id}``.
 
                 The ``global`` location is not supported for batch translation.
 
@@ -655,11 +657,11 @@ class TranslationServiceClient(object):
                 The value format depends on model type:
 
                 -  AutoML Translation models:
-                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
                 -  General (built-in) models:
-                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 If the map is empty or a specific model is not requested for a language
                 pair, then default google model (nmt) is used.
@@ -675,7 +677,7 @@ class TranslationServiceClient(object):
                 characters, underscores and dashes. International characters are allowed.
                 Label values are optional. Label keys must start with a letter.
 
-                See https://goo.gl/xmQnxf for more information on and examples of labels.
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

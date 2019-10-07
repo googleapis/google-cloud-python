@@ -10,7 +10,7 @@ from google.longrunning import (
 
 
 class TranslationServiceStub(object):
-    """Proto file for the Cloud Translation API (v3).
+    """Proto file for the Cloud Translation API (v3 GA).
 
   Provides natural language translation operations.
   """
@@ -64,7 +64,7 @@ class TranslationServiceStub(object):
 
 
 class TranslationServiceServicer(object):
-    """Proto file for the Cloud Translation API (v3).
+    """Proto file for the Cloud Translation API (v3 GA).
 
   Provides natural language translation operations.
   """
