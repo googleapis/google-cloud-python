@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.7.0
+
+10-04-2019 15:37 PDT
+
+### New Features
+- Generate v1. ([#9388](https://github.com/googleapis/google-cloud-python/pull/9388))
+- Add support for passing  project to 'GcsClient'. ([#9299](https://github.com/googleapis/google-cloud-python/pull/9299))
+
 ## 0.6.0
 
 09-30-2019 10:40 PDT
