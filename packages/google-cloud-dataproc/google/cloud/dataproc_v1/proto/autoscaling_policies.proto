@@ -15,19 +15,19 @@
 
 syntax = "proto3";
 
-package google.cloud.dataproc.v1beta2;
+package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
-import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
+import "google/api/client.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc";
+option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
 option java_outer_classname = "AutoscalingPoliciesProto";
-option java_package = "com.google.cloud.dataproc.v1beta2";
+option java_package = "com.google.cloud.dataproc.v1";
 
 // The API interface for managing autoscaling policies in the
 // Google Cloud Dataproc API.
@@ -38,14 +38,13 @@ service AutoscalingPolicyService {
   // Creates new autoscaling policy.
   rpc CreateAutoscalingPolicy(CreateAutoscalingPolicyRequest) returns (AutoscalingPolicy) {
     option (google.api.http) = {
-      post: "/v1beta2/{parent=projects/*/locations/*}/autoscalingPolicies"
+      post: "/v1/{parent=projects/*/locations/*}/autoscalingPolicies"
       body: "policy"
       additional_bindings {
-        post: "/v1beta2/{parent=projects/*/regions/*}/autoscalingPolicies"
+        post: "/v1/{parent=projects/*/regions/*}/autoscalingPolicies"
         body: "policy"
       }
     };
-    option (google.api.method_signature) = "parent,policy";
   }
 
   // Updates (replaces) autoscaling policy.
@@ -54,48 +53,44 @@ service AutoscalingPolicyService {
   // replacements.
   rpc UpdateAutoscalingPolicy(UpdateAutoscalingPolicyRequest) returns (AutoscalingPolicy) {
     option (google.api.http) = {
-      put: "/v1beta2/{policy.name=projects/*/locations/*/autoscalingPolicies/*}"
+      put: "/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}"
       body: "policy"
       additional_bindings {
-        put: "/v1beta2/{policy.name=projects/*/regions/*/autoscalingPolicies/*}"
+        put: "/v1/{policy.name=projects/*/regions/*/autoscalingPolicies/*}"
         body: "policy"
       }
     };
-    option (google.api.method_signature) = "policy";
   }
 
   // Retrieves autoscaling policy.
   rpc GetAutoscalingPolicy(GetAutoscalingPolicyRequest) returns (AutoscalingPolicy) {
     option (google.api.http) = {
-      get: "/v1beta2/{name=projects/*/locations/*/autoscalingPolicies/*}"
+      get: "/v1/{name=projects/*/locations/*/autoscalingPolicies/*}"
       additional_bindings {
-        get: "/v1beta2/{name=projects/*/regions/*/autoscalingPolicies/*}"
+        get: "/v1/{name=projects/*/regions/*/autoscalingPolicies/*}"
       }
     };
-    option (google.api.method_signature) = "name";
   }
 
   // Lists autoscaling policies in the project.
   rpc ListAutoscalingPolicies(ListAutoscalingPoliciesRequest) returns (ListAutoscalingPoliciesResponse) {
     option (google.api.http) = {
-      get: "/v1beta2/{parent=projects/*/locations/*}/autoscalingPolicies"
+      get: "/v1/{parent=projects/*/locations/*}/autoscalingPolicies"
       additional_bindings {
-        get: "/v1beta2/{parent=projects/*/regions/*}/autoscalingPolicies"
+        get: "/v1/{parent=projects/*/regions/*}/autoscalingPolicies"
       }
     };
-    option (google.api.method_signature) = "parent";
   }
 
   // Deletes an autoscaling policy. It is an error to delete an autoscaling
   // policy that is in use by one or more clusters.
   rpc DeleteAutoscalingPolicy(DeleteAutoscalingPolicyRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1beta2/{name=projects/*/locations/*/autoscalingPolicies/*}"
+      delete: "/v1/{name=projects/*/locations/*/autoscalingPolicies/*}"
       additional_bindings {
-        delete: "/v1beta2/{name=projects/*/regions/*/autoscalingPolicies/*}"
+        delete: "/v1/{name=projects/*/regions/*/autoscalingPolicies/*}"
       }
     };
-    option (google.api.method_signature) = "name";
   }
 }
 
@@ -104,8 +99,6 @@ message AutoscalingPolicy {
   option (google.api.resource) = {
     type: "dataproc.googleapis.com/AutoscalingPolicy"
     pattern: "projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}"
-    pattern: "projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}"
-    history: ORIGINALLY_SINGLE_PATTERN
   };
 
   // Required. The policy id.
@@ -113,7 +106,8 @@ message AutoscalingPolicy {
   // The id must contain only letters (a-z, A-Z), numbers (0-9),
   // underscores (_), and hyphens (-). Cannot begin or end with underscore
   // or hyphen. Must consist of between 3 and 50 characters.
-  string id = 1 [(google.api.field_behavior) = REQUIRED];
+  //
+  string id = 1;
 
   // Output only. The "resource name" of the autoscaling policy, as described
   // in https://cloud.google.com/apis/design/resource_names.
@@ -127,9 +121,9 @@ message AutoscalingPolicy {
   //   `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
   string name = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Required. Autoscaling algorithm for policy.
+  // Autoscaling algorithm for policy.
   oneof algorithm {
-    BasicAutoscalingAlgorithm basic_algorithm = 3;
+    BasicAutoscalingAlgorithm basic_algorithm = 3 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Required. Describes how the autoscaler will operate for primary workers.
@@ -207,13 +201,13 @@ message InstanceGroupAutoscalingPolicyConfig {
   // Secondary workers - Bounds: [0, max_instances]. Default: 0.
   int32 min_instances = 1 [(google.api.field_behavior) = OPTIONAL];
 
-  // Optional. Maximum number of instances for this group. Required for primary
+  // Required. Maximum number of instances for this group. Required for primary
   // workers. Note that by default, clusters will not use secondary workers.
   // Required for secondary workers if the minimum secondary instances is set.
   //
-  // Primary workers - Bounds: [min_instances, ). Required.
+  // Primary workers - Bounds: [min_instances, ).
   // Secondary workers - Bounds: [min_instances, ). Default: 0.
-  int32 max_instances = 2 [(google.api.field_behavior) = OPTIONAL];
+  int32 max_instances = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Optional. Weight for the instance group, which is used to determine the
   // fraction of total workers in the cluster from this instance group.
@@ -242,11 +236,11 @@ message CreateAutoscalingPolicyRequest {
   // in https://cloud.google.com/apis/design/resource_names.
   //
   // * For `projects.regions.autoscalingPolicies.create`, the resource name
-  //   has the following format:
+  //   of the region has the following format:
   //   `projects/{project_id}/regions/{region}`
   //
   // * For `projects.locations.autoscalingPolicies.create`, the resource name
-  //   has the following format:
+  //   of the location has the following format:
   //   `projects/{project_id}/locations/{location}`
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -255,8 +249,8 @@ message CreateAutoscalingPolicyRequest {
     }
   ];
 
-  // Required. The autoscaling policy to create.
-  AutoscalingPolicy policy = 2 [(google.api.field_behavior) = REQUIRED];
+  // The autoscaling policy to create.
+  AutoscalingPolicy policy = 2;
 }
 
 // A request to fetch an autoscaling policy.
@@ -282,12 +276,7 @@ message GetAutoscalingPolicyRequest {
 // A request to update an autoscaling policy.
 message UpdateAutoscalingPolicyRequest {
   // Required. The updated autoscaling policy.
-  AutoscalingPolicy policy = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference) = {
-      type: "dataproc.googleapis.com/AutoscalingPolicy"
-    }
-  ];
+  AutoscalingPolicy policy = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // A request to delete an autoscaling policy.
