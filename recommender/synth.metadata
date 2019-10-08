@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-10-05T12:31:38.542410Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.38.0",
+        "dockerImage": "googleapis/artman@sha256:0d2f8d429110aeb8d82df6550ef4ede59d40df9062d260a1580fce688b0512bf"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "ceb8e2fb12f048cc94caae532ef0b4cf026a78f3",
+        "internalRef": "272971705"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.5.2"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "recommender",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/recommender/artman_recommender_v1beta1.yaml"
+      }
+    }
+  ]
+}

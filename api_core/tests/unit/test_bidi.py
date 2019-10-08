@@ -597,6 +597,31 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.is_active is False
         assert call.cancelled is True
 
+    def test_close(self):
+        call = mock.create_autospec(_CallAndFuture, instance=True)
+
+        def cancel_side_effect():
+            call.is_active.return_value = False
+
+        call.cancel.side_effect = cancel_side_effect
+        start_rpc = mock.create_autospec(
+            grpc.StreamStreamMultiCallable, instance=True, return_value=call
+        )
+        should_recover = mock.Mock(spec=["__call__"], return_value=False)
+        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover)
+        bidi_rpc.open()
+
+        bidi_rpc.close()
+
+        should_recover.assert_not_called()
+        call.cancel.assert_called_once()
+        assert bidi_rpc.call == call
+        assert bidi_rpc.is_active is False
+        # ensure the request queue was signaled to stop.
+        assert bidi_rpc.pending_requests == 1
+        assert bidi_rpc._request_queue.get() is None
+        assert bidi_rpc._finalized
+
     def test_reopen_failure_on_rpc_restart(self):
         error1 = ValueError("1")
         error2 = ValueError("2")

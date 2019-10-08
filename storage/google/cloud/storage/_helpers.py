@@ -43,7 +43,7 @@ def _validate_name(name):
     if name is None:
         return
 
-    # The first and las characters must be alphanumeric.
+    # The first and last characters must be alphanumeric.
     if not all([name[0].isalnum(), name[-1].isalnum()]):
         raise ValueError("Bucket names must start and end with a number or letter.")
     return name

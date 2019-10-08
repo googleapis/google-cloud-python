@@ -404,6 +404,8 @@ def test_heartbeat_inactive():
     "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
 )
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
+    stream_ack_deadline = streaming_pull_manager._DEFAULT_STREAM_ACK_DEADLINE
+
     manager = make_manager()
 
     manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
@@ -426,10 +428,16 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
 
     resumable_bidi_rpc.assert_called_once_with(
         start_rpc=manager._client.api.streaming_pull,
-        initial_request=manager._get_initial_request,
+        initial_request=mock.ANY,
         should_recover=manager._should_recover,
+        should_terminate=manager._should_terminate,
         throttle_reopen=True,
     )
+    initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
+    assert initial_request_arg.func == manager._get_initial_request
+    assert initial_request_arg.args[0] == stream_ack_deadline
+    assert not manager._client.api.get_subscription.called
+
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
         manager._on_rpc_done
     )
@@ -574,11 +582,11 @@ def test__get_initial_request():
     manager._leaser = mock.create_autospec(leaser.Leaser, instance=True)
     manager._leaser.ack_ids = ["1", "2"]
 
-    initial_request = manager._get_initial_request()
+    initial_request = manager._get_initial_request(123)
 
     assert isinstance(initial_request, types.StreamingPullRequest)
     assert initial_request.subscription == "subscription-name"
-    assert initial_request.stream_ack_deadline_seconds == 10
+    assert initial_request.stream_ack_deadline_seconds == 123
     assert initial_request.modify_deadline_ack_ids == ["1", "2"]
     assert initial_request.modify_deadline_seconds == [10, 10]
 
@@ -587,11 +595,11 @@ def test__get_initial_request_wo_leaser():
     manager = make_manager()
     manager._leaser = None
 
-    initial_request = manager._get_initial_request()
+    initial_request = manager._get_initial_request(123)
 
     assert isinstance(initial_request, types.StreamingPullRequest)
     assert initial_request.subscription == "subscription-name"
-    assert initial_request.stream_ack_deadline_seconds == 10
+    assert initial_request.stream_ack_deadline_seconds == 123
     assert initial_request.modify_deadline_ack_ids == []
     assert initial_request.modify_deadline_seconds == []
 
@@ -660,12 +668,10 @@ def test__on_response_with_leaser_overload():
     # are called in the expected way.
     manager._on_response(response)
 
+    # only the messages that are added to the lease management and dispatched to
+    # callbacks should have their ACK deadline extended
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [
-            requests.ModAckRequest("fack", 10),
-            requests.ModAckRequest("back", 10),
-            requests.ModAckRequest("zack", 10),
-        ]
+        [requests.ModAckRequest("fack", 10)]
     )
 
     # one message should be scheduled, the leaser capacity allows for it
@@ -717,6 +723,23 @@ def test__should_recover_false():
     exc = TypeError("wahhhhhh")
 
     assert manager._should_recover(exc) is False
+
+
+def test__should_terminate_true():
+    manager = make_manager()
+
+    details = "Cancelled. Go away, before I taunt you a second time."
+    exc = exceptions.Cancelled(details)
+
+    assert manager._should_terminate(exc) is True
+
+
+def test__should_terminate_false():
+    manager = make_manager()
+
+    exc = TypeError("wahhhhhh")
+
+    assert manager._should_terminate(exc) is False
 
 
 @mock.patch("threading.Thread", autospec=True)

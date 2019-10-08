@@ -31,7 +31,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\025com.google.logging.v2B\022LoggingConfigProtoP\001Z8google.golang.org/genproto/googleapis/logging/v2;logging\370\001\001\252\002\027Google.Cloud.Logging.V2\312\002\027Google\\Cloud\\Logging\\V2"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/logging_v2/proto/logging_config.proto\x12\x11google.logging.v2\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto"\xaa\x03\n\x07LogSink\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12K\n\x15output_version_format\x18\x06 \x01(\x0e\x32(.google.logging.v2.LogSink.VersionFormatB\x02\x18\x01\x12\x17\n\x0fwriter_identity\x18\x08 \x01(\t\x12\x18\n\x10include_children\x18\t \x01(\x08\x12>\n\x10\x62igquery_options\x18\x0c \x01(\x0b\x32".google.logging.v2.BigQueryOptionsH\x00\x12/\n\x0b\x63reate_time\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp"?\n\rVersionFormat\x12\x1e\n\x1aVERSION_FORMAT_UNSPECIFIED\x10\x00\x12\x06\n\x02V2\x10\x01\x12\x06\n\x02V1\x10\x02\x42\t\n\x07options"1\n\x0f\x42igQueryOptions\x12\x1e\n\x16use_partitioned_tables\x18\x01 \x01(\x08"I\n\x10ListSinksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"W\n\x11ListSinksResponse\x12)\n\x05sinks\x18\x01 \x03(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x0eGetSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t"m\n\x11\x43reateSinkRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08"\xa1\x01\n\x11UpdateSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"&\n\x11\x44\x65leteSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t"\xb5\x01\n\x0cLogExclusion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x10\n\x08\x64isabled\x18\x04 \x01(\x08\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"N\n\x15ListExclusionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"f\n\x16ListExclusionsResponse\x12\x33\n\nexclusions\x18\x01 \x03(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x13GetExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x16\x43reateExclusionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion"\x8b\x01\n\x16UpdateExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"&\n\x16\x44\x65leteExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\xf6\x1a\n\x0f\x43onfigServiceV2\x12\x87\x02\n\tListSinks\x12#.google.logging.v2.ListSinksRequest\x1a$.google.logging.v2.ListSinksResponse"\xae\x01\x82\xd3\xe4\x93\x02\xa7\x01\x12\x16/v2/{parent=*/*}/sinksZ\x1f\x12\x1d/v2/{parent=projects/*}/sinksZ$\x12"/v2/{parent=organizations/*}/sinksZ\x1e\x12\x1c/v2/{parent=folders/*}/sinksZ&\x12$/v2/{parent=billingAccounts/*}/sinks\x12\x92\x02\n\x07GetSink\x12!.google.logging.v2.GetSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{sink_name=*/*/sinks/*}Z$\x12"/v2/{sink_name=projects/*/sinks/*}Z)\x12\'/v2/{sink_name=organizations/*/sinks/*}Z#\x12!/v2/{sink_name=folders/*/sinks/*}Z+\x12)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\x9d\x02\n\nCreateSink\x12$.google.logging.v2.CreateSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xcc\x01\x82\xd3\xe4\x93\x02\xc5\x01"\x16/v2/{parent=*/*}/sinks:\x04sinkZ%"\x1d/v2/{parent=projects/*}/sinks:\x04sinkZ*""/v2/{parent=organizations/*}/sinks:\x04sinkZ$"\x1c/v2/{parent=folders/*}/sinks:\x04sinkZ,"$/v2/{parent=billingAccounts/*}/sinks:\x04sink\x12\xf1\x03\n\nUpdateSink\x12$.google.logging.v2.UpdateSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xa0\x03\x82\xd3\xe4\x93\x02\x99\x03\x1a\x1b/v2/{sink_name=*/*/sinks/*}:\x04sinkZ*\x1a"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/\x1a\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)\x1a!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ1\x1a)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sinkZ*2"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/2\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)2!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ12)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sink\x12\x94\x02\n\nDeleteSink\x12$.google.logging.v2.DeleteSinkRequest\x1a\x16.google.protobuf.Empty"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{sink_name=*/*/sinks/*}Z$*"/v2/{sink_name=projects/*/sinks/*}Z)*\'/v2/{sink_name=organizations/*/sinks/*}Z#*!/v2/{sink_name=folders/*/sinks/*}Z+*)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\xaf\x02\n\x0eListExclusions\x12(.google.logging.v2.ListExclusionsRequest\x1a).google.logging.v2.ListExclusionsResponse"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{parent=*/*}/exclusionsZ$\x12"/v2/{parent=projects/*}/exclusionsZ)\x12\'/v2/{parent=organizations/*}/exclusionsZ#\x12!/v2/{parent=folders/*}/exclusionsZ+\x12)/v2/{parent=billingAccounts/*}/exclusions\x12\xa1\x02\n\x0cGetExclusion\x12&.google.logging.v2.GetExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{name=*/*/exclusions/*}Z$\x12"/v2/{name=projects/*/exclusions/*}Z)\x12\'/v2/{name=organizations/*/exclusions/*}Z#\x12!/v2/{name=folders/*/exclusions/*}Z+\x12)/v2/{name=billingAccounts/*/exclusions/*}\x12\xde\x02\n\x0f\x43reateExclusion\x12).google.logging.v2.CreateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01"\x1b/v2/{parent=*/*}/exclusions:\texclusionZ/""/v2/{parent=projects/*}/exclusions:\texclusionZ4"\'/v2/{parent=organizations/*}/exclusions:\texclusionZ."!/v2/{parent=folders/*}/exclusions:\texclusionZ6")/v2/{parent=billingAccounts/*}/exclusions:\texclusion\x12\xde\x02\n\x0fUpdateExclusion\x12).google.logging.v2.UpdateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01\x32\x1b/v2/{name=*/*/exclusions/*}:\texclusionZ/2"/v2/{name=projects/*/exclusions/*}:\texclusionZ42\'/v2/{name=organizations/*/exclusions/*}:\texclusionZ.2!/v2/{name=folders/*/exclusions/*}:\texclusionZ62)/v2/{name=billingAccounts/*/exclusions/*}:\texclusion\x12\x9e\x02\n\x0f\x44\x65leteExclusion\x12).google.logging.v2.DeleteExclusionRequest\x1a\x16.google.protobuf.Empty"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{name=*/*/exclusions/*}Z$*"/v2/{name=projects/*/exclusions/*}Z)*\'/v2/{name=organizations/*/exclusions/*}Z#*!/v2/{name=folders/*/exclusions/*}Z+*)/v2/{name=billingAccounts/*/exclusions/*}\x1a\xdf\x01\xca\x41\x16logging.googleapis.com\xd2\x41\xc2\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only,https://www.googleapis.com/auth/logging.admin,https://www.googleapis.com/auth/logging.readB\x9e\x01\n\x15\x63om.google.logging.v2B\x12LoggingConfigProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3'
+        '\n2google/cloud/logging_v2/proto/logging_config.proto\x12\x11google.logging.v2\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto"\x90\x04\n\x07LogSink\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12K\n\x15output_version_format\x18\x06 \x01(\x0e\x32(.google.logging.v2.LogSink.VersionFormatB\x02\x18\x01\x12\x17\n\x0fwriter_identity\x18\x08 \x01(\t\x12\x18\n\x10include_children\x18\t \x01(\x08\x12>\n\x10\x62igquery_options\x18\x0c \x01(\x0b\x32".google.logging.v2.BigQueryOptionsH\x00\x12/\n\x0b\x63reate_time\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\nstart_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x02\x18\x01\x12\x30\n\x08\x65nd_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x02\x18\x01"?\n\rVersionFormat\x12\x1e\n\x1aVERSION_FORMAT_UNSPECIFIED\x10\x00\x12\x06\n\x02V2\x10\x01\x12\x06\n\x02V1\x10\x02\x42\t\n\x07options"1\n\x0f\x42igQueryOptions\x12\x1e\n\x16use_partitioned_tables\x18\x01 \x01(\x08"I\n\x10ListSinksRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"W\n\x11ListSinksResponse\x12)\n\x05sinks\x18\x01 \x03(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x0eGetSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t"m\n\x11\x43reateSinkRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08"\xa1\x01\n\x11UpdateSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t\x12(\n\x04sink\x18\x02 \x01(\x0b\x32\x1a.google.logging.v2.LogSink\x12\x1e\n\x16unique_writer_identity\x18\x03 \x01(\x08\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"&\n\x11\x44\x65leteSinkRequest\x12\x11\n\tsink_name\x18\x01 \x01(\t"\xb5\x01\n\x0cLogExclusion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x10\n\x08\x64isabled\x18\x04 \x01(\x08\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"N\n\x15ListExclusionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"f\n\x16ListExclusionsResponse\x12\x33\n\nexclusions\x18\x01 \x03(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x13GetExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x16\x43reateExclusionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion"\x8b\x01\n\x16UpdateExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\texclusion\x18\x02 \x01(\x0b\x32\x1f.google.logging.v2.LogExclusion\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"&\n\x16\x44\x65leteExclusionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t2\xf6\x1a\n\x0f\x43onfigServiceV2\x12\x87\x02\n\tListSinks\x12#.google.logging.v2.ListSinksRequest\x1a$.google.logging.v2.ListSinksResponse"\xae\x01\x82\xd3\xe4\x93\x02\xa7\x01\x12\x16/v2/{parent=*/*}/sinksZ\x1f\x12\x1d/v2/{parent=projects/*}/sinksZ$\x12"/v2/{parent=organizations/*}/sinksZ\x1e\x12\x1c/v2/{parent=folders/*}/sinksZ&\x12$/v2/{parent=billingAccounts/*}/sinks\x12\x92\x02\n\x07GetSink\x12!.google.logging.v2.GetSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{sink_name=*/*/sinks/*}Z$\x12"/v2/{sink_name=projects/*/sinks/*}Z)\x12\'/v2/{sink_name=organizations/*/sinks/*}Z#\x12!/v2/{sink_name=folders/*/sinks/*}Z+\x12)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\x9d\x02\n\nCreateSink\x12$.google.logging.v2.CreateSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xcc\x01\x82\xd3\xe4\x93\x02\xc5\x01"\x16/v2/{parent=*/*}/sinks:\x04sinkZ%"\x1d/v2/{parent=projects/*}/sinks:\x04sinkZ*""/v2/{parent=organizations/*}/sinks:\x04sinkZ$"\x1c/v2/{parent=folders/*}/sinks:\x04sinkZ,"$/v2/{parent=billingAccounts/*}/sinks:\x04sink\x12\xf1\x03\n\nUpdateSink\x12$.google.logging.v2.UpdateSinkRequest\x1a\x1a.google.logging.v2.LogSink"\xa0\x03\x82\xd3\xe4\x93\x02\x99\x03\x1a\x1b/v2/{sink_name=*/*/sinks/*}:\x04sinkZ*\x1a"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/\x1a\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)\x1a!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ1\x1a)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sinkZ*2"/v2/{sink_name=projects/*/sinks/*}:\x04sinkZ/2\'/v2/{sink_name=organizations/*/sinks/*}:\x04sinkZ)2!/v2/{sink_name=folders/*/sinks/*}:\x04sinkZ12)/v2/{sink_name=billingAccounts/*/sinks/*}:\x04sink\x12\x94\x02\n\nDeleteSink\x12$.google.logging.v2.DeleteSinkRequest\x1a\x16.google.protobuf.Empty"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{sink_name=*/*/sinks/*}Z$*"/v2/{sink_name=projects/*/sinks/*}Z)*\'/v2/{sink_name=organizations/*/sinks/*}Z#*!/v2/{sink_name=folders/*/sinks/*}Z+*)/v2/{sink_name=billingAccounts/*/sinks/*}\x12\xaf\x02\n\x0eListExclusions\x12(.google.logging.v2.ListExclusionsRequest\x1a).google.logging.v2.ListExclusionsResponse"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{parent=*/*}/exclusionsZ$\x12"/v2/{parent=projects/*}/exclusionsZ)\x12\'/v2/{parent=organizations/*}/exclusionsZ#\x12!/v2/{parent=folders/*}/exclusionsZ+\x12)/v2/{parent=billingAccounts/*}/exclusions\x12\xa1\x02\n\x0cGetExclusion\x12&.google.logging.v2.GetExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01\x12\x1b/v2/{name=*/*/exclusions/*}Z$\x12"/v2/{name=projects/*/exclusions/*}Z)\x12\'/v2/{name=organizations/*/exclusions/*}Z#\x12!/v2/{name=folders/*/exclusions/*}Z+\x12)/v2/{name=billingAccounts/*/exclusions/*}\x12\xde\x02\n\x0f\x43reateExclusion\x12).google.logging.v2.CreateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01"\x1b/v2/{parent=*/*}/exclusions:\texclusionZ/""/v2/{parent=projects/*}/exclusions:\texclusionZ4"\'/v2/{parent=organizations/*}/exclusions:\texclusionZ."!/v2/{parent=folders/*}/exclusions:\texclusionZ6")/v2/{parent=billingAccounts/*}/exclusions:\texclusion\x12\xde\x02\n\x0fUpdateExclusion\x12).google.logging.v2.UpdateExclusionRequest\x1a\x1f.google.logging.v2.LogExclusion"\xfe\x01\x82\xd3\xe4\x93\x02\xf7\x01\x32\x1b/v2/{name=*/*/exclusions/*}:\texclusionZ/2"/v2/{name=projects/*/exclusions/*}:\texclusionZ42\'/v2/{name=organizations/*/exclusions/*}:\texclusionZ.2!/v2/{name=folders/*/exclusions/*}:\texclusionZ62)/v2/{name=billingAccounts/*/exclusions/*}:\texclusion\x12\x9e\x02\n\x0f\x44\x65leteExclusion\x12).google.logging.v2.DeleteExclusionRequest\x1a\x16.google.protobuf.Empty"\xc7\x01\x82\xd3\xe4\x93\x02\xc0\x01*\x1b/v2/{name=*/*/exclusions/*}Z$*"/v2/{name=projects/*/exclusions/*}Z)*\'/v2/{name=organizations/*/exclusions/*}Z#*!/v2/{name=folders/*/exclusions/*}Z+*)/v2/{name=billingAccounts/*/exclusions/*}\x1a\xdf\x01\xca\x41\x16logging.googleapis.com\xd2\x41\xc2\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only,https://www.googleapis.com/auth/logging.admin,https://www.googleapis.com/auth/logging.readB\x9e\x01\n\x15\x63om.google.logging.v2B\x12LoggingConfigProtoP\x01Z8google.golang.org/genproto/googleapis/logging/v2;logging\xf8\x01\x01\xaa\x02\x17Google.Cloud.Logging.V2\xca\x02\x17Google\\Cloud\\Logging\\V2b\x06proto3'
     ),
     dependencies=[
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
@@ -66,8 +66,8 @@ _LOGSINK_VERSIONFORMAT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=609,
-    serialized_end=672,
+    serialized_start=711,
+    serialized_end=774,
 )
 _sym_db.RegisterEnumDescriptor(_LOGSINK_VERSIONFORMAT)
 
@@ -241,6 +241,42 @@ _LOGSINK = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="start_time",
+            full_name="google.logging.v2.LogSink.start_time",
+            index=9,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\030\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_time",
+            full_name="google.logging.v2.LogSink.end_time",
+            index=10,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\030\001"),
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -259,7 +295,7 @@ _LOGSINK = _descriptor.Descriptor(
         )
     ],
     serialized_start=257,
-    serialized_end=683,
+    serialized_end=785,
 )
 
 
@@ -297,8 +333,8 @@ _BIGQUERYOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=685,
-    serialized_end=734,
+    serialized_start=787,
+    serialized_end=836,
 )
 
 
@@ -372,8 +408,8 @@ _LISTSINKSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=736,
-    serialized_end=809,
+    serialized_start=838,
+    serialized_end=911,
 )
 
 
@@ -429,8 +465,8 @@ _LISTSINKSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=811,
-    serialized_end=898,
+    serialized_start=913,
+    serialized_end=1000,
 )
 
 
@@ -468,8 +504,8 @@ _GETSINKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=900,
-    serialized_end=935,
+    serialized_start=1002,
+    serialized_end=1037,
 )
 
 
@@ -543,8 +579,8 @@ _CREATESINKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=937,
-    serialized_end=1046,
+    serialized_start=1039,
+    serialized_end=1148,
 )
 
 
@@ -636,8 +672,8 @@ _UPDATESINKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1049,
-    serialized_end=1210,
+    serialized_start=1151,
+    serialized_end=1312,
 )
 
 
@@ -675,8 +711,8 @@ _DELETESINKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1212,
-    serialized_end=1250,
+    serialized_start=1314,
+    serialized_end=1352,
 )
 
 
@@ -804,8 +840,8 @@ _LOGEXCLUSION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1253,
-    serialized_end=1434,
+    serialized_start=1355,
+    serialized_end=1536,
 )
 
 
@@ -879,8 +915,8 @@ _LISTEXCLUSIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1436,
-    serialized_end=1514,
+    serialized_start=1538,
+    serialized_end=1616,
 )
 
 
@@ -936,8 +972,8 @@ _LISTEXCLUSIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1516,
-    serialized_end=1618,
+    serialized_start=1618,
+    serialized_end=1720,
 )
 
 
@@ -975,8 +1011,8 @@ _GETEXCLUSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1620,
-    serialized_end=1655,
+    serialized_start=1722,
+    serialized_end=1757,
 )
 
 
@@ -1032,8 +1068,8 @@ _CREATEEXCLUSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1657,
-    serialized_end=1749,
+    serialized_start=1759,
+    serialized_end=1851,
 )
 
 
@@ -1107,8 +1143,8 @@ _UPDATEEXCLUSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1752,
-    serialized_end=1891,
+    serialized_start=1854,
+    serialized_end=1993,
 )
 
 
@@ -1146,8 +1182,8 @@ _DELETEEXCLUSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1893,
-    serialized_end=1931,
+    serialized_start=1995,
+    serialized_end=2033,
 )
 
 _LOGSINK.fields_by_name["output_version_format"].enum_type = _LOGSINK_VERSIONFORMAT
@@ -1157,6 +1193,12 @@ _LOGSINK.fields_by_name[
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _LOGSINK.fields_by_name[
     "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_LOGSINK.fields_by_name[
+    "start_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_LOGSINK.fields_by_name[
+    "end_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _LOGSINK_VERSIONFORMAT.containing_type = _LOGSINK
 _LOGSINK.oneofs_by_name["options"].fields.append(
@@ -1281,6 +1323,10 @@ LogSink = _reflection.GeneratedProtocolMessageType(
       update_time:
           Output only. The last update timestamp of the sink.  This
           field may not be present for older sinks.
+      start_time:
+          Do not use. This field is ignored.
+      end_time:
+          Do not use. This field is ignored.
   """,
         # @@protoc_insertion_point(class_scope:google.logging.v2.LogSink)
     ),
@@ -1726,6 +1772,8 @@ _sym_db.RegisterMessage(DeleteExclusionRequest)
 
 DESCRIPTOR._options = None
 _LOGSINK.fields_by_name["output_version_format"]._options = None
+_LOGSINK.fields_by_name["start_time"]._options = None
+_LOGSINK.fields_by_name["end_time"]._options = None
 
 _CONFIGSERVICEV2 = _descriptor.ServiceDescriptor(
     name="ConfigServiceV2",
@@ -1735,8 +1783,8 @@ _CONFIGSERVICEV2 = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\026logging.googleapis.com\322A\302\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only,https://www.googleapis.com/auth/logging.admin,https://www.googleapis.com/auth/logging.read"
     ),
-    serialized_start=1934,
-    serialized_end=5380,
+    serialized_start=2036,
+    serialized_end=5482,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListSinks",

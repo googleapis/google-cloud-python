@@ -15,8 +15,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -27,11 +27,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.cloud.dataproc.v1beta2B\017OperationsProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/dataproc_v1beta2/proto/operations.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfa\x01\n\x16\x43lusterOperationStatus\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.dataproc.v1beta2.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\x9f\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12\x45\n\x06status\x18\t \x01(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12M\n\x0estatus_history\x18\n \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12S\n\x06labels\x18\r \x03(\x0b\x32\x43.google.cloud.dataproc.v1beta2.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42}\n!com.google.cloud.dataproc.v1beta2B\x0fOperationsProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
+        '\n4google/cloud/dataproc_v1beta2/proto/operations.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xfa\x01\n\x16\x43lusterOperationStatus\x12J\n\x05state\x18\x01 \x01(\x0e\x32;.google.cloud.dataproc.v1beta2.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\x9f\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12\x45\n\x06status\x18\t \x01(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12M\n\x0estatus_history\x18\n \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12S\n\x06labels\x18\r \x03(\x0b\x32\x43.google.cloud.dataproc.v1beta2.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42}\n!com.google.cloud.dataproc.v1beta2B\x0fOperationsProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 

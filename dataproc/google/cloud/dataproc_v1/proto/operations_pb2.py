@@ -15,8 +15,9 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -27,11 +28,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.dataproc.v1B\017OperationsProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/dataproc_v1/proto/operations.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf5\x01\n\x16\x43lusterOperationStatus\x12\x45\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.dataproc.v1.ClusterOperationStatus.State\x12\x13\n\x0binner_state\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65tails\x18\x03 \x01(\t\x12\x34\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\x90\x03\n\x18\x43lusterOperationMetadata\x12\x14\n\x0c\x63luster_name\x18\x07 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x08 \x01(\t\x12@\n\x06status\x18\t \x01(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12H\n\x0estatus_history\x18\n \x03(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatus\x12\x16\n\x0eoperation_type\x18\x0b \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x0c \x01(\t\x12N\n\x06labels\x18\r \x03(\x0b\x32>.google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntry\x12\x10\n\x08warnings\x18\x0e \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42s\n\x1c\x63om.google.cloud.dataproc.v1B\x0fOperationsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
+        '\n/google/cloud/dataproc_v1/proto/operations.proto\x12\x18google.cloud.dataproc.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x89\x02\n\x16\x43lusterOperationStatus\x12J\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.dataproc.v1.ClusterOperationStatus.StateB\x03\xe0\x41\x03\x12\x18\n\x0binner_state\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07\x64\x65tails\x18\x03 \x01(\tB\x03\xe0\x41\x03\x12\x39\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\xb8\x03\n\x18\x43lusterOperationMetadata\x12\x19\n\x0c\x63luster_name\x18\x07 \x01(\tB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_uuid\x18\x08 \x01(\tB\x03\xe0\x41\x03\x12\x45\n\x06status\x18\t \x01(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatusB\x03\xe0\x41\x03\x12M\n\x0estatus_history\x18\n \x03(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatusB\x03\xe0\x41\x03\x12\x1b\n\x0eoperation_type\x18\x0b \x01(\tB\x03\xe0\x41\x03\x12\x18\n\x0b\x64\x65scription\x18\x0c \x01(\tB\x03\xe0\x41\x03\x12S\n\x06labels\x18\r \x03(\x0b\x32>.google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntryB\x03\xe0\x41\x03\x12\x15\n\x08warnings\x18\x0e \x03(\tB\x03\xe0\x41\x03\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42s\n\x1c\x63om.google.cloud.dataproc.v1B\x0fOperationsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -57,8 +59,8 @@ _CLUSTEROPERATIONSTATUS_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=330,
-    serialized_end=386,
+    serialized_start=383,
+    serialized_end=439,
 )
 _sym_db.RegisterEnumDescriptor(_CLUSTEROPERATIONSTATUS_STATE)
 
@@ -85,7 +87,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -103,7 +105,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -121,7 +123,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -139,7 +141,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -151,8 +153,8 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=141,
-    serialized_end=386,
+    serialized_start=174,
+    serialized_end=439,
 )
 
 
@@ -208,8 +210,8 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=744,
-    serialized_end=789,
+    serialized_start=837,
+    serialized_end=882,
 )
 
 _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
@@ -234,7 +236,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -252,7 +254,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -270,7 +272,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -288,7 +290,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -306,7 +308,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -324,7 +326,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -342,7 +344,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -360,7 +362,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -372,8 +374,8 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=389,
-    serialized_end=789,
+    serialized_start=442,
+    serialized_end=882,
 )
 
 _CLUSTEROPERATIONSTATUS.fields_by_name[
@@ -467,5 +469,17 @@ _sym_db.RegisterMessage(ClusterOperationMetadata.LabelsEntry)
 
 
 DESCRIPTOR._options = None
+_CLUSTEROPERATIONSTATUS.fields_by_name["state"]._options = None
+_CLUSTEROPERATIONSTATUS.fields_by_name["inner_state"]._options = None
+_CLUSTEROPERATIONSTATUS.fields_by_name["details"]._options = None
+_CLUSTEROPERATIONSTATUS.fields_by_name["state_start_time"]._options = None
 _CLUSTEROPERATIONMETADATA_LABELSENTRY._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["cluster_name"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["cluster_uuid"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["status"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["status_history"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["operation_type"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["description"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["labels"]._options = None
+_CLUSTEROPERATIONMETADATA.fields_by_name["warnings"]._options = None
 # @@protoc_insertion_point(module_scope)
