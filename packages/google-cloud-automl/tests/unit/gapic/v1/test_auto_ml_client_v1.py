@@ -72,12 +72,25 @@ class TestAutoMlClient(object):
     def test_create_dataset(self):
         # Setup Expected Response
         name = "name3373707"
-        done = True
-        expected_response = {"name": name, "done": done}
-        expected_response = operations_pb2.Operation(**expected_response)
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        example_count = 1517063674
+        etag = "etag3123477"
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "description": description,
+            "example_count": example_count,
+            "etag": etag,
+        }
+        expected_response = dataset_pb2.Dataset(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_create_dataset", done=True
+        )
+        operation.response.Pack(expected_response)
 
         # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
@@ -88,7 +101,8 @@ class TestAutoMlClient(object):
         dataset = {}
 
         response = client.create_dataset(parent, dataset)
-        assert expected_response == response
+        result = response.result()
+        assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateDatasetRequest(
@@ -98,19 +112,27 @@ class TestAutoMlClient(object):
         assert expected_request == actual_request
 
     def test_create_dataset_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_create_dataset_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
         # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = automl_v1.AutoMlClient()
 
-        # Setup request
+        # Setup Request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
         dataset = {}
 
-        with pytest.raises(CustomException):
-            client.create_dataset(parent, dataset)
+        response = client.create_dataset(parent, dataset)
+        exception = response.exception()
+        assert exception.errors[0] == error
 
     def test_update_dataset(self):
         # Setup Expected Response
