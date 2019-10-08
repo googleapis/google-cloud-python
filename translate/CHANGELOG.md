@@ -10,11 +10,11 @@
 
 ### Implementation Changes
 - Update docstrings, client confg (via synth). ([#9411](https://github.com/googleapis/google-cloud-python/pull/9411))
-- Remove send/recv msg size limit (via synth). ([#8974](https://github.com/googleapis/google-cloud-python/pull/8974))
+- Remove send / receive message size limit (via synth). ([#8974](https://github.com/googleapis/google-cloud-python/pull/8974))
 
 ### New Features
-- Generate v3. ([#9020](https://github.com/googleapis/google-cloud-python/pull/9020))
-- Make 'parent' argument required for all client methods in v3beta1; add 'labels' argument (via synth). ([#9354](https://github.com/googleapis/google-cloud-python/pull/9354))
+- Add support for V3 of the API. ([#9020](https://github.com/googleapis/google-cloud-python/pull/9020))
+- Make `parent` argument required for all client methods in v3beta1; add `labels` argument (via synth). ([#9354](https://github.com/googleapis/google-cloud-python/pull/9354))
 - Add client options to translate_v2. ([#8737](https://github.com/googleapis/google-cloud-python/pull/8737))
 
 ### Dependencies
@@ -25,7 +25,7 @@
 - Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
 
 ### Internal / Testing Changes
-- Update 'ListGlossaries' method annotation (via synth)  ([#9385](https://github.com/googleapis/google-cloud-python/pull/9385))
+- Update `ListGlossaries` method annotation (via synth)  ([#9385](https://github.com/googleapis/google-cloud-python/pull/9385))
 - Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
 - Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
 - Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
