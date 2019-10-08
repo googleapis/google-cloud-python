@@ -25,14 +25,14 @@ def add_empty_column(client, table_id):
     #                  to add an empty column.
     # table_id = "your-project.your_dataset.your_table_name"
 
-    table = client.get_table(table_id)  # Make an API request.
+    table = client.get_table(table_id)  # Makes an API request.
 
     original_schema = table.schema
     new_schema = original_schema[:]  # Creates a copy of the schema.
     new_schema.append(bigquery.SchemaField("phone", "STRING"))
 
     table.schema = new_schema
-    table = client.update_table(table, ["schema"])  # Make an API request.
+    table = client.update_table(table, ["schema"])  # Makes an API request.
 
     if len(table.schema) == len(original_schema) + 1 == len(new_schema):
         print("A new column has been added.")
