@@ -271,6 +271,15 @@ class AutoMlClient(object):
             >>> dataset = {}
             >>>
             >>> response = client.create_dataset(parent, dataset)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
 
         Args:
             parent (str): The resource name of the project to create the dataset for.
@@ -288,7 +297,7 @@ class AutoMlClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.automl_v1.types.Operation` instance.
+            A :class:`~google.cloud.automl_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -322,8 +331,14 @@ class AutoMlClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["create_dataset"](
+        operation = self._inner_api_calls["create_dataset"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            dataset_pb2.Dataset,
+            metadata_type=proto_operations_pb2.OperationMetadata,
         )
 
     def update_dataset(
