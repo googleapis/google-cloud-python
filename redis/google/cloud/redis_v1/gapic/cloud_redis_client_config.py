@@ -17,6 +17,16 @@ config = {
                 }
             },
             "methods": {
+                "ListInstances": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetInstance": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateInstance": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -25,16 +35,6 @@ config = {
                 "UpdateInstance": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "ListInstances": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "GetInstance": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ImportInstance": {
