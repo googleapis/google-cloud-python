@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-10-05T12:44:32.424805Z",
+  "updateTime": "2019-10-08T16:21:52.884418Z",
   "sources": [
     {
       "generator": {
@@ -12,8 +12,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ceb8e2fb12f048cc94caae532ef0b4cf026a78f3",
-        "internalRef": "272971705"
+        "sha": "8fca1cdaf063d914042a678848331d7d6211ee13",
+        "internalRef": "273514424"
       }
     },
     {
@@ -25,16 +25,6 @@
     }
   ],
   "destinations": [
-    {
-      "client": {
-        "source": "googleapis",
-        "apiName": "videointelligence",
-        "apiVersion": "v1beta1",
-        "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/videointelligence/artman_videointelligence_v1beta1.yaml"
-      }
-    },
     {
       "client": {
         "source": "googleapis",
