@@ -1858,17 +1858,62 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_map():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_map(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop(0)
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(range(5))
+
+        def callback(result):
+            return result + 1
+
         query = query_module.Query()
-        with pytest.raises(NotImplementedError):
-            query.map(None)
+        assert query.map(callback) == (1, 2, 3, 4, 5)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    def test_map_async():
+    @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
+    def test_map_async(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop(0)
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(range(5))
+
+        def callback(result):
+            return utils.future_result(result + 1)
+
+        query = query_module.Query()
+        future = query.map_async(callback)
+        assert future.result() == (1, 2, 3, 4, 5)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_map_pass_batch_into_callback():
         query = query_module.Query()
         with pytest.raises(NotImplementedError):
-            query.map_async(None)
+            query.map(None, pass_batch_into_callback=True)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_map_merge_future():
+        query = query_module.Query()
+        with pytest.raises(NotImplementedError):
+            query.map(None, merge_future="hi mom!")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

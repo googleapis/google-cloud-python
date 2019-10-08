@@ -213,8 +213,11 @@ that are affected are: `memcache_add`, `memcache_cas`, `memcache_decr`,
   from GAE to GCP.
 - The `max_memcache_items` option is no longer supported. 
 - The `force_writes` option is no longer supported.
-- `Query.map` and `Query.map_async` are no longer supported.
 - The `blobstore` module is no longer supported.
+- The `pass_batch_into_callback` argument to `Query.map` and `Query.map_async`
+  is no longer supported.
+- The `merge_future` argument to `Query.map` and `Query.map_async` is no longer
+  supported.
 
 ## Privatization
 
