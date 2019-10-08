@@ -22,4 +22,4 @@ def test_query_external_sheets_permanent_table(capsys, dataset_id):
         dataset_id
     )
     out, err = capsys.readouterr()
-    assert "There are 4 states with names starting with W." in out
+    assert "There are 2 states with names starting with W in the selected range." in out

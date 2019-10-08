@@ -39,8 +39,8 @@ def query_external_sheets_temporary_table():
     # Use a shareable link or grant viewing access to the email address you
     # used to authenticate with BigQuery (this example Sheet is public).
     sheet_url = (
-        "https://docs.google.com/spreadsheets/"
-        "d/1dCG0rrY0nkJpB8t6Ko1S3tY7w9-hp0e_jsYer4LgEuA/edit?usp=sharing"
+        "https://docs.google.com/spreadsheets"
+        "/d/1i_QCL-7HcSyUZmIbP9E6lO_T5u3HnpLe7dnpHaijg_E/edit?usp=sharing"
     )
     external_config.source_uris = [sheet_url]
     external_config.schema = [
@@ -49,7 +49,7 @@ def query_external_sheets_temporary_table():
     ]
     external_config.options.skip_leading_rows = 1  # Optionally skip header row.
     external_config.options.range = (
-        "Sheet1!A10:B30"
+        "us-states!A20:B49"
     )  # Optionally set range of the sheet to query from.
     table_id = "us_states"
     job_config = bigquery.QueryJobConfig()
@@ -61,5 +61,9 @@ def query_external_sheets_temporary_table():
 
     # Wait for the query to complete.
     w_states = list(query_job)
-    print("There are {} states with names starting with W.".format(len(w_states)))
+    print(
+        "There are {} states with names starting with W in the selected range.".format(
+            len(w_states)
+        )
+    )
     # [END bigquery_query_external_sheets_temp]
