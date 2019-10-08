@@ -268,6 +268,22 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertEqual(derived.job_type, "derived")
 
+    def test_parent_job_id(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.parent_job_id)
+        job._properties["statistics"] = {"parentJobId": "parent-job-123"}
+        self.assertEqual(job.parent_job_id, "parent-job-123")
+
+    def test_num_child_jobs(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertEqual(job.num_child_jobs, 0)
+        job._properties["statistics"] = {"numChildJobs": "17"}
+        self.assertEqual(job.num_child_jobs, 17)
+
     def test_labels_miss(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
@@ -4337,8 +4353,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
-        full_text = str(exc_info.exception)
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
 
+        full_text = str(exc_info.exception)
         assert job.job_id in full_text
         assert "Query Job SQL Follows" in full_text
 
@@ -4370,8 +4388,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
-        full_text = str(exc_info.exception)
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
 
+        full_text = str(exc_info.exception)
         assert job.job_id in full_text
         assert "Query Job SQL Follows" in full_text
 

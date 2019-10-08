@@ -21,7 +21,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1"]
+versions = ["v1beta1", "v1"]
 
 
 # ----------------------------------------------------------------------------

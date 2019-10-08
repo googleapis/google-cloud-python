@@ -17,10 +17,10 @@
 
 from __future__ import absolute_import
 
-from google.cloud.automl_v1beta1 import AutoMlClient
-from google.cloud.automl_v1beta1 import PredictionServiceClient
-from google.cloud.automl_v1beta1 import enums
-from google.cloud.automl_v1beta1 import types
+from google.cloud.automl_v1 import AutoMlClient
+from google.cloud.automl_v1 import PredictionServiceClient
+from google.cloud.automl_v1 import enums
+from google.cloud.automl_v1 import types
 
 
 __all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient")

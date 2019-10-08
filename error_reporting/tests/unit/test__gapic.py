@@ -25,7 +25,9 @@ class Test_make_report_error_api(unittest.TestCase):
         return make_report_error_api(client)
 
     def test_make_report_error_api(self):
-        client = mock.Mock(spec=["project", "_credentials", "_client_info"])
+        client = mock.Mock(
+            spec=["project", "_credentials", "_client_info", "_client_options"]
+        )
 
         # Call the function being tested.
         patch = mock.patch(
@@ -41,7 +43,9 @@ class Test_make_report_error_api(unittest.TestCase):
         self.assertIs(report_error_client._project, client.project)
         self.assertIs(report_error_client._gapic_api, patched.return_value)
         patched.assert_called_once_with(
-            credentials=client._credentials, client_info=client._client_info
+            credentials=client._credentials,
+            client_info=client._client_info,
+            client_options=client._client_options,
         )
 
 
