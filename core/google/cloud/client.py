@@ -29,7 +29,7 @@ from google.oauth2 import service_account
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
     "This library only supports credentials from google-auth-library-python. "
-    "See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html "
+    "See https://google-auth.readthedocs.io/en/latest/ "
     "for help on authentication with this library."
 )
 

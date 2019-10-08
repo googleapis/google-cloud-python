@@ -34,7 +34,7 @@ class EncodingType(enum.IntEnum):
       based on the UTF-8 encoding of the input. C++ and Go are examples of
       languages that use this encoding natively.
       UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-16 encoding of the input. Java and Javascript are
+      based on the UTF-16 encoding of the input. Java and JavaScript are
       examples of languages that use this encoding natively.
       UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
       based on the UTF-32 encoding of the input. Python is an example of a
@@ -242,7 +242,10 @@ class Document(object):
 class Entity(object):
     class Type(enum.IntEnum):
         """
-        The type of the entity.
+        The type of the entity. For most entity types, the associated metadata
+        is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph MID
+        (``mid``). The table below lists the associated fields for entities that
+        have different metadata.
 
         Attributes:
           UNKNOWN (int): Unknown
@@ -250,9 +253,49 @@ class Entity(object):
           LOCATION (int): Location
           ORGANIZATION (int): Organization
           EVENT (int): Event
-          WORK_OF_ART (int): Work of art
-          CONSUMER_GOOD (int): Consumer goods
-          OTHER (int): Other types
+          WORK_OF_ART (int): Artwork
+          CONSUMER_GOOD (int): Consumer product
+          OTHER (int): Other types of entities
+          PHONE_NUMBER (int): Phone number
+
+          The metadata lists the phone number, formatted according to local
+          convention, plus whichever additional elements appear in the text:
+
+          -  ``number`` - the actual number, broken down into sections as per
+             local convention
+          -  ``national_prefix`` - country code, if detected
+          -  ``area_code`` - region or area code, if detected
+          -  ``extension`` - phone extension (to be dialed after connection), if
+             detected
+          ADDRESS (int): Address
+
+          The metadata identifies the street number and locality plus whichever
+          additional elements appear in the text:
+
+          -  ``street_number`` - street number
+          -  ``locality`` - city or town
+          -  ``street_name`` - street/route name, if detected
+          -  ``postal_code`` - postal code, if detected
+          -  ``country`` - country, if detected<
+          -  ``broad_region`` - administrative area, such as the state, if
+             detected
+          -  ``narrow_region`` - smaller administrative area, such as county, if
+             detected
+          -  ``sublocality`` - used in Asian addresses to demark a district within
+             a city, if detected
+          DATE (int): Date
+
+          The metadata identifies the components of the date:
+
+          -  ``year`` - four digit year, if detected
+          -  ``month`` - two digit month number, if detected
+          -  ``day`` - two digit day number, if detected
+          NUMBER (int): Number
+
+          The metadata is the number itself.
+          PRICE (int): Price
+
+          The metadata identifies the ``value`` and ``currency``.
         """
 
         UNKNOWN = 0
@@ -263,6 +306,11 @@ class Entity(object):
         WORK_OF_ART = 5
         CONSUMER_GOOD = 6
         OTHER = 7
+        PHONE_NUMBER = 9
+        ADDRESS = 10
+        DATE = 11
+        NUMBER = 12
+        PRICE = 13
 
 
 class EntityMention(object):

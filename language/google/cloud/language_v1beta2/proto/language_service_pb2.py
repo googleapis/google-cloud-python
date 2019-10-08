@@ -17,11 +17,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.longrunning import (
-    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
-)
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -32,13 +30,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.cloud.language.v1beta2B\024LanguageServiceProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;language"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/language_v1beta2/proto/language_service.proto\x12\x1dgoogle.cloud.language.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xc8\x01\n\x08\x44ocument\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.language.v1beta2.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source"~\n\x08Sentence\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12;\n\tsentiment\x18\x02 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"\xd2\x03\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\x04type\x18\x02 \x01(\x0e\x32*.google.cloud.language.v1beta2.Entity.Type\x12\x45\n\x08metadata\x18\x03 \x03(\x0b\x32\x33.google.cloud.language.v1beta2.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12>\n\x08mentions\x18\x05 \x03(\x0b\x32,.google.cloud.language.v1beta2.EntityMention\x12;\n\tsentiment\x18\x06 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"y\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07"\xda\x01\n\x05Token\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12\x43\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32+.google.cloud.language.v1beta2.PartOfSpeech\x12\x46\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32-.google.cloud.language.v1beta2.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02"\xdf\x10\n\x0cPartOfSpeech\x12<\n\x03tag\x18\x01 \x01(\x0e\x32/.google.cloud.language.v1beta2.PartOfSpeech.Tag\x12\x42\n\x06\x61spect\x18\x02 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Aspect\x12>\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Case\x12>\n\x04\x66orm\x18\x04 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Form\x12\x42\n\x06gender\x18\x05 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Gender\x12>\n\x04mood\x18\x06 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Mood\x12\x42\n\x06number\x18\x07 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Number\x12\x42\n\x06person\x18\x08 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Person\x12\x42\n\x06proper\x18\t \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Proper\x12L\n\x0breciprocity\x18\n \x01(\x0e\x32\x37.google.cloud.language.v1beta2.PartOfSpeech.Reciprocity\x12@\n\x05tense\x18\x0b \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Tense\x12@\n\x05voice\x18\x0c \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Voice"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03"\x9a\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12\x42\n\x05label\x18\x02 \x01(\x0e\x32\x33.google.cloud.language.v1beta2.DependencyEdge.Label"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R"\xf6\x01\n\rEntityMention\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12?\n\x04type\x18\x02 \x01(\x0e\x32\x31.google.cloud.language.v1beta2.EntityMention.Type\x12;\n\tsentiment\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05":\n\x16\x43lassificationCategory\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02"\x98\x01\n\x17\x41nalyzeSentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\xae\x01\n\x18\x41nalyzeSentimentResponse\x12\x44\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12:\n\tsentences\x18\x03 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence"\x9e\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"k\n\x1e\x41nalyzeEntitySentimentResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x97\x01\n\x16\x41nalyzeEntitiesRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"d\n\x17\x41nalyzeEntitiesResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x95\x01\n\x14\x41nalyzeSyntaxRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\x9b\x01\n\x15\x41nalyzeSyntaxResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x10\n\x08language\x18\x03 \x01(\t"P\n\x13\x43lassifyTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document"a\n\x14\x43lassifyTextResponse\x12I\n\ncategories\x18\x01 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory"\xff\x02\n\x13\x41nnotateTextRequest\x12\x39\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.Document\x12M\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32;.google.cloud.language.v1beta2.AnnotateTextRequest.Features\x12\x42\n\rencoding_type\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\x1a\x99\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\x12\x15\n\rclassify_text\x18\x06 \x01(\x08"\xe4\x02\n\x14\x41nnotateTextResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x37\n\x08\x65ntities\x18\x03 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x44\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t\x12I\n\ncategories\x18\x06 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\xbd\x08\n\x0fLanguageService\x12\xb3\x01\n\x10\x41nalyzeSentiment\x12\x36.google.cloud.language.v1beta2.AnalyzeSentimentRequest\x1a\x37.google.cloud.language.v1beta2.AnalyzeSentimentResponse".\x82\xd3\xe4\x93\x02("#/v1beta2/documents:analyzeSentiment:\x01*\x12\xaf\x01\n\x0f\x41nalyzeEntities\x12\x35.google.cloud.language.v1beta2.AnalyzeEntitiesRequest\x1a\x36.google.cloud.language.v1beta2.AnalyzeEntitiesResponse"-\x82\xd3\xe4\x93\x02\'""/v1beta2/documents:analyzeEntities:\x01*\x12\xcb\x01\n\x16\x41nalyzeEntitySentiment\x12<.google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest\x1a=.google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse"4\x82\xd3\xe4\x93\x02.")/v1beta2/documents:analyzeEntitySentiment:\x01*\x12\xa7\x01\n\rAnalyzeSyntax\x12\x33.google.cloud.language.v1beta2.AnalyzeSyntaxRequest\x1a\x34.google.cloud.language.v1beta2.AnalyzeSyntaxResponse"+\x82\xd3\xe4\x93\x02%" /v1beta2/documents:analyzeSyntax:\x01*\x12\xa3\x01\n\x0c\x43lassifyText\x12\x32.google.cloud.language.v1beta2.ClassifyTextRequest\x1a\x33.google.cloud.language.v1beta2.ClassifyTextResponse"*\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:classifyText:\x01*\x12\xa3\x01\n\x0c\x41nnotateText\x12\x32.google.cloud.language.v1beta2.AnnotateTextRequest\x1a\x33.google.cloud.language.v1beta2.AnnotateTextResponse"*\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:annotateText:\x01*B\x82\x01\n!com.google.cloud.language.v1beta2B\x14LanguageServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;languageb\x06proto3'
+        '\n:google/cloud/language_v1beta2/proto/language_service.proto\x12\x1dgoogle.cloud.language.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xc8\x01\n\x08\x44ocument\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.google.cloud.language.v1beta2.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source"~\n\x08Sentence\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12;\n\tsentiment\x18\x02 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"\x93\x04\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x38\n\x04type\x18\x02 \x01(\x0e\x32*.google.cloud.language.v1beta2.Entity.Type\x12\x45\n\x08metadata\x18\x03 \x03(\x0b\x32\x33.google.cloud.language.v1beta2.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12>\n\x08mentions\x18\x05 \x03(\x0b\x32,.google.cloud.language.v1beta2.EntityMention\x12;\n\tsentiment\x18\x06 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb9\x01\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07\x12\x10\n\x0cPHONE_NUMBER\x10\t\x12\x0b\n\x07\x41\x44\x44RESS\x10\n\x12\x08\n\x04\x44\x41TE\x10\x0b\x12\n\n\x06NUMBER\x10\x0c\x12\t\n\x05PRICE\x10\r"\xda\x01\n\x05Token\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12\x43\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32+.google.cloud.language.v1beta2.PartOfSpeech\x12\x46\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32-.google.cloud.language.v1beta2.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02"\xdf\x10\n\x0cPartOfSpeech\x12<\n\x03tag\x18\x01 \x01(\x0e\x32/.google.cloud.language.v1beta2.PartOfSpeech.Tag\x12\x42\n\x06\x61spect\x18\x02 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Aspect\x12>\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Case\x12>\n\x04\x66orm\x18\x04 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Form\x12\x42\n\x06gender\x18\x05 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Gender\x12>\n\x04mood\x18\x06 \x01(\x0e\x32\x30.google.cloud.language.v1beta2.PartOfSpeech.Mood\x12\x42\n\x06number\x18\x07 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Number\x12\x42\n\x06person\x18\x08 \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Person\x12\x42\n\x06proper\x18\t \x01(\x0e\x32\x32.google.cloud.language.v1beta2.PartOfSpeech.Proper\x12L\n\x0breciprocity\x18\n \x01(\x0e\x32\x37.google.cloud.language.v1beta2.PartOfSpeech.Reciprocity\x12@\n\x05tense\x18\x0b \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Tense\x12@\n\x05voice\x18\x0c \x01(\x0e\x32\x31.google.cloud.language.v1beta2.PartOfSpeech.Voice"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03"\x9a\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12\x42\n\x05label\x18\x02 \x01(\x0e\x32\x33.google.cloud.language.v1beta2.DependencyEdge.Label"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R"\xf6\x01\n\rEntityMention\x12\x35\n\x04text\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.TextSpan\x12?\n\x04type\x18\x02 \x01(\x0e\x32\x31.google.cloud.language.v1beta2.EntityMention.Type\x12;\n\tsentiment\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05":\n\x16\x43lassificationCategory\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02"\x9d\x01\n\x17\x41nalyzeSentimentRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\xae\x01\n\x18\x41nalyzeSentimentResponse\x12\x44\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12:\n\tsentences\x18\x03 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence"\xa3\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"k\n\x1e\x41nalyzeEntitySentimentResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x9c\x01\n\x16\x41nalyzeEntitiesRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"d\n\x17\x41nalyzeEntitiesResponse\x12\x37\n\x08\x65ntities\x18\x01 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x10\n\x08language\x18\x02 \x01(\t"\x9a\x01\n\x14\x41nalyzeSyntaxRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02\x12\x42\n\rencoding_type\x18\x02 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType"\x9b\x01\n\x15\x41nalyzeSyntaxResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x10\n\x08language\x18\x03 \x01(\t"U\n\x13\x43lassifyTextRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02"a\n\x14\x43lassifyTextResponse\x12I\n\ncategories\x18\x01 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory"\x89\x03\n\x13\x41nnotateTextRequest\x12>\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\'.google.cloud.language.v1beta2.DocumentB\x03\xe0\x41\x02\x12R\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32;.google.cloud.language.v1beta2.AnnotateTextRequest.FeaturesB\x03\xe0\x41\x02\x12\x42\n\rencoding_type\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1beta2.EncodingType\x1a\x99\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\x12\x15\n\rclassify_text\x18\x06 \x01(\x08"\xe4\x02\n\x14\x41nnotateTextResponse\x12:\n\tsentences\x18\x01 \x03(\x0b\x32\'.google.cloud.language.v1beta2.Sentence\x12\x34\n\x06tokens\x18\x02 \x03(\x0b\x32$.google.cloud.language.v1beta2.Token\x12\x37\n\x08\x65ntities\x18\x03 \x03(\x0b\x32%.google.cloud.language.v1beta2.Entity\x12\x44\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32(.google.cloud.language.v1beta2.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t\x12I\n\ncategories\x18\x06 \x03(\x0b\x32\x35.google.cloud.language.v1beta2.ClassificationCategory*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\x8a\x0b\n\x0fLanguageService\x12\xd7\x01\n\x10\x41nalyzeSentiment\x12\x36.google.cloud.language.v1beta2.AnalyzeSentimentRequest\x1a\x37.google.cloud.language.v1beta2.AnalyzeSentimentResponse"R\x82\xd3\xe4\x93\x02("#/v1beta2/documents:analyzeSentiment:\x01*\xda\x41\x16\x64ocument,encoding_type\xda\x41\x08\x64ocument\x12\xd3\x01\n\x0f\x41nalyzeEntities\x12\x35.google.cloud.language.v1beta2.AnalyzeEntitiesRequest\x1a\x36.google.cloud.language.v1beta2.AnalyzeEntitiesResponse"Q\x82\xd3\xe4\x93\x02\'""/v1beta2/documents:analyzeEntities:\x01*\xda\x41\x16\x64ocument,encoding_type\xda\x41\x08\x64ocument\x12\xef\x01\n\x16\x41nalyzeEntitySentiment\x12<.google.cloud.language.v1beta2.AnalyzeEntitySentimentRequest\x1a=.google.cloud.language.v1beta2.AnalyzeEntitySentimentResponse"X\x82\xd3\xe4\x93\x02.")/v1beta2/documents:analyzeEntitySentiment:\x01*\xda\x41\x16\x64ocument,encoding_type\xda\x41\x08\x64ocument\x12\xcb\x01\n\rAnalyzeSyntax\x12\x33.google.cloud.language.v1beta2.AnalyzeSyntaxRequest\x1a\x34.google.cloud.language.v1beta2.AnalyzeSyntaxResponse"O\x82\xd3\xe4\x93\x02%" /v1beta2/documents:analyzeSyntax:\x01*\xda\x41\x16\x64ocument,encoding_type\xda\x41\x08\x64ocument\x12\xae\x01\n\x0c\x43lassifyText\x12\x32.google.cloud.language.v1beta2.ClassifyTextRequest\x1a\x33.google.cloud.language.v1beta2.ClassifyTextResponse"5\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:classifyText:\x01*\xda\x41\x08\x64ocument\x12\xd9\x01\n\x0c\x41nnotateText\x12\x32.google.cloud.language.v1beta2.AnnotateTextRequest\x1a\x33.google.cloud.language.v1beta2.AnnotateTextResponse"`\x82\xd3\xe4\x93\x02$"\x1f/v1beta2/documents:annotateText:\x01*\xda\x41\x1f\x64ocument,features,encoding_type\xda\x41\x11\x64ocument,features\x1az\xca\x41\x17language.googleapis.com\xd2\x41]https://www.googleapis.com/auth/cloud-language,https://www.googleapis.com/auth/cloud-platformB\x82\x01\n!com.google.cloud.language.v1beta2B\x14LanguageServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/language/v1beta2;languageb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
     ],
 )
 
@@ -63,8 +61,8 @@ _ENCODINGTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=6939,
-    serialized_end=6995,
+    serialized_start=7035,
+    serialized_end=7091,
 )
 _sym_db.RegisterEnumDescriptor(_ENCODINGTYPE)
 
@@ -97,8 +95,8 @@ _DOCUMENT_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=355,
-    serialized_end=409,
+    serialized_start=351,
+    serialized_end=405,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENT_TYPE)
 
@@ -132,11 +130,26 @@ _ENTITY_TYPE = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="OTHER", index=7, number=7, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="PHONE_NUMBER", index=8, number=9, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ADDRESS", index=9, number=10, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DATE", index=10, number=11, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NUMBER", index=11, number=12, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRICE", index=12, number=13, serialized_options=None, type=None
+        ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=895,
-    serialized_end=1016,
+    serialized_start=892,
+    serialized_end=1077,
 )
 _sym_db.RegisterEnumDescriptor(_ENTITY_TYPE)
 
@@ -191,8 +204,8 @@ _PARTOFSPEECH_TAG = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2108,
-    serialized_end=2249,
+    serialized_start=2169,
+    serialized_end=2310,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_TAG)
 
@@ -217,8 +230,8 @@ _PARTOFSPEECH_ASPECT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2251,
-    serialized_end=2330,
+    serialized_start=2312,
+    serialized_end=2391,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_ASPECT)
 
@@ -288,8 +301,8 @@ _PARTOFSPEECH_CASE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2333,
-    serialized_end=2581,
+    serialized_start=2394,
+    serialized_end=2642,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_CASE)
 
@@ -338,8 +351,8 @@ _PARTOFSPEECH_FORM = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2584,
-    serialized_end=2759,
+    serialized_start=2645,
+    serialized_end=2820,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_FORM)
 
@@ -364,8 +377,8 @@ _PARTOFSPEECH_GENDER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2761,
-    serialized_end=2830,
+    serialized_start=2822,
+    serialized_end=2891,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_GENDER)
 
@@ -403,8 +416,8 @@ _PARTOFSPEECH_MOOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2832,
-    serialized_end=2959,
+    serialized_start=2893,
+    serialized_end=3020,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_MOOD)
 
@@ -429,8 +442,8 @@ _PARTOFSPEECH_NUMBER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2961,
-    serialized_end=3025,
+    serialized_start=3022,
+    serialized_end=3086,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_NUMBER)
 
@@ -462,8 +475,8 @@ _PARTOFSPEECH_PERSON = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3027,
-    serialized_end=3111,
+    serialized_start=3088,
+    serialized_end=3172,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_PERSON)
 
@@ -485,8 +498,8 @@ _PARTOFSPEECH_PROPER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3113,
-    serialized_end=3169,
+    serialized_start=3174,
+    serialized_end=3230,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_PROPER)
 
@@ -512,8 +525,8 @@ _PARTOFSPEECH_RECIPROCITY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3171,
-    serialized_end=3245,
+    serialized_start=3232,
+    serialized_end=3306,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_RECIPROCITY)
 
@@ -551,8 +564,8 @@ _PARTOFSPEECH_TENSE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3247,
-    serialized_end=3362,
+    serialized_start=3308,
+    serialized_end=3423,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_TENSE)
 
@@ -577,8 +590,8 @@ _PARTOFSPEECH_VOICE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3364,
-    serialized_end=3430,
+    serialized_start=3425,
+    serialized_end=3491,
 )
 _sym_db.RegisterEnumDescriptor(_PARTOFSPEECH_VOICE)
 
@@ -840,8 +853,8 @@ _DEPENDENCYEDGE_LABEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3546,
-    serialized_end=4483,
+    serialized_start=3607,
+    serialized_end=4544,
 )
 _sym_db.RegisterEnumDescriptor(_DEPENDENCYEDGE_LABEL)
 
@@ -863,8 +876,8 @@ _ENTITYMENTION_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4684,
-    serialized_end=4732,
+    serialized_start=4745,
+    serialized_end=4793,
 )
 _sym_db.RegisterEnumDescriptor(_ENTITYMENTION_TYPE)
 
@@ -965,8 +978,8 @@ _DOCUMENT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=219,
-    serialized_end=419,
+    serialized_start=215,
+    serialized_end=415,
 )
 
 
@@ -1022,8 +1035,8 @@ _SENTENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=421,
-    serialized_end=547,
+    serialized_start=417,
+    serialized_end=543,
 )
 
 
@@ -1079,8 +1092,8 @@ _ENTITY_METADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=846,
-    serialized_end=893,
+    serialized_start=842,
+    serialized_end=889,
 )
 
 _ENTITY = _descriptor.Descriptor(
@@ -1207,8 +1220,8 @@ _ENTITY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=550,
-    serialized_end=1016,
+    serialized_start=546,
+    serialized_end=1077,
 )
 
 
@@ -1300,8 +1313,8 @@ _TOKEN = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1019,
-    serialized_end=1237,
+    serialized_start=1080,
+    serialized_end=1298,
 )
 
 
@@ -1357,8 +1370,8 @@ _SENTIMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1239,
-    serialized_end=1284,
+    serialized_start=1300,
+    serialized_end=1345,
 )
 
 
@@ -1607,8 +1620,8 @@ _PARTOFSPEECH = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1287,
-    serialized_end=3430,
+    serialized_start=1348,
+    serialized_end=3491,
 )
 
 
@@ -1664,8 +1677,8 @@ _DEPENDENCYEDGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3433,
-    serialized_end=4483,
+    serialized_start=3494,
+    serialized_end=4544,
 )
 
 
@@ -1739,8 +1752,8 @@ _ENTITYMENTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4486,
-    serialized_end=4732,
+    serialized_start=4547,
+    serialized_end=4793,
 )
 
 
@@ -1796,8 +1809,8 @@ _TEXTSPAN = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4734,
-    serialized_end=4783,
+    serialized_start=4795,
+    serialized_end=4844,
 )
 
 
@@ -1853,8 +1866,8 @@ _CLASSIFICATIONCATEGORY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4785,
-    serialized_end=4843,
+    serialized_start=4846,
+    serialized_end=4904,
 )
 
 
@@ -1880,7 +1893,7 @@ _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1910,8 +1923,8 @@ _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4846,
-    serialized_end=4998,
+    serialized_start=4907,
+    serialized_end=5064,
 )
 
 
@@ -1985,8 +1998,8 @@ _ANALYZESENTIMENTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5001,
-    serialized_end=5175,
+    serialized_start=5067,
+    serialized_end=5241,
 )
 
 
@@ -2012,7 +2025,7 @@ _ANALYZEENTITYSENTIMENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2042,8 +2055,8 @@ _ANALYZEENTITYSENTIMENTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5178,
-    serialized_end=5336,
+    serialized_start=5244,
+    serialized_end=5407,
 )
 
 
@@ -2099,8 +2112,8 @@ _ANALYZEENTITYSENTIMENTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5338,
-    serialized_end=5445,
+    serialized_start=5409,
+    serialized_end=5516,
 )
 
 
@@ -2126,7 +2139,7 @@ _ANALYZEENTITIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2156,8 +2169,8 @@ _ANALYZEENTITIESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5448,
-    serialized_end=5599,
+    serialized_start=5519,
+    serialized_end=5675,
 )
 
 
@@ -2213,8 +2226,8 @@ _ANALYZEENTITIESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5601,
-    serialized_end=5701,
+    serialized_start=5677,
+    serialized_end=5777,
 )
 
 
@@ -2240,7 +2253,7 @@ _ANALYZESYNTAXREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2270,8 +2283,8 @@ _ANALYZESYNTAXREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5704,
-    serialized_end=5853,
+    serialized_start=5780,
+    serialized_end=5934,
 )
 
 
@@ -2345,8 +2358,8 @@ _ANALYZESYNTAXRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5856,
-    serialized_end=6011,
+    serialized_start=5937,
+    serialized_end=6092,
 )
 
 
@@ -2372,7 +2385,7 @@ _CLASSIFYTEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -2384,8 +2397,8 @@ _CLASSIFYTEXTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6013,
-    serialized_end=6093,
+    serialized_start=6094,
+    serialized_end=6179,
 )
 
 
@@ -2423,8 +2436,8 @@ _CLASSIFYTEXTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6095,
-    serialized_end=6192,
+    serialized_start=6181,
+    serialized_end=6278,
 )
 
 
@@ -2534,8 +2547,8 @@ _ANNOTATETEXTREQUEST_FEATURES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6425,
-    serialized_end=6578,
+    serialized_start=6521,
+    serialized_end=6674,
 )
 
 _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
@@ -2560,7 +2573,7 @@ _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2578,7 +2591,7 @@ _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2608,8 +2621,8 @@ _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6195,
-    serialized_end=6578,
+    serialized_start=6281,
+    serialized_end=6674,
 )
 
 
@@ -2737,8 +2750,8 @@ _ANNOTATETEXTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6581,
-    serialized_end=6937,
+    serialized_start=6677,
+    serialized_end=7033,
 )
 
 _DOCUMENT.fields_by_name["type"].enum_type = _DOCUMENT_TYPE
@@ -2871,7 +2884,8 @@ Document = _reflection.GeneratedProtocolMessageType(
           The source of the document: a string containing the content or
           a Google Cloud Storage URI.
       content:
-          The content of the input in string format.
+          The content of the input in string format. Cloud audit logging
+          exempt since it is based on user data.
       gcs_content_uri:
           The Google Cloud Storage URI where the file content is
           located. This URI must be of the form:
@@ -2943,9 +2957,11 @@ Entity = _reflection.GeneratedProtocolMessageType(
       type:
           The entity type.
       metadata:
-          Metadata associated with the entity.  Currently, Wikipedia
-          URLs and Knowledge Graph MIDs are provided, if available. The
-          associated keys are "wikipedia\_url" and "mid", respectively.
+          Metadata associated with the entity.  For most entity types,
+          the metadata is a Wikipedia URL (``wikipedia_url``) and
+          Knowledge Graph MID (``mid``), if they are available. For the
+          metadata associated with other entity types, see the Type
+          table below.
       salience:
           The salience score associated with the entity in the [0, 1.0]
           range.  The salience score for an entity provides information
@@ -3001,7 +3017,7 @@ Sentiment = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SENTIMENT,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
         __doc__="""Represents the feeling associated with the entire text or entities in
-  the text.
+  the text. Next ID: 6
   
   
   Attributes:
@@ -3144,7 +3160,8 @@ ClassificationCategory = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the category representing the document.
+          The name of the category representing the document, from the
+          `predefined taxonomy </natural-language/docs/categories>`__.
       confidence:
           The classifier's confidence of the category. Number represents
           how certain the classifier is that this category represents
@@ -3166,7 +3183,7 @@ AnalyzeSentimentRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
       encoding_type:
           The encoding type used by the API to calculate sentence
           offsets for the sentence sentiment.
@@ -3213,7 +3230,7 @@ AnalyzeEntitySentimentRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
@@ -3258,7 +3275,7 @@ AnalyzeEntitiesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
@@ -3302,7 +3319,7 @@ AnalyzeSyntaxRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
@@ -3349,7 +3366,7 @@ ClassifyTextRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.ClassifyTextRequest)
     ),
@@ -3386,7 +3403,7 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
                 __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
                 __doc__="""All available features for sentiment, syntax, and semantic analysis.
     Setting each one to true will enable that specific analysis for the
-    input.
+    input. Next ID: 10
     
     
     Attributes:
@@ -3399,7 +3416,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
         extract_entity_sentiment:
             Extract entities and their associated sentiment.
         classify_text:
-            Classify the full document into categories.
+            Classify the full document into categories. If this is true,
+            the API will use the default model which classifies into a
+            `predefined taxonomy </natural-language/docs/categories>`__.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.language.v1beta2.AnnotateTextRequest.Features)
             ),
@@ -3412,9 +3431,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       document:
-          Input document.
+          Required. Input document.
       features:
-          The enabled features.
+          Required. The enabled features.
       encoding_type:
           The encoding type used by the API to calculate offsets.
   """,
@@ -3470,15 +3489,24 @@ _sym_db.RegisterMessage(AnnotateTextResponse)
 
 DESCRIPTOR._options = None
 _ENTITY_METADATAENTRY._options = None
+_ANALYZESENTIMENTREQUEST.fields_by_name["document"]._options = None
+_ANALYZEENTITYSENTIMENTREQUEST.fields_by_name["document"]._options = None
+_ANALYZEENTITIESREQUEST.fields_by_name["document"]._options = None
+_ANALYZESYNTAXREQUEST.fields_by_name["document"]._options = None
+_CLASSIFYTEXTREQUEST.fields_by_name["document"]._options = None
+_ANNOTATETEXTREQUEST.fields_by_name["document"]._options = None
+_ANNOTATETEXTREQUEST.fields_by_name["features"]._options = None
 
 _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
     name="LanguageService",
     full_name="google.cloud.language.v1beta2.LanguageService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=6998,
-    serialized_end=8083,
+    serialized_options=_b(
+        "\312A\027language.googleapis.com\322A]https://www.googleapis.com/auth/cloud-language,https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=7094,
+    serialized_end=8512,
     methods=[
         _descriptor.MethodDescriptor(
             name="AnalyzeSentiment",
@@ -3488,7 +3516,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANALYZESENTIMENTREQUEST,
             output_type=_ANALYZESENTIMENTRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002("#/v1beta2/documents:analyzeSentiment:\001*'
+                '\202\323\344\223\002("#/v1beta2/documents:analyzeSentiment:\001*\332A\026document,encoding_type\332A\010document'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3499,7 +3527,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANALYZEENTITIESREQUEST,
             output_type=_ANALYZEENTITIESRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\'""/v1beta2/documents:analyzeEntities:\001*'
+                '\202\323\344\223\002\'""/v1beta2/documents:analyzeEntities:\001*\332A\026document,encoding_type\332A\010document'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3510,7 +3538,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANALYZEENTITYSENTIMENTREQUEST,
             output_type=_ANALYZEENTITYSENTIMENTRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002.")/v1beta2/documents:analyzeEntitySentiment:\001*'
+                '\202\323\344\223\002.")/v1beta2/documents:analyzeEntitySentiment:\001*\332A\026document,encoding_type\332A\010document'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3521,7 +3549,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANALYZESYNTAXREQUEST,
             output_type=_ANALYZESYNTAXRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002%" /v1beta2/documents:analyzeSyntax:\001*'
+                '\202\323\344\223\002%" /v1beta2/documents:analyzeSyntax:\001*\332A\026document,encoding_type\332A\010document'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3532,7 +3560,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_CLASSIFYTEXTREQUEST,
             output_type=_CLASSIFYTEXTRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002$"\037/v1beta2/documents:classifyText:\001*'
+                '\202\323\344\223\002$"\037/v1beta2/documents:classifyText:\001*\332A\010document'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3543,7 +3571,7 @@ _LANGUAGESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANNOTATETEXTREQUEST,
             output_type=_ANNOTATETEXTRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002$"\037/v1beta2/documents:annotateText:\001*'
+                '\202\323\344\223\002$"\037/v1beta2/documents:annotateText:\001*\332A\037document,features,encoding_type\332A\021document,features'
             ),
         ),
     ],
