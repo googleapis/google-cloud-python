@@ -633,9 +633,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -739,9 +739,9 @@ class TablesClient(object):
                 `pandas_dataframe` is supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -846,9 +846,9 @@ class TablesClient(object):
                 export. This must be supplied if `gcs_output_uri_prefix` is not.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1158,37 +1158,12 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[str]): The ID of the project that owns the
-                columns. If you have initialized the client with a value for
-                `project` it will be used if this parameter is not supplied.
-                Keep in mind, the service account this client was initialized
-                with must have access to this project.
-            region (Optional[str]):
-                If you have initialized the client with a value for `region` it
-                will be used if this parameter is not supplied.
-            column_spec_name (Optional[str]):
-                The name AutoML-assigned name for the column you want to
-                update.
-            column_spec_display_name (Optional[str]):
-                The human-readable name of the column you want to update. If
-                this is supplied in place of `column_spec_name`, you also need
-                to provide either a way to lookup the source dataset (using one
-                of the `dataset*` kwargs), or the `table_spec_name` of the
-                table this column belongs to.
-            type_code (Optional[str]):
-                The desired 'type_code' of the column. For more information
-                on the available types, please see the proto definition:
-                https://github.com/googleapis/google-cloud-python/blob/bfb4da8542981d2eedffe20f64e87ab528a17592/automl/google/cloud/automl_v1beta1/proto/data_types.proto
-            nullable (Optional[bool]):
-                Set to `True` or `False` to specify if this column's value
-                must expected to be present in all rows or not.
-            table_spec_name (Optional[str]):
-                The AutoML-assigned name for the table whose specs you want to
-                update. If not supplied, the client can determine this name
-                from a source `Dataset` object.
-            table_spec_index (Optional[int]):
-                If no `table_spec_name` was provided, we use this index to
-                determine which table to update column specs on.
+            dataset (Optional[Dataset]):
+                The `Dataset` instance you want to update specs on. If no
+                `table_spec_name` is supplied, this will be used together with
+                `table_spec_index` to infer the name of table to update specs
+                on. This must be supplied if `table_spec_name`, `dataset_name`
+                or `dataset_display_name` are not supplied.
             dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 specs on. If no `table_spec_name` is supplied, this will be
@@ -1203,12 +1178,37 @@ class TablesClient(object):
                 of table to update specs on. This must be supplied if
                 `table_spec_name`, `dataset` or `dataset_display_name` are not
                 supplied.
-            dataset (Optional[Dataset]):
-                The `Dataset` instance you want to update specs on. If no
-                `table_spec_name` is supplied, this will be used together with
-                `table_spec_index` to infer the name of table to update specs
-                on. This must be supplied if `table_spec_name`, `dataset_name`
-                or `dataset_display_name` are not supplied.
+            table_spec_name (Optional[str]):
+                The AutoML-assigned name for the table whose specs you want to
+                update. If not supplied, the client can determine this name
+                from a source `Dataset` object.
+            table_spec_index (Optional[int]):
+                If no `table_spec_name` was provided, we use this index to
+                determine which table to update column specs on.
+            column_spec_name (Optional[str]):
+                The name AutoML-assigned name for the column you want to
+                update.
+            column_spec_display_name (Optional[str]):
+                The human-readable name of the column you want to update. If
+                this is supplied in place of `column_spec_name`, you also need
+                to provide either a way to lookup the source dataset (using one
+                of the `dataset*` kwargs), or the `table_spec_name` of the
+                table this column belongs to.
+            type_code (Optional[str]):
+                The desired 'type_code' of the column. For more information
+                on the available types, please see the documentation:
+                https://cloud.google.com/automl-tables/docs/reference/rpc/google.cloud.automl.v1beta1#typecode
+            nullable (Optional[bool]):
+                Set to `True` or `False` to specify if this column's value
+                must expected to be present in all rows or not.
+            project (Optional[str]): The ID of the project that owns the
+                columns. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instance.
@@ -2072,6 +2072,12 @@ class TablesClient(object):
             instances.  You can also iterate over the pages of the response
             using its `pages` property.
 
+            For a regression model, there will only be one evaluation. For a
+            classification model there will be on for each classification
+            label, as well as one for micro-averaged metrics. See more
+            documentation here:
+            https://cloud.google.com/automl-tables/docs/evaluate#automl-tables-list-model-evaluations-cli-curl:w
+
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                 failed for any reason.
@@ -2117,7 +2123,7 @@ class TablesClient(object):
             ...     project='my-project', region='us-central1')
             ...
             >>> m = client.create_model(
-            ...     'my_model', 
+            ...     'my_model',
             ...     dataset_display_name='my_dataset',
             ...     train_budget_milli_node_hours=1000
             ... )
@@ -2163,9 +2169,9 @@ class TablesClient(object):
                 The list of the names of the columns you want to exclude and
                 not train your model on.
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2293,9 +2299,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2477,9 +2483,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2549,9 +2555,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2751,9 +2757,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance. See the documentation here:
-            https://googleapis.dev/python/google-api-core/latest/operation.html
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
