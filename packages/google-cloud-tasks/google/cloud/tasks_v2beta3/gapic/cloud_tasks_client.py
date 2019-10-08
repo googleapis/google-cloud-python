@@ -285,13 +285,13 @@ class CloudTasksClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
@@ -371,13 +371,13 @@ class CloudTasksClient(object):
             name (str): Required. The resource name of the queue. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -473,13 +473,13 @@ class CloudTasksClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta3.types.Queue`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -581,13 +581,13 @@ class CloudTasksClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta3.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -664,13 +664,13 @@ class CloudTasksClient(object):
             name (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -736,13 +736,13 @@ class CloudTasksClient(object):
             name (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -810,13 +810,13 @@ class CloudTasksClient(object):
             name (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -889,13 +889,13 @@ class CloudTasksClient(object):
             name (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Queue` instance.
@@ -972,13 +972,13 @@ class CloudTasksClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta3.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Policy` instance.
@@ -1065,13 +1065,13 @@ class CloudTasksClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta3.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Policy` instance.
@@ -1149,13 +1149,13 @@ class CloudTasksClient(object):
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.TestIamPermissionsResponse` instance.
@@ -1258,13 +1258,13 @@ class CloudTasksClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
@@ -1356,13 +1356,13 @@ class CloudTasksClient(object):
                 `Google IAM <https://cloud.google.com/iam/>`___ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Task` instance.
@@ -1481,13 +1481,13 @@ class CloudTasksClient(object):
                 `Google IAM <https://cloud.google.com/iam/>`___ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Task` instance.
@@ -1557,13 +1557,13 @@ class CloudTasksClient(object):
             name (str): Required. The task name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1656,13 +1656,13 @@ class CloudTasksClient(object):
                 `Google IAM <https://cloud.google.com/iam/>`___ permission on the
                 ``Task`` resource.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
+                to retry client library requests. If ``None`` is specified, 
+                requests will be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
+                for the client library request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
+                that is provided to the client library method.
 
         Returns:
             A :class:`~google.cloud.tasks_v2beta3.types.Task` instance.
