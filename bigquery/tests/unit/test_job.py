@@ -268,6 +268,22 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertEqual(derived.job_type, "derived")
 
+    def test_parent_job_id(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.parent_job_id)
+        job._properties["statistics"] = {"parentJobId": "parent-job-123"}
+        self.assertEqual(job.parent_job_id, "parent-job-123")
+
+    def test_num_child_jobs(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertEqual(job.num_child_jobs, 0)
+        job._properties["statistics"] = {"numChildJobs": "17"}
+        self.assertEqual(job.num_child_jobs, 17)
+
     def test_labels_miss(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)

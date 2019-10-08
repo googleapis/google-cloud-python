@@ -19,7 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v3beta1"]
+versions = ["v3beta1", "v3"]
 
 excludes = [
     "setup.py",
@@ -41,12 +41,12 @@ for version in versions:
     s.move(library / "tests")
     s.move(library / f"docs/gapic/{version}")
 
-# translation -> translate
-s.replace(
-    "google/**/translation_service_pb2_grpc.py",
-    "google.cloud.translation_v3beta1.proto",
-    "google.cloud.translate_v3beta1.proto",
-)
+    # translation -> translate
+    s.replace(
+        "google/**/translation_service_pb2_grpc.py",
+        f"google.cloud.translation_{version}.proto",
+        f"google.cloud.translate_{version}.proto",
+    )
 
 s.replace(
     "google/cloud/**/translation_service_pb2.py",

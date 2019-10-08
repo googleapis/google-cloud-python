@@ -33,6 +33,7 @@ class BigQueryStorageGrpcTransport(object):
     # in this service.
     _OAUTH_SCOPES = (
         "https://www.googleapis.com/auth/bigquery",
+        "https://www.googleapis.com/auth/bigquery.readonly",
         "https://www.googleapis.com/auth/cloud-platform",
     )
 

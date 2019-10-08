@@ -333,6 +333,31 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return _helpers._get_sub_prop(self._properties, ["jobReference", "jobId"])
 
     @property
+    def parent_job_id(self):
+        """Return the ID of the parent job.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics.FIELDS.parent_job_id
+
+        Returns:
+            Optional[str]
+        """
+        return _helpers._get_sub_prop(self._properties, ["statistics", "parentJobId"])
+
+    @property
+    def num_child_jobs(self):
+        """The number of child jobs executed.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics.FIELDS.num_child_jobs
+
+        Returns:
+            int
+        """
+        count = _helpers._get_sub_prop(self._properties, ["statistics", "numChildJobs"])
+        return int(count) if count is not None else 0
+
+    @property
     def project(self):
         """Project bound to the job.
 
