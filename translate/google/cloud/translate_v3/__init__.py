@@ -18,13 +18,11 @@
 from __future__ import absolute_import
 
 from google.cloud.translate_v3 import types
-from google.cloud.translate_v3.gapic import enums
 from google.cloud.translate_v3.gapic import translation_service_client
 
 
 class TranslationServiceClient(translation_service_client.TranslationServiceClient):
     __doc__ = translation_service_client.TranslationServiceClient.__doc__
-    enums = enums
 
 
-__all__ = ("enums", "types", "TranslationServiceClient")
+__all__ = ("types", "TranslationServiceClient")
