@@ -34,7 +34,7 @@ def create_routine_ddl(client, routine_id):
     """.format(
         routine_id
     )
-    query_job = client.query(sql)  # Makes an API request.
+    query_job = client.query(sql)  # Make an API request.
     query_job.result()  # Waits for the job to complete.
 
     print("Created routine {}".format(query_job.ddl_target_routine))
