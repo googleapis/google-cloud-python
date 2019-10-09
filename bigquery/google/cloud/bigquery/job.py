@@ -953,7 +953,7 @@ class LoadJobConfig(_JobConfig):
         """bool: Allow missing trailing optional columns (CSV only).
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.allow_jagged_rows
         """
         return self._get_sub_prop("allowJaggedRows")
 
@@ -966,7 +966,7 @@ class LoadJobConfig(_JobConfig):
         """bool: Allow quoted data containing newline characters (CSV only).
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.allow_quoted_newlines
         """
         return self._get_sub_prop("allowQuotedNewlines")
 
@@ -979,7 +979,7 @@ class LoadJobConfig(_JobConfig):
         """bool: Automatically infer the schema from a sample of the data.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.autodetect
         """
         return self._get_sub_prop("autodetect")
 
@@ -1021,7 +1021,7 @@ class LoadJobConfig(_JobConfig):
         for creating tables.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.create_disposition
         """
         return self._get_sub_prop("createDisposition")
 
@@ -1038,7 +1038,7 @@ class LoadJobConfig(_JobConfig):
         if using default encryption.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.destination_encryption_configuration
         """
         prop = self._get_sub_prop("destinationEncryptionConfiguration")
         if prop is not None:
@@ -1059,7 +1059,7 @@ class LoadJobConfig(_JobConfig):
         """Union[str, None] name given to destination table.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.description
         """
         prop = self._get_sub_prop("destinationTableProperties")
         if prop is not None:
@@ -1078,7 +1078,7 @@ class LoadJobConfig(_JobConfig):
         """Union[str, None] name given to destination table.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.friendlyName
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.friendly_name
         """
         prop = self._get_sub_prop("destinationTableProperties")
         if prop is not None:
@@ -1098,7 +1098,7 @@ class LoadJobConfig(_JobConfig):
         data.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.encoding
         """
         return self._get_sub_prop("encoding")
 
@@ -1111,7 +1111,7 @@ class LoadJobConfig(_JobConfig):
         """str: The separator for fields in a CSV file.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.field_delimiter
         """
         return self._get_sub_prop("fieldDelimiter")
 
@@ -1124,7 +1124,7 @@ class LoadJobConfig(_JobConfig):
         """bool: Ignore extra values not represented in the table schema.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.ignore_unknown_values
         """
         return self._get_sub_prop("ignoreUnknownValues")
 
@@ -1137,7 +1137,7 @@ class LoadJobConfig(_JobConfig):
         """int: Number of invalid rows to ignore.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.max_bad_records
         """
         return _helpers._int_or_none(self._get_sub_prop("maxBadRecords"))
 
@@ -1150,7 +1150,7 @@ class LoadJobConfig(_JobConfig):
         """str: Represents a null value (CSV only).
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.null_marker
         """
         return self._get_sub_prop("nullMarker")
 
@@ -1163,7 +1163,7 @@ class LoadJobConfig(_JobConfig):
         """str: Character used to quote data sections (CSV only).
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.quote
         """
         return self._get_sub_prop("quote")
 
@@ -1177,7 +1177,7 @@ class LoadJobConfig(_JobConfig):
         destination table.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.schema
         """
         schema = _helpers._get_sub_prop(self._properties, ["load", "schema", "fields"])
         if schema is None:
@@ -1215,7 +1215,7 @@ class LoadJobConfig(_JobConfig):
         """int: Number of rows to skip when reading data (CSV only).
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.skip_leading_rows
         """
         return _helpers._int_or_none(self._get_sub_prop("skipLeadingRows"))
 
@@ -1228,7 +1228,7 @@ class LoadJobConfig(_JobConfig):
         """google.cloud.bigquery.job.SourceFormat: File format of the data.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_format
         """
         return self._get_sub_prop("sourceFormat")
 
@@ -1273,7 +1273,7 @@ class LoadJobConfig(_JobConfig):
         the destination table already exists.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.write_disposition
         """
         return self._get_sub_prop("writeDisposition")
 
@@ -1293,7 +1293,7 @@ class LoadJob(_AsyncJob):
     :type source_uris: sequence of string or ``NoneType``
     :param source_uris:
         URIs of one or more data files to be loaded.  See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_uris
         for supported URI formats. Pass None for jobs that load from a file.
 
     :type destination: :class:`google.cloud.bigquery.table.TableReference`
@@ -1321,7 +1321,7 @@ class LoadJob(_AsyncJob):
         """google.cloud.bigquery.table.TableReference: table where loaded rows are written
 
         See:
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTable
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.destination_table
         """
         return self._destination
 
@@ -1441,7 +1441,7 @@ class LoadJob(_AsyncJob):
         """Union[str, None] name given to destination table.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.description
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.description
         """
         return self._configuration.destination_table_description
 
@@ -1450,7 +1450,7 @@ class LoadJob(_AsyncJob):
         """Union[str, None] name given to destination table.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationTableProperties.friendlyName
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.friendly_name
         """
         return self._configuration.destination_table_friendly_name
 
@@ -1605,7 +1605,7 @@ class CopyJobConfig(_JobConfig):
         for creating tables.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationTableCopy.FIELDS.create_disposition
         """
         return self._get_sub_prop("createDisposition")
 
@@ -1619,7 +1619,7 @@ class CopyJobConfig(_JobConfig):
         the destination table already exists.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationTableCopy.FIELDS.write_disposition
         """
         return self._get_sub_prop("writeDisposition")
 
@@ -1636,7 +1636,7 @@ class CopyJobConfig(_JobConfig):
         if using default encryption.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationTableCopy.FIELDS.destination_encryption_configuration
         """
         prop = self._get_sub_prop("destinationEncryptionConfiguration")
         if prop is not None:
@@ -1800,7 +1800,7 @@ class ExtractJobConfig(_JobConfig):
         exported files.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationExtract.FIELDS.compression
         """
         return self._get_sub_prop("compression")
 
@@ -1813,7 +1813,7 @@ class ExtractJobConfig(_JobConfig):
         """google.cloud.bigquery.job.DestinationFormat: Exported file format.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationExtract.FIELDS.destination_format
         """
         return self._get_sub_prop("destinationFormat")
 
@@ -1826,7 +1826,7 @@ class ExtractJobConfig(_JobConfig):
         """str: Delimiter to use between fields in the exported data.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationExtract.FIELDS.field_delimiter
         """
         return self._get_sub_prop("fieldDelimiter")
 
@@ -1839,7 +1839,7 @@ class ExtractJobConfig(_JobConfig):
         """bool: Print a header row in the exported data.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationExtract.FIELDS.print_header
         """
         return self._get_sub_prop("printHeader")
 
@@ -1916,7 +1916,7 @@ class ExtractJob(_AsyncJob):
         """Return file counts from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.extract.destinationUriFileCounts
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics4.FIELDS.destination_uri_file_counts
 
         Returns:
             a list of integer counts, each representing the number of files
@@ -2039,7 +2039,7 @@ class QueryJobConfig(_JobConfig):
         if using default encryption.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.destination_encryption_configuration
         """
         prop = self._get_sub_prop("destinationEncryptionConfiguration")
         if prop is not None:
@@ -2058,7 +2058,7 @@ class QueryJobConfig(_JobConfig):
         """bool: Allow large query results tables (legacy SQL, only)
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.allow_large_results
         """
         return self._get_sub_prop("allowLargeResults")
 
@@ -2072,7 +2072,7 @@ class QueryJobConfig(_JobConfig):
         for creating tables.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.create_disposition
         """
         return self._get_sub_prop("createDisposition")
 
@@ -2095,7 +2095,7 @@ class QueryJobConfig(_JobConfig):
           separated by ``.``. For example: ``your-project.your_dataset``.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.default_dataset
         """
         prop = self._get_sub_prop("defaultDataset")
         if prop is not None:
@@ -2132,7 +2132,7 @@ class QueryJobConfig(_JobConfig):
           ``your-project.your_dataset.your_table``.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.destination_table
         """
         prop = self._get_sub_prop("destinationTable")
         if prop is not None:
@@ -2155,7 +2155,7 @@ class QueryJobConfig(_JobConfig):
         costs.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfiguration.FIELDS.dry_run
         """
         return self._properties.get("dryRun")
 
@@ -2168,7 +2168,7 @@ class QueryJobConfig(_JobConfig):
         """bool: Flatten nested/repeated fields in results. (Legacy SQL only)
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.flatten_results
         """
         return self._get_sub_prop("flattenResults")
 
@@ -2182,7 +2182,7 @@ class QueryJobConfig(_JobConfig):
         queries.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.maximum_billing_tier
         """
         return self._get_sub_prop("maximumBillingTier")
 
@@ -2195,7 +2195,7 @@ class QueryJobConfig(_JobConfig):
         """int: Maximum bytes to be billed for this job or :data:`None` if not set.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.maximum_bytes_billed
         """
         return _helpers._int_or_none(self._get_sub_prop("maximumBytesBilled"))
 
@@ -2208,7 +2208,7 @@ class QueryJobConfig(_JobConfig):
         """google.cloud.bigquery.job.QueryPriority: Priority of the query.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.priority
         """
         return self._get_sub_prop("priority")
 
@@ -2224,7 +2224,7 @@ class QueryJobConfig(_JobConfig):
         for parameterized query (empty by default)
 
         See:
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.query_parameters
         """
         prop = self._get_sub_prop("queryParameters", default=[])
         return _from_api_repr_query_parameters(prop)
@@ -2239,7 +2239,7 @@ class QueryJobConfig(_JobConfig):
         defined function resources (empty by default)
 
         See:
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.user_defined_function_resources
         """
         prop = self._get_sub_prop("userDefinedFunctionResources", default=[])
         return _from_api_repr_udf_resources(prop)
@@ -2255,7 +2255,7 @@ class QueryJobConfig(_JobConfig):
         """bool: Use legacy SQL syntax.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.use_legacy_sql
         """
         return self._get_sub_prop("useLegacySql")
 
@@ -2268,7 +2268,7 @@ class QueryJobConfig(_JobConfig):
         """bool: Look for the query result in the cache.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.use_query_cache
         """
         return self._get_sub_prop("useQueryCache")
 
@@ -2282,7 +2282,7 @@ class QueryJobConfig(_JobConfig):
         the destination table already exists.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.write_disposition
         """
         return self._get_sub_prop("writeDisposition")
 
@@ -2296,7 +2296,7 @@ class QueryJobConfig(_JobConfig):
         Definitions for external tables or :data:`None` if not set.
 
         See
-        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.external_table_definitions
         """
         prop = self._get_sub_prop("tableDefinitions")
         if prop is not None:
@@ -2488,7 +2488,7 @@ class QueryJob(_AsyncJob):
         """str: The query text used in this query job.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.query
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.query
         """
         return _helpers._get_sub_prop(
             self._properties, ["configuration", "query", "query"]
@@ -2612,7 +2612,7 @@ class QueryJob(_AsyncJob):
         """Return query plan from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.queryPlan
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.query_plan
 
         :rtype: list of :class:`QueryPlanEntry`
         :returns: mappings describing the query plan, or an empty list
@@ -2634,7 +2634,7 @@ class QueryJob(_AsyncJob):
         """Return total bytes processed from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesProcessed
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.total_bytes_processed
 
         :rtype: int or None
         :returns: total bytes processed by the job, or None if job is not
@@ -2650,7 +2650,7 @@ class QueryJob(_AsyncJob):
         """Return total bytes billed from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesBilled
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.total_bytes_billed
 
         :rtype: int or None
         :returns: total bytes processed by the job, or None if job is not
@@ -2666,7 +2666,7 @@ class QueryJob(_AsyncJob):
         """Return billing tier from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.billingTier
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.billing_tier
 
         :rtype: int or None
         :returns: billing tier used by the job, or None if job is not
@@ -2679,7 +2679,7 @@ class QueryJob(_AsyncJob):
         """Return whether or not query results were served from cache.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.cache_hit
 
         :rtype: bool or None
         :returns: whether the query results were returned from cache, or None
@@ -2692,7 +2692,7 @@ class QueryJob(_AsyncJob):
         """Optional[str]: Return the DDL operation performed.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlOperationPerformed
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.ddl_operation_performed
 
         """
         return self._job_statistics().get("ddlOperationPerformed")
@@ -2703,7 +2703,7 @@ class QueryJob(_AsyncJob):
             for CREATE/DROP FUNCTION/PROCEDURE  queries.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.ddl_target_routine
         """
         prop = self._job_statistics().get("ddlTargetRoutine")
         if prop is not None:
@@ -2716,7 +2716,7 @@ class QueryJob(_AsyncJob):
             for CREATE/DROP TABLE/VIEW queries.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.ddlTargetTable
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.ddl_target_table
         """
         prop = self._job_statistics().get("ddlTargetTable")
         if prop is not None:
@@ -2728,7 +2728,7 @@ class QueryJob(_AsyncJob):
         """Return the number of DML rows affected by the job.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.num_dml_affected_rows
 
         :rtype: int or None
         :returns: number of DML rows affected by the job, or None if job is not
@@ -2749,7 +2749,7 @@ class QueryJob(_AsyncJob):
         """Return statement type from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.statementType
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.statement_type
 
         :rtype: str or None
         :returns: type of statement used by the job, or None if job is not
@@ -2762,7 +2762,7 @@ class QueryJob(_AsyncJob):
         """Return referenced tables from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.referencedTables
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.referenced_tables
 
         :rtype: list of dict
         :returns: mappings describing the query plan, or an empty list
@@ -2791,7 +2791,7 @@ class QueryJob(_AsyncJob):
         """Return undeclared query parameters from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParameters
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.undeclared_query_parameters
 
         :rtype:
             list of
@@ -2823,7 +2823,7 @@ class QueryJob(_AsyncJob):
         """Return the estimated number of bytes processed by the query.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.estimatedBytesProcessed
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.estimated_bytes_processed
 
         :rtype: int or None
         :returns: number of DML rows affected by the job, or None if job is not
@@ -3139,7 +3139,7 @@ class QueryPlanEntry(object):
     """QueryPlanEntry represents a single stage of a query execution plan.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#ExplainQueryStage
     for the underlying API representation within query statistics.
 
     """
@@ -3378,7 +3378,7 @@ class TimelineEntry(object):
     point in time.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#querytimelinesample
     for the underlying API representation within query statistics.
 
     """
