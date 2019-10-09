@@ -13,7 +13,7 @@
 
 
 ### New Features
-- Generate v1. ([#9388](https://github.com/googleapis/google-cloud-python/pull/9388))
+- Add support for V1 API (via synth). ([#9388](https://github.com/googleapis/google-cloud-python/pull/9388))
 - Add support for passing  project to 'GcsClient'. ([#9299](https://github.com/googleapis/google-cloud-python/pull/9299))
 
 ## 0.6.0
