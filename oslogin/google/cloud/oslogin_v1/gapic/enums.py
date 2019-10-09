@@ -14,17 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Wrappers for protocol buffer enum types."""
 
-from __future__ import absolute_import
-
-from google.cloud.oslogin_v1 import types
-from google.cloud.oslogin_v1.gapic import enums
-from google.cloud.oslogin_v1.gapic import os_login_service_client
+import enum
 
 
-class OsLoginServiceClient(os_login_service_client.OsLoginServiceClient):
-    __doc__ = os_login_service_client.OsLoginServiceClient.__doc__
-    enums = enums
+class OperatingSystemType(enum.IntEnum):
+    """
+    The operating system options for account entries.
 
+    Attributes:
+      OPERATING_SYSTEM_TYPE_UNSPECIFIED (int): The operating system type associated with the user account information is
+      unspecified.
+      LINUX (int): Linux user account information.
+      WINDOWS (int): Windows user account information.
+    """
 
-__all__ = ("enums", "types", "OsLoginServiceClient")
+    OPERATING_SYSTEM_TYPE_UNSPECIFIED = 0
+    LINUX = 1
+    WINDOWS = 2

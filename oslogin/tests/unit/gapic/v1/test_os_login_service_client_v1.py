@@ -168,10 +168,12 @@ class TestOsLoginServiceClient(object):
         key = "key106079"
         expiration_time_usec = 2058878882
         fingerprint = "fingerprint-1375934236"
+        name_2 = "name2-1052831874"
         expected_response = {
             "key": key,
             "expiration_time_usec": expiration_time_usec,
             "fingerprint": fingerprint,
+            "name": name_2,
         }
         expected_response = common_pb2.SshPublicKey(**expected_response)
 
@@ -253,10 +255,12 @@ class TestOsLoginServiceClient(object):
         key = "key106079"
         expiration_time_usec = 2058878882
         fingerprint = "fingerprint-1375934236"
+        name_2 = "name2-1052831874"
         expected_response = {
             "key": key,
             "expiration_time_usec": expiration_time_usec,
             "fingerprint": fingerprint,
+            "name": name_2,
         }
         expected_response = common_pb2.SshPublicKey(**expected_response)
 
