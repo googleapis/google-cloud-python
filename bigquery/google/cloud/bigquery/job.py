@@ -3481,8 +3481,9 @@ class ScriptStackFrame(object):
 
     @property
     def procedure_id(self):
-        """str: Name of the active procedure, empty if in a top-level
-        script.
+        """Optional[str]: Name of the active procedure.
+
+        Omitted if in a top-level script.
         """
         return self._properties.get("procedureId")
 
