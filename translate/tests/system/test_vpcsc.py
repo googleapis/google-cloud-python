@@ -20,8 +20,7 @@ import pytest
 
 from google.api_core import exceptions
 from google.cloud import translate_v3beta1
-from google.cloud.translate_v3beta1.proto import translation_service_pb2
-from google.longrunning import operations_pb2
+
 
 IS_INSIDE_VPCSC = "GOOGLE_CLOUD_TESTS_IN_VPCSC" in os.environ
 # If IS_INSIDE_VPCSC is set, these environment variables should also be set
@@ -82,14 +81,15 @@ class TestVPCServiceControl(object):
             }
 
         glossary_inside = make_glossary(PROJECT_INSIDE)
-        delayed_inside = lambda: self._client.create_glossary(
-            self._parent_inside, glossary_inside
-        )
+
+        def delayed_inside():
+            return self._client.create_glossary(self._parent_inside, glossary_inside)
 
         glossary_outside = make_glossary(PROJECT_OUTSIDE)
-        delayed_outside = lambda: self._client.create_glossary(
-            self._parent_outside, glossary_outside
-        )
+
+        def delayed_outside():
+            return self._client.create_glossary(self._parent_outside, glossary_outside)
+
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
@@ -99,12 +99,12 @@ class TestVPCServiceControl(object):
     def test_list_glossaries(self):
         # list_glossaries() returns an GRPCIterator instance, and we need to actually iterate through it
         # by calling _next_page() to get real response.
-        delayed_inside = lambda: self._client.list_glossaries(
-            self._parent_inside
-        )._next_page()
-        delayed_outside = lambda: self._client.list_glossaries(
-            self._parent_outside
-        )._next_page()
+        def delayed_inside():
+            return self._client.list_glossaries(self._parent_inside)._next_page()
+
+        def delayed_outside():
+            return self._client.list_glossaries(self._parent_outside)._next_page()
+
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
@@ -112,8 +112,12 @@ class TestVPCServiceControl(object):
         reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_get_glossary(self):
-        delayed_inside = lambda: self._client.get_glossary(self._glossary_name_inside)
-        delayed_outside = lambda: self._client.get_glossary(self._glossary_name_outside)
+        def delayed_inside():
+            return self._client.get_glossary(self._glossary_name_inside)
+
+        def delayed_outside():
+            return self._client.get_glossary(self._glossary_name_outside)
+
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
@@ -121,12 +125,12 @@ class TestVPCServiceControl(object):
         reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
     )
     def test_delete_glossary(self):
-        delayed_inside = lambda: self._client.delete_glossary(
-            self._glossary_name_inside
-        )
-        delayed_outside = lambda: self._client.delete_glossary(
-            self._glossary_name_outside
-        )
+        def delayed_inside():
+            return self._client.delete_glossary(self._glossary_name_inside)
+
+        def delayed_outside():
+            return self._client.delete_glossary(self._glossary_name_outside)
+
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
@@ -140,18 +144,23 @@ class TestVPCServiceControl(object):
         output_config = {
             "gcs_destination": {"output_uri_prefix": "gs://fake-bucket/output/"}
         }
-        delayed_inside = lambda: self._client.batch_translate_text(
-            self._parent_inside,
-            source_language_code,
-            target_language_codes,
-            input_configs,
-            output_config,
-        )
-        delayed_outside = lambda: self._client.batch_translate_text(
-            self._parent_outside,
-            source_language_code,
-            target_language_codes,
-            input_configs,
-            output_config,
-        )
+
+        def delayed_inside():
+            return self._client.batch_translate_text(
+                self._parent_inside,
+                source_language_code,
+                target_language_codes,
+                input_configs,
+                output_config,
+            )
+
+        def delayed_outside():
+            return self._client.batch_translate_text(
+                self._parent_outside,
+                source_language_code,
+                target_language_codes,
+                input_configs,
+                output_config,
+            )
+
         TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
