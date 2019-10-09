@@ -2197,26 +2197,26 @@ ProfileQuery = _reflection.GeneratedProtocolMessageType(
           .address] and [LocationFilter.lat\_lng][google.cloud.talent.v4
           beta1.LocationFilter.lat\_lng] are provided, an error is
           thrown.  The following logic is used to determine which
-          locations in the profile to filter against: 1. All of the
-          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
-          eta1.Profile.addresses] where
+          locations in the profile to filter against:  1. All of the
+          profile's geocoded    [Profile.addresses][google.cloud.talent.
+          v4beta1.Profile.addresses]    where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
           PERSONAL and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is true. 2. If the above set of locations is empty, all of the
-          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
-          eta1.Profile.addresses] where
+          is    true.  2. If the above set of locations is empty, all of
+          the profile's geocoded    [Profile.addresses][google.cloud.tal
+          ent.v4beta1.Profile.addresses]    where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
           CONTACT\_INFO\_USAGE\_UNSPECIFIED and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is true. 3. If the above set of locations is empty, all of the
-          profile's geocoded [Profile.addresses][google.cloud.talent.v4b
-          eta1.Profile.addresses] where
+          is    true.  3. If the above set of locations is empty, all of
+          the profile's geocoded    [Profile.addresses][google.cloud.tal
+          ent.v4beta1.Profile.addresses]    where
           [Address.usage][google.cloud.talent.v4beta1.Address.usage] is
           PERSONAL or CONTACT\_INFO\_USAGE\_UNSPECIFIED and
           [Address.current][google.cloud.talent.v4beta1.Address.current]
-          is not set.  This means that any profiles without any [Profile
-          .addresses][google.cloud.talent.v4beta1.Profile.addresses]
+          is not    set.  This means that any profiles without any [Prof
+          ile.addresses][google.cloud.talent.v4beta1.Profile.addresses]
           that match any of the above criteria will not be included in a
           search with location filter. Furthermore, any [Profile.address
           es][google.cloud.talent.v4beta1.Profile.addresses] where
