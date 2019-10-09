@@ -8,8 +8,12 @@
 
 10-04-2019 15:37 PDT
 
+### Implementation Changes
+-  Return operation future from `AutoMlClient.create_dataset` (via synth).([#9423](https://github.com/googleapis/google-cloud-python/pull/9423))
+
+
 ### New Features
-- Generate v1. ([#9388](https://github.com/googleapis/google-cloud-python/pull/9388))
+- Add support for V1 API (via synth). ([#9388](https://github.com/googleapis/google-cloud-python/pull/9388))
 - Add support for passing  project to 'GcsClient'. ([#9299](https://github.com/googleapis/google-cloud-python/pull/9299))
 
 ## 0.6.0
