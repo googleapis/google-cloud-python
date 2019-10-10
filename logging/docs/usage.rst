@@ -1,3 +1,6 @@
+Usage Guide
+===========
+
 Writing log entries
 -------------------
 
