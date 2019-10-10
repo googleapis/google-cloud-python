@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## 0.3.0
+
+10-10-2019 11:08 PDT
+
+
+### Implementation Changes
+- Remove send / receive message size limit (via synth). ([#8950](https://github.com/googleapis/google-cloud-python/pull/8950))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
 ## 0.2.1
 
 07-16-2019 10:17 PDT
