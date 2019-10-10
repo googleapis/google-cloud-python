@@ -11,7 +11,7 @@
 
 ### Implementation Changes
 - Remove send / receive message size limit (via synth). ([#8963](https://github.com/googleapis/google-cloud-python/pull/8963))
-- Add `client_info` support, re-template / blacken files. ([#8539](https://github.com/googleapis/google-cloud-python/pull/8539))
+- Add `client_options` support, re-template / blacken files. ([#8539](https://github.com/googleapis/google-cloud-python/pull/8539))
 - Fix dist name used to compute `gapic_version`. ([#8100](https://github.com/googleapis/google-cloud-python/pull/8100))
 - Remove retries for `DEADLINE_EXCEEDED` (via synth). ([#7889](https://github.com/googleapis/google-cloud-python/pull/7889))
 
