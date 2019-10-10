@@ -345,6 +345,15 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return _helpers._get_sub_prop(self._properties, ["statistics", "parentJobId"])
 
     @property
+    def script_statistics(self):
+        resource = _helpers._get_sub_prop(
+            self._properties, ["statistics", "scriptStatistics"]
+        )
+        if resource is None:
+            return None
+        return ScriptStatistics(resource)
+
+    @property
     def num_child_jobs(self):
         """The number of child jobs executed.
 
@@ -3456,3 +3465,83 @@ class UnknownJob(_AsyncJob):
         resource["jobReference"] = job_ref_properties
         job._properties = resource
         return job
+
+
+class ScriptStackFrame(object):
+    """Stack frame showing the line/column/procedure name where the current
+    evaluation happened.
+
+    Args:
+        resource (Map[str, Any]):
+            JSON representation of object.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def procedure_id(self):
+        """Optional[str]: Name of the active procedure.
+
+        Omitted if in a top-level script.
+        """
+        return self._properties.get("procedureId")
+
+    @property
+    def text(self):
+        """str: Text of the current statement/expression."""
+        return self._properties.get("text")
+
+    @property
+    def start_line(self):
+        """int: One-based start line."""
+        return _helpers._int_or_none(self._properties.get("startLine"))
+
+    @property
+    def start_column(self):
+        """int: One-based start column."""
+        return _helpers._int_or_none(self._properties.get("startColumn"))
+
+    @property
+    def end_line(self):
+        """int: One-based end line."""
+        return _helpers._int_or_none(self._properties.get("endLine"))
+
+    @property
+    def end_column(self):
+        """int: One-based end column."""
+        return _helpers._int_or_none(self._properties.get("endColumn"))
+
+
+class ScriptStatistics(object):
+    """Statistics for a child job of a script.
+
+    Args:
+        resource (Map[str, Any]):
+            JSON representation of object.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def stack_frames(self):
+        """List[ScriptStackFrame]: Stack trace where the current evaluation
+        happened.
+
+        Shows line/column/procedure name of each frame on the stack at the
+        point where the current evaluation happened.
+
+        The leaf frame is first, the primary script is last.
+        """
+        return [
+            ScriptStackFrame(frame) for frame in self._properties.get("stackFrames", [])
+        ]
+
+    @property
+    def evaluation_kind(self):
+        """str: Indicates the type of child job.
+
+        Possible values include ``STATEMENT`` and ``EXPRESSION``.
+        """
+        return self._properties.get("evaluationKind")
