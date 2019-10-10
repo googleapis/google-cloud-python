@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.13.1
+
+10-10-2019 11:08 PDT
+
+### Documentation
+- Split documentation for v1 and v2. Fix proto copy. ([#9420](https://github.com/googleapis/google-cloud-python/pull/9420))
+
 ## 1.13.0
 
 09-23-2019 10:00 PDT
