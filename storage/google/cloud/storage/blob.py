@@ -468,6 +468,11 @@ class Blob(_PropertyMixin):
         else:
             helper = generate_signed_url_v4
 
+        if self._encryption_key is not None:
+            if headers is None:
+                headers = {}
+            headers.update(_get_encryption_headers(self._encryption_key))
+
         return helper(
             credentials,
             resource=resource,

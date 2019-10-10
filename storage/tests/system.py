@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import datetime
+import hashlib
 import os
 import re
 import tempfile
@@ -860,11 +862,12 @@ class TestStorageSignURLs(unittest.TestCase):
         version="v2",
         payload=None,
         expiration=None,
+        encryption_key=None,
     ):
         expiration = self._morph_expiration(version, expiration)
 
         if payload is not None:
-            blob = self.bucket.blob(blob_name)
+            blob = self.bucket.blob(blob_name, encryption_key=encryption_key)
             blob.upload_from_string(payload)
         else:
             blob = self.blob
@@ -873,7 +876,17 @@ class TestStorageSignURLs(unittest.TestCase):
             expiration=expiration, method=method, client=Config.CLIENT, version=version
         )
 
-        response = requests.get(signed_url)
+        headers = {}
+
+        if encryption_key is not None:
+            headers["x-goog-encryption-algorithm"] = "AES256"
+            encoded_key = base64.b64encode(encryption_key).decode("utf-8")
+            headers["x-goog-encryption-key"] = encoded_key
+            key_hash = hashlib.sha256(encryption_key).digest()
+            key_hash = base64.b64encode(key_hash).decode("utf-8")
+            headers["x-goog-encryption-key-sha256"] = key_hash
+
+        response = requests.get(signed_url, headers=headers)
         self.assertEqual(response.status_code, 200)
         if payload is not None:
             self.assertEqual(response.content, payload)
@@ -913,6 +926,24 @@ class TestStorageSignURLs(unittest.TestCase):
         self._create_signed_read_url_helper(
             blob_name=u"Caf\xe9.txt",
             payload=b"Test signed URL for blob w/ non-ASCII name",
+            version="v4",
+        )
+
+    @unittest.skip("V2 signing does not work with CSEK")
+    def test_create_signed_read_url_v2_w_csek(self):
+        encryption_key = os.urandom(32)
+        self._create_signed_read_url_helper(
+            blob_name="v2-w-csek.txt",
+            payload=b"Test signed URL for blob w/ CSEK",
+            encryption_key=encryption_key,
+        )
+
+    def test_create_signed_read_url_v4_w_csek(self):
+        encryption_key = os.urandom(32)
+        self._create_signed_read_url_helper(
+            blob_name="v2-w-csek.txt",
+            payload=b"Test signed URL for blob w/ CSEK",
+            encryption_key=encryption_key,
             version="v4",
         )
 
