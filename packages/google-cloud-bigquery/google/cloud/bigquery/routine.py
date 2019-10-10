@@ -31,10 +31,7 @@ class Routine(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
 
     Args:
-        routine_ref (Union[ \
-            str, \
-            google.cloud.bigquery.routine.RoutineReference, \
-        ]):
+        routine_ref (Union[str, google.cloud.bigquery.routine.RoutineReference]):
             A pointer to a routine. If ``routine_ref`` is a string, it must
             included a project ID, dataset ID, and routine ID, each separated
             by ``.``.
@@ -262,8 +259,7 @@ class Routine(object):
         """Construct the API resource representation of this routine.
 
         Returns:
-            Dict[str, object]:
-                Routine represented as an API resource.
+            Dict[str, object]: Routine represented as an API resource.
         """
         return self._properties
 
@@ -366,8 +362,7 @@ class RoutineArgument(object):
         """Factory: construct a routine argument given its API representation.
 
         Args:
-            resource (Dict[str, object]):
-                Resource, as returned from the API.
+            resource (Dict[str, object]): Resource, as returned from the API.
 
         Returns:
             google.cloud.bigquery.routine.RoutineArgument:
@@ -381,8 +376,7 @@ class RoutineArgument(object):
         """Construct the API resource representation of this routine argument.
 
         Returns:
-            Dict[str, object]:
-                Routine argument represented as an API resource.
+            Dict[str, object]: Routine argument represented as an API resource.
         """
         return self._properties
 
@@ -485,8 +479,7 @@ class RoutineReference(object):
         """Construct the API resource representation of this routine reference.
 
         Returns:
-            Dict[str, object]:
-                Routine reference represented as an API resource.
+            Dict[str, object]: Routine reference represented as an API resource.
         """
         return self._properties
 
