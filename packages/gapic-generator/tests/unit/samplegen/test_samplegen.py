@@ -15,14 +15,14 @@
 import yaml
 import pytest
 
-from typing import (TypeVar)
-from collections import namedtuple
+from typing import (TypeVar, Sequence)
+from collections import (OrderedDict, namedtuple)
 from google.protobuf import descriptor_pb2
 
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.types as types
 import gapic.samplegen_utils.yaml as gapic_yaml
-from gapic.schema import (api, naming)
+from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 
 from common_types import (DummyField, DummyMessage,
@@ -1555,12 +1555,103 @@ def test_validate_request_enum_invalid_value():
 
 
 def test_validate_request_enum_not_last_attr():
-    enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
-    request_type = message_factory("mollusc.subclass", enum=enum)
+    # enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
+    # field = make_field(name="subclass", enum=enum)
+    request_type = make_message(
+        name="mollusc",
+        fields=[
+            make_field(
+                name="subclass",
+                enum=enum_factory(
+                    "subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"]
+                )
+            )
+        ]
+    )
+
+    # request_type = message_factory("mollusc.subclass", enum=enum)
     v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
                                         input=request_type))
-    with pytest.raises(types.InvalidEnumVariant):
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(
             types.CallingForm.Request,
             [{"field": "subclass.order", "value": "COLEOIDEA"}]
         )
+
+
+def test_validate_request_primitive_field():
+    field = make_field(name="species", type="TYPE_STRING")
+    request_type = make_message(name="request", fields=[field])
+
+    request = [{"field": "species", "value": "Architeuthis dux"}]
+    v = samplegen.Validator(
+        DummyMethod(
+            output=message_factory("mollusc_result"),
+            input=request_type
+        )
+    )
+
+    actual = v.validate_and_transform_request(types.CallingForm.Request,
+                                              request)
+    expected = [
+        samplegen.TransformedRequest(
+            base="species",
+            body=None,
+            single=samplegen.AttributeRequestSetup(
+                value="Architeuthis dux"
+            )
+        )
+    ]
+
+    assert actual == expected
+
+
+def test_validate_request_non_terminal_primitive_field():
+    field = make_field(name="species", type="TYPE_STRING")
+    request_type = make_message(name="request", fields=[field])
+
+    request = [{"field": "species.nomenclature", "value": "Architeuthis dux"}]
+    v = samplegen.Validator(
+        DummyMethod(
+            output=message_factory("mollusc_result"),
+            input=request_type
+        )
+    )
+
+    with pytest.raises(types.NonTerminalPrimitiveOrEnum):
+        v.validate_and_transform_request(types.CallingForm.Request,
+                                         request)
+
+
+def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',
+                 fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
+                 options: descriptor_pb2.MethodOptions = None,
+                 ) -> wrappers.MessageType:
+    message_pb = descriptor_pb2.DescriptorProto(
+        name=name,
+        field=[i.field_pb for i in fields],
+        options=options,
+    )
+    return wrappers.MessageType(
+        message_pb=message_pb,
+        fields=OrderedDict((i.name, i) for i in fields),
+        nested_messages={},
+        nested_enums={},
+        meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=tuple(package.split('.')),
+            module=module,
+        )),
+    )
+
+
+# Borrowed from test_field.py
+def make_field(*, message=None, enum=None, **kwargs) -> wrappers.Field:
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    kwargs.setdefault('name', 'my_field')
+    kwargs.setdefault('number', 1)
+    kwargs.setdefault('type', T.Value('TYPE_BOOL'))
+    if isinstance(kwargs['type'], str):
+        kwargs['type'] = T.Value(kwargs['type'])
+    field_pb = descriptor_pb2.FieldDescriptorProto(**kwargs)
+    return wrappers.Field(field_pb=field_pb, message=message, enum=enum)

@@ -236,7 +236,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser()
-{% with arg_list = [] %}
+{% with arg_list = [] -%}
 {% for request in request_block if request.body -%}
 {% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
@@ -244,8 +244,8 @@ def main():
                         default={{ attr.value }})
 {% do arg_list.append("args." + attr.input_parameter) -%}
 {% endfor -%}
-{% endfor %}
-{% for request in request_block if request.single and request.single.input_parameter -%}
+{% endfor -%}
+{% for request in request_block if request.single and request.single.input_parameter %}
     parser.add_argument("--{{ request.single.input_parameter }}",
                         type=str,
                         default={{ request.single.value }})

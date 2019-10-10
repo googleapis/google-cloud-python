@@ -76,6 +76,10 @@ class InvalidEnumVariant(SampleError):
     pass
 
 
+class NonTerminalPrimitiveOrEnum(SampleError):
+    pass
+
+
 class InvalidSampleFpath(SampleError):
     pass
 
