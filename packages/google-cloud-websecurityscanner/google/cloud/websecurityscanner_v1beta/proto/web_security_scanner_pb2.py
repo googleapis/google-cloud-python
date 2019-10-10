@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.websecurityscanner_v1beta.proto import (
     crawled_url_pb2 as google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_crawled__url__pb2,
 )
@@ -43,10 +46,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\027WebSecurityScannerProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\nGgoogle/cloud/websecurityscanner_v1beta/proto/web_security_scanner.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto\x1a>google/cloud/websecurityscanner_v1beta/proto/crawled_url.proto\x1a:google/cloud/websecurityscanner_v1beta/proto/finding.proto\x1a\x45google/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x1a>google/cloud/websecurityscanner_v1beta/proto/scan_config.proto\x1a;google/cloud/websecurityscanner_v1beta/proto/scan_run.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"r\n\x17\x43reateScanConfigRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12G\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"\'\n\x17\x44\x65leteScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"$\n\x14GetScanConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListScanConfigsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\x93\x01\n\x17UpdateScanConfigRequest\x12G\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfig\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"|\n\x17ListScanConfigsResponse\x12H\n\x0cscan_configs\x18\x01 \x03(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"#\n\x13StartScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"!\n\x11GetScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"L\n\x13ListScanRunsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"s\n\x14ListScanRunsResponse\x12\x42\n\tscan_runs\x18\x01 \x03(\x0b\x32/.google.cloud.websecurityscanner.v1beta.ScanRun\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t""\n\x12StopScanRunRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"O\n\x16ListCrawledUrlsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"|\n\x17ListCrawledUrlsResponse\x12H\n\x0c\x63rawled_urls\x18\x01 \x03(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.CrawledUrl\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11GetFindingRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"r\n\x14ListFindingsResponse\x12\x41\n\x08\x66indings\x18\x01 \x03(\x0b\x32/.google.cloud.websecurityscanner.v1beta.Finding\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1bListFindingTypeStatsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"t\n\x1cListFindingTypeStatsResponse\x12T\n\x12\x66inding_type_stats\x18\x01 \x03(\x0b\x32\x38.google.cloud.websecurityscanner.v1beta.FindingTypeStats2\xaa\x14\n\x12WebSecurityScanner\x12\xc5\x01\n\x10\x43reateScanConfig\x12?.google.cloud.websecurityscanner.v1beta.CreateScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"<\x82\xd3\xe4\x93\x02\x36"\'/v1beta/{parent=projects/*}/scanConfigs:\x0bscan_config\x12\x9c\x01\n\x10\x44\x65leteScanConfig\x12?.google.cloud.websecurityscanner.v1beta.DeleteScanConfigRequest\x1a\x16.google.protobuf.Empty"/\x82\xd3\xe4\x93\x02)*\'/v1beta/{name=projects/*/scanConfigs/*}\x12\xb2\x01\n\rGetScanConfig\x12<.google.cloud.websecurityscanner.v1beta.GetScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"/\x82\xd3\xe4\x93\x02)\x12\'/v1beta/{name=projects/*/scanConfigs/*}\x12\xc3\x01\n\x0fListScanConfigs\x12>.google.cloud.websecurityscanner.v1beta.ListScanConfigsRequest\x1a?.google.cloud.websecurityscanner.v1beta.ListScanConfigsResponse"/\x82\xd3\xe4\x93\x02)\x12\'/v1beta/{parent=projects/*}/scanConfigs\x12\xd1\x01\n\x10UpdateScanConfig\x12?.google.cloud.websecurityscanner.v1beta.UpdateScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"H\x82\xd3\xe4\x93\x02\x42\x32\x33/v1beta/{scan_config.name=projects/*/scanConfigs/*}:\x0bscan_config\x12\xb6\x01\n\x0cStartScanRun\x12;.google.cloud.websecurityscanner.v1beta.StartScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun"8\x82\xd3\xe4\x93\x02\x32"-/v1beta/{name=projects/*/scanConfigs/*}:start:\x01*\x12\xb4\x01\n\nGetScanRun\x12\x39.google.cloud.websecurityscanner.v1beta.GetScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun":\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}\x12\xc5\x01\n\x0cListScanRuns\x12;.google.cloud.websecurityscanner.v1beta.ListScanRunsRequest\x1a<.google.cloud.websecurityscanner.v1beta.ListScanRunsResponse":\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta/{parent=projects/*/scanConfigs/*}/scanRuns\x12\xbe\x01\n\x0bStopScanRun\x12:.google.cloud.websecurityscanner.v1beta.StopScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun"B\x82\xd3\xe4\x93\x02<"7/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\x01*\x12\xdc\x01\n\x0fListCrawledUrls\x12>.google.cloud.websecurityscanner.v1beta.ListCrawledUrlsRequest\x1a?.google.cloud.websecurityscanner.v1beta.ListCrawledUrlsResponse"H\x82\xd3\xe4\x93\x02\x42\x12@/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\x12\xbf\x01\n\nGetFinding\x12\x39.google.cloud.websecurityscanner.v1beta.GetFindingRequest\x1a/.google.cloud.websecurityscanner.v1beta.Finding"E\x82\xd3\xe4\x93\x02?\x12=/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\x12\xd0\x01\n\x0cListFindings\x12;.google.cloud.websecurityscanner.v1beta.ListFindingsRequest\x1a<.google.cloud.websecurityscanner.v1beta.ListFindingsResponse"E\x82\xd3\xe4\x93\x02?\x12=/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\x12\xf0\x01\n\x14ListFindingTypeStats\x12\x43.google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsRequest\x1a\x44.google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsResponse"M\x82\xd3\xe4\x93\x02G\x12\x45/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStatsB\xca\x01\n*com.google.cloud.websecurityscanner.v1betaB\x17WebSecurityScannerProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\nGgoogle/cloud/websecurityscanner_v1beta/proto/web_security_scanner.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a>google/cloud/websecurityscanner_v1beta/proto/crawled_url.proto\x1a:google/cloud/websecurityscanner_v1beta/proto/finding.proto\x1a\x45google/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x1a>google/cloud/websecurityscanner_v1beta/proto/scan_config.proto\x1a;google/cloud/websecurityscanner_v1beta/proto/scan_run.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\xac\x01\n\x17\x43reateScanConfigRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12L\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfigB\x03\xe0\x41\x02"]\n\x17\x44\x65leteScanConfigRequest\x12\x42\n\x04name\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,websecurityscanner.googleapis.com/ScanConfig"Z\n\x14GetScanConfigRequest\x12\x42\n\x04name\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,websecurityscanner.googleapis.com/ScanConfig"\x84\x01\n\x16ListScanConfigsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\x9d\x01\n\x17UpdateScanConfigRequest\x12L\n\x0bscan_config\x18\x02 \x01(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfigB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"|\n\x17ListScanConfigsResponse\x12H\n\x0cscan_configs\x18\x01 \x03(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.ScanConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"Y\n\x13StartScanRunRequest\x12\x42\n\x04name\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,websecurityscanner.googleapis.com/ScanConfig"T\n\x11GetScanRunRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/ScanRun"\x82\x01\n\x13ListScanRunsRequest\x12\x44\n\x06parent\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,websecurityscanner.googleapis.com/ScanConfig\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"s\n\x14ListScanRunsResponse\x12\x42\n\tscan_runs\x18\x01 \x03(\x0b\x32/.google.cloud.websecurityscanner.v1beta.ScanRun\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"U\n\x12StopScanRunRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/ScanRun"\x82\x01\n\x16ListCrawledUrlsRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/ScanRun\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"|\n\x17ListCrawledUrlsResponse\x12H\n\x0c\x63rawled_urls\x18\x01 \x03(\x0b\x32\x32.google.cloud.websecurityscanner.v1beta.CrawledUrl\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"T\n\x11GetFindingRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/Finding"\x94\x01\n\x13ListFindingsRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/ScanRun\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"r\n\x14ListFindingsResponse\x12\x41\n\x08\x66indings\x18\x01 \x03(\x0b\x32/.google.cloud.websecurityscanner.v1beta.Finding\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n\x1bListFindingTypeStatsRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)websecurityscanner.googleapis.com/ScanRun"t\n\x1cListFindingTypeStatsResponse\x12T\n\x12\x66inding_type_stats\x18\x01 \x03(\x0b\x32\x38.google.cloud.websecurityscanner.v1beta.FindingTypeStats2\x8e\x16\n\x12WebSecurityScanner\x12\xda\x01\n\x10\x43reateScanConfig\x12?.google.cloud.websecurityscanner.v1beta.CreateScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"Q\x82\xd3\xe4\x93\x02\x36"\'/v1beta/{parent=projects/*}/scanConfigs:\x0bscan_config\xda\x41\x12parent,scan_config\x12\xa3\x01\n\x10\x44\x65leteScanConfig\x12?.google.cloud.websecurityscanner.v1beta.DeleteScanConfigRequest\x1a\x16.google.protobuf.Empty"6\x82\xd3\xe4\x93\x02)*\'/v1beta/{name=projects/*/scanConfigs/*}\xda\x41\x04name\x12\xb9\x01\n\rGetScanConfig\x12<.google.cloud.websecurityscanner.v1beta.GetScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"6\x82\xd3\xe4\x93\x02)\x12\'/v1beta/{name=projects/*/scanConfigs/*}\xda\x41\x04name\x12\xcc\x01\n\x0fListScanConfigs\x12>.google.cloud.websecurityscanner.v1beta.ListScanConfigsRequest\x1a?.google.cloud.websecurityscanner.v1beta.ListScanConfigsResponse"8\x82\xd3\xe4\x93\x02)\x12\'/v1beta/{parent=projects/*}/scanConfigs\xda\x41\x06parent\x12\xeb\x01\n\x10UpdateScanConfig\x12?.google.cloud.websecurityscanner.v1beta.UpdateScanConfigRequest\x1a\x32.google.cloud.websecurityscanner.v1beta.ScanConfig"b\x82\xd3\xe4\x93\x02\x42\x32\x33/v1beta/{scan_config.name=projects/*/scanConfigs/*}:\x0bscan_config\xda\x41\x17scan_config,update_mask\x12\xbd\x01\n\x0cStartScanRun\x12;.google.cloud.websecurityscanner.v1beta.StartScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun"?\x82\xd3\xe4\x93\x02\x32"-/v1beta/{name=projects/*/scanConfigs/*}:start:\x01*\xda\x41\x04name\x12\xbb\x01\n\nGetScanRun\x12\x39.google.cloud.websecurityscanner.v1beta.GetScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun"A\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}\xda\x41\x04name\x12\xce\x01\n\x0cListScanRuns\x12;.google.cloud.websecurityscanner.v1beta.ListScanRunsRequest\x1a<.google.cloud.websecurityscanner.v1beta.ListScanRunsResponse"C\x82\xd3\xe4\x93\x02\x34\x12\x32/v1beta/{parent=projects/*/scanConfigs/*}/scanRuns\xda\x41\x06parent\x12\xc5\x01\n\x0bStopScanRun\x12:.google.cloud.websecurityscanner.v1beta.StopScanRunRequest\x1a/.google.cloud.websecurityscanner.v1beta.ScanRun"I\x82\xd3\xe4\x93\x02<"7/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\x01*\xda\x41\x04name\x12\xe5\x01\n\x0fListCrawledUrls\x12>.google.cloud.websecurityscanner.v1beta.ListCrawledUrlsRequest\x1a?.google.cloud.websecurityscanner.v1beta.ListCrawledUrlsResponse"Q\x82\xd3\xe4\x93\x02\x42\x12@/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\xda\x41\x06parent\x12\xc6\x01\n\nGetFinding\x12\x39.google.cloud.websecurityscanner.v1beta.GetFindingRequest\x1a/.google.cloud.websecurityscanner.v1beta.Finding"L\x82\xd3\xe4\x93\x02?\x12=/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\xda\x41\x04name\x12\xe0\x01\n\x0cListFindings\x12;.google.cloud.websecurityscanner.v1beta.ListFindingsRequest\x1a<.google.cloud.websecurityscanner.v1beta.ListFindingsResponse"U\x82\xd3\xe4\x93\x02?\x12=/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\xda\x41\rparent,filter\x12\xf9\x01\n\x14ListFindingTypeStats\x12\x43.google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsRequest\x1a\x44.google.cloud.websecurityscanner.v1beta.ListFindingTypeStatsResponse"V\x82\xd3\xe4\x93\x02G\x12\x45/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats\xda\x41\x06parent\x1aU\xca\x41!websecurityscanner.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xca\x01\n*com.google.cloud.websecurityscanner.v1betaB\x17WebSecurityScannerProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_crawled__url__pb2.DESCRIPTOR,
         google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_finding__pb2.DESCRIPTOR,
         google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_finding__type__stats__pb2.DESCRIPTOR,
@@ -80,7 +86,9 @@ _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -98,7 +106,7 @@ _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -110,8 +118,8 @@ _CREATESCANCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=528,
-    serialized_end=642,
+    serialized_start=614,
+    serialized_end=786,
 )
 
 
@@ -137,7 +145,9 @@ _DELETESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,websecurityscanner.googleapis.com/ScanConfig"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -149,8 +159,8 @@ _DELETESCANCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=644,
-    serialized_end=683,
+    serialized_start=788,
+    serialized_end=881,
 )
 
 
@@ -176,7 +186,9 @@ _GETSCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,websecurityscanner.googleapis.com/ScanConfig"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -188,8 +200,8 @@ _GETSCANCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=685,
-    serialized_end=721,
+    serialized_start=883,
+    serialized_end=973,
 )
 
 
@@ -215,7 +227,9 @@ _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -263,8 +277,8 @@ _LISTSCANCONFIGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=723,
-    serialized_end=802,
+    serialized_start=976,
+    serialized_end=1108,
 )
 
 
@@ -290,7 +304,7 @@ _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -308,7 +322,7 @@ _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -320,8 +334,8 @@ _UPDATESCANCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=805,
-    serialized_end=952,
+    serialized_start=1111,
+    serialized_end=1268,
 )
 
 
@@ -377,8 +391,8 @@ _LISTSCANCONFIGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=954,
-    serialized_end=1078,
+    serialized_start=1270,
+    serialized_end=1394,
 )
 
 
@@ -404,7 +418,9 @@ _STARTSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,websecurityscanner.googleapis.com/ScanConfig"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -416,8 +432,8 @@ _STARTSCANRUNREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1080,
-    serialized_end=1115,
+    serialized_start=1396,
+    serialized_end=1485,
 )
 
 
@@ -443,7 +459,9 @@ _GETSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/ScanRun"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -455,8 +473,8 @@ _GETSCANRUNREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1117,
-    serialized_end=1150,
+    serialized_start=1487,
+    serialized_end=1571,
 )
 
 
@@ -482,7 +500,9 @@ _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,websecurityscanner.googleapis.com/ScanConfig"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -530,8 +550,8 @@ _LISTSCANRUNSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1152,
-    serialized_end=1228,
+    serialized_start=1574,
+    serialized_end=1704,
 )
 
 
@@ -587,8 +607,8 @@ _LISTSCANRUNSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1230,
-    serialized_end=1345,
+    serialized_start=1706,
+    serialized_end=1821,
 )
 
 
@@ -614,7 +634,9 @@ _STOPSCANRUNREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/ScanRun"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -626,8 +648,8 @@ _STOPSCANRUNREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1347,
-    serialized_end=1381,
+    serialized_start=1823,
+    serialized_end=1908,
 )
 
 
@@ -653,7 +675,9 @@ _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/ScanRun"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -701,8 +725,8 @@ _LISTCRAWLEDURLSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1383,
-    serialized_end=1462,
+    serialized_start=1911,
+    serialized_end=2041,
 )
 
 
@@ -758,8 +782,8 @@ _LISTCRAWLEDURLSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1464,
-    serialized_end=1588,
+    serialized_start=2043,
+    serialized_end=2167,
 )
 
 
@@ -785,7 +809,9 @@ _GETFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/Finding"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -797,8 +823,8 @@ _GETFINDINGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1590,
-    serialized_end=1623,
+    serialized_start=2169,
+    serialized_end=2253,
 )
 
 
@@ -824,7 +850,9 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/ScanRun"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -842,7 +870,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -890,8 +918,8 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1625,
-    serialized_end=1717,
+    serialized_start=2256,
+    serialized_end=2404,
 )
 
 
@@ -947,8 +975,8 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1719,
-    serialized_end=1833,
+    serialized_start=2406,
+    serialized_end=2520,
 )
 
 
@@ -974,7 +1002,9 @@ _LISTFINDINGTYPESTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)websecurityscanner.googleapis.com/ScanRun"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -986,8 +1016,8 @@ _LISTFINDINGTYPESTATSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1835,
-    serialized_end=1880,
+    serialized_start=2522,
+    serialized_end=2618,
 )
 
 
@@ -1025,8 +1055,8 @@ _LISTFINDINGTYPESTATSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1882,
-    serialized_end=1998,
+    serialized_start=2620,
+    serialized_end=2736,
 )
 
 _CREATESCANCONFIGREQUEST.fields_by_name[
@@ -1422,8 +1452,9 @@ ListFindingsRequest = _reflection.GeneratedProtocolMessageType(
           resource name in the format 'projects/{projectId}/scanConfigs/
           {scanConfigId}/scanRuns/{scanRunId}'.
       filter:
-          The filter expression. The expression must be in the format: .
-          Supported field: 'finding\_type'. Supported operator: '='.
+          Required. The filter expression. The expression must be in the
+          format: . Supported field: 'finding\_type'. Supported
+          operator: '='.
       page_token:
           A token identifying a page of results to be returned. This
           should be a ``next_page_token`` value returned from a previous
@@ -1500,15 +1531,33 @@ _sym_db.RegisterMessage(ListFindingTypeStatsResponse)
 
 
 DESCRIPTOR._options = None
+_CREATESCANCONFIGREQUEST.fields_by_name["parent"]._options = None
+_CREATESCANCONFIGREQUEST.fields_by_name["scan_config"]._options = None
+_DELETESCANCONFIGREQUEST.fields_by_name["name"]._options = None
+_GETSCANCONFIGREQUEST.fields_by_name["name"]._options = None
+_LISTSCANCONFIGSREQUEST.fields_by_name["parent"]._options = None
+_UPDATESCANCONFIGREQUEST.fields_by_name["scan_config"]._options = None
+_UPDATESCANCONFIGREQUEST.fields_by_name["update_mask"]._options = None
+_STARTSCANRUNREQUEST.fields_by_name["name"]._options = None
+_GETSCANRUNREQUEST.fields_by_name["name"]._options = None
+_LISTSCANRUNSREQUEST.fields_by_name["parent"]._options = None
+_STOPSCANRUNREQUEST.fields_by_name["name"]._options = None
+_LISTCRAWLEDURLSREQUEST.fields_by_name["parent"]._options = None
+_GETFINDINGREQUEST.fields_by_name["name"]._options = None
+_LISTFINDINGSREQUEST.fields_by_name["parent"]._options = None
+_LISTFINDINGSREQUEST.fields_by_name["filter"]._options = None
+_LISTFINDINGTYPESTATSREQUEST.fields_by_name["parent"]._options = None
 
 _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
     name="WebSecurityScanner",
     full_name="google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2001,
-    serialized_end=4603,
+    serialized_options=_b(
+        "\312A!websecurityscanner.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=2739,
+    serialized_end=5569,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateScanConfig",
@@ -1518,7 +1567,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_CREATESCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__config__pb2._SCANCONFIG,
             serialized_options=_b(
-                "\202\323\344\223\0026\"'/v1beta/{parent=projects/*}/scanConfigs:\013scan_config"
+                "\202\323\344\223\0026\"'/v1beta/{parent=projects/*}/scanConfigs:\013scan_config\332A\022parent,scan_config"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1529,7 +1578,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_DELETESCANCONFIGREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002)*'/v1beta/{name=projects/*/scanConfigs/*}"
+                "\202\323\344\223\002)*'/v1beta/{name=projects/*/scanConfigs/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1540,7 +1589,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_GETSCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__config__pb2._SCANCONFIG,
             serialized_options=_b(
-                "\202\323\344\223\002)\022'/v1beta/{name=projects/*/scanConfigs/*}"
+                "\202\323\344\223\002)\022'/v1beta/{name=projects/*/scanConfigs/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1551,7 +1600,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTSCANCONFIGSREQUEST,
             output_type=_LISTSCANCONFIGSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002)\022'/v1beta/{parent=projects/*}/scanConfigs"
+                "\202\323\344\223\002)\022'/v1beta/{parent=projects/*}/scanConfigs\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1562,7 +1611,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_UPDATESCANCONFIGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__config__pb2._SCANCONFIG,
             serialized_options=_b(
-                "\202\323\344\223\002B23/v1beta/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config"
+                "\202\323\344\223\002B23/v1beta/{scan_config.name=projects/*/scanConfigs/*}:\013scan_config\332A\027scan_config,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1573,7 +1622,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_STARTSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__run__pb2._SCANRUN,
             serialized_options=_b(
-                '\202\323\344\223\0022"-/v1beta/{name=projects/*/scanConfigs/*}:start:\001*'
+                '\202\323\344\223\0022"-/v1beta/{name=projects/*/scanConfigs/*}:start:\001*\332A\004name'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1584,7 +1633,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_GETSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__run__pb2._SCANRUN,
             serialized_options=_b(
-                "\202\323\344\223\0024\0222/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}"
+                "\202\323\344\223\0024\0222/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1595,7 +1644,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTSCANRUNSREQUEST,
             output_type=_LISTSCANRUNSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0024\0222/v1beta/{parent=projects/*/scanConfigs/*}/scanRuns"
+                "\202\323\344\223\0024\0222/v1beta/{parent=projects/*/scanConfigs/*}/scanRuns\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1606,7 +1655,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_STOPSCANRUNREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__run__pb2._SCANRUN,
             serialized_options=_b(
-                '\202\323\344\223\002<"7/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*'
+                '\202\323\344\223\002<"7/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*}:stop:\001*\332A\004name'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1617,7 +1666,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTCRAWLEDURLSREQUEST,
             output_type=_LISTCRAWLEDURLSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002B\022@/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls"
+                "\202\323\344\223\002B\022@/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/crawledUrls\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1628,7 +1677,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_GETFINDINGREQUEST,
             output_type=google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_finding__pb2._FINDING,
             serialized_options=_b(
-                "\202\323\344\223\002?\022=/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}"
+                "\202\323\344\223\002?\022=/v1beta/{name=projects/*/scanConfigs/*/scanRuns/*/findings/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1639,7 +1688,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTFINDINGSREQUEST,
             output_type=_LISTFINDINGSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002?\022=/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings"
+                "\202\323\344\223\002?\022=/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findings\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1650,7 +1699,7 @@ _WEBSECURITYSCANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTFINDINGTYPESTATSREQUEST,
             output_type=_LISTFINDINGTYPESTATSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002G\022E/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats"
+                "\202\323\344\223\002G\022E/v1beta/{parent=projects/*/scanConfigs/*/scanRuns/*}/findingTypeStats\332A\006parent"
             ),
         ),
     ],

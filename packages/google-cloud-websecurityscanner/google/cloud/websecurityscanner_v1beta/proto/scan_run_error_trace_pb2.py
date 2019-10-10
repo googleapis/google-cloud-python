@@ -191,16 +191,15 @@ ScanRunErrorTrace = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       code:
-          Output only. Indicates the error reason code.
+          Indicates the error reason code.
       scan_config_error:
-          Output only. If the scan encounters SCAN\_CONFIG\_ISSUE error,
-          this field has the error message encountered during scan
-          configuration validation that is performed before each scan
-          run.
+          If the scan encounters SCAN\_CONFIG\_ISSUE error, this field
+          has the error message encountered during scan configuration
+          validation that is performed before each scan run.
       most_common_http_error_code:
-          Output only. If the scan encounters TOO\_MANY\_HTTP\_ERRORS,
-          this field indicates the most common HTTP error code, if such
-          is available. For example, if this code is 404, the scan has
+          If the scan encounters TOO\_MANY\_HTTP\_ERRORS, this field
+          indicates the most common HTTP error code, if such is
+          available. For example, if this code is 404, the scan has
           encountered too many NOT\_FOUND responses.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1beta.ScanRunErrorTrace)
