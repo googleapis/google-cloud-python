@@ -91,6 +91,10 @@ class StructuredQuery(object):
               ``order_by``.
               EQUAL (int): Equal.
               ARRAY_CONTAINS (int): Contains. Requires that the field is an array.
+              IN (int): In. Requires that ``value`` is a non-empty ArrayValue with at most 10
+              values.
+              ARRAY_CONTAINS_ANY (int): Contains any. Requires that the field is an array and ``value`` is a
+              non-empty ArrayValue with at most 10 values.
             """
 
             OPERATOR_UNSPECIFIED = 0
@@ -100,6 +104,8 @@ class StructuredQuery(object):
             GREATER_THAN_OR_EQUAL = 4
             EQUAL = 5
             ARRAY_CONTAINS = 7
+            IN = 8
+            ARRAY_CONTAINS_ANY = 9
 
     class UnaryFilter(object):
         class Operator(enum.IntEnum):
