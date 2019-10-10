@@ -4,12 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
+
 ## 0.2.0
 
-10-10-2019 11:33 PDT
-
+10-10-2019 15:30 PDT
 
 ### Implementation Changes
+- Use correct release status. ([#9451](https://github.com/googleapis/google-cloud-python/pull/9451))
 - Remove send / receive message size limit (via synth). ([#8963](https://github.com/googleapis/google-cloud-python/pull/8963))
 - Add `client_options` support, re-template / blacken files. ([#8539](https://github.com/googleapis/google-cloud-python/pull/8539))
 - Fix dist name used to compute `gapic_version`. ([#8100](https://github.com/googleapis/google-cloud-python/pull/8100))
