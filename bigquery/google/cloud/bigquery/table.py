@@ -367,10 +367,7 @@ class Table(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     Args:
-        table_ref (Union[ \
-            :class:`~google.cloud.bigquery.table.TableReference`, \
-            str, \
-        ]):
+        table_ref (Union[google.cloud.bigquery.table.TableReference, str]):
             A pointer to a table. If ``table_ref`` is a string, it must
             included a project ID, dataset ID, and table ID, each separated
             by ``.``.
@@ -1308,15 +1305,13 @@ class RowIterator(HTTPIterator):
             Defaults to a sensible value set by the API.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
-        table (Union[ \
-            :class:`~google.cloud.bigquery.table.Table`, \
-            :class:`~google.cloud.bigquery.table.TableReference`, \
+        table (Union[
+            google.cloud.bigquery.table.Table,
+            google.cloud.bigquery.table.TableReference,
         ]):
             Optional. The table which these rows belong to, or a reference to
             it. Used to call the BigQuery Storage API to fetch rows.
-        selected_fields (Sequence[ \
-            google.cloud.bigquery.schema.SchemaField, \
-        ]):
+        selected_fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Optional. A subset of columns to select from this table.
 
     """
@@ -1481,8 +1476,8 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            bqstorage_client (
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient
             ):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
@@ -1501,8 +1496,7 @@ class RowIterator(HTTPIterator):
                 from the destination table's schema.
 
         Raises:
-            ValueError:
-                If the :mod:`pyarrow` library cannot be imported.
+            ValueError: If the :mod:`pyarrow` library cannot be imported.
 
         ..versionadded:: 1.17.0
         """
@@ -1567,9 +1561,7 @@ class RowIterator(HTTPIterator):
         """Create a pandas DataFrame by loading all pages of a query.
 
         Args:
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
@@ -1584,9 +1576,7 @@ class RowIterator(HTTPIterator):
                 query result tables with the BQ Storage API. When a problem
                 is encountered reading a table, the tabledata.list method
                 from the BigQuery API is used, instead.
-            dtypes ( \
-                Map[str, Union[str, pandas.Series.dtype]] \
-            ):
+            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for
                 the column specified. Otherwise, the default pandas behavior
@@ -1680,12 +1670,10 @@ class _EmptyRowIterator(object):
         """[Beta] Create an empty class:`pyarrow.Table`.
 
         Args:
-            progress_bar_type (Optional[str]):
-                Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (Optional[str]): Ignored. Added for compatibility with RowIterator.
 
         Returns:
-            pyarrow.Table:
-                An empty :class:`pyarrow.Table`.
+            pyarrow.Table: An empty :class:`pyarrow.Table`.
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
@@ -1695,16 +1683,12 @@ class _EmptyRowIterator(object):
         """Create an empty dataframe.
 
         Args:
-            bqstorage_client (Any):
-                Ignored. Added for compatibility with RowIterator.
-            dtypes (Any):
-                Ignored. Added for compatibility with RowIterator.
-            progress_bar_type (Any):
-                Ignored. Added for compatibility with RowIterator.
+            bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
+            dtypes (Any): Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
 
         Returns:
-            pandas.DataFrame:
-                An empty :class:`~pandas.DataFrame`.
+            pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
         """
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
@@ -1872,14 +1856,12 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
+        resource (Dict): An item to be converted to a row.
 
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
+    Returns:
+        google.cloud.bigquery.table.Row: The next row in the page.
     """
     return Row(
         _helpers._row_tuple_from_json(resource, iterator.schema),
@@ -1910,14 +1892,10 @@ def _tabledata_list_page_columns(schema, response):
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
+        page (google.api_core.page_iterator.Page): The page that was just created.
+        response (Dict): The JSON API response for a page of rows in a table.
     """
     # Make a (lazy) copy of the page in column-oriented format for use in data
     # science packages.
