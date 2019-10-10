@@ -469,9 +469,15 @@ class Blob(_PropertyMixin):
             helper = generate_signed_url_v4
 
         if self._encryption_key is not None:
+            encryption_headers = _get_encryption_headers(self._encryption_key)
             if headers is None:
                 headers = {}
-            headers.update(_get_encryption_headers(self._encryption_key))
+            if version == "v2":
+                # See: https://cloud.google.com/storage/docs/access-control/signed-urls-v2#about-canonical-extension-headers
+                v2_copy_only = "X-Goog-Encryption-Algorithm"
+                headers[v2_copy_only] = encryption_headers[v2_copy_only]
+            else:
+                headers.update(encryption_headers)
 
         return helper(
             credentials,

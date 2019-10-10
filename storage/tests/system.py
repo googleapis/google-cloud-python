@@ -929,7 +929,6 @@ class TestStorageSignURLs(unittest.TestCase):
             version="v4",
         )
 
-    @unittest.skip("V2 signing does not work with CSEK")
     def test_create_signed_read_url_v2_w_csek(self):
         encryption_key = os.urandom(32)
         self._create_signed_read_url_helper(

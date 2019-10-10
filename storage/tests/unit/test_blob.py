@@ -446,7 +446,10 @@ class Test_Blob(unittest.TestCase):
         expected_resource = "/name/{}".format(parse.quote(encoded_name, safe=b"/~"))
         if encryption_key is not None:
             expected_headers = headers or {}
-            expected_headers.update(_get_encryption_headers(encryption_key))
+            if effective_version == "v2":
+                expected_headers["X-Goog-Encryption-Algorithm"] = "AES256"
+            else:
+                expected_headers.update(_get_encryption_headers(encryption_key))
         else:
             expected_headers = headers
 
