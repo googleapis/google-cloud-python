@@ -35,7 +35,7 @@ def create_routine_ddl(client, routine_id):
         routine_id
     )
     query_job = client.query(sql)  # Make an API request.
-    query_job.result()  # Waits for the job to complete.
+    query_job.result()  # Wait for the job to complete.
 
     print("Created routine {}".format(query_job.ddl_target_routine))
     # [END bigquery_create_routine_ddl]
