@@ -1,0 +1,13 @@
+{
+  "name": "dialogflow",
+  "name_pretty": "Dialogflow",
+  "product_documentation": "https://www.dialogflow.com/",
+  "client_documentation": "https://googleapis.dev/python/dialogflow/latest",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/dialogflow-python-client-v2",
+  "distribution_name": "dialogflow",
+  "api_id": "dialogflow.googleapis.com",
+  "requires_billing": true
+}

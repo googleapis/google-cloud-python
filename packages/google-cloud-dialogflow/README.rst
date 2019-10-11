@@ -50,7 +50,7 @@ Installation
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -90,9 +90,3 @@ See `the LICENSE file <https://github.com/googleapis/python-dialogflow/blob/mast
 
 .. |release level| image:: https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat
     :target: https://cloud.google.com/terms/launch-stages
-.. |circleci| image:: https://img.shields.io/circleci/project/github/dialogflow/dialogflow-python-client-v2.svg?style=flat)
-    :target: https://circleci.com/gh/dialogflow/dialogflow-python-client-v2
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/dialogflow/dialogflow-python-client-v2?branch=master&svg=true)
-    :target: https://ci.appveyor.com/project/dialogflow/dialogflow-python-client-v2
-.. |codecov| image:: https://img.shields.io/codecov/c/github/dialogflow/dialogflow-python-client-v2/master.svg?style=flat)
-    :target: https://codecov.io/gh/dialogflow/dialogflow-python-client-v2

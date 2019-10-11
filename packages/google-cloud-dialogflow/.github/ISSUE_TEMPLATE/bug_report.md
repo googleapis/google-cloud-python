@@ -11,20 +11,30 @@ Thanks for stopping by to let us know something could be better!
 Please run down the following list and make sure you've tried the usual "quick fixes":
 
   - Search the issues already opened: https://github.com/googleapis/dialogflow-python-client-v2/issues
+  - Check for answers on StackOverflow: http://stackoverflow.com/questions/
 
 If you are still having issues, please be sure to include as much information as possible:
 
 #### Environment details
 
-  - OS:
-  - Python version:
-  - pip version:
-  - `dialogflow` version:
+1. OS type and version
+2. Python version and virtual environment information: `python --version`
+3. dialogflow version:  `pip show dialogflow` or `pip freeze`
 
 #### Steps to reproduce
 
   1. ?
-  2. ?
+
+#### Code example
+
+```python
+# example
+```
+
+#### Stack trace
+```
+# example
+```
 
 Making sure to follow these steps will guarantee the quickest resolution possible.
 

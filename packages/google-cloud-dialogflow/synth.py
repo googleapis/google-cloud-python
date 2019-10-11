@@ -88,3 +88,5 @@ s.replace(
 
 s.replace('dialogflow_v2/proto/agent_pb2.py', ':math:', '')
 s.replace('dialogflow_v2/proto/agent_pb2.py', ':raw-latex:', '')
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)
