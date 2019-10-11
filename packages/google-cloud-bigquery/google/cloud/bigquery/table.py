@@ -184,7 +184,7 @@ class TableReference(object):
     """TableReferences are pointers to tables.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablereference
 
     Args:
         dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
@@ -364,7 +364,7 @@ class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#resource-table
 
     Args:
         table_ref (Union[google.cloud.bigquery.table.TableReference, str]):

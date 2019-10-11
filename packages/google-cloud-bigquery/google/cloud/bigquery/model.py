@@ -296,7 +296,7 @@ class ModelReference(object):
     """ModelReferences are pointers to models.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/models
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/models#modelreference
     """
 
     def __init__(self):
