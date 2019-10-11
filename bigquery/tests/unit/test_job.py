@@ -276,6 +276,37 @@ class Test_AsyncJob(unittest.TestCase):
         job._properties["statistics"] = {"parentJobId": "parent-job-123"}
         self.assertEqual(job.parent_job_id, "parent-job-123")
 
+    def test_script_statistics(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.script_statistics)
+        job._properties["statistics"] = {
+            "scriptStatistics": {
+                "evaluationKind": "EXPRESSION",
+                "stackFrames": [
+                    {
+                        "startLine": 5,
+                        "startColumn": 29,
+                        "endLine": 9,
+                        "endColumn": 14,
+                        "text": "QUERY TEXT",
+                    }
+                ],
+            }
+        }
+        script_stats = job.script_statistics
+        self.assertEqual(script_stats.evaluation_kind, "EXPRESSION")
+        stack_frames = script_stats.stack_frames
+        self.assertEqual(len(stack_frames), 1)
+        stack_frame = stack_frames[0]
+        self.assertIsNone(stack_frame.procedure_id)
+        self.assertEqual(stack_frame.start_line, 5)
+        self.assertEqual(stack_frame.start_column, 29)
+        self.assertEqual(stack_frame.end_line, 9)
+        self.assertEqual(stack_frame.end_column, 14)
+        self.assertEqual(stack_frame.text, "QUERY TEXT")
+
     def test_num_child_jobs(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
@@ -5337,6 +5368,92 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
 
         entry._properties["endMs"] = self.END_MS
         self.assertEqual(entry.end.strftime(_RFC3339_MICROS), self.END_RFC3339_MICROS)
+
+
+class TestScriptStackFrame(unittest.TestCase, _Base):
+    def _make_one(self, resource):
+        from google.cloud.bigquery.job import ScriptStackFrame
+
+        return ScriptStackFrame(resource)
+
+    def test_procedure_id(self):
+        frame = self._make_one({"procedureId": "some-procedure"})
+        self.assertEqual(frame.procedure_id, "some-procedure")
+        del frame._properties["procedureId"]
+        self.assertIsNone(frame.procedure_id)
+
+    def test_start_line(self):
+        frame = self._make_one({"startLine": 5})
+        self.assertEqual(frame.start_line, 5)
+        frame._properties["startLine"] = "5"
+        self.assertEqual(frame.start_line, 5)
+
+    def test_start_column(self):
+        frame = self._make_one({"startColumn": 29})
+        self.assertEqual(frame.start_column, 29)
+        frame._properties["startColumn"] = "29"
+        self.assertEqual(frame.start_column, 29)
+
+    def test_end_line(self):
+        frame = self._make_one({"endLine": 9})
+        self.assertEqual(frame.end_line, 9)
+        frame._properties["endLine"] = "9"
+        self.assertEqual(frame.end_line, 9)
+
+    def test_end_column(self):
+        frame = self._make_one({"endColumn": 14})
+        self.assertEqual(frame.end_column, 14)
+        frame._properties["endColumn"] = "14"
+        self.assertEqual(frame.end_column, 14)
+
+    def test_text(self):
+        frame = self._make_one({"text": "QUERY TEXT"})
+        self.assertEqual(frame.text, "QUERY TEXT")
+
+
+class TestScriptStatistics(unittest.TestCase, _Base):
+    def _make_one(self, resource):
+        from google.cloud.bigquery.job import ScriptStatistics
+
+        return ScriptStatistics(resource)
+
+    def test_evalutation_kind(self):
+        stats = self._make_one({"evaluationKind": "EXPRESSION"})
+        self.assertEqual(stats.evaluation_kind, "EXPRESSION")
+        self.assertEqual(stats.stack_frames, [])
+
+    def test_stack_frames(self):
+        stats = self._make_one(
+            {
+                "stackFrames": [
+                    {
+                        "procedureId": "some-procedure",
+                        "startLine": 5,
+                        "startColumn": 29,
+                        "endLine": 9,
+                        "endColumn": 14,
+                        "text": "QUERY TEXT",
+                    },
+                    {},
+                ]
+            }
+        )
+        stack_frames = stats.stack_frames
+        self.assertEqual(len(stack_frames), 2)
+        stack_frame = stack_frames[0]
+        self.assertEqual(stack_frame.procedure_id, "some-procedure")
+        self.assertEqual(stack_frame.start_line, 5)
+        self.assertEqual(stack_frame.start_column, 29)
+        self.assertEqual(stack_frame.end_line, 9)
+        self.assertEqual(stack_frame.end_column, 14)
+        self.assertEqual(stack_frame.text, "QUERY TEXT")
+        stack_frame = stack_frames[1]
+        self.assertIsNone(stack_frame.procedure_id)
+        self.assertIsNone(stack_frame.start_line)
+        self.assertIsNone(stack_frame.start_column)
+        self.assertIsNone(stack_frame.end_line)
+        self.assertIsNone(stack_frame.end_column)
+        self.assertIsNone(stack_frame.text)
 
 
 class TestTimelineEntry(unittest.TestCase, _Base):

@@ -88,7 +88,7 @@ class ScanConfigError(object):
         """
         Output only.
         Defines an error reason code.
-        Next id: 43
+        Next id: 44
 
         Attributes:
           CODE_UNSPECIFIED (int): There is no error.
@@ -121,6 +121,7 @@ class ScanConfigError(object):
           FINDING_TYPE_UNSPECIFIED (int): Finding type value is not specified in the list findings request.
           FORBIDDEN_TO_SCAN_COMPUTE (int): Scan targets Compute Engine, yet current project was not whitelisted for
           Google Compute Engine Scanning Alpha access.
+          FORBIDDEN_UPDATE_TO_MANAGED_SCAN (int): User tries to update managed scan
           MALFORMED_FILTER (int): The supplied filter is malformed. For example, it can not be parsed, does
           not have a filter type in expression, or the same filter type appears
           more than once.
@@ -171,6 +172,7 @@ class ScanConfigError(object):
         FAILED_TO_AUTHENTICATE_TO_TARGET = 19
         FINDING_TYPE_UNSPECIFIED = 20
         FORBIDDEN_TO_SCAN_COMPUTE = 21
+        FORBIDDEN_UPDATE_TO_MANAGED_SCAN = 43
         MALFORMED_FILTER = 22
         MALFORMED_RESOURCE_NAME = 23
         PROJECT_INACTIVE = 24
@@ -248,7 +250,7 @@ class ScanRunErrorTrace(object):
           authentication or some other page outside of the scan scope.
           TOO_MANY_HTTP_ERRORS (int): Indicates that a scan encountered numerous errors from the web site
           pages. When available, most\_common\_http\_error\_code field indicates
-          the the most common HTTP error code encountered during the scan.
+          the most common HTTP error code encountered during the scan.
         """
 
         CODE_UNSPECIFIED = 0
@@ -265,7 +267,7 @@ class ScanRunWarningTrace(object):
         """
         Output only.
         Defines a warning message code.
-        Next id: 5
+        Next id: 6
 
         Attributes:
           CODE_UNSPECIFIED (int): Default value is never used.

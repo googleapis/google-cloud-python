@@ -88,6 +88,30 @@ s.replace(
     "types\.View",
     "enums.Task.View")
 
+# Change wording of optional params to disambiguate
+# client library request methods from Cloud Task requests
+s.replace("google/cloud/**/*.py",
+"""            retry \(Optional\[google\.api_core\.retry\.Retry\]\):  A retry object used
+                to retry requests\. If ``None`` is specified, requests will
+                be retried using a default configuration\.
+            timeout \(Optional\[float\]\): The amount of time, in seconds, to wait
+                for the request to complete\. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt\.
+            metadata \(Optional\[Sequence\[Tuple\[str, str\]\]\]\): Additional metadata
+                that is provided to the method\.
+
+""",
+"""            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry client library requests. If ``None`` is specified,
+                requests will be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the client library request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the client library method.
+
+""")
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

@@ -119,7 +119,9 @@ class ClusterControllerGrpcTransport(object):
     def create_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.create_cluster`.
 
-        Creates a cluster in a project.
+        Creates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -132,7 +134,9 @@ class ClusterControllerGrpcTransport(object):
     def update_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.update_cluster`.
 
-        Updates a cluster in a project.
+        Updates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -145,7 +149,9 @@ class ClusterControllerGrpcTransport(object):
     def delete_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.delete_cluster`.
 
-        Deletes a cluster in a project.
+        Deletes a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -184,8 +190,11 @@ class ClusterControllerGrpcTransport(object):
     def diagnose_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.diagnose_cluster`.
 
-        Gets cluster diagnostic information. After the operation completes, the
-        Operation.response field contains ``DiagnoseClusterOutputLocation``.
+        Gets cluster diagnostic information. The returned ``Operation.metadata``
+        will be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+        After the operation completes, ``Operation.response`` contains
+        `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate

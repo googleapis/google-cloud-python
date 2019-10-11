@@ -260,11 +260,9 @@ class WebSecurityScannerClient(object):
             >>> response = client.create_scan_config(parent, scan_config)
 
         Args:
-            parent (str): Required.
-                The parent resource name where the scan is created, which should be a
+            parent (str): Required. The parent resource name where the scan is created, which should be a
                 project resource name in the format 'projects/{projectId}'.
-            scan_config (Union[dict, ~google.cloud.websecurityscanner_v1beta.types.ScanConfig]): Required.
-                The ScanConfig to be created.
+            scan_config (Union[dict, ~google.cloud.websecurityscanner_v1beta.types.ScanConfig]): Required. The ScanConfig to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.websecurityscanner_v1beta.types.ScanConfig`
@@ -338,8 +336,7 @@ class WebSecurityScannerClient(object):
             >>> client.delete_scan_config(name)
 
         Args:
-            name (str): Required.
-                The resource name of the ScanConfig to be deleted. The name follows the
+            name (str): Required. The resource name of the ScanConfig to be deleted. The name follows the
                 format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -406,8 +403,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.get_scan_config(name)
 
         Args:
-            name (str): Required.
-                The resource name of the ScanConfig to be returned. The name follows the
+            name (str): Required. The resource name of the ScanConfig to be returned. The name follows the
                 format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -490,8 +486,7 @@ class WebSecurityScannerClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-                The parent resource name, which should be a project resource name in the
+            parent (str): Required. The parent resource name, which should be a project resource name in the
                 format 'projects/{projectId}'.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -587,8 +582,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.update_scan_config(scan_config, update_mask)
 
         Args:
-            scan_config (Union[dict, ~google.cloud.websecurityscanner_v1beta.types.ScanConfig]): Required.
-                The ScanConfig to be updated. The name field must be set to identify the
+            scan_config (Union[dict, ~google.cloud.websecurityscanner_v1beta.types.ScanConfig]): Required. The ScanConfig to be updated. The name field must be set to identify the
                 resource to be updated. The values of fields not covered by the mask
                 will be ignored.
 
@@ -670,8 +664,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.start_scan_run(name)
 
         Args:
-            name (str): Required.
-                The resource name of the ScanConfig to be used. The name follows the
+            name (str): Required. The resource name of the ScanConfig to be used. The name follows the
                 format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -741,8 +734,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.get_scan_run(name)
 
         Args:
-            name (str): Required.
-                The resource name of the ScanRun to be returned. The name follows the
+            name (str): Required. The resource name of the ScanRun to be returned. The name follows the
                 format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -827,8 +819,7 @@ class WebSecurityScannerClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-                The parent resource name, which should be a scan resource name in the
+            parent (str): Required. The parent resource name, which should be a scan resource name in the
                 format 'projects/{projectId}/scanConfigs/{scanConfigId}'.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -919,8 +910,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.stop_scan_run(name)
 
         Args:
-            name (str): Required.
-                The resource name of the ScanRun to be stopped. The name follows the
+            name (str): Required. The resource name of the ScanRun to be stopped. The name follows the
                 format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1004,8 +994,7 @@ class WebSecurityScannerClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-                The parent resource name, which should be a scan run resource name in the
+            parent (str): Required. The parent resource name, which should be a scan run resource name in the
                 format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
             page_size (int): The maximum number of resources contained in the
@@ -1097,8 +1086,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.get_finding(name)
 
         Args:
-            name (str): Required.
-                The resource name of the Finding to be returned. The name follows the
+            name (str): Required. The resource name of the Finding to be returned. The name follows the
                 format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1186,12 +1174,11 @@ class WebSecurityScannerClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-                The parent resource name, which should be a scan run resource name in the
+            parent (str): Required. The parent resource name, which should be a scan run resource name in the
                 format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-            filter_ (str): The filter expression. The expression must be in the format: . Supported
-                field: 'finding\_type'. Supported operator: '='.
+            filter_ (str): Required. The filter expression. The expression must be in the format: .
+                Supported field: 'finding\_type'. Supported operator: '='.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1281,8 +1268,7 @@ class WebSecurityScannerClient(object):
             >>> response = client.list_finding_type_stats(parent)
 
         Args:
-            parent (str): Required.
-                The parent resource name, which should be a scan run resource name in the
+            parent (str): Required. The parent resource name, which should be a scan run resource name in the
                 format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

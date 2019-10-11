@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## 0.30.0
+
+10-10-2019 11:38 PDT
+
+
+### New Features
+- Add `client_options` support. ([#9043](https://github.com/googleapis/google-cloud-python/pull/9043))
+
+### Dependencies
+- Pin minimum version of `google-cloud-core` to 1.0.3. ([#9043](https://github.com/googleapis/google-cloud-python/pull/9043))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.29.2
 
 07-24-2019 17:25 PDT
