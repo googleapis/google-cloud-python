@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.20.0
+
+09-26-2019 06:45 PDT
+
+
+### New Features
+- Add `user_project` param to HMAC-related methods. ([#9237](https://github.com/googleapis/google-cloud-python/pull/9237))
+- Add `Blob.from_string` and `Bucket.from_string` factories. ([#9143](https://github.com/googleapis/google-cloud-python/pull/9143))
+
+### Documentation
+- Fix intersphinx reference to `requests`. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix deep / broken URL for service account setup. ([#9164](https://github.com/googleapis/google-cloud-python/pull/9164))
+
+### Internal / Testing Changes
+- Fix typo in `_helpers.py`. ([#9239](https://github.com/googleapis/google-cloud-python/pull/9239))
+- In systests, retry bucket creation on 503. ([#9248](https://github.com/googleapis/google-cloud-python/pull/9248))
+- Avoid using `REGIONAL` / `MULTI_REGIONAL` in examples, tests. ([#9205](https://github.com/googleapis/google-cloud-python/pull/9205))
+- Move `benchwrapper` into `tests/perf`. ([#9246](https://github.com/googleapis/google-cloud-python/pull/9246))
+- Add support for `STORAGE_EMULATOR_HOST`; add `benchwrapper` script. ([#9219](https://github.com/googleapis/google-cloud-python/pull/9219))
+
+
 ## 1.19.0
 
 08-28-2019 09:45 PDT

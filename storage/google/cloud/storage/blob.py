@@ -468,6 +468,17 @@ class Blob(_PropertyMixin):
         else:
             helper = generate_signed_url_v4
 
+        if self._encryption_key is not None:
+            encryption_headers = _get_encryption_headers(self._encryption_key)
+            if headers is None:
+                headers = {}
+            if version == "v2":
+                # See: https://cloud.google.com/storage/docs/access-control/signed-urls-v2#about-canonical-extension-headers
+                v2_copy_only = "X-Goog-Encryption-Algorithm"
+                headers[v2_copy_only] = encryption_headers[v2_copy_only]
+            else:
+                headers.update(encryption_headers)
+
         return helper(
             credentials,
             resource=resource,
@@ -712,7 +723,7 @@ class Blob(_PropertyMixin):
             os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None, start=None, end=None):
-        """Download the contents of this blob as a string.
+        """Download the contents of this blob as a bytes object.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.

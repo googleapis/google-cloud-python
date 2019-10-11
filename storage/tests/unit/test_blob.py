@@ -391,10 +391,12 @@ class Test_Blob(unittest.TestCase):
         query_parameters=None,
         credentials=None,
         expiration=None,
+        encryption_key=None,
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
+        from google.cloud.storage.blob import _get_encryption_headers
 
         api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
 
@@ -406,7 +408,7 @@ class Test_Blob(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
+        blob = self._make_one(blob_name, bucket=bucket, encryption_key=encryption_key)
 
         if version is None:
             effective_version = "v2"
@@ -442,6 +444,15 @@ class Test_Blob(unittest.TestCase):
 
         encoded_name = blob_name.encode("utf-8")
         expected_resource = "/name/{}".format(parse.quote(encoded_name, safe=b"/~"))
+        if encryption_key is not None:
+            expected_headers = headers or {}
+            if effective_version == "v2":
+                expected_headers["X-Goog-Encryption-Algorithm"] = "AES256"
+            else:
+                expected_headers.update(_get_encryption_headers(encryption_key))
+        else:
+            expected_headers = headers
+
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": expiration,
@@ -452,7 +463,7 @@ class Test_Blob(unittest.TestCase):
             "response_type": response_type,
             "response_disposition": response_disposition,
             "generation": generation,
-            "headers": headers,
+            "headers": expected_headers,
             "query_parameters": query_parameters,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
@@ -514,6 +525,14 @@ class Test_Blob(unittest.TestCase):
     def test_generate_signed_url_v2_w_headers(self):
         self._generate_signed_url_v2_helper(headers={"x-goog-foo": "bar"})
 
+    def test_generate_signed_url_v2_w_csek(self):
+        self._generate_signed_url_v2_helper(encryption_key=os.urandom(32))
+
+    def test_generate_signed_url_v2_w_csek_and_headers(self):
+        self._generate_signed_url_v2_helper(
+            encryption_key=os.urandom(32), headers={"x-goog-foo": "bar"}
+        )
+
     def test_generate_signed_url_v2_w_credentials(self):
         credentials = object()
         self._generate_signed_url_v2_helper(credentials=credentials)
@@ -565,6 +584,14 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_v4_w_headers(self):
         self._generate_signed_url_v4_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v4_w_csek(self):
+        self._generate_signed_url_v4_helper(encryption_key=os.urandom(32))
+
+    def test_generate_signed_url_v4_w_csek_and_headers(self):
+        self._generate_signed_url_v4_helper(
+            encryption_key=os.urandom(32), headers={"x-goog-foo": "bar"}
+        )
 
     def test_generate_signed_url_v4_w_credentials(self):
         credentials = object()

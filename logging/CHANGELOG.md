@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.13.0
+
+09-23-2019 10:00 PDT
+
+### Implementation Changes
+- Pass 'stream' argument to super in 'ContainerEngineHandler.__init__'. ([#9166](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9166))
+
+### New Features
+- Add LoggingV2Servicer, LogSinks, logging_metrics, and log_entry. Add LogSeverity and HttpRequest types (via synth). ([#9262](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9262))
+- Add client_options to logging v1 ([#9046](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9046))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Docs: Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9085))
+- Delete custom synth removing gRPC send/recv msg size limits. ([#8939](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/8939))
+
 ## 1.12.1
 
 08-01-2019 09:45 PDT

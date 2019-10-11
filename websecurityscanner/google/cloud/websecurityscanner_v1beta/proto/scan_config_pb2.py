@@ -15,7 +15,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.websecurityscanner_v1beta.proto import (
     scan_run_pb2 as google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__run__pb2,
 )
@@ -30,10 +31,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\017ScanConfigProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\n>google/cloud/websecurityscanner_v1beta/proto/scan_config.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto\x1a;google/cloud/websecurityscanner_v1beta/proto/scan_run.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x97\x0c\n\nScanConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0f\n\x07max_qps\x18\x03 \x01(\x05\x12\x15\n\rstarting_urls\x18\x04 \x03(\t\x12Y\n\x0e\x61uthentication\x18\x05 \x01(\x0b\x32\x41.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication\x12P\n\nuser_agent\x18\x06 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1beta.ScanConfig.UserAgent\x12\x1a\n\x12\x62lacklist_patterns\x18\x07 \x03(\t\x12M\n\x08schedule\x18\x08 \x01(\x0b\x32;.google.cloud.websecurityscanner.v1beta.ScanConfig.Schedule\x12[\n\x10target_platforms\x18\t \x03(\x0e\x32\x41.google.cloud.websecurityscanner.v1beta.ScanConfig.TargetPlatform\x12{\n!export_to_security_command_center\x18\n \x01(\x0e\x32P.google.cloud.websecurityscanner.v1beta.ScanConfig.ExportToSecurityCommandCenter\x12\x43\n\nlatest_run\x18\x0b \x01(\x0b\x32/.google.cloud.websecurityscanner.v1beta.ScanRun\x12P\n\nrisk_level\x18\x0c \x01(\x0e\x32<.google.cloud.websecurityscanner.v1beta.ScanConfig.RiskLevel\x1a\xf5\x02\n\x0e\x41uthentication\x12i\n\x0egoogle_account\x18\x01 \x01(\x0b\x32O.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.GoogleAccountH\x00\x12i\n\x0e\x63ustom_account\x18\x02 \x01(\x0b\x32O.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.CustomAccountH\x00\x1a\x33\n\rGoogleAccount\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x1a\x46\n\rCustomAccount\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\tlogin_url\x18\x03 \x01(\tB\x10\n\x0e\x61uthentication\x1a]\n\x08Schedule\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1e\n\x16interval_duration_days\x18\x02 \x01(\x05"`\n\tUserAgent\x12\x1a\n\x16USER_AGENT_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x43HROME_LINUX\x10\x01\x12\x12\n\x0e\x43HROME_ANDROID\x10\x02\x12\x11\n\rSAFARI_IPHONE\x10\x03"N\n\x0eTargetPlatform\x12\x1f\n\x1bTARGET_PLATFORM_UNSPECIFIED\x10\x00\x12\x0e\n\nAPP_ENGINE\x10\x01\x12\x0b\n\x07\x43OMPUTE\x10\x02"<\n\tRiskLevel\x12\x1a\n\x16RISK_LEVEL_UNSPECIFIED\x10\x00\x12\n\n\x06NORMAL\x10\x01\x12\x07\n\x03LOW\x10\x02"m\n\x1d\x45xportToSecurityCommandCenter\x12\x31\n-EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x42\xc2\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0fScanConfigProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\n>google/cloud/websecurityscanner_v1beta/proto/scan_config.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a;google/cloud/websecurityscanner_v1beta/proto/scan_run.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xa6\r\n\nScanConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x0f\n\x07max_qps\x18\x03 \x01(\x05\x12\x1a\n\rstarting_urls\x18\x04 \x03(\tB\x03\xe0\x41\x02\x12Y\n\x0e\x61uthentication\x18\x05 \x01(\x0b\x32\x41.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication\x12P\n\nuser_agent\x18\x06 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1beta.ScanConfig.UserAgent\x12\x1a\n\x12\x62lacklist_patterns\x18\x07 \x03(\t\x12M\n\x08schedule\x18\x08 \x01(\x0b\x32;.google.cloud.websecurityscanner.v1beta.ScanConfig.Schedule\x12[\n\x10target_platforms\x18\t \x03(\x0e\x32\x41.google.cloud.websecurityscanner.v1beta.ScanConfig.TargetPlatform\x12{\n!export_to_security_command_center\x18\n \x01(\x0e\x32P.google.cloud.websecurityscanner.v1beta.ScanConfig.ExportToSecurityCommandCenter\x12\x43\n\nlatest_run\x18\x0b \x01(\x0b\x32/.google.cloud.websecurityscanner.v1beta.ScanRun\x12P\n\nrisk_level\x18\x0c \x01(\x0e\x32<.google.cloud.websecurityscanner.v1beta.ScanConfig.RiskLevel\x1a\x94\x03\n\x0e\x41uthentication\x12i\n\x0egoogle_account\x18\x01 \x01(\x0b\x32O.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.GoogleAccountH\x00\x12i\n\x0e\x63ustom_account\x18\x02 \x01(\x0b\x32O.google.cloud.websecurityscanner.v1beta.ScanConfig.Authentication.CustomAccountH\x00\x1a@\n\rGoogleAccount\x12\x15\n\x08username\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x08password\x18\x02 \x01(\tB\x06\xe0\x41\x02\xe0\x41\x04\x1aX\n\rCustomAccount\x12\x15\n\x08username\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x08password\x18\x02 \x01(\tB\x06\xe0\x41\x02\xe0\x41\x04\x12\x16\n\tlogin_url\x18\x03 \x01(\tB\x03\xe0\x41\x02\x42\x10\n\x0e\x61uthentication\x1a\x62\n\x08Schedule\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12#\n\x16interval_duration_days\x18\x02 \x01(\x05\x42\x03\xe0\x41\x02"`\n\tUserAgent\x12\x1a\n\x16USER_AGENT_UNSPECIFIED\x10\x00\x12\x10\n\x0c\x43HROME_LINUX\x10\x01\x12\x12\n\x0e\x43HROME_ANDROID\x10\x02\x12\x11\n\rSAFARI_IPHONE\x10\x03"N\n\x0eTargetPlatform\x12\x1f\n\x1bTARGET_PLATFORM_UNSPECIFIED\x10\x00\x12\x0e\n\nAPP_ENGINE\x10\x01\x12\x0b\n\x07\x43OMPUTE\x10\x02"<\n\tRiskLevel\x12\x1a\n\x16RISK_LEVEL_UNSPECIFIED\x10\x00\x12\n\n\x06NORMAL\x10\x01\x12\x07\n\x03LOW\x10\x02"m\n\x1d\x45xportToSecurityCommandCenter\x12\x31\n-EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02:_\xea\x41\\\n,websecurityscanner.googleapis.com/ScanConfig\x12,projects/{project}/scanConfigs/{scan_config}B\xc2\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0fScanConfigProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_scan__run__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -65,8 +67,8 @@ _SCANCONFIG_USERAGENT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1441,
-    serialized_end=1537,
+    serialized_start=1517,
+    serialized_end=1613,
 )
 _sym_db.RegisterEnumDescriptor(_SCANCONFIG_USERAGENT)
 
@@ -92,8 +94,8 @@ _SCANCONFIG_TARGETPLATFORM = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1539,
-    serialized_end=1617,
+    serialized_start=1615,
+    serialized_end=1693,
 )
 _sym_db.RegisterEnumDescriptor(_SCANCONFIG_TARGETPLATFORM)
 
@@ -119,8 +121,8 @@ _SCANCONFIG_RISKLEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1619,
-    serialized_end=1679,
+    serialized_start=1695,
+    serialized_end=1755,
 )
 _sym_db.RegisterEnumDescriptor(_SCANCONFIG_RISKLEVEL)
 
@@ -146,8 +148,8 @@ _SCANCONFIG_EXPORTTOSECURITYCOMMANDCENTER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1681,
-    serialized_end=1790,
+    serialized_start=1757,
+    serialized_end=1866,
 )
 _sym_db.RegisterEnumDescriptor(_SCANCONFIG_EXPORTTOSECURITYCOMMANDCENTER)
 
@@ -174,7 +176,7 @@ _SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -192,7 +194,7 @@ _SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\340A\004"),
             file=DESCRIPTOR,
         ),
     ],
@@ -204,8 +206,8 @@ _SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1203,
-    serialized_end=1254,
+    serialized_start=1243,
+    serialized_end=1307,
 )
 
 _SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT = _descriptor.Descriptor(
@@ -230,7 +232,7 @@ _SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -248,7 +250,7 @@ _SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\340A\004"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -266,7 +268,7 @@ _SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -278,8 +280,8 @@ _SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1256,
-    serialized_end=1326,
+    serialized_start=1309,
+    serialized_end=1397,
 )
 
 _SCANCONFIG_AUTHENTICATION = _descriptor.Descriptor(
@@ -345,8 +347,8 @@ _SCANCONFIG_AUTHENTICATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=971,
-    serialized_end=1344,
+    serialized_start=1011,
+    serialized_end=1415,
 )
 
 _SCANCONFIG_SCHEDULE = _descriptor.Descriptor(
@@ -389,7 +391,7 @@ _SCANCONFIG_SCHEDULE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -401,8 +403,8 @@ _SCANCONFIG_SCHEDULE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1346,
-    serialized_end=1439,
+    serialized_start=1417,
+    serialized_end=1515,
 )
 
 _SCANCONFIG = _descriptor.Descriptor(
@@ -445,7 +447,7 @@ _SCANCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -481,7 +483,7 @@ _SCANCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -637,13 +639,15 @@ _SCANCONFIG = _descriptor.Descriptor(
         _SCANCONFIG_RISKLEVEL,
         _SCANCONFIG_EXPORTTOSECURITYCOMMANDCENTER,
     ],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\\\n,websecurityscanner.googleapis.com/ScanConfig\022,projects/{project}/scanConfigs/{scan_config}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=231,
-    serialized_end=1790,
+    serialized_start=261,
+    serialized_end=1963,
 )
 
 _SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT.containing_type = _SCANCONFIG_AUTHENTICATION
@@ -712,7 +716,7 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
           username:
               Required. The user name of the Google account.
           password:
-              Input only. Required. The password of the Google account. The
+              Required. Input only. The password of the Google account. The
               credential is stored encrypted and not returned in any
               response nor included in audit logs.
       """,
@@ -732,7 +736,7 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
           username:
               Required. The user name of the custom account.
           password:
-              Input only. Required. The password of the custom account. The
+              Required. Input only. The password of the custom account. The
               credential is stored encrypted and not returned in any
               response nor included in audit logs.
           login_url:
@@ -830,4 +834,13 @@ _sym_db.RegisterMessage(ScanConfig.Schedule)
 
 
 DESCRIPTOR._options = None
+_SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT.fields_by_name["username"]._options = None
+_SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT.fields_by_name["password"]._options = None
+_SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT.fields_by_name["username"]._options = None
+_SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT.fields_by_name["password"]._options = None
+_SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT.fields_by_name["login_url"]._options = None
+_SCANCONFIG_SCHEDULE.fields_by_name["interval_duration_days"]._options = None
+_SCANCONFIG.fields_by_name["display_name"]._options = None
+_SCANCONFIG.fields_by_name["starting_urls"]._options = None
+_SCANCONFIG._options = None
 # @@protoc_insertion_point(module_scope)

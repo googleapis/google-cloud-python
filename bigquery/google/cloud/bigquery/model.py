@@ -34,10 +34,7 @@ class Model(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/models
 
     Args:
-        model_ref (Union[ \
-            :class:`~google.cloud.bigquery.model.ModelReference`, \
-            str, \
-        ]):
+        model_ref (Union[google.cloud.bigquery.model.ModelReference, str]):
             A pointer to a model. If ``model_ref`` is a string, it must
             included a project ID, dataset ID, and model ID, each separated
             by ``.``.
@@ -299,7 +296,7 @@ class ModelReference(object):
     """ModelReferences are pointers to models.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/models
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/models#modelreference
     """
 
     def __init__(self):

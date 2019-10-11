@@ -207,7 +207,7 @@ class DatasetReference(object):
     """DatasetReferences are pointers to datasets.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference
 
     Args:
         project (str): The ID of the project
@@ -346,13 +346,10 @@ class Dataset(object):
     """Datasets are containers for tables.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#resource-dataset
 
     Args:
-        dataset_ref (Union[ \
-            :class:`~google.cloud.bigquery.dataset.DatasetReference`, \
-            str, \
-        ]):
+        dataset_ref (Union[google.cloud.bigquery.dataset.DatasetReference, str]):
             A pointer to a dataset. If ``dataset_ref`` is a string, it must
             include both the project ID and the dataset ID, separated by
             ``.``.

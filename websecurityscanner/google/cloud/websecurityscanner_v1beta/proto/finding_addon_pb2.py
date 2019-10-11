@@ -15,9 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1beta/proto/finding_addon.proto",
     package="google.cloud.websecurityscanner.v1beta",
@@ -26,9 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\021FindingAddonProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\n@google/cloud/websecurityscanner_v1beta/proto/finding_addon.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto"*\n\x04\x46orm\x12\x12\n\naction_uri\x18\x01 \x01(\t\x12\x0e\n\x06\x66ields\x18\x02 \x03(\t"Q\n\x0fOutdatedLibrary\x12\x14\n\x0clibrary_name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x17\n\x0flearn_more_urls\x18\x03 \x03(\t"?\n\x11ViolatingResource\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x14\n\x0cresource_url\x18\x02 \x01(\t"/\n\x14VulnerableParameters\x12\x17\n\x0fparameter_names\x18\x01 \x03(\t"\xe8\x01\n\x11VulnerableHeaders\x12Q\n\x07headers\x18\x01 \x03(\x0b\x32@.google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header\x12Y\n\x0fmissing_headers\x18\x02 \x03(\x0b\x32@.google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header\x1a%\n\x06Header\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t"2\n\x03Xss\x12\x14\n\x0cstack_traces\x18\x01 \x03(\t\x12\x15\n\rerror_message\x18\x02 \x01(\tB\xc4\x01\n*com.google.cloud.websecurityscanner.v1betaB\x11\x46indingAddonProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\n@google/cloud/websecurityscanner_v1beta/proto/finding_addon.proto\x12&google.cloud.websecurityscanner.v1beta"*\n\x04\x46orm\x12\x12\n\naction_uri\x18\x01 \x01(\t\x12\x0e\n\x06\x66ields\x18\x02 \x03(\t"Q\n\x0fOutdatedLibrary\x12\x14\n\x0clibrary_name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x17\n\x0flearn_more_urls\x18\x03 \x03(\t"?\n\x11ViolatingResource\x12\x14\n\x0c\x63ontent_type\x18\x01 \x01(\t\x12\x14\n\x0cresource_url\x18\x02 \x01(\t"/\n\x14VulnerableParameters\x12\x17\n\x0fparameter_names\x18\x01 \x03(\t"\xe8\x01\n\x11VulnerableHeaders\x12Q\n\x07headers\x18\x01 \x03(\x0b\x32@.google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header\x12Y\n\x0fmissing_headers\x18\x02 \x03(\x0b\x32@.google.cloud.websecurityscanner.v1beta.VulnerableHeaders.Header\x1a%\n\x06Header\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t"2\n\x03Xss\x12\x14\n\x0cstack_traces\x18\x01 \x03(\t\x12\x15\n\rerror_message\x18\x02 \x01(\tB\xc4\x01\n*com.google.cloud.websecurityscanner.v1betaB\x11\x46indingAddonProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -84,8 +80,8 @@ _FORM = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=138,
-    serialized_end=180,
+    serialized_start=108,
+    serialized_end=150,
 )
 
 
@@ -159,8 +155,8 @@ _OUTDATEDLIBRARY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=182,
-    serialized_end=263,
+    serialized_start=152,
+    serialized_end=233,
 )
 
 
@@ -216,8 +212,8 @@ _VIOLATINGRESOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=265,
-    serialized_end=328,
+    serialized_start=235,
+    serialized_end=298,
 )
 
 
@@ -255,8 +251,8 @@ _VULNERABLEPARAMETERS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=330,
-    serialized_end=377,
+    serialized_start=300,
+    serialized_end=347,
 )
 
 
@@ -312,8 +308,8 @@ _VULNERABLEHEADERS_HEADER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=575,
-    serialized_end=612,
+    serialized_start=545,
+    serialized_end=582,
 )
 
 _VULNERABLEHEADERS = _descriptor.Descriptor(
@@ -368,8 +364,8 @@ _VULNERABLEHEADERS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=380,
-    serialized_end=612,
+    serialized_start=350,
+    serialized_end=582,
 )
 
 
@@ -425,8 +421,8 @@ _XSS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=614,
-    serialized_end=664,
+    serialized_start=584,
+    serialized_end=634,
 )
 
 _VULNERABLEHEADERS_HEADER.containing_type = _VULNERABLEHEADERS

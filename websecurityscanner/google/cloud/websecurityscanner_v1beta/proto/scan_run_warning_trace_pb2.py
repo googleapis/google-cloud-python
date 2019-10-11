@@ -130,7 +130,7 @@ ScanRunWarningTrace = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       code:
-          Output only. Indicates the warning code.
+          Indicates the warning code.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1beta.ScanRunWarningTrace)
     ),
