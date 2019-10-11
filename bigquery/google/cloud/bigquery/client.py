@@ -284,7 +284,7 @@ class Client(ClientWithProject):
             filter (str):
                 Optional. An expression for filtering the results by label.
                 For syntax, see
-                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#body.QUERY_PARAMETERS.filter.
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#body.QUERY_PARAMETERS.filter
             max_results (int):
                 Optional. Maximum number of datasets to return.
             page_token (str):
