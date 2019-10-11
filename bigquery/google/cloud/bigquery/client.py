@@ -284,7 +284,7 @@ class Client(ClientWithProject):
             filter (str):
                 Optional. An expression for filtering the results by label.
                 For syntax, see
-                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#body.QUERY_PARAMETERS.filter
             max_results (int):
                 Optional. Maximum number of datasets to return.
             page_token (str):
@@ -1320,7 +1320,7 @@ class Client(ClientWithProject):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationload
 
         Arguments:
             source_uris (Union[str, Sequence[str]]):
@@ -1858,7 +1858,7 @@ class Client(ClientWithProject):
         """Copy one or more tables to another table.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationtablecopy
 
         Arguments:
             sources (Union[ \
@@ -1949,7 +1949,7 @@ class Client(ClientWithProject):
         """Start a job to extract a table into Cloud Storage files.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationextract
 
         Arguments:
             source (Union[ \
@@ -2020,7 +2020,7 @@ class Client(ClientWithProject):
         """Run a SQL query.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery
 
         Arguments:
             query (str):

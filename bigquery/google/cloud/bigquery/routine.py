@@ -183,7 +183,7 @@ class Routine(object):
         time.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#resource-routine
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Routine.FIELDS.return_type
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["return_type"])
         if not resource:
@@ -277,7 +277,7 @@ class RoutineArgument(object):
     """Input/output argument of a function or a stored procedure.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#argument
 
     Args:
         ``**kwargs`` (Dict):
@@ -317,7 +317,7 @@ class RoutineArgument(object):
         ``ANY_TYPE``.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#ArgumentKind
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Argument.FIELDS.argument_kind
         """
         return self._properties.get(self._PROPERTY_TO_API_FIELD["kind"])
 
@@ -340,7 +340,7 @@ class RoutineArgument(object):
         of a variable, e.g., a function argument.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/StandardSqlDataType
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Argument.FIELDS.data_type
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["data_type"])
         if not resource:
@@ -400,7 +400,7 @@ class RoutineReference(object):
     """A pointer to a routine.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#routinereference
     """
 
     def __init__(self):

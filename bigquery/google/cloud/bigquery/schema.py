@@ -51,10 +51,10 @@ class SchemaField(object):
         name (str): the name of the field.
 
         field_type (str): the type of the field. See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
 
-        mode (str): the mode of the field. See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
+        mode (str): the mode of the field.  See
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
 
         description (Optional[str]): description for the field.
 
@@ -103,7 +103,7 @@ class SchemaField(object):
         """str: The type of the field.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
         """
         return self._field_type
 
@@ -112,7 +112,7 @@ class SchemaField(object):
         """str: The mode of the field.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
         """
         return self._mode
 
