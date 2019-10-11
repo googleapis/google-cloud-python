@@ -96,12 +96,12 @@ class Client(ClientWithProject):
                     passed falls back to the default inferred from the
                     environment.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no
-                        ``_http`` object is passed), falls back to the default
-                        inferred from the environment.
+    :param credentials: The authorization credentials to attach to requests.
+                        These credentials identify this application to the service.
+                        If none are specified, the client will attempt to ascertain
+                        the credentials from the environment.
 
     :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
