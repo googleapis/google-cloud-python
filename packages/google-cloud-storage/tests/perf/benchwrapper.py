@@ -24,7 +24,7 @@ args = parser.parse_args()
 if args.port is None:
     sys.exit("Usage: python3 main.py --port 8081")
 
-client = storage.Client()
+client = storage.Client.create_anonymous_client()
 
 
 class StorageBenchWrapperServicer(storage_pb2_grpc.StorageBenchWrapperServicer):
