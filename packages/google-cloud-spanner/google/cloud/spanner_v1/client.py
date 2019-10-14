@@ -93,11 +93,12 @@ class Client(ClientWithProject):
                     attempt to determine from the environment.
 
     :type credentials:
-        :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
+        :class:`Credentials <google.auth.credentials.Credentials>` or
         :data:`NoneType <types.NoneType>`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not provided, defaults to the Google
-                        Application Default Credentials.
+    :param credentials: (Optional) The authorization credentials to attach to requests.
+                        These credentials identify this application to the service.
+                        If none are specified, the client will attempt to ascertain
+                        the credentials from the environment.
 
     :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
     :param client_info:
@@ -143,7 +144,7 @@ class Client(ClientWithProject):
         """Getter for client's credentials.
 
         :rtype:
-            :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>`
+            :class:`Credentials <google.auth.credentials.Credentials>`
         :returns: The credentials stored on the client.
         """
         return self._credentials
