@@ -177,22 +177,6 @@ described above,
 so be sure none of the other possible environments conflict
 with your user provided credentials.
 
-Advanced users of `oauth2client`_ can also use custom flows to
-create credentials using `client secrets`_ or using a
-`webserver flow`_.
-After creation, :class:`Credentials <oauth2client.client.Credentials>`
-can be serialized with
-:meth:`to_json() <oauth2client.client.Credentials.to_json>`
-and stored in a file and then and deserialized with
-:meth:`from_json() <oauth2client.client.Credentials.from_json>`. In order
-to use ``oauth2client``'s credentials with this library, you'll need to
-`convert them`_.
-
-.. _oauth2client: https://github.com/Google/oauth2client
-.. _client secrets: https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets
-.. _webserver flow: https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow
-.. _convert them: http://google-auth.readthedocs.io/en/stable/user-guide.html#user-credentials
-
 Troubleshooting
 ===============
 
