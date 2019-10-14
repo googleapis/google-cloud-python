@@ -20,11 +20,11 @@ MANYLINUX_DIR=$(dirname ${SCRIPT_FI})
 SCRIPTS_DIR=$(dirname ${MANYLINUX_DIR})
 REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
-docker pull quay.io/pypa/manylinux1_x86_64
+docker pull quay.io/pypa/manylinux2010_x86_64
 docker run \
     --rm \
     --tty \
     --interactive \
     --volume ${REPO_ROOT}:/var/code/py-crc32c/ \
-    quay.io/pypa/manylinux1_x86_64 \
+    quay.io/pypa/manylinux2010_x86_64 \
     /var/code/py-crc32c/scripts/manylinux/build_on_centos.sh
