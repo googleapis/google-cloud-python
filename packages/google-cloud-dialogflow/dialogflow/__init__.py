@@ -24,12 +24,12 @@ from dialogflow_v2 import enums
 from dialogflow_v2 import types
 
 __all__ = (
-    'enums',
-    'types',
-    'AgentsClient',
-    'ContextsClient',
-    'EntityTypesClient',
-    'IntentsClient',
-    'SessionEntityTypesClient',
-    'SessionsClient',
+    "enums",
+    "types",
+    "AgentsClient",
+    "ContextsClient",
+    "EntityTypesClient",
+    "IntentsClient",
+    "SessionEntityTypesClient",
+    "SessionsClient",
 )

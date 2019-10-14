@@ -20,6 +20,6 @@ def test_versionless():
     """Establish that the versioned import maps to the versionless one."""
 
     for key in dir(dialogflow):
-        if key.startswith('_'):
+        if key.startswith("_"):
             continue
         assert getattr(dialogflow_v2, key) is getattr(dialogflow, key)

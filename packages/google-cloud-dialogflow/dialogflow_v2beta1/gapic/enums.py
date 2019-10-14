@@ -54,6 +54,7 @@ class AudioEncoding(enum.IntEnum):
       RTP header is replaced with a single byte containing the block length.
       Only Speex wideband is supported. ``sample_rate_hertz`` must be 16000.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
     AUDIO_ENCODING_FLAC = 2
@@ -74,6 +75,7 @@ class IntentView(enum.IntEnum):
       INTENT_VIEW_UNSPECIFIED (int): Training phrases field is not populated in the response.
       INTENT_VIEW_FULL (int): All fields are populated.
     """
+
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_FULL = 1
 
@@ -88,6 +90,7 @@ class NullValue(enum.IntEnum):
     Attributes:
       NULL_VALUE (int): Null value.
     """
+
     NULL_VALUE = 0
 
 
@@ -105,6 +108,7 @@ class OutputAudioEncoding(enum.IntEnum):
       Chrome and Firefox). The quality of the encoding is considerably higher
       than MP3 while using approximately the same bitrate.
     """
+
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
     OUTPUT_AUDIO_ENCODING_MP3 = 2
@@ -123,6 +127,7 @@ class SsmlVoiceGender(enum.IntEnum):
       SSML_VOICE_GENDER_FEMALE (int): A female voice.
       SSML_VOICE_GENDER_NEUTRAL (int): A gender-neutral voice.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     SSML_VOICE_GENDER_MALE = 1
     SSML_VOICE_GENDER_FEMALE = 2
@@ -141,6 +146,7 @@ class Agent(object):
           MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
           especially the ones using @sys.any or very large developer entities.
         """
+
         MATCH_MODE_UNSPECIFIED = 0
         MATCH_MODE_HYBRID = 1
         MATCH_MODE_ML_ONLY = 2
@@ -163,6 +169,7 @@ class Document(object):
           EXTRACTIVE_QA (int): Documents for which unstructured text is extracted and used for
           question answering.
         """
+
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
@@ -180,6 +187,7 @@ class EntityType(object):
           AUTO_EXPANSION_MODE_DEFAULT (int): Allows an agent to recognize values that have not been explicitly
           listed in the entity.
         """
+
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1
 
@@ -195,6 +203,7 @@ class EntityType(object):
           values. However, list entity types can contain references to other entity
           types (with or without aliases).
         """
+
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -211,6 +220,7 @@ class Intent(object):
           WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING (int): Webhook is enabled in the agent and in the intent. Also, each slot
           filling prompt is forwarded to the webhook.
         """
+
         WEBHOOK_STATE_UNSPECIFIED = 0
         WEBHOOK_STATE_ENABLED = 1
         WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
@@ -231,6 +241,7 @@ class Intent(object):
               phrases that you've created in template mode, those will continue to
               work.
             """
+
             TYPE_UNSPECIFIED = 0
             EXAMPLE = 1
             TEMPLATE = 2
@@ -312,6 +323,7 @@ class Intent(object):
                   }</pre>
               TELEPHONY (int): Telephony Gateway.
             """
+
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
             SLACK = 2
@@ -337,6 +349,7 @@ class KnowledgeAnswers(object):
               MEDIUM (int): Indicates our confidence is medium.
               HIGH (int): Indicates our confidence is high.
             """
+
             MATCH_CONFIDENCE_LEVEL_UNSPECIFIED = 0
             LOW = 1
             MEDIUM = 2
@@ -354,6 +367,7 @@ class KnowledgeOperationMetadata(object):
           RUNNING (int): The operation is currently running.
           DONE (int): The operation is done, either cancelled or completed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -379,6 +393,7 @@ class SessionEntityType(object):
           please call ``EntityTypes.GetEntityType`` on the developer entity type
           and merge.
         """
+
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
         ENTITY_OVERRIDE_MODE_OVERRIDE = 1
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
@@ -401,6 +416,7 @@ class StreamingRecognitionResult(object):
           only sent if ``single_utterance`` was set to ``true``, and is not used
           otherwise.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2

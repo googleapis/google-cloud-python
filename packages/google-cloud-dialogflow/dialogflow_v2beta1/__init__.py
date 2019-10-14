@@ -58,8 +58,7 @@ class KnowledgeBasesClient(knowledge_bases_client.KnowledgeBasesClient):
     enums = enums
 
 
-class SessionEntityTypesClient(
-        session_entity_types_client.SessionEntityTypesClient):
+class SessionEntityTypesClient(session_entity_types_client.SessionEntityTypesClient):
     __doc__ = session_entity_types_client.SessionEntityTypesClient.__doc__
     enums = enums
 
@@ -70,14 +69,14 @@ class SessionsClient(sessions_client.SessionsClient):
 
 
 __all__ = (
-    'enums',
-    'types',
-    'AgentsClient',
-    'ContextsClient',
-    'DocumentsClient',
-    'EntityTypesClient',
-    'IntentsClient',
-    'KnowledgeBasesClient',
-    'SessionEntityTypesClient',
-    'SessionsClient',
+    "enums",
+    "types",
+    "AgentsClient",
+    "ContextsClient",
+    "DocumentsClient",
+    "EntityTypesClient",
+    "IntentsClient",
+    "KnowledgeBasesClient",
+    "SessionEntityTypesClient",
+    "SessionsClient",
 )

@@ -2,12 +2,14 @@
 # source: google/cloud/dialogflow_v2beta1/proto/intent.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -15,8 +17,12 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
-from dialogflow_v2beta1.proto import context_pb2 as google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2
-from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from dialogflow_v2beta1.proto import (
+    context_pb2 as google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2,
+)
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
@@ -24,33 +30,52 @@ from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/dialogflow_v2beta1/proto/intent.proto',
-  package='google.cloud.dialogflow.v2beta1',
-  syntax='proto3',
-  serialized_options=_b('\n#com.google.cloud.dialogflow.v2beta1B\013IntentProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1'),
-  serialized_pb=_b('\n2google/cloud/dialogflow_v2beta1/proto/intent.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/context.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xb6&\n\x06Intent\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12K\n\rwebhook_state\x18\x06 \x01(\x0e\x32\x34.google.cloud.dialogflow.v2beta1.Intent.WebhookState\x12\x10\n\x08priority\x18\x03 \x01(\x05\x12\x13\n\x0bis_fallback\x18\x04 \x01(\x08\x12\x16\n\nml_enabled\x18\x05 \x01(\x08\x42\x02\x18\x01\x12\x13\n\x0bml_disabled\x18\x13 \x01(\x08\x12\x17\n\x0f\x65nd_interaction\x18\x15 \x01(\x08\x12\x1b\n\x13input_context_names\x18\x07 \x03(\t\x12\x0e\n\x06\x65vents\x18\x08 \x03(\t\x12P\n\x10training_phrases\x18\t \x03(\x0b\x32\x36.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase\x12\x0e\n\x06\x61\x63tion\x18\n \x01(\t\x12\x41\n\x0foutput_contexts\x18\x0b \x03(\x0b\x32(.google.cloud.dialogflow.v2beta1.Context\x12\x16\n\x0ereset_contexts\x18\x0c \x01(\x08\x12\x45\n\nparameters\x18\r \x03(\x0b\x32\x31.google.cloud.dialogflow.v2beta1.Intent.Parameter\x12\x41\n\x08messages\x18\x0e \x03(\x0b\x32/.google.cloud.dialogflow.v2beta1.Intent.Message\x12\\\n\x1a\x64\x65\x66\x61ult_response_platforms\x18\x0f \x03(\x0e\x32\x38.google.cloud.dialogflow.v2beta1.Intent.Message.Platform\x12!\n\x19root_followup_intent_name\x18\x10 \x01(\t\x12#\n\x1bparent_followup_intent_name\x18\x11 \x01(\t\x12X\n\x14\x66ollowup_intent_info\x18\x12 \x03(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo\x1a\xdd\x02\n\x0eTrainingPhrase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12I\n\x04type\x18\x02 \x01(\x0e\x32;.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Type\x12J\n\x05parts\x18\x03 \x03(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part\x12\x19\n\x11times_added_count\x18\x04 \x01(\x05\x1aN\n\x04Part\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x13\n\x0b\x65ntity_type\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x14\n\x0cuser_defined\x18\x04 \x01(\x08\";\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45XAMPLE\x10\x01\x12\x10\n\x08TEMPLATE\x10\x02\x1a\x02\x08\x01\x1a\xac\x01\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x15\n\rdefault_value\x18\x04 \x01(\t\x12 \n\x18\x65ntity_type_display_name\x18\x05 \x01(\t\x12\x11\n\tmandatory\x18\x06 \x01(\x08\x12\x0f\n\x07prompts\x18\x07 \x03(\t\x12\x0f\n\x07is_list\x18\x08 \x01(\x08\x1a\xfb\x19\n\x07Message\x12\x44\n\x04text\x18\x01 \x01(\x0b\x32\x34.google.cloud.dialogflow.v2beta1.Intent.Message.TextH\x00\x12\x46\n\x05image\x18\x02 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.ImageH\x00\x12U\n\rquick_replies\x18\x03 \x01(\x0b\x32<.google.cloud.dialogflow.v2beta1.Intent.Message.QuickRepliesH\x00\x12\x44\n\x04\x63\x61rd\x18\x04 \x01(\x0b\x32\x34.google.cloud.dialogflow.v2beta1.Intent.Message.CardH\x00\x12*\n\x07payload\x18\x05 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12[\n\x10simple_responses\x18\x07 \x01(\x0b\x32?.google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponsesH\x00\x12O\n\nbasic_card\x18\x08 \x01(\x0b\x32\x39.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCardH\x00\x12R\n\x0bsuggestions\x18\t \x01(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.Message.SuggestionsH\x00\x12`\n\x13link_out_suggestion\x18\n \x01(\x0b\x32\x41.google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestionH\x00\x12Q\n\x0blist_select\x18\x0b \x01(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.Message.ListSelectH\x00\x12Y\n\x0f\x63\x61rousel_select\x18\x0c \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelectH\x00\x12\x62\n\x14telephony_play_audio\x18\r \x01(\x0b\x32\x42.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudioH\x00\x12p\n\x1btelephony_synthesize_speech\x18\x0e \x01(\x0b\x32I.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeechH\x00\x12h\n\x17telephony_transfer_call\x18\x0f \x01(\x0b\x32\x45.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCallH\x00\x12J\n\x08platform\x18\x06 \x01(\x0e\x32\x38.google.cloud.dialogflow.v2beta1.Intent.Message.Platform\x1a\x14\n\x04Text\x12\x0c\n\x04text\x18\x01 \x03(\t\x1a\x36\n\x05Image\x12\x11\n\timage_uri\x18\x01 \x01(\t\x12\x1a\n\x12\x61\x63\x63\x65ssibility_text\x18\x02 \x01(\t\x1a\x34\n\x0cQuickReplies\x12\r\n\x05title\x18\x01 \x01(\t\x12\x15\n\rquick_replies\x18\x02 \x03(\t\x1a\xb2\x01\n\x04\x43\x61rd\x12\r\n\x05title\x18\x01 \x01(\t\x12\x10\n\x08subtitle\x18\x02 \x01(\t\x12\x11\n\timage_uri\x18\x03 \x01(\t\x12L\n\x07\x62uttons\x18\x04 \x03(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button\x1a(\n\x06\x42utton\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x10\n\x08postback\x18\x02 \x01(\t\x1aL\n\x0eSimpleResponse\x12\x16\n\x0etext_to_speech\x18\x01 \x01(\t\x12\x0c\n\x04ssml\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_text\x18\x03 \x01(\t\x1ak\n\x0fSimpleResponses\x12X\n\x10simple_responses\x18\x01 \x03(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse\x1a\xfe\x02\n\tBasicCard\x12\r\n\x05title\x18\x01 \x01(\t\x12\x10\n\x08subtitle\x18\x02 \x01(\t\x12\x16\n\x0e\x66ormatted_text\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x12Q\n\x07\x62uttons\x18\x05 \x03(\x0b\x32@.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button\x1a\x9e\x01\n\x06\x42utton\x12\r\n\x05title\x18\x01 \x01(\t\x12g\n\x0fopen_uri_action\x18\x02 \x01(\x0b\x32N.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction\x1a\x1c\n\rOpenUriAction\x12\x0b\n\x03uri\x18\x01 \x01(\t\x1a\x1b\n\nSuggestion\x12\r\n\x05title\x18\x01 \x01(\t\x1a^\n\x0bSuggestions\x12O\n\x0bsuggestions\x18\x01 \x03(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion\x1a:\n\x11LinkOutSuggestion\x12\x18\n\x10\x64\x65stination_name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x1a\xac\x02\n\nListSelect\x12\r\n\x05title\x18\x01 \x01(\t\x12N\n\x05items\x18\x02 \x03(\x0b\x32?.google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item\x1a\xbe\x01\n\x04Item\x12L\n\x04info\x18\x01 \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x1a\xa5\x02\n\x0e\x43\x61rouselSelect\x12R\n\x05items\x18\x01 \x03(\x0b\x32\x43.google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item\x1a\xbe\x01\n\x04Item\x12L\n\x04info\x18\x01 \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x1a/\n\x0eSelectItemInfo\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x10\n\x08synonyms\x18\x02 \x03(\t\x1a\'\n\x12TelephonyPlayAudio\x12\x11\n\taudio_uri\x18\x01 \x01(\t\x1a\x45\n\x19TelephonySynthesizeSpeech\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x08\n\x06source\x1a-\n\x15TelephonyTransferCall\x12\x14\n\x0cphone_number\x18\x01 \x01(\t\"\x9a\x01\n\x08Platform\x12\x18\n\x14PLATFORM_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x46\x41\x43\x45\x42OOK\x10\x01\x12\t\n\x05SLACK\x10\x02\x12\x0c\n\x08TELEGRAM\x10\x03\x12\x07\n\x03KIK\x10\x04\x12\t\n\x05SKYPE\x10\x05\x12\x08\n\x04LINE\x10\x06\x12\t\n\x05VIBER\x10\x07\x12\x15\n\x11\x41\x43TIONS_ON_GOOGLE\x10\x08\x12\r\n\tTELEPHONY\x10\nB\t\n\x07message\x1aW\n\x12\x46ollowupIntentInfo\x12\x1c\n\x14\x66ollowup_intent_name\x18\x01 \x01(\t\x12#\n\x1bparent_followup_intent_name\x18\x02 \x01(\t\"t\n\x0cWebhookState\x12\x1d\n\x19WEBHOOK_STATE_UNSPECIFIED\x10\x00\x12\x19\n\x15WEBHOOK_STATE_ENABLED\x10\x01\x12*\n&WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING\x10\x02\"\xa4\x01\n\x12ListIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12@\n\x0bintent_view\x18\x03 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t\"h\n\x13ListIntentsResponse\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"y\n\x10GetIntentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12@\n\x0bintent_view\x18\x03 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView\"\xb7\x01\n\x13\x43reateIntentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x06intent\x18\x02 \x01(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12@\n\x0bintent_view\x18\x04 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView\"\xd8\x01\n\x13UpdateIntentRequest\x12\x37\n\x06intent\x18\x01 \x01(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12@\n\x0bintent_view\x18\x04 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView\"#\n\x13\x44\x65leteIntentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xae\x02\n\x19\x42\x61tchUpdateIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x1a\n\x10intent_batch_uri\x18\x02 \x01(\tH\x00\x12K\n\x13intent_batch_inline\x18\x03 \x01(\x0b\x32,.google.cloud.dialogflow.v2beta1.IntentBatchH\x00\x12\x15\n\rlanguage_code\x18\x04 \x01(\t\x12/\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12@\n\x0bintent_view\x18\x06 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentViewB\x0e\n\x0cintent_batch\"V\n\x1a\x42\x61tchUpdateIntentsResponse\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\"e\n\x19\x42\x61tchDeleteIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x38\n\x07intents\x18\x02 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\"G\n\x0bIntentBatch\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent*?\n\nIntentView\x12\x1b\n\x17INTENT_VIEW_UNSPECIFIED\x10\x00\x12\x14\n\x10INTENT_VIEW_FULL\x10\x01\x32\xb2\t\n\x07Intents\x12\xac\x01\n\x0bListIntents\x12\x33.google.cloud.dialogflow.v2beta1.ListIntentsRequest\x1a\x34.google.cloud.dialogflow.v2beta1.ListIntentsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v2beta1/{parent=projects/*/agent}/intents\x12\x9b\x01\n\tGetIntent\x12\x31.google.cloud.dialogflow.v2beta1.GetIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent\"2\x82\xd3\xe4\x93\x02,\x12*/v2beta1/{name=projects/*/agent/intents/*}\x12\xa9\x01\n\x0c\x43reateIntent\x12\x34.google.cloud.dialogflow.v2beta1.CreateIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent\":\x82\xd3\xe4\x93\x02\x34\"*/v2beta1/{parent=projects/*/agent}/intents:\x06intent\x12\xb0\x01\n\x0cUpdateIntent\x12\x34.google.cloud.dialogflow.v2beta1.UpdateIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent\"A\x82\xd3\xe4\x93\x02;21/v2beta1/{intent.name=projects/*/agent/intents/*}:\x06intent\x12\x90\x01\n\x0c\x44\x65leteIntent\x12\x34.google.cloud.dialogflow.v2beta1.DeleteIntentRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,**/v2beta1/{name=projects/*/agent/intents/*}\x12\xb2\x01\n\x12\x42\x61tchUpdateIntents\x12:.google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest\x1a\x1d.google.longrunning.Operation\"A\x82\xd3\xe4\x93\x02;\"6/v2beta1/{parent=projects/*/agent}/intents:batchUpdate:\x01*\x12\xb2\x01\n\x12\x42\x61tchDeleteIntents\x12:.google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest\x1a\x1d.google.longrunning.Operation\"A\x82\xd3\xe4\x93\x02;\"6/v2beta1/{parent=projects/*/agent}/intents:batchDelete:\x01*B\xa9\x01\n#com.google.cloud.dialogflow.v2beta1B\x0bIntentProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_resource__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
+    name="google/cloud/dialogflow_v2beta1/proto/intent.proto",
+    package="google.cloud.dialogflow.v2beta1",
+    syntax="proto3",
+    serialized_options=_b(
+        "\n#com.google.cloud.dialogflow.v2beta1B\013IntentProtoP\001ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\370\001\001\242\002\002DF\252\002\037Google.Cloud.Dialogflow.V2beta1"
+    ),
+    serialized_pb=_b(
+        '\n2google/cloud/dialogflow_v2beta1/proto/intent.proto\x12\x1fgoogle.cloud.dialogflow.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x33google/cloud/dialogflow_v2beta1/proto/context.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto"\xb6&\n\x06Intent\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12K\n\rwebhook_state\x18\x06 \x01(\x0e\x32\x34.google.cloud.dialogflow.v2beta1.Intent.WebhookState\x12\x10\n\x08priority\x18\x03 \x01(\x05\x12\x13\n\x0bis_fallback\x18\x04 \x01(\x08\x12\x16\n\nml_enabled\x18\x05 \x01(\x08\x42\x02\x18\x01\x12\x13\n\x0bml_disabled\x18\x13 \x01(\x08\x12\x17\n\x0f\x65nd_interaction\x18\x15 \x01(\x08\x12\x1b\n\x13input_context_names\x18\x07 \x03(\t\x12\x0e\n\x06\x65vents\x18\x08 \x03(\t\x12P\n\x10training_phrases\x18\t \x03(\x0b\x32\x36.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase\x12\x0e\n\x06\x61\x63tion\x18\n \x01(\t\x12\x41\n\x0foutput_contexts\x18\x0b \x03(\x0b\x32(.google.cloud.dialogflow.v2beta1.Context\x12\x16\n\x0ereset_contexts\x18\x0c \x01(\x08\x12\x45\n\nparameters\x18\r \x03(\x0b\x32\x31.google.cloud.dialogflow.v2beta1.Intent.Parameter\x12\x41\n\x08messages\x18\x0e \x03(\x0b\x32/.google.cloud.dialogflow.v2beta1.Intent.Message\x12\\\n\x1a\x64\x65\x66\x61ult_response_platforms\x18\x0f \x03(\x0e\x32\x38.google.cloud.dialogflow.v2beta1.Intent.Message.Platform\x12!\n\x19root_followup_intent_name\x18\x10 \x01(\t\x12#\n\x1bparent_followup_intent_name\x18\x11 \x01(\t\x12X\n\x14\x66ollowup_intent_info\x18\x12 \x03(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo\x1a\xdd\x02\n\x0eTrainingPhrase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12I\n\x04type\x18\x02 \x01(\x0e\x32;.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Type\x12J\n\x05parts\x18\x03 \x03(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part\x12\x19\n\x11times_added_count\x18\x04 \x01(\x05\x1aN\n\x04Part\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x13\n\x0b\x65ntity_type\x18\x02 \x01(\t\x12\r\n\x05\x61lias\x18\x03 \x01(\t\x12\x14\n\x0cuser_defined\x18\x04 \x01(\x08";\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x45XAMPLE\x10\x01\x12\x10\n\x08TEMPLATE\x10\x02\x1a\x02\x08\x01\x1a\xac\x01\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x15\n\rdefault_value\x18\x04 \x01(\t\x12 \n\x18\x65ntity_type_display_name\x18\x05 \x01(\t\x12\x11\n\tmandatory\x18\x06 \x01(\x08\x12\x0f\n\x07prompts\x18\x07 \x03(\t\x12\x0f\n\x07is_list\x18\x08 \x01(\x08\x1a\xfb\x19\n\x07Message\x12\x44\n\x04text\x18\x01 \x01(\x0b\x32\x34.google.cloud.dialogflow.v2beta1.Intent.Message.TextH\x00\x12\x46\n\x05image\x18\x02 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.ImageH\x00\x12U\n\rquick_replies\x18\x03 \x01(\x0b\x32<.google.cloud.dialogflow.v2beta1.Intent.Message.QuickRepliesH\x00\x12\x44\n\x04\x63\x61rd\x18\x04 \x01(\x0b\x32\x34.google.cloud.dialogflow.v2beta1.Intent.Message.CardH\x00\x12*\n\x07payload\x18\x05 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12[\n\x10simple_responses\x18\x07 \x01(\x0b\x32?.google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponsesH\x00\x12O\n\nbasic_card\x18\x08 \x01(\x0b\x32\x39.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCardH\x00\x12R\n\x0bsuggestions\x18\t \x01(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.Message.SuggestionsH\x00\x12`\n\x13link_out_suggestion\x18\n \x01(\x0b\x32\x41.google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestionH\x00\x12Q\n\x0blist_select\x18\x0b \x01(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.Message.ListSelectH\x00\x12Y\n\x0f\x63\x61rousel_select\x18\x0c \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelectH\x00\x12\x62\n\x14telephony_play_audio\x18\r \x01(\x0b\x32\x42.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudioH\x00\x12p\n\x1btelephony_synthesize_speech\x18\x0e \x01(\x0b\x32I.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeechH\x00\x12h\n\x17telephony_transfer_call\x18\x0f \x01(\x0b\x32\x45.google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCallH\x00\x12J\n\x08platform\x18\x06 \x01(\x0e\x32\x38.google.cloud.dialogflow.v2beta1.Intent.Message.Platform\x1a\x14\n\x04Text\x12\x0c\n\x04text\x18\x01 \x03(\t\x1a\x36\n\x05Image\x12\x11\n\timage_uri\x18\x01 \x01(\t\x12\x1a\n\x12\x61\x63\x63\x65ssibility_text\x18\x02 \x01(\t\x1a\x34\n\x0cQuickReplies\x12\r\n\x05title\x18\x01 \x01(\t\x12\x15\n\rquick_replies\x18\x02 \x03(\t\x1a\xb2\x01\n\x04\x43\x61rd\x12\r\n\x05title\x18\x01 \x01(\t\x12\x10\n\x08subtitle\x18\x02 \x01(\t\x12\x11\n\timage_uri\x18\x03 \x01(\t\x12L\n\x07\x62uttons\x18\x04 \x03(\x0b\x32;.google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button\x1a(\n\x06\x42utton\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x10\n\x08postback\x18\x02 \x01(\t\x1aL\n\x0eSimpleResponse\x12\x16\n\x0etext_to_speech\x18\x01 \x01(\t\x12\x0c\n\x04ssml\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_text\x18\x03 \x01(\t\x1ak\n\x0fSimpleResponses\x12X\n\x10simple_responses\x18\x01 \x03(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse\x1a\xfe\x02\n\tBasicCard\x12\r\n\x05title\x18\x01 \x01(\t\x12\x10\n\x08subtitle\x18\x02 \x01(\t\x12\x16\n\x0e\x66ormatted_text\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x12Q\n\x07\x62uttons\x18\x05 \x03(\x0b\x32@.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button\x1a\x9e\x01\n\x06\x42utton\x12\r\n\x05title\x18\x01 \x01(\t\x12g\n\x0fopen_uri_action\x18\x02 \x01(\x0b\x32N.google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction\x1a\x1c\n\rOpenUriAction\x12\x0b\n\x03uri\x18\x01 \x01(\t\x1a\x1b\n\nSuggestion\x12\r\n\x05title\x18\x01 \x01(\t\x1a^\n\x0bSuggestions\x12O\n\x0bsuggestions\x18\x01 \x03(\x0b\x32:.google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion\x1a:\n\x11LinkOutSuggestion\x12\x18\n\x10\x64\x65stination_name\x18\x01 \x01(\t\x12\x0b\n\x03uri\x18\x02 \x01(\t\x1a\xac\x02\n\nListSelect\x12\r\n\x05title\x18\x01 \x01(\t\x12N\n\x05items\x18\x02 \x03(\x0b\x32?.google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item\x1a\xbe\x01\n\x04Item\x12L\n\x04info\x18\x01 \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x1a\xa5\x02\n\x0e\x43\x61rouselSelect\x12R\n\x05items\x18\x01 \x03(\x0b\x32\x43.google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item\x1a\xbe\x01\n\x04Item\x12L\n\x04info\x18\x01 \x01(\x0b\x32>.google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x44\n\x05image\x18\x04 \x01(\x0b\x32\x35.google.cloud.dialogflow.v2beta1.Intent.Message.Image\x1a/\n\x0eSelectItemInfo\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x10\n\x08synonyms\x18\x02 \x03(\t\x1a\'\n\x12TelephonyPlayAudio\x12\x11\n\taudio_uri\x18\x01 \x01(\t\x1a\x45\n\x19TelephonySynthesizeSpeech\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x08\n\x06source\x1a-\n\x15TelephonyTransferCall\x12\x14\n\x0cphone_number\x18\x01 \x01(\t"\x9a\x01\n\x08Platform\x12\x18\n\x14PLATFORM_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x46\x41\x43\x45\x42OOK\x10\x01\x12\t\n\x05SLACK\x10\x02\x12\x0c\n\x08TELEGRAM\x10\x03\x12\x07\n\x03KIK\x10\x04\x12\t\n\x05SKYPE\x10\x05\x12\x08\n\x04LINE\x10\x06\x12\t\n\x05VIBER\x10\x07\x12\x15\n\x11\x41\x43TIONS_ON_GOOGLE\x10\x08\x12\r\n\tTELEPHONY\x10\nB\t\n\x07message\x1aW\n\x12\x46ollowupIntentInfo\x12\x1c\n\x14\x66ollowup_intent_name\x18\x01 \x01(\t\x12#\n\x1bparent_followup_intent_name\x18\x02 \x01(\t"t\n\x0cWebhookState\x12\x1d\n\x19WEBHOOK_STATE_UNSPECIFIED\x10\x00\x12\x19\n\x15WEBHOOK_STATE_ENABLED\x10\x01\x12*\n&WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING\x10\x02"\xa4\x01\n\x12ListIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12@\n\x0bintent_view\x18\x03 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"h\n\x13ListIntentsResponse\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"y\n\x10GetIntentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12@\n\x0bintent_view\x18\x03 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView"\xb7\x01\n\x13\x43reateIntentRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x37\n\x06intent\x18\x02 \x01(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12@\n\x0bintent_view\x18\x04 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView"\xd8\x01\n\x13UpdateIntentRequest\x12\x37\n\x06intent\x18\x01 \x01(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12@\n\x0bintent_view\x18\x04 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentView"#\n\x13\x44\x65leteIntentRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xae\x02\n\x19\x42\x61tchUpdateIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x1a\n\x10intent_batch_uri\x18\x02 \x01(\tH\x00\x12K\n\x13intent_batch_inline\x18\x03 \x01(\x0b\x32,.google.cloud.dialogflow.v2beta1.IntentBatchH\x00\x12\x15\n\rlanguage_code\x18\x04 \x01(\t\x12/\n\x0bupdate_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12@\n\x0bintent_view\x18\x06 \x01(\x0e\x32+.google.cloud.dialogflow.v2beta1.IntentViewB\x0e\n\x0cintent_batch"V\n\x1a\x42\x61tchUpdateIntentsResponse\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent"e\n\x19\x42\x61tchDeleteIntentsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x38\n\x07intents\x18\x02 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent"G\n\x0bIntentBatch\x12\x38\n\x07intents\x18\x01 \x03(\x0b\x32\'.google.cloud.dialogflow.v2beta1.Intent*?\n\nIntentView\x12\x1b\n\x17INTENT_VIEW_UNSPECIFIED\x10\x00\x12\x14\n\x10INTENT_VIEW_FULL\x10\x01\x32\xb2\t\n\x07Intents\x12\xac\x01\n\x0bListIntents\x12\x33.google.cloud.dialogflow.v2beta1.ListIntentsRequest\x1a\x34.google.cloud.dialogflow.v2beta1.ListIntentsResponse"2\x82\xd3\xe4\x93\x02,\x12*/v2beta1/{parent=projects/*/agent}/intents\x12\x9b\x01\n\tGetIntent\x12\x31.google.cloud.dialogflow.v2beta1.GetIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent"2\x82\xd3\xe4\x93\x02,\x12*/v2beta1/{name=projects/*/agent/intents/*}\x12\xa9\x01\n\x0c\x43reateIntent\x12\x34.google.cloud.dialogflow.v2beta1.CreateIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent":\x82\xd3\xe4\x93\x02\x34"*/v2beta1/{parent=projects/*/agent}/intents:\x06intent\x12\xb0\x01\n\x0cUpdateIntent\x12\x34.google.cloud.dialogflow.v2beta1.UpdateIntentRequest\x1a\'.google.cloud.dialogflow.v2beta1.Intent"A\x82\xd3\xe4\x93\x02;21/v2beta1/{intent.name=projects/*/agent/intents/*}:\x06intent\x12\x90\x01\n\x0c\x44\x65leteIntent\x12\x34.google.cloud.dialogflow.v2beta1.DeleteIntentRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v2beta1/{name=projects/*/agent/intents/*}\x12\xb2\x01\n\x12\x42\x61tchUpdateIntents\x12:.google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v2beta1/{parent=projects/*/agent}/intents:batchUpdate:\x01*\x12\xb2\x01\n\x12\x42\x61tchDeleteIntents\x12:.google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest\x1a\x1d.google.longrunning.Operation"A\x82\xd3\xe4\x93\x02;"6/v2beta1/{parent=projects/*/agent}/intents:batchDelete:\x01*B\xa9\x01\n#com.google.cloud.dialogflow.v2beta1B\x0bIntentProtoP\x01ZIgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2beta1;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1fGoogle.Cloud.Dialogflow.V2beta1b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2.DESCRIPTOR,
+        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
+    ],
+)
 
 _INTENTVIEW = _descriptor.EnumDescriptor(
-  name='IntentView',
-  full_name='google.cloud.dialogflow.v2beta1.IntentView',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='INTENT_VIEW_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INTENT_VIEW_FULL', index=1, number=1,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=6687,
-  serialized_end=6750,
+    name="IntentView",
+    full_name="google.cloud.dialogflow.v2beta1.IntentView",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="INTENT_VIEW_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INTENT_VIEW_FULL",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=6687,
+    serialized_end=6750,
 )
 _sym_db.RegisterEnumDescriptor(_INTENTVIEW)
 
@@ -60,1870 +85,3193 @@ INTENT_VIEW_FULL = 1
 
 
 _INTENT_TRAININGPHRASE_TYPE = _descriptor.EnumDescriptor(
-  name='Type',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Type',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='TYPE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='EXAMPLE', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TEMPLATE', index=2, number=2,
-      serialized_options=_b('\010\001'),
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1511,
-  serialized_end=1570,
+    name="Type",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Type",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="EXAMPLE", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TEMPLATE",
+            index=2,
+            number=2,
+            serialized_options=_b("\010\001"),
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1511,
+    serialized_end=1570,
 )
 _sym_db.RegisterEnumDescriptor(_INTENT_TRAININGPHRASE_TYPE)
 
 _INTENT_MESSAGE_PLATFORM = _descriptor.EnumDescriptor(
-  name='Platform',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Platform',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='PLATFORM_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FACEBOOK', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SLACK', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TELEGRAM', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='KIK', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SKYPE', index=5, number=5,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LINE', index=6, number=6,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='VIBER', index=7, number=7,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTIONS_ON_GOOGLE', index=8, number=8,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TELEPHONY', index=9, number=10,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=4906,
-  serialized_end=5060,
+    name="Platform",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Platform",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="PLATFORM_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FACEBOOK", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SLACK", index=2, number=2, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TELEGRAM", index=3, number=3, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="KIK", index=4, number=4, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SKYPE", index=5, number=5, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LINE", index=6, number=6, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="VIBER", index=7, number=7, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="ACTIONS_ON_GOOGLE",
+            index=8,
+            number=8,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TELEPHONY", index=9, number=10, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=4906,
+    serialized_end=5060,
 )
 _sym_db.RegisterEnumDescriptor(_INTENT_MESSAGE_PLATFORM)
 
 _INTENT_WEBHOOKSTATE = _descriptor.EnumDescriptor(
-  name='WebhookState',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.WebhookState',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='WEBHOOK_STATE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='WEBHOOK_STATE_ENABLED', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=5162,
-  serialized_end=5278,
+    name="WebhookState",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.WebhookState",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="WEBHOOK_STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="WEBHOOK_STATE_ENABLED",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=5162,
+    serialized_end=5278,
 )
 _sym_db.RegisterEnumDescriptor(_INTENT_WEBHOOKSTATE)
 
 
 _INTENT_TRAININGPHRASE_PART = _descriptor.Descriptor(
-  name='Part',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.text', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entity_type', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.entity_type', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='alias', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.alias', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='user_defined', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.user_defined', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1431,
-  serialized_end=1509,
+    name="Part",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="entity_type",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.entity_type",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="alias",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.alias",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="user_defined",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part.user_defined",
+            index=3,
+            number=4,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1431,
+    serialized_end=1509,
 )
 
 _INTENT_TRAININGPHRASE = _descriptor.Descriptor(
-  name='TrainingPhrase',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='type', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parts', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.parts', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='times_added_count', full_name='google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.times_added_count', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_TRAININGPHRASE_PART, ],
-  enum_types=[
-    _INTENT_TRAININGPHRASE_TYPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1221,
-  serialized_end=1570,
+    name="TrainingPhrase",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="type",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parts",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.parts",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="times_added_count",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.times_added_count",
+            index=3,
+            number=4,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_INTENT_TRAININGPHRASE_PART],
+    enum_types=[_INTENT_TRAININGPHRASE_TYPE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1221,
+    serialized_end=1570,
 )
 
 _INTENT_PARAMETER = _descriptor.Descriptor(
-  name='Parameter',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.display_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.value', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='default_value', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.default_value', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entity_type_display_name', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.entity_type_display_name', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mandatory', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.mandatory', index=5,
-      number=6, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='prompts', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.prompts', index=6,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='is_list', full_name='google.cloud.dialogflow.v2beta1.Intent.Parameter.is_list', index=7,
-      number=8, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1573,
-  serialized_end=1745,
+    name="Parameter",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.value",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="default_value",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.default_value",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="entity_type_display_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.entity_type_display_name",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mandatory",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.mandatory",
+            index=5,
+            number=6,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="prompts",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.prompts",
+            index=6,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="is_list",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Parameter.is_list",
+            index=7,
+            number=8,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1573,
+    serialized_end=1745,
 )
 
 _INTENT_MESSAGE_TEXT = _descriptor.Descriptor(
-  name='Text',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Text',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Text.text', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3028,
-  serialized_end=3048,
+    name="Text",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Text",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Text.text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3028,
+    serialized_end=3048,
 )
 
 _INTENT_MESSAGE_IMAGE = _descriptor.Descriptor(
-  name='Image',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Image',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='image_uri', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Image.image_uri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='accessibility_text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Image.accessibility_text', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3050,
-  serialized_end=3104,
+    name="Image",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Image",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="image_uri",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Image.image_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="accessibility_text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Image.accessibility_text",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3050,
+    serialized_end=3104,
 )
 
 _INTENT_MESSAGE_QUICKREPLIES = _descriptor.Descriptor(
-  name='QuickReplies',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='quick_replies', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies.quick_replies', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3106,
-  serialized_end=3158,
+    name="QuickReplies",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="quick_replies",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies.quick_replies",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3106,
+    serialized_end=3158,
 )
 
 _INTENT_MESSAGE_CARD_BUTTON = _descriptor.Descriptor(
-  name='Button',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button.text', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='postback', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button.postback', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3299,
-  serialized_end=3339,
+    name="Button",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button.text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="postback",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button.postback",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3299,
+    serialized_end=3339,
 )
 
 _INTENT_MESSAGE_CARD = _descriptor.Descriptor(
-  name='Card',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='subtitle', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.subtitle', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image_uri', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.image_uri', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='buttons', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Card.buttons', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_CARD_BUTTON, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3161,
-  serialized_end=3339,
+    name="Card",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="subtitle",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.subtitle",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image_uri",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.image_uri",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="buttons",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Card.buttons",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_INTENT_MESSAGE_CARD_BUTTON],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3161,
+    serialized_end=3339,
 )
 
 _INTENT_MESSAGE_SIMPLERESPONSE = _descriptor.Descriptor(
-  name='SimpleResponse',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text_to_speech', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.text_to_speech', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ssml', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.ssml', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.display_text', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3341,
-  serialized_end=3417,
+    name="SimpleResponse",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text_to_speech",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.text_to_speech",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ssml",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.ssml",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse.display_text",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3341,
+    serialized_end=3417,
 )
 
 _INTENT_MESSAGE_SIMPLERESPONSES = _descriptor.Descriptor(
-  name='SimpleResponses',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='simple_responses', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses.simple_responses', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3419,
-  serialized_end=3526,
+    name="SimpleResponses",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="simple_responses",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses.simple_responses",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3419,
+    serialized_end=3526,
 )
 
 _INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION = _descriptor.Descriptor(
-  name='OpenUriAction',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='uri', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction.uri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3883,
-  serialized_end=3911,
+    name="OpenUriAction",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction.uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3883,
+    serialized_end=3911,
 )
 
 _INTENT_MESSAGE_BASICCARD_BUTTON = _descriptor.Descriptor(
-  name='Button',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='open_uri_action', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.open_uri_action', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3753,
-  serialized_end=3911,
+    name="Button",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="open_uri_action",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.open_uri_action",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3753,
+    serialized_end=3911,
 )
 
 _INTENT_MESSAGE_BASICCARD = _descriptor.Descriptor(
-  name='BasicCard',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='subtitle', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.subtitle', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='formatted_text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.formatted_text', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.image', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='buttons', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.buttons', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_BASICCARD_BUTTON, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3529,
-  serialized_end=3911,
+    name="BasicCard",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="subtitle",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.subtitle",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="formatted_text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.formatted_text",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.image",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="buttons",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.buttons",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_INTENT_MESSAGE_BASICCARD_BUTTON],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3529,
+    serialized_end=3911,
 )
 
 _INTENT_MESSAGE_SUGGESTION = _descriptor.Descriptor(
-  name='Suggestion',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3913,
-  serialized_end=3940,
+    name="Suggestion",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3913,
+    serialized_end=3940,
 )
 
 _INTENT_MESSAGE_SUGGESTIONS = _descriptor.Descriptor(
-  name='Suggestions',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='suggestions', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions.suggestions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3942,
-  serialized_end=4036,
+    name="Suggestions",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="suggestions",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions.suggestions",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3942,
+    serialized_end=4036,
 )
 
 _INTENT_MESSAGE_LINKOUTSUGGESTION = _descriptor.Descriptor(
-  name='LinkOutSuggestion',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='destination_name', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion.destination_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='uri', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion.uri', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4038,
-  serialized_end=4096,
+    name="LinkOutSuggestion",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="destination_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion.destination_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="uri",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion.uri",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4038,
+    serialized_end=4096,
 )
 
 _INTENT_MESSAGE_LISTSELECT_ITEM = _descriptor.Descriptor(
-  name='Item',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='info', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.info', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.title', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.image', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4209,
-  serialized_end=4399,
+    name="Item",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="info",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.info",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.title",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item.image",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4209,
+    serialized_end=4399,
 )
 
 _INTENT_MESSAGE_LISTSELECT = _descriptor.Descriptor(
-  name='ListSelect',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='items', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.items', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_LISTSELECT_ITEM, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4099,
-  serialized_end=4399,
+    name="ListSelect",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.title",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="items",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.items",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_INTENT_MESSAGE_LISTSELECT_ITEM],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4099,
+    serialized_end=4399,
 )
 
 _INTENT_MESSAGE_CAROUSELSELECT_ITEM = _descriptor.Descriptor(
-  name='Item',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='info', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.info', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='title', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.title', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.image', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4209,
-  serialized_end=4399,
+    name="Item",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="info",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.info",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="title",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.title",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item.image",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4209,
+    serialized_end=4399,
 )
 
 _INTENT_MESSAGE_CAROUSELSELECT = _descriptor.Descriptor(
-  name='CarouselSelect',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='items', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.items', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_CAROUSELSELECT_ITEM, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4402,
-  serialized_end=4695,
+    name="CarouselSelect",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="items",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.items",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[_INTENT_MESSAGE_CAROUSELSELECT_ITEM],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4402,
+    serialized_end=4695,
 )
 
 _INTENT_MESSAGE_SELECTITEMINFO = _descriptor.Descriptor(
-  name='SelectItemInfo',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='synonyms', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo.synonyms', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4697,
-  serialized_end=4744,
+    name="SelectItemInfo",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="synonyms",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo.synonyms",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4697,
+    serialized_end=4744,
 )
 
 _INTENT_MESSAGE_TELEPHONYPLAYAUDIO = _descriptor.Descriptor(
-  name='TelephonyPlayAudio',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='audio_uri', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio.audio_uri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4746,
-  serialized_end=4785,
+    name="TelephonyPlayAudio",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="audio_uri",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio.audio_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4746,
+    serialized_end=4785,
 )
 
 _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH = _descriptor.Descriptor(
-  name='TelephonySynthesizeSpeech',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.text', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ssml', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.ssml', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='source', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.source',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=4787,
-  serialized_end=4856,
+    name="TelephonySynthesizeSpeech",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ssml",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.ssml",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="source",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech.source",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=4787,
+    serialized_end=4856,
 )
 
 _INTENT_MESSAGE_TELEPHONYTRANSFERCALL = _descriptor.Descriptor(
-  name='TelephonyTransferCall',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='phone_number', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall.phone_number', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4858,
-  serialized_end=4903,
+    name="TelephonyTransferCall",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="phone_number",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall.phone_number",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4858,
+    serialized_end=4903,
 )
 
 _INTENT_MESSAGE = _descriptor.Descriptor(
-  name='Message',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.Message',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.text', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='image', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.image', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='quick_replies', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.quick_replies', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='card', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.card', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.payload', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='simple_responses', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.simple_responses', index=5,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='basic_card', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.basic_card', index=6,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='suggestions', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.suggestions', index=7,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='link_out_suggestion', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.link_out_suggestion', index=8,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='list_select', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.list_select', index=9,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='carousel_select', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.carousel_select', index=10,
-      number=12, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='telephony_play_audio', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.telephony_play_audio', index=11,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='telephony_synthesize_speech', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.telephony_synthesize_speech', index=12,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='telephony_transfer_call', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.telephony_transfer_call', index=13,
-      number=15, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='platform', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.platform', index=14,
-      number=6, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_MESSAGE_TEXT, _INTENT_MESSAGE_IMAGE, _INTENT_MESSAGE_QUICKREPLIES, _INTENT_MESSAGE_CARD, _INTENT_MESSAGE_SIMPLERESPONSE, _INTENT_MESSAGE_SIMPLERESPONSES, _INTENT_MESSAGE_BASICCARD, _INTENT_MESSAGE_SUGGESTION, _INTENT_MESSAGE_SUGGESTIONS, _INTENT_MESSAGE_LINKOUTSUGGESTION, _INTENT_MESSAGE_LISTSELECT, _INTENT_MESSAGE_CAROUSELSELECT, _INTENT_MESSAGE_SELECTITEMINFO, _INTENT_MESSAGE_TELEPHONYPLAYAUDIO, _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH, _INTENT_MESSAGE_TELEPHONYTRANSFERCALL, ],
-  enum_types=[
-    _INTENT_MESSAGE_PLATFORM,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='message', full_name='google.cloud.dialogflow.v2beta1.Intent.Message.message',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=1748,
-  serialized_end=5071,
+    name="Message",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.Message",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.text",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.image",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="quick_replies",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.quick_replies",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="card",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.card",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="payload",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.payload",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="simple_responses",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.simple_responses",
+            index=5,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="basic_card",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.basic_card",
+            index=6,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="suggestions",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.suggestions",
+            index=7,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="link_out_suggestion",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.link_out_suggestion",
+            index=8,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="list_select",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.list_select",
+            index=9,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="carousel_select",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.carousel_select",
+            index=10,
+            number=12,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="telephony_play_audio",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.telephony_play_audio",
+            index=11,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="telephony_synthesize_speech",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.telephony_synthesize_speech",
+            index=12,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="telephony_transfer_call",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.telephony_transfer_call",
+            index=13,
+            number=15,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="platform",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.platform",
+            index=14,
+            number=6,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _INTENT_MESSAGE_TEXT,
+        _INTENT_MESSAGE_IMAGE,
+        _INTENT_MESSAGE_QUICKREPLIES,
+        _INTENT_MESSAGE_CARD,
+        _INTENT_MESSAGE_SIMPLERESPONSE,
+        _INTENT_MESSAGE_SIMPLERESPONSES,
+        _INTENT_MESSAGE_BASICCARD,
+        _INTENT_MESSAGE_SUGGESTION,
+        _INTENT_MESSAGE_SUGGESTIONS,
+        _INTENT_MESSAGE_LINKOUTSUGGESTION,
+        _INTENT_MESSAGE_LISTSELECT,
+        _INTENT_MESSAGE_CAROUSELSELECT,
+        _INTENT_MESSAGE_SELECTITEMINFO,
+        _INTENT_MESSAGE_TELEPHONYPLAYAUDIO,
+        _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH,
+        _INTENT_MESSAGE_TELEPHONYTRANSFERCALL,
+    ],
+    enum_types=[_INTENT_MESSAGE_PLATFORM],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="message",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.Message.message",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1748,
+    serialized_end=5071,
 )
 
 _INTENT_FOLLOWUPINTENTINFO = _descriptor.Descriptor(
-  name='FollowupIntentInfo',
-  full_name='google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='followup_intent_name', full_name='google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo.followup_intent_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parent_followup_intent_name', full_name='google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo.parent_followup_intent_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5073,
-  serialized_end=5160,
+    name="FollowupIntentInfo",
+    full_name="google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="followup_intent_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo.followup_intent_name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parent_followup_intent_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo.parent_followup_intent_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5073,
+    serialized_end=5160,
 )
 
 _INTENT = _descriptor.Descriptor(
-  name='Intent',
-  full_name='google.cloud.dialogflow.v2beta1.Intent',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2beta1.Intent.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='google.cloud.dialogflow.v2beta1.Intent.display_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='webhook_state', full_name='google.cloud.dialogflow.v2beta1.Intent.webhook_state', index=2,
-      number=6, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='priority', full_name='google.cloud.dialogflow.v2beta1.Intent.priority', index=3,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='is_fallback', full_name='google.cloud.dialogflow.v2beta1.Intent.is_fallback', index=4,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ml_enabled', full_name='google.cloud.dialogflow.v2beta1.Intent.ml_enabled', index=5,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\030\001'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ml_disabled', full_name='google.cloud.dialogflow.v2beta1.Intent.ml_disabled', index=6,
-      number=19, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='end_interaction', full_name='google.cloud.dialogflow.v2beta1.Intent.end_interaction', index=7,
-      number=21, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='input_context_names', full_name='google.cloud.dialogflow.v2beta1.Intent.input_context_names', index=8,
-      number=7, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='events', full_name='google.cloud.dialogflow.v2beta1.Intent.events', index=9,
-      number=8, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='training_phrases', full_name='google.cloud.dialogflow.v2beta1.Intent.training_phrases', index=10,
-      number=9, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='action', full_name='google.cloud.dialogflow.v2beta1.Intent.action', index=11,
-      number=10, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_contexts', full_name='google.cloud.dialogflow.v2beta1.Intent.output_contexts', index=12,
-      number=11, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reset_contexts', full_name='google.cloud.dialogflow.v2beta1.Intent.reset_contexts', index=13,
-      number=12, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parameters', full_name='google.cloud.dialogflow.v2beta1.Intent.parameters', index=14,
-      number=13, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='messages', full_name='google.cloud.dialogflow.v2beta1.Intent.messages', index=15,
-      number=14, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='default_response_platforms', full_name='google.cloud.dialogflow.v2beta1.Intent.default_response_platforms', index=16,
-      number=15, type=14, cpp_type=8, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='root_followup_intent_name', full_name='google.cloud.dialogflow.v2beta1.Intent.root_followup_intent_name', index=17,
-      number=16, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parent_followup_intent_name', full_name='google.cloud.dialogflow.v2beta1.Intent.parent_followup_intent_name', index=18,
-      number=17, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='followup_intent_info', full_name='google.cloud.dialogflow.v2beta1.Intent.followup_intent_info', index=19,
-      number=18, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_INTENT_TRAININGPHRASE, _INTENT_PARAMETER, _INTENT_MESSAGE, _INTENT_FOLLOWUPINTENTINFO, ],
-  enum_types=[
-    _INTENT_WEBHOOKSTATE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=360,
-  serialized_end=5278,
+    name="Intent",
+    full_name="google.cloud.dialogflow.v2beta1.Intent",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.display_name",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="webhook_state",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.webhook_state",
+            index=2,
+            number=6,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="priority",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.priority",
+            index=3,
+            number=3,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="is_fallback",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.is_fallback",
+            index=4,
+            number=4,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ml_enabled",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.ml_enabled",
+            index=5,
+            number=5,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\030\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ml_disabled",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.ml_disabled",
+            index=6,
+            number=19,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_interaction",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.end_interaction",
+            index=7,
+            number=21,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_context_names",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.input_context_names",
+            index=8,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="events",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.events",
+            index=9,
+            number=8,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="training_phrases",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.training_phrases",
+            index=10,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="action",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.action",
+            index=11,
+            number=10,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_contexts",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.output_contexts",
+            index=12,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reset_contexts",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.reset_contexts",
+            index=13,
+            number=12,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parameters",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.parameters",
+            index=14,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="messages",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.messages",
+            index=15,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="default_response_platforms",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.default_response_platforms",
+            index=16,
+            number=15,
+            type=14,
+            cpp_type=8,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="root_followup_intent_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.root_followup_intent_name",
+            index=17,
+            number=16,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parent_followup_intent_name",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.parent_followup_intent_name",
+            index=18,
+            number=17,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="followup_intent_info",
+            full_name="google.cloud.dialogflow.v2beta1.Intent.followup_intent_info",
+            index=19,
+            number=18,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _INTENT_TRAININGPHRASE,
+        _INTENT_PARAMETER,
+        _INTENT_MESSAGE,
+        _INTENT_FOLLOWUPINTENTINFO,
+    ],
+    enum_types=[_INTENT_WEBHOOKSTATE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=360,
+    serialized_end=5278,
 )
 
 
 _LISTINTENTSREQUEST = _descriptor.Descriptor(
-  name='ListIntentsRequest',
-  full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest.language_code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_view', full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest.intent_view', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_size', full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest.page_size', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.dialogflow.v2beta1.ListIntentsRequest.page_token', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5281,
-  serialized_end=5445,
+    name="ListIntentsRequest",
+    full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest.language_code",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_view",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest.intent_view",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest.page_size",
+            index=3,
+            number=4,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsRequest.page_token",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5281,
+    serialized_end=5445,
 )
 
 
 _LISTINTENTSRESPONSE = _descriptor.Descriptor(
-  name='ListIntentsResponse',
-  full_name='google.cloud.dialogflow.v2beta1.ListIntentsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='intents', full_name='google.cloud.dialogflow.v2beta1.ListIntentsResponse.intents', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.dialogflow.v2beta1.ListIntentsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5447,
-  serialized_end=5551,
+    name="ListIntentsResponse",
+    full_name="google.cloud.dialogflow.v2beta1.ListIntentsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="intents",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsResponse.intents",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.dialogflow.v2beta1.ListIntentsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5447,
+    serialized_end=5551,
 )
 
 
 _GETINTENTREQUEST = _descriptor.Descriptor(
-  name='GetIntentRequest',
-  full_name='google.cloud.dialogflow.v2beta1.GetIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2beta1.GetIntentRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2beta1.GetIntentRequest.language_code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_view', full_name='google.cloud.dialogflow.v2beta1.GetIntentRequest.intent_view', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5553,
-  serialized_end=5674,
+    name="GetIntentRequest",
+    full_name="google.cloud.dialogflow.v2beta1.GetIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2beta1.GetIntentRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2beta1.GetIntentRequest.language_code",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_view",
+            full_name="google.cloud.dialogflow.v2beta1.GetIntentRequest.intent_view",
+            index=2,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5553,
+    serialized_end=5674,
 )
 
 
 _CREATEINTENTREQUEST = _descriptor.Descriptor(
-  name='CreateIntentRequest',
-  full_name='google.cloud.dialogflow.v2beta1.CreateIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.dialogflow.v2beta1.CreateIntentRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent', full_name='google.cloud.dialogflow.v2beta1.CreateIntentRequest.intent', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2beta1.CreateIntentRequest.language_code', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_view', full_name='google.cloud.dialogflow.v2beta1.CreateIntentRequest.intent_view', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5677,
-  serialized_end=5860,
+    name="CreateIntentRequest",
+    full_name="google.cloud.dialogflow.v2beta1.CreateIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.dialogflow.v2beta1.CreateIntentRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent",
+            full_name="google.cloud.dialogflow.v2beta1.CreateIntentRequest.intent",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2beta1.CreateIntentRequest.language_code",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_view",
+            full_name="google.cloud.dialogflow.v2beta1.CreateIntentRequest.intent_view",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5677,
+    serialized_end=5860,
 )
 
 
 _UPDATEINTENTREQUEST = _descriptor.Descriptor(
-  name='UpdateIntentRequest',
-  full_name='google.cloud.dialogflow.v2beta1.UpdateIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='intent', full_name='google.cloud.dialogflow.v2beta1.UpdateIntentRequest.intent', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2beta1.UpdateIntentRequest.language_code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.dialogflow.v2beta1.UpdateIntentRequest.update_mask', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_view', full_name='google.cloud.dialogflow.v2beta1.UpdateIntentRequest.intent_view', index=3,
-      number=4, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5863,
-  serialized_end=6079,
+    name="UpdateIntentRequest",
+    full_name="google.cloud.dialogflow.v2beta1.UpdateIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="intent",
+            full_name="google.cloud.dialogflow.v2beta1.UpdateIntentRequest.intent",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2beta1.UpdateIntentRequest.language_code",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.dialogflow.v2beta1.UpdateIntentRequest.update_mask",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_view",
+            full_name="google.cloud.dialogflow.v2beta1.UpdateIntentRequest.intent_view",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=5863,
+    serialized_end=6079,
 )
 
 
 _DELETEINTENTREQUEST = _descriptor.Descriptor(
-  name='DeleteIntentRequest',
-  full_name='google.cloud.dialogflow.v2beta1.DeleteIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2beta1.DeleteIntentRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6081,
-  serialized_end=6116,
+    name="DeleteIntentRequest",
+    full_name="google.cloud.dialogflow.v2beta1.DeleteIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2beta1.DeleteIntentRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6081,
+    serialized_end=6116,
 )
 
 
 _BATCHUPDATEINTENTSREQUEST = _descriptor.Descriptor(
-  name='BatchUpdateIntentsRequest',
-  full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_batch_uri', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch_uri', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_batch_inline', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch_inline', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.language_code', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='update_mask', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.update_mask', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_view', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_view', index=5,
-      number=6, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='intent_batch', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=6119,
-  serialized_end=6421,
+    name="BatchUpdateIntentsRequest",
+    full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_batch_uri",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch_uri",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_batch_inline",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch_inline",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.language_code",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.update_mask",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_view",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_view",
+            index=5,
+            number=6,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="intent_batch",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest.intent_batch",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=6119,
+    serialized_end=6421,
 )
 
 
 _BATCHUPDATEINTENTSRESPONSE = _descriptor.Descriptor(
-  name='BatchUpdateIntentsResponse',
-  full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='intents', full_name='google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse.intents', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6423,
-  serialized_end=6509,
+    name="BatchUpdateIntentsResponse",
+    full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="intents",
+            full_name="google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse.intents",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6423,
+    serialized_end=6509,
 )
 
 
 _BATCHDELETEINTENTSREQUEST = _descriptor.Descriptor(
-  name='BatchDeleteIntentsRequest',
-  full_name='google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='parent', full_name='google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest.parent', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intents', full_name='google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest.intents', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6511,
-  serialized_end=6612,
+    name="BatchDeleteIntentsRequest",
+    full_name="google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intents",
+            full_name="google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest.intents",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6511,
+    serialized_end=6612,
 )
 
 
 _INTENTBATCH = _descriptor.Descriptor(
-  name='IntentBatch',
-  full_name='google.cloud.dialogflow.v2beta1.IntentBatch',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='intents', full_name='google.cloud.dialogflow.v2beta1.IntentBatch.intents', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6614,
-  serialized_end=6685,
+    name="IntentBatch",
+    full_name="google.cloud.dialogflow.v2beta1.IntentBatch",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="intents",
+            full_name="google.cloud.dialogflow.v2beta1.IntentBatch.intents",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6614,
+    serialized_end=6685,
 )
 
 _INTENT_TRAININGPHRASE_PART.containing_type = _INTENT_TRAININGPHRASE
-_INTENT_TRAININGPHRASE.fields_by_name['type'].enum_type = _INTENT_TRAININGPHRASE_TYPE
-_INTENT_TRAININGPHRASE.fields_by_name['parts'].message_type = _INTENT_TRAININGPHRASE_PART
+_INTENT_TRAININGPHRASE.fields_by_name["type"].enum_type = _INTENT_TRAININGPHRASE_TYPE
+_INTENT_TRAININGPHRASE.fields_by_name[
+    "parts"
+].message_type = _INTENT_TRAININGPHRASE_PART
 _INTENT_TRAININGPHRASE.containing_type = _INTENT
 _INTENT_TRAININGPHRASE_TYPE.containing_type = _INTENT_TRAININGPHRASE
 _INTENT_PARAMETER.containing_type = _INTENT
@@ -1931,152 +3279,270 @@ _INTENT_MESSAGE_TEXT.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_IMAGE.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_QUICKREPLIES.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_CARD_BUTTON.containing_type = _INTENT_MESSAGE_CARD
-_INTENT_MESSAGE_CARD.fields_by_name['buttons'].message_type = _INTENT_MESSAGE_CARD_BUTTON
+_INTENT_MESSAGE_CARD.fields_by_name[
+    "buttons"
+].message_type = _INTENT_MESSAGE_CARD_BUTTON
 _INTENT_MESSAGE_CARD.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_SIMPLERESPONSE.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_SIMPLERESPONSES.fields_by_name['simple_responses'].message_type = _INTENT_MESSAGE_SIMPLERESPONSE
+_INTENT_MESSAGE_SIMPLERESPONSES.fields_by_name[
+    "simple_responses"
+].message_type = _INTENT_MESSAGE_SIMPLERESPONSE
 _INTENT_MESSAGE_SIMPLERESPONSES.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION.containing_type = _INTENT_MESSAGE_BASICCARD_BUTTON
-_INTENT_MESSAGE_BASICCARD_BUTTON.fields_by_name['open_uri_action'].message_type = _INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION
+_INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION.containing_type = (
+    _INTENT_MESSAGE_BASICCARD_BUTTON
+)
+_INTENT_MESSAGE_BASICCARD_BUTTON.fields_by_name[
+    "open_uri_action"
+].message_type = _INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION
 _INTENT_MESSAGE_BASICCARD_BUTTON.containing_type = _INTENT_MESSAGE_BASICCARD
-_INTENT_MESSAGE_BASICCARD.fields_by_name['image'].message_type = _INTENT_MESSAGE_IMAGE
-_INTENT_MESSAGE_BASICCARD.fields_by_name['buttons'].message_type = _INTENT_MESSAGE_BASICCARD_BUTTON
+_INTENT_MESSAGE_BASICCARD.fields_by_name["image"].message_type = _INTENT_MESSAGE_IMAGE
+_INTENT_MESSAGE_BASICCARD.fields_by_name[
+    "buttons"
+].message_type = _INTENT_MESSAGE_BASICCARD_BUTTON
 _INTENT_MESSAGE_BASICCARD.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_SUGGESTION.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_SUGGESTIONS.fields_by_name['suggestions'].message_type = _INTENT_MESSAGE_SUGGESTION
+_INTENT_MESSAGE_SUGGESTIONS.fields_by_name[
+    "suggestions"
+].message_type = _INTENT_MESSAGE_SUGGESTION
 _INTENT_MESSAGE_SUGGESTIONS.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_LINKOUTSUGGESTION.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_LISTSELECT_ITEM.fields_by_name['info'].message_type = _INTENT_MESSAGE_SELECTITEMINFO
-_INTENT_MESSAGE_LISTSELECT_ITEM.fields_by_name['image'].message_type = _INTENT_MESSAGE_IMAGE
+_INTENT_MESSAGE_LISTSELECT_ITEM.fields_by_name[
+    "info"
+].message_type = _INTENT_MESSAGE_SELECTITEMINFO
+_INTENT_MESSAGE_LISTSELECT_ITEM.fields_by_name[
+    "image"
+].message_type = _INTENT_MESSAGE_IMAGE
 _INTENT_MESSAGE_LISTSELECT_ITEM.containing_type = _INTENT_MESSAGE_LISTSELECT
-_INTENT_MESSAGE_LISTSELECT.fields_by_name['items'].message_type = _INTENT_MESSAGE_LISTSELECT_ITEM
+_INTENT_MESSAGE_LISTSELECT.fields_by_name[
+    "items"
+].message_type = _INTENT_MESSAGE_LISTSELECT_ITEM
 _INTENT_MESSAGE_LISTSELECT.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_CAROUSELSELECT_ITEM.fields_by_name['info'].message_type = _INTENT_MESSAGE_SELECTITEMINFO
-_INTENT_MESSAGE_CAROUSELSELECT_ITEM.fields_by_name['image'].message_type = _INTENT_MESSAGE_IMAGE
+_INTENT_MESSAGE_CAROUSELSELECT_ITEM.fields_by_name[
+    "info"
+].message_type = _INTENT_MESSAGE_SELECTITEMINFO
+_INTENT_MESSAGE_CAROUSELSELECT_ITEM.fields_by_name[
+    "image"
+].message_type = _INTENT_MESSAGE_IMAGE
 _INTENT_MESSAGE_CAROUSELSELECT_ITEM.containing_type = _INTENT_MESSAGE_CAROUSELSELECT
-_INTENT_MESSAGE_CAROUSELSELECT.fields_by_name['items'].message_type = _INTENT_MESSAGE_CAROUSELSELECT_ITEM
+_INTENT_MESSAGE_CAROUSELSELECT.fields_by_name[
+    "items"
+].message_type = _INTENT_MESSAGE_CAROUSELSELECT_ITEM
 _INTENT_MESSAGE_CAROUSELSELECT.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_SELECTITEMINFO.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_TELEPHONYPLAYAUDIO.containing_type = _INTENT_MESSAGE
 _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name['source'].fields.append(
-  _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name['text'])
-_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name['text'].containing_oneof = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name['source']
-_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name['source'].fields.append(
-  _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name['ssml'])
-_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name['ssml'].containing_oneof = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name['source']
+_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name["source"].fields.append(
+    _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name["text"]
+)
+_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name[
+    "text"
+].containing_oneof = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name["source"]
+_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name["source"].fields.append(
+    _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name["ssml"]
+)
+_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.fields_by_name[
+    "ssml"
+].containing_oneof = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH.oneofs_by_name["source"]
 _INTENT_MESSAGE_TELEPHONYTRANSFERCALL.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE.fields_by_name['text'].message_type = _INTENT_MESSAGE_TEXT
-_INTENT_MESSAGE.fields_by_name['image'].message_type = _INTENT_MESSAGE_IMAGE
-_INTENT_MESSAGE.fields_by_name['quick_replies'].message_type = _INTENT_MESSAGE_QUICKREPLIES
-_INTENT_MESSAGE.fields_by_name['card'].message_type = _INTENT_MESSAGE_CARD
-_INTENT_MESSAGE.fields_by_name['payload'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_INTENT_MESSAGE.fields_by_name['simple_responses'].message_type = _INTENT_MESSAGE_SIMPLERESPONSES
-_INTENT_MESSAGE.fields_by_name['basic_card'].message_type = _INTENT_MESSAGE_BASICCARD
-_INTENT_MESSAGE.fields_by_name['suggestions'].message_type = _INTENT_MESSAGE_SUGGESTIONS
-_INTENT_MESSAGE.fields_by_name['link_out_suggestion'].message_type = _INTENT_MESSAGE_LINKOUTSUGGESTION
-_INTENT_MESSAGE.fields_by_name['list_select'].message_type = _INTENT_MESSAGE_LISTSELECT
-_INTENT_MESSAGE.fields_by_name['carousel_select'].message_type = _INTENT_MESSAGE_CAROUSELSELECT
-_INTENT_MESSAGE.fields_by_name['telephony_play_audio'].message_type = _INTENT_MESSAGE_TELEPHONYPLAYAUDIO
-_INTENT_MESSAGE.fields_by_name['telephony_synthesize_speech'].message_type = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH
-_INTENT_MESSAGE.fields_by_name['telephony_transfer_call'].message_type = _INTENT_MESSAGE_TELEPHONYTRANSFERCALL
-_INTENT_MESSAGE.fields_by_name['platform'].enum_type = _INTENT_MESSAGE_PLATFORM
+_INTENT_MESSAGE.fields_by_name["text"].message_type = _INTENT_MESSAGE_TEXT
+_INTENT_MESSAGE.fields_by_name["image"].message_type = _INTENT_MESSAGE_IMAGE
+_INTENT_MESSAGE.fields_by_name[
+    "quick_replies"
+].message_type = _INTENT_MESSAGE_QUICKREPLIES
+_INTENT_MESSAGE.fields_by_name["card"].message_type = _INTENT_MESSAGE_CARD
+_INTENT_MESSAGE.fields_by_name[
+    "payload"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_INTENT_MESSAGE.fields_by_name[
+    "simple_responses"
+].message_type = _INTENT_MESSAGE_SIMPLERESPONSES
+_INTENT_MESSAGE.fields_by_name["basic_card"].message_type = _INTENT_MESSAGE_BASICCARD
+_INTENT_MESSAGE.fields_by_name["suggestions"].message_type = _INTENT_MESSAGE_SUGGESTIONS
+_INTENT_MESSAGE.fields_by_name[
+    "link_out_suggestion"
+].message_type = _INTENT_MESSAGE_LINKOUTSUGGESTION
+_INTENT_MESSAGE.fields_by_name["list_select"].message_type = _INTENT_MESSAGE_LISTSELECT
+_INTENT_MESSAGE.fields_by_name[
+    "carousel_select"
+].message_type = _INTENT_MESSAGE_CAROUSELSELECT
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_play_audio"
+].message_type = _INTENT_MESSAGE_TELEPHONYPLAYAUDIO
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_synthesize_speech"
+].message_type = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_transfer_call"
+].message_type = _INTENT_MESSAGE_TELEPHONYTRANSFERCALL
+_INTENT_MESSAGE.fields_by_name["platform"].enum_type = _INTENT_MESSAGE_PLATFORM
 _INTENT_MESSAGE.containing_type = _INTENT
 _INTENT_MESSAGE_PLATFORM.containing_type = _INTENT_MESSAGE
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['text'])
-_INTENT_MESSAGE.fields_by_name['text'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['image'])
-_INTENT_MESSAGE.fields_by_name['image'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['quick_replies'])
-_INTENT_MESSAGE.fields_by_name['quick_replies'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['card'])
-_INTENT_MESSAGE.fields_by_name['card'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['payload'])
-_INTENT_MESSAGE.fields_by_name['payload'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['simple_responses'])
-_INTENT_MESSAGE.fields_by_name['simple_responses'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['basic_card'])
-_INTENT_MESSAGE.fields_by_name['basic_card'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['suggestions'])
-_INTENT_MESSAGE.fields_by_name['suggestions'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['link_out_suggestion'])
-_INTENT_MESSAGE.fields_by_name['link_out_suggestion'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['list_select'])
-_INTENT_MESSAGE.fields_by_name['list_select'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['carousel_select'])
-_INTENT_MESSAGE.fields_by_name['carousel_select'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['telephony_play_audio'])
-_INTENT_MESSAGE.fields_by_name['telephony_play_audio'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['telephony_synthesize_speech'])
-_INTENT_MESSAGE.fields_by_name['telephony_synthesize_speech'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
-_INTENT_MESSAGE.oneofs_by_name['message'].fields.append(
-  _INTENT_MESSAGE.fields_by_name['telephony_transfer_call'])
-_INTENT_MESSAGE.fields_by_name['telephony_transfer_call'].containing_oneof = _INTENT_MESSAGE.oneofs_by_name['message']
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["text"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "text"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["image"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "image"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["quick_replies"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "quick_replies"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["card"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "card"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["payload"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "payload"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["simple_responses"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "simple_responses"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["basic_card"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "basic_card"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["suggestions"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "suggestions"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["link_out_suggestion"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "link_out_suggestion"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["list_select"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "list_select"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["carousel_select"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "carousel_select"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["telephony_play_audio"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_play_audio"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["telephony_synthesize_speech"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_synthesize_speech"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
+_INTENT_MESSAGE.oneofs_by_name["message"].fields.append(
+    _INTENT_MESSAGE.fields_by_name["telephony_transfer_call"]
+)
+_INTENT_MESSAGE.fields_by_name[
+    "telephony_transfer_call"
+].containing_oneof = _INTENT_MESSAGE.oneofs_by_name["message"]
 _INTENT_FOLLOWUPINTENTINFO.containing_type = _INTENT
-_INTENT.fields_by_name['webhook_state'].enum_type = _INTENT_WEBHOOKSTATE
-_INTENT.fields_by_name['training_phrases'].message_type = _INTENT_TRAININGPHRASE
-_INTENT.fields_by_name['output_contexts'].message_type = google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2._CONTEXT
-_INTENT.fields_by_name['parameters'].message_type = _INTENT_PARAMETER
-_INTENT.fields_by_name['messages'].message_type = _INTENT_MESSAGE
-_INTENT.fields_by_name['default_response_platforms'].enum_type = _INTENT_MESSAGE_PLATFORM
-_INTENT.fields_by_name['followup_intent_info'].message_type = _INTENT_FOLLOWUPINTENTINFO
+_INTENT.fields_by_name["webhook_state"].enum_type = _INTENT_WEBHOOKSTATE
+_INTENT.fields_by_name["training_phrases"].message_type = _INTENT_TRAININGPHRASE
+_INTENT.fields_by_name[
+    "output_contexts"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_context__pb2._CONTEXT
+)
+_INTENT.fields_by_name["parameters"].message_type = _INTENT_PARAMETER
+_INTENT.fields_by_name["messages"].message_type = _INTENT_MESSAGE
+_INTENT.fields_by_name[
+    "default_response_platforms"
+].enum_type = _INTENT_MESSAGE_PLATFORM
+_INTENT.fields_by_name["followup_intent_info"].message_type = _INTENT_FOLLOWUPINTENTINFO
 _INTENT_WEBHOOKSTATE.containing_type = _INTENT
-_LISTINTENTSREQUEST.fields_by_name['intent_view'].enum_type = _INTENTVIEW
-_LISTINTENTSRESPONSE.fields_by_name['intents'].message_type = _INTENT
-_GETINTENTREQUEST.fields_by_name['intent_view'].enum_type = _INTENTVIEW
-_CREATEINTENTREQUEST.fields_by_name['intent'].message_type = _INTENT
-_CREATEINTENTREQUEST.fields_by_name['intent_view'].enum_type = _INTENTVIEW
-_UPDATEINTENTREQUEST.fields_by_name['intent'].message_type = _INTENT
-_UPDATEINTENTREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_UPDATEINTENTREQUEST.fields_by_name['intent_view'].enum_type = _INTENTVIEW
-_BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_batch_inline'].message_type = _INTENTBATCH
-_BATCHUPDATEINTENTSREQUEST.fields_by_name['update_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_view'].enum_type = _INTENTVIEW
-_BATCHUPDATEINTENTSREQUEST.oneofs_by_name['intent_batch'].fields.append(
-  _BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_batch_uri'])
-_BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_batch_uri'].containing_oneof = _BATCHUPDATEINTENTSREQUEST.oneofs_by_name['intent_batch']
-_BATCHUPDATEINTENTSREQUEST.oneofs_by_name['intent_batch'].fields.append(
-  _BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_batch_inline'])
-_BATCHUPDATEINTENTSREQUEST.fields_by_name['intent_batch_inline'].containing_oneof = _BATCHUPDATEINTENTSREQUEST.oneofs_by_name['intent_batch']
-_BATCHUPDATEINTENTSRESPONSE.fields_by_name['intents'].message_type = _INTENT
-_BATCHDELETEINTENTSREQUEST.fields_by_name['intents'].message_type = _INTENT
-_INTENTBATCH.fields_by_name['intents'].message_type = _INTENT
-DESCRIPTOR.message_types_by_name['Intent'] = _INTENT
-DESCRIPTOR.message_types_by_name['ListIntentsRequest'] = _LISTINTENTSREQUEST
-DESCRIPTOR.message_types_by_name['ListIntentsResponse'] = _LISTINTENTSRESPONSE
-DESCRIPTOR.message_types_by_name['GetIntentRequest'] = _GETINTENTREQUEST
-DESCRIPTOR.message_types_by_name['CreateIntentRequest'] = _CREATEINTENTREQUEST
-DESCRIPTOR.message_types_by_name['UpdateIntentRequest'] = _UPDATEINTENTREQUEST
-DESCRIPTOR.message_types_by_name['DeleteIntentRequest'] = _DELETEINTENTREQUEST
-DESCRIPTOR.message_types_by_name['BatchUpdateIntentsRequest'] = _BATCHUPDATEINTENTSREQUEST
-DESCRIPTOR.message_types_by_name['BatchUpdateIntentsResponse'] = _BATCHUPDATEINTENTSRESPONSE
-DESCRIPTOR.message_types_by_name['BatchDeleteIntentsRequest'] = _BATCHDELETEINTENTSREQUEST
-DESCRIPTOR.message_types_by_name['IntentBatch'] = _INTENTBATCH
-DESCRIPTOR.enum_types_by_name['IntentView'] = _INTENTVIEW
+_LISTINTENTSREQUEST.fields_by_name["intent_view"].enum_type = _INTENTVIEW
+_LISTINTENTSRESPONSE.fields_by_name["intents"].message_type = _INTENT
+_GETINTENTREQUEST.fields_by_name["intent_view"].enum_type = _INTENTVIEW
+_CREATEINTENTREQUEST.fields_by_name["intent"].message_type = _INTENT
+_CREATEINTENTREQUEST.fields_by_name["intent_view"].enum_type = _INTENTVIEW
+_UPDATEINTENTREQUEST.fields_by_name["intent"].message_type = _INTENT
+_UPDATEINTENTREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_UPDATEINTENTREQUEST.fields_by_name["intent_view"].enum_type = _INTENTVIEW
+_BATCHUPDATEINTENTSREQUEST.fields_by_name[
+    "intent_batch_inline"
+].message_type = _INTENTBATCH
+_BATCHUPDATEINTENTSREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_BATCHUPDATEINTENTSREQUEST.fields_by_name["intent_view"].enum_type = _INTENTVIEW
+_BATCHUPDATEINTENTSREQUEST.oneofs_by_name["intent_batch"].fields.append(
+    _BATCHUPDATEINTENTSREQUEST.fields_by_name["intent_batch_uri"]
+)
+_BATCHUPDATEINTENTSREQUEST.fields_by_name[
+    "intent_batch_uri"
+].containing_oneof = _BATCHUPDATEINTENTSREQUEST.oneofs_by_name["intent_batch"]
+_BATCHUPDATEINTENTSREQUEST.oneofs_by_name["intent_batch"].fields.append(
+    _BATCHUPDATEINTENTSREQUEST.fields_by_name["intent_batch_inline"]
+)
+_BATCHUPDATEINTENTSREQUEST.fields_by_name[
+    "intent_batch_inline"
+].containing_oneof = _BATCHUPDATEINTENTSREQUEST.oneofs_by_name["intent_batch"]
+_BATCHUPDATEINTENTSRESPONSE.fields_by_name["intents"].message_type = _INTENT
+_BATCHDELETEINTENTSREQUEST.fields_by_name["intents"].message_type = _INTENT
+_INTENTBATCH.fields_by_name["intents"].message_type = _INTENT
+DESCRIPTOR.message_types_by_name["Intent"] = _INTENT
+DESCRIPTOR.message_types_by_name["ListIntentsRequest"] = _LISTINTENTSREQUEST
+DESCRIPTOR.message_types_by_name["ListIntentsResponse"] = _LISTINTENTSRESPONSE
+DESCRIPTOR.message_types_by_name["GetIntentRequest"] = _GETINTENTREQUEST
+DESCRIPTOR.message_types_by_name["CreateIntentRequest"] = _CREATEINTENTREQUEST
+DESCRIPTOR.message_types_by_name["UpdateIntentRequest"] = _UPDATEINTENTREQUEST
+DESCRIPTOR.message_types_by_name["DeleteIntentRequest"] = _DELETEINTENTREQUEST
+DESCRIPTOR.message_types_by_name[
+    "BatchUpdateIntentsRequest"
+] = _BATCHUPDATEINTENTSREQUEST
+DESCRIPTOR.message_types_by_name[
+    "BatchUpdateIntentsResponse"
+] = _BATCHUPDATEINTENTSRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "BatchDeleteIntentsRequest"
+] = _BATCHDELETEINTENTSREQUEST
+DESCRIPTOR.message_types_by_name["IntentBatch"] = _INTENTBATCH
+DESCRIPTOR.enum_types_by_name["IntentView"] = _INTENTVIEW
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,), dict(
-
-  TrainingPhrase = _reflection.GeneratedProtocolMessageType('TrainingPhrase', (_message.Message,), dict(
-
-    Part = _reflection.GeneratedProtocolMessageType('Part', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_TRAININGPHRASE_PART,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """Represents a part of a training phrase.
+Intent = _reflection.GeneratedProtocolMessageType(
+    "Intent",
+    (_message.Message,),
+    dict(
+        TrainingPhrase=_reflection.GeneratedProtocolMessageType(
+            "TrainingPhrase",
+            (_message.Message,),
+            dict(
+                Part=_reflection.GeneratedProtocolMessageType(
+                    "Part",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_TRAININGPHRASE_PART,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""Represents a part of a training phrase.
       
       
       Attributes:
@@ -2095,13 +3561,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               to manually annotate the part. When creating an annotated part
               with the API, you must set this to true.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part)
-      ))
-    ,
-    DESCRIPTOR = _INTENT_TRAININGPHRASE,
-    __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-    ,
-    __doc__ = """Represents an example that the agent is trained on.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase.Part)
+                    ),
+                ),
+                DESCRIPTOR=_INTENT_TRAININGPHRASE,
+                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                __doc__="""Represents an example that the agent is trained on.
     
     
     Attributes:
@@ -2131,15 +3596,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             the intent. Each time a developer adds an existing sample by
             editing an intent or training, this counter is increased.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase)
-    ))
-  ,
-
-  Parameter = _reflection.GeneratedProtocolMessageType('Parameter', (_message.Message,), dict(
-    DESCRIPTOR = _INTENT_PARAMETER,
-    __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-    ,
-    __doc__ = """Represents intent parameters.
+                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.TrainingPhrase)
+            ),
+        ),
+        Parameter=_reflection.GeneratedProtocolMessageType(
+            "Parameter",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_INTENT_PARAMETER,
+                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                __doc__="""Represents intent parameters.
     
     
     Attributes:
@@ -2173,32 +3639,36 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             Optional. Indicates whether the parameter represents a list of
             values.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Parameter)
-    ))
-  ,
-
-  Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), dict(
-
-    Text = _reflection.GeneratedProtocolMessageType('Text', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_TEXT,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The text response message.
+                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Parameter)
+            ),
+        ),
+        Message=_reflection.GeneratedProtocolMessageType(
+            "Message",
+            (_message.Message,),
+            dict(
+                Text=_reflection.GeneratedProtocolMessageType(
+                    "Text",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_TEXT,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The text response message.
       
       
       Attributes:
           text:
               Optional. The collection of the agent's responses.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Text)
-      ))
-    ,
-
-    Image = _reflection.GeneratedProtocolMessageType('Image', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_IMAGE,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The image response message.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Text)
+                    ),
+                ),
+                Image=_reflection.GeneratedProtocolMessageType(
+                    "Image",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_IMAGE,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The image response message.
       
       
       Attributes:
@@ -2209,15 +3679,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               e.g., screen readers. Required if image\_uri is set for
               CarouselSelect.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Image)
-      ))
-    ,
-
-    QuickReplies = _reflection.GeneratedProtocolMessageType('QuickReplies', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_QUICKREPLIES,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The quick replies response message.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Image)
+                    ),
+                ),
+                QuickReplies=_reflection.GeneratedProtocolMessageType(
+                    "QuickReplies",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_QUICKREPLIES,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The quick replies response message.
       
       
       Attributes:
@@ -2226,17 +3697,20 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           quick_replies:
               Optional. The collection of quick replies.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies)
-      ))
-    ,
-
-    Card = _reflection.GeneratedProtocolMessageType('Card', (_message.Message,), dict(
-
-      Button = _reflection.GeneratedProtocolMessageType('Button', (_message.Message,), dict(
-        DESCRIPTOR = _INTENT_MESSAGE_CARD_BUTTON,
-        __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-        ,
-        __doc__ = """Optional. Contains information about a button.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.QuickReplies)
+                    ),
+                ),
+                Card=_reflection.GeneratedProtocolMessageType(
+                    "Card",
+                    (_message.Message,),
+                    dict(
+                        Button=_reflection.GeneratedProtocolMessageType(
+                            "Button",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_INTENT_MESSAGE_CARD_BUTTON,
+                                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                                __doc__="""Optional. Contains information about a button.
         
         
         Attributes:
@@ -2246,13 +3720,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
                 Optional. The text to send back to the Dialogflow API or a URI
                 to open.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button)
-        ))
-      ,
-      DESCRIPTOR = _INTENT_MESSAGE_CARD,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The card response message.
+                                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Card.Button)
+                            ),
+                        ),
+                        DESCRIPTOR=_INTENT_MESSAGE_CARD,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The card response message.
       
       
       Attributes:
@@ -2265,15 +3738,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           buttons:
               Optional. The collection of card buttons.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Card)
-      ))
-    ,
-
-    SimpleResponse = _reflection.GeneratedProtocolMessageType('SimpleResponse', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_SIMPLERESPONSE,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The simple response message containing speech or text.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Card)
+                    ),
+                ),
+                SimpleResponse=_reflection.GeneratedProtocolMessageType(
+                    "SimpleResponse",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_SIMPLERESPONSE,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The simple response message containing speech or text.
       
       
       Attributes:
@@ -2287,15 +3761,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           display_text:
               Optional. The text to display.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse)
-      ))
-    ,
-
-    SimpleResponses = _reflection.GeneratedProtocolMessageType('SimpleResponses', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_SIMPLERESPONSES,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The collection of simple response candidates. This message in
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponse)
+                    ),
+                ),
+                SimpleResponses=_reflection.GeneratedProtocolMessageType(
+                    "SimpleResponses",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_SIMPLERESPONSES,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The collection of simple response candidates. This message in
       ``QueryResult.fulfillment_messages`` and
       ``WebhookResponse.fulfillment_messages`` should contain only one
       ``SimpleResponse``.
@@ -2305,32 +3780,36 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           simple_responses:
               Required. The list of simple responses.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses)
-      ))
-    ,
-
-    BasicCard = _reflection.GeneratedProtocolMessageType('BasicCard', (_message.Message,), dict(
-
-      Button = _reflection.GeneratedProtocolMessageType('Button', (_message.Message,), dict(
-
-        OpenUriAction = _reflection.GeneratedProtocolMessageType('OpenUriAction', (_message.Message,), dict(
-          DESCRIPTOR = _INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION,
-          __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-          ,
-          __doc__ = """Opens the given URI.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SimpleResponses)
+                    ),
+                ),
+                BasicCard=_reflection.GeneratedProtocolMessageType(
+                    "BasicCard",
+                    (_message.Message,),
+                    dict(
+                        Button=_reflection.GeneratedProtocolMessageType(
+                            "Button",
+                            (_message.Message,),
+                            dict(
+                                OpenUriAction=_reflection.GeneratedProtocolMessageType(
+                                    "OpenUriAction",
+                                    (_message.Message,),
+                                    dict(
+                                        DESCRIPTOR=_INTENT_MESSAGE_BASICCARD_BUTTON_OPENURIACTION,
+                                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                                        __doc__="""Opens the given URI.
           
           
           Attributes:
               uri:
                   Required. The HTTP or HTTPS scheme URI.
           """,
-          # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction)
-          ))
-        ,
-        DESCRIPTOR = _INTENT_MESSAGE_BASICCARD_BUTTON,
-        __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-        ,
-        __doc__ = """The button object that appears at the bottom of a card.
+                                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button.OpenUriAction)
+                                    ),
+                                ),
+                                DESCRIPTOR=_INTENT_MESSAGE_BASICCARD_BUTTON,
+                                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                                __doc__="""The button object that appears at the bottom of a card.
         
         
         Attributes:
@@ -2339,13 +3818,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             open_uri_action:
                 Required. Action to take when a user taps on the button.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button)
-        ))
-      ,
-      DESCRIPTOR = _INTENT_MESSAGE_BASICCARD,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The basic card message. Useful for displaying information.
+                                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard.Button)
+                            ),
+                        ),
+                        DESCRIPTOR=_INTENT_MESSAGE_BASICCARD,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The basic card message. Useful for displaying information.
       
       
       Attributes:
@@ -2360,15 +3838,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           buttons:
               Optional. The collection of card buttons.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard)
-      ))
-    ,
-
-    Suggestion = _reflection.GeneratedProtocolMessageType('Suggestion', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_SUGGESTION,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The suggestion chip message that the user can tap to quickly post a
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.BasicCard)
+                    ),
+                ),
+                Suggestion=_reflection.GeneratedProtocolMessageType(
+                    "Suggestion",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_SUGGESTION,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The suggestion chip message that the user can tap to quickly post a
       reply to the conversation.
       
       
@@ -2376,30 +3855,32 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           title:
               Required. The text shown the in the suggestion chip.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion)
-      ))
-    ,
-
-    Suggestions = _reflection.GeneratedProtocolMessageType('Suggestions', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_SUGGESTIONS,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The collection of suggestions.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Suggestion)
+                    ),
+                ),
+                Suggestions=_reflection.GeneratedProtocolMessageType(
+                    "Suggestions",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_SUGGESTIONS,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The collection of suggestions.
       
       
       Attributes:
           suggestions:
               Required. The list of suggested replies.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions)
-      ))
-    ,
-
-    LinkOutSuggestion = _reflection.GeneratedProtocolMessageType('LinkOutSuggestion', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_LINKOUTSUGGESTION,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The suggestion chip message that allows the user to jump out to the app
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.Suggestions)
+                    ),
+                ),
+                LinkOutSuggestion=_reflection.GeneratedProtocolMessageType(
+                    "LinkOutSuggestion",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_LINKOUTSUGGESTION,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The suggestion chip message that allows the user to jump out to the app
       or website associated with this agent.
       
       
@@ -2410,17 +3891,20 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               Required. The URI of the app or site to open when the user
               taps the suggestion chip.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion)
-      ))
-    ,
-
-    ListSelect = _reflection.GeneratedProtocolMessageType('ListSelect', (_message.Message,), dict(
-
-      Item = _reflection.GeneratedProtocolMessageType('Item', (_message.Message,), dict(
-        DESCRIPTOR = _INTENT_MESSAGE_LISTSELECT_ITEM,
-        __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-        ,
-        __doc__ = """An item in the list.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.LinkOutSuggestion)
+                    ),
+                ),
+                ListSelect=_reflection.GeneratedProtocolMessageType(
+                    "ListSelect",
+                    (_message.Message,),
+                    dict(
+                        Item=_reflection.GeneratedProtocolMessageType(
+                            "Item",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_INTENT_MESSAGE_LISTSELECT_ITEM,
+                                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                                __doc__="""An item in the list.
         
         
         Attributes:
@@ -2433,13 +3917,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             image:
                 Optional. The image to display.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item)
-        ))
-      ,
-      DESCRIPTOR = _INTENT_MESSAGE_LISTSELECT,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The card for presenting a list of options to select from.
+                                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect.Item)
+                            ),
+                        ),
+                        DESCRIPTOR=_INTENT_MESSAGE_LISTSELECT,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The card for presenting a list of options to select from.
       
       
       Attributes:
@@ -2448,17 +3931,20 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           items:
               Required. List items.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect)
-      ))
-    ,
-
-    CarouselSelect = _reflection.GeneratedProtocolMessageType('CarouselSelect', (_message.Message,), dict(
-
-      Item = _reflection.GeneratedProtocolMessageType('Item', (_message.Message,), dict(
-        DESCRIPTOR = _INTENT_MESSAGE_CAROUSELSELECT_ITEM,
-        __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-        ,
-        __doc__ = """An item in the carousel.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.ListSelect)
+                    ),
+                ),
+                CarouselSelect=_reflection.GeneratedProtocolMessageType(
+                    "CarouselSelect",
+                    (_message.Message,),
+                    dict(
+                        Item=_reflection.GeneratedProtocolMessageType(
+                            "Item",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_INTENT_MESSAGE_CAROUSELSELECT_ITEM,
+                                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                                __doc__="""An item in the carousel.
         
         
         Attributes:
@@ -2471,28 +3957,28 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             image:
                 Optional. The image to display.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item)
-        ))
-      ,
-      DESCRIPTOR = _INTENT_MESSAGE_CAROUSELSELECT,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """The card for presenting a carousel of options to select from.
+                                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect.Item)
+                            ),
+                        ),
+                        DESCRIPTOR=_INTENT_MESSAGE_CAROUSELSELECT,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""The card for presenting a carousel of options to select from.
       
       
       Attributes:
           items:
               Required. Carousel items.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect)
-      ))
-    ,
-
-    SelectItemInfo = _reflection.GeneratedProtocolMessageType('SelectItemInfo', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_SELECTITEMINFO,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """Additional info about the select item for when it is triggered in a
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.CarouselSelect)
+                    ),
+                ),
+                SelectItemInfo=_reflection.GeneratedProtocolMessageType(
+                    "SelectItemInfo",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_SELECTITEMINFO,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""Additional info about the select item for when it is triggered in a
       dialog.
       
       
@@ -2504,15 +3990,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               Optional. A list of synonyms that can also be used to trigger
               this item in dialog.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo)
-      ))
-    ,
-
-    TelephonyPlayAudio = _reflection.GeneratedProtocolMessageType('TelephonyPlayAudio', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_TELEPHONYPLAYAUDIO,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """Plays audio from a file in Telephony Gateway.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.SelectItemInfo)
+                    ),
+                ),
+                TelephonyPlayAudio=_reflection.GeneratedProtocolMessageType(
+                    "TelephonyPlayAudio",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_TELEPHONYPLAYAUDIO,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""Plays audio from a file in Telephony Gateway.
       
       
       Attributes:
@@ -2530,15 +4017,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               audio from other sources, consider using the
               ``TelephonySynthesizeSpeech`` message with SSML.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio)
-      ))
-    ,
-
-    TelephonySynthesizeSpeech = _reflection.GeneratedProtocolMessageType('TelephonySynthesizeSpeech', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """Synthesizes speech and plays back the synthesized audio to the caller in
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyPlayAudio)
+                    ),
+                ),
+                TelephonySynthesizeSpeech=_reflection.GeneratedProtocolMessageType(
+                    "TelephonySynthesizeSpeech",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_TELEPHONYSYNTHESIZESPEECH,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""Synthesizes speech and plays back the synthesized audio to the caller in
       Telephony Gateway.
       
       Telephony Gateway takes the synthesizer settings from
@@ -2555,15 +4043,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               The SSML to be synthesized. For more information, see `SSML
               <https://developers.google.com/actions/reference/ssml>`__.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech)
-      ))
-    ,
-
-    TelephonyTransferCall = _reflection.GeneratedProtocolMessageType('TelephonyTransferCall', (_message.Message,), dict(
-      DESCRIPTOR = _INTENT_MESSAGE_TELEPHONYTRANSFERCALL,
-      __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-      ,
-      __doc__ = """Transfers the call in Telephony Gateway.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonySynthesizeSpeech)
+                    ),
+                ),
+                TelephonyTransferCall=_reflection.GeneratedProtocolMessageType(
+                    "TelephonyTransferCall",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_INTENT_MESSAGE_TELEPHONYTRANSFERCALL,
+                        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                        __doc__="""Transfers the call in Telephony Gateway.
       
       
       Attributes:
@@ -2572,13 +4061,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
               format <https://en.wikipedia.org/wiki/E.164>`__.  We currently
               only allow transferring to US numbers (+1xxxyyyzzzz).
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall)
-      ))
-    ,
-    DESCRIPTOR = _INTENT_MESSAGE,
-    __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-    ,
-    __doc__ = """Corresponds to the ``Response`` field in the Dialogflow console.
+                        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message.TelephonyTransferCall)
+                    ),
+                ),
+                DESCRIPTOR=_INTENT_MESSAGE,
+                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                __doc__="""Corresponds to the ``Response`` field in the Dialogflow console.
     
     
     Attributes:
@@ -2618,15 +4106,16 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
         platform:
             Optional. The platform that this message is intended for.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message)
-    ))
-  ,
-
-  FollowupIntentInfo = _reflection.GeneratedProtocolMessageType('FollowupIntentInfo', (_message.Message,), dict(
-    DESCRIPTOR = _INTENT_FOLLOWUPINTENTINFO,
-    __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-    ,
-    __doc__ = """Represents a single followup intent in the chain.
+                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.Message)
+            ),
+        ),
+        FollowupIntentInfo=_reflection.GeneratedProtocolMessageType(
+            "FollowupIntentInfo",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_INTENT_FOLLOWUPINTENTINFO,
+                __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+                __doc__="""Represents a single followup intent in the chain.
     
     
     Attributes:
@@ -2637,13 +4126,12 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
             The unique identifier of the followup intent's parent. Format:
             ``projects/<Project ID>/agent/intents/<Intent ID>``.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo)
-    ))
-  ,
-  DESCRIPTOR = _INTENT,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """Represents an intent. Intents convert a number of user expressions or
+                # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent.FollowupIntentInfo)
+            ),
+        ),
+        DESCRIPTOR=_INTENT,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""Represents an intent. Intents convert a number of user expressions or
   patterns into an action. An action is an extraction of a user command or
   sentence semantics.
   
@@ -2743,8 +4231,9 @@ Intent = _reflection.GeneratedProtocolMessageType('Intent', (_message.Message,),
           this intent as a direct or indirect parent. We populate this
           field only in the output.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.Intent)
+    ),
+)
 _sym_db.RegisterMessage(Intent)
 _sym_db.RegisterMessage(Intent.TrainingPhrase)
 _sym_db.RegisterMessage(Intent.TrainingPhrase.Part)
@@ -2773,11 +4262,13 @@ _sym_db.RegisterMessage(Intent.Message.TelephonySynthesizeSpeech)
 _sym_db.RegisterMessage(Intent.Message.TelephonyTransferCall)
 _sym_db.RegisterMessage(Intent.FollowupIntentInfo)
 
-ListIntentsRequest = _reflection.GeneratedProtocolMessageType('ListIntentsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTINTENTSREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+ListIntentsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListIntentsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTINTENTSREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
   
   
@@ -2802,15 +4293,18 @@ ListIntentsRequest = _reflection.GeneratedProtocolMessageType('ListIntentsReques
           Optional. The next\_page\_token value returned from a previous
           list request.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ListIntentsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ListIntentsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListIntentsRequest)
 
-ListIntentsResponse = _reflection.GeneratedProtocolMessageType('ListIntentsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTINTENTSRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The response message for
+ListIntentsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListIntentsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTINTENTSRESPONSE,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The response message for
   [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
   
   
@@ -2822,15 +4316,18 @@ ListIntentsResponse = _reflection.GeneratedProtocolMessageType('ListIntentsRespo
           Token to retrieve the next page of results, or empty if there
           are no more results in the list.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ListIntentsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.ListIntentsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListIntentsResponse)
 
-GetIntentRequest = _reflection.GeneratedProtocolMessageType('GetIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+GetIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "GetIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.GetIntent][google.cloud.dialogflow.v2beta1.Intents.GetIntent].
   
   
@@ -2849,15 +4346,18 @@ GetIntentRequest = _reflection.GeneratedProtocolMessageType('GetIntentRequest', 
       intent_view:
           Optional. The resource view to apply to the returned intent.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.GetIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.GetIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetIntentRequest)
 
-CreateIntentRequest = _reflection.GeneratedProtocolMessageType('CreateIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _CREATEINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+CreateIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.CreateIntent][google.cloud.dialogflow.v2beta1.Intents.CreateIntent].
   
   
@@ -2878,15 +4378,18 @@ CreateIntentRequest = _reflection.GeneratedProtocolMessageType('CreateIntentRequ
       intent_view:
           Optional. The resource view to apply to the returned intent.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.CreateIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.CreateIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(CreateIntentRequest)
 
-UpdateIntentRequest = _reflection.GeneratedProtocolMessageType('UpdateIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _UPDATEINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+UpdateIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.UpdateIntent][google.cloud.dialogflow.v2beta1.Intents.UpdateIntent].
   
   
@@ -2906,15 +4409,18 @@ UpdateIntentRequest = _reflection.GeneratedProtocolMessageType('UpdateIntentRequ
       intent_view:
           Optional. The resource view to apply to the returned intent.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.UpdateIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.UpdateIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(UpdateIntentRequest)
 
-DeleteIntentRequest = _reflection.GeneratedProtocolMessageType('DeleteIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+DeleteIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.DeleteIntent][google.cloud.dialogflow.v2beta1.Intents.DeleteIntent].
   
   
@@ -2924,15 +4430,18 @@ DeleteIntentRequest = _reflection.GeneratedProtocolMessageType('DeleteIntentRequ
           direct or indirect followup intents, we also delete them.
           Format: ``projects/<Project ID>/agent/intents/<Intent ID>``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.DeleteIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.DeleteIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteIntentRequest)
 
-BatchUpdateIntentsRequest = _reflection.GeneratedProtocolMessageType('BatchUpdateIntentsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHUPDATEINTENTSREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+BatchUpdateIntentsRequest = _reflection.GeneratedProtocolMessageType(
+    "BatchUpdateIntentsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHUPDATEINTENTSREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
   
   
@@ -2962,15 +4471,18 @@ BatchUpdateIntentsRequest = _reflection.GeneratedProtocolMessageType('BatchUpdat
       intent_view:
           Optional. The resource view to apply to the returned intent.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchUpdateIntentsRequest)
+    ),
+)
 _sym_db.RegisterMessage(BatchUpdateIntentsRequest)
 
-BatchUpdateIntentsResponse = _reflection.GeneratedProtocolMessageType('BatchUpdateIntentsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHUPDATEINTENTSRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The response message for
+BatchUpdateIntentsResponse = _reflection.GeneratedProtocolMessageType(
+    "BatchUpdateIntentsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHUPDATEINTENTSRESPONSE,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The response message for
   [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
   
   
@@ -2978,15 +4490,18 @@ BatchUpdateIntentsResponse = _reflection.GeneratedProtocolMessageType('BatchUpda
       intents:
           The collection of updated or created intents.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse)
+    ),
+)
 _sym_db.RegisterMessage(BatchUpdateIntentsResponse)
 
-BatchDeleteIntentsRequest = _reflection.GeneratedProtocolMessageType('BatchDeleteIntentsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _BATCHDELETEINTENTSREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """The request message for
+BatchDeleteIntentsRequest = _reflection.GeneratedProtocolMessageType(
+    "BatchDeleteIntentsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_BATCHDELETEINTENTSREQUEST,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""The request message for
   [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents].
   
   
@@ -2998,105 +4513,124 @@ BatchDeleteIntentsRequest = _reflection.GeneratedProtocolMessageType('BatchDelet
           Required. The collection of intents to delete. Only intent
           ``name`` must be filled in.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.BatchDeleteIntentsRequest)
+    ),
+)
 _sym_db.RegisterMessage(BatchDeleteIntentsRequest)
 
-IntentBatch = _reflection.GeneratedProtocolMessageType('IntentBatch', (_message.Message,), dict(
-  DESCRIPTOR = _INTENTBATCH,
-  __module__ = 'google.cloud.dialogflow_v2beta1.proto.intent_pb2'
-  ,
-  __doc__ = """This message is a wrapper around a collection of intents.
+IntentBatch = _reflection.GeneratedProtocolMessageType(
+    "IntentBatch",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_INTENTBATCH,
+        __module__="google.cloud.dialogflow_v2beta1.proto.intent_pb2",
+        __doc__="""This message is a wrapper around a collection of intents.
   
   
   Attributes:
       intents:
           A collection of intents.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.IntentBatch)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2beta1.IntentBatch)
+    ),
+)
 _sym_db.RegisterMessage(IntentBatch)
 
 
 DESCRIPTOR._options = None
 _INTENT_TRAININGPHRASE_TYPE.values_by_name["TEMPLATE"]._options = None
-_INTENT.fields_by_name['ml_enabled']._options = None
+_INTENT.fields_by_name["ml_enabled"]._options = None
 
 _INTENTS = _descriptor.ServiceDescriptor(
-  name='Intents',
-  full_name='google.cloud.dialogflow.v2beta1.Intents',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  serialized_start=6753,
-  serialized_end=7955,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='ListIntents',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.ListIntents',
+    name="Intents",
+    full_name="google.cloud.dialogflow.v2beta1.Intents",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_LISTINTENTSREQUEST,
-    output_type=_LISTINTENTSRESPONSE,
-    serialized_options=_b('\202\323\344\223\002,\022*/v2beta1/{parent=projects/*/agent}/intents'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetIntent',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.GetIntent',
-    index=1,
-    containing_service=None,
-    input_type=_GETINTENTREQUEST,
-    output_type=_INTENT,
-    serialized_options=_b('\202\323\344\223\002,\022*/v2beta1/{name=projects/*/agent/intents/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='CreateIntent',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.CreateIntent',
-    index=2,
-    containing_service=None,
-    input_type=_CREATEINTENTREQUEST,
-    output_type=_INTENT,
-    serialized_options=_b('\202\323\344\223\0024\"*/v2beta1/{parent=projects/*/agent}/intents:\006intent'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateIntent',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.UpdateIntent',
-    index=3,
-    containing_service=None,
-    input_type=_UPDATEINTENTREQUEST,
-    output_type=_INTENT,
-    serialized_options=_b('\202\323\344\223\002;21/v2beta1/{intent.name=projects/*/agent/intents/*}:\006intent'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteIntent',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.DeleteIntent',
-    index=4,
-    containing_service=None,
-    input_type=_DELETEINTENTREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    serialized_options=_b('\202\323\344\223\002,**/v2beta1/{name=projects/*/agent/intents/*}'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='BatchUpdateIntents',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents',
-    index=5,
-    containing_service=None,
-    input_type=_BATCHUPDATEINTENTSREQUEST,
-    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    serialized_options=_b('\202\323\344\223\002;\"6/v2beta1/{parent=projects/*/agent}/intents:batchUpdate:\001*'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='BatchDeleteIntents',
-    full_name='google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents',
-    index=6,
-    containing_service=None,
-    input_type=_BATCHDELETEINTENTSREQUEST,
-    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-    serialized_options=_b('\202\323\344\223\002;\"6/v2beta1/{parent=projects/*/agent}/intents:batchDelete:\001*'),
-  ),
-])
+    serialized_options=None,
+    serialized_start=6753,
+    serialized_end=7955,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="ListIntents",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.ListIntents",
+            index=0,
+            containing_service=None,
+            input_type=_LISTINTENTSREQUEST,
+            output_type=_LISTINTENTSRESPONSE,
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v2beta1/{parent=projects/*/agent}/intents"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetIntent",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.GetIntent",
+            index=1,
+            containing_service=None,
+            input_type=_GETINTENTREQUEST,
+            output_type=_INTENT,
+            serialized_options=_b(
+                "\202\323\344\223\002,\022*/v2beta1/{name=projects/*/agent/intents/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateIntent",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.CreateIntent",
+            index=2,
+            containing_service=None,
+            input_type=_CREATEINTENTREQUEST,
+            output_type=_INTENT,
+            serialized_options=_b(
+                '\202\323\344\223\0024"*/v2beta1/{parent=projects/*/agent}/intents:\006intent'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateIntent",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.UpdateIntent",
+            index=3,
+            containing_service=None,
+            input_type=_UPDATEINTENTREQUEST,
+            output_type=_INTENT,
+            serialized_options=_b(
+                "\202\323\344\223\002;21/v2beta1/{intent.name=projects/*/agent/intents/*}:\006intent"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteIntent",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.DeleteIntent",
+            index=4,
+            containing_service=None,
+            input_type=_DELETEINTENTREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            serialized_options=_b(
+                "\202\323\344\223\002,**/v2beta1/{name=projects/*/agent/intents/*}"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="BatchUpdateIntents",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents",
+            index=5,
+            containing_service=None,
+            input_type=_BATCHUPDATEINTENTSREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            serialized_options=_b(
+                '\202\323\344\223\002;"6/v2beta1/{parent=projects/*/agent}/intents:batchUpdate:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="BatchDeleteIntents",
+            full_name="google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents",
+            index=6,
+            containing_service=None,
+            input_type=_BATCHDELETEINTENTSREQUEST,
+            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+            serialized_options=_b(
+                '\202\323\344\223\002;"6/v2beta1/{parent=projects/*/agent}/intents:batchDelete:\001*'
+            ),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_INTENTS)
 
-DESCRIPTOR.services_by_name['Intents'] = _INTENTS
+DESCRIPTOR.services_by_name["Intents"] = _INTENTS
 
 # @@protoc_insertion_point(module_scope)

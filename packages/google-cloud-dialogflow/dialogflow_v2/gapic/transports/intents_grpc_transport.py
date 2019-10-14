@@ -28,17 +28,17 @@ class IntentsGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/dialogflow',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dialogflow",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='dialogflow.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="dialogflow.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -56,34 +56,28 @@ class IntentsGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'intents_stub': intent_pb2_grpc.IntentsStub(channel),
-        }
+        self._stubs = {"intents_stub": intent_pb2_grpc.IntentsStub(channel)}
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='dialogflow.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="dialogflow.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -98,9 +92,7 @@ class IntentsGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -123,7 +115,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].ListIntents
+        return self._stubs["intents_stub"].ListIntents
 
     @property
     def get_intent(self):
@@ -136,7 +128,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].GetIntent
+        return self._stubs["intents_stub"].GetIntent
 
     @property
     def create_intent(self):
@@ -149,7 +141,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].CreateIntent
+        return self._stubs["intents_stub"].CreateIntent
 
     @property
     def update_intent(self):
@@ -162,7 +154,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].UpdateIntent
+        return self._stubs["intents_stub"].UpdateIntent
 
     @property
     def delete_intent(self):
@@ -175,7 +167,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].DeleteIntent
+        return self._stubs["intents_stub"].DeleteIntent
 
     @property
     def batch_update_intents(self):
@@ -190,7 +182,7 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].BatchUpdateIntents
+        return self._stubs["intents_stub"].BatchUpdateIntents
 
     @property
     def batch_delete_intents(self):
@@ -205,4 +197,4 @@ class IntentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['intents_stub'].BatchDeleteIntents
+        return self._stubs["intents_stub"].BatchDeleteIntents

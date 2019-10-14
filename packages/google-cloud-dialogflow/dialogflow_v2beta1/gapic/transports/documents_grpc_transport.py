@@ -28,17 +28,17 @@ class DocumentsGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/dialogflow',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dialogflow",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='dialogflow.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="dialogflow.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -56,34 +56,28 @@ class DocumentsGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'documents_stub': document_pb2_grpc.DocumentsStub(channel),
-        }
+        self._stubs = {"documents_stub": document_pb2_grpc.DocumentsStub(channel)}
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
         self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel)
+            channel
+        )
 
     @classmethod
-    def create_channel(cls,
-                       address='dialogflow.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="dialogflow.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -98,9 +92,7 @@ class DocumentsGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -123,7 +115,7 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].ListDocuments
+        return self._stubs["documents_stub"].ListDocuments
 
     @property
     def get_document(self):
@@ -136,7 +128,7 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].GetDocument
+        return self._stubs["documents_stub"].GetDocument
 
     @property
     def create_document(self):
@@ -152,7 +144,7 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].CreateDocument
+        return self._stubs["documents_stub"].CreateDocument
 
     @property
     def delete_document(self):
@@ -168,7 +160,7 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].DeleteDocument
+        return self._stubs["documents_stub"].DeleteDocument
 
     @property
     def update_document(self):
@@ -182,7 +174,7 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].UpdateDocument
+        return self._stubs["documents_stub"].UpdateDocument
 
     @property
     def reload_document(self):
@@ -200,4 +192,4 @@ class DocumentsGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['documents_stub'].ReloadDocument
+        return self._stubs["documents_stub"].ReloadDocument

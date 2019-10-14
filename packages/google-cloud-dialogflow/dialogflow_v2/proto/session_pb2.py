@@ -3,12 +3,14 @@
 # source: google/cloud/dialogflow_v2/proto/session.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -16,67 +18,113 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
-from dialogflow_v2.proto import audio_config_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2
-from dialogflow_v2.proto import context_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2
-from dialogflow_v2.proto import intent_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2
-from dialogflow_v2.proto import session_entity_type_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2
+from dialogflow_v2.proto import (
+    audio_config_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2,
+)
+from dialogflow_v2.proto import (
+    context_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2,
+)
+from dialogflow_v2.proto import (
+    intent_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2,
+)
+from dialogflow_v2.proto import (
+    session_entity_type_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2,
+)
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 from google.type import latlng_pb2 as google_dot_type_dot_latlng__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/dialogflow_v2/proto/session.proto',
-  package='google.cloud.dialogflow.v2',
-  syntax='proto3',
-  serialized_options=_b('\n\036com.google.cloud.dialogflow.v2B\014SessionProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2'),
-  serialized_pb=_b('\n.google/cloud/dialogflow_v2/proto/session.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x33google/cloud/dialogflow_v2/proto/audio_config.proto\x1a.google/cloud/dialogflow_v2/proto/context.proto\x1a-google/cloud/dialogflow_v2/proto/intent.proto\x1a:google/cloud/dialogflow_v2/proto/session_entity_type.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17google/rpc/status.proto\x1a\x18google/type/latlng.proto\"\x87\x02\n\x13\x44\x65tectIntentRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x41\n\x0cquery_params\x18\x02 \x01(\x0b\x32+.google.cloud.dialogflow.v2.QueryParameters\x12;\n\x0bquery_input\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.QueryInput\x12J\n\x13output_audio_config\x18\x04 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\x12\x13\n\x0binput_audio\x18\x05 \x01(\x0c\"\xf8\x01\n\x14\x44\x65tectIntentResponse\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12=\n\x0cquery_result\x18\x02 \x01(\x0b\x32\'.google.cloud.dialogflow.v2.QueryResult\x12*\n\x0ewebhook_status\x18\x03 \x01(\x0b\x32\x12.google.rpc.Status\x12\x14\n\x0coutput_audio\x18\x04 \x01(\x0c\x12J\n\x13output_audio_config\x18\x06 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\"\xfc\x02\n\x0fQueryParameters\x12\x11\n\ttime_zone\x18\x01 \x01(\t\x12)\n\x0cgeo_location\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\x12\x35\n\x08\x63ontexts\x18\x03 \x03(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12\x16\n\x0ereset_contexts\x18\x04 \x01(\x08\x12K\n\x14session_entity_types\x18\x05 \x03(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityType\x12(\n\x07payload\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x65\n!sentiment_analysis_request_config\x18\n \x01(\x0b\x32:.google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig\"\xcb\x01\n\nQueryInput\x12\x44\n\x0c\x61udio_config\x18\x01 \x01(\x0b\x32,.google.cloud.dialogflow.v2.InputAudioConfigH\x00\x12\x35\n\x04text\x18\x02 \x01(\x0b\x32%.google.cloud.dialogflow.v2.TextInputH\x00\x12\x37\n\x05\x65vent\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.EventInputH\x00\x42\x07\n\x05input\"\x90\x05\n\x0bQueryResult\x12\x12\n\nquery_text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12%\n\x1dspeech_recognition_confidence\x18\x02 \x01(\x02\x12\x0e\n\x06\x61\x63tion\x18\x03 \x01(\t\x12+\n\nparameters\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12#\n\x1b\x61ll_required_params_present\x18\x05 \x01(\x08\x12\x18\n\x10\x66ulfillment_text\x18\x06 \x01(\t\x12H\n\x14\x66ulfillment_messages\x18\x07 \x03(\x0b\x32*.google.cloud.dialogflow.v2.Intent.Message\x12\x16\n\x0ewebhook_source\x18\x08 \x01(\t\x12\x30\n\x0fwebhook_payload\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x12<\n\x0foutput_contexts\x18\n \x03(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12\x32\n\x06intent\x18\x0b \x01(\x0b\x32\".google.cloud.dialogflow.v2.Intent\x12#\n\x1bintent_detection_confidence\x18\x0c \x01(\x02\x12\x30\n\x0f\x64iagnostic_info\x18\x0e \x01(\x0b\x32\x17.google.protobuf.Struct\x12V\n\x19sentiment_analysis_result\x18\x11 \x01(\x0b\x32\x33.google.cloud.dialogflow.v2.SentimentAnalysisResult\"\xaa\x02\n\x1cStreamingDetectIntentRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x41\n\x0cquery_params\x18\x02 \x01(\x0b\x32+.google.cloud.dialogflow.v2.QueryParameters\x12;\n\x0bquery_input\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.QueryInput\x12\x18\n\x10single_utterance\x18\x04 \x01(\x08\x12J\n\x13output_audio_config\x18\x05 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\x12\x13\n\x0binput_audio\x18\x06 \x01(\x0c\"\xd5\x02\n\x1dStreamingDetectIntentResponse\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12R\n\x12recognition_result\x18\x02 \x01(\x0b\x32\x36.google.cloud.dialogflow.v2.StreamingRecognitionResult\x12=\n\x0cquery_result\x18\x03 \x01(\x0b\x32\'.google.cloud.dialogflow.v2.QueryResult\x12*\n\x0ewebhook_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\x12\x14\n\x0coutput_audio\x18\x05 \x01(\x0c\x12J\n\x13output_audio_config\x18\x06 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\"\x8a\x02\n\x1aStreamingRecognitionResult\x12X\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x42.google.cloud.dialogflow.v2.StreamingRecognitionResult.MessageType\x12\x12\n\ntranscript\x18\x02 \x01(\t\x12\x10\n\x08is_final\x18\x03 \x01(\x08\x12\x12\n\nconfidence\x18\x04 \x01(\x02\"X\n\x0bMessageType\x12\x1c\n\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nTRANSCRIPT\x10\x01\x12\x1b\n\x17\x45ND_OF_SINGLE_UTTERANCE\x10\x02\"\x9d\x01\n\x10InputAudioConfig\x12\x41\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32).google.cloud.dialogflow.v2.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x14\n\x0cphrase_hints\x18\x04 \x03(\t\"0\n\tTextInput\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t\"^\n\nEventInput\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\nparameters\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\"F\n\x1eSentimentAnalysisRequestConfig\x12$\n\x1c\x61nalyze_query_text_sentiment\x18\x01 \x01(\x08\"^\n\x17SentimentAnalysisResult\x12\x43\n\x14query_text_sentiment\x18\x01 \x01(\x0b\x32%.google.cloud.dialogflow.v2.Sentiment\"-\n\tSentiment\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x11\n\tmagnitude\x18\x02 \x01(\x02*\xfb\x01\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x1c\n\x18\x41UDIO_ENCODING_LINEAR_16\x10\x01\x12\x17\n\x13\x41UDIO_ENCODING_FLAC\x10\x02\x12\x18\n\x14\x41UDIO_ENCODING_MULAW\x10\x03\x12\x16\n\x12\x41UDIO_ENCODING_AMR\x10\x04\x12\x19\n\x15\x41UDIO_ENCODING_AMR_WB\x10\x05\x12\x1b\n\x17\x41UDIO_ENCODING_OGG_OPUS\x10\x06\x12)\n%AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE\x10\x07\x32\xd6\x02\n\x08Sessions\x12\xb4\x01\n\x0c\x44\x65tectIntent\x12/.google.cloud.dialogflow.v2.DetectIntentRequest\x1a\x30.google.cloud.dialogflow.v2.DetectIntentResponse\"A\x82\xd3\xe4\x93\x02;\"6/v2/{session=projects/*/agent/sessions/*}:detectIntent:\x01*\x12\x92\x01\n\x15StreamingDetectIntent\x12\x38.google.cloud.dialogflow.v2.StreamingDetectIntentRequest\x1a\x39.google.cloud.dialogflow.v2.StreamingDetectIntentResponse\"\x00(\x01\x30\x01\x42\x9b\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x0cSessionProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_resource__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2.DESCRIPTOR,google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,google_dot_rpc_dot_status__pb2.DESCRIPTOR,google_dot_type_dot_latlng__pb2.DESCRIPTOR,])
+    name="google/cloud/dialogflow_v2/proto/session.proto",
+    package="google.cloud.dialogflow.v2",
+    syntax="proto3",
+    serialized_options=_b(
+        "\n\036com.google.cloud.dialogflow.v2B\014SessionProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2"
+    ),
+    serialized_pb=_b(
+        '\n.google/cloud/dialogflow_v2/proto/session.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x33google/cloud/dialogflow_v2/proto/audio_config.proto\x1a.google/cloud/dialogflow_v2/proto/context.proto\x1a-google/cloud/dialogflow_v2/proto/intent.proto\x1a:google/cloud/dialogflow_v2/proto/session_entity_type.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17google/rpc/status.proto\x1a\x18google/type/latlng.proto"\x87\x02\n\x13\x44\x65tectIntentRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x41\n\x0cquery_params\x18\x02 \x01(\x0b\x32+.google.cloud.dialogflow.v2.QueryParameters\x12;\n\x0bquery_input\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.QueryInput\x12J\n\x13output_audio_config\x18\x04 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\x12\x13\n\x0binput_audio\x18\x05 \x01(\x0c"\xf8\x01\n\x14\x44\x65tectIntentResponse\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12=\n\x0cquery_result\x18\x02 \x01(\x0b\x32\'.google.cloud.dialogflow.v2.QueryResult\x12*\n\x0ewebhook_status\x18\x03 \x01(\x0b\x32\x12.google.rpc.Status\x12\x14\n\x0coutput_audio\x18\x04 \x01(\x0c\x12J\n\x13output_audio_config\x18\x06 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig"\xfc\x02\n\x0fQueryParameters\x12\x11\n\ttime_zone\x18\x01 \x01(\t\x12)\n\x0cgeo_location\x18\x02 \x01(\x0b\x32\x13.google.type.LatLng\x12\x35\n\x08\x63ontexts\x18\x03 \x03(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12\x16\n\x0ereset_contexts\x18\x04 \x01(\x08\x12K\n\x14session_entity_types\x18\x05 \x03(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityType\x12(\n\x07payload\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x65\n!sentiment_analysis_request_config\x18\n \x01(\x0b\x32:.google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig"\xcb\x01\n\nQueryInput\x12\x44\n\x0c\x61udio_config\x18\x01 \x01(\x0b\x32,.google.cloud.dialogflow.v2.InputAudioConfigH\x00\x12\x35\n\x04text\x18\x02 \x01(\x0b\x32%.google.cloud.dialogflow.v2.TextInputH\x00\x12\x37\n\x05\x65vent\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.EventInputH\x00\x42\x07\n\x05input"\x90\x05\n\x0bQueryResult\x12\x12\n\nquery_text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12%\n\x1dspeech_recognition_confidence\x18\x02 \x01(\x02\x12\x0e\n\x06\x61\x63tion\x18\x03 \x01(\t\x12+\n\nparameters\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12#\n\x1b\x61ll_required_params_present\x18\x05 \x01(\x08\x12\x18\n\x10\x66ulfillment_text\x18\x06 \x01(\t\x12H\n\x14\x66ulfillment_messages\x18\x07 \x03(\x0b\x32*.google.cloud.dialogflow.v2.Intent.Message\x12\x16\n\x0ewebhook_source\x18\x08 \x01(\t\x12\x30\n\x0fwebhook_payload\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x12<\n\x0foutput_contexts\x18\n \x03(\x0b\x32#.google.cloud.dialogflow.v2.Context\x12\x32\n\x06intent\x18\x0b \x01(\x0b\x32".google.cloud.dialogflow.v2.Intent\x12#\n\x1bintent_detection_confidence\x18\x0c \x01(\x02\x12\x30\n\x0f\x64iagnostic_info\x18\x0e \x01(\x0b\x32\x17.google.protobuf.Struct\x12V\n\x19sentiment_analysis_result\x18\x11 \x01(\x0b\x32\x33.google.cloud.dialogflow.v2.SentimentAnalysisResult"\xaa\x02\n\x1cStreamingDetectIntentRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x41\n\x0cquery_params\x18\x02 \x01(\x0b\x32+.google.cloud.dialogflow.v2.QueryParameters\x12;\n\x0bquery_input\x18\x03 \x01(\x0b\x32&.google.cloud.dialogflow.v2.QueryInput\x12\x18\n\x10single_utterance\x18\x04 \x01(\x08\x12J\n\x13output_audio_config\x18\x05 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig\x12\x13\n\x0binput_audio\x18\x06 \x01(\x0c"\xd5\x02\n\x1dStreamingDetectIntentResponse\x12\x13\n\x0bresponse_id\x18\x01 \x01(\t\x12R\n\x12recognition_result\x18\x02 \x01(\x0b\x32\x36.google.cloud.dialogflow.v2.StreamingRecognitionResult\x12=\n\x0cquery_result\x18\x03 \x01(\x0b\x32\'.google.cloud.dialogflow.v2.QueryResult\x12*\n\x0ewebhook_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.Status\x12\x14\n\x0coutput_audio\x18\x05 \x01(\x0c\x12J\n\x13output_audio_config\x18\x06 \x01(\x0b\x32-.google.cloud.dialogflow.v2.OutputAudioConfig"\x8a\x02\n\x1aStreamingRecognitionResult\x12X\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x42.google.cloud.dialogflow.v2.StreamingRecognitionResult.MessageType\x12\x12\n\ntranscript\x18\x02 \x01(\t\x12\x10\n\x08is_final\x18\x03 \x01(\x08\x12\x12\n\nconfidence\x18\x04 \x01(\x02"X\n\x0bMessageType\x12\x1c\n\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nTRANSCRIPT\x10\x01\x12\x1b\n\x17\x45ND_OF_SINGLE_UTTERANCE\x10\x02"\x9d\x01\n\x10InputAudioConfig\x12\x41\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32).google.cloud.dialogflow.v2.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x14\n\x0cphrase_hints\x18\x04 \x03(\t"0\n\tTextInput\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\t"^\n\nEventInput\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\nparameters\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\rlanguage_code\x18\x03 \x01(\t"F\n\x1eSentimentAnalysisRequestConfig\x12$\n\x1c\x61nalyze_query_text_sentiment\x18\x01 \x01(\x08"^\n\x17SentimentAnalysisResult\x12\x43\n\x14query_text_sentiment\x18\x01 \x01(\x0b\x32%.google.cloud.dialogflow.v2.Sentiment"-\n\tSentiment\x12\r\n\x05score\x18\x01 \x01(\x02\x12\x11\n\tmagnitude\x18\x02 \x01(\x02*\xfb\x01\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x1c\n\x18\x41UDIO_ENCODING_LINEAR_16\x10\x01\x12\x17\n\x13\x41UDIO_ENCODING_FLAC\x10\x02\x12\x18\n\x14\x41UDIO_ENCODING_MULAW\x10\x03\x12\x16\n\x12\x41UDIO_ENCODING_AMR\x10\x04\x12\x19\n\x15\x41UDIO_ENCODING_AMR_WB\x10\x05\x12\x1b\n\x17\x41UDIO_ENCODING_OGG_OPUS\x10\x06\x12)\n%AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE\x10\x07\x32\xd6\x02\n\x08Sessions\x12\xb4\x01\n\x0c\x44\x65tectIntent\x12/.google.cloud.dialogflow.v2.DetectIntentRequest\x1a\x30.google.cloud.dialogflow.v2.DetectIntentResponse"A\x82\xd3\xe4\x93\x02;"6/v2/{session=projects/*/agent/sessions/*}:detectIntent:\x01*\x12\x92\x01\n\x15StreamingDetectIntent\x12\x38.google.cloud.dialogflow.v2.StreamingDetectIntentRequest\x1a\x39.google.cloud.dialogflow.v2.StreamingDetectIntentResponse"\x00(\x01\x30\x01\x42\x9b\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x0cSessionProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+        google_dot_type_dot_latlng__pb2.DESCRIPTOR,
+    ],
+)
 
 _AUDIOENCODING = _descriptor.EnumDescriptor(
-  name='AudioEncoding',
-  full_name='google.cloud.dialogflow.v2.AudioEncoding',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_LINEAR_16', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_FLAC', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_MULAW', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_AMR', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_AMR_WB', index=5, number=5,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_OGG_OPUS', index=6, number=6,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE', index=7, number=7,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=3625,
-  serialized_end=3876,
+    name="AudioEncoding",
+    full_name="google.cloud.dialogflow.v2.AudioEncoding",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_LINEAR_16",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_FLAC",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_MULAW",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_AMR",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_AMR_WB",
+            index=5,
+            number=5,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_OGG_OPUS",
+            index=6,
+            number=6,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE",
+            index=7,
+            number=7,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=3625,
+    serialized_end=3876,
 )
 _sym_db.RegisterEnumDescriptor(_AUDIOENCODING)
 
@@ -92,883 +140,1629 @@ AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
 
 
 _STREAMINGRECOGNITIONRESULT_MESSAGETYPE = _descriptor.EnumDescriptor(
-  name='MessageType',
-  full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult.MessageType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='MESSAGE_TYPE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TRANSCRIPT', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='END_OF_SINGLE_UTTERANCE', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=3013,
-  serialized_end=3101,
+    name="MessageType",
+    full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult.MessageType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="MESSAGE_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TRANSCRIPT", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="END_OF_SINGLE_UTTERANCE",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=3013,
+    serialized_end=3101,
 )
 _sym_db.RegisterEnumDescriptor(_STREAMINGRECOGNITIONRESULT_MESSAGETYPE)
 
 
 _DETECTINTENTREQUEST = _descriptor.Descriptor(
-  name='DetectIntentRequest',
-  full_name='google.cloud.dialogflow.v2.DetectIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.cloud.dialogflow.v2.DetectIntentRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_params', full_name='google.cloud.dialogflow.v2.DetectIntentRequest.query_params', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_input', full_name='google.cloud.dialogflow.v2.DetectIntentRequest.query_input', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio_config', full_name='google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='input_audio', full_name='google.cloud.dialogflow.v2.DetectIntentRequest.input_audio', index=4,
-      number=5, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=425,
-  serialized_end=688,
+    name="DetectIntentRequest",
+    full_name="google.cloud.dialogflow.v2.DetectIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.cloud.dialogflow.v2.DetectIntentRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_params",
+            full_name="google.cloud.dialogflow.v2.DetectIntentRequest.query_params",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_input",
+            full_name="google.cloud.dialogflow.v2.DetectIntentRequest.query_input",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio_config",
+            full_name="google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_audio",
+            full_name="google.cloud.dialogflow.v2.DetectIntentRequest.input_audio",
+            index=4,
+            number=5,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=425,
+    serialized_end=688,
 )
 
 
 _DETECTINTENTRESPONSE = _descriptor.Descriptor(
-  name='DetectIntentResponse',
-  full_name='google.cloud.dialogflow.v2.DetectIntentResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='response_id', full_name='google.cloud.dialogflow.v2.DetectIntentResponse.response_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_result', full_name='google.cloud.dialogflow.v2.DetectIntentResponse.query_result', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='webhook_status', full_name='google.cloud.dialogflow.v2.DetectIntentResponse.webhook_status', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio', full_name='google.cloud.dialogflow.v2.DetectIntentResponse.output_audio', index=3,
-      number=4, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio_config', full_name='google.cloud.dialogflow.v2.DetectIntentResponse.output_audio_config', index=4,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=691,
-  serialized_end=939,
+    name="DetectIntentResponse",
+    full_name="google.cloud.dialogflow.v2.DetectIntentResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="response_id",
+            full_name="google.cloud.dialogflow.v2.DetectIntentResponse.response_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_result",
+            full_name="google.cloud.dialogflow.v2.DetectIntentResponse.query_result",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="webhook_status",
+            full_name="google.cloud.dialogflow.v2.DetectIntentResponse.webhook_status",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio",
+            full_name="google.cloud.dialogflow.v2.DetectIntentResponse.output_audio",
+            index=3,
+            number=4,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio_config",
+            full_name="google.cloud.dialogflow.v2.DetectIntentResponse.output_audio_config",
+            index=4,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=691,
+    serialized_end=939,
 )
 
 
 _QUERYPARAMETERS = _descriptor.Descriptor(
-  name='QueryParameters',
-  full_name='google.cloud.dialogflow.v2.QueryParameters',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='time_zone', full_name='google.cloud.dialogflow.v2.QueryParameters.time_zone', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='geo_location', full_name='google.cloud.dialogflow.v2.QueryParameters.geo_location', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='contexts', full_name='google.cloud.dialogflow.v2.QueryParameters.contexts', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='reset_contexts', full_name='google.cloud.dialogflow.v2.QueryParameters.reset_contexts', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='session_entity_types', full_name='google.cloud.dialogflow.v2.QueryParameters.session_entity_types', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='google.cloud.dialogflow.v2.QueryParameters.payload', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentiment_analysis_request_config', full_name='google.cloud.dialogflow.v2.QueryParameters.sentiment_analysis_request_config', index=6,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=942,
-  serialized_end=1322,
+    name="QueryParameters",
+    full_name="google.cloud.dialogflow.v2.QueryParameters",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="time_zone",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.time_zone",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="geo_location",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.geo_location",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="contexts",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.contexts",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="reset_contexts",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.reset_contexts",
+            index=3,
+            number=4,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="session_entity_types",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.session_entity_types",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="payload",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.payload",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentiment_analysis_request_config",
+            full_name="google.cloud.dialogflow.v2.QueryParameters.sentiment_analysis_request_config",
+            index=6,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=942,
+    serialized_end=1322,
 )
 
 
 _QUERYINPUT = _descriptor.Descriptor(
-  name='QueryInput',
-  full_name='google.cloud.dialogflow.v2.QueryInput',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='audio_config', full_name='google.cloud.dialogflow.v2.QueryInput.audio_config', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2.QueryInput.text', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='event', full_name='google.cloud.dialogflow.v2.QueryInput.event', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='input', full_name='google.cloud.dialogflow.v2.QueryInput.input',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=1325,
-  serialized_end=1528,
+    name="QueryInput",
+    full_name="google.cloud.dialogflow.v2.QueryInput",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="audio_config",
+            full_name="google.cloud.dialogflow.v2.QueryInput.audio_config",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2.QueryInput.text",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="event",
+            full_name="google.cloud.dialogflow.v2.QueryInput.event",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="input",
+            full_name="google.cloud.dialogflow.v2.QueryInput.input",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1325,
+    serialized_end=1528,
 )
 
 
 _QUERYRESULT = _descriptor.Descriptor(
-  name='QueryResult',
-  full_name='google.cloud.dialogflow.v2.QueryResult',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='query_text', full_name='google.cloud.dialogflow.v2.QueryResult.query_text', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2.QueryResult.language_code', index=1,
-      number=15, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='speech_recognition_confidence', full_name='google.cloud.dialogflow.v2.QueryResult.speech_recognition_confidence', index=2,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='action', full_name='google.cloud.dialogflow.v2.QueryResult.action', index=3,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parameters', full_name='google.cloud.dialogflow.v2.QueryResult.parameters', index=4,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='all_required_params_present', full_name='google.cloud.dialogflow.v2.QueryResult.all_required_params_present', index=5,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='fulfillment_text', full_name='google.cloud.dialogflow.v2.QueryResult.fulfillment_text', index=6,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='fulfillment_messages', full_name='google.cloud.dialogflow.v2.QueryResult.fulfillment_messages', index=7,
-      number=7, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='webhook_source', full_name='google.cloud.dialogflow.v2.QueryResult.webhook_source', index=8,
-      number=8, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='webhook_payload', full_name='google.cloud.dialogflow.v2.QueryResult.webhook_payload', index=9,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_contexts', full_name='google.cloud.dialogflow.v2.QueryResult.output_contexts', index=10,
-      number=10, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent', full_name='google.cloud.dialogflow.v2.QueryResult.intent', index=11,
-      number=11, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='intent_detection_confidence', full_name='google.cloud.dialogflow.v2.QueryResult.intent_detection_confidence', index=12,
-      number=12, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='diagnostic_info', full_name='google.cloud.dialogflow.v2.QueryResult.diagnostic_info', index=13,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sentiment_analysis_result', full_name='google.cloud.dialogflow.v2.QueryResult.sentiment_analysis_result', index=14,
-      number=17, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1531,
-  serialized_end=2187,
+    name="QueryResult",
+    full_name="google.cloud.dialogflow.v2.QueryResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="query_text",
+            full_name="google.cloud.dialogflow.v2.QueryResult.query_text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2.QueryResult.language_code",
+            index=1,
+            number=15,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="speech_recognition_confidence",
+            full_name="google.cloud.dialogflow.v2.QueryResult.speech_recognition_confidence",
+            index=2,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="action",
+            full_name="google.cloud.dialogflow.v2.QueryResult.action",
+            index=3,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parameters",
+            full_name="google.cloud.dialogflow.v2.QueryResult.parameters",
+            index=4,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="all_required_params_present",
+            full_name="google.cloud.dialogflow.v2.QueryResult.all_required_params_present",
+            index=5,
+            number=5,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="fulfillment_text",
+            full_name="google.cloud.dialogflow.v2.QueryResult.fulfillment_text",
+            index=6,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="fulfillment_messages",
+            full_name="google.cloud.dialogflow.v2.QueryResult.fulfillment_messages",
+            index=7,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="webhook_source",
+            full_name="google.cloud.dialogflow.v2.QueryResult.webhook_source",
+            index=8,
+            number=8,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="webhook_payload",
+            full_name="google.cloud.dialogflow.v2.QueryResult.webhook_payload",
+            index=9,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_contexts",
+            full_name="google.cloud.dialogflow.v2.QueryResult.output_contexts",
+            index=10,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent",
+            full_name="google.cloud.dialogflow.v2.QueryResult.intent",
+            index=11,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="intent_detection_confidence",
+            full_name="google.cloud.dialogflow.v2.QueryResult.intent_detection_confidence",
+            index=12,
+            number=12,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="diagnostic_info",
+            full_name="google.cloud.dialogflow.v2.QueryResult.diagnostic_info",
+            index=13,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sentiment_analysis_result",
+            full_name="google.cloud.dialogflow.v2.QueryResult.sentiment_analysis_result",
+            index=14,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1531,
+    serialized_end=2187,
 )
 
 
 _STREAMINGDETECTINTENTREQUEST = _descriptor.Descriptor(
-  name='StreamingDetectIntentRequest',
-  full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.session', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_params', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_input', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='single_utterance', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.single_utterance', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio_config', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='input_audio', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio', index=5,
-      number=6, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2190,
-  serialized_end=2488,
+    name="StreamingDetectIntentRequest",
+    full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="session",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.session",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_params",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_input",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="single_utterance",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.single_utterance",
+            index=3,
+            number=4,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio_config",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_audio",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio",
+            index=5,
+            number=6,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2190,
+    serialized_end=2488,
 )
 
 
 _STREAMINGDETECTINTENTRESPONSE = _descriptor.Descriptor(
-  name='StreamingDetectIntentResponse',
-  full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='response_id', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.response_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='recognition_result', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.recognition_result', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='query_result', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.query_result', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='webhook_status', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.webhook_status', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.output_audio', index=4,
-      number=5, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='output_audio_config', full_name='google.cloud.dialogflow.v2.StreamingDetectIntentResponse.output_audio_config', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2491,
-  serialized_end=2832,
+    name="StreamingDetectIntentResponse",
+    full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="response_id",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.response_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="recognition_result",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.recognition_result",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query_result",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.query_result",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="webhook_status",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.webhook_status",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.output_audio",
+            index=4,
+            number=5,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="output_audio_config",
+            full_name="google.cloud.dialogflow.v2.StreamingDetectIntentResponse.output_audio_config",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2491,
+    serialized_end=2832,
 )
 
 
 _STREAMINGRECOGNITIONRESULT = _descriptor.Descriptor(
-  name='StreamingRecognitionResult',
-  full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='message_type', full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult.message_type', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='transcript', full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult.transcript', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='is_final', full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult.is_final', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='confidence', full_name='google.cloud.dialogflow.v2.StreamingRecognitionResult.confidence', index=3,
-      number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _STREAMINGRECOGNITIONRESULT_MESSAGETYPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2835,
-  serialized_end=3101,
+    name="StreamingRecognitionResult",
+    full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="message_type",
+            full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult.message_type",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="transcript",
+            full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult.transcript",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="is_final",
+            full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult.is_final",
+            index=2,
+            number=3,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="confidence",
+            full_name="google.cloud.dialogflow.v2.StreamingRecognitionResult.confidence",
+            index=3,
+            number=4,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_STREAMINGRECOGNITIONRESULT_MESSAGETYPE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2835,
+    serialized_end=3101,
 )
 
 
 _INPUTAUDIOCONFIG = _descriptor.Descriptor(
-  name='InputAudioConfig',
-  full_name='google.cloud.dialogflow.v2.InputAudioConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='audio_encoding', full_name='google.cloud.dialogflow.v2.InputAudioConfig.audio_encoding', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sample_rate_hertz', full_name='google.cloud.dialogflow.v2.InputAudioConfig.sample_rate_hertz', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2.InputAudioConfig.language_code', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='phrase_hints', full_name='google.cloud.dialogflow.v2.InputAudioConfig.phrase_hints', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3104,
-  serialized_end=3261,
+    name="InputAudioConfig",
+    full_name="google.cloud.dialogflow.v2.InputAudioConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="audio_encoding",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.audio_encoding",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sample_rate_hertz",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.sample_rate_hertz",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.language_code",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="phrase_hints",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.phrase_hints",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3104,
+    serialized_end=3261,
 )
 
 
 _TEXTINPUT = _descriptor.Descriptor(
-  name='TextInput',
-  full_name='google.cloud.dialogflow.v2.TextInput',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='text', full_name='google.cloud.dialogflow.v2.TextInput.text', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2.TextInput.language_code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3263,
-  serialized_end=3311,
+    name="TextInput",
+    full_name="google.cloud.dialogflow.v2.TextInput",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="text",
+            full_name="google.cloud.dialogflow.v2.TextInput.text",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2.TextInput.language_code",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3263,
+    serialized_end=3311,
 )
 
 
 _EVENTINPUT = _descriptor.Descriptor(
-  name='EventInput',
-  full_name='google.cloud.dialogflow.v2.EventInput',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='google.cloud.dialogflow.v2.EventInput.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='parameters', full_name='google.cloud.dialogflow.v2.EventInput.parameters', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='language_code', full_name='google.cloud.dialogflow.v2.EventInput.language_code', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3313,
-  serialized_end=3407,
+    name="EventInput",
+    full_name="google.cloud.dialogflow.v2.EventInput",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.dialogflow.v2.EventInput.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="parameters",
+            full_name="google.cloud.dialogflow.v2.EventInput.parameters",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language_code",
+            full_name="google.cloud.dialogflow.v2.EventInput.language_code",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3313,
+    serialized_end=3407,
 )
 
 
 _SENTIMENTANALYSISREQUESTCONFIG = _descriptor.Descriptor(
-  name='SentimentAnalysisRequestConfig',
-  full_name='google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='analyze_query_text_sentiment', full_name='google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig.analyze_query_text_sentiment', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3409,
-  serialized_end=3479,
+    name="SentimentAnalysisRequestConfig",
+    full_name="google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="analyze_query_text_sentiment",
+            full_name="google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig.analyze_query_text_sentiment",
+            index=0,
+            number=1,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3409,
+    serialized_end=3479,
 )
 
 
 _SENTIMENTANALYSISRESULT = _descriptor.Descriptor(
-  name='SentimentAnalysisResult',
-  full_name='google.cloud.dialogflow.v2.SentimentAnalysisResult',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='query_text_sentiment', full_name='google.cloud.dialogflow.v2.SentimentAnalysisResult.query_text_sentiment', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3481,
-  serialized_end=3575,
+    name="SentimentAnalysisResult",
+    full_name="google.cloud.dialogflow.v2.SentimentAnalysisResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="query_text_sentiment",
+            full_name="google.cloud.dialogflow.v2.SentimentAnalysisResult.query_text_sentiment",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3481,
+    serialized_end=3575,
 )
 
 
 _SENTIMENT = _descriptor.Descriptor(
-  name='Sentiment',
-  full_name='google.cloud.dialogflow.v2.Sentiment',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='score', full_name='google.cloud.dialogflow.v2.Sentiment.score', index=0,
-      number=1, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='magnitude', full_name='google.cloud.dialogflow.v2.Sentiment.magnitude', index=1,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3577,
-  serialized_end=3622,
+    name="Sentiment",
+    full_name="google.cloud.dialogflow.v2.Sentiment",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="score",
+            full_name="google.cloud.dialogflow.v2.Sentiment.score",
+            index=0,
+            number=1,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="magnitude",
+            full_name="google.cloud.dialogflow.v2.Sentiment.magnitude",
+            index=1,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3577,
+    serialized_end=3622,
 )
 
-_DETECTINTENTREQUEST.fields_by_name['query_params'].message_type = _QUERYPARAMETERS
-_DETECTINTENTREQUEST.fields_by_name['query_input'].message_type = _QUERYINPUT
-_DETECTINTENTREQUEST.fields_by_name['output_audio_config'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
-_DETECTINTENTRESPONSE.fields_by_name['query_result'].message_type = _QUERYRESULT
-_DETECTINTENTRESPONSE.fields_by_name['webhook_status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_DETECTINTENTRESPONSE.fields_by_name['output_audio_config'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
-_QUERYPARAMETERS.fields_by_name['geo_location'].message_type = google_dot_type_dot_latlng__pb2._LATLNG
-_QUERYPARAMETERS.fields_by_name['contexts'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2._CONTEXT
-_QUERYPARAMETERS.fields_by_name['session_entity_types'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2._SESSIONENTITYTYPE
-_QUERYPARAMETERS.fields_by_name['payload'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_QUERYPARAMETERS.fields_by_name['sentiment_analysis_request_config'].message_type = _SENTIMENTANALYSISREQUESTCONFIG
-_QUERYINPUT.fields_by_name['audio_config'].message_type = _INPUTAUDIOCONFIG
-_QUERYINPUT.fields_by_name['text'].message_type = _TEXTINPUT
-_QUERYINPUT.fields_by_name['event'].message_type = _EVENTINPUT
-_QUERYINPUT.oneofs_by_name['input'].fields.append(
-  _QUERYINPUT.fields_by_name['audio_config'])
-_QUERYINPUT.fields_by_name['audio_config'].containing_oneof = _QUERYINPUT.oneofs_by_name['input']
-_QUERYINPUT.oneofs_by_name['input'].fields.append(
-  _QUERYINPUT.fields_by_name['text'])
-_QUERYINPUT.fields_by_name['text'].containing_oneof = _QUERYINPUT.oneofs_by_name['input']
-_QUERYINPUT.oneofs_by_name['input'].fields.append(
-  _QUERYINPUT.fields_by_name['event'])
-_QUERYINPUT.fields_by_name['event'].containing_oneof = _QUERYINPUT.oneofs_by_name['input']
-_QUERYRESULT.fields_by_name['parameters'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_QUERYRESULT.fields_by_name['fulfillment_messages'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2._INTENT_MESSAGE
-_QUERYRESULT.fields_by_name['webhook_payload'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_QUERYRESULT.fields_by_name['output_contexts'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2._CONTEXT
-_QUERYRESULT.fields_by_name['intent'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2._INTENT
-_QUERYRESULT.fields_by_name['diagnostic_info'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_QUERYRESULT.fields_by_name['sentiment_analysis_result'].message_type = _SENTIMENTANALYSISRESULT
-_STREAMINGDETECTINTENTREQUEST.fields_by_name['query_params'].message_type = _QUERYPARAMETERS
-_STREAMINGDETECTINTENTREQUEST.fields_by_name['query_input'].message_type = _QUERYINPUT
-_STREAMINGDETECTINTENTREQUEST.fields_by_name['output_audio_config'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
-_STREAMINGDETECTINTENTRESPONSE.fields_by_name['recognition_result'].message_type = _STREAMINGRECOGNITIONRESULT
-_STREAMINGDETECTINTENTRESPONSE.fields_by_name['query_result'].message_type = _QUERYRESULT
-_STREAMINGDETECTINTENTRESPONSE.fields_by_name['webhook_status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
-_STREAMINGDETECTINTENTRESPONSE.fields_by_name['output_audio_config'].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
-_STREAMINGRECOGNITIONRESULT.fields_by_name['message_type'].enum_type = _STREAMINGRECOGNITIONRESULT_MESSAGETYPE
+_DETECTINTENTREQUEST.fields_by_name["query_params"].message_type = _QUERYPARAMETERS
+_DETECTINTENTREQUEST.fields_by_name["query_input"].message_type = _QUERYINPUT
+_DETECTINTENTREQUEST.fields_by_name[
+    "output_audio_config"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
+)
+_DETECTINTENTRESPONSE.fields_by_name["query_result"].message_type = _QUERYRESULT
+_DETECTINTENTRESPONSE.fields_by_name[
+    "webhook_status"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_DETECTINTENTRESPONSE.fields_by_name[
+    "output_audio_config"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
+)
+_QUERYPARAMETERS.fields_by_name[
+    "geo_location"
+].message_type = google_dot_type_dot_latlng__pb2._LATLNG
+_QUERYPARAMETERS.fields_by_name[
+    "contexts"
+].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2._CONTEXT
+_QUERYPARAMETERS.fields_by_name[
+    "session_entity_types"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_session__entity__type__pb2._SESSIONENTITYTYPE
+)
+_QUERYPARAMETERS.fields_by_name[
+    "payload"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_QUERYPARAMETERS.fields_by_name[
+    "sentiment_analysis_request_config"
+].message_type = _SENTIMENTANALYSISREQUESTCONFIG
+_QUERYINPUT.fields_by_name["audio_config"].message_type = _INPUTAUDIOCONFIG
+_QUERYINPUT.fields_by_name["text"].message_type = _TEXTINPUT
+_QUERYINPUT.fields_by_name["event"].message_type = _EVENTINPUT
+_QUERYINPUT.oneofs_by_name["input"].fields.append(
+    _QUERYINPUT.fields_by_name["audio_config"]
+)
+_QUERYINPUT.fields_by_name[
+    "audio_config"
+].containing_oneof = _QUERYINPUT.oneofs_by_name["input"]
+_QUERYINPUT.oneofs_by_name["input"].fields.append(_QUERYINPUT.fields_by_name["text"])
+_QUERYINPUT.fields_by_name["text"].containing_oneof = _QUERYINPUT.oneofs_by_name[
+    "input"
+]
+_QUERYINPUT.oneofs_by_name["input"].fields.append(_QUERYINPUT.fields_by_name["event"])
+_QUERYINPUT.fields_by_name["event"].containing_oneof = _QUERYINPUT.oneofs_by_name[
+    "input"
+]
+_QUERYRESULT.fields_by_name[
+    "parameters"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_QUERYRESULT.fields_by_name[
+    "fulfillment_messages"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2._INTENT_MESSAGE
+)
+_QUERYRESULT.fields_by_name[
+    "webhook_payload"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_QUERYRESULT.fields_by_name[
+    "output_contexts"
+].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_context__pb2._CONTEXT
+_QUERYRESULT.fields_by_name[
+    "intent"
+].message_type = google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_intent__pb2._INTENT
+_QUERYRESULT.fields_by_name[
+    "diagnostic_info"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_QUERYRESULT.fields_by_name[
+    "sentiment_analysis_result"
+].message_type = _SENTIMENTANALYSISRESULT
+_STREAMINGDETECTINTENTREQUEST.fields_by_name[
+    "query_params"
+].message_type = _QUERYPARAMETERS
+_STREAMINGDETECTINTENTREQUEST.fields_by_name["query_input"].message_type = _QUERYINPUT
+_STREAMINGDETECTINTENTREQUEST.fields_by_name[
+    "output_audio_config"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
+)
+_STREAMINGDETECTINTENTRESPONSE.fields_by_name[
+    "recognition_result"
+].message_type = _STREAMINGRECOGNITIONRESULT
+_STREAMINGDETECTINTENTRESPONSE.fields_by_name[
+    "query_result"
+].message_type = _QUERYRESULT
+_STREAMINGDETECTINTENTRESPONSE.fields_by_name[
+    "webhook_status"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_STREAMINGDETECTINTENTRESPONSE.fields_by_name[
+    "output_audio_config"
+].message_type = (
+    google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_audio__config__pb2._OUTPUTAUDIOCONFIG
+)
+_STREAMINGRECOGNITIONRESULT.fields_by_name[
+    "message_type"
+].enum_type = _STREAMINGRECOGNITIONRESULT_MESSAGETYPE
 _STREAMINGRECOGNITIONRESULT_MESSAGETYPE.containing_type = _STREAMINGRECOGNITIONRESULT
-_INPUTAUDIOCONFIG.fields_by_name['audio_encoding'].enum_type = _AUDIOENCODING
-_EVENTINPUT.fields_by_name['parameters'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_SENTIMENTANALYSISRESULT.fields_by_name['query_text_sentiment'].message_type = _SENTIMENT
-DESCRIPTOR.message_types_by_name['DetectIntentRequest'] = _DETECTINTENTREQUEST
-DESCRIPTOR.message_types_by_name['DetectIntentResponse'] = _DETECTINTENTRESPONSE
-DESCRIPTOR.message_types_by_name['QueryParameters'] = _QUERYPARAMETERS
-DESCRIPTOR.message_types_by_name['QueryInput'] = _QUERYINPUT
-DESCRIPTOR.message_types_by_name['QueryResult'] = _QUERYRESULT
-DESCRIPTOR.message_types_by_name['StreamingDetectIntentRequest'] = _STREAMINGDETECTINTENTREQUEST
-DESCRIPTOR.message_types_by_name['StreamingDetectIntentResponse'] = _STREAMINGDETECTINTENTRESPONSE
-DESCRIPTOR.message_types_by_name['StreamingRecognitionResult'] = _STREAMINGRECOGNITIONRESULT
-DESCRIPTOR.message_types_by_name['InputAudioConfig'] = _INPUTAUDIOCONFIG
-DESCRIPTOR.message_types_by_name['TextInput'] = _TEXTINPUT
-DESCRIPTOR.message_types_by_name['EventInput'] = _EVENTINPUT
-DESCRIPTOR.message_types_by_name['SentimentAnalysisRequestConfig'] = _SENTIMENTANALYSISREQUESTCONFIG
-DESCRIPTOR.message_types_by_name['SentimentAnalysisResult'] = _SENTIMENTANALYSISRESULT
-DESCRIPTOR.message_types_by_name['Sentiment'] = _SENTIMENT
-DESCRIPTOR.enum_types_by_name['AudioEncoding'] = _AUDIOENCODING
+_INPUTAUDIOCONFIG.fields_by_name["audio_encoding"].enum_type = _AUDIOENCODING
+_EVENTINPUT.fields_by_name[
+    "parameters"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_SENTIMENTANALYSISRESULT.fields_by_name[
+    "query_text_sentiment"
+].message_type = _SENTIMENT
+DESCRIPTOR.message_types_by_name["DetectIntentRequest"] = _DETECTINTENTREQUEST
+DESCRIPTOR.message_types_by_name["DetectIntentResponse"] = _DETECTINTENTRESPONSE
+DESCRIPTOR.message_types_by_name["QueryParameters"] = _QUERYPARAMETERS
+DESCRIPTOR.message_types_by_name["QueryInput"] = _QUERYINPUT
+DESCRIPTOR.message_types_by_name["QueryResult"] = _QUERYRESULT
+DESCRIPTOR.message_types_by_name[
+    "StreamingDetectIntentRequest"
+] = _STREAMINGDETECTINTENTREQUEST
+DESCRIPTOR.message_types_by_name[
+    "StreamingDetectIntentResponse"
+] = _STREAMINGDETECTINTENTRESPONSE
+DESCRIPTOR.message_types_by_name[
+    "StreamingRecognitionResult"
+] = _STREAMINGRECOGNITIONRESULT
+DESCRIPTOR.message_types_by_name["InputAudioConfig"] = _INPUTAUDIOCONFIG
+DESCRIPTOR.message_types_by_name["TextInput"] = _TEXTINPUT
+DESCRIPTOR.message_types_by_name["EventInput"] = _EVENTINPUT
+DESCRIPTOR.message_types_by_name[
+    "SentimentAnalysisRequestConfig"
+] = _SENTIMENTANALYSISREQUESTCONFIG
+DESCRIPTOR.message_types_by_name["SentimentAnalysisResult"] = _SENTIMENTANALYSISRESULT
+DESCRIPTOR.message_types_by_name["Sentiment"] = _SENTIMENT
+DESCRIPTOR.enum_types_by_name["AudioEncoding"] = _AUDIOENCODING
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-DetectIntentRequest = _reflection.GeneratedProtocolMessageType('DetectIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DETECTINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The request to detect user's intent.
+DetectIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "DetectIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DETECTINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The request to detect user's intent.
   
   
   Attributes:
@@ -997,15 +1791,18 @@ DetectIntentRequest = _reflection.GeneratedProtocolMessageType('DetectIntentRequ
           an input audio config. A single request can contain up to 1
           minute of speech audio data.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.DetectIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.DetectIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(DetectIntentRequest)
 
-DetectIntentResponse = _reflection.GeneratedProtocolMessageType('DetectIntentResponse', (_message.Message,), dict(
-  DESCRIPTOR = _DETECTINTENTRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The message returned from the DetectIntent method.
+DetectIntentResponse = _reflection.GeneratedProtocolMessageType(
+    "DetectIntentResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DETECTINTENTRESPONSE,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The message returned from the DetectIntent method.
   
   
   Attributes:
@@ -1031,15 +1828,18 @@ DetectIntentResponse = _reflection.GeneratedProtocolMessageType('DetectIntentRes
           The config used by the speech synthesizer to generate the
           output audio.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.DetectIntentResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.DetectIntentResponse)
+    ),
+)
 _sym_db.RegisterMessage(DetectIntentResponse)
 
-QueryParameters = _reflection.GeneratedProtocolMessageType('QueryParameters', (_message.Message,), dict(
-  DESCRIPTOR = _QUERYPARAMETERS,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Represents the parameters of the conversational query.
+QueryParameters = _reflection.GeneratedProtocolMessageType(
+    "QueryParameters",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_QUERYPARAMETERS,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Represents the parameters of the conversational query.
   
   
   Attributes:
@@ -1068,15 +1868,18 @@ QueryParameters = _reflection.GeneratedProtocolMessageType('QueryParameters', (_
           Optional. Configures the type of sentiment analysis to
           perform. If not provided, sentiment analysis is not performed.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryParameters)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryParameters)
+    ),
+)
 _sym_db.RegisterMessage(QueryParameters)
 
-QueryInput = _reflection.GeneratedProtocolMessageType('QueryInput', (_message.Message,), dict(
-  DESCRIPTOR = _QUERYINPUT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Represents the query input. It can contain either:
+QueryInput = _reflection.GeneratedProtocolMessageType(
+    "QueryInput",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_QUERYINPUT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Represents the query input. It can contain either:
   
   1. An audio config which instructs the speech recognizer how to process
      the speech audio.
@@ -1097,15 +1900,18 @@ QueryInput = _reflection.GeneratedProtocolMessageType('QueryInput', (_message.Me
       event:
           The event to be processed.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryInput)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryInput)
+    ),
+)
 _sym_db.RegisterMessage(QueryInput)
 
-QueryResult = _reflection.GeneratedProtocolMessageType('QueryResult', (_message.Message,), dict(
-  DESCRIPTOR = _QUERYRESULT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Represents the result of conversational query or event processing.
+QueryResult = _reflection.GeneratedProtocolMessageType(
+    "QueryResult",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_QUERYRESULT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Represents the result of conversational query or event processing.
   
   
   Attributes:
@@ -1179,15 +1985,18 @@ QueryResult = _reflection.GeneratedProtocolMessageType('QueryResult', (_message.
           ``sentiment_analysis_request_config`` specified in the
           request.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryResult)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.QueryResult)
+    ),
+)
 _sym_db.RegisterMessage(QueryResult)
 
-StreamingDetectIntentRequest = _reflection.GeneratedProtocolMessageType('StreamingDetectIntentRequest', (_message.Message,), dict(
-  DESCRIPTOR = _STREAMINGDETECTINTENTREQUEST,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The top-level message sent by the client to the
+StreamingDetectIntentRequest = _reflection.GeneratedProtocolMessageType(
+    "StreamingDetectIntentRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STREAMINGDETECTINTENTREQUEST,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The top-level message sent by the client to the
   ``StreamingDetectIntent`` method.
   
   Multiple request messages should be sent in order:
@@ -1236,15 +2045,18 @@ StreamingDetectIntentRequest = _reflection.GeneratedProtocolMessageType('Streami
           config. The complete audio over all streaming messages must
           not exceed 1 minute.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingDetectIntentRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingDetectIntentRequest)
+    ),
+)
 _sym_db.RegisterMessage(StreamingDetectIntentRequest)
 
-StreamingDetectIntentResponse = _reflection.GeneratedProtocolMessageType('StreamingDetectIntentResponse', (_message.Message,), dict(
-  DESCRIPTOR = _STREAMINGDETECTINTENTRESPONSE,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The top-level message returned from the ``StreamingDetectIntent``
+StreamingDetectIntentResponse = _reflection.GeneratedProtocolMessageType(
+    "StreamingDetectIntentResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STREAMINGDETECTINTENTRESPONSE,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The top-level message returned from the ``StreamingDetectIntent``
   method.
   
   Multiple response messages can be returned in order:
@@ -1276,15 +2088,18 @@ StreamingDetectIntentResponse = _reflection.GeneratedProtocolMessageType('Stream
           audio. This field is populated from the agent-level speech
           synthesizer configuration, if enabled.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingDetectIntentResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingDetectIntentResponse)
+    ),
+)
 _sym_db.RegisterMessage(StreamingDetectIntentResponse)
 
-StreamingRecognitionResult = _reflection.GeneratedProtocolMessageType('StreamingRecognitionResult', (_message.Message,), dict(
-  DESCRIPTOR = _STREAMINGRECOGNITIONRESULT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Contains a speech recognition result corresponding to a portion of the
+StreamingRecognitionResult = _reflection.GeneratedProtocolMessageType(
+    "StreamingRecognitionResult",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STREAMINGRECOGNITIONRESULT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Contains a speech recognition result corresponding to a portion of the
   audio that is currently being processed or an indication that this is
   the end of the single requested utterance.
   
@@ -1340,15 +2155,18 @@ StreamingRecognitionResult = _reflection.GeneratedProtocolMessageType('Streaming
           ``is_final`` is true and you should not rely on it being
           accurate or even set.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingRecognitionResult)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.StreamingRecognitionResult)
+    ),
+)
 _sym_db.RegisterMessage(StreamingRecognitionResult)
 
-InputAudioConfig = _reflection.GeneratedProtocolMessageType('InputAudioConfig', (_message.Message,), dict(
-  DESCRIPTOR = _INPUTAUDIOCONFIG,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Instructs the speech recognizer how to process the audio content.
+InputAudioConfig = _reflection.GeneratedProtocolMessageType(
+    "InputAudioConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_INPUTAUDIOCONFIG,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Instructs the speech recognizer how to process the audio content.
   
   
   Attributes:
@@ -1373,15 +2191,18 @@ InputAudioConfig = _reflection.GeneratedProtocolMessageType('InputAudioConfig', 
           API documentation <https://cloud.google.com/speech-to-
           text/docs/basics#phrase-hints>`__ for more details.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.InputAudioConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.InputAudioConfig)
+    ),
+)
 _sym_db.RegisterMessage(InputAudioConfig)
 
-TextInput = _reflection.GeneratedProtocolMessageType('TextInput', (_message.Message,), dict(
-  DESCRIPTOR = _TEXTINPUT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Represents the natural language text to be processed.
+TextInput = _reflection.GeneratedProtocolMessageType(
+    "TextInput",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_TEXTINPUT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Represents the natural language text to be processed.
   
   
   Attributes:
@@ -1396,15 +2217,18 @@ TextInput = _reflection.GeneratedProtocolMessageType('TextInput', (_message.Mess
           same session do not necessarily need to specify the same
           language.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.TextInput)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.TextInput)
+    ),
+)
 _sym_db.RegisterMessage(TextInput)
 
-EventInput = _reflection.GeneratedProtocolMessageType('EventInput', (_message.Message,), dict(
-  DESCRIPTOR = _EVENTINPUT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Events allow for matching intents by event name instead of the natural
+EventInput = _reflection.GeneratedProtocolMessageType(
+    "EventInput",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_EVENTINPUT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Events allow for matching intents by event name instead of the natural
   language input. For instance, input
   ``<event: { name: "welcome_event", parameters: { name: "Sam" } }>`` can
   trigger a personalized welcome response. The parameter ``name`` may be
@@ -1426,15 +2250,18 @@ EventInput = _reflection.GeneratedProtocolMessageType('EventInput', (_message.Me
           same session do not necessarily need to specify the same
           language.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.EventInput)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.EventInput)
+    ),
+)
 _sym_db.RegisterMessage(EventInput)
 
-SentimentAnalysisRequestConfig = _reflection.GeneratedProtocolMessageType('SentimentAnalysisRequestConfig', (_message.Message,), dict(
-  DESCRIPTOR = _SENTIMENTANALYSISREQUESTCONFIG,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """Configures the types of sentiment analysis to perform.
+SentimentAnalysisRequestConfig = _reflection.GeneratedProtocolMessageType(
+    "SentimentAnalysisRequestConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENTIMENTANALYSISREQUESTCONFIG,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""Configures the types of sentiment analysis to perform.
   
   
   Attributes:
@@ -1443,15 +2270,18 @@ SentimentAnalysisRequestConfig = _reflection.GeneratedProtocolMessageType('Senti
           on ``query_text``. If not provided, sentiment analysis is not
           performed on ``query_text``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SentimentAnalysisRequestConfig)
+    ),
+)
 _sym_db.RegisterMessage(SentimentAnalysisRequestConfig)
 
-SentimentAnalysisResult = _reflection.GeneratedProtocolMessageType('SentimentAnalysisResult', (_message.Message,), dict(
-  DESCRIPTOR = _SENTIMENTANALYSISRESULT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The result of sentiment analysis as configured by
+SentimentAnalysisResult = _reflection.GeneratedProtocolMessageType(
+    "SentimentAnalysisResult",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENTIMENTANALYSISRESULT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The result of sentiment analysis as configured by
   ``sentiment_analysis_request_config``.
   
   
@@ -1459,15 +2289,18 @@ SentimentAnalysisResult = _reflection.GeneratedProtocolMessageType('SentimentAna
       query_text_sentiment:
           The sentiment analysis result for ``query_text``.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SentimentAnalysisResult)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SentimentAnalysisResult)
+    ),
+)
 _sym_db.RegisterMessage(SentimentAnalysisResult)
 
-Sentiment = _reflection.GeneratedProtocolMessageType('Sentiment', (_message.Message,), dict(
-  DESCRIPTOR = _SENTIMENT,
-  __module__ = 'google.cloud.dialogflow_v2.proto.session_pb2'
-  ,
-  __doc__ = """The sentiment, such as positive/negative feeling or association, for a
+Sentiment = _reflection.GeneratedProtocolMessageType(
+    "Sentiment",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SENTIMENT,
+        __module__="google.cloud.dialogflow_v2.proto.session_pb2",
+        __doc__="""The sentiment, such as positive/negative feeling or association, for a
   unit of analysis, such as the query text.
   
   
@@ -1480,43 +2313,47 @@ Sentiment = _reflection.GeneratedProtocolMessageType('Sentiment', (_message.Mess
           the absolute magnitude of sentiment, regardless of score
           (positive or negative).
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.Sentiment)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.Sentiment)
+    ),
+)
 _sym_db.RegisterMessage(Sentiment)
 
 
 DESCRIPTOR._options = None
 
 _SESSIONS = _descriptor.ServiceDescriptor(
-  name='Sessions',
-  full_name='google.cloud.dialogflow.v2.Sessions',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  serialized_start=3879,
-  serialized_end=4221,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='DetectIntent',
-    full_name='google.cloud.dialogflow.v2.Sessions.DetectIntent',
+    name="Sessions",
+    full_name="google.cloud.dialogflow.v2.Sessions",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_DETECTINTENTREQUEST,
-    output_type=_DETECTINTENTRESPONSE,
-    serialized_options=_b('\202\323\344\223\002;\"6/v2/{session=projects/*/agent/sessions/*}:detectIntent:\001*'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='StreamingDetectIntent',
-    full_name='google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent',
-    index=1,
-    containing_service=None,
-    input_type=_STREAMINGDETECTINTENTREQUEST,
-    output_type=_STREAMINGDETECTINTENTRESPONSE,
     serialized_options=None,
-  ),
-])
+    serialized_start=3879,
+    serialized_end=4221,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="DetectIntent",
+            full_name="google.cloud.dialogflow.v2.Sessions.DetectIntent",
+            index=0,
+            containing_service=None,
+            input_type=_DETECTINTENTREQUEST,
+            output_type=_DETECTINTENTRESPONSE,
+            serialized_options=_b(
+                '\202\323\344\223\002;"6/v2/{session=projects/*/agent/sessions/*}:detectIntent:\001*'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="StreamingDetectIntent",
+            full_name="google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent",
+            index=1,
+            containing_service=None,
+            input_type=_STREAMINGDETECTINTENTREQUEST,
+            output_type=_STREAMINGDETECTINTENTRESPONSE,
+            serialized_options=None,
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_SESSIONS)
 
-DESCRIPTOR.services_by_name['Sessions'] = _SESSIONS
+DESCRIPTOR.services_by_name["Sessions"] = _SESSIONS
 
 # @@protoc_insertion_point(module_scope)

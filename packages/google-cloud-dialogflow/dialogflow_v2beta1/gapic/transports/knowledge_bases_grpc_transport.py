@@ -27,17 +27,17 @@ class KnowledgeBasesGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/dialogflow',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dialogflow",
     )
 
-    def __init__(self,
-                 channel=None,
-                 credentials=None,
-                 address='dialogflow.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="dialogflow.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -55,29 +55,23 @@ class KnowledgeBasesGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.', )
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
+            )
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(
-                address=address,
-                credentials=credentials,
-            )
+            channel = self.create_channel(address=address, credentials=credentials)
 
         self._channel = channel
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            'knowledge_bases_stub':
-            knowledge_base_pb2_grpc.KnowledgeBasesStub(channel),
+            "knowledge_bases_stub": knowledge_base_pb2_grpc.KnowledgeBasesStub(channel)
         }
 
     @classmethod
-    def create_channel(cls,
-                       address='dialogflow.googleapis.com:443',
-                       credentials=None):
+    def create_channel(cls, address="dialogflow.googleapis.com:443", credentials=None):
         """Create and return a gRPC channel object.
 
         Args:
@@ -92,9 +86,7 @@ class KnowledgeBasesGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
         )
 
     @property
@@ -117,7 +109,7 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['knowledge_bases_stub'].ListKnowledgeBases
+        return self._stubs["knowledge_bases_stub"].ListKnowledgeBases
 
     @property
     def get_knowledge_base(self):
@@ -130,7 +122,7 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['knowledge_bases_stub'].GetKnowledgeBase
+        return self._stubs["knowledge_bases_stub"].GetKnowledgeBase
 
     @property
     def create_knowledge_base(self):
@@ -143,7 +135,7 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['knowledge_bases_stub'].CreateKnowledgeBase
+        return self._stubs["knowledge_bases_stub"].CreateKnowledgeBase
 
     @property
     def delete_knowledge_base(self):
@@ -156,7 +148,7 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['knowledge_bases_stub'].DeleteKnowledgeBase
+        return self._stubs["knowledge_bases_stub"].DeleteKnowledgeBase
 
     @property
     def update_knowledge_base(self):
@@ -169,4 +161,4 @@ class KnowledgeBasesGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['knowledge_bases_stub'].UpdateKnowledgeBase
+        return self._stubs["knowledge_bases_stub"].UpdateKnowledgeBase
