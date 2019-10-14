@@ -83,12 +83,14 @@ Table
 .. autosummary::
     :toctree: generated
 
+    table.EncryptionConfiguration
+    table.PartitionRange
+    table.RangePartitioning
+    table.Row
+    table.RowIterator
     table.Table
     table.TableListItem
     table.TableReference
-    table.Row
-    table.RowIterator
-    table.EncryptionConfiguration
     table.TimePartitioning
     table.TimePartitioningType
 
