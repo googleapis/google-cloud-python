@@ -1030,7 +1030,7 @@ class _Base(object):
     TABLE_ID = "table_id"
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_ID = "JOB_ID"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)

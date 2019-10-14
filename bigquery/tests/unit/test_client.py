@@ -81,7 +81,7 @@ class TestClient(unittest.TestCase):
     TABLE_ID = "TABLE_ID"
     MODEL_ID = "MODEL_ID"
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
     LOCATION = "us-central"
 
     @staticmethod
