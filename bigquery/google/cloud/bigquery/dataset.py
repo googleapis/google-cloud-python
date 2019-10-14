@@ -358,6 +358,7 @@ class Dataset(object):
     _PROPERTY_TO_API_FIELD = {
         "access_entries": "access",
         "created": "creationTime",
+        "default_partition_expiration_ms": "defaultPartitionExpirationMs",
         "default_table_expiration_ms": "defaultTableExpirationMs",
         "friendly_name": "friendlyName",
     }
@@ -459,6 +460,34 @@ class Dataset(object):
         set from the server).
         """
         return self._properties.get("selfLink")
+
+    @property
+    def default_partition_expiration_ms(self):
+        """Optional[int]: The default partition expiration for all
+        partitioned tables in the dataset, in milliseconds.
+
+        Once this property is set, all newly-created partitioned tables in
+        the dataset will have an ``time_paritioning.expiration_ms`` property
+        set to this value, and changing the value will only affect new
+        tables, not existing ones. The storage in a partition will have an
+        expiration time of its partition time plus this value.
+
+        Setting this property overrides the use of
+        ``default_table_expiration_ms`` for partitioned tables: only one of
+        ``default_table_expiration_ms`` and
+        ``default_partition_expiration_ms`` will be used for any new
+        partitioned table. If you provide an explicit
+        ``time_partitioning.expiration_ms`` when creating or updating a
+        partitioned table, that value takes precedence over the default
+        partition expiration time indicated by this property.
+        """
+        return _helpers._int_or_none(
+            self._properties.get("defaultPartitionExpirationMs")
+        )
+
+    @default_partition_expiration_ms.setter
+    def default_partition_expiration_ms(self, value):
+        self._properties["defaultPartitionExpirationMs"] = _helpers._str_or_none(value)
 
     @property
     def default_table_expiration_ms(self):

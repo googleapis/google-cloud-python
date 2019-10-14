@@ -928,6 +928,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
 
+    def test_require_partitioning_filter(self):
+        table = self._make_one("proj.dset.tbl")
+        assert table.require_partition_filter is None
+        table.require_partition_filter = True
+        assert table.require_partition_filter
+        table.require_partition_filter = False
+        assert table.require_partition_filter is not None
+        assert not table.require_partition_filter
+        table.require_partition_filter = None
+        assert table.require_partition_filter is None
+
     def test_time_partitioning_getter(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
