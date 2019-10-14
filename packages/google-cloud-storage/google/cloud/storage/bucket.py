@@ -2121,11 +2121,12 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
 
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+        :type credentials: :class:`google.auth.credentials.Credentials` or
                            :class:`NoneType`
-        :param credentials: (Optional) The OAuth2 credentials to use to sign
-                            the URL. Defaults to the credentials stored on the
-                            client used.
+        :param credentials: The authorization credentials to attach to requests.
+                            These credentials identify this application to the service.
+                            If none are specified, the client will attempt to ascertain
+                            the credentials from the environment.
 
         :type version: str
         :param version: (Optional) The version of signed credential to create.
