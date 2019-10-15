@@ -13,11 +13,9 @@
 # limitations under the License.
 
 """Testable usage examples for Google BigQuery API wrapper
-
 Each example function takes a ``client`` argument (which must be an instance
 of :class:`google.cloud.bigquery.client.Client`) and uses it to perform a task
 with the API.
-
 To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
@@ -301,47 +299,6 @@ def test_load_and_query_partitioned_table(client, to_delete):
     print("{} states were admitted to the US in the 1800s".format(len(rows)))
     # [END bigquery_query_partitioned_table]
     assert len(rows) == 29
-
-
-# [START bigquery_table_exists]
-def table_exists(client, table_reference):
-    """Return if a table exists.
-
-    Args:
-        client (google.cloud.bigquery.client.Client):
-            A client to connect to the BigQuery API.
-        table_reference (google.cloud.bigquery.table.TableReference):
-            A reference to the table to look for.
-
-    Returns:
-        bool: ``True`` if the table exists, ``False`` otherwise.
-    """
-    from google.cloud.exceptions import NotFound
-
-    try:
-        client.get_table(table_reference)
-        return True
-    except NotFound:
-        return False
-
-
-# [END bigquery_table_exists]
-
-
-def test_table_exists(client, to_delete):
-    """Determine if a table exists."""
-    DATASET_ID = "get_table_dataset_{}".format(_millis())
-    TABLE_ID = "get_table_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table_ref = dataset.table(TABLE_ID)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)
-
-    assert table_exists(client, table_ref)
-    assert not table_exists(client, dataset.table("i_dont_exist"))
 
 
 @pytest.mark.skip(
@@ -698,36 +655,6 @@ def test_manage_views(client, to_delete):
     # [END bigquery_grant_view_access]
 
 
-def test_table_insert_rows(client, to_delete):
-    """Insert / fetch table data."""
-    dataset_id = "table_insert_rows_dataset_{}".format(_millis())
-    table_id = "table_insert_rows_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    dataset.location = "US"
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
-
-    # [START bigquery_table_insert_rows]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'  # replace with your dataset ID
-    # For this sample, the table must already exist and have a defined schema
-    # table_id = 'my_table'  # replace with your table ID
-    # table_ref = client.dataset(dataset_id).table(table_id)
-    # table = client.get_table(table_ref)  # API request
-
-    rows_to_insert = [(u"Phred Phlyntstone", 32), (u"Wylma Phlyntstone", 29)]
-
-    errors = client.insert_rows(table, rows_to_insert)  # API request
-
-    assert errors == []
-    # [END bigquery_table_insert_rows]
-
-
 def test_load_table_from_file(client, to_delete):
     """Upload table data from a CSV file."""
     dataset_id = "load_table_from_file_dataset_{}".format(_millis())
@@ -993,12 +920,10 @@ def test_load_table_from_uri_orc(client, to_delete, capsys):
 
 def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     """Load table from a GCS URI using various formats and auto-detected schema
-
     Each file format has its own tested load from URI sample. Because most of
     the code is common for autodetect, append, and truncate, this sample
     includes snippets for all supported formats but only calls a single load
     job.
-
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
@@ -1058,12 +983,10 @@ def test_load_table_from_uri_autodetect(client, to_delete, capsys):
 
 def test_load_table_from_uri_truncate(client, to_delete, capsys):
     """Replaces table data with data from a GCS URI using various formats
-
     Each file format has its own tested load from URI sample. Because most of
     the code is common for autodetect, append, and truncate, this sample
     includes snippets for all supported formats but only calls a single load
     job.
-
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
@@ -1301,38 +1224,6 @@ def test_load_table_relax_column(client, to_delete):
     assert len(table.schema) == 3
     assert table.schema[2].mode == "NULLABLE"
     assert table.num_rows > 0
-
-
-def test_copy_table(client, to_delete):
-    dataset_id = "copy_table_dataset_{}".format(_millis())
-    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dest_dataset.location = "US"
-    dest_dataset = client.create_dataset(dest_dataset)
-    to_delete.append(dest_dataset)
-
-    # [START bigquery_copy_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    source_dataset = client.dataset("samples", project="bigquery-public-data")
-    source_table_ref = source_dataset.table("shakespeare")
-
-    # dataset_id = 'my_dataset'
-    dest_table_ref = client.dataset(dataset_id).table("destination_table")
-
-    job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-    )  # API request
-
-    job.result()  # Waits for job to complete.
-
-    assert job.state == "DONE"
-    dest_table = client.get_table(dest_table_ref)  # API request
-    assert dest_table.num_rows > 0
-    # [END bigquery_copy_table]
 
 
 def test_copy_table_multiple_source(client, to_delete):
@@ -1599,31 +1490,6 @@ def test_undelete_table(client, to_delete):
         "Copied data from deleted table {} to {}".format(table_id, recovered_table_id)
     )
     # [END bigquery_undelete_table]
-
-
-def test_client_query(client):
-    """Run a simple query."""
-
-    # [START bigquery_query]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    query = (
-        "SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` "
-        'WHERE state = "TX" '
-        "LIMIT 100"
-    )
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-    )  # API request - starts the query
-
-    for row in query_job:  # API request - fetches results
-        # Row values can be accessed by field name or index
-        assert row[0] == row.name == row["name"]
-        print(row)
-    # [END bigquery_query]
 
 
 def test_client_query_legacy_sql(client):
@@ -2358,42 +2224,6 @@ def test_ddl_create_view(client, to_delete, capsys):
     if pandas is not None:
         df = job.to_dataframe()
         assert len(df) == 0
-
-
-def test_client_list_jobs(client):
-    """List jobs for a project."""
-
-    # [START bigquery_list_jobs]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # project = 'my_project'  # replace with your project ID
-    # client = bigquery.Client(project=project)
-    import datetime
-
-    # List the 10 most recent jobs in reverse chronological order.
-    # Omit the max_results parameter to list jobs from the past 6 months.
-    print("Last 10 jobs:")
-    for job in client.list_jobs(max_results=10):  # API request(s)
-        print(job.job_id)
-
-    # The following are examples of additional optional parameters:
-
-    # Use min_creation_time and/or max_creation_time to specify a time window.
-    print("Jobs from the last ten minutes:")
-    ten_mins_ago = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
-    for job in client.list_jobs(min_creation_time=ten_mins_ago):
-        print(job.job_id)
-
-    # Use all_users to include jobs run by all users in the project.
-    print("Last 10 jobs run by all users:")
-    for job in client.list_jobs(max_results=10, all_users=True):
-        print("{} run by user: {}".format(job.job_id, job.user_email))
-
-    # Use state_filter to filter by job state.
-    print("Jobs currently running:")
-    for job in client.list_jobs(state_filter="RUNNING"):
-        print(job.job_id)
-    # [END bigquery_list_jobs]
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
