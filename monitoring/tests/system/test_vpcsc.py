@@ -28,6 +28,8 @@ from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import enums
 
 PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
+if not PROJECT_INSIDE:
+    PROJECT_INSIDE = None
 PROJECT_OUTSIDE = os.environ.get(
     "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
 )

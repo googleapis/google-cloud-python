@@ -30,13 +30,13 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-s.move(library / "google/cloud/logging_v2/proto")
+# the structure of the logging directory is a bit different, so manually copy the protos
+s.move(library / "google/cloud/logging_v2/proto/cloud/logging_v2/proto", "google/cloud/logging_v2/proto")
+s.move(library / "google/cloud/logging_v2/proto/*.proto")
+
 s.move(library / "google/cloud/logging_v2/gapic")
 s.move(library / "tests/unit/gapic/v2")
-
-# Issues exist where python files should define the source encoding
-# https://github.com/googleapis/gapic-generator/issues/2097
-s.replace("google/**/proto/*_pb2.py", r"(^.*$\n)*", r"# -*- coding: utf-8 -*-\n\g<0>")
+s.move(library / "docs/gapic/v2")
 
 # ----------------------------------------------------------------------------
 # Add templated files

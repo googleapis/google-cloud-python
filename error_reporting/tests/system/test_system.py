@@ -117,7 +117,7 @@ class TestErrorReporting(unittest.TestCase):
 
         is_one = functools.partial(operator.eq, 1)
         is_one.__name__ = "is_one"  # partial() has no name.
-        retry = RetryResult(is_one, max_tries=6)
+        retry = RetryResult(is_one, max_tries=8)
         wrapped_get_count = retry(_get_error_count)
 
         error_count = wrapped_get_count(class_name, Config.CLIENT)

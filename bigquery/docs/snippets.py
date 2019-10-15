@@ -13,11 +13,9 @@
 # limitations under the License.
 
 """Testable usage examples for Google BigQuery API wrapper
-
 Each example function takes a ``client`` argument (which must be an instance
 of :class:`google.cloud.bigquery.client.Client`) and uses it to perform a task
 with the API.
-
 To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
@@ -123,133 +121,6 @@ def test_create_client_default_credentials():
     # [END bigquery_client_default_credentials]
 
     assert client is not None
-
-
-def test_list_datasets_by_label(client, to_delete):
-    dataset_id = "list_datasets_by_label_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.labels = {"color": "green"}
-    dataset = client.create_dataset(dataset)  # API request
-    to_delete.append(dataset)
-
-    # [START bigquery_list_datasets_by_label]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    # The following label filter example will find datasets with an
-    # arbitrary 'color' label set to 'green'
-    label_filter = "labels.color:green"
-    datasets = list(client.list_datasets(filter=label_filter))
-
-    if datasets:
-        print("Datasets filtered by {}:".format(label_filter))
-        for dataset in datasets:  # API request(s)
-            print("\t{}".format(dataset.dataset_id))
-    else:
-        print("No datasets found with this filter.")
-    # [END bigquery_list_datasets_by_label]
-    found = set([dataset.dataset_id for dataset in datasets])
-    assert dataset_id in found
-
-
-# [START bigquery_dataset_exists]
-def dataset_exists(client, dataset_reference):
-    """Return if a dataset exists.
-
-    Args:
-        client (google.cloud.bigquery.client.Client):
-            A client to connect to the BigQuery API.
-        dataset_reference (google.cloud.bigquery.dataset.DatasetReference):
-            A reference to the dataset to look for.
-
-    Returns:
-        bool: ``True`` if the dataset exists, ``False`` otherwise.
-    """
-    from google.cloud.exceptions import NotFound
-
-    try:
-        client.get_dataset(dataset_reference)
-        return True
-    except NotFound:
-        return False
-
-
-# [END bigquery_dataset_exists]
-
-
-def test_dataset_exists(client, to_delete):
-    """Determine if a dataset exists."""
-    DATASET_ID = "get_table_dataset_{}".format(_millis())
-    dataset_ref = client.dataset(DATASET_ID)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    assert dataset_exists(client, dataset_ref)
-    assert not dataset_exists(client, client.dataset("i_dont_exist"))
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_dataset() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5588"
-    )
-)
-def test_manage_dataset_labels(client, to_delete):
-    dataset_id = "label_dataset_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_label_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-    # dataset = client.get_dataset(dataset_ref)  # API request
-
-    assert dataset.labels == {}
-    labels = {"color": "green"}
-    dataset.labels = labels
-
-    dataset = client.update_dataset(dataset, ["labels"])  # API request
-
-    assert dataset.labels == labels
-    # [END bigquery_label_dataset]
-
-    # [START bigquery_get_dataset_labels]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    dataset = client.get_dataset(dataset_ref)  # API request
-
-    # View dataset labels
-    print("Dataset ID: {}".format(dataset_id))
-    print("Labels:")
-    if dataset.labels:
-        for label, value in dataset.labels.items():
-            print("\t{}: {}".format(label, value))
-    else:
-        print("\tDataset has no labels defined.")
-    # [END bigquery_get_dataset_labels]
-    assert dataset.labels == labels
-
-    # [START bigquery_delete_label_dataset]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
-    # dataset = client.get_dataset(dataset_ref)  # API request
-
-    # This example dataset starts with one label
-    assert dataset.labels == {"color": "green"}
-    # To delete a label from a dataset, set its value to None
-    dataset.labels["color"] = None
-
-    dataset = client.update_dataset(dataset, ["labels"])  # API request
-
-    assert dataset.labels == {}
-    # [END bigquery_delete_label_dataset]
 
 
 def test_create_table_nested_repeated_schema(client, to_delete):
@@ -430,47 +301,6 @@ def test_load_and_query_partitioned_table(client, to_delete):
     assert len(rows) == 29
 
 
-# [START bigquery_table_exists]
-def table_exists(client, table_reference):
-    """Return if a table exists.
-
-    Args:
-        client (google.cloud.bigquery.client.Client):
-            A client to connect to the BigQuery API.
-        table_reference (google.cloud.bigquery.table.TableReference):
-            A reference to the table to look for.
-
-    Returns:
-        bool: ``True`` if the table exists, ``False`` otherwise.
-    """
-    from google.cloud.exceptions import NotFound
-
-    try:
-        client.get_table(table_reference)
-        return True
-    except NotFound:
-        return False
-
-
-# [END bigquery_table_exists]
-
-
-def test_table_exists(client, to_delete):
-    """Determine if a table exists."""
-    DATASET_ID = "get_table_dataset_{}".format(_millis())
-    TABLE_ID = "get_table_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table_ref = dataset.table(TABLE_ID)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)
-
-    assert table_exists(client, table_ref)
-    assert not table_exists(client, dataset.table("i_dont_exist"))
-
-
 @pytest.mark.skip(
     reason=(
         "update_table() is flaky "
@@ -618,43 +448,6 @@ def test_update_table_expiration(client, to_delete):
         "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
     )
 )
-def test_add_empty_column(client, to_delete):
-    """Adds an empty column to an existing table."""
-    dataset_id = "add_empty_column_dataset_{}".format(_millis())
-    table_id = "add_empty_column_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
-
-    # [START bigquery_add_empty_column]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
-
-    table_ref = client.dataset(dataset_id).table(table_id)
-    table = client.get_table(table_ref)  # API request
-
-    original_schema = table.schema
-    new_schema = original_schema[:]  # creates a copy of the schema
-    new_schema.append(bigquery.SchemaField("phone", "STRING"))
-
-    table.schema = new_schema
-    table = client.update_table(table, ["schema"])  # API request
-
-    assert len(table.schema) == len(original_schema) + 1 == len(new_schema)
-    # [END bigquery_add_empty_column]
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_table() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
-    )
-)
 def test_relax_column(client, to_delete):
     """Updates a schema field from required to nullable."""
     dataset_id = "relax_column_dataset_{}".format(_millis())
@@ -735,47 +528,6 @@ def test_update_table_cmek(client, to_delete):
     assert table.encryption_configuration.kms_key_name == updated_kms_key_name
     assert original_kms_key_name != updated_kms_key_name
     # [END bigquery_update_table_cmek]
-
-
-def test_browse_table_data(client, to_delete, capsys):
-    """Retreive selected row data from a table."""
-
-    # [START bigquery_browse_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    dataset_ref = client.dataset("samples", project="bigquery-public-data")
-    table_ref = dataset_ref.table("shakespeare")
-    table = client.get_table(table_ref)  # API call
-
-    # Load all rows from a table
-    rows = client.list_rows(table)
-    assert len(list(rows)) == table.num_rows
-
-    # Load the first 10 rows
-    rows = client.list_rows(table, max_results=10)
-    assert len(list(rows)) == 10
-
-    # Specify selected fields to limit the results to certain columns
-    fields = table.schema[:2]  # first two columns
-    rows = client.list_rows(table, selected_fields=fields, max_results=10)
-    assert len(rows.schema) == 2
-    assert len(list(rows)) == 10
-
-    # Use the start index to load an arbitrary portion of the table
-    rows = client.list_rows(table, start_index=10, max_results=10)
-
-    # Print row data in tabular format
-    format_string = "{!s:<16} " * len(rows.schema)
-    field_names = [field.name for field in rows.schema]
-    print(format_string.format(*field_names))  # prints column headers
-    for row in rows:
-        print(format_string.format(*row))  # prints row data
-    # [END bigquery_browse_table]
-
-    out, err = capsys.readouterr()
-    out = list(filter(bool, out.split("\n")))  # list of non-blank lines
-    assert len(out) == 11
 
 
 @pytest.mark.skip(
@@ -901,36 +653,6 @@ def test_manage_views(client, to_delete):
         source_dataset, ["access_entries"]
     )  # API request
     # [END bigquery_grant_view_access]
-
-
-def test_table_insert_rows(client, to_delete):
-    """Insert / fetch table data."""
-    dataset_id = "table_insert_rows_dataset_{}".format(_millis())
-    table_id = "table_insert_rows_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset = client.create_dataset(dataset)
-    dataset.location = "US"
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
-
-    # [START bigquery_table_insert_rows]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'  # replace with your dataset ID
-    # For this sample, the table must already exist and have a defined schema
-    # table_id = 'my_table'  # replace with your table ID
-    # table_ref = client.dataset(dataset_id).table(table_id)
-    # table = client.get_table(table_ref)  # API request
-
-    rows_to_insert = [(u"Phred Phlyntstone", 32), (u"Wylma Phlyntstone", 29)]
-
-    errors = client.insert_rows(table, rows_to_insert)  # API request
-
-    assert errors == []
-    # [END bigquery_table_insert_rows]
 
 
 def test_load_table_from_file(client, to_delete):
@@ -1198,12 +920,10 @@ def test_load_table_from_uri_orc(client, to_delete, capsys):
 
 def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     """Load table from a GCS URI using various formats and auto-detected schema
-
     Each file format has its own tested load from URI sample. Because most of
     the code is common for autodetect, append, and truncate, this sample
     includes snippets for all supported formats but only calls a single load
     job.
-
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
@@ -1263,12 +983,10 @@ def test_load_table_from_uri_autodetect(client, to_delete, capsys):
 
 def test_load_table_from_uri_truncate(client, to_delete, capsys):
     """Replaces table data with data from a GCS URI using various formats
-
     Each file format has its own tested load from URI sample. Because most of
     the code is common for autodetect, append, and truncate, this sample
     includes snippets for all supported formats but only calls a single load
     job.
-
     This code snippet is made up of shared code, then format-specific code,
     followed by more shared code. Note that only the last format in the
     format-specific code section will be tested in this test.
@@ -1506,38 +1224,6 @@ def test_load_table_relax_column(client, to_delete):
     assert len(table.schema) == 3
     assert table.schema[2].mode == "NULLABLE"
     assert table.num_rows > 0
-
-
-def test_copy_table(client, to_delete):
-    dataset_id = "copy_table_dataset_{}".format(_millis())
-    dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dest_dataset.location = "US"
-    dest_dataset = client.create_dataset(dest_dataset)
-    to_delete.append(dest_dataset)
-
-    # [START bigquery_copy_table]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    source_dataset = client.dataset("samples", project="bigquery-public-data")
-    source_table_ref = source_dataset.table("shakespeare")
-
-    # dataset_id = 'my_dataset'
-    dest_table_ref = client.dataset(dataset_id).table("destination_table")
-
-    job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-    )  # API request
-
-    job.result()  # Waits for job to complete.
-
-    assert job.state == "DONE"
-    dest_table = client.get_table(dest_table_ref)  # API request
-    assert dest_table.num_rows > 0
-    # [END bigquery_copy_table]
 
 
 def test_copy_table_multiple_source(client, to_delete):
@@ -1804,31 +1490,6 @@ def test_undelete_table(client, to_delete):
         "Copied data from deleted table {} to {}".format(table_id, recovered_table_id)
     )
     # [END bigquery_undelete_table]
-
-
-def test_client_query(client):
-    """Run a simple query."""
-
-    # [START bigquery_query]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    query = (
-        "SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` "
-        'WHERE state = "TX" '
-        "LIMIT 100"
-    )
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-    )  # API request - starts the query
-
-    for row in query_job:  # API request - fetches results
-        # Row values can be accessed by field name or index
-        assert row[0] == row.name == row["name"]
-        print(row)
-    # [END bigquery_query]
 
 
 def test_client_query_legacy_sql(client):
@@ -2508,108 +2169,6 @@ def test_query_external_gcs_permanent_table(client, to_delete):
     assert len(w_states) == 4
 
 
-def test_query_external_sheets_temporary_table(client):
-    # [START bigquery_query_external_sheets_temp]
-    # [START bigquery_auth_drive_scope]
-    import google.auth
-
-    # from google.cloud import bigquery
-
-    # Create credentials with Drive & BigQuery API scopes
-    # Both APIs must be enabled for your project before running this code
-    credentials, project = google.auth.default(
-        scopes=[
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/bigquery",
-        ]
-    )
-    client = bigquery.Client(credentials=credentials, project=project)
-    # [END bigquery_auth_drive_scope]
-
-    # Configure the external data source and query job
-    external_config = bigquery.ExternalConfig("GOOGLE_SHEETS")
-    # Use a shareable link or grant viewing access to the email address you
-    # used to authenticate with BigQuery (this example Sheet is public)
-    sheet_url = (
-        "https://docs.google.com/spreadsheets"
-        "/d/1i_QCL-7HcSyUZmIbP9E6lO_T5u3HnpLe7dnpHaijg_E/edit?usp=sharing"
-    )
-    external_config.source_uris = [sheet_url]
-    external_config.schema = [
-        bigquery.SchemaField("name", "STRING"),
-        bigquery.SchemaField("post_abbr", "STRING"),
-    ]
-    external_config.options.skip_leading_rows = 1  # optionally skip header row
-    table_id = "us_states"
-    job_config = bigquery.QueryJobConfig()
-    job_config.table_definitions = {table_id: external_config}
-
-    # Example query to find states starting with 'W'
-    sql = 'SELECT * FROM `{}` WHERE name LIKE "W%"'.format(table_id)
-
-    query_job = client.query(sql, job_config=job_config)  # API request
-
-    w_states = list(query_job)  # Waits for query to finish
-    print("There are {} states with names starting with W.".format(len(w_states)))
-    # [END bigquery_query_external_sheets_temp]
-    assert len(w_states) == 4
-
-
-def test_query_external_sheets_permanent_table(client, to_delete):
-    dataset_id = "query_external_sheets_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_query_external_sheets_perm]
-    import google.auth
-
-    # from google.cloud import bigquery
-    # dataset_id = 'my_dataset'
-
-    # Create credentials with Drive & BigQuery API scopes
-    # Both APIs must be enabled for your project before running this code
-    credentials, project = google.auth.default(
-        scopes=[
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/bigquery",
-        ]
-    )
-    client = bigquery.Client(credentials=credentials, project=project)
-
-    # Configure the external data source
-    dataset_ref = client.dataset(dataset_id)
-    table_id = "us_states"
-    schema = [
-        bigquery.SchemaField("name", "STRING"),
-        bigquery.SchemaField("post_abbr", "STRING"),
-    ]
-    table = bigquery.Table(dataset_ref.table(table_id), schema=schema)
-    external_config = bigquery.ExternalConfig("GOOGLE_SHEETS")
-    # Use a shareable link or grant viewing access to the email address you
-    # used to authenticate with BigQuery (this example Sheet is public)
-    sheet_url = (
-        "https://docs.google.com/spreadsheets"
-        "/d/1i_QCL-7HcSyUZmIbP9E6lO_T5u3HnpLe7dnpHaijg_E/edit?usp=sharing"
-    )
-    external_config.source_uris = [sheet_url]
-    external_config.options.skip_leading_rows = 1  # optionally skip header row
-    table.external_data_configuration = external_config
-
-    # Create a permanent table linked to the Sheets file
-    table = client.create_table(table)  # API request
-
-    # Example query to find states starting with 'W'
-    sql = 'SELECT * FROM `{}.{}` WHERE name LIKE "W%"'.format(dataset_id, table_id)
-
-    query_job = client.query(sql)  # API request
-
-    w_states = list(query_job)  # Waits for query to finish
-    print("There are {} states with names starting with W.".format(len(w_states)))
-    # [END bigquery_query_external_sheets_perm]
-    assert len(w_states) == 4
-
-
 def test_ddl_create_view(client, to_delete, capsys):
     """Create a view via a DDL query."""
     project = client.project
@@ -2667,42 +2226,6 @@ def test_ddl_create_view(client, to_delete, capsys):
         assert len(df) == 0
 
 
-def test_client_list_jobs(client):
-    """List jobs for a project."""
-
-    # [START bigquery_list_jobs]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # project = 'my_project'  # replace with your project ID
-    # client = bigquery.Client(project=project)
-    import datetime
-
-    # List the 10 most recent jobs in reverse chronological order.
-    # Omit the max_results parameter to list jobs from the past 6 months.
-    print("Last 10 jobs:")
-    for job in client.list_jobs(max_results=10):  # API request(s)
-        print(job.job_id)
-
-    # The following are examples of additional optional parameters:
-
-    # Use min_creation_time and/or max_creation_time to specify a time window.
-    print("Jobs from the last ten minutes:")
-    ten_mins_ago = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
-    for job in client.list_jobs(min_creation_time=ten_mins_ago):
-        print(job.job_id)
-
-    # Use all_users to include jobs run by all users in the project.
-    print("Last 10 jobs run by all users:")
-    for job in client.list_jobs(max_results=10, all_users=True):
-        print("{} run by user: {}".format(job.job_id, job.user_email))
-
-    # Use state_filter to filter by job state.
-    print("Jobs currently running:")
-    for job in client.list_jobs(state_filter="RUNNING"):
-        print(job.job_id)
-    # [END bigquery_list_jobs]
-
-
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_query_results_as_dataframe(client):
     # [START bigquery_query_results_dataframe]
@@ -2739,53 +2262,6 @@ def test_list_rows_as_dataframe(client):
     assert isinstance(df, pandas.DataFrame)
     assert len(list(df)) == len(table.schema)  # verify the number of columns
     assert len(df) == table.num_rows  # verify the number of rows
-
-
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.parametrize("parquet_engine", ["pyarrow", "fastparquet"])
-def test_load_table_from_dataframe(client, to_delete, parquet_engine):
-    if parquet_engine == "pyarrow" and pyarrow is None:
-        pytest.skip("Requires `pyarrow`")
-    if parquet_engine == "fastparquet" and fastparquet is None:
-        pytest.skip("Requires `fastparquet`")
-
-    pandas.set_option("io.parquet.engine", parquet_engine)
-
-    dataset_id = "load_table_from_dataframe_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_load_table_dataframe]
-    # from google.cloud import bigquery
-    # import pandas
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table("monty_python")
-    records = [
-        {"title": u"The Meaning of Life", "release_year": 1983},
-        {"title": u"Monty Python and the Holy Grail", "release_year": 1975},
-        {"title": u"Life of Brian", "release_year": 1979},
-        {"title": u"And Now for Something Completely Different", "release_year": 1971},
-    ]
-    # Optionally set explicit indices.
-    # If indices are not specified, a column will be created for the default
-    # indices created by pandas.
-    index = [u"Q24980", u"Q25043", u"Q24953", u"Q16403"]
-    dataframe = pandas.DataFrame(records, index=pandas.Index(index, name="wikidata_id"))
-
-    job = client.load_table_from_dataframe(dataframe, table_ref, location="US")
-
-    job.result()  # Waits for table load to complete.
-
-    assert job.state == "DONE"
-    table = client.get_table(table_ref)
-    assert table.num_rows == 4
-    # [END bigquery_load_table_dataframe]
-    column_names = [field.name for field in table.schema]
-    assert sorted(column_names) == ["release_year", "title", "wikidata_id"]
 
 
 if __name__ == "__main__":

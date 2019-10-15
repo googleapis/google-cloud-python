@@ -150,6 +150,7 @@ def lint(session):
     session.install("-e", ".")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
+    session.run("flake8", os.path.join("docs", "samples"))
     session.run("flake8", os.path.join("docs", "snippets.py"))
     session.run("black", "--check", *BLACK_PATHS)
 

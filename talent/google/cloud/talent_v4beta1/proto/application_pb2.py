@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
@@ -32,10 +33,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\030ApplicationResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto"\xc2\x07\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x1f \x01(\t\x12\x0f\n\x07profile\x18\x02 \x01(\t\x12\x0b\n\x03job\x18\x04 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12H\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStage\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12/\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12,\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x19\n\x11job_title_snippet\x18\x1d \x01(\t"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07\x42\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto"\xe0\x07\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0b\x65xternal_id\x18\x1f \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07profile\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x0b\n\x03job\x18\x04 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12M\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStageB\x03\xe0\x41\x02\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x34\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12\x31\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\x03\xe0\x41\x03\x12\x1e\n\x11job_title_snippet\x18\x1d \x01(\tB\x03\xe0\x41\x03"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07\x42\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
@@ -83,8 +85,8 @@ _APPLICATION_APPLICATIONSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=898,
-    serialized_end=1042,
+    serialized_start=961,
+    serialized_end=1105,
 )
 _sym_db.RegisterEnumDescriptor(_APPLICATION_APPLICATIONSTATE)
 
@@ -129,8 +131,8 @@ _APPLICATION_APPLICATIONSTAGE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1045,
-    serialized_end=1214,
+    serialized_start=1108,
+    serialized_end=1277,
 )
 _sym_db.RegisterEnumDescriptor(_APPLICATION_APPLICATIONSTAGE)
 
@@ -175,7 +177,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -193,7 +195,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -265,7 +267,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -337,7 +339,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -409,7 +411,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -427,7 +429,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -439,8 +441,8 @@ _APPLICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=252,
-    serialized_end=1214,
+    serialized_start=285,
+    serialized_end=1277,
 )
 
 _APPLICATION.fields_by_name[
@@ -487,8 +489,8 @@ Application = _reflection.GeneratedProtocolMessageType(
           Required during application update.  Resource name assigned to
           an application by the API.  The format is "projects/{project\_
           id}/tenants/{tenant\_id}/profiles/{profile\_id}/applications/{
-          application\_id}", for example, "projects/api-test-
-          project/tenants/foo/profiles/bar/applications/baz".
+          application\_id}". For example,
+          "projects/foo/tenants/bar/profiles/baz/applications/qux".
       external_id:
           Required. Client side application identifier, used to uniquely
           identify the application.  The maximum number of allowed
@@ -496,21 +498,21 @@ Application = _reflection.GeneratedProtocolMessageType(
       profile:
           Output only. Resource name of the candidate of this
           application.  The format is "projects/{project\_id}/tenants/{t
-          enant\_id}/profiles/{profile\_id}", for example,
-          "projects/api-test-project/tenants/foo/profiles/bar".
+          enant\_id}/profiles/{profile\_id}". For example,
+          "projects/foo/tenants/bar/profiles/baz".
       job:
           One of either a job or a company is required.  Resource name
           of the job which the candidate applied for.  The format is
-          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}",
-          for example, "projects/api-test-project/tenants/foo/jobs/bar".
+          "projects/{project\_id}/tenants/{tenant\_id}/jobs/{job\_id}".
+          For example, "projects/foo/tenants/bar/jobs/baz".
       company:
           One of either a job or a company is required.  Resource name
           of the company which the candidate applied for.  The format is
           "projects/{project\_id}/tenants/{tenant\_id}/companies/{compan
-          y\_id}", for example, "projects/api-test-
-          project/tenants/foo/companies/bar".
+          y\_id}". For example,
+          "projects/foo/tenants/bar/companies/baz".
       application_date:
-          Optional. The application date.
+          The application date.
       stage:
           Required. What is the most recent stage of the application
           (that is, new, screen, send cv, hired, finished work)? This
@@ -518,25 +520,23 @@ Application = _reflection.GeneratedProtocolMessageType(
           status, but instead, represents statuses that would be used to
           indicate to the ML models good / bad matches.
       state:
-          Optional. The application state.
+          The application state.
       interviews:
-          Optional. All interviews (screen, onsite, and so on) conducted
-          as part of this application (includes details such as user
-          conducting the interview, timestamp, feedback, and so on).
+          All interviews (screen, onsite, and so on) conducted as part
+          of this application (includes details such as user conducting
+          the interview, timestamp, feedback, and so on).
       referral:
-          Optional. If the candidate is referred by a employee.
+          If the candidate is referred by a employee.
       create_time:
           Required. Reflects the time that the application was created.
       update_time:
-          Optional. The last update timestamp.
+          The last update timestamp.
       outcome_notes:
-          Optional. Free text reason behind the recruitement outcome
-          (for example, reason for withdraw / reject, reason for an
-          unsuccessful finish, and so on).  Number of characters allowed
-          is 100.
+          Free text reason behind the recruitement outcome (for example,
+          reason for withdraw / reject, reason for an unsuccessful
+          finish, and so on).  Number of characters allowed is 100.
       outcome:
-          Optional. Outcome positiveness shows how positive the outcome
-          is.
+          Outcome positiveness shows how positive the outcome is.
       is_match:
           Output only. Indicates whether this job application is a match
           to application related filters. This value is only applicable
@@ -553,4 +553,10 @@ _sym_db.RegisterMessage(Application)
 
 
 DESCRIPTOR._options = None
+_APPLICATION.fields_by_name["external_id"]._options = None
+_APPLICATION.fields_by_name["profile"]._options = None
+_APPLICATION.fields_by_name["stage"]._options = None
+_APPLICATION.fields_by_name["create_time"]._options = None
+_APPLICATION.fields_by_name["is_match"]._options = None
+_APPLICATION.fields_by_name["job_title_snippet"]._options = None
 # @@protoc_insertion_point(module_scope)

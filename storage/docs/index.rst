@@ -18,6 +18,7 @@ API Reference
   buckets
   acl
   batch
+  constants
 
 Changelog
 ---------

@@ -15,9 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1beta/proto/crawled_url.proto",
     package="google.cloud.websecurityscanner.v1beta",
@@ -26,9 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\017CrawledUrlProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\n>google/cloud/websecurityscanner_v1beta/proto/crawled_url.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto"<\n\nCrawledUrl\x12\x13\n\x0bhttp_method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x62ody\x18\x03 \x01(\tB\xc2\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0f\x43rawledUrlProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\n>google/cloud/websecurityscanner_v1beta/proto/crawled_url.proto\x12&google.cloud.websecurityscanner.v1beta"<\n\nCrawledUrl\x12\x13\n\x0bhttp_method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x62ody\x18\x03 \x01(\tB\xc2\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0f\x43rawledUrlProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -102,8 +98,8 @@ _CRAWLEDURL = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=136,
-    serialized_end=196,
+    serialized_start=106,
+    serialized_end=166,
 )
 
 DESCRIPTOR.message_types_by_name["CrawledUrl"] = _CRAWLEDURL
@@ -123,13 +119,12 @@ CrawledUrl = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       http_method:
-          Output only. The http method of the request that was used to
-          visit the URL, in uppercase.
+          The http method of the request that was used to visit the URL,
+          in uppercase.
       url:
-          Output only. The URL that was crawled.
+          The URL that was crawled.
       body:
-          Output only. The body of the request that was used to visit
-          the URL.
+          The body of the request that was used to visit the URL.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1beta.CrawledUrl)
     ),

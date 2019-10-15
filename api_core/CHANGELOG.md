@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.14.3
+
+10-07-2019 10:35 PDT
+
+
+### Implementation Changes
+- Finalize during close of 'ResumableBidiRpc' ([#9337](https://github.com/googleapis/google-cloud-python/pull/9337))
+- add on_error to Retry.__init__ ([#8892](https://github.com/googleapis/google-cloud-python/pull/8892))
+- Fix race in 'BackgroundConsumer._thread_main'. ([#8883](https://github.com/googleapis/google-cloud-python/pull/8883))
+
+### Documentation
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix broken links in docs. ([#9148](https://github.com/googleapis/google-cloud-python/pull/9148))
+- About of time -> amount of time ([#9052](https://github.com/googleapis/google-cloud-python/pull/9052))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
 ## 1.14.2
 
 07-30-2019 14:08 PDT

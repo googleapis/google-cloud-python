@@ -19,6 +19,16 @@ These are *not* part of the API.
 
 import base64
 from hashlib import md5
+import os
+
+STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
+"""Environment variable defining host for Storage emulator."""
+
+_DEFAULT_STORAGE_HOST = u"https://www.googleapis.com"
+
+
+def _get_storage_host():
+    return os.environ.get(STORAGE_EMULATOR_ENV_VAR, _DEFAULT_STORAGE_HOST)
 
 
 def _validate_name(name):
@@ -33,7 +43,7 @@ def _validate_name(name):
     if name is None:
         return
 
-    # The first and las characters must be alphanumeric.
+    # The first and last characters must be alphanumeric.
     if not all([name[0].isalnum(), name[-1].isalnum()]):
         raise ValueError("Bucket names must start and end with a number or letter.")
     return name

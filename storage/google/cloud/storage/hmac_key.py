@@ -28,6 +28,9 @@ class HMACKeyMetadata(object):
     :type project_id: str
     :param project_id: (Optional) project ID of an existing key.
         Defaults to client's project.
+
+    :type user_project: str
+    :param user_project: (Optional) This parameter is currently ignored.
     """
 
     ACTIVE_STATE = "ACTIVE"
@@ -42,7 +45,7 @@ class HMACKeyMetadata(object):
 
     _SETTABLE_STATES = (ACTIVE_STATE, INACTIVE_STATE)
 
-    def __init__(self, client, access_id=None, project_id=None):
+    def __init__(self, client, access_id=None, project_id=None, user_project=None):
         self._client = client
         self._properties = {}
 
@@ -51,6 +54,8 @@ class HMACKeyMetadata(object):
 
         if project_id is not None:
             self._properties["projectId"] = project_id
+
+        self._user_project = user_project
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -63,7 +68,7 @@ class HMACKeyMetadata(object):
 
     @property
     def access_id(self):
-        """ID of the key.
+        """Access ID of the key.
 
         :rtype: str or None
         :returns: unique identifier of the key within a project.
@@ -78,6 +83,15 @@ class HMACKeyMetadata(object):
         :returns: ETag for the version of the key's metadata.
         """
         return self._properties.get("etag")
+
+    @property
+    def id(self):
+        """ID of the key, including the Project ID and the Access ID.
+
+        :rtype: str or None
+        :returns: ID of the key.
+        """
+        return self._properties.get("id")
 
     @property
     def project(self):
@@ -161,6 +175,16 @@ class HMACKeyMetadata(object):
 
         return "/projects/{}/hmacKeys/{}".format(project, self.access_id)
 
+    @property
+    def user_project(self):
+        """Project ID to be billed for API requests made via this bucket.
+
+        This property is currently ignored by the server.
+
+        :rtype: str
+        """
+        return self._user_project
+
     def exists(self):
         """Determine whether or not the key for this metadata exists.
 
@@ -168,7 +192,14 @@ class HMACKeyMetadata(object):
         :returns: True if the key exists in Cloud Storage.
         """
         try:
-            self._client._connection.api_request(method="GET", path=self.path)
+            qs_params = {}
+
+            if self.user_project is not None:
+                qs_params["userProject"] = self.user_project
+
+            self._client._connection.api_request(
+                method="GET", path=self.path, query_params=qs_params
+            )
         except NotFound:
             return False
         else:
@@ -180,8 +211,13 @@ class HMACKeyMetadata(object):
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
         """
+        qs_params = {}
+
+        if self.user_project is not None:
+            qs_params["userProject"] = self.user_project
+
         self._properties = self._client._connection.api_request(
-            method="GET", path=self.path
+            method="GET", path=self.path, query_params=qs_params
         )
 
     def update(self):
@@ -190,9 +226,13 @@ class HMACKeyMetadata(object):
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
         """
+        qs_params = {}
+        if self.user_project is not None:
+            qs_params["userProject"] = self.user_project
+
         payload = {"state": self.state}
         self._properties = self._client._connection.api_request(
-            method="PUT", path=self.path, data=payload
+            method="PUT", path=self.path, data=payload, query_params=qs_params
         )
 
     def delete(self):
@@ -204,4 +244,10 @@ class HMACKeyMetadata(object):
         if self.state != self.INACTIVE_STATE:
             raise ValueError("Cannot delete key if not in 'INACTIVE' state.")
 
-        self._client._connection.api_request(method="DELETE", path=self.path)
+        qs_params = {}
+        if self.user_project is not None:
+            qs_params["userProject"] = self.user_project
+
+        self._client._connection.api_request(
+            method="DELETE", path=self.path, query_params=qs_params
+        )

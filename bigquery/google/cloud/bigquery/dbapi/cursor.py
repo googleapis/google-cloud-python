@@ -61,8 +61,10 @@ class Cursor(object):
         # cannot be determined by the interface.
         self.rowcount = -1
         # Per PEP 249: The arraysize attribute defaults to 1, meaning to fetch
-        # a single row at a time.
-        self.arraysize = 1
+        # a single row at a time. However, we deviate from that, and set the
+        # default to None, allowing the backend to automatically determine the
+        # most appropriate size.
+        self.arraysize = None
         self._query_data = None
         self._query_job = None
 
@@ -114,7 +116,7 @@ class Cursor(object):
             total_rows = num_dml_affected_rows
         self.rowcount = total_rows
 
-    def execute(self, operation, parameters=None, job_id=None):
+    def execute(self, operation, parameters=None, job_id=None, job_config=None):
         """Prepare and execute a database operation.
 
         .. note::
@@ -146,6 +148,9 @@ class Cursor(object):
         :type job_id: str
         :param job_id: (Optional) The job_id to use. If not set, a job ID
             is generated at random.
+
+        :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
+        :param job_config: (Optional) Extra configuration options for the query job.
         """
         self._query_data = None
         self._query_job = None
@@ -158,9 +163,8 @@ class Cursor(object):
         formatted_operation = _format_operation(operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
-        config = job.QueryJobConfig()
+        config = job_config or job.QueryJobConfig(use_legacy_sql=False)
         config.query_parameters = query_parameters
-        config.use_legacy_sql = False
         self._query_job = client.query(
             formatted_operation, job_config=config, job_id=job_id
         )
@@ -241,7 +245,8 @@ class Cursor(object):
         :type size: int
         :param size:
             (Optional) Maximum number of rows to return. Defaults to the
-            ``arraysize`` property value.
+            ``arraysize`` property value. If ``arraysize`` is not set, it
+            defaults to ``1``.
 
         :rtype: List[tuple]
         :returns: A list of rows.
@@ -249,7 +254,10 @@ class Cursor(object):
             if called before ``execute()``.
         """
         if size is None:
-            size = self.arraysize
+            # Since self.arraysize can be None (a deviation from PEP 249),
+            # use an actual PEP 249 default of 1 in such case (*some* number
+            # is needed here).
+            size = self.arraysize if self.arraysize else 1
 
         self._try_fetch(size=size)
         rows = []

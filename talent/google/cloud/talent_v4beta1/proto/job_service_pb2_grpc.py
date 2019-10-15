@@ -28,6 +28,11 @@ class JobServiceStub(object):
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.CreateJobRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.Job.FromString,
         )
+        self.BatchCreateJobs = channel.unary_unary(
+            "/google.cloud.talent.v4beta1.JobService/BatchCreateJobs",
+            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
         self.GetJob = channel.unary_unary(
             "/google.cloud.talent.v4beta1.JobService/GetJob",
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.GetJobRequest.SerializeToString,
@@ -38,20 +43,25 @@ class JobServiceStub(object):
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.UpdateJobRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.Job.FromString,
         )
+        self.BatchUpdateJobs = channel.unary_unary(
+            "/google.cloud.talent.v4beta1.JobService/BatchUpdateJobs",
+            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
         self.DeleteJob = channel.unary_unary(
             "/google.cloud.talent.v4beta1.JobService/DeleteJob",
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.DeleteJobRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.BatchDeleteJobs = channel.unary_unary(
+            "/google.cloud.talent.v4beta1.JobService/BatchDeleteJobs",
+            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchDeleteJobsRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.ListJobs = channel.unary_unary(
             "/google.cloud.talent.v4beta1.JobService/ListJobs",
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.ListJobsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.ListJobsResponse.FromString,
-        )
-        self.BatchDeleteJobs = channel.unary_unary(
-            "/google.cloud.talent.v4beta1.JobService/BatchDeleteJobs",
-            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchDeleteJobsRequest.SerializeToString,
-            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.SearchJobs = channel.unary_unary(
             "/google.cloud.talent.v4beta1.JobService/SearchJobs",
@@ -62,16 +72,6 @@ class JobServiceStub(object):
             "/google.cloud.talent.v4beta1.JobService/SearchJobsForAlert",
             request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsResponse.FromString,
-        )
-        self.BatchCreateJobs = channel.unary_unary(
-            "/google.cloud.talent.v4beta1.JobService/BatchCreateJobs",
-            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.SerializeToString,
-            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
-        )
-        self.BatchUpdateJobs = channel.unary_unary(
-            "/google.cloud.talent.v4beta1.JobService/BatchUpdateJobs",
-            request_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.SerializeToString,
-            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
 
 
@@ -84,6 +84,13 @@ class JobServiceServicer(object):
 
     Typically, the job becomes searchable within 10 seconds, but it may take
     up to 5 minutes.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def BatchCreateJobs(self, request, context):
+        """Begins executing a batch create jobs operation.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -107,6 +114,13 @@ class JobServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def BatchUpdateJobs(self, request, context):
+        """Begins executing a batch update jobs operation.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def DeleteJob(self, request, context):
         """Deletes the specified job.
 
@@ -117,15 +131,15 @@ class JobServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def ListJobs(self, request, context):
-        """Lists jobs by filter.
+    def BatchDeleteJobs(self, request, context):
+        """Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def BatchDeleteJobs(self, request, context):
-        """Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by filter.
+    def ListJobs(self, request, context):
+        """Lists jobs by filter.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -162,20 +176,6 @@ class JobServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def BatchCreateJobs(self, request, context):
-        """Begins executing a batch create jobs operation.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def BatchUpdateJobs(self, request, context):
-        """Begins executing a batch update jobs operation.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
 
 def add_JobServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -183,6 +183,11 @@ def add_JobServiceServicer_to_server(servicer, server):
             servicer.CreateJob,
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.CreateJobRequest.FromString,
             response_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.Job.SerializeToString,
+        ),
+        "BatchCreateJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchCreateJobs,
+            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetJob": grpc.unary_unary_rpc_method_handler(
             servicer.GetJob,
@@ -194,20 +199,25 @@ def add_JobServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.UpdateJobRequest.FromString,
             response_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__pb2.Job.SerializeToString,
         ),
+        "BatchUpdateJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchUpdateJobs,
+            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
         "DeleteJob": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteJob,
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.DeleteJobRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "BatchDeleteJobs": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchDeleteJobs,
+            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchDeleteJobsRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "ListJobs": grpc.unary_unary_rpc_method_handler(
             servicer.ListJobs,
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.ListJobsRequest.FromString,
             response_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.ListJobsResponse.SerializeToString,
-        ),
-        "BatchDeleteJobs": grpc.unary_unary_rpc_method_handler(
-            servicer.BatchDeleteJobs,
-            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchDeleteJobsRequest.FromString,
-            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "SearchJobs": grpc.unary_unary_rpc_method_handler(
             servicer.SearchJobs,
@@ -218,16 +228,6 @@ def add_JobServiceServicer_to_server(servicer, server):
             servicer.SearchJobsForAlert,
             request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsRequest.FromString,
             response_serializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.SearchJobsResponse.SerializeToString,
-        ),
-        "BatchCreateJobs": grpc.unary_unary_rpc_method_handler(
-            servicer.BatchCreateJobs,
-            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchCreateJobsRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        ),
-        "BatchUpdateJobs": grpc.unary_unary_rpc_method_handler(
-            servicer.BatchUpdateJobs,
-            request_deserializer=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_job__service__pb2.BatchUpdateJobsRequest.FromString,
-            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

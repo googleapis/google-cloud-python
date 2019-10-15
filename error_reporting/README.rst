@@ -14,7 +14,7 @@ to receive email and mobile alerts on new errors.
 - `Product Documentation`_
 
 .. _Error Reporting: https://cloud.google.com/error-reporting/
-.. _Client Library Documentation: https://googleapis.dev/python/clouderroreporting/latest
+.. _Client Library Documentation: https://googleapis.dev/python/clouderrorreporting/latest
 .. _Product Documentation: https://cloud.google.com/error-reporting/reference/
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/

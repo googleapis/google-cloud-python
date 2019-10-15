@@ -22,7 +22,6 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import talent_v4beta1
-from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
@@ -483,7 +482,7 @@ class TestJobServiceClient(object):
     def test_batch_create_jobs(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        expected_response = job_service_pb2.JobOperationResult(**expected_response)
         operation = operations_pb2.Operation(
             name="operations/test_batch_create_jobs", done=True
         )
@@ -537,7 +536,7 @@ class TestJobServiceClient(object):
     def test_batch_update_jobs(self):
         # Setup Expected Response
         expected_response = {}
-        expected_response = batch_pb2.JobOperationResult(**expected_response)
+        expected_response = job_service_pb2.JobOperationResult(**expected_response)
         operation = operations_pb2.Operation(
             name="operations/test_batch_update_jobs", done=True
         )

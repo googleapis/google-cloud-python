@@ -36,6 +36,7 @@ from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import StandardSqlDataTypes
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
@@ -124,6 +125,7 @@ __all__ = [
     "GoogleSheetsOptions",
     "DEFAULT_RETRY",
     # Enum Constants
+    "enums",
     "Compression",
     "CreateDisposition",
     "DestinationFormat",

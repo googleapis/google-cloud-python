@@ -83,6 +83,65 @@ class TypeCode(enum.IntEnum):
     CATEGORY = 10
 
 
+class Document(object):
+    class Layout(object):
+        class TextSegmentType(enum.IntEnum):
+            """
+            The type of TextSegment in the context of the original document.
+
+            Attributes:
+              TEXT_SEGMENT_TYPE_UNSPECIFIED (int): Should not be used.
+              TOKEN (int): The text segment is a token. e.g. word.
+              PARAGRAPH (int): The text segment is a paragraph.
+              FORM_FIELD (int): The text segment is a form field.
+              FORM_FIELD_NAME (int): The text segment is the name part of a form field. It will be treated as
+              child of another FORM\_FIELD TextSegment if its span is subspan of
+              another TextSegment with type FORM\_FIELD.
+              FORM_FIELD_CONTENTS (int): The text segment is the text content part of a form field. It will be
+              treated as child of another FORM\_FIELD TextSegment if its span is
+              subspan of another TextSegment with type FORM\_FIELD.
+              TABLE (int): The text segment is a whole table, including headers, and all rows.
+              TABLE_HEADER (int): The text segment is a table's headers. It will be treated as child of
+              another TABLE TextSegment if its span is subspan of another TextSegment
+              with type TABLE.
+              TABLE_ROW (int): The text segment is a row in table. It will be treated as child of
+              another TABLE TextSegment if its span is subspan of another TextSegment
+              with type TABLE.
+              TABLE_CELL (int): The text segment is a cell in table. It will be treated as child of
+              another TABLE\_ROW TextSegment if its span is subspan of another
+              TextSegment with type TABLE\_ROW.
+            """
+
+            TEXT_SEGMENT_TYPE_UNSPECIFIED = 0
+            TOKEN = 1
+            PARAGRAPH = 2
+            FORM_FIELD = 3
+            FORM_FIELD_NAME = 4
+            FORM_FIELD_CONTENTS = 5
+            TABLE = 6
+            TABLE_HEADER = 7
+            TABLE_ROW = 8
+            TABLE_CELL = 9
+
+
+class DocumentDimensions(object):
+    class DocumentDimensionUnit(enum.IntEnum):
+        """
+        Unit of the document dimension.
+
+        Attributes:
+          DOCUMENT_DIMENSION_UNIT_UNSPECIFIED (int): Should not be used.
+          INCH (int): Document dimension is measured in inches.
+          CENTIMETER (int): Document dimension is measured in centimeters.
+          POINT (int): Document dimension is measured in points. 72 points = 1 inch.
+        """
+
+        DOCUMENT_DIMENSION_UNIT_UNSPECIFIED = 0
+        INCH = 1
+        CENTIMETER = 2
+        POINT = 3
+
+
 class Model(object):
     class DeploymentState(enum.IntEnum):
         """

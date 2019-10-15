@@ -264,6 +264,47 @@ class BigtableTableAdminGrpcTransport(object):
         return self._stubs["bigtable_table_admin_stub"].CheckConsistency
 
     @property
+    def get_iam_policy(self):
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.get_iam_policy`.
+
+        Gets the access control policy for an instance resource. Returns an empty
+        policy if an table exists but does not have a policy set.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["bigtable_table_admin_stub"].GetIamPolicy
+
+    @property
+    def set_iam_policy(self):
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.set_iam_policy`.
+
+        Sets the access control policy on a table resource. Replaces any existing
+        policy.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["bigtable_table_admin_stub"].SetIamPolicy
+
+    @property
+    def test_iam_permissions(self):
+        """Return the gRPC stub for :meth:`BigtableTableAdminClient.test_iam_permissions`.
+
+        Returns permissions that the caller has on the specified table resource.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["bigtable_table_admin_stub"].TestIamPermissions
+
+    @property
     def snapshot_table(self):
         """Return the gRPC stub for :meth:`BigtableTableAdminClient.snapshot_table`.
 

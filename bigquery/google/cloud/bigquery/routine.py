@@ -31,10 +31,7 @@ class Routine(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
 
     Args:
-        routine_ref (Union[ \
-            str, \
-            google.cloud.bigquery.routine.RoutineReference, \
-        ]):
+        routine_ref (Union[str, google.cloud.bigquery.routine.RoutineReference]):
             A pointer to a routine. If ``routine_ref`` is a string, it must
             included a project ID, dataset ID, and routine ID, each separated
             by ``.``.
@@ -186,7 +183,7 @@ class Routine(object):
         time.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#resource-routine
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Routine.FIELDS.return_type
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["return_type"])
         if not resource:
@@ -262,8 +259,7 @@ class Routine(object):
         """Construct the API resource representation of this routine.
 
         Returns:
-            Dict[str, object]:
-                Routine represented as an API resource.
+            Dict[str, object]: Routine represented as an API resource.
         """
         return self._properties
 
@@ -281,7 +277,7 @@ class RoutineArgument(object):
     """Input/output argument of a function or a stored procedure.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#argument
 
     Args:
         ``**kwargs`` (Dict):
@@ -321,7 +317,7 @@ class RoutineArgument(object):
         ``ANY_TYPE``.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#ArgumentKind
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Argument.FIELDS.argument_kind
         """
         return self._properties.get(self._PROPERTY_TO_API_FIELD["kind"])
 
@@ -344,7 +340,7 @@ class RoutineArgument(object):
         of a variable, e.g., a function argument.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/StandardSqlDataType
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#Argument.FIELDS.data_type
         """
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["data_type"])
         if not resource:
@@ -366,8 +362,7 @@ class RoutineArgument(object):
         """Factory: construct a routine argument given its API representation.
 
         Args:
-            resource (Dict[str, object]):
-                Resource, as returned from the API.
+            resource (Dict[str, object]): Resource, as returned from the API.
 
         Returns:
             google.cloud.bigquery.routine.RoutineArgument:
@@ -381,8 +376,7 @@ class RoutineArgument(object):
         """Construct the API resource representation of this routine argument.
 
         Returns:
-            Dict[str, object]:
-                Routine argument represented as an API resource.
+            Dict[str, object]: Routine argument represented as an API resource.
         """
         return self._properties
 
@@ -406,7 +400,7 @@ class RoutineReference(object):
     """A pointer to a routine.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#routinereference
     """
 
     def __init__(self):
@@ -485,8 +479,7 @@ class RoutineReference(object):
         """Construct the API resource representation of this routine reference.
 
         Returns:
-            Dict[str, object]:
-                Routine reference represented as an API resource.
+            Dict[str, object]: Routine reference represented as an API resource.
         """
         return self._properties
 

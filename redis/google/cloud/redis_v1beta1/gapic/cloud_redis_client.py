@@ -669,7 +669,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `input_config`:
             >>> input_config = {}
@@ -770,7 +771,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
@@ -853,7 +855,7 @@ class CloudRedisClient(object):
     def failover_instance(
         self,
         name,
-        data_protection_mode,
+        data_protection_mode=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -864,16 +866,12 @@ class CloudRedisClient(object):
 
         Example:
             >>> from google.cloud import redis_v1beta1
-            >>> from google.cloud.redis_v1beta1 import enums
             >>>
             >>> client = redis_v1beta1.CloudRedisClient()
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize `data_protection_mode`:
-            >>> data_protection_mode = enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
-            >>>
-            >>> response = client.failover_instance(name, data_protection_mode)
+            >>> response = client.failover_instance(name)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.

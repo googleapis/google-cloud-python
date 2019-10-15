@@ -17,6 +17,7 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.talent_v4beta1.proto import (
     event_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_event__pb2,
 )
@@ -30,11 +31,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\021EventServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"j\n\x18\x43reateClientEventRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12>\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEvent2\xe3\x02\n\x0c\x45ventService\x12\xe4\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"n\x82\xd3\xe4\x93\x02h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\x01*Z.")/v4beta1/{parent=projects/*}/clientEvents:\x01*\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"t\n\x18\x43reateClientEventRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x43\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEventB\x03\xe0\x41\x02\x32\xe3\x02\n\x0c\x45ventService\x12\xe4\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"n\x82\xd3\xe4\x93\x02h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\x01*Z.")/v4beta1/{parent=projects/*}/clientEvents:\x01*\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_event__pb2.DESCRIPTOR,
     ],
 )
@@ -62,7 +64,7 @@ _CREATECLIENTEVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -80,7 +82,7 @@ _CREATECLIENTEVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -92,8 +94,8 @@ _CREATECLIENTEVENTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=188,
-    serialized_end=294,
+    serialized_start=221,
+    serialized_end=337,
 )
 
 _CREATECLIENTEVENTREQUEST.fields_by_name[
@@ -118,9 +120,8 @@ CreateClientEventRequest = _reflection.GeneratedProtocolMessageType(
           Required. Resource name of the tenant under which the event is
           created.  The format is
           "projects/{project\_id}/tenants/{tenant\_id}", for example,
-          "projects/api-test-project/tenant/foo".  Tenant id is optional
-          and a default tenant is created if unspecified, for example,
-          "projects/api-test-project".
+          "projects/foo/tenant/bar". If tenant id is unspecified, a
+          default tenant is created, for example, "projects/foo".
       client_event:
           Required. Events issued when end user interacts with
           customer's application that uses Cloud Talent Solution.
@@ -132,6 +133,8 @@ _sym_db.RegisterMessage(CreateClientEventRequest)
 
 
 DESCRIPTOR._options = None
+_CREATECLIENTEVENTREQUEST.fields_by_name["parent"]._options = None
+_CREATECLIENTEVENTREQUEST.fields_by_name["client_event"]._options = None
 
 _EVENTSERVICE = _descriptor.ServiceDescriptor(
     name="EventService",
@@ -141,8 +144,8 @@ _EVENTSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=297,
-    serialized_end=652,
+    serialized_start=340,
+    serialized_end=695,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateClientEvent",

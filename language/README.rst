@@ -23,7 +23,7 @@ with your document storage on Google Cloud Storage.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
-.. _Product Documentation:  https://cloud.google.com/language/docs
+.. _Product Documentation:  https://cloud.google.com/natural-language/docs
 .. _Client Library Documentation: https://googleapis.dev/python/language/latest
 
 .. note::

@@ -17,7 +17,8 @@ def update_model(client, model_id):
     """Sample ID: go/samples-tracker/1533"""
 
     # [START bigquery_update_model_description]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -25,9 +26,9 @@ def update_model(client, model_id):
     # TODO(developer): Set model_id to the ID of the model to fetch.
     # model_id = 'your-project.your_dataset.your_model'
 
-    model = client.get_model(model_id)
+    model = client.get_model(model_id)  # Make an API request.
     model.description = "This model was modified from a Python program."
-    model = client.update_model(model, ["description"])
+    model = client.update_model(model, ["description"])  # Make an API request.
 
     full_model_id = "{}.{}.{}".format(model.project, model.dataset_id, model.model_id)
     print(

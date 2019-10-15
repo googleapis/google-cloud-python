@@ -1,13 +1,13 @@
 {
-  "name": "clouderroreporting",
+  "name": "clouderrorreporting",
   "name_pretty": "Stackdriver Error Reporting",
   "product_documentation": "https://cloud.google.com/error-reporting",
-  "client_documentation": "https://googleapis.dev/python/clouderroreporting/latest",
+  "client_documentation": "https://googleapis.dev/python/clouderrorreporting/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559780",
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-error-reporting",
-  "api_id": "clouderroreporting.googleapis.com",
+  "api_id": "clouderrorreporting.googleapis.com",
   "requires_billing": false
 }

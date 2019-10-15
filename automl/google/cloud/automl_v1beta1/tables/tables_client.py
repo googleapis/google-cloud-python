@@ -17,13 +17,16 @@
 """A tables helper for the google.cloud.automl_v1beta1 AutoML API"""
 
 import pkg_resources
+import logging
 
 from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
 from google.cloud.automl_v1beta1 import gapic
 from google.cloud.automl_v1beta1.proto import data_types_pb2
+from google.cloud.automl_v1beta1.tables import gcs_client
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+_LOGGER = logging.getLogger(__name__)
 
 
 class TablesClient(object):
@@ -39,8 +42,10 @@ class TablesClient(object):
         self,
         project=None,
         region="us-central1",
+        credentials=None,
         client=None,
         prediction_client=None,
+        gcs_client=None,
         **kwargs
     ):
         """Constructor.
@@ -56,11 +61,11 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]): The project all future calls will
-                default to. Most methods take `project` as an optional
-                parameter, and can override your choice of `project` supplied
-                here.
-            region (Optional[string]): The region all future calls will
+            project (Optional[str]): The project ID of the GCP project all
+                future calls will default to. Most methods take `project` as an
+                optional parameter, and can override your choice of `project`
+                supplied here.
+            region (Optional[str]): The region all future calls will
                 default to. Most methods take `region` as an optional
                 parameter, and can override your choice of `region` supplied
                 here. Note, only `us-central1` is supported to-date.
@@ -116,6 +121,30 @@ class TablesClient(object):
 
         self.project = project
         self.region = region
+        self.credentials = credentials
+        self.gcs_client = gcs_client
+
+    def __lookup_by_display_name(self, object_type, items, display_name):
+        relevant_items = [i for i in items if i.display_name == display_name]
+        if len(relevant_items) == 0:
+            raise exceptions.NotFound(
+                "The {} with display_name='{}' was not found.".format(
+                    object_type, display_name
+                )
+            )
+        elif len(relevant_items) == 1:
+            return relevant_items[0]
+        else:
+            raise ValueError(
+                (
+                    "Multiple {}s match display_name='{}': {}\n\n"
+                    "Please use the `.name` (unique identifier) field instead"
+                ).format(
+                    object_type,
+                    display_name,
+                    ", ".join([str(i) for i in relevant_items]),
+                )
+            )
 
     def __location_path(self, project=None, region=None):
         if project is None:
@@ -290,6 +319,29 @@ class TablesClient(object):
             )
         return model_name
 
+    def __log_operation_info(self, message, op):
+        name = "UNKNOWN"
+        try:
+            if (
+                op is not None
+                and op.operation is not None
+                and op.operation.name is not None
+            ):
+                name = op.operation.name
+        except AttributeError:
+            pass
+        _LOGGER.info(
+            (
+                "Operation '{}' is running in the background. The returned "
+                "Operation '{}' can be used to query or block on the status "
+                "of this operation. Ending your python session will _not_ "
+                "cancel this operation. Read the documentation here:\n\n"
+                "\thttps://googleapis.dev/python/google-api-core/latest/operation.html\n\n"
+                "for more information on the Operation class."
+            ).format(message, name)
+        )
+        return op
+
     def __column_spec_name_from_args(
         self,
         dataset=None,
@@ -356,6 +408,24 @@ class TablesClient(object):
         else:
             raise ValueError("Unknown type_code: {}".format(type_code))
 
+    def __ensure_gcs_client_is_initialized(self, credentials, project):
+        """Checks if GCS client is initialized. Initializes it if not.
+
+        Args:
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            project (str): The ID of the project to use with the GCS
+                client. If none is specified, the client will attempt to
+                ascertain the credentials from the environment.
+        """
+        if self.gcs_client is None:
+            self.gcs_client = gcs_client.GcsClient(
+                project=project, credentials=credentials
+            )
+
     def list_datasets(self, project=None, region=None, **kwargs):
         """List all datasets in a particular project and region.
 
@@ -376,12 +446,12 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                datasets. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
@@ -425,21 +495,21 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 This is the fully-qualified name generated by the AutoML API
                 for this dataset. This is not to be confused with the
                 human-assigned `dataset_display_name` that is provided when
                 creating a dataset. Either `dataset_name` or
                 `dataset_display_name` must be provided.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 This is the name you provided for the dataset when first
                 creating it. Either `dataset_name` or `dataset_display_name`
                 must be provided.
@@ -463,23 +533,11 @@ class TablesClient(object):
         if dataset_name is not None:
             return self.auto_ml_client.get_dataset(dataset_name, **kwargs)
 
-        result = next(
-            (
-                d
-                for d in self.list_datasets(project, region, **kwargs)
-                if d.display_name == dataset_display_name
-            ),
-            None,
+        return self.__lookup_by_display_name(
+            "dataset",
+            self.list_datasets(project, region, **kwargs),
+            dataset_display_name,
         )
-
-        if result is None:
-            raise exceptions.NotFound(
-                ("Dataset with display_name: '{}' " + "not found").format(
-                    dataset_display_name
-                )
-            )
-
-        return result
 
     def create_dataset(
         self, dataset_display_name, metadata={}, project=None, region=None, **kwargs
@@ -499,15 +557,15 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that will own the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (string):
+            dataset_display_name (str):
                 A human-readable name to refer to this dataset by.
 
         Returns:
@@ -553,19 +611,19 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to
                 delete.  This must be supplied if `dataset` or `dataset_name`
                 are not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 delete. This must be supplied if `dataset_display_name` or
                 `dataset` are not supplied.
@@ -575,8 +633,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -598,17 +657,21 @@ class TablesClient(object):
         except exceptions.NotFound:
             return None
 
-        return self.auto_ml_client.delete_dataset(dataset_name, **kwargs)
+        op = self.auto_ml_client.delete_dataset(dataset_name, **kwargs)
+        self.__log_operation_info("Delete dataset", op)
+        return op
 
     def import_data(
         self,
         dataset=None,
         dataset_display_name=None,
         dataset_name=None,
+        pandas_dataframe=None,
         gcs_input_uris=None,
         bigquery_input_uri=None,
         project=None,
         region=None,
+        credentials=None,
         **kwargs
     ):
         """Imports data into a dataset.
@@ -624,7 +687,7 @@ class TablesClient(object):
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
             >>>
-            >>> client.import_data(dataset=d,
+            >>> response = client.import_data(dataset=d,
             ...     gcs_input_uris='gs://cloud-ml-tables-data/bank-marketing.csv')
             ...
             >>> def callback(operation_future):
@@ -634,19 +697,24 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to import
                 data into. This must be supplied if `dataset` or `dataset_name`
                 are not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 import data into. This must be supplied if
                 `dataset_display_name` or `dataset` are not supplied.
@@ -654,17 +722,26 @@ class TablesClient(object):
                 The `Dataset` instance you want to import data into. This must
                 be supplied if `dataset_display_name` or `dataset_name` are not
                 supplied.
-            gcs_input_uris (Optional[Union[string, Sequence[string]]]):
+            pandas_dataframe (Optional[pandas.DataFrame]):
+                A Pandas Dataframe object containing the data to import. The data
+                will be converted to CSV, and this CSV will be staged to GCS in
+                `gs://{project}-automl-tables-staging/{uploaded_csv_name}`
+                This parameter must be supplied if neither `gcs_input_uris` nor
+                `bigquery_input_uri` is supplied.
+            gcs_input_uris (Optional[Union[str, Sequence[str]]]):
                 Either a single `gs://..` prefixed URI, or a list of URIs
                 referring to GCS-hosted CSV files containing the data to
-                import. This must be supplied if `bigquery_input_uri` is not.
-            bigquery_input_uri (Optional[string]):
+                import. This must be supplied if neither `bigquery_input_uri`
+                nor `pandas_dataframe` is supplied.
+            bigquery_input_uri (Optional[str]):
                 A URI pointing to the BigQuery table containing the data to
-                import. This must be supplied if `gcs_input_uris` is not.
+                import. This must be supplied if neither `gcs_input_uris` nor
+                `pandas_dataframe` is supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -683,7 +760,16 @@ class TablesClient(object):
         )
 
         request = {}
-        if gcs_input_uris is not None:
+
+        if pandas_dataframe is not None:
+            project = project or self.project
+            region = region or self.region
+            credentials = credentials or self.credentials
+            self.__ensure_gcs_client_is_initialized(credentials, project)
+            self.gcs_client.ensure_bucket_exists(project, region)
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
+            request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
+        elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
                 gcs_input_uris = [gcs_input_uris]
             request = {"gcs_source": {"input_uris": gcs_input_uris}}
@@ -691,10 +777,12 @@ class TablesClient(object):
             request = {"bigquery_source": {"input_uri": bigquery_input_uri}}
         else:
             raise ValueError(
-                "One of 'gcs_input_uris', or " "'bigquery_input_uri' must be set."
+                "One of 'gcs_input_uris', or 'bigquery_input_uri', or 'pandas_dataframe' must be set."
             )
 
-        return self.auto_ml_client.import_data(dataset_name, request, **kwargs)
+        op = self.auto_ml_client.import_data(dataset_name, request, **kwargs)
+        self.__log_operation_info("Data import", op)
+        return op
 
     def export_data(
         self,
@@ -720,7 +808,7 @@ class TablesClient(object):
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
             >>>
-            >>> client.export_data(dataset=d,
+            >>> response = client.export_data(dataset=d,
             ...     gcs_output_uri_prefix='gs://cloud-ml-tables-data/bank-marketing.csv')
             ...
             >>> def callback(operation_future):
@@ -730,19 +818,19 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to export
                 data from. This must be supplied if `dataset` or `dataset_name`
                 are not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 export data from. This must be supplied if
                 `dataset_display_name` or `dataset` are not supplied.
@@ -750,16 +838,17 @@ class TablesClient(object):
                 The `Dataset` instance you want to export data from. This must
                 be supplied if `dataset_display_name` or `dataset_name` are not
                 supplied.
-            gcs_output_uri_prefix (Optional[Union[string, Sequence[string]]]):
+            gcs_output_uri_prefix (Optional[Union[str, Sequence[str]]]):
                 A single `gs://..` prefixed URI to export to. This must be
                 supplied if `bigquery_output_uri` is not.
-            bigquery_output_uri (Optional[string]):
+            bigquery_output_uri (Optional[str]):
                 A URI pointing to the BigQuery table containing the data to
                 export. This must be supplied if `gcs_output_uri_prefix` is not.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -787,7 +876,9 @@ class TablesClient(object):
                 "One of 'gcs_output_uri_prefix', or 'bigquery_output_uri' must be set."
             )
 
-        return self.auto_ml_client.export_data(dataset_name, request, **kwargs)
+        op = self.auto_ml_client.export_data(dataset_name, request, **kwargs)
+        self.__log_operation_info("Export data", op)
+        return op
 
     def get_table_spec(self, table_spec_name, project=None, region=None, **kwargs):
         """Gets a single table spec in a particular project and region.
@@ -805,15 +896,15 @@ class TablesClient(object):
             >>>
 
         Args:
-            table_spec_name (string):
+            table_spec_name (str):
                 This is the fully-qualified name generated by the AutoML API
                 for this table spec.
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
@@ -855,19 +946,19 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                dataset. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to read
                 specs from. This must be supplied if `dataset` or
                 `dataset_name` are not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to read
                 specs from. This must be supplied if `dataset_display_name` or
                 `dataset` are not supplied.
@@ -917,15 +1008,15 @@ class TablesClient(object):
             >>>
 
         Args:
-            column_spec_name (string):
+            column_spec_name (str):
                 This is the fully-qualified name generated by the AutoML API
                 for this column spec.
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                column. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
@@ -969,29 +1060,29 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                columns. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            table_spec_name (Optional[string]):
+            table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose specs you want to
                 read. If not supplied, the client can determine this name from
                 a source `Dataset` object.
             table_spec_index (Optional[int]):
                 If no `table_spec_name` was provided, we use this index to
                 determine which table to read column specs from.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to read
                 specs from. If no `table_spec_name` is supplied, this will be
                 used together with `table_spec_index` to infer the name of
                 table to read specs from. This must be supplied if
                 `table_spec_name`, `dataset` or `dataset_name` are not
                 supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to read
                 specs from. If no `table_spec_name` is supplied, this will be
                 used together with `table_spec_index` to infer the name of
@@ -1067,50 +1158,57 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
-                If you have initialized the client with a value for `region` it
-                will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
-                The name AutoML-assigned name for the column you want to
-                update.
-            column_spec_display_name (Optional[string]):
-                The human-readable name of the column you want to update. If
-                this is supplied in place of `column_spec_name`, you also need
-                to provide either a way to lookup the source dataset (using one
-                of the `dataset*` kwargs), or the `table_spec_name` of the
-                table this column belongs to.
-            table_spec_name (Optional[string]):
-                The AutoML-assigned name for the table whose specs you want to
-                update. If not supplied, the client can determine this name
-                from a source `Dataset` object.
-            table_spec_index (Optional[int]):
-                If no `table_spec_name` was provided, we use this index to
-                determine which table to update column specs on.
-            dataset_display_name (Optional[string]):
-                The human-readable name given to the dataset you want to update
-                specs on. If no `table_spec_name` is supplied, this will be
-                used together with `table_spec_index` to infer the name of
-                table to update specs on. This must be supplied if
-                `table_spec_name`, `dataset` or `dataset_name` are not
-                supplied.
-            dataset_name (Optional[string]):
-                The AutoML-assigned name given to the dataset you want to
-                update specs one. If no `table_spec_name` is supplied, this
-                will be used together with `table_spec_index` to infer the name
-                of table to update specs on. This must be supplied if
-                `table_spec_name`, `dataset` or `dataset_display_name` are not
-                supplied.
             dataset (Optional[Dataset]):
                 The `Dataset` instance you want to update specs on. If no
                 `table_spec_name` is supplied, this will be used together with
                 `table_spec_index` to infer the name of table to update specs
                 on. This must be supplied if `table_spec_name`, `dataset_name`
                 or `dataset_display_name` are not supplied.
+            dataset_display_name (Optional[str]):
+                The human-readable name given to the dataset you want to update
+                specs on. If no `table_spec_name` is supplied, this will be
+                used together with `table_spec_index` to infer the name of
+                table to update specs on. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_name` are not
+                supplied.
+            dataset_name (Optional[str]):
+                The AutoML-assigned name given to the dataset you want to
+                update specs one. If no `table_spec_name` is supplied, this
+                will be used together with `table_spec_index` to infer the name
+                of table to update specs on. This must be supplied if
+                `table_spec_name`, `dataset` or `dataset_display_name` are not
+                supplied.
+            table_spec_name (Optional[str]):
+                The AutoML-assigned name for the table whose specs you want to
+                update. If not supplied, the client can determine this name
+                from a source `Dataset` object.
+            table_spec_index (Optional[int]):
+                If no `table_spec_name` was provided, we use this index to
+                determine which table to update column specs on.
+            column_spec_name (Optional[str]):
+                The name AutoML-assigned name for the column you want to
+                update.
+            column_spec_display_name (Optional[str]):
+                The human-readable name of the column you want to update. If
+                this is supplied in place of `column_spec_name`, you also need
+                to provide either a way to lookup the source dataset (using one
+                of the `dataset*` kwargs), or the `table_spec_name` of the
+                table this column belongs to.
+            type_code (Optional[str]):
+                The desired 'type_code' of the column. For more information
+                on the available types, please see the documentation:
+                https://cloud.google.com/automl-tables/docs/reference/rpc/google.cloud.automl.v1beta1#typecode
+            nullable (Optional[bool]):
+                Set to `True` or `False` to specify if this column's value
+                must expected to be present in all rows or not.
+            project (Optional[str]): The ID of the project that owns the
+                columns. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
+                If you have initialized the client with a value for `region` it
+                will be used if this parameter is not supplied.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.ColumnSpec` instance.
@@ -1192,24 +1290,24 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
+            column_spec_name (Optional[str]):
                 The name AutoML-assigned name for the column you want to set as
                 the target column.
-            column_spec_display_name (Optional[string]):
+            column_spec_display_name (Optional[str]):
                 The human-readable name of the column you want to set as the
                 target column. If this is supplied in place of
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
-            table_spec_name (Optional[string]):
+            table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose target column you
                 want to set . If not supplied, the client can determine this
                 name from a source `Dataset` object.
@@ -1217,14 +1315,14 @@ class TablesClient(object):
                 If no `table_spec_name` or `column_spec_name` was provided, we
                 use this index to determine which table to set the target
                 column on.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the target column of. If no `table_spec_name` is supplied, this
                 will be used together with `table_spec_index` to infer the name
                 of table to update the target column of. This must be supplied
                 if `table_spec_name`, `dataset` or `dataset_name` are not
                 supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the target column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1305,28 +1403,28 @@ class TablesClient(object):
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset',
-            ...     column_spec_name='Unix Time')
+            ...     column_spec_display_name='Unix Time')
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
+            column_spec_name (Optional[str]):
                 The name AutoML-assigned name for the column you want to set as
                 the time column.
-            column_spec_display_name (Optional[string]):
+            column_spec_display_name (Optional[str]):
                 The human-readable name of the column you want to set as the
                 time column. If this is supplied in place of
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
-            table_spec_name (Optional[string]):
+            table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose time column
                 you want to set . If not supplied, the client can determine
                 this name from a source `Dataset` object.
@@ -1334,14 +1432,14 @@ class TablesClient(object):
                 If no `table_spec_name` or `column_spec_name` was provided, we
                 use this index to determine which table to set the time
                 column on.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the time column of. If no `table_spec_name` is supplied,
                 this will be used together with `table_spec_index` to infer the
                 name of table to update the time column of. This must be
                 supplied if `table_spec_name`, `dataset` or `dataset_name` are
                 not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the time column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1417,26 +1515,26 @@ class TablesClient(object):
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
-            >>> client.set_time_column(dataset_display_name='my_dataset')
+            >>> client.clear_time_column(dataset_display_name='my_dataset')
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the time column of. If no `table_spec_name` is supplied,
                 this will be used together with `table_spec_index` to infer the
                 name of table to update the time column of. This must be
                 supplied if `table_spec_name`, `dataset` or `dataset_name` are
                 not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the time column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1507,24 +1605,24 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
+            column_spec_name (Optional[str]):
                 The name AutoML-assigned name for the column you want to
                 set as the weight column.
-            column_spec_display_name (Optional[string]):
+            column_spec_display_name (Optional[str]):
                 The human-readable name of the column you want to set as the
                 weight column. If this is supplied in place of
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
-            table_spec_name (Optional[string]):
+            table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose weight column you
                 want to set . If not supplied, the client can determine this
                 name from a source `Dataset` object.
@@ -1532,14 +1630,14 @@ class TablesClient(object):
                 If no `table_spec_name` or `column_spec_name` was provided, we
                 use this index to determine which table to set the weight
                 column on.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the weight column of. If no `table_spec_name` is supplied, this
                 will be used together with `table_spec_index` to infer the name
                 of table to update the weight column of. This must be supplied
                 if `table_spec_name`, `dataset` or `dataset_name` are not
                 supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the weight column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1619,22 +1717,22 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the weight column of. If no `table_spec_name` is supplied, this
                 will be used together with `table_spec_index` to infer the name
                 of table to update the weight column of. This must be supplied
                 if `table_spec_name`, `dataset` or `dataset_name` are not
                 supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the weight column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1704,24 +1802,24 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            column_spec_name (Optional[string]):
+            column_spec_name (Optional[str]):
                 The name AutoML-assigned name for the column you want to set as
                 the test/train column.
-            column_spec_display_name (Optional[string]):
+            column_spec_display_name (Optional[str]):
                 The human-readable name of the column you want to set as the
                 test/train column. If this is supplied in place of
                 `column_spec_name`, you also need to provide either a way to
                 lookup the source dataset (using one of the `dataset*` kwargs),
                 or the `table_spec_name` of the table this column belongs to.
-            table_spec_name (Optional[string]):
+            table_spec_name (Optional[str]):
                 The AutoML-assigned name for the table whose test/train column
                 you want to set . If not supplied, the client can determine
                 this name from a source `Dataset` object.
@@ -1729,14 +1827,14 @@ class TablesClient(object):
                 If no `table_spec_name` or `column_spec_name` was provided, we
                 use this index to determine which table to set the test/train
                 column on.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the test/train column of. If no `table_spec_name` is supplied,
                 this will be used together with `table_spec_index` to infer the
                 name of table to update the test/train column of. This must be
                 supplied if `table_spec_name`, `dataset` or `dataset_name` are
                 not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the test/train column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1817,22 +1915,22 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                table. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to update
                 the test/train column of. If no `table_spec_name` is supplied,
                 this will be used together with `table_spec_index` to infer the
                 name of table to update the test/train column of. This must be
                 supplied if `table_spec_name`, `dataset` or `dataset_name` are
                 not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to
                 update the test/train column of. If no `table_spec_name` is
                 supplied, this will be used together with `table_spec_index` to
@@ -1892,12 +1990,12 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                models. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
@@ -1946,19 +2044,19 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to list
                 evaluations for.  This must be supplied if `model` or
                 `model_name` are not supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to list
                 evaluations for. This must be supplied if `model_display_name`
                 or `model` are not supplied.
@@ -1973,6 +2071,12 @@ class TablesClient(object):
             :class:`~google.cloud.automl_v1beta1.types.ModelEvaluation`
             instances.  You can also iterate over the pages of the response
             using its `pages` property.
+
+            For a regression model, there will only be one evaluation. For a
+            classification model there will be on for each classification
+            label, as well as one for micro-averaged metrics. See more
+            documentation here:
+            https://cloud.google.com/automl-tables/docs/evaluate#automl-tables-list-model-evaluations-cli-curl:w
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2018,33 +2122,37 @@ class TablesClient(object):
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
             ...     project='my-project', region='us-central1')
             ...
-            >>> m = client.create_model('my_model', dataset_display_name='my_dataset')
+            >>> m = client.create_model(
+            ...     'my_model',
+            ...     dataset_display_name='my_dataset',
+            ...     train_budget_milli_node_hours=1000
+            ... )
             >>>
             >>> m.result() # blocks on result
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that will own the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_display_name (string):
+            model_display_name (str):
                 A human-readable name to refer to this model by.
             train_budget_milli_node_hours (int):
                 The amount of time (in thousandths of an hour) to spend
                 training. This value must be between 1,000 and 72,000 inclusive
                 (between 1 and 72 hours).
-            optimization_objective (string):
+            optimization_objective (str):
                 The metric AutoML tables should optimize for.
-            dataset_display_name (Optional[string]):
+            dataset_display_name (Optional[str]):
                 The human-readable name given to the dataset you want to train
                 your model on. This must be supplied if `dataset` or
                 `dataset_name` are not supplied.
-            dataset_name (Optional[string]):
+            dataset_name (Optional[str]):
                 The AutoML-assigned name given to the dataset you want to train
                 your model on. This must be supplied if `dataset_display_name`
                 or `dataset` are not supplied.
@@ -2054,15 +2162,17 @@ class TablesClient(object):
                 are not supplied.
             model_metadata (Optional[Dict]):
                 Optional model metadata to supply to the client.
-            include_column_spec_names(Optional[string]):
+            include_column_spec_names(Optional[str]):
                 The list of the names of the columns you want to include to train
                 your model on.
-            exclude_column_spec_names(Optional[string]):
+            exclude_column_spec_names(Optional[str]):
                 The list of the names of the columns you want to exclude and
                 not train your model on.
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
+
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
                 failed for any reason.
@@ -2134,9 +2244,11 @@ class TablesClient(object):
             "tables_model_metadata": model_metadata,
         }
 
-        return self.auto_ml_client.create_model(
+        op = self.auto_ml_client.create_model(
             self.__location_path(project=project, region=region), request, **kwargs
         )
+        self.__log_operation_info("Model creation", op)
+        return op
 
     def delete_model(
         self,
@@ -2165,19 +2277,19 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to
                 delete.  This must be supplied if `model` or `model_name`
                 are not supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to
                 delete. This must be supplied if `model_display_name` or
                 `model` are not supplied.
@@ -2187,8 +2299,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2210,7 +2323,9 @@ class TablesClient(object):
         except exceptions.NotFound:
             return None
 
-        return self.auto_ml_client.delete_model(model_name, **kwargs)
+        op = self.auto_ml_client.delete_model(model_name, **kwargs)
+        self.__log_operation_info("Delete model", op)
+        return op
 
     def get_model_evaluation(
         self, model_evaluation_name, project=None, region=None, **kwargs
@@ -2230,15 +2345,15 @@ class TablesClient(object):
             >>>
 
         Args:
-            model_evaluation_name (string):
+            model_evaluation_name (str):
                 This is the fully-qualified name generated by the AutoML API
                 for this model evaluation.
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
 
@@ -2277,21 +2392,21 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 This is the fully-qualified name generated by the AutoML API
                 for this model. This is not to be confused with the
                 human-assigned `model_display_name` that is provided when
                 creating a model. Either `model_name` or
                 `model_display_name` must be provided.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 This is the name you provided for the model when first
                 creating it. Either `model_name` or `model_display_name`
                 must be provided.
@@ -2314,22 +2429,9 @@ class TablesClient(object):
         if model_name is not None:
             return self.auto_ml_client.get_model(model_name, **kwargs)
 
-        model = next(
-            (
-                d
-                for d in self.list_models(project, region, **kwargs)
-                if d.display_name == model_display_name
-            ),
-            None,
+        return self.__lookup_by_display_name(
+            "model", self.list_models(project, region, **kwargs), model_display_name
         )
-
-        if model is None:
-            raise exceptions.NotFound(
-                "No model with model_diplay_name: "
-                + "'{}' found".format(model_display_name)
-            )
-
-        return model
 
     # TODO(jonathanskim): allow deployment from just model ID
     def deploy_model(
@@ -2359,19 +2461,19 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to
                 deploy.  This must be supplied if `model` or `model_name`
                 are not supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to
                 deploy. This must be supplied if `model_display_name` or
                 `model` are not supplied.
@@ -2381,8 +2483,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2400,7 +2503,9 @@ class TablesClient(object):
             **kwargs
         )
 
-        return self.auto_ml_client.deploy_model(model_name, **kwargs)
+        op = self.auto_ml_client.deploy_model(model_name, **kwargs)
+        self.__log_operation_info("Deploy model", op)
+        return op
 
     def undeploy_model(
         self,
@@ -2428,19 +2533,19 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to
                 undeploy.  This must be supplied if `model` or `model_name`
                 are not supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to
                 undeploy. This must be supplied if `model_display_name` or
                 `model` are not supplied.
@@ -2450,8 +2555,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2469,7 +2575,9 @@ class TablesClient(object):
             **kwargs
         )
 
-        return self.auto_ml_client.undeploy_model(model_name, **kwargs)
+        op = self.auto_ml_client.undeploy_model(model_name, **kwargs)
+        self.__log_operation_info("Undeploy model", op)
+        return op
 
     ## TODO(lwander): support pandas DataFrame as input type
     def predict(
@@ -2501,22 +2609,22 @@ class TablesClient(object):
             >>>
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            inputs (Union[List[string], Dict[string, string]]):
+            inputs (Union[List[str], Dict[str, str]]):
                 Either the sorted list of column values to predict with, or a
                 key-value map of column display name to value to predict with.
-            model_display_name (Optional[string]):
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to predict
                 with.  This must be supplied if `model` or `model_name` are not
                 supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to predict
                 with. This must be supplied if `model_display_name` or `model`
                 are not supplied.
@@ -2569,6 +2677,7 @@ class TablesClient(object):
 
     def batch_predict(
         self,
+        pandas_dataframe=None,
         bigquery_input_uri=None,
         bigquery_output_uri=None,
         gcs_input_uris=None,
@@ -2578,6 +2687,7 @@ class TablesClient(object):
         model_display_name=None,
         project=None,
         region=None,
+        credentials=None,
         inputs=None,
         **kwargs
     ):
@@ -2601,28 +2711,43 @@ class TablesClient(object):
             ...
 
         Args:
-            project (Optional[string]):
-                If you have initialized the client with a value for `project`
-                it will be used if this parameter is not supplied. Keep in
-                mind, the service account this client was initialized with must
-                have access to this project.
-            region (Optional[string]):
+            project (Optional[str]): The ID of the project that owns the
+                model. If you have initialized the client with a value for
+                `project` it will be used if this parameter is not supplied.
+                Keep in mind, the service account this client was initialized
+                with must have access to this project.
+            region (Optional[str]):
                 If you have initialized the client with a value for `region` it
                 will be used if this parameter is not supplied.
-            gcs_input_uris (Optional(Union[List[string], string]))
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            pandas_dataframe (Optional[pandas.DataFrame]):
+                A Pandas Dataframe object containing the data you want to predict
+                off of. The data will be converted to CSV, and this CSV will be
+                staged to GCS in `gs://{project}-automl-tables-staging/{uploaded_csv_name}`
+                This must be supplied if neither `gcs_input_uris` nor
+                `bigquery_input_uri` is supplied.
+            gcs_input_uris (Optional(Union[List[str], str]))
                 Either a list of or a single GCS URI containing the data you
-                want to predict off of.
-            gcs_output_uri_prefix (Optional[string])
-                The folder in GCS you want to write output to.
-            bigquery_input_uri (Optional[string])
-                The BigQuery table to input data from.
-            bigquery_output_uri (Optional[string])
-                The BigQuery table to output data to.
-            model_display_name (Optional[string]):
+                want to predict off of. This must be supplied if neither
+                `pandas_dataframe` nor `bigquery_input_uri` is supplied.
+            gcs_output_uri_prefix (Optional[str])
+                The folder in GCS you want to write output to. This must be
+                supplied if `bigquery_output_uri` is not.
+            bigquery_input_uri (Optional[str])
+                The BigQuery table to input data from. This must be supplied if
+                neither `pandas_dataframe` nor `gcs_input_uris` is supplied.
+            bigquery_output_uri (Optional[str])
+                The BigQuery table to output data to. This must be supplied if
+                `gcs_output_uri_prefix` is not.
+            model_display_name (Optional[str]):
                 The human-readable name given to the model you want to predict
                 with.  This must be supplied if `model` or `model_name` are not
                 supplied.
-            model_name (Optional[string]):
+            model_name (Optional[str]):
                 The AutoML-assigned name given to the model you want to predict
                 with. This must be supplied if `model_display_name` or `model`
                 are not supplied.
@@ -2632,8 +2757,9 @@ class TablesClient(object):
                 supplied.
 
         Returns:
-            A :class:`~google.cloud.automl_v1beta1.types._OperationFuture`
-            instance.
+            google.api_core.operation.Operation:
+                An operation future that can be used to check for
+                completion synchronously or asynchronously.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -2652,7 +2778,16 @@ class TablesClient(object):
         )
 
         input_request = None
-        if gcs_input_uris is not None:
+
+        if pandas_dataframe is not None:
+            project = project or self.project
+            region = region or self.region
+            credentials = credentials or self.credentials
+            self.__ensure_gcs_client_is_initialized(credentials, project)
+            self.gcs_client.ensure_bucket_exists(project, region)
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
+            input_request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
+        elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
                 gcs_input_uris = [gcs_input_uris]
             input_request = {"gcs_source": {"input_uris": gcs_input_uris}}
@@ -2677,6 +2812,8 @@ class TablesClient(object):
                 "One of 'gcs_output_uri_prefix'/'bigquery_output_uri' must be set"
             )
 
-        return self.prediction_client.batch_predict(
+        op = self.prediction_client.batch_predict(
             model_name, input_request, output_request, **kwargs
         )
+        self.__log_operation_info("Batch predict", op)
+        return op

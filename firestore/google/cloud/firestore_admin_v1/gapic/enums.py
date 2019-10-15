@@ -74,10 +74,14 @@ class Index(object):
           COLLECTION (int): Indexes with a collection query scope specified allow queries
           against a collection that is the child of a specific document, specified
           at query time, and that has the collection id specified by the index.
+          COLLECTION_GROUP (int): Indexes with a collection group query scope specified allow queries
+          against all collections that has the collection id specified by the
+          index.
         """
 
         QUERY_SCOPE_UNSPECIFIED = 0
         COLLECTION = 1
+        COLLECTION_GROUP = 2
 
     class State(enum.IntEnum):
         """

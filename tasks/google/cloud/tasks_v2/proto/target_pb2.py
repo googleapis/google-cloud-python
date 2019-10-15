@@ -399,11 +399,11 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   construct the URL that the task is delivered to can be set at the
   queue-level or task-level:
   
-  -  If set,
-     [app\_engine\_routing\_override][google.cloud.tasks.v2.AppEngineHttpQueue.app\_engine\_routing\_override]
-     is used for all tasks in the queue, no matter what the setting is for
-     the [task-level
-     app\_engine\_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app\_engine\_routing].
+  -  If [app\_engine\_routing\_override is set on the
+     queue][Queue.app\_engine\_routing\_override], this value is used for
+     all tasks in the queue, no matter what the setting is for the
+     [task-level
+     app\_engine\_routing][AppEngineHttpRequest.app\_engine\_routing].
   
   The ``url`` that the task will be sent to is:
   
@@ -424,12 +424,13 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   Tasks does not receive response before the
   [deadline][google.cloud.tasks.v2.Task.dispatch\_deadline]. Failed tasks
   will be retried according to the [retry
-  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is
-  considered an App Engine system error instead of an application error
-  and will cause Cloud Tasks' traffic congestion control to temporarily
-  throttle the queue's dispatches. Unlike other types of task targets, a
-  ``429`` (Too Many Requests) response from an app handler does not cause
-  traffic congestion control to throttle the queue.
+  configuration][google.cloud.tasks.v2.Queue.retry\_config]. ``503``
+  (Service Unavailable) is considered an App Engine system error instead
+  of an application error and will cause Cloud Tasks' traffic congestion
+  control to temporarily throttle the queue's dispatches. Unlike other
+  types of task targets, a ``429`` (Too Many Requests) response from an
+  app handler does not cause traffic congestion control to throttle the
+  queue.
   
   
   Attributes:
@@ -446,12 +447,12 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
           google.com/appengine/docs/python/tools/webapp/requesthandlercl
           ass>`_.
       app_engine_routing:
-          Task-level setting for App Engine routing.  If set, [app\_engi
-          ne\_routing\_override][google.cloud.tasks.v2.AppEngineHttpQueu
-          e.app\_engine\_routing\_override] is used for all tasks in the
-          queue, no matter what the setting is for the [task-level app\_
-          engine\_routing][google.cloud.tasks.v2.AppEngineHttpRequest.ap
-          p\_engine\_routing].
+          Task-level setting for App Engine routing.  -  If
+          [app\_engine\_routing\_override is set on the
+          queue][Queue.app\_engine\_routing\_override], this value is
+          used for    all tasks in the queue, no matter what the setting
+          is for the    [task-level    app\_engine\_routing][AppEngineHt
+          tpRequest.app\_engine\_routing].
       relative_uri:
           The relative URI.  The relative URI must begin with "/" and
           must be a valid HTTP relative URI. It can contain a path and
@@ -525,6 +526,13 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
   routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_,
   and `App Engine Flex request
   routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`_.
+  
+  Using [AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting]
+  requires
+  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
+  Google IAM permission for the project and the following scope:
+  
+  ``https://www.googleapis.com/auth/cloud-platform``
   
   
   Attributes:

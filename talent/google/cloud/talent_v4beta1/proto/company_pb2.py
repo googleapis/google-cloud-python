@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
@@ -29,10 +30,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\024CompanyResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/talent_v4beta1/proto/company.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto"\xe4\x03\n\x07\x43ompany\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x03 \x01(\t\x12\x36\n\x04size\x18\x04 \x01(\x0e\x32(.google.cloud.talent.v4beta1.CompanySize\x12\x1c\n\x14headquarters_address\x18\x05 \x01(\t\x12\x15\n\rhiring_agency\x18\x06 \x01(\x08\x12\x10\n\x08\x65\x65o_text\x18\x07 \x01(\t\x12\x13\n\x0bwebsite_uri\x18\x08 \x01(\t\x12\x17\n\x0f\x63\x61reer_site_uri\x18\t \x01(\t\x12\x11\n\timage_uri\x18\n \x01(\t\x12\x30\n(keyword_searchable_job_custom_attributes\x18\x0b \x03(\t\x12\x46\n\x0c\x64\x65rived_info\x18\x0c \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Company.DerivedInfo\x12\x11\n\tsuspended\x18\r \x01(\x08\x1aS\n\x0b\x44\x65rivedInfo\x12\x44\n\x15headquarters_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.LocationB\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14\x43ompanyResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n/google/cloud/talent_v4beta1/proto/company.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto"\xf8\x03\n\x07\x43ompany\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x36\n\x04size\x18\x04 \x01(\x0e\x32(.google.cloud.talent.v4beta1.CompanySize\x12\x1c\n\x14headquarters_address\x18\x05 \x01(\t\x12\x15\n\rhiring_agency\x18\x06 \x01(\x08\x12\x10\n\x08\x65\x65o_text\x18\x07 \x01(\t\x12\x13\n\x0bwebsite_uri\x18\x08 \x01(\t\x12\x17\n\x0f\x63\x61reer_site_uri\x18\t \x01(\t\x12\x11\n\timage_uri\x18\n \x01(\t\x12\x30\n(keyword_searchable_job_custom_attributes\x18\x0b \x03(\t\x12K\n\x0c\x64\x65rived_info\x18\x0c \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Company.DerivedInfoB\x03\xe0\x41\x03\x12\x16\n\tsuspended\x18\r \x01(\x08\x42\x03\xe0\x41\x03\x1aS\n\x0b\x44\x65rivedInfo\x12\x44\n\x15headquarters_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.LocationB\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14\x43ompanyResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
     ],
 )
@@ -72,8 +74,8 @@ _COMPANY_DERIVEDINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=560,
-    serialized_end=643,
+    serialized_start=613,
+    serialized_end=696,
 )
 
 _COMPANY = _descriptor.Descriptor(
@@ -116,7 +118,7 @@ _COMPANY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -134,7 +136,7 @@ _COMPANY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,7 +298,7 @@ _COMPANY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,7 +316,7 @@ _COMPANY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -326,8 +328,8 @@ _COMPANY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=159,
-    serialized_end=643,
+    serialized_start=192,
+    serialized_end=696,
 )
 
 _COMPANY_DERIVEDINFO.fields_by_name[
@@ -379,10 +381,10 @@ Company = _reflection.GeneratedProtocolMessageType(
           Required during company update.  The resource name for a
           company. This is generated by the service when a company is
           created.  The format is "projects/{project\_id}/tenants/{tenan
-          t\_id}/companies/{company\_id}", for example, "projects/api-
-          test-project/tenants/foo/companies/bar".  Tenant id is
-          optional and the default tenant is used if unspecified, for
-          example, "projects/api-test-project/companies/bar".
+          t\_id}/companies/{company\_id}", for example,
+          "projects/foo/tenants/bar/companies/baz".  If tenant id is
+          unspecified, the default tenant is used. For example,
+          "projects/foo/companies/bar".
       display_name:
           Required. The display name of the company, for example,
           "Google LLC".
@@ -391,35 +393,34 @@ Company = _reflection.GeneratedProtocolMessageType(
           identify the company.  The maximum number of allowed
           characters is 255.
       size:
-          Optional. The employer's company size.
+          The employer's company size.
       headquarters_address:
-          Optional. The street address of the company's main
-          headquarters, which may be different from the job location.
-          The service attempts to geolocate the provided address, and
-          populates a more specific location wherever possible in [Deriv
-          edInfo.headquarters\_location][google.cloud.talent.v4beta1.Com
-          pany.DerivedInfo.headquarters\_location].
+          The street address of the company's main headquarters, which
+          may be different from the job location. The service attempts
+          to geolocate the provided address, and populates a more
+          specific location wherever possible in [DerivedInfo.headquarte
+          rs\_location][google.cloud.talent.v4beta1.Company.DerivedInfo.
+          headquarters\_location].
       hiring_agency:
-          Optional. Set to true if it is the hiring agency that post
-          jobs for other employers.  Defaults to false if not provided.
+          Set to true if it is the hiring agency that post jobs for
+          other employers.  Defaults to false if not provided.
       eeo_text:
-          Optional. Equal Employment Opportunity legal disclaimer text
-          to be associated with all jobs, and typically to be displayed
-          in all roles.  The maximum number of allowed characters is
-          500.
+          Equal Employment Opportunity legal disclaimer text to be
+          associated with all jobs, and typically to be displayed in all
+          roles.  The maximum number of allowed characters is 500.
       website_uri:
-          Optional. The URI representing the company's primary web site
-          or home page, for example, "https://www.google.com".  The
-          maximum number of allowed characters is 255.
+          The URI representing the company's primary web site or home
+          page, for example, "https://www.google.com".  The maximum
+          number of allowed characters is 255.
       career_site_uri:
-          Optional. The URI to employer's career site or careers page on
-          the employer's web site, for example,
+          The URI to employer's career site or careers page on the
+          employer's web site, for example,
           "https://careers.google.com".
       image_uri:
-          Optional. A URI that hosts the employer's company logo.
+          A URI that hosts the employer's company logo.
       keyword_searchable_job_custom_attributes:
-          Optional. A list of keys of filterable [Job.custom\_attributes
-          ][google.cloud.talent.v4beta1.Job.custom\_attributes], whose
+          A list of keys of filterable [Job.custom\_attributes][google.c
+          loud.talent.v4beta1.Job.custom\_attributes], whose
           corresponding ``string_values`` are used in keyword searches.
           Jobs with ``string_values`` under these specified field keys
           are returned if any of the values match the search keyword.
@@ -441,4 +442,8 @@ _sym_db.RegisterMessage(Company.DerivedInfo)
 
 
 DESCRIPTOR._options = None
+_COMPANY.fields_by_name["display_name"]._options = None
+_COMPANY.fields_by_name["external_id"]._options = None
+_COMPANY.fields_by_name["derived_info"]._options = None
+_COMPANY.fields_by_name["suspended"]._options = None
 # @@protoc_insertion_point(module_scope)

@@ -81,7 +81,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == "google"
+        assert response.logo_annotations[0].description.lower() == "google"
 
     def test_detect_logos_file_handler(self):
         # Get a file handler, and make the request using it.
@@ -90,7 +90,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == "google"
+        assert response.logo_annotations[0].description.lower() == "google"
 
     def test_detect_logos_filename(self):
         # Make the request with the filename directly.
@@ -98,7 +98,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
 
         # Check to ensure we got what we expect.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == "google"
+        assert response.logo_annotations[0].description.lower() == "google"
 
     def test_detect_logos_gcs(self):
         # Upload the image to Google Cloud Storage.
@@ -121,7 +121,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
 
         # Check the response.
         assert len(response.logo_annotations) == 1
-        assert response.logo_annotations[0].description == "google"
+        assert response.logo_annotations[0].description.lower() == "google"
 
     def test_detect_logos_async(self):
         # Upload the image to Google Cloud Storage.
@@ -177,7 +177,7 @@ class TestVisionClientLogo(VisionSystemTestBase):
         assert len(responses) == 1
         logo_annotations = responses[0]["logoAnnotations"]
         assert len(logo_annotations) == 1
-        assert logo_annotations[0]["description"] == "google"
+        assert logo_annotations[0]["description"].lower() == "google"
 
 
 class TestVisionClientFiles(VisionSystemTestBase):

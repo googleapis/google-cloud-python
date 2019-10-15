@@ -203,7 +203,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Creates a cluster in a project.
+        Creates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1
@@ -306,7 +308,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Updates a cluster in a project.
+        Updates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1
@@ -401,6 +405,10 @@ class ClusterControllerClient(object):
                      <td><strong><em>config.secondary_worker_config.num_instances</em></strong></td>
                      <td>Resize secondary worker group</td>
                      </tr>
+                     <tr>
+                     <td>config.autoscaling_config.policy_uri</td><td>Use, stop using, or
+                     change autoscaling policies</td>
+                     </tr>
                      </tbody>
                      </table>
 
@@ -489,7 +497,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Deletes a cluster in a project.
+        Deletes a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1
@@ -779,8 +789,11 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Gets cluster diagnostic information. After the operation completes, the
-        Operation.response field contains ``DiagnoseClusterOutputLocation``.
+        Gets cluster diagnostic information. The returned ``Operation.metadata``
+        will be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+        After the operation completes, ``Operation.response`` contains
+        `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1

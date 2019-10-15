@@ -557,7 +557,7 @@ class CloudRedisClient(object):
             >>> paths_element_2 = 'memory_size_gb'
             >>> paths = [paths_element, paths_element_2]
             >>> update_mask = {'paths': paths}
-            >>> display_name = ' instance.memory_size_gb=4'
+            >>> display_name = '￼ instance.memory_size_gb=4'
             >>> instance = {'display_name': display_name}
             >>>
             >>> response = client.update_instance(update_mask, instance)
@@ -667,7 +667,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `input_config`:
             >>> input_config = {}
@@ -768,7 +769,8 @@ class CloudRedisClient(object):
             >>>
             >>> client = redis_v1.CloudRedisClient()
             >>>
-            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
@@ -851,7 +853,7 @@ class CloudRedisClient(object):
     def failover_instance(
         self,
         name,
-        data_protection_mode,
+        data_protection_mode=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -862,16 +864,12 @@ class CloudRedisClient(object):
 
         Example:
             >>> from google.cloud import redis_v1
-            >>> from google.cloud.redis_v1 import enums
             >>>
             >>> client = redis_v1.CloudRedisClient()
             >>>
             >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
             >>>
-            >>> # TODO: Initialize `data_protection_mode`:
-            >>> data_protection_mode = enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
-            >>>
-            >>> response = client.failover_instance(name, data_protection_mode)
+            >>> response = client.failover_instance(name)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
