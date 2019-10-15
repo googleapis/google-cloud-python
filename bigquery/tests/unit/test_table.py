@@ -2864,9 +2864,7 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
 
         self.assertEqual(time_partitioning.type_, "DAY")
@@ -2945,9 +2943,7 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
 
         with warnings.catch_warnings(record=True) as warned:
@@ -2985,12 +2981,8 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___require_partition_filter_mismatch(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
         with warnings.catch_warnings(record=True) as warned:
             time_partitioning.require_partition_filter = True
             other.require_partition_filter = False
@@ -3002,12 +2994,8 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___hit(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
         self.assertEqual(time_partitioning, other)
 
     def test___ne___wrong_type(self):
@@ -3051,16 +3039,9 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
-        expected = (
-            "TimePartitioning("
-            "expirationMs=10000,"
-            "field=name,"
-            "type=DAY)"
-        )
+        expected = "TimePartitioning(" "expirationMs=10000," "field=name," "type=DAY)"
         self.assertEqual(repr(time_partitioning), expected)
 
     def test_set_expiration_w_none(self):
