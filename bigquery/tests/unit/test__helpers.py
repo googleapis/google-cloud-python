@@ -805,6 +805,35 @@ class Test_scalar_field_to_json(unittest.TestCase):
         self.assertEqual(converted, str(original))
 
 
+class Test_single_field_to_json(unittest.TestCase):
+    def _call_fut(self, field, value):
+        from google.cloud.bigquery._helpers import _single_field_to_json
+
+        return _single_field_to_json(field, value)
+
+    def test_w_none(self):
+        field = _make_field("INT64")
+        original = None
+        converted = self._call_fut(field, original)
+        self.assertIsNone(converted)
+
+    def test_w_record(self):
+        subfields = [
+            _make_field("INT64", name="one"),
+            _make_field("STRING", name="two"),
+        ]
+        field = _make_field("RECORD", fields=subfields)
+        original = {"one": 42, "two": "two"}
+        converted = self._call_fut(field, original)
+        self.assertEqual(converted, {"one": "42", "two": "two"})
+
+    def test_w_scalar(self):
+        field = _make_field("INT64")
+        original = 42
+        converted = self._call_fut(field, original)
+        self.assertEqual(converted, str(original))
+
+
 class Test_repeated_field_to_json(unittest.TestCase):
     def _call_fut(self, field, value):
         from google.cloud.bigquery._helpers import _repeated_field_to_json
