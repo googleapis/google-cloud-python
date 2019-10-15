@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## 1.14.0
+
+10-15-2019 06:50 PDT
+
+
+### Implementation Changes
+- Fix proto copy. ([#9420](https://github.com/googleapis/google-cloud-python/pull/9420))
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
 ## 1.13.0
 
 09-23-2019 10:00 PDT
