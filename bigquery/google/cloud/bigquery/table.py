@@ -1795,10 +1795,28 @@ class TimePartitioning(object):
         :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
         instead.
         """
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return self._properties.get("requirePartitionFilter")
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         self._properties["requirePartitionFilter"] = value
 
     @classmethod

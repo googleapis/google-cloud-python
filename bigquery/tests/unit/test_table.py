@@ -957,7 +957,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(table.time_partitioning.field, "col1")
         self.assertEqual(table.time_partitioning.expiration_ms, 123456)
-        self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        assert len(warned) == 1
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_time_partitioning_getter_w_none(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -985,7 +990,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.time_partitioning.type_)
         self.assertIsNone(table.time_partitioning.field)
         self.assertIsNone(table.time_partitioning.expiration_ms)
-        self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -2846,11 +2856,9 @@ class TestTimePartitioning(unittest.TestCase):
 
     def test_constructor_defaults(self):
         time_partitioning = self._make_one()
-
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_constructor_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -2859,13 +2867,23 @@ class TestTimePartitioning(unittest.TestCase):
             type_=TimePartitioningType.DAY,
             field="name",
             expiration_ms=10000,
-            require_partition_filter=True,
         )
 
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+    def test_require_partition_filter_warns_deprecation(self):
+        object_under_test = self._make_one()
+
+        with warnings.catch_warnings(record=True) as warned:
+            assert object_under_test.require_partition_filter is None
+            object_under_test.require_partition_filter = True
+            assert object_under_test.require_partition_filter
+
+        assert len(warned) == 3
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -2879,7 +2897,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.type_)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -2891,7 +2908,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_doesnt_override_type(self):
         klass = self._get_target_class()
@@ -2914,7 +2930,11 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertTrue(time_partitioning.require_partition_filter)
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_to_api_repr_defaults(self):
         time_partitioning = self._make_one()
@@ -2928,8 +2948,12 @@ class TestTimePartitioning(unittest.TestCase):
             type_=TimePartitioningType.DAY,
             field="name",
             expiration_ms=10000,
-            require_partition_filter=True,
         )
+
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
         expected = {
             "type": "DAY",
@@ -2962,19 +2986,27 @@ class TestTimePartitioning(unittest.TestCase):
 
     def test___eq___require_partition_filter_mismatch(self):
         time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
+            field="foo", expiration_ms=100000
         )
         other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=False
+            field="foo", expiration_ms=100000
         )
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+            other.require_partition_filter = False
+
+        assert len(warned) == 2
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
+
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___hit(self):
         time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
+            field="foo", expiration_ms=100000
         )
         other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
+            field="foo", expiration_ms=100000
         )
         self.assertEqual(time_partitioning, other)
 
@@ -3022,13 +3054,11 @@ class TestTimePartitioning(unittest.TestCase):
             type_=TimePartitioningType.DAY,
             field="name",
             expiration_ms=10000,
-            require_partition_filter=True,
         )
         expected = (
             "TimePartitioning("
             "expirationMs=10000,"
             "field=name,"
-            "requirePartitionFilter=True,"
             "type=DAY)"
         )
         self.assertEqual(repr(time_partitioning), expected)
