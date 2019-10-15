@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## 0.31.0
+
+10-15-2019 06:42 PDT
+
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Fix intersphinx reference to `requests`. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix broken links in docs. ([#9148](https://github.com/googleapis/google-cloud-python/pull/9148))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
 ## 0.30.2
 
 07-11-2019 10:09 PDT
