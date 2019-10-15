@@ -80,6 +80,8 @@ class Batch(object):
     def __init__(self, client):
         self._client = client
         self._mutations = []
+        # Stores a list of entity.Entity and .entity_pb2.Entity objects with
+        # partial keys
         self._partial_key_entities = []
         self._status = self._INITIAL
 
@@ -210,10 +212,10 @@ class Batch(object):
         if self.project != entity_pb.key.partition_id.project_id:
             raise ValueError("Key must be from same project as batch")
 
-        # Key is considered partial if neither "id" nor "name" values of the key
-        # "path" field are set
+        # Key is considered partial if neither "id" nor "name" values of the last
+        # key path element are set
         is_key_partial = not entity_pb.key.path or (
-            not entity_pb.key.path[0].name and not entity_pb.key.path[0].id
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
         )
 
         if is_key_partial:
@@ -280,17 +282,11 @@ class Batch(object):
         # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys, self._partial_key_entities):
             if isinstance(entity, entity_pb2.Entity):
-                # Entity Protobuf instance
+                # entity_pb2.Entity Protobuf instance
                 new_id = new_key_pb.path[-1].id
-
-                # TODO: Make this efficient, don't rely on conversion back and forth
-                entity_ = helpers.entity_from_protobuf(entity)
-                entity_.key = entity_.key.completed_key(new_id)
-
-                entity.key.CopyFrom(entity_.key.to_protobuf())
-                pass
+                entity.key.path[-1].id = new_id
             else:
-                # Entity class
+                # entity.Entity class
                 new_id = new_key_pb.path[-1].id
                 entity.key = entity.key.completed_key(new_id)
 

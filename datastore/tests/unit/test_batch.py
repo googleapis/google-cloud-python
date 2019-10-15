@@ -17,6 +17,7 @@ import unittest
 import mock
 
 from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore.key import Key
 
 
 class TestBatch(unittest.TestCase):
@@ -463,6 +464,90 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         mutated_entity = _mutated_pb(self, batch.mutations, "upsert")
         self.assertEqual(mutated_entity.key, key._key)
 
+    def test_commit_w_completed_key_hierarchical_key_integer_id(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        new_id = 1234
+        ds_api = _make_datastore_api(new_id)
+        client = _Client(project, datastore_api=ds_api)
+        batch = self._make_one(client)
+
+        # Complete key where ID of last key path is set
+        key1 = Key("Parent", "foo", "Child", 1234, project=project)
+        self.assertFalse(key1.is_partial)
+
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key1.to_protobuf())
+
+        self.assertEqual(len(entity_pb.key.path), 2)
+        self.assertEqual(entity_pb.key.path[0].kind, "Parent")
+        self.assertEqual(entity_pb.key.path[0].name, "foo")
+        self.assertEqual(entity_pb.key.path[1].kind, "Child")
+        self.assertEqual(entity_pb.key.path[1].id, 1234)
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertFalse(is_key_partial)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertFalse(is_key_partial)
+        self.assertEqual(entity_pb.key.path[-1].id, 1234)
+
+    def test_commit_w_completed_key_hierarchical_key_string_name(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        new_id = 1234
+        ds_api = _make_datastore_api(new_id)
+        client = _Client(project, datastore_api=ds_api)
+        batch = self._make_one(client)
+
+        # Complete key where ID of last key path is set
+        key1 = Key("Parent", "foo", "Child", "name1", project=project)
+        self.assertFalse(key1.is_partial)
+
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key1.to_protobuf())
+
+        self.assertEqual(len(entity_pb.key.path), 2)
+        self.assertEqual(entity_pb.key.path[0].kind, "Parent")
+        self.assertEqual(entity_pb.key.path[0].name, "foo")
+        self.assertEqual(entity_pb.key.path[1].kind, "Child")
+        self.assertEqual(entity_pb.key.path[1].name, "name1")
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertFalse(is_key_partial)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertFalse(is_key_partial)
+        self.assertEqual(entity_pb.key.path[-1].name, "name1")
+
     def test_commit_w_partial_key_entities(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
@@ -493,10 +578,65 @@ class TestBatchRawEntityPBMethods(unittest.TestCase):
         ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
 
         is_key_partial = not entity_pb.key.path or (
-            not entity_pb.key.path[0].name and not entity_pb.key.path[0].id
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
         )
         self.assertFalse(is_key_partial)
         self.assertEqual(entity_pb.key.path[0].id, new_id)
+
+    def test_commit_w_partial_key_entities_hierarchical_key(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        new_id = 1234
+        ds_api = _make_datastore_api(new_id)
+        client = _Client(project, datastore_api=ds_api)
+        batch = self._make_one(client)
+
+        key = Key("Parent", "foo", "Child", project=project)
+        self.assertTrue(key.is_partial)
+
+        key_completed_1 = Key("Parent", "foo", "Child", 1234, project=project)
+        self.assertFalse(key_completed_1.is_partial)
+
+        key_completed_2 = Key("Parent", "foo", "Child", "child1", project=project)
+        self.assertFalse(key_completed_2.is_partial)
+
+        key._id = None
+        entity_pb = entity_pb2.Entity()
+        entity_pb.key.CopyFrom(key.to_protobuf())
+        batch._partial_key_entities.append(entity_pb)
+
+        self.assertEqual(len(entity_pb.key.path), 2)
+        self.assertEqual(entity_pb.key.path[0].kind, "Parent")
+        self.assertEqual(entity_pb.key.path[0].name, "foo")
+        self.assertEqual(entity_pb.key.path[1].kind, "Child")
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertTrue(is_key_partial)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(project, mode, [], transaction=None)
+
+        is_key_partial = not entity_pb.key.path or (
+            not entity_pb.key.path[-1].name and not entity_pb.key.path[-1].id
+        )
+        self.assertFalse(is_key_partial)
+        self.assertEqual(entity_pb.key.path[-1].id, new_id)
+
+        self.assertEqual(len(entity_pb.key.path), 2)
+        self.assertEqual(entity_pb.key.path[0].kind, "Parent")
+        self.assertEqual(entity_pb.key.path[0].name, "foo")
+        self.assertEqual(entity_pb.key.path[1].kind, "Child")
+        self.assertEqual(entity_pb.key.path[-1].id, new_id)
+        self.assertEqual(entity_pb.key.path[1].id, new_id)
 
 
 class Test__parse_commit_response(unittest.TestCase):
