@@ -646,6 +646,60 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["query_params"], {"project": PROJECT})
         self.assertEqual(kw["data"], DATA)
 
+    def test_create_w_predefined_acl_invalid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+
+        with self.assertRaises(ValueError):
+            bucket.create(predefined_acl="bogus")
+
+    def test_create_w_predefined_acl_valid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        bucket.create(predefined_acl="publicRead")
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], "/b")
+        expected_qp = {"project": PROJECT, "predefinedAcl": "publicRead"}
+        self.assertEqual(kw["query_params"], expected_qp)
+        self.assertEqual(kw["data"], DATA)
+
+    def test_create_w_predefined_default_object_acl_invalid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+
+        with self.assertRaises(ValueError):
+            bucket.create(predefined_default_object_acl="bogus")
+
+    def test_create_w_predefined_default_object_acl_valid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        bucket.create(predefined_default_object_acl="publicRead")
+
+        kw, = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], "/b")
+        expected_qp = {"project": PROJECT, "predefinedDefaultObjectAcl": "publicRead"}
+        self.assertEqual(kw["query_params"], expected_qp)
+        self.assertEqual(kw["data"], DATA)
+
     def test_acl_property(self):
         from google.cloud.storage.acl import BucketACL
 
