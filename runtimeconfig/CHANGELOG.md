@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## 0.30.0
+
+10-15-2019 06:53 PDT
+
+
+### New Features
+- Add `client_options` to client. ([#9045](https://github.com/googleapis/google-cloud-python/pull/9045))
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix broken links in docs. ([#9148](https://github.com/googleapis/google-cloud-python/pull/9148))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.29.2
 
 07-24-2019 17:26 PDT
