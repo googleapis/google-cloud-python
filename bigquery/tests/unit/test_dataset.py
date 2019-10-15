@@ -454,6 +454,14 @@ class TestDataset(unittest.TestCase):
         dataset.access_entries = [phred, bharney]
         self.assertEqual(dataset.access_entries, [phred, bharney])
 
+    def test_default_partition_expiration_ms(self):
+        dataset = self._make_one("proj.dset")
+        assert dataset.default_partition_expiration_ms is None
+        dataset.default_partition_expiration_ms = 12345
+        assert dataset.default_partition_expiration_ms == 12345
+        dataset.default_partition_expiration_ms = None
+        assert dataset.default_partition_expiration_ms is None
+
     def test_default_table_expiration_ms_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
         with self.assertRaises(ValueError):
