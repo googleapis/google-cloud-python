@@ -385,6 +385,7 @@ class Table(object):
         "view_query": "view",
         "external_data_configuration": "externalDataConfiguration",
         "encryption_configuration": "encryptionConfiguration",
+        "require_partition_filter": "requirePartitionFilter",
     }
 
     def __init__(self, table_ref, schema=None):
@@ -419,6 +420,18 @@ class Table(object):
             self.dataset_id,
             self.table_id,
         )
+
+    @property
+    def require_partition_filter(self):
+        """bool: If set to true, queries over the partitioned table require a
+        partition filter that can be used for partition elimination to be
+        specified.
+        """
+        return self._properties.get("requirePartitionFilter")
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties["requirePartitionFilter"] = value
 
     @property
     def schema(self):
@@ -1722,9 +1735,9 @@ class TimePartitioning(object):
             Number of milliseconds for which to keep the storage for a
             partition.
         require_partition_filter (bool, optional):
-            If set to true, queries over the partitioned table require a
-            partition filter that can be used for partition elimination to be
-            specified.
+            DEPRECATED: Use
+            :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
+            instead.
     """
 
     def __init__(
@@ -1777,11 +1790,33 @@ class TimePartitioning(object):
     @property
     def require_partition_filter(self):
         """bool: Specifies whether partition filters are required for queries
+
+        DEPRECATED: Use
+        :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
+        instead.
         """
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return self._properties.get("requirePartitionFilter")
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         self._properties["requirePartitionFilter"] = value
 
     @classmethod
