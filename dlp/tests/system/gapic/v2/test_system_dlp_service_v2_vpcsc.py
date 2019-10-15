@@ -96,7 +96,7 @@ class TestSystemDlpService(object):
         name_inside = client.project_path(PROJECT_INSIDE)
         delayed_inside = lambda: client.deidentify_content(name_inside)
         name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.deidentify_content(name_outside)
+        delayed_outside = lambda: client.deidentify_conent(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
@@ -163,6 +163,7 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_inspect_template(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
+    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -243,6 +244,7 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_deidentify_template(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
+    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -291,6 +293,7 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.create_dlp_job(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
+    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -355,6 +358,7 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.cancel_dlp_job(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
+    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -483,6 +487,7 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_stored_info_type(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
+    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
