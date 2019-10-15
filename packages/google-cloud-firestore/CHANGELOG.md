@@ -5,6 +5,32 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.5.0
+
+10-15-2019 06:45 PDT
+
+
+### Implementation Changes
+- Expand dotted keys in mappings used as cursors. ([#8568](https://github.com/googleapis/google-cloud-python/pull/8568))
+- Tweak GAPIC client configuration (via synth). ([#9173](https://github.com/googleapis/google-cloud-python/pull/9173))
+
+### New Features
+- Add `IN`, `ARRAY_CONTAINS_ANY` operators; update docstrings (via synth). ([#9439](https://github.com/googleapis/google-cloud-python/pull/9439))
+- Add `COLLECTION_GROUP` to `Index.QueryScope` enum; update docstrings (via synth). ([#9253](https://github.com/googleapis/google-cloud-python/pull/9253))
+- Add `client_options` to v1 client. ([#9048](https://github.com/googleapis/google-cloud-python/pull/9048))
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Update README example to use non-deprecated `query.get`. ([#9235](https://github.com/googleapis/google-cloud-python/pull/9235))
+- Remove duplicated word in README. ([#9297](https://github.com/googleapis/google-cloud-python/pull/9297))
+- Fix intersphinx reference to `requests`. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core refs`. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Add license file. ([#9109](https://github.com/googleapis/google-cloud-python/pull/9109))
+- Fix reference to library name ([#9047](https://github.com/googleapis/google-cloud-python/pull/9047))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
 ## 1.4.0
 
 08-06-2019 11:43 PDT
