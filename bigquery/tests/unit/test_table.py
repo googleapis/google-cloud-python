@@ -70,6 +70,27 @@ class _SchemaBase(object):
             self._verify_field(field, r_field)
 
 
+class TestEncryptionConfiguration(unittest.TestCase):
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import EncryptionConfiguration
+
+        return EncryptionConfiguration
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        encryption_config = self._make_one()
+        self.assertIsNone(encryption_config.kms_key_name)
+
+    def test_ctor_with_key(self):
+        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
+        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
+
+
 class TestTableReference(unittest.TestCase):
     @staticmethod
     def _get_target_class():
