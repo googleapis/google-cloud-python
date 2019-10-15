@@ -595,7 +595,14 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None, project=None, location=None):
+    def create(
+        self,
+        client=None,
+        project=None,
+        location=None,
+        predefined_acl=None,
+        predefined_default_object_acl=None,
+    ):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -622,6 +629,16 @@ class Bucket(_PropertyMixin):
         :param location: Optional. The location of the bucket. If not passed,
                          the default location, US, will be used. See
                          https://cloud.google.com/storage/docs/bucket-locations
+
+        :type predefined_acl: str
+        :param predefined_acl:
+            Optional. Name of predefined ACL to apply to bucket. See:
+            https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
+
+        :type predefined_default_object_acl: str
+        :param predefined_default_object_acl:
+            Optional. Name of predefined ACL to apply to bucket's objects. See:
+            https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
         """
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
@@ -635,6 +652,17 @@ class Bucket(_PropertyMixin):
             raise ValueError("Client project not set:  pass an explicit project.")
 
         query_params = {"project": project}
+
+        if predefined_acl is not None:
+            predefined_acl = BucketACL.validate_predefined(predefined_acl)
+            query_params["predefinedAcl"] = predefined_acl
+
+        if predefined_default_object_acl is not None:
+            predefined_default_object_acl = DefaultObjectACL.validate_predefined(
+                predefined_default_object_acl
+            )
+            query_params["predefinedDefaultObjectAcl"] = predefined_default_object_acl
+
         properties = {key: self._properties[key] for key in self._changes}
         properties["name"] = self.name
 
