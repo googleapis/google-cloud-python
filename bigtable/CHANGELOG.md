@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 1.1.0
+
+10-15-2019 06:40 PDT
+
+
+### New Features
+- Add IAM Policy methods to table admin client (via synth). ([#9172](https://github.com/googleapis/google-cloud-python/pull/9172))
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix misspelling in docs. ([#9184](https://github.com/googleapis/google-cloud-python/pull/9184))
+
 ## 1.0.0
 
 08-28-2019 12:49 PDT
