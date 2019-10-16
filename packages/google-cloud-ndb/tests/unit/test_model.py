@@ -4260,11 +4260,25 @@ class TestModel:
         class Simple(model.Model):
             x = model.IntegerProperty()
 
-        entity = Simple()
-        query = entity.gql("WHERE x=1")
+        query = Simple.gql("WHERE x=1")
         assert isinstance(query, query_module.Query)
         assert query.kind == "Simple"
         assert query.filters == query_module.FilterNode("x", "=", 1)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql_binding():
+        class Simple(model.Model):
+            x = model.IntegerProperty()
+            y = model.StringProperty()
+
+        query = Simple.gql("WHERE x=:1 and y=:foo", 2, foo="bar")
+        assert isinstance(query, query_module.Query)
+        assert query.kind == "Simple"
+        assert query.filters == query_module.AND(
+            query_module.FilterNode("x", "=", 2),
+            query_module.FilterNode("y", "=", "bar"),
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

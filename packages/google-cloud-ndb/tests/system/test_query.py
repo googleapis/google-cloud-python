@@ -1321,3 +1321,23 @@ def test_map(dispose_of):
 
     query = SomeKind.query().order(SomeKind.foo)
     assert query.map(get_other_foo) == foos
+
+
+@pytest.mark.usefixtures("client_context")
+def test_gql(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = ndb.gql("SELECT * FROM SomeKind WHERE foo = :1", 2)
+    results = query.fetch()
+    assert results[0].foo == 2
+
+    query = SomeKind.gql("WHERE foo = :1", 2)
+    results = query.fetch()
+    assert results[0].foo == 2

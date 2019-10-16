@@ -4860,11 +4860,8 @@ class Model(metaclass=MetaModel):
         # import late to avoid circular import problems
         from google.cloud.ndb import query
 
-        return query.gql(
-            "SELECT * FROM {} {}".format(
-                cls._class_name(), query_string, *args, *kwargs
-            )
-        )
+        gql = "SELECT * FROM {} {}".format(cls._class_name(), query_string)
+        return query.gql(gql, *args, **kwargs)
 
     gql = _gql
 
