@@ -13,12 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2beta1 Sessions API."""
 
 import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -39,6 +41,7 @@ from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
 from dialogflow_v2beta1.proto import entity_type_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2_grpc
+from dialogflow_v2beta1.proto import gcs_pb2
 from dialogflow_v2beta1.proto import intent_pb2
 from dialogflow_v2beta1.proto import intent_pb2_grpc
 from dialogflow_v2beta1.proto import knowledge_base_pb2
@@ -47,10 +50,12 @@ from dialogflow_v2beta1.proto import session_entity_type_pb2
 from dialogflow_v2beta1.proto import session_entity_type_pb2_grpc
 from dialogflow_v2beta1.proto import session_pb2
 from dialogflow_v2beta1.proto import session_pb2_grpc
+from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -116,6 +121,7 @@ class SessionsClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -146,6 +152,9 @@ class SessionsClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -164,6 +173,15 @@ class SessionsClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -172,6 +190,7 @@ class SessionsClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=sessions_grpc_transport.SessionsGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -182,7 +201,7 @@ class SessionsClient(object):
                 self.transport = transport
         else:
             self.transport = sessions_grpc_transport.SessionsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -242,9 +261,9 @@ class SessionsClient(object):
                 ``projects/<Project ID>/agent/sessions/<Session ID>``, or
                 ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
                 If ``Environment ID`` is not specified, we assume default 'draft'
-                environment. If ``User ID`` is not specified, we are using "-". It’s up
+                environment. If ``User ID`` is not specified, we are using "-". It's up
                 to the API caller to choose an appropriate ``Session ID`` and
-                ``User Id``. They can be a random numbers or some type of user and
+                ``User Id``. They can be a random number or some type of user and
                 session identifiers (preferably hashed). The length of the
                 ``Session ID`` and ``User ID`` must not exceed 36 characters.
             query_input (Union[dict, ~google.cloud.dialogflow_v2beta1.types.QueryInput]): Required. The input specification. It can be set to:
@@ -272,8 +291,8 @@ class SessionsClient(object):
                 should be populated iff ``query_input`` is set to an input audio config.
                 A single request can contain up to 1 minute of speech audio data.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -360,8 +379,8 @@ class SessionsClient(object):
             requests (iterator[dict|google.cloud.dialogflow_v2beta1.proto.session_pb2.StreamingDetectIntentRequest]): The input objects. If a dict is provided, it must be of the
                 same form as the protobuf message :class:`~google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2beta1 KnowledgeBases API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -40,14 +42,17 @@ from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
 from dialogflow_v2beta1.proto import entity_type_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2_grpc
+from dialogflow_v2beta1.proto import gcs_pb2
 from dialogflow_v2beta1.proto import intent_pb2
 from dialogflow_v2beta1.proto import intent_pb2_grpc
 from dialogflow_v2beta1.proto import knowledge_base_pb2
 from dialogflow_v2beta1.proto import knowledge_base_pb2_grpc
+from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -109,6 +114,7 @@ class KnowledgeBasesClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -139,6 +145,9 @@ class KnowledgeBasesClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -157,6 +166,15 @@ class KnowledgeBasesClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -165,6 +183,7 @@ class KnowledgeBasesClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=knowledge_bases_grpc_transport.KnowledgeBasesGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -175,7 +194,7 @@ class KnowledgeBasesClient(object):
                 self.transport = transport
         else:
             self.transport = knowledge_bases_grpc_transport.KnowledgeBasesGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -212,6 +231,9 @@ class KnowledgeBasesClient(object):
         """
         Returns the list of all knowledge bases of the specified agent.
 
+        Note: The ``projects.agent.knowledgeBases`` resource is deprecated; only
+        use ``projects.knowledgeBases``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -242,8 +264,8 @@ class KnowledgeBasesClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -251,10 +273,10 @@ class KnowledgeBasesClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2beta1.types.KnowledgeBase` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2beta1.types.KnowledgeBase` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -315,6 +337,9 @@ class KnowledgeBasesClient(object):
         """
         Retrieves the specified knowledge base.
 
+        Note: The ``projects.agent.knowledgeBases`` resource is deprecated; only
+        use ``projects.knowledgeBases``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -328,8 +353,8 @@ class KnowledgeBasesClient(object):
             name (str): Required. The name of the knowledge base to retrieve. Format
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -386,6 +411,9 @@ class KnowledgeBasesClient(object):
         """
         Creates a knowledge base.
 
+        Note: The ``projects.agent.knowledgeBases`` resource is deprecated; only
+        use ``projects.knowledgeBases``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -406,8 +434,8 @@ class KnowledgeBasesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.KnowledgeBase`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -466,6 +494,9 @@ class KnowledgeBasesClient(object):
         """
         Deletes the specified knowledge base.
 
+        Note: The ``projects.agent.knowledgeBases`` resource is deprecated; only
+        use ``projects.knowledgeBases``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -481,8 +512,8 @@ class KnowledgeBasesClient(object):
             force (bool): Optional. Force deletes the knowledge base. When set to true, any documents
                 in the knowledge base are also deleted.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -527,7 +558,7 @@ class KnowledgeBasesClient(object):
 
     def update_knowledge_base(
         self,
-        knowledge_base=None,
+        knowledge_base,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -536,12 +567,18 @@ class KnowledgeBasesClient(object):
         """
         Updates the specified knowledge base.
 
+        Note: The ``projects.agent.knowledgeBases`` resource is deprecated; only
+        use ``projects.knowledgeBases``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
             >>> client = dialogflow_v2beta1.KnowledgeBasesClient()
             >>>
-            >>> response = client.update_knowledge_base()
+            >>> # TODO: Initialize `knowledge_base`:
+            >>> knowledge_base = {}
+            >>>
+            >>> response = client.update_knowledge_base(knowledge_base)
 
         Args:
             knowledge_base (Union[dict, ~google.cloud.dialogflow_v2beta1.types.KnowledgeBase]): Required. The knowledge base to update.
@@ -555,8 +592,8 @@ class KnowledgeBasesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

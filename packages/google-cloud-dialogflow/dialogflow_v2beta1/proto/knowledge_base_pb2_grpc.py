@@ -54,6 +54,9 @@ class KnowledgeBasesServicer(object):
 
     def ListKnowledgeBases(self, request, context):
         """Returns the list of all knowledge bases of the specified agent.
+
+    Note: The `projects.agent.knowledgeBases` resource is deprecated;
+    only use `projects.knowledgeBases`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -61,6 +64,9 @@ class KnowledgeBasesServicer(object):
 
     def GetKnowledgeBase(self, request, context):
         """Retrieves the specified knowledge base.
+
+    Note: The `projects.agent.knowledgeBases` resource is deprecated;
+    only use `projects.knowledgeBases`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -68,6 +74,9 @@ class KnowledgeBasesServicer(object):
 
     def CreateKnowledgeBase(self, request, context):
         """Creates a knowledge base.
+
+    Note: The `projects.agent.knowledgeBases` resource is deprecated;
+    only use `projects.knowledgeBases`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -75,6 +84,9 @@ class KnowledgeBasesServicer(object):
 
     def DeleteKnowledgeBase(self, request, context):
         """Deletes the specified knowledge base.
+
+    Note: The `projects.agent.knowledgeBases` resource is deprecated;
+    only use `projects.knowledgeBases`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -82,6 +94,9 @@ class KnowledgeBasesServicer(object):
 
     def UpdateKnowledgeBase(self, request, context):
         """Updates the specified knowledge base.
+
+    Note: The `projects.agent.knowledgeBases` resource is deprecated;
+    only use `projects.knowledgeBases`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

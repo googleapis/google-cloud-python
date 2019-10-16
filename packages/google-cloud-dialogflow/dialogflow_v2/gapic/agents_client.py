@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2 Agents API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -39,7 +41,9 @@ from dialogflow_v2.proto import agent_pb2
 from dialogflow_v2.proto import agent_pb2_grpc
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -57,19 +61,19 @@ class AgentsClient(object):
 
     You can create an agent using both Dialogflow Standard Edition and
     Dialogflow Enterprise Edition. For details, see `Dialogflow
-    Editions <https://cloud.google.com/dialogflow-enterprise/docs/editions>`__.
+    Editions <https://cloud.google.com/dialogflow/docs/editions>`__.
 
     You can save your agent for backup or versioning by exporting the agent
     by using the ``ExportAgent`` method. You can import a saved agent by
     using the ``ImportAgent`` method.
 
     Dialogflow provides several `prebuilt
-    agents <https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt>`__
-    for common conversation scenarios such as determining a date and time,
+    agents <https://cloud.google.com/dialogflow/docs/agents-prebuilt>`__ for
+    common conversation scenarios such as determining a date and time,
     converting currency, and so on.
 
     For more information about agents, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow-enterprise/docs/agents-overview>`__.
+    documentation <https://cloud.google.com/dialogflow/docs/agents-overview>`__.
     """
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
@@ -113,6 +117,7 @@ class AgentsClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -143,6 +148,9 @@ class AgentsClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -161,6 +169,15 @@ class AgentsClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -169,6 +186,7 @@ class AgentsClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=agents_grpc_transport.AgentsGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -179,7 +197,7 @@ class AgentsClient(object):
                 self.transport = transport
         else:
             self.transport = agents_grpc_transport.AgentsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -205,6 +223,151 @@ class AgentsClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def set_agent(
+        self,
+        agent,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates/updates the specified agent.
+
+        Example:
+            >>> import dialogflow_v2
+            >>>
+            >>> client = dialogflow_v2.AgentsClient()
+            >>>
+            >>> # TODO: Initialize `agent`:
+            >>> agent = {}
+            >>>
+            >>> response = client.set_agent(agent)
+
+        Args:
+            agent (Union[dict, ~google.cloud.dialogflow_v2.types.Agent]): Required. The agent to update.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dialogflow_v2.types.Agent`
+            update_mask (Union[dict, ~google.cloud.dialogflow_v2.types.FieldMask]): Optional. The mask to control which fields get updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dialogflow_v2.types.Agent` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "set_agent" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "set_agent"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.set_agent,
+                default_retry=self._method_configs["SetAgent"].retry,
+                default_timeout=self._method_configs["SetAgent"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = agent_pb2.SetAgentRequest(agent=agent, update_mask=update_mask)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("agent.parent", agent.parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["set_agent"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_agent(
+        self,
+        parent,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes the specified agent.
+
+        Example:
+            >>> import dialogflow_v2
+            >>>
+            >>> client = dialogflow_v2.AgentsClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> client.delete_agent(parent)
+
+        Args:
+            parent (str): Required. The project that the agent to delete is associated with.
+                Format: ``projects/<Project ID>``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_agent" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_agent"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_agent,
+                default_retry=self._method_configs["DeleteAgent"].retry,
+                default_timeout=self._method_configs["DeleteAgent"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = agent_pb2.DeleteAgentRequest(parent=parent)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_agent"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_agent(
         self,
         parent,
@@ -228,8 +391,8 @@ class AgentsClient(object):
             parent (str): Required. The project that the agent to fetch is associated with.
                 Format: ``projects/<Project ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -322,8 +485,8 @@ class AgentsClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -331,10 +494,10 @@ class AgentsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2.types.Agent` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2.types.Agent` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -417,8 +580,8 @@ class AgentsClient(object):
             parent (str): Required. The project that the agent to train is associated with.
                 Format: ``projects/<Project ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -504,14 +667,14 @@ class AgentsClient(object):
         Args:
             parent (str): Required. The project that the agent to export is associated with.
                 Format: ``projects/<Project ID>``.
-            agent_uri (str): Optional. The `Google Cloud
+            agent_uri (str): Required. The `Google Cloud
                 Storage <https://cloud.google.com/storage/docs/>`__ URI to export the
                 agent to. The format of this URI must be
                 ``gs://<bucket-name>/<object-name>``. If left unspecified, the
                 serialized agent is returned inline.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -604,26 +767,10 @@ class AgentsClient(object):
                 Format: ``projects/<Project ID>``.
             agent_uri (str): The URI to a Google Cloud Storage file containing the agent to import.
                 Note: The URI must start with "gs://".
-            agent_content (bytes): The agent to import.
-
-                Example for how to import an agent via the command line:
-
-                .. raw:: html
-
-                    <pre>curl \
-                      'https://dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/agent:import\
-                       -X POST \
-                       -H 'Authorization: Bearer '$(gcloud auth application-default
-                       print-access-token) \
-                       -H 'Accept: application/json' \
-                       -H 'Content-Type: application/json' \
-                       --compressed \
-                       --data-binary "{
-                          'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
-                       }"</pre>
+            agent_content (bytes): Zip compressed raw byte content for agent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -723,26 +870,10 @@ class AgentsClient(object):
                 Format: ``projects/<Project ID>``.
             agent_uri (str): The URI to a Google Cloud Storage file containing the agent to restore.
                 Note: The URI must start with "gs://".
-            agent_content (bytes): The agent to restore.
-
-                Example for how to restore an agent via the command line:
-
-                .. raw:: html
-
-                    <pre>curl \
-                      'https://dialogflow.googleapis.com/v2/projects/&lt;project_name&gt;/agent:restore\
-                       -X POST \
-                       -H 'Authorization: Bearer '$(gcloud auth application-default
-                       print-access-token) \
-                       -H 'Accept: application/json' \
-                       -H 'Content-Type: application/json' \
-                       --compressed \
-                       --data-binary "{
-                           'agentContent': '$(cat &lt;agent zip file&gt; | base64 -w 0)'
-                       }"</pre>
+            agent_content (bytes): Zip compressed raw byte content for agent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

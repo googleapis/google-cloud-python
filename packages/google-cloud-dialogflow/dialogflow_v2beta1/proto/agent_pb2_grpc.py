@@ -4,9 +4,13 @@ import grpc
 from dialogflow_v2beta1.proto import (
     agent_pb2 as google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2,
 )
+from dialogflow_v2beta1.proto import (
+    validation_result_pb2 as google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_validation__result__pb2,
+)
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class AgentsStub(object):
@@ -23,7 +27,7 @@ class AgentsStub(object):
   You can create an agent using both Dialogflow Standard Edition and
   Dialogflow Enterprise Edition. For details, see
   [Dialogflow
-  Editions](https://cloud.google.com/dialogflow-enterprise/docs/editions).
+  Editions](https://cloud.google.com/dialogflow/docs/editions).
 
   You can save your agent for backup or versioning by exporting the agent by
   using the [ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent] method. You can import a saved
@@ -31,13 +35,13 @@ class AgentsStub(object):
 
   Dialogflow provides several
   [prebuilt
-  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  agents](https://cloud.google.com/dialogflow/docs/agents-prebuilt)
   for common conversation scenarios such as determining a date and time,
   converting currency, and so on.
 
   For more information about agents, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/agents-overview).
   """
 
     def __init__(self, channel):
@@ -50,6 +54,16 @@ class AgentsStub(object):
             "/google.cloud.dialogflow.v2beta1.Agents/GetAgent",
             request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.GetAgentRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.Agent.FromString,
+        )
+        self.SetAgent = channel.unary_unary(
+            "/google.cloud.dialogflow.v2beta1.Agents/SetAgent",
+            request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.SetAgentRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.Agent.FromString,
+        )
+        self.DeleteAgent = channel.unary_unary(
+            "/google.cloud.dialogflow.v2beta1.Agents/DeleteAgent",
+            request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.DeleteAgentRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.SearchAgents = channel.unary_unary(
             "/google.cloud.dialogflow.v2beta1.Agents/SearchAgents",
@@ -76,6 +90,11 @@ class AgentsStub(object):
             request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.RestoreAgentRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.GetValidationResult = channel.unary_unary(
+            "/google.cloud.dialogflow.v2beta1.Agents/GetValidationResult",
+            request_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.GetValidationResultRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_validation__result__pb2.ValidationResult.FromString,
+        )
 
 
 class AgentsServicer(object):
@@ -92,7 +111,7 @@ class AgentsServicer(object):
   You can create an agent using both Dialogflow Standard Edition and
   Dialogflow Enterprise Edition. For details, see
   [Dialogflow
-  Editions](https://cloud.google.com/dialogflow-enterprise/docs/editions).
+  Editions](https://cloud.google.com/dialogflow/docs/editions).
 
   You can save your agent for backup or versioning by exporting the agent by
   using the [ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent] method. You can import a saved
@@ -100,17 +119,31 @@ class AgentsServicer(object):
 
   Dialogflow provides several
   [prebuilt
-  agents](https://cloud.google.com/dialogflow-enterprise/docs/agents-prebuilt)
+  agents](https://cloud.google.com/dialogflow/docs/agents-prebuilt)
   for common conversation scenarios such as determining a date and time,
   converting currency, and so on.
 
   For more information about agents, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/agents-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/agents-overview).
   """
 
     def GetAgent(self, request, context):
         """Retrieves the specified agent.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SetAgent(self, request, context):
+        """Creates/updates the specified agent.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteAgent(self, request, context):
+        """Deletes the specified agent.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -176,6 +209,14 @@ class AgentsServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def GetValidationResult(self, request, context):
+        """Gets agent validation result. Agent validation is performed during
+    training time and is updated automatically when training is completed.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_AgentsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -183,6 +224,16 @@ def add_AgentsServicer_to_server(servicer, server):
             servicer.GetAgent,
             request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.GetAgentRequest.FromString,
             response_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.Agent.SerializeToString,
+        ),
+        "SetAgent": grpc.unary_unary_rpc_method_handler(
+            servicer.SetAgent,
+            request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.SetAgentRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.Agent.SerializeToString,
+        ),
+        "DeleteAgent": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteAgent,
+            request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.DeleteAgentRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "SearchAgents": grpc.unary_unary_rpc_method_handler(
             servicer.SearchAgents,
@@ -208,6 +259,11 @@ def add_AgentsServicer_to_server(servicer, server):
             servicer.RestoreAgent,
             request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.RestoreAgentRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "GetValidationResult": grpc.unary_unary_rpc_method_handler(
+            servicer.GetValidationResult,
+            request_deserializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_agent__pb2.GetValidationResultRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dialogflow__v2beta1_dot_proto_dot_validation__result__pb2.ValidationResult.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

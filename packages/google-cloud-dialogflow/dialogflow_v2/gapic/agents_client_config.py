@@ -17,6 +17,16 @@ config = {
                 }
             },
             "methods": {
+                "SetAgent": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteAgent": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetAgent": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",

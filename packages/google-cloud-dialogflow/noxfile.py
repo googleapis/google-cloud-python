@@ -23,6 +23,7 @@ BLACK_PATHS = [
     "dialogflow",
     "dialogflow_v2",
     "dialogflow_v2beta1",
+    "tests",
     "docs",
     "noxfile.py",
     "setup.py",

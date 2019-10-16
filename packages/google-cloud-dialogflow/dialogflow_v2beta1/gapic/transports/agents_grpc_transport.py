@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 import google.api_core.operations_v1
 
@@ -61,7 +62,14 @@ class AgentsGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -77,7 +85,9 @@ class AgentsGrpcTransport(object):
         )
 
     @classmethod
-    def create_channel(cls, address="dialogflow.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="dialogflow.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -87,12 +97,14 @@ class AgentsGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -103,6 +115,32 @@ class AgentsGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
+
+    @property
+    def set_agent(self):
+        """Return the gRPC stub for :meth:`AgentsClient.set_agent`.
+
+        Creates/updates the specified agent.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["agents_stub"].SetAgent
+
+    @property
+    def delete_agent(self):
+        """Return the gRPC stub for :meth:`AgentsClient.delete_agent`.
+
+        Deletes the specified agent.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["agents_stub"].DeleteAgent
 
     @property
     def get_agent(self):
@@ -202,3 +240,17 @@ class AgentsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["agents_stub"].RestoreAgent
+
+    @property
+    def get_validation_result(self):
+        """Return the gRPC stub for :meth:`AgentsClient.get_validation_result`.
+
+        Gets agent validation result. Agent validation is performed during
+        training time and is updated automatically when training is completed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["agents_stub"].GetValidationResult

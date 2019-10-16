@@ -18,9 +18,13 @@ class SessionEntityTypesStub(object):
   favorites, preferences, playlists, and so on. You can redefine a session
   entity type at the session level.
 
+  Session entity methods do not work with Google Assistant integration.
+  Contact Dialogflow support if you need to use session entities
+  with Google Assistant integration.
+
   For more information about entity types, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
   """
 
     def __init__(self, channel):
@@ -67,13 +71,21 @@ class SessionEntityTypesServicer(object):
   favorites, preferences, playlists, and so on. You can redefine a session
   entity type at the session level.
 
+  Session entity methods do not work with Google Assistant integration.
+  Contact Dialogflow support if you need to use session entities
+  with Google Assistant integration.
+
   For more information about entity types, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
   """
 
     def ListSessionEntityTypes(self, request, context):
         """Returns the list of all session entity types in the specified session.
+
+    This method doesn't work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities
+    with Google Assistant integration.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -81,6 +93,10 @@ class SessionEntityTypesServicer(object):
 
     def GetSessionEntityType(self, request, context):
         """Retrieves the specified session entity type.
+
+    This method doesn't work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities
+    with Google Assistant integration.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -91,6 +107,10 @@ class SessionEntityTypesServicer(object):
 
     If the specified session entity type already exists, overrides the session
     entity type.
+
+    This method doesn't work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities
+    with Google Assistant integration.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -98,6 +118,10 @@ class SessionEntityTypesServicer(object):
 
     def UpdateSessionEntityType(self, request, context):
         """Updates the specified session entity type.
+
+    This method doesn't work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities
+    with Google Assistant integration.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -105,6 +129,10 @@ class SessionEntityTypesServicer(object):
 
     def DeleteSessionEntityType(self, request, context):
         """Deletes the specified session entity type.
+
+    This method doesn't work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities
+    with Google Assistant integration.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

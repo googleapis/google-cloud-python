@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Wrappers for protocol buffer enum types."""
 
 import enum
@@ -115,6 +116,51 @@ class OutputAudioEncoding(enum.IntEnum):
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
 
 
+class SpeechModelVariant(enum.IntEnum):
+    """
+    Variant of the specified ``Speech model`` to use.
+
+    See the `Cloud Speech
+    documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+    for which models have different variants. For example, the "phone\_call"
+    model has both a standard and an enhanced variant. When you use an
+    enhanced model, you will generally receive higher quality results than
+    for a standard model.
+
+    Attributes:
+      SPEECH_MODEL_VARIANT_UNSPECIFIED (int): No model variant specified. In this case Dialogflow defaults to
+      USE\_BEST\_AVAILABLE.
+      USE_BEST_AVAILABLE (int): Use the best available variant of the ``Speech model`` that the caller
+      is eligible for.
+
+      Please see the `Dialogflow
+      docs <https://cloud.google.com/dialogflow/docs/data-logging>`__ for how
+      to make your project eligible for enhanced models.
+      USE_STANDARD (int): Use standard model variant even if an enhanced model is available. See
+      the `Cloud Speech
+      documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+      for details about enhanced models.
+      USE_ENHANCED (int): Use an enhanced model variant:
+
+      -  If an enhanced variant does not exist for the given ``model`` and
+         request language, Dialogflow falls back to the standard variant.
+
+         The `Cloud Speech
+         documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+         describes which models have enhanced variants.
+
+      -  If the API caller isn't eligible for enhanced models, Dialogflow
+         returns an error. Please see the `Dialogflow
+         docs <https://cloud.google.com/dialogflow/docs/data-logging>`__ for
+         how to make your project eligible.
+    """
+
+    SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
+    USE_BEST_AVAILABLE = 1
+    USE_STANDARD = 2
+    USE_ENHANCED = 3
+
+
 class SsmlVoiceGender(enum.IntEnum):
     """
     Gender of the voice as described in `SSML voice
@@ -135,6 +181,22 @@ class SsmlVoiceGender(enum.IntEnum):
 
 
 class Agent(object):
+    class ApiVersion(enum.IntEnum):
+        """
+        API version for the agent.
+
+        Attributes:
+          API_VERSION_UNSPECIFIED (int): Not specified.
+          API_VERSION_V1 (int): Legacy V1 API.
+          API_VERSION_V2 (int): V2 API.
+          API_VERSION_V2_BETA_1 (int): V2beta1 API.
+        """
+
+        API_VERSION_UNSPECIFIED = 0
+        API_VERSION_V1 = 1
+        API_VERSION_V2 = 2
+        API_VERSION_V2_BETA_1 = 3
+
     class MatchMode(enum.IntEnum):
         """
         Match mode determines how intents are detected from user queries.
@@ -150,6 +212,22 @@ class Agent(object):
         MATCH_MODE_UNSPECIFIED = 0
         MATCH_MODE_HYBRID = 1
         MATCH_MODE_ML_ONLY = 2
+
+    class Tier(enum.IntEnum):
+        """
+        Represents the agent tier.
+
+        Attributes:
+          TIER_UNSPECIFIED (int): Not specified. This value should never be used.
+          TIER_STANDARD (int): Standard tier.
+          TIER_ENTERPRISE (int): Enterprise tier (Essentials).
+          TIER_ENTERPRISE_PLUS (int): Enterprise tier (Plus).
+        """
+
+        TIER_UNSPECIFIED = 0
+        TIER_STANDARD = 1
+        TIER_ENTERPRISE = 2
+        TIER_ENTERPRISE_PLUS = 3
 
 
 class Document(object):
@@ -202,11 +280,14 @@ class EntityType(object):
           KIND_LIST (int): List entity types contain a set of entries that do not map to canonical
           values. However, list entity types can contain references to other entity
           types (with or without aliases).
+          KIND_REGEXP (int): Regexp entity types allow to specify regular expressions in entries
+          values.
         """
 
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
+        KIND_REGEXP = 3
 
 
 class Intent(object):
@@ -322,6 +403,7 @@ class Intent(object):
                     }
                   }</pre>
               TELEPHONY (int): Telephony Gateway.
+              GOOGLE_HANGOUTS (int): Google Hangouts.
             """
 
             PLATFORM_UNSPECIFIED = 0
@@ -334,6 +416,148 @@ class Intent(object):
             VIBER = 7
             ACTIONS_ON_GOOGLE = 8
             TELEPHONY = 10
+            GOOGLE_HANGOUTS = 11
+
+        class RbmCarouselCard(object):
+            class CardWidth(enum.IntEnum):
+                """
+                The width of the cards in the carousel.
+
+                Attributes:
+                  CARD_WIDTH_UNSPECIFIED (int): Not specified.
+                  SMALL (int): 120 DP. Note that tall media cannot be used.
+                  MEDIUM (int): 232 DP.
+                """
+
+                CARD_WIDTH_UNSPECIFIED = 0
+                SMALL = 1
+                MEDIUM = 2
+
+        class RbmStandaloneCard(object):
+            class CardOrientation(enum.IntEnum):
+                """
+                Orientation of the card.
+
+                Attributes:
+                  CARD_ORIENTATION_UNSPECIFIED (int): Not specified.
+                  HORIZONTAL (int): Horizontal layout.
+                  VERTICAL (int): Vertical layout.
+                """
+
+                CARD_ORIENTATION_UNSPECIFIED = 0
+                HORIZONTAL = 1
+                VERTICAL = 2
+
+            class ThumbnailImageAlignment(enum.IntEnum):
+                """
+                Thumbnail preview alignment for standalone cards with horizontal
+                layout.
+
+                Attributes:
+                  THUMBNAIL_IMAGE_ALIGNMENT_UNSPECIFIED (int): Not specified.
+                  LEFT (int): Thumbnail preview is left-aligned.
+                  RIGHT (int): Thumbnail preview is right-aligned.
+                """
+
+                THUMBNAIL_IMAGE_ALIGNMENT_UNSPECIFIED = 0
+                LEFT = 1
+                RIGHT = 2
+
+        class RbmCardContent(object):
+            class RbmMedia(object):
+                class Height(enum.IntEnum):
+                    """
+                    Media height
+
+                    Attributes:
+                      HEIGHT_UNSPECIFIED (int): Not specified.
+                      SHORT (int): 112 DP.
+                      MEDIUM (int): 168 DP.
+                      TALL (int): 264 DP. Not available for rich card carousels when the card width
+                      is set to small.
+                    """
+
+                    HEIGHT_UNSPECIFIED = 0
+                    SHORT = 1
+                    MEDIUM = 2
+                    TALL = 3
+
+        class MediaContent(object):
+            class ResponseMediaType(enum.IntEnum):
+                """
+                Format of response media type.
+
+                Attributes:
+                  RESPONSE_MEDIA_TYPE_UNSPECIFIED (int): Unspecified.
+                  AUDIO (int): Response media type is audio.
+                """
+
+                RESPONSE_MEDIA_TYPE_UNSPECIFIED = 0
+                AUDIO = 1
+
+        class BrowseCarouselCard(object):
+            class ImageDisplayOptions(enum.IntEnum):
+                """
+                Image display options for Actions on Google. This should be used for
+                when the image's aspect ratio does not match the image container's
+                aspect ratio.
+
+                Attributes:
+                  IMAGE_DISPLAY_OPTIONS_UNSPECIFIED (int): Fill the gaps between the image and the image container with gray
+                  bars.
+                  GRAY (int): Fill the gaps between the image and the image container with gray
+                  bars.
+                  WHITE (int): Fill the gaps between the image and the image container with white
+                  bars.
+                  CROPPED (int): Image is scaled such that the image width and height match or exceed
+                  the container dimensions. This may crop the top and bottom of the
+                  image if the scaled image height is greater than the container
+                  height, or crop the left and right of the image if the scaled image
+                  width is greater than the container width. This is similar to "Zoom
+                  Mode" on a widescreen TV when playing a 4:3 video.
+                  BLURRED_BACKGROUND (int): Pad the gaps between image and image frame with a blurred copy of the
+                  same image.
+                """
+
+                IMAGE_DISPLAY_OPTIONS_UNSPECIFIED = 0
+                GRAY = 1
+                WHITE = 2
+                CROPPED = 3
+                BLURRED_BACKGROUND = 4
+
+            class BrowseCarouselCardItem(object):
+                class OpenUrlAction(object):
+                    class UrlTypeHint(enum.IntEnum):
+                        """
+                        Type of the URI.
+
+                        Attributes:
+                          URL_TYPE_HINT_UNSPECIFIED (int): Unspecified
+                          AMP_ACTION (int): Url would be an amp action
+                          AMP_CONTENT (int): URL that points directly to AMP content, or to a canonical URL
+                          which refers to AMP content via <link rel="amphtml">.
+                        """
+
+                        URL_TYPE_HINT_UNSPECIFIED = 0
+                        AMP_ACTION = 1
+                        AMP_CONTENT = 2
+
+        class ColumnProperties(object):
+            class HorizontalAlignment(enum.IntEnum):
+                """
+                Text alignments within a cell.
+
+                Attributes:
+                  HORIZONTAL_ALIGNMENT_UNSPECIFIED (int): Text is aligned to the leading edge of the column.
+                  LEADING (int): Text is aligned to the leading edge of the column.
+                  CENTER (int): Text is centered in the column.
+                  TRAILING (int): Text is aligned to the trailing edge of the column.
+                """
+
+                HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
+                LEADING = 1
+                CENTER = 2
+                TRAILING = 3
 
 
 class KnowledgeAnswers(object):
@@ -420,3 +644,23 @@ class StreamingRecognitionResult(object):
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
+
+
+class ValidationError(object):
+    class Severity(enum.IntEnum):
+        """
+        Represents a level of severity.
+
+        Attributes:
+          SEVERITY_UNSPECIFIED (int): Not specified. This value should never be used.
+          INFO (int): The agent doesn't follow Dialogflow best practicies.
+          WARNING (int): The agent may not behave as expected.
+          ERROR (int): The agent may experience partial failures.
+          CRITICAL (int): The agent may completely fail.
+        """
+
+        SEVERITY_UNSPECIFIED = 0
+        INFO = 1
+        WARNING = 2
+        ERROR = 3
+        CRITICAL = 4

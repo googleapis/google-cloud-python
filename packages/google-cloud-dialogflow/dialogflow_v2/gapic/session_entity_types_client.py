@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2 SessionEntityTypes API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -47,6 +49,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
@@ -62,8 +65,12 @@ class SessionEntityTypesClient(object):
     preferences, playlists, and so on. You can redefine a session entity
     type at the session level.
 
+    Session entity methods do not work with Google Assistant integration.
+    Contact Dialogflow support if you need to use session entities with
+    Google Assistant integration.
+
     For more information about entity types, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow-enterprise/docs/entities-overview>`__.
+    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
     """
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
@@ -119,6 +126,7 @@ class SessionEntityTypesClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -149,6 +157,9 @@ class SessionEntityTypesClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -167,6 +178,15 @@ class SessionEntityTypesClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -175,6 +195,7 @@ class SessionEntityTypesClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=session_entity_types_grpc_transport.SessionEntityTypesGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -185,7 +206,7 @@ class SessionEntityTypesClient(object):
                 self.transport = transport
         else:
             self.transport = session_entity_types_grpc_transport.SessionEntityTypesGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -222,6 +243,10 @@ class SessionEntityTypesClient(object):
         """
         Returns the list of all session entity types in the specified session.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Example:
             >>> import dialogflow_v2
             >>>
@@ -252,8 +277,8 @@ class SessionEntityTypesClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -261,10 +286,10 @@ class SessionEntityTypesClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2.types.SessionEntityType` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2.types.SessionEntityType` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -325,6 +350,10 @@ class SessionEntityTypesClient(object):
         """
         Retrieves the specified session entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Example:
             >>> import dialogflow_v2
             >>>
@@ -338,8 +367,8 @@ class SessionEntityTypesClient(object):
             name (str): Required. The name of the session entity type. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -399,6 +428,10 @@ class SessionEntityTypesClient(object):
         If the specified session entity type already exists, overrides the session
         entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Example:
             >>> import dialogflow_v2
             >>>
@@ -419,8 +452,8 @@ class SessionEntityTypesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.SessionEntityType`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -479,6 +512,10 @@ class SessionEntityTypesClient(object):
         """
         Updates the specified session entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Example:
             >>> import dialogflow_v2
             >>>
@@ -500,8 +537,8 @@ class SessionEntityTypesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -559,6 +596,10 @@ class SessionEntityTypesClient(object):
         """
         Deletes the specified session entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Example:
             >>> import dialogflow_v2
             >>>
@@ -572,8 +613,8 @@ class SessionEntityTypesClient(object):
             name (str): Required. The name of the entity type to delete. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

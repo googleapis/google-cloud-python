@@ -38,7 +38,7 @@ class EntityTypesStub(object):
 
   For more information about entity types, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
   """
 
     def __init__(self, channel):
@@ -127,7 +127,7 @@ class EntityTypesServicer(object):
 
   For more information about entity types, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/entities-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
   """
 
     def ListEntityTypes(self, request, context):

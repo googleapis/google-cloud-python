@@ -43,7 +43,7 @@ class IntentsStub(object):
 
   For more information about intents, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/intents-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/intents-overview).
   """
 
     def __init__(self, channel):
@@ -121,7 +121,7 @@ class IntentsServicer(object):
 
   For more information about intents, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/intents-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/intents-overview).
   """
 
     def ListIntents(self, request, context):

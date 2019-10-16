@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
@@ -22,6 +23,7 @@ from google.rpc import status_pb2
 
 import dialogflow_v2beta1
 from dialogflow_v2beta1.proto import agent_pb2
+from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
@@ -63,6 +65,91 @@ class CustomException(Exception):
 
 
 class TestAgentsClient(object):
+    def test_set_agent(self):
+        # Setup Expected Response
+        parent = "parent-995424086"
+        display_name = "displayName1615086568"
+        default_language_code = "defaultLanguageCode856575222"
+        time_zone = "timeZone36848094"
+        description = "description-1724546052"
+        avatar_uri = "avatarUri-402824826"
+        enable_logging = False
+        classification_threshold = 1.11581064e8
+        expected_response = {
+            "parent": parent,
+            "display_name": display_name,
+            "default_language_code": default_language_code,
+            "time_zone": time_zone,
+            "description": description,
+            "avatar_uri": avatar_uri,
+            "enable_logging": enable_logging,
+            "classification_threshold": classification_threshold,
+        }
+        expected_response = agent_pb2.Agent(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        # Setup Request
+        agent = {}
+
+        response = client.set_agent(agent)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = agent_pb2.SetAgentRequest(agent=agent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_set_agent_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        # Setup request
+        agent = {}
+
+        with pytest.raises(CustomException):
+            client.set_agent(agent)
+
+    def test_delete_agent(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+
+        client.delete_agent(parent)
+
+        assert len(channel.requests) == 1
+        expected_request = agent_pb2.DeleteAgentRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_agent_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        # Setup request
+        parent = client.project_path("[PROJECT]")
+
+        with pytest.raises(CustomException):
+            client.delete_agent(parent)
+
     def test_get_agent(self):
         # Setup Expected Response
         parent_2 = "parent21175163357"
@@ -360,3 +447,34 @@ class TestAgentsClient(object):
         response = client.restore_agent(parent)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_get_validation_result(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = validation_result_pb2.ValidationResult(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        response = client.get_validation_result()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = agent_pb2.GetValidationResultRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_validation_result_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dialogflow_v2beta1.AgentsClient()
+
+        with pytest.raises(CustomException):
+            client.get_validation_result()

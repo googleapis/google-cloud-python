@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
@@ -268,35 +269,61 @@ class TestDocumentsClient(object):
     def test_update_document(self):
         # Setup Expected Response
         name = "name3373707"
-        done = True
-        expected_response = {"name": name, "done": done}
-        expected_response = operations_pb2.Operation(**expected_response)
+        display_name = "displayName1615086568"
+        mime_type = "mimeType-196041627"
+        content_uri = "contentUri-388807514"
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "mime_type": mime_type,
+            "content_uri": content_uri,
+        }
+        expected_response = document_pb2.Document(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_update_document", done=True
+        )
+        operation.response.Pack(expected_response)
 
         # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = dialogflow_v2beta1.DocumentsClient()
 
-        response = client.update_document()
-        assert expected_response == response
+        # Setup Request
+        document = {}
+
+        response = client.update_document(document)
+        result = response.result()
+        assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = document_pb2.UpdateDocumentRequest()
+        expected_request = document_pb2.UpdateDocumentRequest(document=document)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_update_document_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_update_document_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
         # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = dialogflow_v2beta1.DocumentsClient()
 
-        with pytest.raises(CustomException):
-            client.update_document()
+        # Setup Request
+        document = {}
+
+        response = client.update_document(document)
+        exception = response.exception()
+        assert exception.errors[0] == error
 
     def test_reload_document(self):
         # Setup Expected Response

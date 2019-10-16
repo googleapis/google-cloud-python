@@ -25,7 +25,7 @@ class ContextsStub(object):
 
   For more information about contexts, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/contexts-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/contexts-overview).
   """
 
     def __init__(self, channel):
@@ -84,7 +84,7 @@ class ContextsServicer(object):
 
   For more information about contexts, see the
   [Dialogflow
-  documentation](https://cloud.google.com/dialogflow-enterprise/docs/contexts-overview).
+  documentation](https://cloud.google.com/dialogflow/docs/contexts-overview).
   """
 
     def ListContexts(self, request, context):

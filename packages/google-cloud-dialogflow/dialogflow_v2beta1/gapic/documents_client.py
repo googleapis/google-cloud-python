@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2beta1 Documents API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -29,6 +31,7 @@ import google.api_core.operation
 import google.api_core.operations_v1
 import google.api_core.page_iterator
 import google.api_core.path_template
+import google.api_core.protobuf_helpers
 import grpc
 
 from dialogflow_v2beta1.gapic import documents_client_config
@@ -40,10 +43,13 @@ from dialogflow_v2beta1.proto import context_pb2
 from dialogflow_v2beta1.proto import context_pb2_grpc
 from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
+from dialogflow_v2beta1.proto import gcs_pb2
+from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -104,6 +110,7 @@ class DocumentsClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -134,6 +141,9 @@ class DocumentsClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -152,6 +162,15 @@ class DocumentsClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -160,6 +179,7 @@ class DocumentsClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=documents_grpc_transport.DocumentsGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -170,7 +190,7 @@ class DocumentsClient(object):
                 self.transport = transport
         else:
             self.transport = documents_grpc_transport.DocumentsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -207,6 +227,9 @@ class DocumentsClient(object):
         """
         Returns the list of all documents of the knowledge base.
 
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -237,8 +260,8 @@ class DocumentsClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -246,10 +269,10 @@ class DocumentsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2beta1.types.Document` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2beta1.types.Document` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -308,6 +331,9 @@ class DocumentsClient(object):
         """
         Retrieves the specified document.
 
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -321,8 +347,8 @@ class DocumentsClient(object):
             name (str): Required. The name of the document to retrieve. Format
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -379,6 +405,9 @@ class DocumentsClient(object):
         """
         Creates a new document.
 
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
         Operation <response: ``Document``, metadata:
         ``KnowledgeOperationMetadata``>
 
@@ -411,8 +440,8 @@ class DocumentsClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.Document`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -474,6 +503,9 @@ class DocumentsClient(object):
         """
         Deletes the specified document.
 
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
         Operation <response: ``google.protobuf.Empty``, metadata:
         ``KnowledgeOperationMetadata``>
 
@@ -499,8 +531,8 @@ class DocumentsClient(object):
             name (str): The name of the document to delete. Format:
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -554,22 +586,39 @@ class DocumentsClient(object):
 
     def update_document(
         self,
-        document=None,
+        document,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates the specified document. Operation <response: ``Document``,
-        metadata: ``KnowledgeOperationMetadata``>
+        Updates the specified document.
+
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
+        Operation <response: ``Document``, metadata:
+        ``KnowledgeOperationMetadata``>
 
         Example:
             >>> import dialogflow_v2beta1
             >>>
             >>> client = dialogflow_v2beta1.DocumentsClient()
             >>>
-            >>> response = client.update_document()
+            >>> # TODO: Initialize `document`:
+            >>> document = {}
+            >>>
+            >>> response = client.update_document(document)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
 
         Args:
             document (Union[dict, ~google.cloud.dialogflow_v2beta1.types.Document]): Required. The document to update.
@@ -583,8 +632,8 @@ class DocumentsClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -592,7 +641,7 @@ class DocumentsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dialogflow_v2beta1.types.Operation` instance.
+            A :class:`~google.cloud.dialogflow_v2beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -628,13 +677,20 @@ class DocumentsClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["update_document"](
+        operation = self._inner_api_calls["update_document"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            document_pb2.Document,
+            metadata_type=document_pb2.KnowledgeOperationMetadata,
         )
 
     def reload_document(
         self,
         name=None,
+        gcs_source=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -644,7 +700,12 @@ class DocumentsClient(object):
         or content. The previously loaded content of the document will be
         deleted. Note: Even when the content of the document has not changed,
         there still may be side effects because of internal implementation
-        changes. Operation <response: ``Document``, metadata:
+        changes.
+
+        Note: The ``projects.agent.knowledgeBases.documents`` resource is
+        deprecated; only use ``projects.knowledgeBases.documents``.
+
+        Operation <response: ``Document``, metadata:
         ``KnowledgeOperationMetadata``>
 
         Example:
@@ -657,9 +718,13 @@ class DocumentsClient(object):
         Args:
             name (str): The name of the document to reload. Format:
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``
+            gcs_source (Union[dict, ~google.cloud.dialogflow_v2beta1.types.GcsSource]): The path of gcs source file for reloading document content.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dialogflow_v2beta1.types.GcsSource`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -687,7 +752,11 @@ class DocumentsClient(object):
                 client_info=self._client_info,
             )
 
-        request = document_pb2.ReloadDocumentRequest(name=name)
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(gcs_source=gcs_source)
+
+        request = document_pb2.ReloadDocumentRequest(name=name, gcs_source=gcs_source)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

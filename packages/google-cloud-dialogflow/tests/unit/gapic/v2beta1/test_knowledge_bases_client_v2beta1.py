@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
@@ -235,11 +236,16 @@ class TestKnowledgeBasesClient(object):
             create_channel.return_value = channel
             client = dialogflow_v2beta1.KnowledgeBasesClient()
 
-        response = client.update_knowledge_base()
+        # Setup Request
+        knowledge_base = {}
+
+        response = client.update_knowledge_base(knowledge_base)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = knowledge_base_pb2.UpdateKnowledgeBaseRequest()
+        expected_request = knowledge_base_pb2.UpdateKnowledgeBaseRequest(
+            knowledge_base=knowledge_base
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -251,5 +257,8 @@ class TestKnowledgeBasesClient(object):
             create_channel.return_value = channel
             client = dialogflow_v2beta1.KnowledgeBasesClient()
 
+        # Setup request
+        knowledge_base = {}
+
         with pytest.raises(CustomException):
-            client.update_knowledge_base()
+            client.update_knowledge_base(knowledge_base)

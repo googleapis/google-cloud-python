@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Unit tests."""
 
 import mock
@@ -113,7 +114,12 @@ class TestEntityTypesClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
-        expected_response = {"name": name_2, "display_name": display_name}
+        enable_fuzzy_extraction = True
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "enable_fuzzy_extraction": enable_fuzzy_extraction,
+        }
         expected_response = entity_type_pb2.EntityType(**expected_response)
 
         # Mock the API response
@@ -152,7 +158,12 @@ class TestEntityTypesClient(object):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        expected_response = {"name": name, "display_name": display_name}
+        enable_fuzzy_extraction = True
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "enable_fuzzy_extraction": enable_fuzzy_extraction,
+        }
         expected_response = entity_type_pb2.EntityType(**expected_response)
 
         # Mock the API response
@@ -195,7 +206,12 @@ class TestEntityTypesClient(object):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        expected_response = {"name": name, "display_name": display_name}
+        enable_fuzzy_extraction = True
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "enable_fuzzy_extraction": enable_fuzzy_extraction,
+        }
         expected_response = entity_type_pb2.EntityType(**expected_response)
 
         # Mock the API response

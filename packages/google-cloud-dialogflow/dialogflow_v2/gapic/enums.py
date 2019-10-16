@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Wrappers for protocol buffer enum types."""
 
 import enum
@@ -115,6 +116,51 @@ class OutputAudioEncoding(enum.IntEnum):
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
 
 
+class SpeechModelVariant(enum.IntEnum):
+    """
+    Variant of the specified ``Speech model`` to use.
+
+    See the `Cloud Speech
+    documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+    for which models have different variants. For example, the "phone\_call"
+    model has both a standard and an enhanced variant. When you use an
+    enhanced model, you will generally receive higher quality results than
+    for a standard model.
+
+    Attributes:
+      SPEECH_MODEL_VARIANT_UNSPECIFIED (int): No model variant specified. In this case Dialogflow defaults to
+      USE\_BEST\_AVAILABLE.
+      USE_BEST_AVAILABLE (int): Use the best available variant of the ``Speech model`` that the caller
+      is eligible for.
+
+      Please see the `Dialogflow
+      docs <https://cloud.google.com/dialogflow/docs/data-logging>`__ for how
+      to make your project eligible for enhanced models.
+      USE_STANDARD (int): Use standard model variant even if an enhanced model is available. See
+      the `Cloud Speech
+      documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+      for details about enhanced models.
+      USE_ENHANCED (int): Use an enhanced model variant:
+
+      -  If an enhanced variant does not exist for the given ``model`` and
+         request language, Dialogflow falls back to the standard variant.
+
+         The `Cloud Speech
+         documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+         describes which models have enhanced variants.
+
+      -  If the API caller isn't eligible for enhanced models, Dialogflow
+         returns an error. Please see the `Dialogflow
+         docs <https://cloud.google.com/dialogflow/docs/data-logging>`__ for
+         how to make your project eligible.
+    """
+
+    SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
+    USE_BEST_AVAILABLE = 1
+    USE_STANDARD = 2
+    USE_ENHANCED = 3
+
+
 class SsmlVoiceGender(enum.IntEnum):
     """
     Gender of the voice as described in `SSML voice
@@ -135,6 +181,22 @@ class SsmlVoiceGender(enum.IntEnum):
 
 
 class Agent(object):
+    class ApiVersion(enum.IntEnum):
+        """
+        API version for the agent.
+
+        Attributes:
+          API_VERSION_UNSPECIFIED (int): Not specified.
+          API_VERSION_V1 (int): Legacy V1 API.
+          API_VERSION_V2 (int): V2 API.
+          API_VERSION_V2_BETA_1 (int): V2beta1 API.
+        """
+
+        API_VERSION_UNSPECIFIED = 0
+        API_VERSION_V1 = 1
+        API_VERSION_V2 = 2
+        API_VERSION_V2_BETA_1 = 3
+
     class MatchMode(enum.IntEnum):
         """
         Match mode determines how intents are detected from user queries.
@@ -150,6 +212,22 @@ class Agent(object):
         MATCH_MODE_UNSPECIFIED = 0
         MATCH_MODE_HYBRID = 1
         MATCH_MODE_ML_ONLY = 2
+
+    class Tier(enum.IntEnum):
+        """
+        Represents the agent tier.
+
+        Attributes:
+          TIER_UNSPECIFIED (int): Not specified. This value should never be used.
+          TIER_STANDARD (int): Standard tier.
+          TIER_ENTERPRISE (int): Enterprise tier (Essentials).
+          TIER_ENTERPRISE_PLUS (int): Enterprise tier (Plus).
+        """
+
+        TIER_UNSPECIFIED = 0
+        TIER_STANDARD = 1
+        TIER_ENTERPRISE = 2
+        TIER_ENTERPRISE_PLUS = 3
 
 
 class EntityType(object):
@@ -179,11 +257,14 @@ class EntityType(object):
           KIND_LIST (int): List entity types contain a set of entries that do not map to canonical
           values. However, list entity types can contain references to other entity
           types (with or without aliases).
+          KIND_REGEXP (int): Regexp entity types allow to specify regular expressions in entries
+          values.
         """
 
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
+        KIND_REGEXP = 3
 
 
 class Intent(object):
@@ -298,6 +379,7 @@ class Intent(object):
                       "intent": "actions.intent.OPTION"
                     }
                   }</pre>
+              GOOGLE_HANGOUTS (int): Google Hangouts.
             """
 
             PLATFORM_UNSPECIFIED = 0
@@ -309,6 +391,7 @@ class Intent(object):
             LINE = 6
             VIBER = 7
             ACTIONS_ON_GOOGLE = 8
+            GOOGLE_HANGOUTS = 11
 
 
 class SessionEntityType(object):
@@ -345,7 +428,7 @@ class StreamingRecognitionResult(object):
           MESSAGE_TYPE_UNSPECIFIED (int): Not specified. Should never be used.
           TRANSCRIPT (int): Message contains a (possibly partial) transcript.
           END_OF_SINGLE_UTTERANCE (int): Event indicates that the server has detected the end of the user's
-          speech utterance and expects no additional speech. Therefore, the server
+          speech utterance and expects no additional inputs. Therefore, the server
           will not process additional audio (although it may subsequently return
           additional results). The client should stop sending additional audio
           data, half-close the gRPC connection, and wait for any additional

@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2beta1 EntityTypes API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -43,10 +45,13 @@ from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
 from dialogflow_v2beta1.proto import entity_type_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2_grpc
+from dialogflow_v2beta1.proto import gcs_pb2
+from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -79,7 +84,7 @@ class EntityTypesClient(object):
        represented by the ``SessionEntityType`` type.
 
     For more information about entity types, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow-enterprise/docs/entities-overview>`__.
+    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
     """
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
@@ -132,6 +137,7 @@ class EntityTypesClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -162,6 +168,9 @@ class EntityTypesClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -180,6 +189,15 @@ class EntityTypesClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -188,6 +206,7 @@ class EntityTypesClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=entity_types_grpc_transport.EntityTypesGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -198,7 +217,7 @@ class EntityTypesClient(object):
                 self.transport = transport
         else:
             self.transport = entity_types_grpc_transport.EntityTypesGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -262,7 +281,7 @@ class EntityTypesClient(object):
                 ``projects/<Project ID>/agent``.
             language_code (str): Optional. The language to list entity synonyms for. If not specified,
                 the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             page_size (int): The maximum number of resources contained in the
@@ -271,8 +290,8 @@ class EntityTypesClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -280,10 +299,10 @@ class EntityTypesClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2beta1.types.EntityType` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2beta1.types.EntityType` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -359,12 +378,12 @@ class EntityTypesClient(object):
                 ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
             language_code (str): Optional. The language to retrieve entity synonyms for. If not
                 specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -445,12 +464,12 @@ class EntityTypesClient(object):
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityType`
             language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If
                 not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -527,7 +546,7 @@ class EntityTypesClient(object):
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityType`
             language_code (str): Optional. The language of entity synonyms defined in ``entity_type``. If
                 not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
@@ -535,8 +554,8 @@ class EntityTypesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -609,8 +628,8 @@ class EntityTypesClient(object):
             name (str): Required. The name of the entity type to delete. Format:
                 ``projects/<Project ID>/agent/entityTypes/<EntityType ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -700,7 +719,7 @@ class EntityTypesClient(object):
                 message :class:`~google.cloud.dialogflow_v2beta1.types.EntityTypeBatch`
             language_code (str): Optional. The language of entity synonyms defined in ``entity_types``.
                 If not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
@@ -708,8 +727,8 @@ class EntityTypesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -814,8 +833,8 @@ class EntityTypesClient(object):
             entity_type_names (list[str]): Required. The names entity types to delete. All names must point to the
                 same agent as ``parent``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -913,12 +932,12 @@ class EntityTypesClient(object):
                 message :class:`~google.cloud.dialogflow_v2beta1.types.Entity`
             language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
                 not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1019,7 +1038,7 @@ class EntityTypesClient(object):
                 message :class:`~google.cloud.dialogflow_v2beta1.types.Entity`
             language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
                 not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2beta1.types.FieldMask]): Optional. The mask to control which fields get updated.
@@ -1027,8 +1046,8 @@ class EntityTypesClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -1128,12 +1147,12 @@ class EntityTypesClient(object):
                 ``projects/<Project ID>``.
             language_code (str): Optional. The language of entity synonyms defined in ``entities``. If
                 not specified, the agent's default language is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.

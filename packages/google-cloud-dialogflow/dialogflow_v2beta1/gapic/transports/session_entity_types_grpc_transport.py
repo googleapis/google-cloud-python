@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import google.api_core.grpc_helpers
 
 from dialogflow_v2beta1.proto import session_entity_type_pb2_grpc
@@ -60,7 +61,14 @@ class SessionEntityTypesGrpcTransport(object):
 
         # Create the channel.
         if channel is None:
-            channel = self.create_channel(address=address, credentials=credentials)
+            channel = self.create_channel(
+                address=address,
+                credentials=credentials,
+                options={
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
+                }.items(),
+            )
 
         self._channel = channel
 
@@ -73,7 +81,9 @@ class SessionEntityTypesGrpcTransport(object):
         }
 
     @classmethod
-    def create_channel(cls, address="dialogflow.googleapis.com:443", credentials=None):
+    def create_channel(
+        cls, address="dialogflow.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -83,12 +93,14 @@ class SessionEntityTypesGrpcTransport(object):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            kwargs (dict): Keyword arguments, which are passed to the
+                channel creation.
 
         Returns:
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -106,6 +118,10 @@ class SessionEntityTypesGrpcTransport(object):
 
         Returns the list of all session entity types in the specified session.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -118,6 +134,10 @@ class SessionEntityTypesGrpcTransport(object):
         """Return the gRPC stub for :meth:`SessionEntityTypesClient.get_session_entity_type`.
 
         Retrieves the specified session entity type.
+
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -135,6 +155,10 @@ class SessionEntityTypesGrpcTransport(object):
         If the specified session entity type already exists, overrides the
         session entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -148,6 +172,10 @@ class SessionEntityTypesGrpcTransport(object):
 
         Updates the specified session entity type.
 
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -160,6 +188,10 @@ class SessionEntityTypesGrpcTransport(object):
         """Return the gRPC stub for :meth:`SessionEntityTypesClient.delete_session_entity_type`.
 
         Deletes the specified session entity type.
+
+        This method doesn't work with Google Assistant integration.
+        Contact Dialogflow support if you need to use session entities
+        with Google Assistant integration.
 
         Returns:
             Callable: A callable which accepts the appropriate

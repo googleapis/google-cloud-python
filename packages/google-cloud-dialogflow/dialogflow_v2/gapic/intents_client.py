@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Accesses the google.cloud.dialogflow.v2 Intents API."""
 
 import functools
@@ -20,6 +21,7 @@ import pkg_resources
 import warnings
 
 from google.oauth2 import service_account
+import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
@@ -47,6 +49,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
@@ -82,7 +85,7 @@ class IntentsClient(object):
        Dialogflow API agent to better match intents.
 
     For more information about intents, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow-enterprise/docs/intents-overview>`__.
+    documentation <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
     """
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
@@ -140,6 +143,7 @@ class IntentsClient(object):
         credentials=None,
         client_config=None,
         client_info=None,
+        client_options=None,
     ):
         """Constructor.
 
@@ -170,6 +174,9 @@ class IntentsClient(object):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            client_options (Union[dict, google.api_core.client_options.ClientOptions]):
+                Client options used to set user options on the client. API Endpoint
+                should be set through client_options.
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
@@ -188,6 +195,15 @@ class IntentsClient(object):
                 stacklevel=2,
             )
 
+        api_endpoint = self.SERVICE_ADDRESS
+        if client_options:
+            if type(client_options) == dict:
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
+            if client_options.api_endpoint:
+                api_endpoint = client_options.api_endpoint
+
         # Instantiate the transport.
         # The transport is responsible for handling serialization and
         # deserialization and actually sending data to the service.
@@ -196,6 +212,7 @@ class IntentsClient(object):
                 self.transport = transport(
                     credentials=credentials,
                     default_class=intents_grpc_transport.IntentsGrpcTransport,
+                    address=api_endpoint,
                 )
             else:
                 if credentials:
@@ -206,7 +223,7 @@ class IntentsClient(object):
                 self.transport = transport
         else:
             self.transport = intents_grpc_transport.IntentsGrpcTransport(
-                address=self.SERVICE_ADDRESS, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
@@ -272,7 +289,7 @@ class IntentsClient(object):
             language_code (str): Optional. The language to list training phrases, parameters and rich
                 messages for. If not specified, the agent's default language is used.
                 `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             intent_view (~google.cloud.dialogflow_v2.types.IntentView): Optional. The resource view to apply to the returned intent.
@@ -282,8 +299,8 @@ class IntentsClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -291,10 +308,10 @@ class IntentsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.dialogflow_v2.types.Intent` instances.
-            This object can also be configured to iterate over the pages
-            of the response through the `options` parameter.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.dialogflow_v2.types.Intent` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -375,13 +392,13 @@ class IntentsClient(object):
             language_code (str): Optional. The language to retrieve training phrases, parameters and rich
                 messages for. If not specified, the agent's default language is used.
                 `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             intent_view (~google.cloud.dialogflow_v2.types.IntentView): Optional. The resource view to apply to the returned intent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -464,13 +481,13 @@ class IntentsClient(object):
             language_code (str): Optional. The language of training phrases, parameters and rich messages
                 defined in ``intent``. If not specified, the agent's default language is
                 used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             intent_view (~google.cloud.dialogflow_v2.types.IntentView): Optional. The resource view to apply to the returned intent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -555,7 +572,7 @@ class IntentsClient(object):
             language_code (str): Optional. The language of training phrases, parameters and rich messages
                 defined in ``intent``. If not specified, the agent's default language is
                 used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2.types.FieldMask]): Optional. The mask to control which fields get updated.
@@ -564,8 +581,8 @@ class IntentsClient(object):
                 message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
             intent_view (~google.cloud.dialogflow_v2.types.IntentView): Optional. The resource view to apply to the returned intent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -640,8 +657,8 @@ class IntentsClient(object):
                 indirect followup intents, we also delete them. Format:
                 ``projects/<Project ID>/agent/intents/<Intent ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -728,7 +745,7 @@ class IntentsClient(object):
             language_code (str): Optional. The language of training phrases, parameters and rich messages
                 defined in ``intents``. If not specified, the agent's default language
                 is used. `Many
-                languages <https://cloud.google.com/dialogflow-enterprise/docs/reference/language>`__
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.
             intent_batch_uri (str): The URI to a Google Cloud Storage file containing intents to update or
@@ -744,8 +761,8 @@ class IntentsClient(object):
                 message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
             intent_view (~google.cloud.dialogflow_v2.types.IntentView): Optional. The resource view to apply to the returned intent.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
@@ -853,8 +870,8 @@ class IntentsClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.Intent`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
