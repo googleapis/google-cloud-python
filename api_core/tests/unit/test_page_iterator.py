@@ -30,7 +30,7 @@ class TestPage(object):
         parent = mock.sentinel.parent
         item_to_value = mock.sentinel.item_to_value
 
-        page = page_iterator.Page(parent, (1, 2, 3), item_to_value)
+        page = page_iterator.Page(parent, (1, 2, 3), item_to_value, None)
 
         assert page.num_items == 3
         assert page.remaining == 3
@@ -38,7 +38,7 @@ class TestPage(object):
         assert page._item_to_value is item_to_value
 
     def test___iter__(self):
-        page = page_iterator.Page(None, (), None)
+        page = page_iterator.Page(None, (), None, None)
         assert iter(page) is page
 
     def test_iterator_calls_parent_item_to_value(self):
@@ -48,7 +48,7 @@ class TestPage(object):
             side_effect=lambda iterator, value: value, spec=["__call__"]
         )
 
-        page = page_iterator.Page(parent, (10, 11, 12), item_to_value)
+        page = page_iterator.Page(parent, (10, 11, 12), item_to_value, None)
         page._remaining = 100
 
         assert item_to_value.call_count == 0
@@ -68,6 +68,22 @@ class TestPage(object):
         assert item_to_value.call_count == 3
         item_to_value.assert_called_with(parent, 12)
         assert page.remaining == 97
+
+    def test_raw_page(self):
+        parent = mock.sentinel.parent
+        item_to_value = mock.sentinel.item_to_value
+
+        raw_page = mock.sentinel.raw_page
+
+        page = page_iterator.Page(parent, (1, 2, 3), item_to_value, raw_page)
+        assert page.raw_page is raw_page
+
+        try:
+            page.raw_page = None
+        except AttributeError:
+            pass
+        else:
+            assert False, "The raw_page attribute should be a read-only property"
 
 
 class PageIteratorImpl(page_iterator.Iterator):
@@ -116,7 +132,7 @@ class TestIterator(object):
     def test__page_iter_increment(self):
         iterator = PageIteratorImpl(None, None)
         page = page_iterator.Page(
-            iterator, ("item",), page_iterator._item_to_value_identity
+            iterator, ("item",), page_iterator._item_to_value_identity, None
         )
         iterator._next_page = mock.Mock(side_effect=[page, None])
 
@@ -147,10 +163,10 @@ class TestIterator(object):
         # Make pages from mock responses
         parent = mock.sentinel.parent
         page1 = page_iterator.Page(
-            parent, (item1, item2), page_iterator._item_to_value_identity
+            parent, (item1, item2), page_iterator._item_to_value_identity, None
         )
         page2 = page_iterator.Page(
-            parent, (item3,), page_iterator._item_to_value_identity
+            parent, (item3,), page_iterator._item_to_value_identity, None
         )
 
         iterator = PageIteratorImpl(None, None)
