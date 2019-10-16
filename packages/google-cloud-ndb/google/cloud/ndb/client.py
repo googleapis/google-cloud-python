@@ -161,6 +161,10 @@ class Client(google_client.ClientWithProject):
             legacy_data (bool): Set to ``True`` (the default) to write data in
                 a way that can be read by the legacy version of NDB.
         """
+        context = context_module.get_context(False)
+        if context is not None:
+            raise RuntimeError("Context is already created for this thread.")
+
         context = context_module.Context(
             self,
             cache_policy=cache_policy,

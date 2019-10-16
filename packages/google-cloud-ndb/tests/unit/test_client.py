@@ -105,6 +105,15 @@ class TestClient:
             assert context.client is client
 
     @staticmethod
+    def test_context_double_jeopardy():
+        with patch_credentials("testing"):
+            client = client_module.Client()
+
+        with client.context():
+            with pytest.raises(RuntimeError):
+                client.context().__enter__()
+
+    @staticmethod
     def test_context_unfinished_business():
         """Regression test for #213.
 
