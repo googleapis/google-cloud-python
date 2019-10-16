@@ -1077,7 +1077,7 @@ class _Base(object):
     TABLE_ID = "table_id"
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_ID = "JOB_ID"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -1276,7 +1276,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.destination_encryption_configuration)
 
     def test_destination_encryption_configuration_hit(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -1289,7 +1291,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         )
 
     def test_destination_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -2486,7 +2490,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(config.write_disposition, write_disposition)
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
@@ -3411,7 +3417,9 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(resource["someNewProperty"], "Woohoo, alpha stuff.")
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
