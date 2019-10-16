@@ -67,7 +67,8 @@ class _AbstractQueryParameter(object):
     def to_api_repr(self):
         """Construct JSON API representation for the parameter.
 
-        :rtype: dict
+        Returns:
+            Dict: JSON representation for the parameter.
         """
         raise NotImplementedError
 

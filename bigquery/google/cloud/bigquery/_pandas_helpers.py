@@ -130,7 +130,8 @@ def bq_to_arrow_struct_data_type(field):
 def bq_to_arrow_data_type(field):
     """Return the Arrow data type, corresponding to a given BigQuery column.
 
-    Returns None if default Arrow type inspection should be used.
+    Returns:
+        None: if default Arrow type inspection should be used.
     """
     if field.mode is not None and field.mode.upper() == "REPEATED":
         inner_type = bq_to_arrow_data_type(
@@ -152,7 +153,8 @@ def bq_to_arrow_data_type(field):
 def bq_to_arrow_field(bq_field):
     """Return the Arrow field, corresponding to a given BigQuery column.
 
-    Returns None if the Arrow type cannot be determined.
+    Returns:
+        None: if the Arrow type cannot be determined.
     """
     arrow_type = bq_to_arrow_data_type(bq_field)
     if arrow_type:
@@ -166,7 +168,8 @@ def bq_to_arrow_field(bq_field):
 def bq_to_arrow_schema(bq_schema):
     """Return the Arrow schema, corresponding to a given BigQuery schema.
 
-    Returns None if any Arrow type cannot be determined.
+    Returns:
+        None: if any Arrow type cannot be determined.
     """
     arrow_fields = []
     for bq_field in bq_schema:
