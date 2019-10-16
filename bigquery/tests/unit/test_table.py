@@ -1046,9 +1046,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
-        from google.cloud.bigquery.encryption_configuration import (
-            EncryptionConfiguration,
-        )
+        # Previously, the EncryptionConfiguration class was in the table module, not the
+        # encryption_configuration module. It was moved to support models encryption.
+        # This test import from the table module to ensure that the previous location
+        # continues to function as an alias.
+        from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
