@@ -512,7 +512,7 @@ class Method:
         for sig in signatures:
             # Get all of the individual fields.
             fields = collections.OrderedDict([
-                (f, self.input.get_field(*f.split('.')))
+                (f.strip(), self.input.get_field(*f.strip().split('.')))
                 for f in sig.split(',')
             ])
 
