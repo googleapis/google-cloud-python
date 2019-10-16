@@ -96,7 +96,7 @@ class TestSystemDlpService(object):
         name_inside = client.project_path(PROJECT_INSIDE)
         delayed_inside = lambda: client.deidentify_content(name_inside)
         name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.deidentify_conent(name_outside)
+        delayed_outside = lambda: client.deidentify_content(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
     @pytest.mark.skipif(
