@@ -13,10 +13,13 @@
 # limitations under the License.
 
 
-from .. import update_routine
+from .. import client_query_destination_table_legacy
 
 
-def test_update_routine(client, routine_id):
+def test_client_query_destination_table_legacy(capsys, client, table_id):
 
-    routine = update_routine.update_routine(client, routine_id)
-    assert routine.body == "x * 4"
+    client_query_destination_table_legacy.client_query_destination_table_legacy(
+        client, table_id
+    )
+    out, err = capsys.readouterr()
+    assert "Query results loaded to the table {}".format(table_id) in out

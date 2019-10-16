@@ -13,12 +13,13 @@
 # limitations under the License.
 
 
-from .. import list_routines
+from .. import client_query_dry_run
 
 
-def test_list_routines(capsys, client, dataset_id, routine_id):
+def test_client_query_dry_run(capsys, client):
 
-    list_routines.list_routines(client, dataset_id)
+    query_job = client_query_dry_run.client_query_dry_run(client)
     out, err = capsys.readouterr()
-    assert "Routines contained in dataset {}:".format(dataset_id) in out
-    assert routine_id in out
+    assert "This query will process 65935918 bytes." in out
+    assert query_job.state == "DONE"
+    assert query_job.dry_run

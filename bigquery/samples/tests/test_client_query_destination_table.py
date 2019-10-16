@@ -13,11 +13,11 @@
 # limitations under the License.
 
 
-from .. import create_routine
+from .. import client_query_destination_table
 
 
-def test_create_routine(capsys, client, random_routine_id):
+def test_client_query_destination_table(capsys, client, table_id):
 
-    create_routine.create_routine(client, random_routine_id)
+    client_query_destination_table.client_query_destination_table(client, table_id)
     out, err = capsys.readouterr()
-    assert "Created routine {}".format(random_routine_id) in out
+    assert "Query results loaded to the table {}".format(table_id) in out

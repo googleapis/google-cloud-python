@@ -13,27 +13,32 @@
 # limitations under the License.
 
 
-def copy_table(client, source_table_id, destination_table_id):
+def client_query_legacy_sql(client):
 
-    # [START bigquery_copy_table]
-    # TODO(developer): Import the client library.
-    # from google.cloud import bigquery
+    # [START bigquery_query_legacy]
+    from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    # TODO(developer): Set source_table_id to the ID of the original table.
-    # source_table_id = "your-project.source_dataset.source_table"
-
-    # TODO(developer): Set destination_table_id to the ID of the destination table.
-    # destination_table_id = "your-project.destination_dataset.destination_table"
-
-    job = client.copy_table(
-        source_table_id,
-        destination_table_id,
-        location="US",  # Must match the source and the destination dataset(s) location.
+    query = (
+        "SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] "
+        'WHERE state = "TX" '
+        "LIMIT 100"
     )
-    job.result()  # Wait for the job to complete.
 
-    print("A copy of the table created.")
-    # [END bigquery_copy_table]
+    # Set use_legacy_sql to True to use legacy SQL syntax.
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_legacy_sql = True
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        query,
+        location="US",  # Must match the source and the destination dataset(s) location.
+        job_config=job_config,
+    )  # Make an API request.
+
+    print("The query data:")
+    for row in query_job:
+        print(row)
+    # [END bigquery_query_legacy]

@@ -13,11 +13,11 @@
 # limitations under the License.
 
 
-from .. import delete_routine
+from .. import client_query_legacy_sql
 
 
-def test_delete_routine(capsys, client, routine_id):
+def test_client_query_legacy_sql(capsys, client):
 
-    delete_routine.delete_routine(client, routine_id)
+    client_query_legacy_sql.client_query_legacy_sql(client)
     out, err = capsys.readouterr()
-    assert "Deleted routine {}.".format(routine_id) in out
+    assert "Row(('Frances',), {'name': 0})" in out

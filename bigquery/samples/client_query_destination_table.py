@@ -13,30 +13,34 @@
 # limitations under the License.
 
 
-def client_query(client):
+def client_query_destination_table(client, table_id):
 
-    # [START bigquery_query]
-    # TODO(developer): Import the client library.
-    # from google.cloud import bigquery
+    # [START bigquery_query_destination_table]
+    from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    query = """
-        SELECT name, SUM(number) as total_people
-        FROM `bigquery-public-data.usa_names.usa_1910_2013`
-        WHERE state = 'TX'
-        GROUP BY name, state
-        ORDER BY total_people DESC
-        LIMIT 20
-    """
-    query_job = client.query(
-        query,
-        location="US",  # Must match the source and the destination dataset(s) location.
-    )  # Make an API request.
+    # TODO(developer): Set table_id to the ID of the destination table.
+    # table_id = "your-project.your_dataset.your_table_name"
 
-    print("The query data:")
-    for row in query_job:
-        # Row values can be accessed by field name or index.
-        print("name={}, count={}".format(row[0], row["total_people"]))
-    # [END bigquery_query]
+    job_config = bigquery.QueryJobConfig()
+
+    table = client.get_table(table_id)  # Make an API request.
+    job_config.destination = table
+    sql = """
+        SELECT corpus
+        FROM `bigquery-public-data.samples.shakespeare`
+        GROUP BY corpus;
+    """
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        sql,
+        location="US",  # Must match the source and the destination dataset(s) location.
+        job_config=job_config,
+    )  # Make an API request.
+    query_job.result()  # Wait for the job to complete.
+
+    print("Query results loaded to the table {}".format(table_id))
+    # [END bigquery_query_destination_table]

@@ -13,15 +13,11 @@
 # limitations under the License.
 
 
-from .. import get_routine
+from .. import copy_table_cmek
 
 
-def test_get_routine(capsys, client, routine_id):
+def test_copy_table_cmek(capsys, client, random_table_id, table_with_data_id):
 
-    get_routine.get_routine(client, routine_id)
+    copy_table_cmek.copy_table_cmek(client, random_table_id, table_with_data_id)
     out, err = capsys.readouterr()
-    assert "Routine '{}':".format(routine_id) in out
-    assert "Type: 'SCALAR_FUNCTION'" in out
-    assert "Language: 'SQL'" in out
-    assert "Name: 'x'" in out
-    assert "Type: 'type_kind: INT64\n'" in out
+    assert "A copy of the table created" in out
