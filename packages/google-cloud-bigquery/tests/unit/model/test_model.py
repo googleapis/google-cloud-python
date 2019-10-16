@@ -21,6 +21,8 @@ import pytest
 import google.cloud._helpers
 from google.cloud.bigquery_v2.gapic import enums
 
+KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
+
 
 @pytest.fixture
 def target_class():
@@ -99,6 +101,7 @@ def test_from_api_repr(target_class):
             },
         ],
         "featureColumns": [],
+        "encryptionConfiguration": {"kmsKeyName": KMS_KEY_NAME},
     }
     got = target_class.from_api_repr(resource)
 
@@ -116,6 +119,7 @@ def test_from_api_repr(target_class):
     assert got.friendly_name == u"A friendly name."
     assert got.model_type == enums.Model.ModelType.LOGISTIC_REGRESSION
     assert got.labels == {"greeting": u"こんにちは"}
+    assert got.encryption_configuration.kms_key_name == KMS_KEY_NAME
     assert got.training_runs[0].training_options.initial_learn_rate == 1.0
     assert (
         got.training_runs[0]
@@ -160,6 +164,7 @@ def test_from_api_repr_w_minimal_resource(target_class):
     assert got.friendly_name is None
     assert got.model_type == enums.Model.ModelType.MODEL_TYPE_UNSPECIFIED
     assert got.labels == {}
+    assert got.encryption_configuration is None
     assert len(got.training_runs) == 0
     assert len(got.feature_columns) == 0
     assert len(got.label_columns) == 0
@@ -229,6 +234,17 @@ def test_from_api_repr_w_unknown_fields(target_class):
             ["labels"],
             {"labels": {"a-label": "a-value"}},
         ),
+        (
+            {
+                "friendlyName": "hello",
+                "description": "world",
+                "expirationTime": None,
+                "labels": {"a-label": "a-value"},
+                "encryptionConfiguration": {"kmsKeyName": KMS_KEY_NAME},
+            },
+            ["encryptionConfiguration"],
+            {"encryptionConfiguration": {"kmsKeyName": KMS_KEY_NAME}},
+        ),
     ],
 )
 def test_build_resource(object_under_test, resource, filter_fields, expected):
@@ -281,6 +297,18 @@ def test_replace_labels(object_under_test):
     assert object_under_test.labels is labels
     object_under_test.labels = None
     assert object_under_test.labels == {}
+
+
+def test_set_encryption_configuration(object_under_test):
+    from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+
+    assert not object_under_test.encryption_configuration
+    object_under_test.encryption_configuration = EncryptionConfiguration(
+        kms_key_name=KMS_KEY_NAME
+    )
+    assert object_under_test.encryption_configuration.kms_key_name == KMS_KEY_NAME
+    object_under_test.encryption_configuration = None
+    assert not object_under_test.encryption_configuration
 
 
 def test_repr(target_class):

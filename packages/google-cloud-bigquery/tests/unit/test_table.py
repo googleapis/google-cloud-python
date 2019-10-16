@@ -71,7 +71,7 @@ class _SchemaBase(object):
 
 
 class TestEncryptionConfiguration(unittest.TestCase):
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -89,78 +89,6 @@ class TestEncryptionConfiguration(unittest.TestCase):
     def test_ctor_with_key(self):
         encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_kms_key_name_setter(self):
-        encryption_config = self._make_one()
-        self.assertIsNone(encryption_config.kms_key_name)
-        encryption_config.kms_key_name = self.KMS_KEY_NAME
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-        encryption_config.kms_key_name = None
-        self.assertIsNone(encryption_config.kms_key_name)
-
-    def test_from_api_repr(self):
-        RESOURCE = {"kmsKeyName": self.KMS_KEY_NAME}
-        klass = self._get_target_class()
-        encryption_config = klass.from_api_repr(RESOURCE)
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_to_api_repr(self):
-        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
-        resource = encryption_config.to_api_repr()
-        self.assertEqual(resource, {"kmsKeyName": self.KMS_KEY_NAME})
-
-    def test___eq___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___eq___kms_key_name_mismatch(self):
-        encryption_config = self._make_one()
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config, other)
-
-    def test___eq___hit(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertEqual(encryption_config, other)
-
-    def test___ne___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___ne___same_value(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        # unittest ``assertEqual`` uses ``==`` not ``!=``.
-        comparison_val = encryption_config1 != encryption_config2
-        self.assertFalse(comparison_val)
-
-    def test___ne___different_values(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config1, encryption_config2)
-
-    def test___hash__set_equality(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1, encryption_config2}
-        set_two = {encryption_config1, encryption_config2}
-        self.assertEqual(set_one, set_two)
-
-    def test___hash__not_equals(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1}
-        set_two = {encryption_config2}
-        self.assertNotEqual(set_one, set_two)
-
-    def test___repr__(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        expected = "EncryptionConfiguration({})".format(self.KMS_KEY_NAME)
-        self.assertEqual(repr(encryption_config), expected)
 
 
 class TestTableReference(unittest.TestCase):
@@ -339,7 +267,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -1139,6 +1067,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
+        # Previously, the EncryptionConfiguration class was in the table module, not the
+        # encryption_configuration module. It was moved to support models encryption.
+        # This test import from the table module to ensure that the previous location
+        # continues to function as an alias.
         from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)

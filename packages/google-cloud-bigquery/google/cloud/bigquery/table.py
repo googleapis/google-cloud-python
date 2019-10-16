@@ -55,6 +55,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -111,73 +112,6 @@ def _view_use_legacy_sql_getter(table):
     if table.table_type == "VIEW":
         # The server-side default for useLegacySql is True.
         return True
-
-
-class EncryptionConfiguration(object):
-    """Custom encryption configuration (e.g., Cloud KMS keys).
-
-    Args:
-        kms_key_name (str): resource ID of Cloud KMS key used for encryption
-    """
-
-    def __init__(self, kms_key_name=None):
-        self._properties = {}
-        if kms_key_name is not None:
-            self._properties["kmsKeyName"] = kms_key_name
-
-    @property
-    def kms_key_name(self):
-        """str: Resource ID of Cloud KMS key
-
-        Resource ID of Cloud KMS key or :data:`None` if using default
-        encryption.
-        """
-        return self._properties.get("kmsKeyName")
-
-    @kms_key_name.setter
-    def kms_key_name(self, value):
-        self._properties["kmsKeyName"] = value
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Construct an encryption configuration from its API representation
-
-        Args:
-            resource (Dict[str, object]):
-                An encryption configuration representation as returned from
-                the API.
-
-        Returns:
-            google.cloud.bigquery.table.EncryptionConfiguration:
-                An encryption configuration parsed from ``resource``.
-        """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
-
-    def to_api_repr(self):
-        """Construct the API resource representation of this encryption
-        configuration.
-
-        Returns:
-            Dict[str, object]:
-                Encryption configuration as represented as an API resource
-        """
-        return copy.deepcopy(self._properties)
-
-    def __eq__(self, other):
-        if not isinstance(other, EncryptionConfiguration):
-            return NotImplemented
-        return self.kms_key_name == other.kms_key_name
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __hash__(self):
-        return hash(self.kms_key_name)
-
-    def __repr__(self):
-        return "EncryptionConfiguration({})".format(self.kms_key_name)
 
 
 class TableReference(object):
@@ -479,7 +413,7 @@ class Table(object):
 
     @property
     def encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
