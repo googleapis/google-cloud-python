@@ -1107,10 +1107,12 @@ class Client(ClientWithProject):
             resource (Dict): one job resource from API response
 
         Returns:
-            Union[google.cloud.bigquery.job.LoadJob,
-                  google.cloud.bigquery.job.CopyJob,
-                  google.cloud.bigquery.job.ExtractJob,
-                  google.cloud.bigquery.job.QueryJob]:
+            Union[
+                google.cloud.bigquery.job.LoadJob,
+                google.cloud.bigquery.job.CopyJob,
+                google.cloud.bigquery.job.ExtractJob,
+                google.cloud.bigquery.job.QueryJob
+            ]:
                 The job instance, constructed via the resource.
         """
         config = resource.get("configuration", {})
@@ -1142,10 +1144,12 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
 
         Returns:
-            Union[google.cloud.bigquery.job.LoadJob,
-                  google.cloud.bigquery.job.CopyJob,
-                  google.cloud.bigquery.job.ExtractJob,
-                  google.cloud.bigquery.job.QueryJob]:
+            Union[
+                google.cloud.bigquery.job.LoadJob,
+                google.cloud.bigquery.job.CopyJob,
+                google.cloud.bigquery.job.ExtractJob,
+                google.cloud.bigquery.job.QueryJob
+            ]:
                 Job instance, based on the resource returned by the API.
         """
         extra_params = {"projection": "full"}
@@ -1185,10 +1189,12 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
 
         Returns:
-            Union[google.cloud.bigquery.job.LoadJob,
-                  google.cloud.bigquery.job.CopyJob,
-                  google.cloud.bigquery.job.ExtractJob,
-                  google.cloud.bigquery.job.QueryJob]:
+            Union[
+                google.cloud.bigquery.job.LoadJob,
+                google.cloud.bigquery.job.CopyJob,
+                google.cloud.bigquery.job.ExtractJob,
+                google.cloud.bigquery.job.QueryJob,
+            ]:
                 Job instance, based on the resource returned by the API.
         """
         extra_params = {"projection": "full"}
@@ -1860,17 +1866,17 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationtablecopy
 
         Args:
-            sources (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
-                Sequence[
-                    Union[
-                        google.cloud.bigquery.table.Table,
-                        google.cloud.bigquery.table.TableReference,
-                        str,
-                    ]
-                ],
+            sources (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
+                Sequence[ \
+                    Union[ \
+                        google.cloud.bigquery.table.Table, \
+                        google.cloud.bigquery.table.TableReference, \
+                        str, \
+                    ] \
+                ], \
             ]):
                 Table or tables to be copied.
             destination (Union[
@@ -2197,32 +2203,33 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
-        table (Union[
-            google.cloud.bigquery.table.Table
-            google.cloud.bigquery.table.TableReference,
-            str,
-        ]):
-            The destination table for the row data, or a reference to it.
-        json_rows (Sequence[Dict]):
-            Row data to be inserted. Keys must match the table schema fields
-            and values must be JSON-compatible representations.
-        row_ids (Sequence[str]):
-            (Optional) Unique ids, one per row being inserted. If omitted,
-            unique IDs are created.
-        skip_invalid_rows (bool):
-            (Optional) Insert all valid rows of a request, even if invalid
-            rows exist. The default value is False, which causes the entire
-            request to fail if any invalid rows exist.
-        ignore_unknown_values (bool):
-            (Optional) Accept rows that contain values that do not match the
-            schema. The unknown values are ignored. Default is False, which
-            treats unknown values as errors.
-        template_suffix (str):
-            (Optional) treat ``name`` as a template table and provide a suffix.
-            BigQuery will create the table ``<name> + <template_suffix>`` based
-            on the schema of the template table. See
-            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
-        retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+        Args:
+            table (Union[
+                google.cloud.bigquery.table.Table
+                google.cloud.bigquery.table.TableReference,
+                str,
+            ]):
+                The destination table for the row data, or a reference to it.
+            json_rows (Sequence[Dict]):
+                Row data to be inserted. Keys must match the table schema fields
+                and values must be JSON-compatible representations.
+            row_ids (Sequence[str]):
+                (Optional) Unique ids, one per row being inserted. If omitted,
+                unique IDs are created.
+            skip_invalid_rows (bool):
+                (Optional) Insert all valid rows of a request, even if invalid
+                rows exist. The default value is False, which causes the entire
+                request to fail if any invalid rows exist.
+            ignore_unknown_values (bool):
+                (Optional) Accept rows that contain values that do not match the
+                schema. The unknown values are ignored. Default is False, which
+                treats unknown values as errors.
+            template_suffix (str):
+                (Optional) treat ``name`` as a template table and provide a suffix.
+                BigQuery will create the table ``<name> + <template_suffix>`` based
+                on the schema of the template table. See
+                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
         Returns:
             Sequence[Mappings]:
