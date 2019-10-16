@@ -38,7 +38,7 @@ def scalar_to_query_parameter(value, name=None):
             (Optional) Name of the query parameter.
 
     Returns:
-        google.cloud.bigquery.ScalarQueryParameterЖ
+        google.cloud.bigquery.ScalarQueryParameter:
             A query parameter corresponding with the type and value of the plain
             Python object.
 
