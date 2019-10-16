@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [0.7.0](https://www.github.com/googleapis/dialogflow-python-client-v2/compare/v0.6.0...v0.7.0) (2019-10-16)
+
+
+### Features
+
+* regenerate ([#151](https://www.github.com/googleapis/dialogflow-python-client-v2/issues/151)) ([6222277](https://www.github.com/googleapis/dialogflow-python-client-v2/commit/6222277a5332011e9cc2e80bb5b26692a12fad36))
+  #### v2 and v2beta1
+  * Add `set_agent` and `delete_agent` methods to  `AgentsClient`
+  * Add `api_version` and `tier` to `Agents`
+  * Add `session_entity_types` to `WebhookResponse`
+  * Add `model_variant` and `single_utterance` to `InputAudioConfig`
+  * Add `SpeechModelVariant` enum
+  * Add `enable_fuzzy_extraction` to `EntityType`
+  * Add `KIND_REGEXP` to `EntityType.Kind` enum
+  * Add `client_options` to clients
+  * Allow kwargs to be passed to transport `create_channel` methods
+  * Deprecate `single_utterance` attribute in `StreamingDetectIntentRequest`. Please use `InputAudioConfig.single_utterance`
+
+  #### v2
+  * Add Google Hangouts to `Message.Platform` enum
+
+  #### v2beta1 
+  * Add `get_validation_result` method to `AgentsClient`
+  * Add `gcs_source` and `source` to `reload_document` method in `DocumentsClient`
+  * Add Rich Business Messaging (RBM) support, `table_card`, and `media_content` to intent messages
+  * Add `enable_word_info`, `speech_contexts` to `InputAudioConfig`
+  * `update_document` returns `_OperationFuture` rather than `Operation`
+  * Deprecate `projects.agent.knowledgeBases`. Please use `projects.knowledgeBases`.
+  * Add `stability`, `speech_word_info` and `speech_end_offset` to `StreamingRecognitionResult`
+
 ## 0.6.0
 
 05-06-2019 1:34 PST
@@ -61,4 +91,3 @@
 
 ### Internal / Testing Changes
 - Fix typo (#16)
-
