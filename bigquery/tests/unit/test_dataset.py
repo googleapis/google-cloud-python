@@ -275,7 +275,7 @@ class TestDataset(unittest.TestCase):
     PROJECT = "project"
     DS_ID = "dataset-id"
     DS_REF = DatasetReference(PROJECT, DS_ID)
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
