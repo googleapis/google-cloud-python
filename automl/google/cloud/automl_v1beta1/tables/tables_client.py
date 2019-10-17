@@ -107,14 +107,14 @@ class TablesClient(object):
 
         if client is None:
             self.auto_ml_client = gapic.auto_ml_client.AutoMlClient(
-                client_info=client_info_, **kwargs
+                credentials=credentials, client_info=client_info_, **kwargs
             )
         else:
             self.auto_ml_client = client
 
         if prediction_client is None:
             self.prediction_client = gapic.prediction_service_client.PredictionServiceClient(
-                client_info=client_info_, **kwargs
+                credentials=credentials, client_info=client_info_, **kwargs
             )
         else:
             self.prediction_client = prediction_client
