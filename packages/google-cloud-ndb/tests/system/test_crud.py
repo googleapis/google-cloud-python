@@ -913,6 +913,26 @@ def test_insert_autonow_property(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_insert_nested_autonow_property(dispose_of):
+    class OtherKind(ndb.Model):
+        created_at = ndb.DateTimeProperty(indexed=True, auto_now_add=True)
+        updated_at = ndb.DateTimeProperty(indexed=True, auto_now=True)
+
+    class SomeKind(ndb.Model):
+        other = ndb.StructuredProperty(OtherKind)
+
+    entity = SomeKind(other=OtherKind())
+    key = entity.put()
+
+    retrieved = key.get()
+
+    assert isinstance(retrieved.other.created_at, datetime.datetime)
+    assert isinstance(retrieved.other.updated_at, datetime.datetime)
+
+    dispose_of(key._key)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_uninitialized_property(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.StringProperty(required=True)

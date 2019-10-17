@@ -4035,6 +4035,14 @@ class StructuredProperty(Property):
 
         return set(keys)
 
+    def _prepare_for_put(self, entity):
+        values = self._get_user_value(entity)
+        if not self._repeated:
+            values = [values]
+        for value in values:
+            if value is not None:
+                value._prepare_for_put()
+
 
 class LocalStructuredProperty(BlobProperty):
     """A property that contains ndb.Model value.
@@ -4129,6 +4137,14 @@ class LocalStructuredProperty(BlobProperty):
         if not self._keep_keys and value.key:
             value.key = None
         return _entity_from_ds_entity(value, model_class=self._model_class)
+
+    def _prepare_for_put(self, entity):
+        values = self._get_user_value(entity)
+        if not self._repeated:
+            values = [values]
+        for value in values:
+            if value is not None:
+                value._prepare_for_put()
 
 
 class GenericProperty(Property):

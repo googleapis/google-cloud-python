@@ -3295,6 +3295,45 @@ class TestStructuredProperty:
             assert SomeKind.foo._to_datastore(entity, data) == {"foo.bar"}
             assert data == {"foo.bar": ["baz", "boz"]}
 
+    @staticmethod
+    def test__prepare_for_put():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind)
+
+        entity = SomeKind(foo=SubKind())
+        entity.foo._prepare_for_put = unittest.mock.Mock()
+        SomeKind.foo._prepare_for_put(entity)
+        entity.foo._prepare_for_put.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_repeated():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        entity = SomeKind(foo=[SubKind(), SubKind()])
+        entity.foo[0]._prepare_for_put = unittest.mock.Mock()
+        entity.foo[1]._prepare_for_put = unittest.mock.Mock()
+        SomeKind.foo._prepare_for_put(entity)
+        entity.foo[0]._prepare_for_put.assert_called_once_with()
+        entity.foo[1]._prepare_for_put.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_repeated_None():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind)
+
+        entity = SomeKind()
+        SomeKind.foo._prepare_for_put(entity)  # noop
+
 
 class TestLocalStructuredProperty:
     @staticmethod
@@ -3396,6 +3435,45 @@ class TestLocalStructuredProperty:
         entity.key = "key"
         expected = Simple()
         assert prop._from_base_type(entity) == expected
+
+    @staticmethod
+    def test__prepare_for_put():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(SubKind)
+
+        entity = SomeKind(foo=SubKind())
+        entity.foo._prepare_for_put = unittest.mock.Mock()
+        SomeKind.foo._prepare_for_put(entity)
+        entity.foo._prepare_for_put.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_repeated():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(SubKind, repeated=True)
+
+        entity = SomeKind(foo=[SubKind(), SubKind()])
+        entity.foo[0]._prepare_for_put = unittest.mock.Mock()
+        entity.foo[1]._prepare_for_put = unittest.mock.Mock()
+        SomeKind.foo._prepare_for_put(entity)
+        entity.foo[0]._prepare_for_put.assert_called_once_with()
+        entity.foo[1]._prepare_for_put.assert_called_once_with()
+
+    @staticmethod
+    def test__prepare_for_put_repeated_None():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(SubKind)
+
+        entity = SomeKind()
+        SomeKind.foo._prepare_for_put(entity)  # noop
 
 
 class TestGenericProperty:
