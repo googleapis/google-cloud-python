@@ -430,11 +430,12 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
 
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+        :type credentials: :class:`google.auth.credentials.Credentials` or
                            :class:`NoneType`
-        :param credentials: (Optional) The OAuth2 credentials to use to sign
-                            the URL. Defaults to the credentials stored on the
-                            client used.
+        :param credentials: The authorization credentials to attach to requests.
+                            These credentials identify this application to the service.
+                            If none are specified, the client will attempt to ascertain
+                            the credentials from the environment.
 
         :type version: str
         :param version: (Optional) The version of signed credential to create.
@@ -467,6 +468,17 @@ class Blob(_PropertyMixin):
             helper = generate_signed_url_v2
         else:
             helper = generate_signed_url_v4
+
+        if self._encryption_key is not None:
+            encryption_headers = _get_encryption_headers(self._encryption_key)
+            if headers is None:
+                headers = {}
+            if version == "v2":
+                # See: https://cloud.google.com/storage/docs/access-control/signed-urls-v2#about-canonical-extension-headers
+                v2_copy_only = "X-Goog-Encryption-Algorithm"
+                headers[v2_copy_only] = encryption_headers[v2_copy_only]
+            else:
+                headers.update(encryption_headers)
 
         return helper(
             credentials,
@@ -712,7 +724,7 @@ class Blob(_PropertyMixin):
             os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None, start=None, end=None):
-        """Download the contents of this blob as a string.
+        """Download the contents of this blob as a bytes object.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.

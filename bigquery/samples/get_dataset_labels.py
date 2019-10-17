@@ -25,9 +25,9 @@ def get_dataset_labels(client, dataset_id):
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.
     # dataset_id = "your-project.your_dataset"
 
-    dataset = client.get_dataset(dataset_id)
+    dataset = client.get_dataset(dataset_id)  # Make an API request.
 
-    # View dataset labels
+    # View dataset labels.
     print("Dataset ID: {}".format(dataset_id))
     print("Labels:")
     if dataset.labels:

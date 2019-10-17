@@ -212,8 +212,8 @@ class WebRiskServiceV1Beta1Client(object):
             >>> response = client.compute_threat_list_diff(threat_type, constraints)
 
         Args:
-            threat_type (~google.cloud.webrisk_v1beta1.types.ThreatType): Required. The ThreatList to update.
-            constraints (Union[dict, ~google.cloud.webrisk_v1beta1.types.Constraints]): The constraints associated with this request.
+            threat_type (~google.cloud.webrisk_v1beta1.types.ThreatType): The ThreatList to update.
+            constraints (Union[dict, ~google.cloud.webrisk_v1beta1.types.Constraints]): Required. The constraints associated with this request.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.webrisk_v1beta1.types.Constraints`
@@ -284,7 +284,7 @@ class WebRiskServiceV1Beta1Client(object):
             >>> response = client.search_uris(uri, threat_types)
 
         Args:
-            uri (str): The URI to be checked for matches.
+            uri (str): Required. The URI to be checked for matches.
             threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

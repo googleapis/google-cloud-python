@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## 1.10.0
+
+10-10-2019 12:20 PDT
+
+
+### Implementation Changes
+- Remove send / receive message size limit (via synth). ([#8952](https://github.com/googleapis/google-cloud-python/pull/8952))
+
+### New Features
+- Add `client_options` to constructors for manual clients. ([#9055](https://github.com/googleapis/google-cloud-python/pull/9055))
+
+### Dependencies
+- Pin `google-cloud-core >= 1.0.3, < 2.0.0dev`. ([#9055](https://github.com/googleapis/google-cloud-python/pull/9055))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update docs for building datastore indexes. ([#8707](https://github.com/googleapis/google-cloud-python/pull/8707))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.9.0
 
 07-24-2019 16:04 PDT

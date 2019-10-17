@@ -71,7 +71,7 @@ class _SchemaBase(object):
 
 
 class TestEncryptionConfiguration(unittest.TestCase):
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -89,78 +89,6 @@ class TestEncryptionConfiguration(unittest.TestCase):
     def test_ctor_with_key(self):
         encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_kms_key_name_setter(self):
-        encryption_config = self._make_one()
-        self.assertIsNone(encryption_config.kms_key_name)
-        encryption_config.kms_key_name = self.KMS_KEY_NAME
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-        encryption_config.kms_key_name = None
-        self.assertIsNone(encryption_config.kms_key_name)
-
-    def test_from_api_repr(self):
-        RESOURCE = {"kmsKeyName": self.KMS_KEY_NAME}
-        klass = self._get_target_class()
-        encryption_config = klass.from_api_repr(RESOURCE)
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_to_api_repr(self):
-        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
-        resource = encryption_config.to_api_repr()
-        self.assertEqual(resource, {"kmsKeyName": self.KMS_KEY_NAME})
-
-    def test___eq___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___eq___kms_key_name_mismatch(self):
-        encryption_config = self._make_one()
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config, other)
-
-    def test___eq___hit(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertEqual(encryption_config, other)
-
-    def test___ne___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___ne___same_value(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        # unittest ``assertEqual`` uses ``==`` not ``!=``.
-        comparison_val = encryption_config1 != encryption_config2
-        self.assertFalse(comparison_val)
-
-    def test___ne___different_values(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config1, encryption_config2)
-
-    def test___hash__set_equality(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1, encryption_config2}
-        set_two = {encryption_config1, encryption_config2}
-        self.assertEqual(set_one, set_two)
-
-    def test___hash__not_equals(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1}
-        set_two = {encryption_config2}
-        self.assertNotEqual(set_one, set_two)
-
-    def test___repr__(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        expected = "EncryptionConfiguration({})".format(self.KMS_KEY_NAME)
-        self.assertEqual(repr(encryption_config), expected)
 
 
 class TestTableReference(unittest.TestCase):
@@ -339,7 +267,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -928,6 +856,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
 
+    def test_require_partitioning_filter(self):
+        table = self._make_one("proj.dset.tbl")
+        assert table.require_partition_filter is None
+        table.require_partition_filter = True
+        assert table.require_partition_filter
+        table.require_partition_filter = False
+        assert table.require_partition_filter is not None
+        assert not table.require_partition_filter
+        table.require_partition_filter = None
+        assert table.require_partition_filter is None
+
     def test_time_partitioning_getter(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
@@ -946,7 +885,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(table.time_partitioning.field, "col1")
         self.assertEqual(table.time_partitioning.expiration_ms, 123456)
-        self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        assert len(warned) == 1
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_time_partitioning_getter_w_none(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -974,7 +918,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.time_partitioning.type_)
         self.assertIsNone(table.time_partitioning.field)
         self.assertIsNone(table.time_partitioning.expiration_ms)
-        self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -1118,6 +1067,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
+        # Previously, the EncryptionConfiguration class was in the table module, not the
+        # encryption_configuration module. It was moved to support models encryption.
+        # This test import from the table module to ensure that the previous location
+        # continues to function as an alias.
         from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -2835,26 +2788,32 @@ class TestTimePartitioning(unittest.TestCase):
 
     def test_constructor_defaults(self):
         time_partitioning = self._make_one()
-
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_constructor_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
 
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+    def test_require_partition_filter_warns_deprecation(self):
+        object_under_test = self._make_one()
+
+        with warnings.catch_warnings(record=True) as warned:
+            assert object_under_test.require_partition_filter is None
+            object_under_test.require_partition_filter = True
+            assert object_under_test.require_partition_filter
+
+        assert len(warned) == 3
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -2868,7 +2827,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.type_)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -2880,7 +2838,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_doesnt_override_type(self):
         klass = self._get_target_class()
@@ -2903,7 +2860,11 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertTrue(time_partitioning.require_partition_filter)
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_to_api_repr_defaults(self):
         time_partitioning = self._make_one()
@@ -2914,11 +2875,13 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
+
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
         expected = {
             "type": "DAY",
@@ -2950,21 +2913,21 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___require_partition_filter_mismatch(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=False
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+            other.require_partition_filter = False
+
+        assert len(warned) == 2
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
+
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___hit(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
         self.assertEqual(time_partitioning, other)
 
     def test___ne___wrong_type(self):
@@ -3008,18 +2971,9 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
-        expected = (
-            "TimePartitioning("
-            "expirationMs=10000,"
-            "field=name,"
-            "requirePartitionFilter=True,"
-            "type=DAY)"
-        )
+        expected = "TimePartitioning(" "expirationMs=10000," "field=name," "type=DAY)"
         self.assertEqual(repr(time_partitioning), expected)
 
     def test_set_expiration_w_none(self):

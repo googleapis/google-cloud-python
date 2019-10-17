@@ -130,7 +130,10 @@ class TestExternalConfig(unittest.TestCase):
             self.BASE_RESOURCE,
             {
                 "sourceFormat": "GOOGLE_SHEETS",
-                "googleSheetsOptions": {"skipLeadingRows": "123"},
+                "googleSheetsOptions": {
+                    "skipLeadingRows": "123",
+                    "range": "Sheet1!A5:B10",
+                },
             },
         )
 
@@ -140,14 +143,17 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(ec.source_format, "GOOGLE_SHEETS")
         self.assertIsInstance(ec.options, external_config.GoogleSheetsOptions)
         self.assertEqual(ec.options.skip_leading_rows, 123)
+        self.assertEqual(ec.options.range, "Sheet1!A5:B10")
 
         got_resource = ec.to_api_repr()
 
         self.assertEqual(got_resource, resource)
 
         del resource["googleSheetsOptions"]["skipLeadingRows"]
+        del resource["googleSheetsOptions"]["range"]
         ec = external_config.ExternalConfig.from_api_repr(resource)
         self.assertIsNone(ec.options.skip_leading_rows)
+        self.assertIsNone(ec.options.range)
         got_resource = ec.to_api_repr()
         self.assertEqual(got_resource, resource)
 
@@ -155,11 +161,12 @@ class TestExternalConfig(unittest.TestCase):
         ec = external_config.ExternalConfig("GOOGLE_SHEETS")
         options = external_config.GoogleSheetsOptions()
         options.skip_leading_rows = 123
+        options.range = "Sheet1!A5:B10"
         ec._options = options
 
         exp_resource = {
             "sourceFormat": "GOOGLE_SHEETS",
-            "googleSheetsOptions": {"skipLeadingRows": "123"},
+            "googleSheetsOptions": {"skipLeadingRows": "123", "range": "Sheet1!A5:B10"},
         }
 
         got_resource = ec.to_api_repr()

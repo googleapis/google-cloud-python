@@ -15,7 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -27,10 +27,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n+com.google.cloud.websecurityscanner.v1alphaB\014ScanRunProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
     ),
     serialized_pb=_b(
-        '\n<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x04\n\x07ScanRun\x12\x0c\n\x04name\x18\x01 \x01(\t\x12X\n\x0f\x65xecution_state\x18\x02 \x01(\x0e\x32?.google.cloud.websecurityscanner.v1alpha.ScanRun.ExecutionState\x12R\n\x0cresult_state\x18\x03 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1alpha.ScanRun.ResultState\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12urls_crawled_count\x18\x06 \x01(\x03\x12\x19\n\x11urls_tested_count\x18\x07 \x01(\x03\x12\x1b\n\x13has_vulnerabilities\x18\x08 \x01(\x08\x12\x18\n\x10progress_percent\x18\t \x01(\x05"Y\n\x0e\x45xecutionState\x12\x1f\n\x1b\x45XECUTION_STATE_UNSPECIFIED\x10\x00\x12\n\n\x06QUEUED\x10\x01\x12\x0c\n\x08SCANNING\x10\x02\x12\x0c\n\x08\x46INISHED\x10\x03"O\n\x0bResultState\x12\x1c\n\x18RESULT_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\t\n\x05\x45RROR\x10\x02\x12\n\n\x06KILLED\x10\x03\x42\x98\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0cScanRunProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
+        '\n<google/cloud/websecurityscanner_v1alpha/proto/scan_run.proto\x12\'google.cloud.websecurityscanner.v1alpha\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xaf\x05\n\x07ScanRun\x12\x0c\n\x04name\x18\x01 \x01(\t\x12X\n\x0f\x65xecution_state\x18\x02 \x01(\x0e\x32?.google.cloud.websecurityscanner.v1alpha.ScanRun.ExecutionState\x12R\n\x0cresult_state\x18\x03 \x01(\x0e\x32<.google.cloud.websecurityscanner.v1alpha.ScanRun.ResultState\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12urls_crawled_count\x18\x06 \x01(\x03\x12\x19\n\x11urls_tested_count\x18\x07 \x01(\x03\x12\x1b\n\x13has_vulnerabilities\x18\x08 \x01(\x08\x12\x18\n\x10progress_percent\x18\t \x01(\x05"Y\n\x0e\x45xecutionState\x12\x1f\n\x1b\x45XECUTION_STATE_UNSPECIFIED\x10\x00\x12\n\n\x06QUEUED\x10\x01\x12\x0c\n\x08SCANNING\x10\x02\x12\x0c\n\x08\x46INISHED\x10\x03"O\n\x0bResultState\x12\x1c\n\x18RESULT_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\t\n\x05\x45RROR\x10\x02\x12\n\n\x06KILLED\x10\x03:p\xea\x41m\n)websecurityscanner.googleapis.com/ScanRun\x12@projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}B\x98\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0cScanRunProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -61,8 +61,8 @@ _SCANRUN_EXECUTIONSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=572,
-    serialized_end=661,
+    serialized_start=569,
+    serialized_end=658,
 )
 _sym_db.RegisterEnumDescriptor(_SCANRUN_EXECUTIONSTATE)
 
@@ -91,8 +91,8 @@ _SCANRUN_RESULTSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=663,
-    serialized_end=742,
+    serialized_start=660,
+    serialized_end=739,
 )
 _sym_db.RegisterEnumDescriptor(_SCANRUN_RESULTSTATE)
 
@@ -270,13 +270,15 @@ _SCANRUN = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_SCANRUN_EXECUTIONSTATE, _SCANRUN_RESULTSTATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Am\n)websecurityscanner.googleapis.com/ScanRun\022@projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=169,
-    serialized_end=742,
+    serialized_start=166,
+    serialized_end=853,
 )
 
 _SCANRUN.fields_by_name["execution_state"].enum_type = _SCANRUN_EXECUTIONSTATE
@@ -304,39 +306,36 @@ ScanRun = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. The resource name of the ScanRun. The name
-          follows the format of 'projects/{projectId}/scanConfigs/{scanC
-          onfigId}/scanRuns/{scanRunId}'. The ScanRun IDs are generated
-          by the system.
+          The resource name of the ScanRun. The name follows the format
+          of 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{
+          scanRunId}'. The ScanRun IDs are generated by the system.
       execution_state:
-          Output only. The execution state of the ScanRun.
+          The execution state of the ScanRun.
       result_state:
-          Output only. The result state of the ScanRun. This field is
-          only available after the execution state reaches "FINISHED".
+          The result state of the ScanRun. This field is only available
+          after the execution state reaches "FINISHED".
       start_time:
-          Output only. The time at which the ScanRun started.
+          The time at which the ScanRun started.
       end_time:
-          Output only. The time at which the ScanRun reached termination
-          state - that the ScanRun is either finished or stopped by
-          user.
+          The time at which the ScanRun reached termination state - that
+          the ScanRun is either finished or stopped by user.
       urls_crawled_count:
-          Output only. The number of URLs crawled during this ScanRun.
-          If the scan is in progress, the value represents the number of
-          URLs crawled up to now.
+          The number of URLs crawled during this ScanRun. If the scan is
+          in progress, the value represents the number of URLs crawled
+          up to now.
       urls_tested_count:
-          Output only. The number of URLs tested during this ScanRun. If
-          the scan is in progress, the value represents the number of
-          URLs tested up to now. The number of URLs tested is usually
-          larger than the number URLS crawled because typically a
-          crawled URL is tested with multiple test payloads.
+          The number of URLs tested during this ScanRun. If the scan is
+          in progress, the value represents the number of URLs tested up
+          to now. The number of URLs tested is usually larger than the
+          number URLS crawled because typically a crawled URL is tested
+          with multiple test payloads.
       has_vulnerabilities:
-          Output only. Whether the scan run has found any
-          vulnerabilities.
+          Whether the scan run has found any vulnerabilities.
       progress_percent:
-          Output only. The percentage of total completion ranging from 0
-          to 100. If the scan is in queue, the value is 0. If the scan
-          is running, the value ranges from 0 to 100. If the scan is
-          finished, the value is 100.
+          The percentage of total completion ranging from 0 to 100. If
+          the scan is in queue, the value is 0. If the scan is running,
+          the value ranges from 0 to 100. If the scan is finished, the
+          value is 100.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1alpha.ScanRun)
     ),
@@ -345,4 +344,5 @@ _sym_db.RegisterMessage(ScanRun)
 
 
 DESCRIPTOR._options = None
+_SCANRUN._options = None
 # @@protoc_insertion_point(module_scope)

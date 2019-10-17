@@ -15,9 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto",
     package="google.cloud.websecurityscanner.v1alpha",
@@ -26,9 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n+com.google.cloud.websecurityscanner.v1alphaB\017CrawledUrlProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscanner"
     ),
     serialized_pb=_b(
-        "\n?google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto\x12'google.cloud.websecurityscanner.v1alpha\x1a\x1cgoogle/api/annotations.proto\"<\n\nCrawledUrl\x12\x13\n\x0bhttp_method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x62ody\x18\x03 \x01(\tB\x9b\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0f\x43rawledUrlProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3"
+        "\n?google/cloud/websecurityscanner_v1alpha/proto/crawled_url.proto\x12'google.cloud.websecurityscanner.v1alpha\"<\n\nCrawledUrl\x12\x13\n\x0bhttp_method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x62ody\x18\x03 \x01(\tB\x9b\x01\n+com.google.cloud.websecurityscanner.v1alphaB\x0f\x43rawledUrlProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1alpha;websecurityscannerb\x06proto3"
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -102,8 +98,8 @@ _CRAWLEDURL = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=138,
-    serialized_end=198,
+    serialized_start=108,
+    serialized_end=168,
 )
 
 DESCRIPTOR.message_types_by_name["CrawledUrl"] = _CRAWLEDURL

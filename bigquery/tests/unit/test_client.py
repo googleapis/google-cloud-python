@@ -81,7 +81,7 @@ class TestClient(unittest.TestCase):
     TABLE_ID = "TABLE_ID"
     MODEL_ID = "MODEL_ID"
     TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
     LOCATION = "us-central"
 
     @staticmethod
@@ -1074,7 +1074,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_encryption_configuration(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
         from google.cloud.bigquery.table import Table
 
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
@@ -2951,6 +2953,24 @@ class TestClient(unittest.TestCase):
                 "maxCreationTime": str(end_time_millis),
             },
         )
+
+    def test_list_jobs_w_parent_job_filter(self):
+        from google.cloud.bigquery import job
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection({}, {})
+
+        parent_job_args = ["parent-job-123", job._AsyncJob("parent-job-123", client)]
+
+        for parent_job in parent_job_args:
+            list(client.list_jobs(parent_job=parent_job))
+            conn.api_request.assert_called_once_with(
+                method="GET",
+                path="/projects/%s/jobs" % self.PROJECT,
+                query_params={"projection": "full", "parentJobId": "parent-job-123"},
+            )
+            conn.api_request.reset_mock()
 
     def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob

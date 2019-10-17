@@ -12,25 +12,85 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
+import os
+import io
+import requests
 
 from google.cloud import speech_v1p1beta1
-from google.cloud.speech_v1p1beta1 import enums
-from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2
 
 
 class TestSystemSpeech(object):
     def test_recognize(self):
 
+        try:
+            BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
+        except KeyError:
+            BUCKET = "cloud-samples-tests"
+
         client = speech_v1p1beta1.SpeechClient()
-        language_code = "en-US"
-        sample_rate_hertz = 44100
-        encoding = enums.RecognitionConfig.AudioEncoding.FLAC
+
         config = {
-            "language_code": language_code,
-            "sample_rate_hertz": sample_rate_hertz,
-            "encoding": encoding,
+            "encoding": speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+            "language_code": "en-US",
+            "sample_rate_hertz": 16000,
         }
-        uri = "gs://gapic-toolkit/hello.flac"
+
+        uri = "gs://{}/speech/brooklyn.flac".format(BUCKET)
         audio = {"uri": uri}
+
         response = client.recognize(config, audio)
+
+        assert response.results[0].alternatives[0].transcript is not None
+
+    def test_long_running_recognize(self):
+
+        try:
+            BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
+        except KeyError:
+            BUCKET = "cloud-samples-tests"
+
+        client = speech_v1p1beta1.SpeechClient()
+
+        config = speech_v1p1beta1.types.RecognitionConfig(
+            encoding=speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+            language_code="en-US",
+            sample_rate_hertz=16000,
+        )
+
+        uri = "gs://{}/speech/brooklyn.flac".format(BUCKET)
+        audio = {"uri": uri}
+
+        response = client.long_running_recognize(config, audio)
+
+        assert response.result() is not None
+
+    def test_streaming_recognize(self):
+
+        try:
+            BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
+        except KeyError:
+            BUCKET = "cloud-samples-tests"
+
+        client = speech_v1p1beta1.SpeechClient()
+
+        config = speech_v1p1beta1.types.RecognitionConfig(
+            encoding=speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+            language_code="en-US",
+            sample_rate_hertz=16000,
+        )
+        streamingConfig = speech_v1p1beta1.types.StreamingRecognitionConfig(
+            config=config
+        )
+
+        uri = "https://storage.googleapis.com/{}/speech/brooklyn.flac".format(BUCKET)
+        streaming_requests = [
+            speech_v1p1beta1.types.StreamingRecognizeRequest(
+                audio_content=requests.get(uri).content
+            )
+        ]
+
+        responses = client.streaming_recognize(streamingConfig, streaming_requests)
+
+        for response in responses:
+            for result in response.results:
+                assert result.alternatives[0].transcript is not None

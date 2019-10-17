@@ -284,7 +284,7 @@ class Client(ClientWithProject):
             filter (str):
                 Optional. An expression for filtering the results by label.
                 For syntax, see
-                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#body.QUERY_PARAMETERS.filter
             max_results (int):
                 Optional. Maximum number of datasets to return.
             page_token (str):
@@ -1216,6 +1216,7 @@ class Client(ClientWithProject):
     def list_jobs(
         self,
         project=None,
+        parent_job=None,
         max_results=None,
         page_token=None,
         all_users=None,
@@ -1233,6 +1234,11 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving datasets. Defaults
                 to the client's project.
+            parent_job (Optional[Union[ \
+                :class:`~google.cloud.bigquery.job._AsyncJob`, \
+                str, \
+            ]]):
+                If set, retrieve only child jobs of the specified parent.
             max_results (int, optional):
                 Maximum number of jobs to return.
             page_token (str, optional):
@@ -1265,6 +1271,9 @@ class Client(ClientWithProject):
             google.api_core.page_iterator.Iterator:
                 Iterable of job instances.
         """
+        if isinstance(parent_job, job._AsyncJob):
+            parent_job = parent_job.job_id
+
         extra_params = {
             "allUsers": all_users,
             "stateFilter": state_filter,
@@ -1275,6 +1284,7 @@ class Client(ClientWithProject):
                 google.cloud._helpers._millis_from_datetime(max_creation_time)
             ),
             "projection": "full",
+            "parentJobId": parent_job,
         }
 
         extra_params = {
@@ -1310,7 +1320,7 @@ class Client(ClientWithProject):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationload
 
         Arguments:
             source_uris (Union[str, Sequence[str]]):
@@ -1644,6 +1654,22 @@ class Client(ClientWithProject):
             json_rows (Iterable[Dict[str, Any]]):
                 Row data to be inserted. Keys must match the table schema fields
                 and values must be JSON-compatible representations.
+
+                .. note::
+
+                    If your data is already a newline-delimited JSON string,
+                    it is best to wrap it into a file-like object and pass it
+                    to :meth:`~google.cloud.bigquery.client.Client.load_table_from_file`::
+
+                        import io
+                        from google.cloud import bigquery
+
+                        data = u'{"foo": "bar"}'
+                        data_as_file = io.StringIO(data)
+
+                        client = bigquery.Client()
+                        client.load_table_from_file(data_as_file, ...)
+
             destination (Union[ \
                 :class:`~google.cloud.bigquery.table.Table`, \
                 :class:`~google.cloud.bigquery.table.TableReference`, \
@@ -1832,7 +1858,7 @@ class Client(ClientWithProject):
         """Copy one or more tables to another table.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationtablecopy
 
         Arguments:
             sources (Union[ \
@@ -1923,7 +1949,7 @@ class Client(ClientWithProject):
         """Start a job to extract a table into Cloud Storage files.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationextract
 
         Arguments:
             source (Union[ \
@@ -1994,7 +2020,7 @@ class Client(ClientWithProject):
         """Run a SQL query.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery
 
         Arguments:
             query (str):

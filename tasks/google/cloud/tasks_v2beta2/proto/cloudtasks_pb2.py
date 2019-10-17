@@ -41,7 +41,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.tasks.v2beta2B\017CloudTasksProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\242\002\005TASKS"
     ),
     serialized_pb=_b(
-        '\n1google/cloud/tasks_v2beta2/proto/cloudtasks.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a,google/cloud/tasks_v2beta2/proto/queue.proto\x1a+google/cloud/tasks_v2beta2/proto/task.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x85\x01\n\x11ListQueuesRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\x12!locations.googleapis.com/Location\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"`\n\x12ListQueuesResponse\x12\x31\n\x06queues\x18\x01 \x03(\x0b\x32!.google.cloud.tasks.v2beta2.Queue\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"H\n\x0fGetQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"\x86\x01\n\x12\x43reateQueueRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\x12!locations.googleapis.com/Location\x12\x35\n\x05queue\x18\x02 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.QueueB\x03\xe0\x41\x02"|\n\x12UpdateQueueRequest\x12\x35\n\x05queue\x18\x01 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.QueueB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"K\n\x12\x44\x65leteQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"J\n\x11PurgeQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"J\n\x11PauseQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"K\n\x12ResumeQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"\xb0\x01\n\x10ListTasksRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudtasks.googleapis.com/Queue\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"]\n\x11ListTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x0eGetTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\xbf\x01\n\x11\x43reateTaskRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudtasks.googleapis.com/Queue\x12\x33\n\x04task\x18\x02 \x01(\x0b\x32 .google.cloud.tasks.v2beta2.TaskB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"I\n\x11\x44\x65leteTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task"\xe5\x01\n\x11LeaseTasksRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudtasks.googleapis.com/Queue\x12\x11\n\tmax_tasks\x18\x02 \x01(\x05\x12\x36\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"E\n\x12LeaseTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task"\x86\x01\n\x16\x41\x63knowledgeTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02"\xf7\x01\n\x11RenewLeaseRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x36\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\xc0\x01\n\x12\x43\x61ncelLeaseRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\x84\x01\n\x0eRunTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View2\xd4\x1c\n\nCloudTasks\x12\xad\x01\n\nListQueues\x12-.google.cloud.tasks.v2beta2.ListQueuesRequest\x1a..google.cloud.tasks.v2beta2.ListQueuesResponse"@\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{parent=projects/*/locations/*}/queues\xda\x41\x06parent\x12\x9a\x01\n\x08GetQueue\x12+.google.cloud.tasks.v2beta2.GetQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue">\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{name=projects/*/locations/*/queues/*}\xda\x41\x04name\x12\xaf\x01\n\x0b\x43reateQueue\x12..google.cloud.tasks.v2beta2.CreateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"M\x82\xd3\xe4\x93\x02\x38"//v2beta2/{parent=projects/*/locations/*}/queues:\x05queue\xda\x41\x0cparent,queue\x12\xba\x01\n\x0bUpdateQueue\x12..google.cloud.tasks.v2beta2.UpdateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"X\x82\xd3\xe4\x93\x02>25/v2beta2/{queue.name=projects/*/locations/*/queues/*}:\x05queue\xda\x41\x11queue,update_mask\x12\x95\x01\n\x0b\x44\x65leteQueue\x12..google.cloud.tasks.v2beta2.DeleteQueueRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x31*//v2beta2/{name=projects/*/locations/*/queues/*}\xda\x41\x04name\x12\xa7\x01\n\nPurgeQueue\x12-.google.cloud.tasks.v2beta2.PurgeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"G\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:purge:\x01*\xda\x41\x04name\x12\xa7\x01\n\nPauseQueue\x12-.google.cloud.tasks.v2beta2.PauseQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"G\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:pause:\x01*\xda\x41\x04name\x12\xaa\x01\n\x0bResumeQueue\x12..google.cloud.tasks.v2beta2.ResumeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"H\x82\xd3\xe4\x93\x02;"6/v2beta2/{name=projects/*/locations/*/queues/*}:resume:\x01*\xda\x41\x04name\x12\xa1\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"V\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xa8\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"]\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xd3\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"h\x82\xd3\xe4\x93\x02K"F/v2beta2/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x12\xb2\x01\n\tListTasks\x12,.google.cloud.tasks.v2beta2.ListTasksRequest\x1a-.google.cloud.tasks.v2beta2.ListTasksResponse"H\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks\xda\x41\x06parent\x12\x9f\x01\n\x07GetTask\x12*.google.cloud.tasks.v2beta2.GetTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"F\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\xda\x41\x04name\x12\xaf\x01\n\nCreateTask\x12-.google.cloud.tasks.v2beta2.CreateTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"P\x82\xd3\xe4\x93\x02<"7/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:\x01*\xda\x41\x0bparent,task\x12\x9b\x01\n\nDeleteTask\x12-.google.cloud.tasks.v2beta2.DeleteTaskRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02\x39*7/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\xda\x41\x04name\x12\xcd\x01\n\nLeaseTasks\x12-.google.cloud.tasks.v2beta2.LeaseTasksRequest\x1a..google.cloud.tasks.v2beta2.LeaseTasksResponse"`\x82\xd3\xe4\x93\x02\x42"=/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:lease:\x01*\xda\x41\x15parent,lease_duration\x12\xc2\x01\n\x0f\x41\x63knowledgeTask\x12\x32.google.cloud.tasks.v2beta2.AcknowledgeTaskRequest\x1a\x16.google.protobuf.Empty"c\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:acknowledge:\x01*\xda\x41\x12name,schedule_time\x12\xd0\x01\n\nRenewLease\x12-.google.cloud.tasks.v2beta2.RenewLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"q\x82\xd3\xe4\x93\x02G"B/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:renewLease:\x01*\xda\x41!name,schedule_time,lease_duration\x12\xc4\x01\n\x0b\x43\x61ncelLease\x12..google.cloud.tasks.v2beta2.CancelLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"c\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:cancelLease:\x01*\xda\x41\x12name,schedule_time\x12\xa6\x01\n\x07RunTask\x12*.google.cloud.tasks.v2beta2.RunTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"M\x82\xd3\xe4\x93\x02@";/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:run:\x01*\xda\x41\x04name\x1aM\xca\x41\x19\x63loudtasks.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB|\n\x1e\x63om.google.cloud.tasks.v2beta2B\x0f\x43loudTasksProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\xa2\x02\x05TASKSb\x06proto3'
+        '\n1google/cloud/tasks_v2beta2/proto/cloudtasks.proto\x12\x1agoogle.cloud.tasks.v2beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a,google/cloud/tasks_v2beta2/proto/queue.proto\x1a+google/cloud/tasks_v2beta2/proto/task.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x83\x01\n\x11ListQueuesRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudtasks.googleapis.com/Queue\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"`\n\x12ListQueuesResponse\x12\x31\n\x06queues\x18\x01 \x03(\x0b\x32!.google.cloud.tasks.v2beta2.Queue\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"H\n\x0fGetQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"\x84\x01\n\x12\x43reateQueueRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudtasks.googleapis.com/Queue\x12\x35\n\x05queue\x18\x02 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.QueueB\x03\xe0\x41\x02"|\n\x12UpdateQueueRequest\x12\x35\n\x05queue\x18\x01 \x01(\x0b\x32!.google.cloud.tasks.v2beta2.QueueB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"K\n\x12\x44\x65leteQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"J\n\x11PurgeQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"J\n\x11PauseQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"K\n\x12ResumeQueueRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x63loudtasks.googleapis.com/Queue"\xaf\x01\n\x10ListTasksRequest\x12\x36\n\x06parent\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \x12\x1e\x63loudtasks.googleapis.com/Task\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"]\n\x11ListTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x0eGetTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\xbe\x01\n\x11\x43reateTaskRequest\x12\x36\n\x06parent\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \x12\x1e\x63loudtasks.googleapis.com/Task\x12\x33\n\x04task\x18\x02 \x01(\x0b\x32 .google.cloud.tasks.v2beta2.TaskB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"I\n\x11\x44\x65leteTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task"\xe4\x01\n\x11LeaseTasksRequest\x12\x36\n\x06parent\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \x12\x1e\x63loudtasks.googleapis.com/Task\x12\x11\n\tmax_tasks\x18\x02 \x01(\x05\x12\x36\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"E\n\x12LeaseTasksResponse\x12/\n\x05tasks\x18\x01 \x03(\x0b\x32 .google.cloud.tasks.v2beta2.Task"\x86\x01\n\x16\x41\x63knowledgeTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02"\xf7\x01\n\x11RenewLeaseRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x36\n\x0elease_duration\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x04 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\xc0\x01\n\x12\x43\x61ncelLeaseRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12\x36\n\rschedule_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12<\n\rresponse_view\x18\x03 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View"\x84\x01\n\x0eRunTaskRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudtasks.googleapis.com/Task\x12<\n\rresponse_view\x18\x02 \x01(\x0e\x32%.google.cloud.tasks.v2beta2.Task.View2\xd4\x1c\n\nCloudTasks\x12\xad\x01\n\nListQueues\x12-.google.cloud.tasks.v2beta2.ListQueuesRequest\x1a..google.cloud.tasks.v2beta2.ListQueuesResponse"@\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{parent=projects/*/locations/*}/queues\xda\x41\x06parent\x12\x9a\x01\n\x08GetQueue\x12+.google.cloud.tasks.v2beta2.GetQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue">\x82\xd3\xe4\x93\x02\x31\x12//v2beta2/{name=projects/*/locations/*/queues/*}\xda\x41\x04name\x12\xaf\x01\n\x0b\x43reateQueue\x12..google.cloud.tasks.v2beta2.CreateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"M\x82\xd3\xe4\x93\x02\x38"//v2beta2/{parent=projects/*/locations/*}/queues:\x05queue\xda\x41\x0cparent,queue\x12\xba\x01\n\x0bUpdateQueue\x12..google.cloud.tasks.v2beta2.UpdateQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"X\x82\xd3\xe4\x93\x02>25/v2beta2/{queue.name=projects/*/locations/*/queues/*}:\x05queue\xda\x41\x11queue,update_mask\x12\x95\x01\n\x0b\x44\x65leteQueue\x12..google.cloud.tasks.v2beta2.DeleteQueueRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x31*//v2beta2/{name=projects/*/locations/*/queues/*}\xda\x41\x04name\x12\xa7\x01\n\nPurgeQueue\x12-.google.cloud.tasks.v2beta2.PurgeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"G\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:purge:\x01*\xda\x41\x04name\x12\xa7\x01\n\nPauseQueue\x12-.google.cloud.tasks.v2beta2.PauseQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"G\x82\xd3\xe4\x93\x02:"5/v2beta2/{name=projects/*/locations/*/queues/*}:pause:\x01*\xda\x41\x04name\x12\xaa\x01\n\x0bResumeQueue\x12..google.cloud.tasks.v2beta2.ResumeQueueRequest\x1a!.google.cloud.tasks.v2beta2.Queue"H\x82\xd3\xe4\x93\x02;"6/v2beta2/{name=projects/*/locations/*/queues/*}:resume:\x01*\xda\x41\x04name\x12\xa1\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"V\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xa8\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"]\x82\xd3\xe4\x93\x02\x45"@/v2beta2/{resource=projects/*/locations/*/queues/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xd3\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"h\x82\xd3\xe4\x93\x02K"F/v2beta2/{resource=projects/*/locations/*/queues/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x12\xb2\x01\n\tListTasks\x12,.google.cloud.tasks.v2beta2.ListTasksRequest\x1a-.google.cloud.tasks.v2beta2.ListTasksResponse"H\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks\xda\x41\x06parent\x12\x9f\x01\n\x07GetTask\x12*.google.cloud.tasks.v2beta2.GetTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"F\x82\xd3\xe4\x93\x02\x39\x12\x37/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\xda\x41\x04name\x12\xaf\x01\n\nCreateTask\x12-.google.cloud.tasks.v2beta2.CreateTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"P\x82\xd3\xe4\x93\x02<"7/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:\x01*\xda\x41\x0bparent,task\x12\x9b\x01\n\nDeleteTask\x12-.google.cloud.tasks.v2beta2.DeleteTaskRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02\x39*7/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}\xda\x41\x04name\x12\xcd\x01\n\nLeaseTasks\x12-.google.cloud.tasks.v2beta2.LeaseTasksRequest\x1a..google.cloud.tasks.v2beta2.LeaseTasksResponse"`\x82\xd3\xe4\x93\x02\x42"=/v2beta2/{parent=projects/*/locations/*/queues/*}/tasks:lease:\x01*\xda\x41\x15parent,lease_duration\x12\xc2\x01\n\x0f\x41\x63knowledgeTask\x12\x32.google.cloud.tasks.v2beta2.AcknowledgeTaskRequest\x1a\x16.google.protobuf.Empty"c\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:acknowledge:\x01*\xda\x41\x12name,schedule_time\x12\xd0\x01\n\nRenewLease\x12-.google.cloud.tasks.v2beta2.RenewLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"q\x82\xd3\xe4\x93\x02G"B/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:renewLease:\x01*\xda\x41!name,schedule_time,lease_duration\x12\xc4\x01\n\x0b\x43\x61ncelLease\x12..google.cloud.tasks.v2beta2.CancelLeaseRequest\x1a .google.cloud.tasks.v2beta2.Task"c\x82\xd3\xe4\x93\x02H"C/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:cancelLease:\x01*\xda\x41\x12name,schedule_time\x12\xa6\x01\n\x07RunTask\x12*.google.cloud.tasks.v2beta2.RunTaskRequest\x1a .google.cloud.tasks.v2beta2.Task"M\x82\xd3\xe4\x93\x02@";/v2beta2/{name=projects/*/locations/*/queues/*/tasks/*}:run:\x01*\xda\x41\x04name\x1aM\xca\x41\x19\x63loudtasks.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB|\n\x1e\x63om.google.cloud.tasks.v2beta2B\x0f\x43loudTasksProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta2;tasks\xa2\x02\x05TASKSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -83,7 +83,7 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A#\022!locations.googleapis.com/Location"
+                "\340A\002\372A!\022\037cloudtasks.googleapis.com/Queue"
             ),
             file=DESCRIPTOR,
         ),
@@ -151,7 +151,7 @@ _LISTQUEUESREQUEST = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=476,
-    serialized_end=609,
+    serialized_end=607,
 )
 
 
@@ -207,8 +207,8 @@ _LISTQUEUESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=611,
-    serialized_end=707,
+    serialized_start=609,
+    serialized_end=705,
 )
 
 
@@ -248,8 +248,8 @@ _GETQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=709,
-    serialized_end=781,
+    serialized_start=707,
+    serialized_end=779,
 )
 
 
@@ -276,7 +276,7 @@ _CREATEQUEUEREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A#\022!locations.googleapis.com/Location"
+                "\340A\002\372A!\022\037cloudtasks.googleapis.com/Queue"
             ),
             file=DESCRIPTOR,
         ),
@@ -307,8 +307,8 @@ _CREATEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=784,
-    serialized_end=918,
+    serialized_start=782,
+    serialized_end=914,
 )
 
 
@@ -364,8 +364,8 @@ _UPDATEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=920,
-    serialized_end=1044,
+    serialized_start=916,
+    serialized_end=1040,
 )
 
 
@@ -405,8 +405,8 @@ _DELETEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1046,
-    serialized_end=1121,
+    serialized_start=1042,
+    serialized_end=1117,
 )
 
 
@@ -446,8 +446,8 @@ _PURGEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1123,
-    serialized_end=1197,
+    serialized_start=1119,
+    serialized_end=1193,
 )
 
 
@@ -487,8 +487,8 @@ _PAUSEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1199,
-    serialized_end=1273,
+    serialized_start=1195,
+    serialized_end=1269,
 )
 
 
@@ -528,8 +528,8 @@ _RESUMEQUEUEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1275,
-    serialized_end=1350,
+    serialized_start=1271,
+    serialized_end=1346,
 )
 
 
@@ -556,7 +556,7 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A!\022\037cloudtasks.googleapis.com/Queue"
+                "\340A\002\372A \022\036cloudtasks.googleapis.com/Task"
             ),
             file=DESCRIPTOR,
         ),
@@ -623,8 +623,8 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1353,
-    serialized_end=1529,
+    serialized_start=1349,
+    serialized_end=1524,
 )
 
 
@@ -680,8 +680,8 @@ _LISTTASKSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1531,
-    serialized_end=1624,
+    serialized_start=1526,
+    serialized_end=1619,
 )
 
 
@@ -739,8 +739,8 @@ _GETTASKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1627,
-    serialized_end=1759,
+    serialized_start=1622,
+    serialized_end=1754,
 )
 
 
@@ -767,7 +767,7 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A!\022\037cloudtasks.googleapis.com/Queue"
+                "\340A\002\372A \022\036cloudtasks.googleapis.com/Task"
             ),
             file=DESCRIPTOR,
         ),
@@ -816,8 +816,8 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1762,
-    serialized_end=1953,
+    serialized_start=1757,
+    serialized_end=1947,
 )
 
 
@@ -857,8 +857,8 @@ _DELETETASKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1955,
-    serialized_end=2028,
+    serialized_start=1949,
+    serialized_end=2022,
 )
 
 
@@ -885,7 +885,7 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A!\022\037cloudtasks.googleapis.com/Queue"
+                "\340A\002\372A \022\036cloudtasks.googleapis.com/Task"
             ),
             file=DESCRIPTOR,
         ),
@@ -970,8 +970,8 @@ _LEASETASKSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2031,
-    serialized_end=2260,
+    serialized_start=2025,
+    serialized_end=2253,
 )
 
 
@@ -1009,8 +1009,8 @@ _LEASETASKSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2262,
-    serialized_end=2331,
+    serialized_start=2255,
+    serialized_end=2324,
 )
 
 
@@ -1068,8 +1068,8 @@ _ACKNOWLEDGETASKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2334,
-    serialized_end=2468,
+    serialized_start=2327,
+    serialized_end=2461,
 )
 
 
@@ -1163,8 +1163,8 @@ _RENEWLEASEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2471,
-    serialized_end=2718,
+    serialized_start=2464,
+    serialized_end=2711,
 )
 
 
@@ -1240,8 +1240,8 @@ _CANCELLEASEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2721,
-    serialized_end=2913,
+    serialized_start=2714,
+    serialized_end=2906,
 )
 
 
@@ -1299,8 +1299,8 @@ _RUNTASKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2916,
-    serialized_end=3048,
+    serialized_start=2909,
+    serialized_end=3041,
 )
 
 _LISTQUEUESRESPONSE.fields_by_name[
@@ -2092,8 +2092,8 @@ _CLOUDTASKS = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\031cloudtasks.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=3051,
-    serialized_end=6719,
+    serialized_start=3044,
+    serialized_end=6712,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListQueues",

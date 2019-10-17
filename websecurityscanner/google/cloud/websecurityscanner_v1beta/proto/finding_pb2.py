@@ -15,7 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.websecurityscanner_v1beta.proto import (
     finding_addon_pb2 as google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_finding__addon__pb2,
 )
@@ -29,10 +29,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\014FindingProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/websecurityscanner_v1beta/proto/finding.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto\x1a@google/cloud/websecurityscanner_v1beta/proto/finding_addon.proto"\xa2\x05\n\x07\x46inding\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x66inding_type\x18\x02 \x01(\t\x12\x13\n\x0bhttp_method\x18\x03 \x01(\t\x12\x12\n\nfuzzed_url\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x18\n\x10reproduction_url\x18\x07 \x01(\t\x12\x11\n\tframe_url\x18\x08 \x01(\t\x12\x11\n\tfinal_url\x18\t \x01(\t\x12\x13\n\x0btracking_id\x18\n \x01(\t\x12:\n\x04\x66orm\x18\x10 \x01(\x0b\x32,.google.cloud.websecurityscanner.v1beta.Form\x12Q\n\x10outdated_library\x18\x0b \x01(\x0b\x32\x37.google.cloud.websecurityscanner.v1beta.OutdatedLibrary\x12U\n\x12violating_resource\x18\x0c \x01(\x0b\x32\x39.google.cloud.websecurityscanner.v1beta.ViolatingResource\x12U\n\x12vulnerable_headers\x18\x0f \x01(\x0b\x32\x39.google.cloud.websecurityscanner.v1beta.VulnerableHeaders\x12[\n\x15vulnerable_parameters\x18\r \x01(\x0b\x32<.google.cloud.websecurityscanner.v1beta.VulnerableParameters\x12\x38\n\x03xss\x18\x0e \x01(\x0b\x32+.google.cloud.websecurityscanner.v1beta.XssB\xbf\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0c\x46indingProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\n:google/cloud/websecurityscanner_v1beta/proto/finding.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x19google/api/resource.proto\x1a@google/cloud/websecurityscanner_v1beta/proto/finding_addon.proto"\xa9\x06\n\x07\x46inding\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x66inding_type\x18\x02 \x01(\t\x12\x13\n\x0bhttp_method\x18\x03 \x01(\t\x12\x12\n\nfuzzed_url\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x18\n\x10reproduction_url\x18\x07 \x01(\t\x12\x11\n\tframe_url\x18\x08 \x01(\t\x12\x11\n\tfinal_url\x18\t \x01(\t\x12\x13\n\x0btracking_id\x18\n \x01(\t\x12:\n\x04\x66orm\x18\x10 \x01(\x0b\x32,.google.cloud.websecurityscanner.v1beta.Form\x12Q\n\x10outdated_library\x18\x0b \x01(\x0b\x32\x37.google.cloud.websecurityscanner.v1beta.OutdatedLibrary\x12U\n\x12violating_resource\x18\x0c \x01(\x0b\x32\x39.google.cloud.websecurityscanner.v1beta.ViolatingResource\x12U\n\x12vulnerable_headers\x18\x0f \x01(\x0b\x32\x39.google.cloud.websecurityscanner.v1beta.VulnerableHeaders\x12[\n\x15vulnerable_parameters\x18\r \x01(\x0b\x32<.google.cloud.websecurityscanner.v1beta.VulnerableParameters\x12\x38\n\x03xss\x18\x0e \x01(\x0b\x32+.google.cloud.websecurityscanner.v1beta.Xss:\x84\x01\xea\x41\x80\x01\n)websecurityscanner.googleapis.com/Finding\x12Sprojects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}B\xbf\x01\n*com.google.cloud.websecurityscanner.v1betaB\x0c\x46indingProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_websecurityscanner__v1beta_dot_proto_dot_finding__addon__pb2.DESCRIPTOR,
     ],
 )
@@ -337,13 +337,15 @@ _FINDING = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\200\001\n)websecurityscanner.googleapis.com/Finding\022Sprojects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=199,
-    serialized_end=873,
+    serialized_start=196,
+    serialized_end=1005,
 )
 
 _FINDING.fields_by_name[
@@ -391,57 +393,54 @@ Finding = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. The resource name of the Finding. The name
-          follows the format of 'projects/{projectId}/scanConfigs/{scanC
-          onfigId}/scanruns/{scanRunId}/findings/{findingId}'. The
-          finding IDs are generated by the system.
+          The resource name of the Finding. The name follows the format
+          of 'projects/{projectId}/scanConfigs/{scanConfigId}/scanruns/{
+          scanRunId}/findings/{findingId}'. The finding IDs are
+          generated by the system.
       finding_type:
-          Output only. The type of the Finding. Detailed and up-to-date
-          information on findings can be found here:
+          The type of the Finding. Detailed and up-to-date information
+          on findings can be found here:
           https://cloud.google.com/security-scanner/docs/scan-result-
           details
       http_method:
-          Output only. The http method of the request that triggered the
+          The http method of the request that triggered the
           vulnerability, in uppercase.
       fuzzed_url:
-          Output only. The URL produced by the server-side fuzzer and
-          used in the request that triggered the vulnerability.
+          The URL produced by the server-side fuzzer and used in the
+          request that triggered the vulnerability.
       body:
-          Output only. The body of the request that triggered the
-          vulnerability.
+          The body of the request that triggered the vulnerability.
       description:
-          Output only. The description of the vulnerability.
+          The description of the vulnerability.
       reproduction_url:
-          Output only. The URL containing human-readable payload that
-          user can leverage to reproduce the vulnerability.
+          The URL containing human-readable payload that user can
+          leverage to reproduce the vulnerability.
       frame_url:
-          Output only. If the vulnerability was originated from nested
-          IFrame, the immediate parent IFrame is reported.
+          If the vulnerability was originated from nested IFrame, the
+          immediate parent IFrame is reported.
       final_url:
-          Output only. The URL where the browser lands when the
-          vulnerability is detected.
+          The URL where the browser lands when the vulnerability is
+          detected.
       tracking_id:
-          Output only. The tracking ID uniquely identifies a
-          vulnerability instance across multiple ScanRuns.
+          The tracking ID uniquely identifies a vulnerability instance
+          across multiple ScanRuns.
       form:
-          Output only. An addon containing information reported for a
-          vulnerability with an HTML form, if any.
+          An addon containing information reported for a vulnerability
+          with an HTML form, if any.
       outdated_library:
-          Output only. An addon containing information about outdated
-          libraries.
+          An addon containing information about outdated libraries.
       violating_resource:
-          Output only. An addon containing detailed information
-          regarding any resource causing the vulnerability such as
-          JavaScript sources, image, audio files, etc.
+          An addon containing detailed information regarding any
+          resource causing the vulnerability such as JavaScript sources,
+          image, audio files, etc.
       vulnerable_headers:
-          Output only. An addon containing information about vulnerable
-          or missing HTTP headers.
+          An addon containing information about vulnerable or missing
+          HTTP headers.
       vulnerable_parameters:
-          Output only. An addon containing information about request
-          parameters which were found to be vulnerable.
+          An addon containing information about request parameters which
+          were found to be vulnerable.
       xss:
-          Output only. An addon containing information reported for an
-          XSS, if any.
+          An addon containing information reported for an XSS, if any.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1beta.Finding)
     ),
@@ -450,4 +449,5 @@ _sym_db.RegisterMessage(Finding)
 
 
 DESCRIPTOR._options = None
+_FINDING._options = None
 # @@protoc_insertion_point(module_scope)

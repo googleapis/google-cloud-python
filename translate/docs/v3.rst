@@ -1,0 +1,8 @@
+v3
+===
+
+.. toctree::
+  :maxdepth: 2
+
+  gapic/v3/api
+  gapic/v3/types

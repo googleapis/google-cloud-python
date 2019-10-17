@@ -1,29 +1,12 @@
 .. include:: README.rst
 
-Usage Documentation
+Documentation
 -------------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   usage
-
-Api Reference
--------------
-.. toctree::
-   :maxdepth: 2
-
-   client
-   logger
-   entries
-   metric
-   sink
-   stdlib-usage
-   handlers
-   handlers-app-engine
-   handlers-container-engine
-   transports-sync
-   transports-thread
-   transports-base
+   v1
+   v2
 
 Changelog
 ~~~~~~~~~

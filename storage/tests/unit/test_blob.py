@@ -391,10 +391,12 @@ class Test_Blob(unittest.TestCase):
         query_parameters=None,
         credentials=None,
         expiration=None,
+        encryption_key=None,
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
+        from google.cloud.storage.blob import _get_encryption_headers
 
         api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
 
@@ -406,7 +408,7 @@ class Test_Blob(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
+        blob = self._make_one(blob_name, bucket=bucket, encryption_key=encryption_key)
 
         if version is None:
             effective_version = "v2"
@@ -442,6 +444,15 @@ class Test_Blob(unittest.TestCase):
 
         encoded_name = blob_name.encode("utf-8")
         expected_resource = "/name/{}".format(parse.quote(encoded_name, safe=b"/~"))
+        if encryption_key is not None:
+            expected_headers = headers or {}
+            if effective_version == "v2":
+                expected_headers["X-Goog-Encryption-Algorithm"] = "AES256"
+            else:
+                expected_headers.update(_get_encryption_headers(encryption_key))
+        else:
+            expected_headers = headers
+
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": expiration,
@@ -452,7 +463,7 @@ class Test_Blob(unittest.TestCase):
             "response_type": response_type,
             "response_disposition": response_disposition,
             "generation": generation,
-            "headers": headers,
+            "headers": expected_headers,
             "query_parameters": query_parameters,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
@@ -514,6 +525,14 @@ class Test_Blob(unittest.TestCase):
     def test_generate_signed_url_v2_w_headers(self):
         self._generate_signed_url_v2_helper(headers={"x-goog-foo": "bar"})
 
+    def test_generate_signed_url_v2_w_csek(self):
+        self._generate_signed_url_v2_helper(encryption_key=os.urandom(32))
+
+    def test_generate_signed_url_v2_w_csek_and_headers(self):
+        self._generate_signed_url_v2_helper(
+            encryption_key=os.urandom(32), headers={"x-goog-foo": "bar"}
+        )
+
     def test_generate_signed_url_v2_w_credentials(self):
         credentials = object()
         self._generate_signed_url_v2_helper(credentials=credentials)
@@ -565,6 +584,14 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_v4_w_headers(self):
         self._generate_signed_url_v4_helper(headers={"x-goog-foo": "bar"})
+
+    def test_generate_signed_url_v4_w_csek(self):
+        self._generate_signed_url_v4_helper(encryption_key=os.urandom(32))
+
+    def test_generate_signed_url_v4_w_csek_and_headers(self):
+        self._generate_signed_url_v4_helper(
+            encryption_key=os.urandom(32), headers={"x-goog-foo": "bar"}
+        )
 
     def test_generate_signed_url_v4_w_credentials(self):
         credentials = object()
@@ -755,15 +782,13 @@ class Test_Blob(unittest.TestCase):
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b"", stream=False):
         import requests
-        from urllib3.response import HTTPResponse
 
         response = requests.Response()
         response.status_code = status_code
         response.headers.update(headers)
         if stream:
-            raw = mock.create_autospec(HTTPResponse, instance=True)
+            raw = io.BytesIO(content)
             raw.headers = headers
-            raw.stream.return_value = iter([content])
             response.raw = raw
             response._content = False
         else:
@@ -816,12 +841,7 @@ class Test_Blob(unittest.TestCase):
         headers["range"] = "bytes=3-5"
         headers["accept-encoding"] = "gzip"
         call = mock.call(
-            "GET",
-            expected_url,
-            data=None,
-            headers=headers,
-            stream=True,
-            timeout=mock.ANY,
+            "GET", expected_url, data=None, headers=headers, timeout=mock.ANY
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -916,12 +936,7 @@ class Test_Blob(unittest.TestCase):
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-5"})
         call = mock.call(
-            "GET",
-            download_url,
-            data=None,
-            headers=headers,
-            stream=True,
-            timeout=mock.ANY,
+            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -949,12 +964,7 @@ class Test_Blob(unittest.TestCase):
         # ``headers`` was modified (in place) once for each API call.
         self.assertEqual(headers, {"range": "bytes=3-4"})
         call = mock.call(
-            "GET",
-            download_url,
-            data=None,
-            headers=headers,
-            stream=True,
-            timeout=mock.ANY,
+            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
         )
         self.assertEqual(transport.request.mock_calls, [call, call])
 
@@ -1103,7 +1113,6 @@ class Test_Blob(unittest.TestCase):
         self._download_to_filename_helper()
 
     def test_download_to_filename_corrupted(self):
-        from urllib3.response import HTTPResponse
         from google.resumable_media import DataCorruption
         from google.resumable_media.requests.download import _CHECKSUM_MISMATCH
 
@@ -1111,19 +1120,25 @@ class Test_Blob(unittest.TestCase):
         transport = mock.Mock(spec=["request"])
         empty_hash = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
         headers = {"x-goog-hash": "md5=" + empty_hash}
-        chunks = (b"noms1", b"coooookies2")
-        mock_raw = mock.create_autospec(HTTPResponse, instance=True)
-        mock_raw.headers = headers
-        mock_raw.stream.return_value = iter(chunks)
+        mock_raw = mock.Mock(headers=headers, spec=["headers"])
         response = mock.MagicMock(
             headers=headers,
             status_code=http_client.OK,
             raw=mock_raw,
-            spec=["__enter__", "__exit__", "headers", "status_code", "raw"],
+            spec=[
+                "__enter__",
+                "__exit__",
+                "headers",
+                "iter_content",
+                "status_code",
+                "raw",
+            ],
         )
         # i.e. context manager returns ``self``.
         response.__enter__.return_value = response
         response.__exit__.return_value = None
+        chunks = (b"noms1", b"coooookies2")
+        response.iter_content.return_value = iter(chunks)
 
         transport.request.return_value = response
         # Create a fake client/bucket and use them in the Blob() constructor.
@@ -1158,7 +1173,9 @@ class Test_Blob(unittest.TestCase):
         # Check the mocks.
         response.__enter__.assert_called_once_with()
         response.__exit__.assert_called_once_with(None, None, None)
-        mock_raw.stream.assert_called_once_with(8192, decode_content=False)
+        response.iter_content.assert_called_once_with(
+            chunk_size=8192, decode_unicode=False
+        )
         transport.request.assert_called_once_with(
             "GET",
             media_link,

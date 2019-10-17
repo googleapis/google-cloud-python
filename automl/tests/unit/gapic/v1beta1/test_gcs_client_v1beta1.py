@@ -22,7 +22,10 @@ import pytest
 import re
 
 from google.api_core import exceptions
+from google.auth.credentials import AnonymousCredentials
 from google.cloud import automl_v1beta1
+
+PROJECT = "project"
 
 
 class TestGcsClient(object):
@@ -31,6 +34,24 @@ class TestGcsClient(object):
         return automl_v1beta1.tables.gcs_client.GcsClient(
             bucket_name=bucket_name, client=client_mock
         )
+
+    def test_init_with_project_and_credentials(self):
+        # helper for checking that the storage client is initialized with the
+        # passed in project and credentials.
+        class FakeStorageClient:
+            def __init__(self, project=None, credentials=None):
+                self.project = project
+                self.credentials = credentials
+
+        patch = mock.patch("google.cloud.storage.Client", new=FakeStorageClient)
+        with patch:
+            credentials = AnonymousCredentials()
+            gcs_client = automl_v1beta1.tables.gcs_client.GcsClient(
+                project=PROJECT, credentials=credentials
+            )
+            assert isinstance(gcs_client.client, FakeStorageClient)
+            assert gcs_client.client.project == PROJECT
+            assert gcs_client.client.credentials == credentials
 
     def test_ensure_bucket_exists(self):
         mock_bucket = mock.Mock()

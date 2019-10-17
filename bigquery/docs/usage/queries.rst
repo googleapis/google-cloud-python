@@ -4,9 +4,10 @@ Running Queries
 Querying data
 ^^^^^^^^^^^^^
 
-Run a query and wait for it to finish:
+Run a query and wait for it to finish with the
+:func:`~google.cloud.bigquery.client.Client.query` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/client_query.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query]

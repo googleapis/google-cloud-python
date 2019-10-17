@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 1.7.0
+
+10-07-2019 14:57 PDT
+
+### Implementation Changes
+- Update docstrings, client confg (via synth). ([#9411](https://github.com/googleapis/google-cloud-python/pull/9411))
+- Remove send / receive message size limit (via synth). ([#8974](https://github.com/googleapis/google-cloud-python/pull/8974))
+
+### New Features
+- Add support for V3 of the API. ([#9020](https://github.com/googleapis/google-cloud-python/pull/9020))
+- Make `parent` argument required for all client methods in v3beta1; add `labels` argument (via synth). ([#9354](https://github.com/googleapis/google-cloud-python/pull/9354))
+- Add client options to translate_v2. ([#8737](https://github.com/googleapis/google-cloud-python/pull/8737))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Fix links to reference documentation. ([#8884](https://github.com/googleapis/google-cloud-python/pull/8884))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
+### Internal / Testing Changes
+- Update `ListGlossaries` method annotation (via synth)  ([#9385](https://github.com/googleapis/google-cloud-python/pull/9385))
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.6.0
 
 07-09-2019 13:13 PDT
