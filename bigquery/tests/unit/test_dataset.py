@@ -568,7 +568,9 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(resource, exp_resource)
 
     def test_default_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         dataset = self._make_one(self.DS_REF)
         encryption_configuration = EncryptionConfiguration(

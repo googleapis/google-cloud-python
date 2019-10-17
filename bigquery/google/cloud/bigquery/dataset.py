@@ -24,7 +24,7 @@ from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 def _get_table_reference(self, table_id):
@@ -577,7 +577,7 @@ class Dataset(object):
 
     @property
     def default_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for all tables in the dataset.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
