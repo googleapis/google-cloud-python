@@ -351,7 +351,7 @@ def test_samplegen_config_to_output_files(
                 content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
+                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
                 content=dedent("""\
                 ---
                 type: manifest/samples
@@ -441,7 +441,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
                 content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="samples/Mollusc.v6.python.21120601.131313.manifest.yaml",
+                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
                 content=dedent("""\
                 ---
                 type: manifest/samples

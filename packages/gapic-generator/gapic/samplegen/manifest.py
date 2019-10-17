@@ -17,6 +17,7 @@ import time
 from typing import Tuple
 
 from gapic.samplegen_utils import (types, yaml)
+from gapic.utils import case
 
 BASE_PATH_KEY = "base_path"
 DEFAULT_SAMPLE_DIR = "samples"
@@ -111,7 +112,7 @@ def generate(
     )
 
     manifest_fname = manifest_fname_template.format(
-        api=api_schema.naming.name,
+        api=case.to_snake_case(api_schema.naming.name),
         version=api_schema.naming.version,
         language=environment.name,
         year=dt.tm_year,

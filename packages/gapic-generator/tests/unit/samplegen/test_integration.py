@@ -91,14 +91,14 @@ def test_generate_sample_basic():
               "description": "Determine the full taxonomy of input mollusc",
               "request": [
                   {"field": "classify_request.video",
-                   "value": "'path/to/mollusc/video.mkv'",
+                   "value": "path/to/mollusc/video.mkv",
                    "input_parameter": "video",
                    "value_is_file": True},
                   {"field": "classify_request.location_annotation",
-                   "value": "'New Zealand'",
+                   "value": "New Zealand",
                    "input_parameter": "location"}
               ],
-              "response": [{"print": ["Mollusc is a %s", "$resp.taxonomy"]}]}
+              "response": [{"print": ['Mollusc is a "%s"', "$resp.taxonomy"]}]}
 
     sample_str = samplegen.generate_sample(
         sample,
@@ -130,16 +130,16 @@ def sample_classify(video, location):
     )
 
     classify_request = {}
-    # video = 'path/to/mollusc/video.mkv'
+    # video = "path/to/mollusc/video.mkv"
     with open(video, "rb") as f:
         classify_request["video"] = f.read()
 
-    # location = 'New Zealand'
+    # location = "New Zealand"
     classify_request["location_annotation"] = location
 
 
     response = client.classify(classify_request)
-    print("Mollusc is a {}".format(response.taxonomy))
+    print("Mollusc is a \\"{}\\"".format(response.taxonomy))
 
 # [END %s]
 
@@ -149,10 +149,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--video",
                         type=str,
-                        default='path/to/mollusc/video.mkv')
+                        default="path/to/mollusc/video.mkv")
     parser.add_argument("--location",
                         type=str,
-                        default='New Zealand')
+                        default="New Zealand")
     args = parser.parse_args()
 
     sample_classify(args.video, args.location)

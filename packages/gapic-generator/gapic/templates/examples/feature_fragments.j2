@@ -41,9 +41,9 @@ There is a little, but not enough for it to be important because
 
 {% macro print_string_formatting(string_list) %}
 {% if string_list|length == 1 %}
-"{{ string_list[0]|replace("%s", "{}") }}"
+"{{ string_list[0]|replace("%s", "{}")|replace('\"', '\\\"') }}"
 {% else %}
-"{{ string_list[0]|replace("%s", "{}") }}".format({{ string_list[1:]|map("coerce_response_name")|join(", ") }})
+"{{ string_list[0]|replace("%s", "{}")|replace('\"', '\\\"') }}".format({{ string_list[1:]|map("coerce_response_name")|join(", ") }})
 {% endif %}
 {% endmacro %}
 
@@ -177,14 +177,14 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% endmacro %}
 
 {% macro render_method_call(sample, calling_form, calling_form_enum) %}
-{# Note: this doesn't deal with enums or unions #}
+  {# Note: this doesn't deal with enums or unions #}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
-                       calling_form_enum.RequestStreamingClient] %}
-client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request) }}])
-{% else %}
+                       calling_form_enum.RequestStreamingClient] -%}
+client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request)|trim -}}])
+{% else -%}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request) }})
-{% endif %}
+client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request)|trim -}})
+{% endif -%}
 {% endmacro %}
 
 {# Setting up the method invocation is the responsibility of the caller: #}

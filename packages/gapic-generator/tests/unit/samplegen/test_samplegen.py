@@ -878,7 +878,10 @@ def test_validate_request_basic():
                         "mantle_length": DummyField(
                             message=DummyMessage(type="LENGTH_TYPE")),
                         "mantle_mass": DummyField(
-                            message=DummyMessage(type="MASS_TYPE"))},
+                            message=DummyMessage(type="MASS_TYPE")),
+                        "num_tentacles": DummyField(
+                            message=DummyMessage(type="MASS_TYPE"))
+                    },
                     type="SQUID_TYPE"
                 )
             )
@@ -890,17 +893,20 @@ def test_validate_request_basic():
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [
-            {"field": "squid.mantle_length", "value": "100 cm"},
+            {"field": "squid.mantle_length", "value": '100 "cm'},
             {"field": "squid.mantle_mass", "value": "10 kg"},
+            {"field": "squid.num_tentacles", "value": 10},
         ],
     )
     expected = [samplegen.TransformedRequest(
         base="squid",
         body=[
             samplegen.AttributeRequestSetup(field="mantle_length",
-                                            value="100 cm"),
+                                            value='"100 \\"cm"'),
             samplegen.AttributeRequestSetup(field="mantle_mass",
-                                            value="10 kg"),
+                                            value='"10 kg"'),
+            samplegen.AttributeRequestSetup(field="num_tentacles",
+                                            value=10)
         ],
         single=None
     )]
@@ -940,7 +946,7 @@ def test_validate_request_top_level_field():
         samplegen.TransformedRequest(base="squid",
                                      body=None,
                                      single=samplegen.AttributeRequestSetup(
-                                         value="humboldt"
+                                         value='"humboldt"'
                                      ))
     ]
 
@@ -1033,7 +1039,7 @@ def test_validate_request_multiple_arguments():
             base="squid",
             body=[samplegen.AttributeRequestSetup(
                 field="mantle_length",
-                value="100 cm",
+                value='"100 cm"',
                 value_is_file=True)],
             single=None
         ),
@@ -1041,7 +1047,7 @@ def test_validate_request_multiple_arguments():
             base="clam",
             body=[samplegen.AttributeRequestSetup(
                 field="shell_mass",
-                value="100 kg",
+                value='"100 kg"',
                 comment="Clams can be large")],
             single=None
         ),
@@ -1520,7 +1526,7 @@ def test_validate_request_enum():
     expected = [samplegen.TransformedRequest(
         "cephalopod",
         body=[samplegen.AttributeRequestSetup(field="subclass",
-                                              value="'COLEOIDEA'")],
+                                              value='"COLEOIDEA"')],
         single=None)]
     assert actual == expected
 
@@ -1536,7 +1542,7 @@ def test_validate_request_enum_top_level():
     )
     expected = [samplegen.TransformedRequest(
         "subclass",
-        single=samplegen.AttributeRequestSetup(value="'COLEOIDEA'"),
+        single=samplegen.AttributeRequestSetup(value='"COLEOIDEA"'),
         body=None)]
     assert actual == expected
 
@@ -1598,7 +1604,7 @@ def test_validate_request_primitive_field():
             base="species",
             body=None,
             single=samplegen.AttributeRequestSetup(
-                value="Architeuthis dux"
+                value='"Architeuthis dux"'
             )
         )
     ]

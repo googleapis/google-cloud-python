@@ -38,7 +38,7 @@ def test_generate_manifest():
         manifest_time=4486525628
     )
 
-    assert fname == "Mollusc.v1.python.21120304.090708.manifest.yaml"
+    assert fname == "mollusc.v1.python.21120304.090708.manifest.yaml"
 
     doc = gapic_yaml.Doc([
         gapic_yaml.KeyVal("type", "manifest/samples"),
