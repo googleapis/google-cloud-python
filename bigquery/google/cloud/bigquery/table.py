@@ -507,8 +507,12 @@ class Table(object):
 
     @property
     def range_partitioning(self):
-        """Optional[google.cloud.bigquery.table.RangePartitioning]: Configures range-based
-        partitioning for a table.
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for a table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
 
         Only specify at most one of
         :attr:`~google.cloud.bigquery.table.Table.time_partitioning` or
@@ -1684,6 +1688,10 @@ class _EmptyRowIterator(object):
 class PartitionRange(object):
     """Definition of the ranges for range partitioning.
 
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
+
     Args:
         start (Optional[int]):
             Sets the
@@ -1750,6 +1758,10 @@ class PartitionRange(object):
 
 class RangePartitioning(object):
     """Range-based partitioning configuration for a table.
+
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
 
     Args:
         range_ (Optional[google.cloud.bigquery.table.PartitionRange]):

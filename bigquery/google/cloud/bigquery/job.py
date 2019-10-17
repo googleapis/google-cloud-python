@@ -1183,8 +1183,12 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def range_partitioning(self):
-        """Optional[google.cloud.bigquery.table.RangePartitioning]: Configures range-based
-        partitioning for destination table.
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for destination table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
 
         Only specify at most one of
         :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
@@ -2286,8 +2290,12 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def range_partitioning(self):
-        """Optional[google.cloud.bigquery.table.RangePartitioning]: Configures range-based
-        partitioning for destination table.
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for destination table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
 
         Only specify at most one of
         :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
