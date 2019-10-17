@@ -1654,12 +1654,12 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         object_under_test.range_partitioning.range_.interval == 10
 
     def test_range_partitioning_setter(self):
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
         from google.cloud.bigquery.table import RangePartitioning
 
         object_under_test = self._get_target_class()()
         object_under_test.range_partitioning = RangePartitioning(
-            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+            field="column_one", range_=RangeDefinition(start=1, end=1000, interval=10)
         )
         object_under_test.range_partitioning.field == "column_one"
         object_under_test.range_partitioning.range_.start == 1
@@ -3383,12 +3383,12 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         object_under_test.range_partitioning.range_.interval == 10
 
     def test_range_partitioning_setter(self):
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
         from google.cloud.bigquery.table import RangePartitioning
 
         object_under_test = self._get_target_class()()
         object_under_test.range_partitioning = RangePartitioning(
-            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+            field="column_one", range_=RangeDefinition(start=1, end=1000, interval=10)
         )
         object_under_test.range_partitioning.field == "column_one"
         object_under_test.range_partitioning.range_.start == 1

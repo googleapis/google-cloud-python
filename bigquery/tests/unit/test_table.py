@@ -858,13 +858,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_range_partitioning(self):
         from google.cloud.bigquery.table import RangePartitioning
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
 
         table = self._make_one("proj.dset.tbl")
         assert table.range_partitioning is None
 
         table.range_partitioning = RangePartitioning(
-            field="col1", range_=PartitionRange(start=-512, end=1024, interval=128)
+            field="col1", range_=RangeDefinition(start=-512, end=1024, interval=128)
         )
         assert table.range_partitioning.field == "col1"
         assert table.range_partitioning.range_.start == -512
@@ -2800,11 +2800,11 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe(bqstorage_client)
 
 
-class TestPartitionRange(unittest.TestCase):
+class TestRangeDefinition(unittest.TestCase):
     def _get_target_class(self):
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
 
-        return PartitionRange
+        return RangeDefinition
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -2831,7 +2831,7 @@ class TestPartitionRange(unittest.TestCase):
 
     def test_repr(self):
         object_under_test = self._make_one(start=1, end=10, interval=2)
-        assert repr(object_under_test) == "PartitionRange(end=10, interval=2, start=1)"
+        assert repr(object_under_test) == "RangeDefinition(end=10, interval=2, start=1)"
 
 
 class TestRangePartitioning(unittest.TestCase):
@@ -2851,10 +2851,10 @@ class TestRangePartitioning(unittest.TestCase):
         assert object_under_test.range_.interval is None
 
     def test_constructor_w_properties(self):
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
 
         object_under_test = self._make_one(
-            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+            range_=RangeDefinition(start=1, end=10, interval=2), field="integer_col"
         )
         assert object_under_test.field == "integer_col"
         assert object_under_test.range_.start == 1
@@ -2875,18 +2875,18 @@ class TestRangePartitioning(unittest.TestCase):
 
     def test_range_w_wrong_type(self):
         object_under_test = self._make_one()
-        with pytest.raises(ValueError, match="PartitionRange"):
+        with pytest.raises(ValueError, match="RangeDefinition"):
             object_under_test.range_ = object()
 
     def test_repr(self):
-        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangeDefinition
 
         object_under_test = self._make_one(
-            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+            range_=RangeDefinition(start=1, end=10, interval=2), field="integer_col"
         )
         assert (
             repr(object_under_test)
-            == "RangePartitioning(field='integer_col', range_=PartitionRange(end=10, interval=2, start=1))"
+            == "RangePartitioning(field='integer_col', range_=RangeDefinition(end=10, interval=2, start=1))"
         )
 
 
