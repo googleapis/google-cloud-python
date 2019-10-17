@@ -50,10 +50,11 @@ The '_EXTRA_HEADERS' class-level attribute is deprecated.  Please use
 class Connection(object):
     """A generic connection to Google Cloud Platform.
 
-    Args:
-        client (google.cloud.client.Client): The client that owns the current connection.
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client that owns the current connection.
 
-        client_info (google.api_core.client_info.ClientInfo): (Optional) instance used to generate user agent.
+    :type client_info: :class:`~google.api_core.client_info.ClientInfo`
+    :param client_info: (Optional) instance used to generate user agent.
     """
 
     _user_agent = DEFAULT_USER_AGENT
@@ -181,25 +182,25 @@ class JSONConnection(Connection):
 
         Typically, you shouldn't need to use this method.
 
-        Args:
-            path (str): The path to the resource (ie, ``'/b/bucket-name'``).
+        :type path: str
+        :param path: The path to the resource (ie, ``'/b/bucket-name'``).
 
-            query_params (Union[dict, list]):
-                A dictionary of keys and values (or list of
-                key-value pairs) to insert into the query
-                string of the URL.
+        :type query_params: dict or list
+        :param query_params: A dictionary of keys and values (or list of
+                             key-value pairs) to insert into the query
+                             string of the URL.
 
-            api_base_url (str):
-                The base URL for the API endpoint.
-                Typically you won't have to provide this.
+        :type api_base_url: str
+        :param api_base_url: The base URL for the API endpoint.
+                             Typically you won't have to provide this.
 
-            api_version (str):
-                The version of the API to call.
-                Typically you shouldn't provide this and instead
-                use the default for the library.
+        :type api_version: str
+        :param api_version: The version of the API to call.
+                            Typically you shouldn't provide this and instead
+                            use the default for the library.
 
-        Returns:
-            str: The URL assembled from the pieces provided.
+        :rtype: str
+        :returns: The URL assembled from the pieces provided.
         """
         url = self.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or self.API_BASE_URL),
@@ -226,27 +227,31 @@ class JSONConnection(Connection):
 
         Typically, you shouldn't need to use this method.
 
-        Args:
-            method (str): The HTTP method to use in the request.
+        :type method: str
+        :param method: The HTTP method to use in the request.
 
-            url (str): The URL to send the request to.
+        :type url: str
+        :param url: The URL to send the request to.
 
-            data (str): The data to send as the body of the request.
+        :type data: str
+        :param data: The data to send as the body of the request.
 
-            content_type (str): The proper MIME type of the data provided.
+        :type content_type: str
+        :param content_type: The proper MIME type of the data provided.
 
-            headers (Dict):
-                (Optional) A dictionary of HTTP headers to send with
-                the request. If passed, will be modified directly
-                here with added headers.
+        :type headers: dict
+        :param headers: (Optional) A dictionary of HTTP headers to send with
+                        the request. If passed, will be modified directly
+                        here with added headers.
 
-            target_object (object):
-                (Optional) Argument to be used by library callers.  This can allow
-                custom behavior, for example, to defer an HTTP request and complete
-                initialization of the object at a later time.
+        :type target_object: object
+        :param target_object:
+            (Optional) Argument to be used by library callers.  This can allow
+            custom behavior, for example, to defer an HTTP request and complete
+            initialization of the object at a later time.
 
-        Returns:
-            requests.Response: The HTTP response.
+        :rtype: :class:`requests.Response`
+        :returns: The HTTP response.
         """
         headers = headers or {}
         headers.update(self.extra_headers)
@@ -267,21 +272,25 @@ class JSONConnection(Connection):
 
         Allows batch context managers to override and defer a request.
 
-        Args:
-            method (str): The HTTP method to use in the request.
+        :type method: str
+        :param method: The HTTP method to use in the request.
 
-            url (str): The URL to send the request to.
+        :type url: str
+        :param url: The URL to send the request to.
 
-            headers (Dict): A dictionary of HTTP headers to send with the request.
+        :type headers: dict
+        :param headers: A dictionary of HTTP headers to send with the request.
 
-            data (str): The data to send as the body of the request.
+        :type data: str
+        :param data: The data to send as the body of the request.
 
-            target_object (object):
-                (Optional) Unused ``target_object`` here but may be used by a
-                superclass.
+        :type target_object: object
+        :param target_object:
+            (Optional) Unused ``target_object`` here but may be used by a
+            superclass.
 
-        Returns:
-            requests.Response: The HTTP response.
+        :rtype: :class:`requests.Response`
+        :returns: The HTTP response.
         """
         return self.http.request(url=url, method=method, headers=headers, data=data)
 
@@ -304,59 +313,59 @@ class JSONConnection(Connection):
         interact with the API using these primitives, this is the
         correct one to use.
 
-        Args:
-            method (str):
-                The HTTP method name (ie, ``GET``, ``POST``, etc).
-                Required.
+        :type method: str
+        :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
+                       Required.
 
-            path (str):
-                The path to the resource (ie, ``'/b/bucket-name'``).
-                Required.
+        :type path: str
+        :param path: The path to the resource (ie, ``'/b/bucket-name'``).
+                     Required.
 
-            query_params (Union[dict, list]):
-                A dictionary of keys and values (or list of
-                key-value pairs) to insert into the query
-                string of the URL.
+        :type query_params: dict or list
+        :param query_params: A dictionary of keys and values (or list of
+                             key-value pairs) to insert into the query
+                             string of the URL.
 
-            data (str):
-                The data to send as the body of the request. Default is
-                the empty string.
+        :type data: str
+        :param data: The data to send as the body of the request. Default is
+                     the empty string.
 
-            content_type (str):
-                The proper MIME type of the data provided. Default
-                is None.
+        :type content_type: str
+        :param content_type: The proper MIME type of the data provided. Default
+                             is None.
 
-            headers (Dict): extra HTTP headers to be sent with the request.
+        :type headers: dict
+        :param headers: extra HTTP headers to be sent with the request.
 
-            api_base_url (str):
-                The base URL for the API endpoint.
-                Typically you won't have to provide this.
-                Default is the standard API base URL.
+        :type api_base_url: str
+        :param api_base_url: The base URL for the API endpoint.
+                             Typically you won't have to provide this.
+                             Default is the standard API base URL.
 
-            api_version (str):
-                The version of the API to call.  Typically
-                you shouldn't provide this and instead use
-                the default for the library.  Default is the
-                latest API version supported by
-                google-cloud-python.
+        :type api_version: str
+        :param api_version: The version of the API to call.  Typically
+                            you shouldn't provide this and instead use
+                            the default for the library.  Default is the
+                            latest API version supported by
+                            google-cloud-python.
 
-            expect_json (bool):
-                If True, this method will try to parse the
-                response as JSON and raise an exception if
-                that cannot be done.  Default is True.
+        :type expect_json: bool
+        :param expect_json: If True, this method will try to parse the
+                            response as JSON and raise an exception if
+                            that cannot be done.  Default is True.
 
-            _target_object (object):
-                (Optional) Protected argument to be used by library callers. This
-                can allow custom behavior, for example, to defer an HTTP request
-                and complete initialization of the object at a later time.
+        :type _target_object: :class:`object`
+        :param _target_object:
+            (Optional) Protected argument to be used by library callers. This
+            can allow custom behavior, for example, to defer an HTTP request
+            and complete initialization of the object at a later time.
 
         :raises ~google.cloud.exceptions.GoogleCloudError: if the response code
             is not 200 OK.
         :raises ValueError: if the response content type is not JSON.
-        Returns:
-            Union[dict, str]:
-                The API response payload, either as a raw string or
-                a dictionary if the response is valid JSON.
+        :rtype: dict or str
+        :returns: The API response payload, either as a raw string or
+                  a dictionary if the response is valid JSON.
         """
         url = self.build_api_url(
             path=path,
