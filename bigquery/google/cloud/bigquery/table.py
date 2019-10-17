@@ -1681,21 +1681,21 @@ class _EmptyRowIterator(object):
         return iter(())
 
 
-class RangeDefinition(object):
+class PartitionRange(object):
     """Definition of the ranges for range partitioning.
 
     Args:
         start (Optional[int]):
             Sets the
-            :attr:`~google.cloud.bigquery.table.RangeDefinition.start`
+            :attr:`~google.cloud.bigquery.table.PartitionRange.start`
             property.
         end (Optional[int]):
             Sets the
-            :attr:`~google.cloud.bigquery.table.RangeDefinition.end`
+            :attr:`~google.cloud.bigquery.table.PartitionRange.end`
             property.
         interval (Optional[int]):
             Sets the
-            :attr:`~google.cloud.bigquery.table.RangeDefinition.interval`
+            :attr:`~google.cloud.bigquery.table.PartitionRange.interval`
             property.
         _properties (Optional[dict]):
             Private. Used to construct object from API resource.
@@ -1745,14 +1745,14 @@ class RangeDefinition(object):
 
     def __repr__(self):
         key_vals = ["{}={}".format(key, val) for key, val in self._key()]
-        return "RangeDefinition({})".format(", ".join(key_vals))
+        return "PartitionRange({})".format(", ".join(key_vals))
 
 
 class RangePartitioning(object):
     """Range-based partitioning configuration for a table.
 
     Args:
-        range_ (Optional[google.cloud.bigquery.table.RangeDefinition]):
+        range_ (Optional[google.cloud.bigquery.table.PartitionRange]):
             Sets the
             :attr:`google.cloud.bigquery.table.RangePartitioning.range_`
             property.
@@ -1777,20 +1777,20 @@ class RangePartitioning(object):
     # Trailing underscore to prevent conflict with built-in range() function.
     @property
     def range_(self):
-        """google.cloud.bigquery.table.RangeDefinition: Defines the
+        """google.cloud.bigquery.table.PartitionRange: Defines the
         ranges for range partitioning.
 
         Raises:
             ValueError:
-                If the value is not a :class:`RangeDefinition`.
+                If the value is not a :class:`PartitionRange`.
         """
         range_properties = self._properties.setdefault("range", {})
-        return RangeDefinition(_properties=range_properties)
+        return PartitionRange(_properties=range_properties)
 
     @range_.setter
     def range_(self, value):
-        if not isinstance(value, RangeDefinition):
-            raise ValueError("Expected a RangeDefinition, but got {}.".format(value))
+        if not isinstance(value, PartitionRange):
+            raise ValueError("Expected a PartitionRange, but got {}.".format(value))
         self._properties["range"] = value._properties
 
     @property

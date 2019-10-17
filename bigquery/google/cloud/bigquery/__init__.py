@@ -73,7 +73,7 @@ from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineArgument
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import RangeDefinition
+from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import Table
@@ -98,7 +98,7 @@ __all__ = [
     # Tables
     "Table",
     "TableReference",
-    "RangeDefinition",
+    "PartitionRange",
     "RangePartitioning",
     "Row",
     "TimePartitioning",

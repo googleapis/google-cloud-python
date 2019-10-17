@@ -83,7 +83,7 @@ Table
 .. autosummary::
     :toctree: generated
 
-    table.RangeDefinition
+    table.PartitionRange
     table.RangePartitioning
     table.Row
     table.RowIterator
