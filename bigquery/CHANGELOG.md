@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.21.0
+
+10-16-2019 10:33 PDT
+
+
+### New Features
+
+- add ability to pass in a table ID instead of a query to the `%%bigquery` magic ([#9170](https://github.com/googleapis/google-cloud-python/pull/9170))
+- add support for custom `QueryJobConfig` in `BigQuery.cursor.execute` method ([#9278](https://github.com/googleapis/google-cloud-python/pull/9278))
+- store `QueryJob` to destination var on error in `%%bigquery` magic ([#9245](https://github.com/googleapis/google-cloud-python/pull/9245))
+- add script statistics to job resource ([#9428](https://github.com/googleapis/google-cloud-python/pull/9428))
+- add support for sheets ranges ([#9416](https://github.com/googleapis/google-cloud-python/pull/9416))
+- add support for listing jobs by parent job ([#9225](https://github.com/googleapis/google-cloud-python/pull/9225))
+- expose customer managed encryption key for ML models ([#9302](https://github.com/googleapis/google-cloud-python/pull/9302))
+- add `Dataset.default_partition_expiration_ms` and `Table.require_partition_filter` properties ([#9464](https://github.com/googleapis/google-cloud-python/pull/9464))
+
+### Dependencies
+
+- restrict version range of `google-resumable-media` ([#9243](https://github.com/googleapis/google-cloud-python/pull/9243))
+
+### Documentation
+
+- document how to load data as JSON string ([#9231](https://github.com/googleapis/google-cloud-python/pull/9231))
+- standardize comments and formatting in existing code samples ([#9212](https://github.com/googleapis/google-cloud-python/pull/9212))
+- rewrite docstrings in Google style ([#9326](https://github.com/googleapis/google-cloud-python/pull/9326))
+- fix incorrect links to REST API in reference docs ([#9436](https://github.com/googleapis/google-cloud-python/pull/9436))
+
+### Internal / Testing Changes
+
+- add code samples to lint check ([#9277](https://github.com/googleapis/google-cloud-python/pull/9277))
+- update code samples to use strings for table and dataset IDs ([#9136](https://github.com/googleapis/google-cloud-python/pull/9136))
+- simplify scripting system test to reduce flakiness ([#9458](https://github.com/googleapis/google-cloud-python/pull/9458))
+
 ## 1.20.0
 
 09-13-2019 11:22 PDT

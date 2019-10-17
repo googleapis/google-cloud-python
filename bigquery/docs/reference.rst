@@ -83,7 +83,6 @@ Table
 .. autosummary::
     :toctree: generated
 
-    table.EncryptionConfiguration
     table.PartitionRange
     table.RangePartitioning
     table.Row
@@ -175,6 +174,13 @@ Enums
 
     enums.StandardSqlDataTypes
 
+Encryption Configuration
+========================
+
+.. autosummary::
+    :toctree: generated
+
+    encryption_configuration.EncryptionConfiguration
 
 Additional Types
 ================

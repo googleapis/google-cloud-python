@@ -27,7 +27,9 @@ from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -37,13 +39,11 @@ from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
-from google.cloud.bigquery.table import EncryptionConfiguration
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TimePartitioning
-from google.cloud.bigquery import _helpers
 
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
@@ -1041,7 +1041,7 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -1469,7 +1469,7 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys)
@@ -1680,7 +1680,7 @@ class CopyJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -1751,7 +1751,7 @@ class CopyJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -2083,7 +2083,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -2542,7 +2542,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
