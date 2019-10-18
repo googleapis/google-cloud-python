@@ -1355,6 +1355,11 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
+
+        Raises:
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.LoadJobConfig``
+                class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
@@ -1370,6 +1375,14 @@ class Client(ClientWithProject):
             source_uris = [source_uris]
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
+
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
+                raise ValueError(
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
+
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
         load_job._begin(retry=retry)
 
@@ -1436,6 +1449,9 @@ class Client(ClientWithProject):
                 If ``size`` is not passed in and can not be determined, or if
                 the ``file_obj`` can be detected to be a file opened in text
                 mode.
+
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.LoadJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
@@ -1447,6 +1463,12 @@ class Client(ClientWithProject):
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
         job_ref = job._JobReference(job_id, project=project, location=location)
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
+                raise ValueError(
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job.to_api_repr()
 
@@ -1545,16 +1567,25 @@ class Client(ClientWithProject):
                 If a usable parquet engine cannot be found. This method
                 requires :mod:`pyarrow` or :mod:`fastparquet` to be
                 installed.
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.LoadJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
-        if job_config is None:
-            job_config = job.LoadJobConfig()
-        else:
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
+                raise ValueError(
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
             # Make a copy so that the job config isn't modified in-place.
             job_config_properties = copy.deepcopy(job_config._properties)
             job_config = job.LoadJobConfig()
             job_config._properties = job_config_properties
+
+        else:
+            job_config = job.LoadJobConfig()
+
         job_config.source_format = job.SourceFormat.PARQUET
 
         if location is None:
@@ -1700,14 +1731,24 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
+
+        Raises:
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.LoadJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
-        if job_config is None:
-            job_config = job.LoadJobConfig()
-        else:
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
+                raise ValueError(
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
             # Make a copy so that the job config isn't modified in-place.
             job_config = copy.deepcopy(job_config)
+        else:
+            job_config = job.LoadJobConfig()
+
         job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
 
         if job_config.schema is None:
@@ -1900,6 +1941,10 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.job.CopyJob: A new copy job instance.
+
+        Raises:
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.CopyJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
@@ -1928,6 +1973,12 @@ class Client(ClientWithProject):
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.CopyJobConfig):
+                raise ValueError(
+                    "Expected an instance of CopyJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
         )
@@ -1985,6 +2036,10 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.job.ExtractJob: A new extract job instance.
+
+        Raises:
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.ExtractJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
@@ -2000,6 +2055,12 @@ class Client(ClientWithProject):
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
 
+        if job_config:
+            if not isinstance(job_config, google.cloud.bigquery.job.ExtractJobConfig):
+                raise ValueError(
+                    "Expected an instance of ExtractJobConfig class for the job_config parameter, but received job_config = %s"
+                    % (job_config,)
+                )
         extract_job = job.ExtractJob(
             job_ref, source, destination_uris, client=self, job_config=job_config
         )
@@ -2049,6 +2110,10 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
+
+        Raises:
+            ValueError:
+                If ``job_config`` is not an instance of ``google.cloud.bigquery.job.QueryJobConfig`` class.
         """
         job_id = _make_job_id(job_id, job_id_prefix)
 
@@ -2060,6 +2125,11 @@ class Client(ClientWithProject):
 
         if self._default_query_job_config:
             if job_config:
+                if not isinstance(job_config, google.cloud.bigquery.job.QueryJobConfig):
+                    raise ValueError(
+                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = %s"
+                        % (job_config,)
+                    )
                 # anything that's not defined on the incoming
                 # that is in the default,
                 # should be filled in with the default
@@ -2068,6 +2138,14 @@ class Client(ClientWithProject):
                     self._default_query_job_config
                 )
             else:
+                if not isinstance(
+                    self._default_query_job_config,
+                    google.cloud.bigquery.job.QueryJobConfig,
+                ):
+                    raise ValueError(
+                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = %s"
+                        % (job_config,)
+                    )
                 job_config = self._default_query_job_config
 
         job_ref = job._JobReference(job_id, project=project, location=location)
