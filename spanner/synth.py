@@ -55,6 +55,9 @@ s.replace(
     "\g<1>grpc_gcp_config = grpc_gcp.api_config_from_text_pb("
     "\g<1>    pkg_resources.resource_string(__name__, _SPANNER_GRPC_CONFIG))"
     "\g<1>options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]"
+    "\g<1>if 'options' in kwargs:"
+    "\g<1>    options.extend(kwargs['options'])"
+    "\g<1>kwargs['options'] = options"
     "\g<0>",
 )
 s.replace(
