@@ -105,6 +105,9 @@ class SpannerGrpcTransport(object):
             pkg_resources.resource_string(__name__, _SPANNER_GRPC_CONFIG)
         )
         options = [(grpc_gcp.API_CONFIG_CHANNEL_ARG, grpc_gcp_config)]
+        if "options" in kwargs:
+            options.extend(kwargs["options"])
+        kwargs["options"] = options
         return google.api_core.grpc_helpers.create_channel(
             address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
