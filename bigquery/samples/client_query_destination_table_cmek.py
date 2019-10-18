@@ -30,7 +30,7 @@ def client_query_destination_table_cmek(client, table_id):
     # Set the encryption key to use for the destination.
     # TODO(developer): Replace this key with a key you have created in KMS.
     kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
 
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
