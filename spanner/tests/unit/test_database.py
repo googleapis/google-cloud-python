@@ -233,6 +233,7 @@ class TestDatabase(_BaseTest):
     def test_spanner_api_property_w_scopeless_creds(self):
         client = _Client()
         client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = mock.Mock()
         credentials = client.credentials = object()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
@@ -250,7 +251,9 @@ class TestDatabase(_BaseTest):
         self.assertIs(again, api)
 
         spanner_client.assert_called_once_with(
-            credentials=credentials, client_info=client_info
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
         )
 
     def test_spanner_api_w_scoped_creds(self):
@@ -271,6 +274,7 @@ class TestDatabase(_BaseTest):
         expected_scopes = (SPANNER_DATA_SCOPE,)
         client = _Client()
         client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = mock.Mock()
         credentials = client.credentials = _CredentialsWithScopes()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
