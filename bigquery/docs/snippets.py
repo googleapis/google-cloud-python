@@ -660,7 +660,6 @@ def test_load_table_from_file(client, to_delete):
     dataset_id = "load_table_from_file_dataset_{}".format(_millis())
     table_id = "load_table_from_file_table_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = "US"
     client.create_dataset(dataset)
     to_delete.append(dataset)
     snippets_dir = os.path.abspath(os.path.dirname(__file__))
@@ -774,7 +773,6 @@ def test_load_table_from_uri_csv(client, to_delete, capsys):
 def test_load_table_from_uri_json(client, to_delete, capsys):
     dataset_id = "load_table_from_uri_json_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = "US"
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -793,10 +791,7 @@ def test_load_table_from_uri_json(client, to_delete, capsys):
     uri = "gs://cloud-samples-data/bigquery/us-states/us-states.json"
 
     load_job = client.load_table_from_uri(
-        uri,
-        dataset_ref.table("us_states"),
-        location="US",  # Location must match that of the destination dataset.
-        job_config=job_config,
+        uri, dataset_ref.table("us_states"), job_config=job_config
     )  # API request
     print("Starting job {}".format(load_job.job_id))
 
@@ -814,7 +809,6 @@ def test_load_table_from_uri_json(client, to_delete, capsys):
 def test_load_table_from_uri_cmek(client, to_delete):
     dataset_id = "load_table_from_uri_cmek_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = "US"
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -838,10 +832,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     uri = "gs://cloud-samples-data/bigquery/us-states/us-states.json"
 
     load_job = client.load_table_from_uri(
-        uri,
-        dataset_ref.table("us_states"),
-        location="US",  # Location must match that of the destination dataset.
-        job_config=job_config,
+        uri, dataset_ref.table("us_states"), job_config=job_config
     )  # API request
 
     assert load_job.job_type == "load"
@@ -1085,7 +1076,6 @@ def test_load_table_add_column(client, to_delete):
     dataset_id = "load_table_add_column_{}".format(_millis())
     dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -1128,10 +1118,7 @@ def test_load_table_add_column(client, to_delete):
 
     with open(filepath, "rb") as source_file:
         job = client.load_table_from_file(
-            source_file,
-            table_ref,
-            location="US",  # Must match the destination dataset location.
-            job_config=job_config,
+            source_file, table_ref, job_config=job_config
         )  # API request
 
     job.result()  # Waits for table load to complete.
@@ -1153,7 +1140,6 @@ def test_load_table_relax_column(client, to_delete):
     dataset_id = "load_table_relax_column_{}".format(_millis())
     dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -1202,10 +1188,7 @@ def test_load_table_relax_column(client, to_delete):
 
     with open(filepath, "rb") as source_file:
         job = client.load_table_from_file(
-            source_file,
-            table_ref,
-            location="US",  # Must match the destination dataset location.
-            job_config=job_config,
+            source_file, table_ref, job_config=job_config
         )  # API request
 
     job.result()  # Waits for table load to complete.
@@ -1229,13 +1212,11 @@ def test_load_table_relax_column(client, to_delete):
 def test_copy_table_multiple_source(client, to_delete):
     dest_dataset_id = "dest_dataset_{}".format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dest_dataset_id))
-    dest_dataset.location = "US"
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
     source_dataset_id = "source_dataset_{}".format(_millis())
     source_dataset = bigquery.Dataset(client.dataset(source_dataset_id))
-    source_dataset.location = "US"
     source_dataset = client.create_dataset(source_dataset)
     to_delete.append(source_dataset)
 
@@ -1250,13 +1231,7 @@ def test_copy_table_multiple_source(client, to_delete):
         job_config = bigquery.LoadJobConfig()
         job_config.schema = schema
         body = six.BytesIO(data)
-        client.load_table_from_file(
-            body,
-            table_ref,
-            # Location must match that of the destination dataset.
-            location="US",
-            job_config=job_config,
-        ).result()
+        client.load_table_from_file(body, table_ref, job_config=job_config).result()
 
     # [START bigquery_copy_table_multiple_source]
     # from google.cloud import bigquery
@@ -1268,12 +1243,7 @@ def test_copy_table_multiple_source(client, to_delete):
     table2_ref = client.dataset(source_dataset_id).table("table2")
     dest_table_ref = client.dataset(dest_dataset_id).table("destination_table")
 
-    job = client.copy_table(
-        [table1_ref, table2_ref],
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-    )  # API request
+    job = client.copy_table([table1_ref, table2_ref], dest_table_ref)  # API request
     job.result()  # Waits for job to complete.
 
     assert job.state == "DONE"
@@ -1287,7 +1257,6 @@ def test_copy_table_multiple_source(client, to_delete):
 def test_copy_table_cmek(client, to_delete):
     dataset_id = "copy_table_cmek_{}".format(_millis())
     dest_dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dest_dataset.location = "US"
     dest_dataset = client.create_dataset(dest_dataset)
     to_delete.append(dest_dataset)
 
@@ -1312,11 +1281,7 @@ def test_copy_table_cmek(client, to_delete):
     job_config.destination_encryption_configuration = encryption_config
 
     job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-        job_config=job_config,
+        source_table_ref, dest_table_ref, job_config=job_config
     )  # API request
     job.result()  # Waits for job to complete.
 
@@ -1344,12 +1309,7 @@ def test_extract_table(client, to_delete):
     dataset_ref = client.dataset(dataset_id, project=project)
     table_ref = dataset_ref.table(table_id)
 
-    extract_job = client.extract_table(
-        table_ref,
-        destination_uri,
-        # Location must match that of the source table.
-        location="US",
-    )  # API request
+    extract_job = client.extract_table(table_ref, destination_uri)  # API request
     extract_job.result()  # Waits for job to complete.
 
     print(
@@ -1381,11 +1341,7 @@ def test_extract_table_json(client, to_delete):
     job_config.destination_format = bigquery.DestinationFormat.NEWLINE_DELIMITED_JSON
 
     extract_job = client.extract_table(
-        table_ref,
-        destination_uri,
-        job_config=job_config,
-        # Location must match that of the source table.
-        location="US",
+        table_ref, destination_uri, job_config=job_config
     )  # API request
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_json]
@@ -1414,11 +1370,7 @@ def test_extract_table_compressed(client, to_delete):
     job_config.compression = bigquery.Compression.GZIP
 
     extract_job = client.extract_table(
-        table_ref,
-        destination_uri,
-        # Location must match that of the source table.
-        location="US",
-        job_config=job_config,
+        table_ref, destination_uri, job_config=job_config
     )  # API request
     extract_job.result()  # Waits for job to complete.
     # [END bigquery_extract_table_compressed]
@@ -1433,7 +1385,6 @@ def test_undelete_table(client, to_delete):
     dataset_id = "undelete_table_dataset_{}".format(_millis())
     table_id = "undelete_table_table_{}".format(_millis())
     dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = "US"
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -1477,12 +1428,7 @@ def test_undelete_table(client, to_delete):
     dest_table_ref = client.dataset(dataset_id).table(recovered_table_id)
 
     # Construct and run a copy job.
-    job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-    )  # API request
+    job = client.copy_table(source_table_ref, dest_table_ref)  # API request
 
     job.result()  # Waits for job to complete.
 
@@ -1509,10 +1455,7 @@ def test_client_query_legacy_sql(client):
     job_config.use_legacy_sql = True
 
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results.
@@ -1532,11 +1475,7 @@ def test_client_query_total_rows(client, capsys):
         'WHERE state = "TX" '
         "LIMIT 100"
     )
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-    )  # API request - starts the query
+    query_job = client.query(query)  # API request - starts the query
 
     results = query_job.result()  # Wait for query to complete.
     print("Got {} rows.".format(results.total_rows))
@@ -1552,8 +1491,7 @@ def test_manage_job(client):
         FROM `bigquery-public-data.samples.shakespeare`
         GROUP BY corpus;
     """
-    location = "us"
-    job = client.query(sql, location=location)
+    job = client.query(sql)
     job_id = job.job_id
 
     # [START bigquery_cancel_job]
@@ -1561,9 +1499,8 @@ def test_manage_job(client):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
-    # location = 'us'                         # replace with your location
 
-    job = client.cancel_job(job_id, location=location)
+    job = client.cancel_job(job_id)
     # [END bigquery_cancel_job]
 
     # [START bigquery_get_job]
@@ -1571,12 +1508,11 @@ def test_manage_job(client):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
-    # location = 'us'                         # replace with your location
 
-    job = client.get_job(job_id, location=location)  # API request
+    job = client.get_job(job_id)  # API request
 
     # Print selected job properties
-    print("Details for job {} running in {}:".format(job_id, location))
+    print("Details for job {}:".format(job_id))
     print(
         "\tType: {}\n\tState: {}\n\tCreated: {}".format(
             job.job_type, job.state, job.created
@@ -1591,7 +1527,6 @@ def test_client_query_destination_table(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     client.create_dataset(dataset)
 
     # [START bigquery_query_destination_table]
@@ -1611,11 +1546,7 @@ def test_client_query_destination_table(client, to_delete):
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        sql,
-        # Location must match that of the dataset(s) referenced in the query
-        # and of the destination table.
-        location="US",
-        job_config=job_config,
+        sql, job_config=job_config
     )  # API request - starts the query
 
     query_job.result()  # Waits for the query to finish
@@ -1628,7 +1559,6 @@ def test_client_query_destination_table_legacy(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     client.create_dataset(dataset)
 
     # [START bigquery_query_legacy_large_results]
@@ -1650,11 +1580,7 @@ def test_client_query_destination_table_legacy(client, to_delete):
     """
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        sql,
-        # Location must match that of the dataset(s) referenced in the query
-        # and of the destination table.
-        location="US",
-        job_config=job_config,
+        sql, job_config=job_config
     )  # API request - starts the query
 
     query_job.result()  # Waits for the query to finish
@@ -1668,7 +1594,6 @@ def test_client_query_destination_table_cmek(client, to_delete):
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     client.create_dataset(dataset)
 
     # [START bigquery_query_destination_table_cmek]
@@ -1692,11 +1617,7 @@ def test_client_query_destination_table_cmek(client, to_delete):
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        "SELECT 17 AS my_col;",
-        # Location must match that of the dataset(s) referenced in the query
-        # and of the destination table.
-        location="US",
-        job_config=job_config,
+        "SELECT 17 AS my_col;", job_config=job_config
     )  # API request - starts the query
     query_job.result()
 
@@ -1719,17 +1640,13 @@ def test_client_query_batch(client, to_delete):
         FROM `bigquery-public-data.samples.shakespeare`
         GROUP BY corpus;
     """
-    # Location must match that of the dataset(s) referenced in the query.
-    location = "US"
 
     # API request - starts the query
-    query_job = client.query(sql, location=location, job_config=job_config)
+    query_job = client.query(sql, job_config=job_config)
 
     # Check on the progress by getting the job's updated state. Once the state
     # is `DONE`, the results are ready.
-    query_job = client.get_job(
-        query_job.job_id, location=location
-    )  # API request - fetches job
+    query_job = client.get_job(query_job.job_id)  # API request - fetches job
     print("Job {} is currently in state {}".format(query_job.job_id, query_job.state))
     # [END bigquery_query_batch]
 
@@ -1738,7 +1655,6 @@ def test_client_query_relax_column(client, to_delete):
     dataset_id = "query_relax_column_{}".format(_millis())
     dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -1775,9 +1691,6 @@ def test_client_query_relax_column(client, to_delete):
         # In this example, the existing table contains 'full_name' and 'age' as
         # required columns, but the query results will omit the second column.
         'SELECT "Beyonce" as full_name;',
-        # Location must match that of the dataset(s) referenced in the query
-        # and of the destination table.
-        location="US",
         job_config=job_config,
     )  # API request - starts the query
 
@@ -1799,7 +1712,6 @@ def test_client_query_add_column(client, to_delete):
     dataset_id = "query_add_column_{}".format(_millis())
     dataset_ref = client.dataset(dataset_id)
     dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "US"
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -1835,9 +1747,6 @@ def test_client_query_add_column(client, to_delete):
         # 'age' columns, while the results of this query will contain an
         # additional 'favorite_color' column.
         'SELECT "Timmy" as full_name, 85 as age, "Blue" as favorite_color;',
-        # Location must match that of the dataset(s) referenced in the query
-        # and of the destination table.
-        location="US",
         job_config=job_config,
     )  # API request - starts the query
 
@@ -1873,10 +1782,7 @@ def test_client_query_w_named_params(client, capsys):
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results
@@ -1913,10 +1819,7 @@ def test_client_query_w_positional_params(client, capsys):
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results
@@ -1951,10 +1854,7 @@ def test_client_query_w_timestamp_params(client, capsys):
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results
@@ -1990,10 +1890,7 @@ def test_client_query_w_array_params(client, capsys):
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results
@@ -2024,10 +1921,7 @@ def test_client_query_w_struct_params(client, capsys):
     job_config = bigquery.QueryJobConfig()
     job_config.query_parameters = query_params
     query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
+        query, job_config=job_config
     )  # API request - starts the query
 
     # Print the results
@@ -2059,8 +1953,6 @@ def test_client_query_dry_run(client):
             "WHERE state = 'WA' "
             "GROUP BY name"
         ),
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
         job_config=job_config,
     )  # API request
 
@@ -2086,12 +1978,7 @@ def test_query_no_cache(client):
         FROM `bigquery-public-data.samples.shakespeare`
         GROUP BY corpus;
     """
-    query_job = client.query(
-        sql,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request
+    query_job = client.query(sql, job_config=job_config)  # API request
 
     # Print the results.
     for row in query_job:  # API request - fetches results
