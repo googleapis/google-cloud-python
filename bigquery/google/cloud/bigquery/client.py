@@ -1107,11 +1107,11 @@ class Client(ClientWithProject):
             resource (Dict): one job resource from API response
 
         Returns:
-            Union[
-                google.cloud.bigquery.job.LoadJob,
-                google.cloud.bigquery.job.CopyJob,
-                google.cloud.bigquery.job.ExtractJob,
-                google.cloud.bigquery.job.QueryJob
+            Union[ \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
             ]:
                 The job instance, constructed via the resource.
         """
