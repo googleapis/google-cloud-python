@@ -27,7 +27,9 @@ from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -37,12 +39,11 @@ from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
-from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TimePartitioning
-from google.cloud.bigquery import _helpers
 
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
@@ -1048,7 +1049,7 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -1189,6 +1190,40 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("quote", value)
 
     @property
+    def range_partitioning(self):
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for destination table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.range_partitioning`.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.table.RangePartitioning` or
+                :data:`None`.
+        """
+        resource = self._get_sub_prop("rangePartitioning")
+        if resource is not None:
+            return RangePartitioning(_properties=resource)
+
+    @range_partitioning.setter
+    def range_partitioning(self, value):
+        resource = value
+        if isinstance(value, RangePartitioning):
+            resource = value._properties
+        elif value is not None:
+            raise ValueError(
+                "Expected value to be RangePartitioning or None, got {}.".format(value)
+            )
+        self._set_sub_prop("rangePartitioning", resource)
+
+    @property
     def schema(self):
         """List[google.cloud.bigquery.schema.SchemaField]: Schema of the
         destination table.
@@ -1257,6 +1292,10 @@ class LoadJobConfig(_JobConfig):
     def time_partitioning(self):
         """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
         partitioning for the destination table.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.range_partitioning`.
         """
         prop = self._get_sub_prop("timePartitioning")
         if prop is not None:
@@ -1440,7 +1479,7 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys)
@@ -1468,6 +1507,13 @@ class LoadJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.friendly_name
         """
         return self._configuration.destination_table_friendly_name
+
+    @property
+    def range_partitioning(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.range_partitioning`.
+        """
+        return self._configuration.range_partitioning
 
     @property
     def time_partitioning(self):
@@ -1646,7 +1692,7 @@ class CopyJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -1714,7 +1760,7 @@ class CopyJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -2044,7 +2090,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -2246,6 +2292,40 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop("queryParameters", _to_api_repr_query_parameters(values))
 
     @property
+    def range_partitioning(self):
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for destination table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.range_partitioning`.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.table.RangePartitioning` or
+                :data:`None`.
+        """
+        resource = self._get_sub_prop("rangePartitioning")
+        if resource is not None:
+            return RangePartitioning(_properties=resource)
+
+    @range_partitioning.setter
+    def range_partitioning(self, value):
+        resource = value
+        if isinstance(value, RangePartitioning):
+            resource = value._properties
+        elif value is not None:
+            raise ValueError(
+                "Expected value to be RangePartitioning or None, got {}.".format(value)
+            )
+        self._set_sub_prop("rangePartitioning", resource)
+
+    @property
     def udf_resources(self):
         """List[google.cloud.bigquery.query.UDFResource]: user
         defined function resources (empty by default)
@@ -2321,8 +2401,18 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def time_partitioning(self):
-        """google.cloud.bigquery.table.TimePartitioning: Specifies time-based
-        partitioning for the destination table.
+        """Optional[google.cloud.bigquery.table.TimePartitioning]: Specifies
+        time-based partitioning for the destination table.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.time_partitioning` or
+        :attr:`~google.cloud.bigquery.job.LoadJobConfig.range_partitioning`.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.table.TimePartitioning` or
+                :data:`None`.
         """
         prop = self._get_sub_prop("timePartitioning")
         if prop is not None:
@@ -2461,7 +2551,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def destination_encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the destination table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -2552,6 +2642,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed`.
         """
         return self._configuration.maximum_bytes_billed
+
+    @property
+    def range_partitioning(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.range_partitioning`.
+        """
+        return self._configuration.range_partitioning
 
     @property
     def table_definitions(self):
