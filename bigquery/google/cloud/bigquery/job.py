@@ -2276,8 +2276,8 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def query_parameters(self):
-        """List[Union[google.cloud.bigquery.query.ArrayQueryParameter,
-        google.cloud.bigquery.query.ScalarQueryParameter,
+        """List[Union[google.cloud.bigquery.query.ArrayQueryParameter, \
+        google.cloud.bigquery.query.ScalarQueryParameter, \
         google.cloud.bigquery.query.StructQueryParameter]]: list of parameters
         for parameterized query (empty by default)
 
@@ -2909,9 +2909,11 @@ class QueryJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.undeclared_query_parameters
 
         Returns:
-            List[Union[google.cloud.bigquery.ArrayQueryParameter,
-                google.cloud.bigquery.ScalarQueryParameter,
-                google.cloud.bigquery.StructQueryParameter]]:
+            List[Union[ \
+                google.cloud.bigquery.query.ArrayQueryParameter, \
+                google.cloud.bigquery.query.ScalarQueryParameter, \
+                google.cloud.bigquery.query.StructQueryParameter \
+            ]]:
                 Undeclared parameters, or an empty list if the query has
                 not yet completed.
         """

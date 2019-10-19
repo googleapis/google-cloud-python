@@ -347,10 +347,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/insert
 
         Args:
-            dataset (Union[
-                google.cloud.bigquery.dataset.Dataset,
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset (Union[ \
+                google.cloud.bigquery.dataset.Dataset, \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A :class:`~google.cloud.bigquery.dataset.Dataset` to create.
                 If ``dataset`` is a reference, an empty dataset is created
@@ -436,10 +436,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 A :class:`~google.cloud.bigquery.table.Table` to create.
                 If ``table`` is a reference, an empty table is created
@@ -477,9 +477,9 @@ class Client(ClientWithProject):
         """Fetch the dataset referenced by ``dataset_ref``
 
         Args:
-            dataset_ref (Union[
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset_ref (Union[ \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A reference to the dataset to fetch from the BigQuery API.
                 If a string is passed in, this method attempts to create a
@@ -504,9 +504,9 @@ class Client(ClientWithProject):
         """[Beta] Fetch the model referenced by ``model_ref``.
 
          Args:
-            model_ref (Union[
-                google.cloud.bigquery.model.ModelReference,
-                str,
+            model_ref (Union[ \
+                google.cloud.bigquery.model.ModelReference, \
+                str, \
             ]):
                 A reference to the model to fetch from the BigQuery API.
                 If a string is passed in, this method attempts to create a
@@ -530,10 +530,10 @@ class Client(ClientWithProject):
         """[Beta] Get the routine referenced by ``routine_ref``.
 
          Args:
-            routine_ref (Union[
-                google.cloud.bigquery.routine.Routine,
-                google.cloud.bigquery.routine.RoutineReference,
-                str,
+            routine_ref (Union[ \
+                google.cloud.bigquery.routine.Routine, \
+                google.cloud.bigquery.routine.RoutineReference, \
+                str, \
             ]):
                 A reference to the routine to fetch from the BigQuery API. If
                 a string is passed in, this method attempts to create a
@@ -558,10 +558,10 @@ class Client(ClientWithProject):
         """Fetch the table referenced by ``table``.
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 A reference to the table to fetch from the BigQuery API.
                 If a string is passed in, this method attempts to create a
@@ -739,10 +739,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/models/list
 
         Args:
-            dataset (Union[
-                google.cloud.bigquery.dataset.Dataset,
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset (Union[ \
+                google.cloud.bigquery.dataset.Dataset, \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A reference to the dataset whose models to list from the
                 BigQuery API. If a string is passed in, this method attempts
@@ -797,10 +797,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/list
 
         Args:
-            dataset (Union[
-                google.cloud.bigquery.dataset.Dataset,
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset (Union[ \
+                google.cloud.bigquery.dataset.Dataset, \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A reference to the dataset whose routines to list from the
                 BigQuery API. If a string is passed in, this method attempts
@@ -855,10 +855,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
         Args:
-            dataset (Union[
-                google.cloud.bigquery.dataset.Dataset,
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset (Union[ \
+                google.cloud.bigquery.dataset.Dataset, \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A reference to the dataset whose tables to list from the
                 BigQuery API. If a string is passed in, this method attempts
@@ -913,10 +913,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
         Args
-            dataset (Union[
-                google.cloud.bigquery.dataset.Dataset,
-                google.cloud.bigquery.dataset.DatasetReference,
-                str,
+            dataset (Union[ \
+                google.cloud.bigquery.dataset.Dataset, \
+                google.cloud.bigquery.dataset.DatasetReference, \
+                str, \
             ]):
                 A reference to the dataset to delete. If a string is passed
                 in, this method attempts to create a dataset reference from a
@@ -959,10 +959,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/models/delete
 
         Args:
-            model (Union[
-                google.cloud.bigquery.model.Model,
-                google.cloud.bigquery.model.ModelReference,
-                str,
+            model (Union[ \
+                google.cloud.bigquery.model.Model, \
+                google.cloud.bigquery.model.ModelReference, \
+                str, \
             ]):
                 A reference to the model to delete. If a string is passed in,
                 this method attempts to create a model reference from a
@@ -993,10 +993,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/routines/delete
 
         Args:
-            model (Union[
-                google.cloud.bigquery.routine.Routine,
-                google.cloud.bigquery.routine.RoutineReference,
-                str,
+            model (Union[ \
+                google.cloud.bigquery.routine.Routine, \
+                google.cloud.bigquery.routine.RoutineReference, \
+                str, \
             ]):
                 A reference to the routine to delete. If a string is passed
                 in, this method attempts to create a routine reference from a
@@ -1029,10 +1029,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 A reference to the table to delete. If a string is passed in,
                 this method attempts to create a table reference from a
@@ -1144,11 +1144,11 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
 
         Returns:
-            Union[
-                google.cloud.bigquery.job.LoadJob,
-                google.cloud.bigquery.job.CopyJob,
-                google.cloud.bigquery.job.ExtractJob,
-                google.cloud.bigquery.job.QueryJob
+            Union[ \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
             ]:
                 Job instance, based on the resource returned by the API.
         """
@@ -1189,11 +1189,11 @@ class Client(ClientWithProject):
                 (Optional) How to retry the RPC.
 
         Returns:
-            Union[
-                google.cloud.bigquery.job.LoadJob,
-                google.cloud.bigquery.job.CopyJob,
-                google.cloud.bigquery.job.ExtractJob,
-                google.cloud.bigquery.job.QueryJob,
+            Union[ \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob, \
             ]:
                 Job instance, based on the resource returned by the API.
         """
@@ -1329,10 +1329,10 @@ class Client(ClientWithProject):
             source_uris (Union[str, Sequence[str]]):
                 URIs of data files to be loaded; in format
                 ``gs://<bucket_name>/<object_name_or_glob>``.
-            destination (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            destination (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 Table into which data is to be loaded. If a string is passed
                 in, this method attempts to create a table reference from a
@@ -1398,10 +1398,10 @@ class Client(ClientWithProject):
 
         Arguments:
             file_obj (file): A file handle opened in binary mode for reading.
-            destination (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            destination (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 Table into which data is to be loaded. If a string is passed
                 in, this method attempts to create a table reference from a
@@ -1673,10 +1673,10 @@ class Client(ClientWithProject):
                         client = bigquery.Client()
                         client.load_table_from_file(data_as_file, ...)
 
-            destination (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            destination (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 Table into which data is to be loaded. If a string is passed
                 in, this method attempts to create a table reference from a
@@ -1879,10 +1879,10 @@ class Client(ClientWithProject):
                 ], \
             ]):
                 Table or tables to be copied.
-            destination (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            destination (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 Table into which data is to be copied.
 
@@ -1957,10 +1957,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationextract
 
         Args:
-            source (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                src,
+            source (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                src, \
             ]):
                 Table to be extracted.
             destination_uris (Union[str, Sequence[str]]):
@@ -2087,10 +2087,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 The destination table for the row data, or a reference to it.
             rows (Union[Sequence[Tuple], Sequence[dict]]):
@@ -2145,10 +2145,10 @@ class Client(ClientWithProject):
         """Insert rows into a table from a dataframe via the streaming API.
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 The destination table for the row data, or a reference to it.
             dataframe (pandas.DataFrame):
@@ -2204,10 +2204,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 The destination table for the row data, or a reference to it.
             json_rows (Sequence[Dict]):
@@ -2276,10 +2276,10 @@ class Client(ClientWithProject):
         """List the partitions in a table.
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 The table or reference from which to get partition info
             retry (google.api_core.retry.Retry):
@@ -2326,11 +2326,11 @@ class Client(ClientWithProject):
            local copy of the schema is up-to-date, call ``client.get_table``.
 
         Args:
-            table (Union[
-                google.cloud.bigquery.table.Table,
-                google.cloud.bigquery.table.TableListItem,
-                google.cloud.bigquery.table.TableReference,
-                str,
+            table (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableListItem, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
             ]):
                 The table to list, or a reference to it. When the table
                 object does not contain a schema and ``selected_fields`` is
