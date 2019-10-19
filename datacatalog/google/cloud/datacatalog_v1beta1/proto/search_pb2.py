@@ -16,7 +16,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -28,10 +28,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.datacatalogP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/datacatalog_v1beta1/proto/search.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x01\n\x13SearchCatalogResult\x12N\n\x12search_result_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.datacatalog.v1beta1.SearchResultType\x12\x1d\n\x15search_result_subtype\x18\x02 \x01(\t\x12\x1e\n\x16relative_resource_name\x18\x03 \x01(\t\x12\x17\n\x0flinked_resource\x18\x04 \x01(\t*d\n\x10SearchResultType\x12"\n\x1eSEARCH_RESULT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x45NTRY\x10\x01\x12\x10\n\x0cTAG_TEMPLATE\x10\x02\x12\x0f\n\x0b\x45NTRY_GROUP\x10\x03\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n3google/cloud/datacatalog_v1beta1/proto/search.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x01\n\x13SearchCatalogResult\x12N\n\x12search_result_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.datacatalog.v1beta1.SearchResultType\x12\x1d\n\x15search_result_subtype\x18\x02 \x01(\t\x12\x1e\n\x16relative_resource_name\x18\x03 \x01(\t\x12\x17\n\x0flinked_resource\x18\x04 \x01(\t*d\n\x10SearchResultType\x12"\n\x1eSEARCH_RESULT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x45NTRY\x10\x01\x12\x10\n\x0cTAG_TEMPLATE\x10\x02\x12\x0f\n\x0b\x45NTRY_GROUP\x10\x03\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -61,8 +61,8 @@ _SEARCHRESULTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=344,
-    serialized_end=444,
+    serialized_start=347,
+    serialized_end=447,
 )
 _sym_db.RegisterEnumDescriptor(_SEARCHRESULTTYPE)
 
@@ -161,8 +161,8 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=153,
-    serialized_end=342,
+    serialized_start=156,
+    serialized_end=345,
 )
 
 _SEARCHCATALOGRESULT.fields_by_name["search_result_type"].enum_type = _SEARCHRESULTTYPE
@@ -188,17 +188,18 @@ SearchCatalogResult = _reflection.GeneratedProtocolMessageType(
           Sub-type of the search result. This is a dot-delimited
           description of the resource's full type, and is the same as
           the value callers would provide in the "type" search facet.
-          Examples: "entry.table", "entry.dataStream", "tagTemplate"
+          Examples: ``entry.table``, ``entry.dataStream``,
+          ``tagTemplate``.
       relative_resource_name:
           The relative resource name of the resource in URL format.
-          Examples: "projects/{project\_id}/locations/{location\_id}/ent
-          ryGroups/{entry\_group\_id}/entries/{entry\_id}".
-          "projects/{project\_id}/tagTemplates/{tag\_template\_id}".
+          Examples:  -  ``projects/{project_id}/locations/{location_id}/
+          entryGroups/{entry_group_id}/entries/{entry_id}`` -
+          ``projects/{project_id}/tagTemplates/{tag_template_id}``
       linked_resource:
           The full name of the cloud resource the entry belongs to. See:
           https://cloud.google.com/apis/design/resource\_names#full\_res
-          ource\_name Example: "//bigquery.googleapis.com/projects/proje
-          ctId/datasets/datasetId/tables/tableId".
+          ource\_name. Example:  -  ``//bigquery.googleapis.com/projects
+          /projectId/datasets/datasetId/tables/tableId``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.SearchCatalogResult)
     ),
