@@ -1237,9 +1237,9 @@ class Client(ClientWithProject):
             project (Optional[str]):
                 Project ID to use for retreiving datasets. Defaults
                 to the client's project.
-            parent_job (Optional[Union[
-                google.cloud.bigquery.job._AsyncJob,
-                str,
+            parent_job (Optional[Union[ \
+                google.cloud.bigquery.job._AsyncJob, \
+                str, \
             ]]):
                 If set, retrieve only child jobs of the specified parent.
             max_results (Optional[int]):

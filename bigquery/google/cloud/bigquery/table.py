@@ -1463,9 +1463,7 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
