@@ -45,7 +45,6 @@ def client_query_relax_column(client, table_id):
         # In this example, the existing table contains 'full_name' and 'age' as
         # required columns, but the query results will omit the second column.
         'SELECT "Beyonce" as full_name;',
-        location="US",  # Must match the source and the destination dataset(s) location.
         job_config=job_config,
     )  # Make an API request.
     query_job.result()  # Wait for the job to complete.

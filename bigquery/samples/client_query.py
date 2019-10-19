@@ -30,10 +30,7 @@ def client_query(client):
         ORDER BY total_people DESC
         LIMIT 20
     """
-    query_job = client.query(
-        query,
-        location="US",  # Must match the source and the destination dataset(s) location.
-    )  # Make an API request.
+    query_job = client.query(query)  # Make an API request.
 
     print("The query data:")
     for row in query_job:

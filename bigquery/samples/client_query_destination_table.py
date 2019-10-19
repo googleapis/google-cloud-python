@@ -35,11 +35,7 @@ def client_query_destination_table(client, table_id):
     """
 
     # Start the query, passing in the extra configuration.
-    query_job = client.query(
-        sql,
-        location="US",  # Must match the source and the destination dataset(s) location.
-        job_config=job_config,
-    )  # Make an API request.
+    query_job = client.query(sql, job_config=job_config)  # Make an API request.
     query_job.result()  # Wait for the job to complete.
 
     print("Query results loaded to the table {}".format(table_id))

@@ -33,7 +33,6 @@ def client_query_dry_run(client):
             "WHERE state = 'WA' "
             "GROUP BY name"
         ),
-        location="US",  # Must match the source and the destination dataset(s) location.
         job_config=job_config,
     )  # Make an API request.
 

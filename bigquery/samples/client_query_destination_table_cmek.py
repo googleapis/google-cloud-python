@@ -38,9 +38,7 @@ def client_query_destination_table_cmek(client, table_id, kms_key_name):
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(
-        "SELECT 17 AS my_col;",
-        location="US",  # Must match the source and the destination dataset(s) location.
-        job_config=job_config,
+        "SELECT 17 AS my_col;", job_config=job_config
     )  # Make an API request.
     query_job.result()  # Wait for the job to complete.
 

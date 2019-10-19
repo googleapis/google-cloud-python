@@ -36,12 +36,7 @@ def copy_table_cmek(client, dest_table_id, orig_table_id, kms_key_name):
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
     job_config = bigquery.CopyJobConfig()
     job_config.destination_encryption_configuration = encryption_config
-    job = client.copy_table(
-        orig_table_id,
-        dest_table_id,
-        location="US",  # Must match the source and the destination dataset(s) location.
-        job_config=job_config,
-    )
+    job = client.copy_table(orig_table_id, dest_table_id, job_config=job_config)
     job.result()  # Wait for the job to complete.
 
     dest_table = client.get_table(dest_table_id)  # Make an API request.

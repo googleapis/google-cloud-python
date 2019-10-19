@@ -43,7 +43,6 @@ def client_query_add_column(client, table_id):
         # 'age' columns, while the results of this query will contain an
         # additional 'favorite_color' column.
         'SELECT "Timmy" as full_name, 85 as age, "Blue" as favorite_color;',
-        location="US",  # Must match the source and the destination dataset(s) location.
         job_config=job_config,
     )  # Make an API request.
     query_job.result()  # Wait for the job to complete.

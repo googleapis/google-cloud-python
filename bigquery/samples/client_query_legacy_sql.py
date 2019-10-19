@@ -32,11 +32,7 @@ def client_query_legacy_sql(client):
     job_config.use_legacy_sql = True
 
     # Start the query, passing in the extra configuration.
-    query_job = client.query(
-        query,
-        location="US",  # Must match the source and the destination dataset(s) location.
-        job_config=job_config,
-    )  # Make an API request.
+    query_job = client.query(query, job_config=job_config)  # Make an API request.
 
     print("The query data:")
     for row in query_job:

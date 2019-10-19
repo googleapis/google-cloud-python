@@ -28,11 +28,7 @@ def copy_table_multiple_source(client, dest_table_id, table_ids):
     # TODO(developer): Set table_ids to the list of the IDs of the original tables.
     # table_ids = ["your-project.your_dataset.your_table_name", ...]
 
-    job = client.copy_table(
-        table_ids,
-        dest_table_id,
-        location="US",  # Must match the source and the destination dataset(s) location.
-    )  # Make an API request.
+    job = client.copy_table(table_ids, dest_table_id)  # Make an API request.
     job.result()  # Wait for the job to complete.
 
     print("The tables {} have been appended to {}".format(table_ids, dest_table_id))

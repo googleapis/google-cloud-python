@@ -19,6 +19,6 @@ from .. import create_job
 def test_create_job(capsys, client):
 
     query_job = create_job.create_job(client)
-    client.cancel_job(query_job.job_id, location="US")
+    client.cancel_job(query_job.job_id)
     out, err = capsys.readouterr()
     assert "Started job: {}".format(query_job.job_id) in out
