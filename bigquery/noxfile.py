@@ -88,7 +88,6 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
@@ -116,7 +115,6 @@ def snippets(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
