@@ -380,11 +380,23 @@ def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
     for column_index, arrow_type in enumerate(arrow_types):
         arrays.append(pyarrow.array(page._columns[column_index], type=arrow_type))
 
-    return pyarrow.RecordBatch.from_arrays(arrays, column_names)
+    if isinstance(column_names, pyarrow.Schema):
+        return pyarrow.RecordBatch.from_arrays(arrays, schema=column_names)
+    return pyarrow.RecordBatch.from_arrays(arrays, names=column_names)
 
 
 def download_arrow_tabledata_list(pages, schema):
-    """Use tabledata.list to construct an iterable of RecordBatches."""
+    """Use tabledata.list to construct an iterable of RecordBatches.
+
+    Args:
+        pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
+            An iterator over the result pages.
+        schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            A decription of the fields in result pages.
+    Yields:
+        :class:`pyarrow.RecordBatch`
+        The next page of records as a ``pyarrow`` record batch.
+    """
     column_names = bq_to_arrow_schema(schema) or [field.name for field in schema]
     arrow_types = [bq_to_arrow_data_type(field) for field in schema]
 
