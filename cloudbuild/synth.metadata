@@ -1,0 +1,39 @@
+{
+  "updateTime": "2019-10-21T20:19:31.770510Z",
+  "sources": [
+    {
+      "generator": {
+        "name": "artman",
+        "version": "0.40.1",
+        "dockerImage": "googleapis/artman@sha256:168646efbffe41e8f8fa86a60fa0d5724fab67fa37f35082cf6cfc85cedce3c7"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "09c6bd212586c0de4823f4bafa72b7989200a67f",
+        "internalRef": "275904143"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "0.0.0+dev"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "cloudbuild",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/devtools/cloudbuild/artman_cloudbuild.yaml"
+      }
+    }
+  ]
+}
