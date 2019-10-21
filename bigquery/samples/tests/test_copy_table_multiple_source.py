@@ -39,13 +39,16 @@ def test_copy_table_multiple_source(capsys, client, random_table_id, random_data
             body, table_ref, location="US", job_config=job_config
         ).result()
 
-    tables_ids = [
+    table_ids = [
         "{}.table1".format(random_dataset_id),
         "{}.table2".format(random_dataset_id),
     ]
 
     copy_table_multiple_source.copy_table_multiple_source(
-        client, random_table_id, tables_ids
+        client, random_table_id, table_ids
     )
     out, err = capsys.readouterr()
-    assert "A copy of 2 tables has been created" in out
+    assert (
+        "The tables {} have been appended to {}".format(table_ids, random_table_id)
+        in out
+    )

@@ -20,4 +20,4 @@ def test_client_query_legacy_sql(capsys, client):
 
     client_query_legacy_sql.client_query_legacy_sql(client)
     out, err = capsys.readouterr()
-    assert "Row(('Frances',), {'name': 0})" in out
+    assert "Row((" in out

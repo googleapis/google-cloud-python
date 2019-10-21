@@ -18,6 +18,6 @@ from .. import client_query_batch
 
 def test_client_query_batch(capsys, client):
 
-    job_id = client_query_batch.client_query_batch(client)
+    job = client_query_batch.client_query_batch(client)
     out, err = capsys.readouterr()
-    assert "Job {} is currently in state DONE".format(job_id) in out
+    assert "Job {} is currently in state {}".format(job.job_id, job.state) in out

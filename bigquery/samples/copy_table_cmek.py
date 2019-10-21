@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def copy_table_cmek(client, dest_table_id, orig_table_id):
+def copy_table_cmek(client, dest_table_id, orig_table_id, kms_key_name):
 
     # [START bigquery_copy_table_cmek]
     from google.cloud import bigquery
@@ -29,9 +29,9 @@ def copy_table_cmek(client, dest_table_id, orig_table_id):
 
     # Set the encryption key to use for the destination.
     # TODO(developer): Replace this key with a key you have created in KMS.
-    kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us", "test", "test"
-    )
+    # kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
+    #     your-project, location, your-ring, your-key
+    # )
 
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
     job_config = bigquery.CopyJobConfig()
