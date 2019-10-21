@@ -1088,7 +1088,7 @@ class Bucket(_PropertyMixin):
 
         :type preserve_acl: bool
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
-                             Default: True. Deprecated: this argument is no longer
+                             Default: None. Deprecated: this argument is no longer
                              affecting anything and will be removed in a future release.
                              Please update the bucket's ACL manually.
 
@@ -1122,7 +1122,7 @@ class Bucket(_PropertyMixin):
 
         if preserve_acl is not None:
             warnings.warn(
-                "The 'preserve_acl' argument is deprecated.",
+                "The 'preserve_acl' argument is deprecated. Please update the bucket's ACL manually.",
                 DeprecationWarning,
                 stacklevel=2,
             )

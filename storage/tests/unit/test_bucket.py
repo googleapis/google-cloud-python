@@ -1168,7 +1168,7 @@ class Test_Bucket(unittest.TestCase):
 
         source.copy_blob(blob, dest, NEW_NAME, client=client, preserve_acl=False)
         mock_warn.assert_called_once_with(
-            "The 'preserve_acl' argument is deprecated.",
+            "The 'preserve_acl' argument is deprecated. Please update the bucket's ACL manually.",
             DeprecationWarning,
             stacklevel=2,
         )
