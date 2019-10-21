@@ -295,6 +295,7 @@ class TestDatabase(_BaseTest):
         called_args, called_kw = spanner_client.call_args
         self.assertEqual(called_args, ())
         self.assertEqual(called_kw["client_info"], client_info)
+        self.assertEqual(called_kw["client_options"], client_options)
         scoped = called_kw["credentials"]
         self.assertEqual(scoped._scopes, expected_scopes)
         self.assertIs(scoped._source, credentials)
