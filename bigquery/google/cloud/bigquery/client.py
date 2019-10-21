@@ -1379,8 +1379,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
                 raise ValueError(
-                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = {}".format(
+                        job_config
+                    )
                 )
 
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
@@ -1466,8 +1467,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
                 raise ValueError(
-                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config {}".format(
+                        job_config
+                    )
                 )
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job.to_api_repr()
@@ -1575,8 +1577,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
                 raise ValueError(
-                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = {}".format(
+                        job_config
+                    )
                 )
             # Make a copy so that the job config isn't modified in-place.
             job_config_properties = copy.deepcopy(job_config._properties)
@@ -1741,8 +1744,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.LoadJobConfig):
                 raise ValueError(
-                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of LoadJobConfig class for the job_config parameter, but received job_config = {}".format(
+                        job_config
+                    )
                 )
             # Make a copy so that the job config isn't modified in-place.
             job_config = copy.deepcopy(job_config)
@@ -1976,8 +1980,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.CopyJobConfig):
                 raise ValueError(
-                    "Expected an instance of CopyJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of CopyJobConfig class for the job_config parameter, but received job_config = {}".format(
+                        job_config
+                    )
                 )
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
@@ -2058,8 +2063,9 @@ class Client(ClientWithProject):
         if job_config:
             if not isinstance(job_config, google.cloud.bigquery.job.ExtractJobConfig):
                 raise ValueError(
-                    "Expected an instance of ExtractJobConfig class for the job_config parameter, but received job_config = %s"
-                    % (job_config,)
+                    "Expected an instance of ExtractJobConfig class for the job_config parameter, but received job_config = {}".format(
+                        job_config
+                    )
                 )
         extract_job = job.ExtractJob(
             job_ref, source, destination_uris, client=self, job_config=job_config
@@ -2127,8 +2133,9 @@ class Client(ClientWithProject):
             if job_config:
                 if not isinstance(job_config, google.cloud.bigquery.job.QueryJobConfig):
                     raise ValueError(
-                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = %s"
-                        % (job_config,)
+                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = {}".format(
+                            job_config
+                        )
                     )
                 # anything that's not defined on the incoming
                 # that is in the default,
@@ -2143,8 +2150,9 @@ class Client(ClientWithProject):
                     google.cloud.bigquery.job.QueryJobConfig,
                 ):
                     raise ValueError(
-                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = %s"
-                        % (job_config,)
+                        "Expected an instance of QueryJobConfig class for the job_config parameter, but received job_config = {}".format(
+                            job_config
+                        )
                     )
                 job_config = self._default_query_job_config
 
