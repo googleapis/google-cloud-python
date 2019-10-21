@@ -17,7 +17,7 @@ Run a query and wait for it to finish with the
 Run a dry run query
 ^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/client_query_dry_run.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_dry_run]
@@ -30,7 +30,7 @@ Writing query results to a destination table
 See BigQuery documentation for more information on
 `writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/client_query_destination_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_destination_table]
