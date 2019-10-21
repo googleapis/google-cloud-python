@@ -1064,7 +1064,7 @@ class Bucket(_PropertyMixin):
         destination_bucket,
         new_name=None,
         client=None,
-        preserve_acl=True,
+        preserve_acl=None,
         source_generation=None,
     ):
         """Copy the given blob to the given bucket, optionally with a new name.
@@ -1088,7 +1088,9 @@ class Bucket(_PropertyMixin):
 
         :type preserve_acl: bool
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
-                             Default: True.
+                             Default: True. Deprecated: this argument is no longer
+                             affecting anything and will be removed in a future release.
+                             Please update the bucket's ACL manually.
 
         :type source_generation: long
         :param source_generation: Optional. The generation of the blob to be
@@ -1118,8 +1120,12 @@ class Bucket(_PropertyMixin):
             _target_object=new_blob,
         )
 
-        if not preserve_acl:
-            new_blob.acl.save(acl={}, client=client)
+        if preserve_acl is not None:
+            warnings.warn(
+                "The 'preserve_acl' argument is deprecated.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
         new_blob._set_properties(copy_result)
         return new_blob
