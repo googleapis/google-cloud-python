@@ -658,3 +658,18 @@ def _build_resource_from_properties(obj, filter_fields):
             partial[filter_field] = obj._properties[filter_field]
 
     return partial
+
+
+def _verify_job_config_type(job_config, expected_type, param_name="job_config"):
+    if not isinstance(job_config, expected_type):
+        msg = (
+            "Expected an instance of {expected_type} class for the {param_name} parameter, "
+            "but received {param_name} = {job_config}"
+        )
+        raise TypeError(
+            msg.format(
+                expected_type=expected_type.__name__,
+                param_name=param_name,
+                job_config=job_config,
+            )
+        )

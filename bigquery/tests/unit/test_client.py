@@ -3105,17 +3105,19 @@ class TestClient(unittest.TestCase):
         )
 
     def test_load_table_from_uri_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
         JOB = "job_name"
         DESTINATION = "destination_table"
         SOURCE_URI = "http://example.com/source.csv"
 
         creds = _make_credentials()
         http = object()
-        job_config = object()
+        job_config = job.CopyJobConfig()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         destination = client.dataset(self.DS_ID).table(DESTINATION)
 
-        with self.assertRaises(ValueError) as exc:
+        with self.assertRaises(TypeError) as exc:
             client.load_table_from_uri(
                 SOURCE_URI, destination, job_id=JOB, job_config=job_config
             )
@@ -3445,6 +3447,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.destination, expected_destination)
 
     def test_copy_table_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
         JOB = "job_name"
         SOURCE = "source_table"
         DESTINATION = "destination_table"
@@ -3452,11 +3456,11 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        job_config = object()
+        job_config = job.ExtractJobConfig()
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
-        with self.assertRaises(ValueError) as exc:
+        with self.assertRaises(TypeError) as exc:
             client.copy_table(source, destination, job_id=JOB, job_config=job_config)
 
         self.assertIn("Expected an instance of CopyJobConfig", exc.exception.args[0])
@@ -3543,6 +3547,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
     def test_extract_table_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
         JOB = "job_id"
         SOURCE = "source_table"
         DESTINATION = "gs://bucket_name/object_name"
@@ -3552,8 +3558,8 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
-        job_config = object()
-        with self.assertRaises(ValueError) as exc:
+        job_config = job.LoadJobConfig()
+        with self.assertRaises(TypeError) as exc:
             client.extract_table(source, DESTINATION, job_id=JOB, job_config=job_config)
 
         self.assertIn("Expected an instance of ExtractJobConfig", exc.exception.args[0])
@@ -3843,6 +3849,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_w_invalid_job_config(self):
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        from google.cloud.bigquery import job
 
         job_id = "some-job-id"
         query = "select count(*) from persons"
@@ -3861,9 +3868,9 @@ class TestClient(unittest.TestCase):
             default_query_job_config=default_job_config,
         )
 
-        job_config = object()
+        job_config = job.LoadJobConfig()
 
-        with self.assertRaises(ValueError) as exc:
+        with self.assertRaises(TypeError) as exc:
             client.query(
                 query, job_id=job_id, location=self.LOCATION, job_config=job_config
             )
@@ -3976,7 +3983,7 @@ class TestClient(unittest.TestCase):
             default_query_job_config=default_job_config,
         )
 
-        with self.assertRaises(ValueError) as exc:
+        with self.assertRaises(TypeError) as exc:
             client.query(query, job_id=job_id, location=self.LOCATION)
         self.assertIn("Expected an instance of QueryJobConfig", exc.exception.args[0])
 
@@ -5561,12 +5568,14 @@ class TestClientUpload(object):
             client.load_table_from_file(file_obj, self.TABLE_REF)
 
     def test_load_table_from_file_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
         client = self._make_client()
         gzip_file = self._make_gzip_file_obj(writable=True)
-
-        with pytest.raises(ValueError) as exc:
+        config = job.QueryJobConfig()
+        with pytest.raises(TypeError) as exc:
             client.load_table_from_file(
-                gzip_file, self.TABLE_REF, job_id="job_id", job_config=object()
+                gzip_file, self.TABLE_REF, job_id="job_id", job_config=config
             )
         err_msg = str(exc.value)
         assert "Expected an instance of LoadJobConfig" in err_msg
@@ -6272,13 +6281,15 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_load_table_from_dataframe_w_invaild_job_config(self):
+        from google.cloud.bigquery import job
+
         client = self._make_client()
 
         records = [{"float_column": 3.14, "struct_column": [{"foo": 1}, {"bar": -1}]}]
         dataframe = pandas.DataFrame(data=records)
-        job_config = object()
+        job_config = job.CopyJobConfig()
 
-        with pytest.raises(ValueError) as exc:
+        with pytest.raises(TypeError) as exc:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
@@ -6375,13 +6386,15 @@ class TestClientUpload(object):
         assert sent_config._properties.get("load", {}).get("unknown_field") == "foobar"
 
     def test_load_table_from_json_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
         client = self._make_client()
         json_rows = [
             {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
             {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
         ]
-        job_config = object()
-        with pytest.raises(ValueError) as exc:
+        job_config = job.CopyJobConfig()
+        with pytest.raises(TypeError) as exc:
             client.load_table_from_json(
                 json_rows,
                 self.TABLE_REF,
