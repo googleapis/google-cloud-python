@@ -155,12 +155,22 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% endmacro %}
 
 {% macro render_request_setup(request) %}
-  {% for parameter_block in request if parameter_block.body %}
+{% for parameter_block in request if parameter_block.body %}
+{% if parameter_block.pattern -%}
+{# This is a resource-name patterned lookup parameter #}
+{% with formals = [] -%} 
+{% for attr in parameter_block.body -%} 
+{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) -%} 
+{% endfor -%} 
+{{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
+{% endwith -%}  
+{% else -%}
 {{ parameter_block.base }} = {}
-    {% for attr in parameter_block.body %}
+{% for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) }}
-    {% endfor %}
-  {% endfor %}
+{% endfor %}
+{% endif -%}
+{% endfor %}
 {% endmacro %}
 
 {% macro render_request_params(request) %}

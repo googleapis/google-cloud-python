@@ -173,6 +173,36 @@ def test_render_request_basic():
     )
 
 
+def test_render_request_resource_name():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_request_setup(request) }}
+        ''',
+        '''
+        taxon = "kingdom/{kingdom}/phylum/{phylum}".format(kingdom="animalia", phylum=mollusca)
+        ''',
+        request=[
+            samplegen.TransformedRequest(
+                base="taxon",
+                single=None,
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="kingdom",
+                        value='"animalia"',
+                    ),
+                    samplegen.AttributeRequestSetup(
+                        field="phylum",
+                        value="mollusca",
+                        input_parameter="mollusca",
+                    )
+                ],
+                pattern="kingdom/{kingdom}/phylum/{phylum}"
+            ),
+        ]
+    )
+
+
 def test_render_print():
     check_template(
         '''

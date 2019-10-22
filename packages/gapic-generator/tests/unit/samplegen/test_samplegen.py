@@ -17,6 +17,7 @@ import pytest
 
 from typing import (TypeVar, Sequence)
 from collections import (OrderedDict, namedtuple)
+from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 import gapic.samplegen.samplegen as samplegen
@@ -25,7 +26,7 @@ import gapic.samplegen_utils.yaml as gapic_yaml
 from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 
-from common_types import (DummyField, DummyMessage,
+from common_types import (DummyApiSchema, DummyField, DummyMessage,
                           DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
@@ -1585,6 +1586,69 @@ def test_validate_request_enum_not_last_attr():
         )
 
 
+def test_validate_request_resource_name():
+    request = [
+        {"field": "taxon%kingdom", "value": "animalia"},
+        {"field": "taxon%phylum", "value": "mollusca", "input_parameter": "phylum"}
+    ]
+
+    resource_type = "taxonomy.google.com/Linnaean"
+    taxon_field = make_field(name="taxon")
+    rr = taxon_field.options.Extensions[resource_pb2.resource_reference]
+    rr.type = resource_type
+    request_descriptor = make_message(name="Request", fields=[taxon_field])
+
+    # Strictly speaking, 'phylum' is the resource, but it's not what we're
+    # manipulating to let samplegen know it's the resource.
+    phylum_options = descriptor_pb2.MessageOptions()
+    resource = phylum_options.Extensions[resource_pb2.resource]
+    resource.type = resource_type
+    resource.pattern.append("kingdom/{kingdom}/phylum/{phylum}")
+    phylum_descriptor = make_message(name="Phylum", options=phylum_options)
+
+    method = DummyMethod(input=request_descriptor)
+    # We don't actually care about the key,
+    # but the 'messages' property is a mapping type,
+    # and the implementation code expects this.
+    api_schema = DummyApiSchema(
+        messages={
+            k: v
+            for k, v in enumerate([
+                request_descriptor,
+                phylum_descriptor,
+            ])
+        }
+    )
+
+    v = samplegen.Validator(method=method, api_schema=api_schema)
+
+    actual = v.validate_and_transform_request(
+        types.CallingForm.Request,
+        request
+    )
+
+    expected = [
+        samplegen.TransformedRequest(
+            base="taxon",
+            pattern="kingdom/{kingdom}/phylum/{phylum}",
+            single=None,
+            body=[
+                samplegen.AttributeRequestSetup(
+                    field="kingdom",
+                    value="animalia",
+                ),
+                samplegen.AttributeRequestSetup(
+                    field="phylum",
+                    value="mollusca",
+                    input_parameter="phylum",
+                ),
+            ]
+        )
+    ]
+
+    assert actual == expected
+
+
 def test_validate_request_primitive_field():
     field = make_field(name="species", type="TYPE_STRING")
     request_type = make_message(name="request", fields=[field])
@@ -1610,6 +1674,117 @@ def test_validate_request_primitive_field():
     ]
 
     assert actual == expected
+
+
+def test_validate_request_resource_name_mixed(request=None):
+    # Note the mixing of resource name and non-resource name request field
+    request = request or [
+        {"field": "taxon%kingdom", "value": "animalia"},
+        {"field": "taxon.domain", "value": "eukarya"},
+    ]
+    v = samplegen.Validator(
+        method=DummyMethod(
+            input=make_message(
+                name="taxonomy",
+                fields=[
+                    make_field(
+                        name="taxon",
+                        message=make_message(
+                            name="Taxon",
+                            fields=[
+                                make_field(
+                                    name="domain",
+                                    message=make_message(name="Domain")
+                                )
+                            ]
+                        )
+                    )
+                ]
+            ),
+        ),
+        api_schema=None
+    )
+
+    with pytest.raises(types.ResourceRequestMismatch):
+        v.validate_and_transform_request(
+            types.CallingForm.Request,
+            request
+        )
+
+
+def test_validate_request_resource_name_mixed_reversed():
+    # Again, note the mixed use of . and %
+    request = [
+        {"field": "taxon.domain", "value": "eukarya"},
+        {"field": "taxon%kingdom", "value": "animalia"},
+    ]
+    test_validate_request_resource_name_mixed(request)
+
+
+def test_validate_request_no_such_attr():
+    request = [
+        {"field": "taxon%kingdom", "value": "animalia"}
+    ]
+    method = DummyMethod(input=make_message(name="Request"))
+    v = samplegen.Validator(method=method)
+
+    with pytest.raises(types.BadAttributeLookup):
+        v.validate_and_transform_request(types.CallingForm.Request, request)
+
+
+def test_validate_request_no_such_resource():
+    request = [
+        {"field": "taxon%kingdom", "value": "animalia"}
+    ]
+    resource_type = "taxonomy.google.com/Linnaean"
+    taxon_field = make_field(name="taxon")
+    rr = taxon_field.options.Extensions[resource_pb2.resource_reference]
+    rr.type = resource_type
+    request_descriptor = make_message(name="Request", fields=[taxon_field])
+
+    method = DummyMethod(input=request_descriptor)
+    api_schema = DummyApiSchema(
+        messages={k: v for k, v in enumerate([request_descriptor])}
+    )
+
+    v = samplegen.Validator(method=method, api_schema=api_schema)
+    with pytest.raises(types.NoSuchResource):
+        v.validate_and_transform_request(types.CallingForm.Request, request)
+
+
+def test_validate_request_no_such_pattern():
+    request = [
+        # Note that there's only the one attribute, 'phylum', and that the only
+        # pattern expects both 'kingdom' and 'phylum'.
+        {"field": "taxon%phylum", "value": "mollusca", "input_parameter": "phylum"}
+    ]
+
+    resource_type = "taxonomy.google.com/Linnaean"
+    taxon_field = make_field(name="taxon")
+    rr = taxon_field.options.Extensions[resource_pb2.resource_reference]
+    rr.type = resource_type
+    request_descriptor = make_message(name="Request", fields=[taxon_field])
+
+    phylum_options = descriptor_pb2.MessageOptions()
+    resource = phylum_options.Extensions[resource_pb2.resource]
+    resource.type = resource_type
+    resource.pattern.append("kingdom/{kingdom}/phylum/{phylum}")
+    phylum_descriptor = make_message(name="Phylum", options=phylum_options)
+
+    method = DummyMethod(input=request_descriptor)
+    api_schema = DummyApiSchema(
+        messages={
+            k: v
+            for k, v in enumerate([
+                request_descriptor,
+                phylum_descriptor,
+            ])
+        }
+    )
+
+    v = samplegen.Validator(method=method, api_schema=api_schema)
+    with pytest.raises(types.NoSuchResourcePattern):
+        v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
 def test_validate_request_non_terminal_primitive_field():

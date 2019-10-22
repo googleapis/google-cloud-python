@@ -88,6 +88,18 @@ class DuplicateSample(SampleError):
     pass
 
 
+class ResourceRequestMismatch(SampleError):
+    pass
+
+
+class NoSuchResource(SampleError):
+    pass
+
+
+class NoSuchResourcePattern(SampleError):
+    pass
+
+
 class CallingForm(Enum):
     Request = auto()
     RequestPaged = auto()
