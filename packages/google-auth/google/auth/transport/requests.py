@@ -23,10 +23,11 @@ try:
     import requests
 except ImportError as caught_exc:  # pragma: NO COVER
     import six
+
     six.raise_from(
         ImportError(
-            'The requests library is not installed, please install the '
-            'requests package to use the requests transport.'
+            "The requests library is not installed, please install the "
+            "requests package to use the requests transport."
         ),
         caught_exc,
     )
@@ -46,6 +47,7 @@ class _Response(transport.Response):
     Args:
         response (requests.Response): The raw Requests response.
     """
+
     def __init__(self, response):
         self._response = response
 
@@ -85,14 +87,16 @@ class Request(transport.Request):
 
     .. automethod:: __call__
     """
+
     def __init__(self, session=None):
         if not session:
             session = requests.Session()
 
         self.session = session
 
-    def __call__(self, url, method='GET', body=None, headers=None,
-                 timeout=None, **kwargs):
+    def __call__(
+        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
+    ):
         """Make an HTTP request using requests.
 
         Args:
@@ -114,10 +118,10 @@ class Request(transport.Request):
             google.auth.exceptions.TransportError: If any exception occurred.
         """
         try:
-            _LOGGER.debug('Making request: %s %s', method, url)
+            _LOGGER.debug("Making request: %s %s", method, url)
             response = self.session.request(
-                method, url, data=body, headers=headers, timeout=timeout,
-                **kwargs)
+                method, url, data=body, headers=headers, timeout=timeout, **kwargs
+            )
             return _Response(response)
         except requests.exceptions.RequestException as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
@@ -157,11 +161,15 @@ class AuthorizedSession(requests.Session):
             an instance of :class:`~google.auth.transport.requests.Request`
             is created.
     """
-    def __init__(self, credentials,
-                 refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-                 max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
-                 refresh_timeout=None,
-                 auth_request=None):
+
+    def __init__(
+        self,
+        credentials,
+        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+        refresh_timeout=None,
+        auth_request=None,
+    ):
         super(AuthorizedSession, self).__init__()
         self.credentials = credentials
         self._refresh_status_codes = refresh_status_codes
@@ -194,40 +202,50 @@ class AuthorizedSession(requests.Session):
 
         # Use a kwarg for this instead of an attribute to maintain
         # thread-safety.
-        _credential_refresh_attempt = kwargs.pop(
-            '_credential_refresh_attempt', 0)
+        _credential_refresh_attempt = kwargs.pop("_credential_refresh_attempt", 0)
 
         # Make a copy of the headers. They will be modified by the credentials
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy() if headers is not None else {}
 
         self.credentials.before_request(
-            self._auth_request, method, url, request_headers)
+            self._auth_request, method, url, request_headers
+        )
 
         response = super(AuthorizedSession, self).request(
-            method, url, data=data, headers=request_headers, **kwargs)
+            method, url, data=data, headers=request_headers, **kwargs
+        )
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
         # request.
         # A stored token may expire between the time it is retrieved and
         # the time the request is made, so we may need to try twice.
-        if (response.status_code in self._refresh_status_codes
-                and _credential_refresh_attempt < self._max_refresh_attempts):
+        if (
+            response.status_code in self._refresh_status_codes
+            and _credential_refresh_attempt < self._max_refresh_attempts
+        ):
 
             _LOGGER.info(
-                'Refreshing credentials due to a %s response. Attempt %s/%s.',
-                response.status_code, _credential_refresh_attempt + 1,
-                self._max_refresh_attempts)
+                "Refreshing credentials due to a %s response. Attempt %s/%s.",
+                response.status_code,
+                _credential_refresh_attempt + 1,
+                self._max_refresh_attempts,
+            )
 
             auth_request_with_timeout = functools.partial(
-                self._auth_request, timeout=self._refresh_timeout)
+                self._auth_request, timeout=self._refresh_timeout
+            )
             self.credentials.refresh(auth_request_with_timeout)
 
             # Recurse. Pass in the original headers, not our modified set.
             return self.request(
-                method, url, data=data, headers=headers,
+                method,
+                url,
+                data=data,
+                headers=headers,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs)
+                **kwargs
+            )
 
         return response

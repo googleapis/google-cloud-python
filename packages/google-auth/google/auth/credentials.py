@@ -41,6 +41,7 @@ class Credentials(object):
     construction. Some classes will provide mechanisms to copy the credentials
     with modifications such as :meth:`ScopedCredentials.with_scopes`.
     """
+
     def __init__(self):
         self.token = None
         """str: The bearer token that can be used in HTTP headers to make
@@ -88,7 +89,7 @@ class Credentials(object):
         """
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)
-        raise NotImplementedError('Refresh must be implemented')
+        raise NotImplementedError("Refresh must be implemented")
 
     def apply(self, headers, token=None):
         """Apply the token to the authentication header.
@@ -98,8 +99,9 @@ class Credentials(object):
             token (Optional[str]): If specified, overrides the current access
                 token.
         """
-        headers['authorization'] = 'Bearer {}'.format(
-            _helpers.from_bytes(token or self.token))
+        headers["authorization"] = "Bearer {}".format(
+            _helpers.from_bytes(token or self.token)
+        )
 
     def before_request(self, request, method, url, headers):
         """Performs credential-specific before request logic.
@@ -189,6 +191,7 @@ class ReadOnlyScoped(object):
 
     .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
     """
+
     def __init__(self):
         super(ReadOnlyScoped, self).__init__()
         self._scopes = None
@@ -247,6 +250,7 @@ class Scoped(ReadOnlyScoped):
 
     .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
     """
+
     @abc.abstractmethod
     def with_scopes(self, scopes):
         """Create a copy of these credentials with the specified scopes.
@@ -260,7 +264,7 @@ class Scoped(ReadOnlyScoped):
                 This can be avoided by checking :attr:`requires_scopes` before
                 calling this method.
         """
-        raise NotImplementedError('This class does not require scoping.')
+        raise NotImplementedError("This class does not require scoping.")
 
 
 def with_scopes_if_required(credentials, scopes):
@@ -305,18 +309,18 @@ class Signing(object):
         """
         # pylint: disable=missing-raises-doc,redundant-returns-doc
         # (pylint doesn't recognize that this is abstract)
-        raise NotImplementedError('Sign bytes must be implemented.')
+        raise NotImplementedError("Sign bytes must be implemented.")
 
     @abc.abstractproperty
     def signer_email(self):
         """Optional[str]: An email address that identifies the signer."""
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)
-        raise NotImplementedError('Signer email must be implemented.')
+        raise NotImplementedError("Signer email must be implemented.")
 
     @abc.abstractproperty
     def signer(self):
         """google.auth.crypt.Signer: The signer used to sign bytes."""
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)
-        raise NotImplementedError('Signer must be implemented.')
+        raise NotImplementedError("Signer must be implemented.")

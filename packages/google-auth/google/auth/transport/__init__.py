@@ -45,17 +45,17 @@ class Response(object):
     @abc.abstractproperty
     def status(self):
         """int: The HTTP status code."""
-        raise NotImplementedError('status must be implemented.')
+        raise NotImplementedError("status must be implemented.")
 
     @abc.abstractproperty
     def headers(self):
         """Mapping[str, str]: The HTTP response headers."""
-        raise NotImplementedError('headers must be implemented.')
+        raise NotImplementedError("headers must be implemented.")
 
     @abc.abstractproperty
     def data(self):
         """bytes: The response body."""
-        raise NotImplementedError('data must be implemented.')
+        raise NotImplementedError("data must be implemented.")
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -69,8 +69,9 @@ class Request(object):
     """
 
     @abc.abstractmethod
-    def __call__(self, url, method='GET', body=None, headers=None,
-                 timeout=None, **kwargs):
+    def __call__(
+        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
+    ):
         """Make an HTTP request.
 
         Args:
@@ -93,4 +94,4 @@ class Request(object):
         """
         # pylint: disable=redundant-returns-doc, missing-raises-doc
         # (pylint doesn't play well with abstract docstrings.)
-        raise NotImplementedError('__call__ must be implemented.')
+        raise NotImplementedError("__call__ must be implemented.")

@@ -73,13 +73,11 @@ def get_project_id():
     # Pylint rightfully thinks EnvironmentError is OSError, but doesn't
     # realize it's a valid alias.
     if app_identity is None:
-        raise EnvironmentError(
-            'The App Engine APIs are not available.')
+        raise EnvironmentError("The App Engine APIs are not available.")
     return app_identity.get_application_id()
 
 
-class Credentials(credentials.Scoped, credentials.Signing,
-                  credentials.Credentials):
+class Credentials(credentials.Scoped, credentials.Signing, credentials.Credentials):
     """App Engine standard environment credentials.
 
     These credentials use the App Engine App Identity API to obtain access
@@ -103,8 +101,7 @@ class Credentials(credentials.Scoped, credentials.Signing,
         # Pylint rightfully thinks EnvironmentError is OSError, but doesn't
         # realize it's a valid alias.
         if app_identity is None:
-            raise EnvironmentError(
-                'The App Engine APIs are not available.')
+            raise EnvironmentError("The App Engine APIs are not available.")
 
         super(Credentials, self).__init__()
         self._scopes = scopes
@@ -115,7 +112,8 @@ class Credentials(credentials.Scoped, credentials.Signing,
     def refresh(self, request):
         # pylint: disable=unused-argument
         token, ttl = app_identity.get_access_token(
-            self._scopes, self._service_account_id)
+            self._scopes, self._service_account_id
+        )
         expiry = datetime.datetime.utcfromtimestamp(ttl)
 
         self.token, self.expiry = token, expiry
@@ -139,7 +137,8 @@ class Credentials(credentials.Scoped, credentials.Signing,
     @_helpers.copy_docstring(credentials.Scoped)
     def with_scopes(self, scopes):
         return self.__class__(
-            scopes=scopes, service_account_id=self._service_account_id)
+            scopes=scopes, service_account_id=self._service_account_id
+        )
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):

@@ -32,11 +32,9 @@ from google.auth import _helpers
 from google.auth.crypt import base
 
 _POW2 = (128, 64, 32, 16, 8, 4, 2, 1)
-_CERTIFICATE_MARKER = b'-----BEGIN CERTIFICATE-----'
-_PKCS1_MARKER = ('-----BEGIN RSA PRIVATE KEY-----',
-                 '-----END RSA PRIVATE KEY-----')
-_PKCS8_MARKER = ('-----BEGIN PRIVATE KEY-----',
-                 '-----END PRIVATE KEY-----')
+_CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
+_PKCS1_MARKER = ("-----BEGIN RSA PRIVATE KEY-----", "-----END RSA PRIVATE KEY-----")
+_PKCS8_MARKER = ("-----BEGIN PRIVATE KEY-----", "-----END PRIVATE KEY-----")
 _PKCS8_SPEC = PrivateKeyInfo()
 
 
@@ -55,9 +53,8 @@ def _bit_list_to_bytes(bit_list):
     num_bits = len(bit_list)
     byte_vals = bytearray()
     for start in six.moves.xrange(0, num_bits, 8):
-        curr_bits = bit_list[start:start + 8]
-        char_val = sum(
-            val * digit for val, digit in six.moves.zip(_POW2, curr_bits))
+        curr_bits = bit_list[start : start + 8]
+        char_val = sum(val * digit for val, digit in six.moves.zip(_POW2, curr_bits))
         byte_vals.append(char_val)
     return bytes(byte_vals)
 
@@ -101,16 +98,16 @@ class RSAVerifier(base.Verifier):
 
         # If this is a certificate, extract the public key info.
         if is_x509_cert:
-            der = rsa.pem.load_pem(public_key, 'CERTIFICATE')
+            der = rsa.pem.load_pem(public_key, "CERTIFICATE")
             asn1_cert, remaining = decoder.decode(der, asn1Spec=Certificate())
-            if remaining != b'':
-                raise ValueError('Unused bytes', remaining)
+            if remaining != b"":
+                raise ValueError("Unused bytes", remaining)
 
-            cert_info = asn1_cert['tbsCertificate']['subjectPublicKeyInfo']
-            key_bytes = _bit_list_to_bytes(cert_info['subjectPublicKey'])
-            pubkey = rsa.PublicKey.load_pkcs1(key_bytes, 'DER')
+            cert_info = asn1_cert["tbsCertificate"]["subjectPublicKeyInfo"]
+            key_bytes = _bit_list_to_bytes(cert_info["subjectPublicKey"])
+            pubkey = rsa.PublicKey.load_pkcs1(key_bytes, "DER")
         else:
-            pubkey = rsa.PublicKey.load_pkcs1(public_key, 'PEM')
+            pubkey = rsa.PublicKey.load_pkcs1(public_key, "PEM")
         return cls(pubkey)
 
 
@@ -136,7 +133,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     @_helpers.copy_docstring(base.Signer)
     def sign(self, message):
         message = _helpers.to_bytes(message)
-        return rsa.pkcs1.sign(message, self._key, 'SHA-256')
+        return rsa.pkcs1.sign(message, self._key, "SHA-256")
 
     @classmethod
     def from_string(cls, key, key_id=None):
@@ -155,22 +152,22 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         """
         key = _helpers.from_bytes(key)  # PEM expects str in Python 3
         marker_id, key_bytes = pem.readPemBlocksFromFile(
-            six.StringIO(key), _PKCS1_MARKER, _PKCS8_MARKER)
+            six.StringIO(key), _PKCS1_MARKER, _PKCS8_MARKER
+        )
 
         # Key is in pkcs1 format.
         if marker_id == 0:
-            private_key = rsa.key.PrivateKey.load_pkcs1(
-                key_bytes, format='DER')
+            private_key = rsa.key.PrivateKey.load_pkcs1(key_bytes, format="DER")
         # Key is in pkcs8.
         elif marker_id == 1:
-            key_info, remaining = decoder.decode(
-                key_bytes, asn1Spec=_PKCS8_SPEC)
-            if remaining != b'':
-                raise ValueError('Unused bytes', remaining)
-            private_key_info = key_info.getComponentByName('privateKey')
+            key_info, remaining = decoder.decode(key_bytes, asn1Spec=_PKCS8_SPEC)
+            if remaining != b"":
+                raise ValueError("Unused bytes", remaining)
+            private_key_info = key_info.getComponentByName("privateKey")
             private_key = rsa.key.PrivateKey.load_pkcs1(
-                private_key_info.asOctets(), format='DER')
+                private_key_info.asOctets(), format="DER"
+            )
         else:
-            raise ValueError('No key could be detected.')
+            raise ValueError("No key could be detected.")
 
         return cls(private_key, key_id=key_id)

@@ -21,8 +21,7 @@ from google.oauth2 import service_account
 
 @pytest.fixture
 def credentials(service_account_file):
-    yield service_account.Credentials.from_service_account_file(
-        service_account_file)
+    yield service_account.Credentials.from_service_account_file(service_account_file)
 
 
 def test_refresh_no_scopes(http_request, credentials):
@@ -31,7 +30,7 @@ def test_refresh_no_scopes(http_request, credentials):
 
 
 def test_refresh_success(http_request, credentials, token_info):
-    credentials = credentials.with_scopes(['email', 'profile'])
+    credentials = credentials.with_scopes(["email", "profile"])
 
     credentials.refresh(http_request)
 
@@ -39,8 +38,11 @@ def test_refresh_success(http_request, credentials, token_info):
 
     info = token_info(credentials.token)
 
-    assert info['email'] == credentials.service_account_email
-    info_scopes = _helpers.string_to_scopes(info['scope'])
-    assert set(info_scopes) == set([
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'])
+    assert info["email"] == credentials.service_account_email
+    info_scopes = _helpers.string_to_scopes(info["scope"])
+    assert set(info_scopes) == set(
+        [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+        ]
+    )

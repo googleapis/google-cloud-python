@@ -15,35 +15,35 @@
 """Environment variables used by :mod:`google.auth`."""
 
 
-PROJECT = 'GOOGLE_CLOUD_PROJECT'
+PROJECT = "GOOGLE_CLOUD_PROJECT"
 """Environment variable defining default project.
 
 This used by :func:`google.auth.default` to explicitly set a project ID. This
 environment variable is also used by the Google Cloud Python Library.
 """
 
-LEGACY_PROJECT = 'GCLOUD_PROJECT'
+LEGACY_PROJECT = "GCLOUD_PROJECT"
 """Previously used environment variable defining the default project.
 
 This environment variable is used instead of the current one in some
 situations (such as Google App Engine).
 """
 
-CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
+CREDENTIALS = "GOOGLE_APPLICATION_CREDENTIALS"
 """Environment variable defining the location of Google application default
 credentials."""
 
 # The environment variable name which can replace ~/.config if set.
-CLOUD_SDK_CONFIG_DIR = 'CLOUDSDK_CONFIG'
+CLOUD_SDK_CONFIG_DIR = "CLOUDSDK_CONFIG"
 """Environment variable defines the location of Google Cloud SDK's config
 files."""
 
 # These two variables allow for customization of the addresses used when
 # contacting the GCE metadata service.
-GCE_METADATA_ROOT = 'GCE_METADATA_ROOT'
+GCE_METADATA_ROOT = "GCE_METADATA_ROOT"
 """Environment variable providing an alternate hostname or host:port to be
 used for GCE metadata requests."""
 
-GCE_METADATA_IP = 'GCE_METADATA_IP'
+GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
 GCE metadata requests."""

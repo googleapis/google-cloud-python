@@ -42,8 +42,8 @@ Stacktrace:
 Captured output:
 {}
 """
-TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
-EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
+TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo"
+EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email"
 HTTP = urllib3.contrib.appengine.AppEngineManager()
 HTTP_REQUEST = google.auth.transport.urllib3.Request(HTTP)
 
@@ -58,13 +58,13 @@ def test_credentials():
     assert scoped_credentials.token is not None
 
     # Get token info and verify scope
-    url = _helpers.update_query(TOKEN_INFO_URL, {
-        'access_token': scoped_credentials.token,
-    })
-    response = HTTP_REQUEST(url=url, method='GET')
-    token_info = json.loads(response.data.decode('utf-8'))
+    url = _helpers.update_query(
+        TOKEN_INFO_URL, {"access_token": scoped_credentials.token}
+    )
+    response = HTTP_REQUEST(url=url, method="GET")
+    token_info = json.loads(response.data.decode("utf-8"))
 
-    assert token_info['scope'] == EMAIL_SCOPE
+    assert token_info["scope"] == EMAIL_SCOPE
 
 
 def test_default():
@@ -90,11 +90,11 @@ def run_test_func(func):
     with capture() as capsys:
         try:
             func()
-            return True, ''
+            return True, ""
         except Exception as exc:
             output = FAILED_TEST_TMPL.format(
-                func.func_name, exc, traceback.format_exc(),
-                capsys.getvalue())
+                func.func_name, exc, traceback.format_exc(), capsys.getvalue()
+            )
             return False, output
 
 
@@ -106,7 +106,7 @@ def run_tests():
         otherwise, and any captured output from the tests.
     """
     status = True
-    output = ''
+    output = ""
 
     tests = (test_credentials, test_default)
 
@@ -120,7 +120,7 @@ def run_tests():
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.headers['content-type'] = 'text/plain'
+        self.response.headers["content-type"] = "text/plain"
 
         status, output = run_tests()
 
@@ -130,6 +130,4 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(output)
 
 
-app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-], debug=True)
+app = webapp2.WSGIApplication([("/", MainHandler)], debug=True)

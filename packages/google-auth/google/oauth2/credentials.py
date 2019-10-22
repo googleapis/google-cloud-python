@@ -43,15 +43,22 @@ from google.oauth2 import _client
 
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
-_GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://oauth2.googleapis.com/token'
+_GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
     """Credentials using OAuth 2.0 access and refresh tokens."""
 
-    def __init__(self, token, refresh_token=None, id_token=None,
-                 token_uri=None, client_id=None, client_secret=None,
-                 scopes=None):
+    def __init__(
+        self,
+        token,
+        refresh_token=None,
+        id_token=None,
+        token_uri=None,
+        client_id=None,
+        client_secret=None,
+        scopes=None,
+    ):
         """
         Args:
             token (Optional(str)): The OAuth 2.0 access token. Can be None
@@ -124,35 +131,43 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        if (self._refresh_token is None or
-                self._token_uri is None or
-                self._client_id is None or
-                self._client_secret is None):
+        if (
+            self._refresh_token is None
+            or self._token_uri is None
+            or self._client_id is None
+            or self._client_secret is None
+        ):
             raise exceptions.RefreshError(
-                'The credentials do not contain the necessary fields need to '
-                'refresh the access token. You must specify refresh_token, '
-                'token_uri, client_id, and client_secret.')
+                "The credentials do not contain the necessary fields need to "
+                "refresh the access token. You must specify refresh_token, "
+                "token_uri, client_id, and client_secret."
+            )
 
-        access_token, refresh_token, expiry, grant_response = (
-            _client.refresh_grant(
-                request, self._token_uri, self._refresh_token, self._client_id,
-                self._client_secret, self._scopes))
+        access_token, refresh_token, expiry, grant_response = _client.refresh_grant(
+            request,
+            self._token_uri,
+            self._refresh_token,
+            self._client_id,
+            self._client_secret,
+            self._scopes,
+        )
 
         self.token = access_token
         self.expiry = expiry
         self._refresh_token = refresh_token
-        self._id_token = grant_response.get('id_token')
+        self._id_token = grant_response.get("id_token")
 
-        if self._scopes and 'scopes' in grant_response:
+        if self._scopes and "scopes" in grant_response:
             requested_scopes = frozenset(self._scopes)
-            granted_scopes = frozenset(grant_response['scopes'].split())
-            scopes_requested_but_not_granted = (
-                requested_scopes - granted_scopes)
+            granted_scopes = frozenset(grant_response["scopes"].split())
+            scopes_requested_but_not_granted = requested_scopes - granted_scopes
             if scopes_requested_but_not_granted:
                 raise exceptions.RefreshError(
-                    'Not all requested scopes were granted by the '
-                    'authorization server, missing scopes {}.'.format(
-                        ', '.join(scopes_requested_but_not_granted)))
+                    "Not all requested scopes were granted by the "
+                    "authorization server, missing scopes {}.".format(
+                        ", ".join(scopes_requested_but_not_granted)
+                    )
+                )
 
     @classmethod
     def from_authorized_user_info(cls, info, scopes=None):
@@ -171,21 +186,23 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         Raises:
             ValueError: If the info is not in the expected format.
         """
-        keys_needed = set(('refresh_token', 'client_id', 'client_secret'))
+        keys_needed = set(("refresh_token", "client_id", "client_secret"))
         missing = keys_needed.difference(six.iterkeys(info))
 
         if missing:
             raise ValueError(
-                'Authorized user info was not in the expected format, missing '
-                'fields {}.'.format(', '.join(missing)))
+                "Authorized user info was not in the expected format, missing "
+                "fields {}.".format(", ".join(missing))
+            )
 
         return cls(
             None,  # No access token, must be refreshed.
-            refresh_token=info['refresh_token'],
+            refresh_token=info["refresh_token"],
             token_uri=_GOOGLE_OAUTH2_TOKEN_ENDPOINT,
             scopes=scopes,
-            client_id=info['client_id'],
-            client_secret=info['client_secret'])
+            client_id=info["client_id"],
+            client_secret=info["client_secret"],
+        )
 
     @classmethod
     def from_authorized_user_file(cls, filename, scopes=None):
@@ -203,6 +220,6 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         Raises:
             ValueError: If the file is not in the expected format.
         """
-        with io.open(filename, 'r', encoding='utf-8') as json_file:
+        with io.open(filename, "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
             return cls.from_authorized_user_info(data, scopes)

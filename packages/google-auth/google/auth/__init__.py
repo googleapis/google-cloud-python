@@ -19,9 +19,7 @@ import logging
 from google.auth._default import default
 
 
-__all__ = [
-    'default',
-]
+__all__ = ["default"]
 
 
 # Set default logging handler to avoid "No handler found" warnings.

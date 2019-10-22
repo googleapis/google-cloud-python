@@ -34,10 +34,11 @@ try:
     import urllib3
 except ImportError as caught_exc:  # pragma: NO COVER
     import six
+
     six.raise_from(
         ImportError(
-            'The urllib3 library is not installed, please install the '
-            'urllib3 package to use the urllib3 transport.'
+            "The urllib3 library is not installed, please install the "
+            "urllib3 package to use the urllib3 transport."
         ),
         caught_exc,
     )
@@ -56,6 +57,7 @@ class _Response(transport.Response):
     Args:
         response (urllib3.response.HTTPResponse): The raw urllib3 response.
     """
+
     def __init__(self, response):
         self._response = response
 
@@ -97,11 +99,13 @@ class Request(transport.Request):
 
     .. automethod:: __call__
     """
+
     def __init__(self, http):
         self.http = http
 
-    def __call__(self, url, method='GET', body=None, headers=None,
-                 timeout=None, **kwargs):
+    def __call__(
+        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
+    ):
         """Make an HTTP request using urllib3.
 
         Args:
@@ -125,12 +129,13 @@ class Request(transport.Request):
         # urllib3 uses a sentinel default value for timeout, so only set it if
         # specified.
         if timeout is not None:
-            kwargs['timeout'] = timeout
+            kwargs["timeout"] = timeout
 
         try:
-            _LOGGER.debug('Making request: %s %s', method, url)
+            _LOGGER.debug("Making request: %s %s", method, url)
             response = self.http.request(
-                method, url, body=body, headers=headers, **kwargs)
+                method, url, body=body, headers=headers, **kwargs
+            )
             return _Response(response)
         except urllib3.exceptions.HTTPError as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
@@ -139,9 +144,7 @@ class Request(transport.Request):
 
 def _make_default_http():
     if certifi is not None:
-        return urllib3.PoolManager(
-            cert_reqs='CERT_REQUIRED',
-            ca_certs=certifi.where())
+        return urllib3.PoolManager(cert_reqs="CERT_REQUIRED", ca_certs=certifi.where())
     else:
         return urllib3.PoolManager()
 
@@ -178,9 +181,14 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         max_refresh_attempts (int): The maximum number of times to attempt to
             refresh the credentials and retry the request.
     """
-    def __init__(self, credentials, http=None,
-                 refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-                 max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS):
+
+    def __init__(
+        self,
+        credentials,
+        http=None,
+        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+    ):
 
         if http is None:
             http = _make_default_http()
@@ -204,8 +212,7 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
 
         # Use a kwarg for this instead of an attribute to maintain
         # thread-safety.
-        _credential_refresh_attempt = kwargs.pop(
-            '_credential_refresh_attempt', 0)
+        _credential_refresh_attempt = kwargs.pop("_credential_refresh_attempt", 0)
 
         if headers is None:
             headers = self.headers
@@ -214,11 +221,11 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy()
 
-        self.credentials.before_request(
-            self._request, method, url, request_headers)
+        self.credentials.before_request(self._request, method, url, request_headers)
 
         response = self.http.urlopen(
-            method, url, body=body, headers=request_headers, **kwargs)
+            method, url, body=body, headers=request_headers, **kwargs
+        )
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
@@ -227,21 +234,29 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         # the time the request is made, so we may need to try twice.
         # The reason urllib3's retries aren't used is because they
         # don't allow you to modify the request headers. :/
-        if (response.status in self._refresh_status_codes
-                and _credential_refresh_attempt < self._max_refresh_attempts):
+        if (
+            response.status in self._refresh_status_codes
+            and _credential_refresh_attempt < self._max_refresh_attempts
+        ):
 
             _LOGGER.info(
-                'Refreshing credentials due to a %s response. Attempt %s/%s.',
-                response.status, _credential_refresh_attempt + 1,
-                self._max_refresh_attempts)
+                "Refreshing credentials due to a %s response. Attempt %s/%s.",
+                response.status,
+                _credential_refresh_attempt + 1,
+                self._max_refresh_attempts,
+            )
 
             self.credentials.refresh(self._request)
 
             # Recurse. Pass in the original headers, not our modified set.
             return self.urlopen(
-                method, url, body=body, headers=headers,
+                method,
+                url,
+                body=body,
+                headers=headers,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs)
+                **kwargs
+            )
 
         return response
 

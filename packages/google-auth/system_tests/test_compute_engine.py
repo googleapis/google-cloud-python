@@ -26,7 +26,7 @@ def check_gce_environment(http_request):
     try:
         _metadata.get_service_account_info(http_request)
     except exceptions.TransportError:
-        pytest.skip('Compute Engine metadata service is not available.')
+        pytest.skip("Compute Engine metadata service is not available.")
 
 
 def test_refresh(http_request, token_info):
@@ -38,7 +38,7 @@ def test_refresh(http_request, token_info):
     assert credentials.service_account_email is not None
 
     info = token_info(credentials.token)
-    info_scopes = _helpers.string_to_scopes(info['scope'])
+    info_scopes = _helpers.string_to_scopes(info["scope"])
     assert set(info_scopes) == set(credentials.scopes)
 
 

@@ -17,43 +17,42 @@ import os
 from google.auth import crypt
 
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 # To generate privatekey.pem, privatekey.pub, and public_cert.pem:
 #   $ openssl req -new -newkey rsa:1024 -x509 -nodes -out public_cert.pem \
 #   >    -keyout privatekey.pem
 #   $ openssl rsa -in privatekey.pem -pubout -out privatekey.pub
 
-with open(os.path.join(DATA_DIR, 'privatekey.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "privatekey.pem"), "rb") as fh:
     PRIVATE_KEY_BYTES = fh.read()
 
-with open(os.path.join(DATA_DIR, 'public_cert.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "public_cert.pem"), "rb") as fh:
     PUBLIC_CERT_BYTES = fh.read()
 
 # To generate other_cert.pem:
 #   $ openssl req -new -newkey rsa:1024 -x509 -nodes -out other_cert.pem
 
-with open(os.path.join(DATA_DIR, 'other_cert.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "other_cert.pem"), "rb") as fh:
     OTHER_CERT_BYTES = fh.read()
 
 
 def test_verify_signature():
-    to_sign = b'foo'
+    to_sign = b"foo"
     signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
     signature = signer.sign(to_sign)
 
-    assert crypt.verify_signature(
-        to_sign, signature, PUBLIC_CERT_BYTES)
+    assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
 
     # List of certs
     assert crypt.verify_signature(
-        to_sign, signature, [OTHER_CERT_BYTES, PUBLIC_CERT_BYTES])
+        to_sign, signature, [OTHER_CERT_BYTES, PUBLIC_CERT_BYTES]
+    )
 
 
 def test_verify_signature_failure():
-    to_sign = b'foo'
+    to_sign = b"foo"
     signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
     signature = signer.sign(to_sign)
 
-    assert not crypt.verify_signature(
-        to_sign, signature, OTHER_CERT_BYTES)
+    assert not crypt.verify_signature(to_sign, signature, OTHER_CERT_BYTES)

@@ -16,7 +16,7 @@ import os
 
 import google.auth
 
-EXPECT_PROJECT_ID = os.environ.get('EXPECT_PROJECT_ID')
+EXPECT_PROJECT_ID = os.environ.get("EXPECT_PROJECT_ID")
 
 
 def test_application_default_credentials(verify_refresh):

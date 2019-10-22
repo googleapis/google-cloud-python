@@ -31,18 +31,18 @@ from google.auth import _helpers
 from google.auth.crypt import base
 
 _IMPORT_ERROR_MSG = (
-    'cryptography>=1.4.0 is required to use cryptography-based RSA '
-    'implementation.')
+    "cryptography>=1.4.0 is required to use cryptography-based RSA " "implementation."
+)
 
 try:  # pragma: NO COVER
-    release = pkg_resources.get_distribution('cryptography').parsed_version
-    if release < pkg_resources.parse_version('1.4.0'):
+    release = pkg_resources.get_distribution("cryptography").parsed_version
+    if release < pkg_resources.parse_version("1.4.0"):
         raise ImportError(_IMPORT_ERROR_MSG)
 except pkg_resources.DistributionNotFound:  # pragma: NO COVER
     raise ImportError(_IMPORT_ERROR_MSG)
 
 
-_CERTIFICATE_MARKER = b'-----BEGIN CERTIFICATE-----'
+_CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
 _BACKEND = backends.default_backend()
 _PADDING = padding.PKCS1v15()
 _SHA256 = hashes.SHA256()
@@ -88,12 +88,12 @@ class RSAVerifier(base.Verifier):
 
         if _CERTIFICATE_MARKER in public_key_data:
             cert = cryptography.x509.load_pem_x509_certificate(
-                public_key_data, _BACKEND)
+                public_key_data, _BACKEND
+            )
             pubkey = cert.public_key()
 
         else:
-            pubkey = serialization.load_pem_public_key(
-                public_key_data, _BACKEND)
+            pubkey = serialization.load_pem_public_key(public_key_data, _BACKEND)
 
         return cls(pubkey)
 
@@ -122,8 +122,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
     @_helpers.copy_docstring(base.Signer)
     def sign(self, message):
         message = _helpers.to_bytes(message)
-        return self._key.sign(
-            message, _PADDING, _SHA256)
+        return self._key.sign(message, _PADDING, _SHA256)
 
     @classmethod
     def from_string(cls, key, key_id=None):
@@ -145,5 +144,6 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         """
         key = _helpers.to_bytes(key)
         private_key = serialization.load_pem_private_key(
-            key, password=None, backend=_BACKEND)
+            key, password=None, backend=_BACKEND
+        )
         return cls(private_key, key_id=key_id)

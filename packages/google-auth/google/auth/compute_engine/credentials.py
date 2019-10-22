@@ -54,7 +54,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         https://cloud.google.com/compute/docs/authentication#using
     """
 
-    def __init__(self, service_account_email='default'):
+    def __init__(self, service_account_email="default"):
         """
         Args:
             service_account_email (str): The service account email to use, or
@@ -74,11 +74,11 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                 HTTP requests.
         """
         info = _metadata.get_service_account_info(
-            request,
-            service_account=self._service_account_email)
+            request, service_account=self._service_account_email
+        )
 
-        self._service_account_email = info['email']
-        self._scopes = info['scopes']
+        self._service_account_email = info["email"]
+        self._scopes = info["scopes"]
 
     def refresh(self, request):
         """Refresh the access token and scopes.
@@ -95,8 +95,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         try:
             self._retrieve_info(request)
             self.token, self.expiry = _metadata.get_service_account_token(
-                request,
-                service_account=self._service_account_email)
+                request, service_account=self._service_account_email
+            )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
             six.raise_from(new_exc, caught_exc)
@@ -117,7 +117,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
 
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
-_DEFAULT_TOKEN_URI = 'https://www.googleapis.com/oauth2/v4/token'
+_DEFAULT_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
 
 
 class IDTokenCredentials(credentials.Credentials, credentials.Signing):
@@ -128,10 +128,15 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
     In order for this to work, the GCE instance must have been started with
     a service account that has access to the IAM Cloud API.
     """
-    def __init__(self, request, target_audience,
-                 token_uri=_DEFAULT_TOKEN_URI,
-                 additional_claims=None,
-                 service_account_email=None):
+
+    def __init__(
+        self,
+        request,
+        target_audience,
+        token_uri=_DEFAULT_TOKEN_URI,
+        additional_claims=None,
+        service_account_email=None,
+    ):
         """
         Args:
             request (google.auth.transport.Request): The object used to make
@@ -150,13 +155,14 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
 
         if service_account_email is None:
             sa_info = _metadata.get_service_account_info(request)
-            service_account_email = sa_info['email']
+            service_account_email = sa_info["email"]
         self._service_account_email = service_account_email
 
         self._signer = iam.Signer(
             request=request,
             credentials=Credentials(),
-            service_account_email=service_account_email)
+            service_account_email=service_account_email,
+        )
 
         self._token_uri = token_uri
         self._target_audience = target_audience
@@ -181,7 +187,8 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
             service_account_email=self._service_account_email,
             token_uri=self._token_uri,
             target_audience=target_audience,
-            additional_claims=self._additional_claims.copy())
+            additional_claims=self._additional_claims.copy(),
+        )
 
     def _make_authorization_grant_assertion(self):
         """Create the OAuth 2.0 assertion.
@@ -195,15 +202,15 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
         expiry = now + lifetime
 
         payload = {
-            'iat': _helpers.datetime_to_secs(now),
-            'exp': _helpers.datetime_to_secs(expiry),
+            "iat": _helpers.datetime_to_secs(now),
+            "exp": _helpers.datetime_to_secs(expiry),
             # The issuer must be the service account email.
-            'iss': self.service_account_email,
+            "iss": self.service_account_email,
             # The audience must be the auth token endpoint's URI
-            'aud': self._token_uri,
+            "aud": self._token_uri,
             # The target audience specifies which service the ID token is
             # intended for.
-            'target_audience': self._target_audience
+            "target_audience": self._target_audience,
         }
 
         payload.update(self._additional_claims)
@@ -216,7 +223,8 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
     def refresh(self, request):
         assertion = self._make_authorization_grant_assertion()
         access_token, expiry, _ = _client.id_token_jwt_grant(
-            request, self._token_uri, assertion)
+            request, self._token_uri, assertion
+        )
         self.token = access_token
         self.expiry = expiry
 

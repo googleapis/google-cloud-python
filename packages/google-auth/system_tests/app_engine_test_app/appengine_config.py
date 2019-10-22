@@ -15,7 +15,7 @@
 from google.appengine.ext import vendor
 
 # Add any libraries installed in the "lib" folder.
-vendor.add('lib')
+vendor.add("lib")
 
 
 # Patch os.path.expanduser. This should be fixed in GAE
@@ -25,5 +25,6 @@ import os.path
 
 def patched_expanduser(path):
     return path
+
 
 os.path.expanduser = patched_expanduser

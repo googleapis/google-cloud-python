@@ -35,7 +35,7 @@ def test_credentials_constructor():
 
 def test_expired_and_valid():
     credentials = CredentialsImpl()
-    credentials.token = 'token'
+    credentials.token = "token"
 
     assert credentials.valid
     assert not credentials.expired
@@ -43,9 +43,8 @@ def test_expired_and_valid():
     # Set the expiration to one second more than now plus the clock skew
     # accomodation. These credentials should be valid.
     credentials.expiry = (
-        datetime.datetime.utcnow() +
-        _helpers.CLOCK_SKEW +
-        datetime.timedelta(seconds=1))
+        datetime.datetime.utcnow() + _helpers.CLOCK_SKEW + datetime.timedelta(seconds=1)
+    )
 
     assert credentials.valid
     assert not credentials.expired
@@ -60,23 +59,23 @@ def test_expired_and_valid():
 
 def test_before_request():
     credentials = CredentialsImpl()
-    request = 'token'
+    request = "token"
     headers = {}
 
     # First call should call refresh, setting the token.
-    credentials.before_request(request, 'http://example.com', 'GET', headers)
+    credentials.before_request(request, "http://example.com", "GET", headers)
     assert credentials.valid
-    assert credentials.token == 'token'
-    assert headers['authorization'] == 'Bearer token'
+    assert credentials.token == "token"
+    assert headers["authorization"] == "Bearer token"
 
-    request = 'token2'
+    request = "token2"
     headers = {}
 
     # Second call shouldn't call refresh.
-    credentials.before_request(request, 'http://example.com', 'GET', headers)
+    credentials.before_request(request, "http://example.com", "GET", headers)
     assert credentials.valid
-    assert credentials.token == 'token'
-    assert headers['authorization'] == 'Bearer token'
+    assert credentials.token == "token"
+    assert headers["authorization"] == "Bearer token"
 
 
 def test_anonymous_credentials_ctor():
@@ -100,21 +99,20 @@ def test_anonymous_credentials_apply_default():
     anon.apply(headers)
     assert headers == {}
     with pytest.raises(ValueError):
-        anon.apply(headers, token='TOKEN')
+        anon.apply(headers, token="TOKEN")
 
 
 def test_anonymous_credentials_before_request():
     anon = credentials.AnonymousCredentials()
     request = object()
-    method = 'GET'
-    url = 'https://example.com/api/endpoint'
+    method = "GET"
+    url = "https://example.com/api/endpoint"
     headers = {}
     anon.before_request(request, method, url, headers)
     assert headers == {}
 
 
-class ReadOnlyScopedCredentialsImpl(
-        credentials.ReadOnlyScoped, CredentialsImpl):
+class ReadOnlyScopedCredentialsImpl(credentials.ReadOnlyScoped, CredentialsImpl):
     @property
     def requires_scopes(self):
         return super(ReadOnlyScopedCredentialsImpl, self).requires_scopes
@@ -127,12 +125,12 @@ def test_readonly_scoped_credentials_constructor():
 
 def test_readonly_scoped_credentials_scopes():
     credentials = ReadOnlyScopedCredentialsImpl()
-    credentials._scopes = ['one', 'two']
-    assert credentials.scopes == ['one', 'two']
-    assert credentials.has_scopes(['one'])
-    assert credentials.has_scopes(['two'])
-    assert credentials.has_scopes(['one', 'two'])
-    assert not credentials.has_scopes(['three'])
+    credentials._scopes = ["one", "two"]
+    assert credentials.scopes == ["one", "two"]
+    assert credentials.has_scopes(["one"])
+    assert credentials.has_scopes(["two"])
+    assert credentials.has_scopes(["one", "two"])
+    assert not credentials.has_scopes(["three"])
 
 
 def test_readonly_scoped_credentials_requires_scopes():
@@ -156,16 +154,18 @@ class RequiresScopedCredentialsImpl(credentials.Scoped, CredentialsImpl):
 def test_create_scoped_if_required_scoped():
     unscoped_credentials = RequiresScopedCredentialsImpl()
     scoped_credentials = credentials.with_scopes_if_required(
-        unscoped_credentials, ['one', 'two'])
+        unscoped_credentials, ["one", "two"]
+    )
 
     assert scoped_credentials is not unscoped_credentials
     assert not scoped_credentials.requires_scopes
-    assert scoped_credentials.has_scopes(['one', 'two'])
+    assert scoped_credentials.has_scopes(["one", "two"])
 
 
 def test_create_scoped_if_required_not_scopes():
     unscoped_credentials = CredentialsImpl()
     scoped_credentials = credentials.with_scopes_if_required(
-        unscoped_credentials, ['one', 'two'])
+        unscoped_credentials, ["one", "two"]
+    )
 
     assert scoped_credentials is unscoped_credentials

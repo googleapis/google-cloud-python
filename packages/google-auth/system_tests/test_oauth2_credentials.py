@@ -17,19 +17,20 @@ import json
 from google.auth import _helpers
 import google.oauth2.credentials
 
-GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token'
+GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
 
 
 def test_refresh(authorized_user_file, http_request, token_info):
-    with open(authorized_user_file, 'r') as fh:
+    with open(authorized_user_file, "r") as fh:
         info = json.load(fh)
 
     credentials = google.oauth2.credentials.Credentials(
         None,  # No access token, must be refreshed.
-        refresh_token=info['refresh_token'],
+        refresh_token=info["refresh_token"],
         token_uri=GOOGLE_OAUTH2_TOKEN_ENDPOINT,
-        client_id=info['client_id'],
-        client_secret=info['client_secret'])
+        client_id=info["client_id"],
+        client_secret=info["client_secret"],
+    )
 
     credentials.refresh(http_request)
 
@@ -37,7 +38,10 @@ def test_refresh(authorized_user_file, http_request, token_info):
 
     info = token_info(credentials.token)
 
-    info_scopes = _helpers.string_to_scopes(info['scope'])
-    assert set(info_scopes) == set([
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'])
+    info_scopes = _helpers.string_to_scopes(info["scope"])
+    assert set(info_scopes) == set(
+        [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+        ]
+    )

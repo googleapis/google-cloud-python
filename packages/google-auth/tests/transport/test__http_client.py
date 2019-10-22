@@ -26,6 +26,6 @@ class TestRequestResponse(compliance.RequestResponseTests):
     def test_non_http(self):
         request = self.make_request()
         with pytest.raises(exceptions.TransportError) as excinfo:
-            request(url='https://{}'.format(compliance.NXDOMAIN), method='GET')
+            request(url="https://{}".format(compliance.NXDOMAIN), method="GET")
 
-        assert excinfo.match('https')
+        assert excinfo.match("https")

@@ -34,9 +34,9 @@ from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import jwt
 
-_URLENCODED_CONTENT_TYPE = 'application/x-www-form-urlencoded'
-_JWT_GRANT_TYPE = 'urn:ietf:params:oauth:grant-type:jwt-bearer'
-_REFRESH_GRANT_TYPE = 'refresh_token'
+_URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded"
+_JWT_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer"
+_REFRESH_GRANT_TYPE = "refresh_token"
 
 
 def _handle_error_response(response_body):
@@ -50,15 +50,14 @@ def _handle_error_response(response_body):
     """
     try:
         error_data = json.loads(response_body)
-        error_details = '{}: {}'.format(
-            error_data['error'],
-            error_data.get('error_description'))
+        error_details = "{}: {}".format(
+            error_data["error"], error_data.get("error_description")
+        )
     # If no details could be extracted, use the response data.
     except (KeyError, ValueError):
         error_details = response_body
 
-    raise exceptions.RefreshError(
-        error_details, response_body)
+    raise exceptions.RefreshError(error_details, response_body)
 
 
 def _parse_expiry(response_data):
@@ -71,11 +70,10 @@ def _parse_expiry(response_data):
         Optional[datetime]: The expiration or ``None`` if no expiration was
             specified.
     """
-    expires_in = response_data.get('expires_in', None)
+    expires_in = response_data.get("expires_in", None)
 
     if expires_in is not None:
-        return _helpers.utcnow() + datetime.timedelta(
-            seconds=expires_in)
+        return _helpers.utcnow() + datetime.timedelta(seconds=expires_in)
     else:
         return None
 
@@ -98,24 +96,20 @@ def _token_endpoint_request(request, token_uri, body):
             an error.
     """
     body = urllib.parse.urlencode(body)
-    headers = {
-        'content-type': _URLENCODED_CONTENT_TYPE,
-    }
+    headers = {"content-type": _URLENCODED_CONTENT_TYPE}
 
     retry = 0
     # retry to fetch token for maximum of two times if any internal failure
     # occurs.
     while True:
-        response = request(
-            method='POST', url=token_uri, headers=headers, body=body)
-        response_body = response.data.decode('utf-8')
+        response = request(method="POST", url=token_uri, headers=headers, body=body)
+        response_body = response.data.decode("utf-8")
 
         if response.status == http_client.OK:
             break
         else:
-            error_desc = json.loads(
-                response_body).get('error_description') or ''
-            if error_desc == 'internal_failure' and retry < 1:
+            error_desc = json.loads(response_body).get("error_description") or ""
+            if error_desc == "internal_failure" and retry < 1:
                 retry += 1
                 continue
             _handle_error_response(response_body)
@@ -147,18 +141,14 @@ def jwt_grant(request, token_uri, assertion):
 
     .. _rfc7523 section 4: https://tools.ietf.org/html/rfc7523#section-4
     """
-    body = {
-        'assertion': assertion,
-        'grant_type': _JWT_GRANT_TYPE,
-    }
+    body = {"assertion": assertion, "grant_type": _JWT_GRANT_TYPE}
 
     response_data = _token_endpoint_request(request, token_uri, body)
 
     try:
-        access_token = response_data['access_token']
+        access_token = response_data["access_token"]
     except KeyError as caught_exc:
-        new_exc = exceptions.RefreshError(
-            'No access token in response.', response_data)
+        new_exc = exceptions.RefreshError("No access token in response.", response_data)
         six.raise_from(new_exc, caught_exc)
 
     expiry = _parse_expiry(response_data)
@@ -191,28 +181,25 @@ def id_token_jwt_grant(request, token_uri, assertion):
         google.auth.exceptions.RefreshError: If the token endpoint returned
             an error.
     """
-    body = {
-        'assertion': assertion,
-        'grant_type': _JWT_GRANT_TYPE,
-    }
+    body = {"assertion": assertion, "grant_type": _JWT_GRANT_TYPE}
 
     response_data = _token_endpoint_request(request, token_uri, body)
 
     try:
-        id_token = response_data['id_token']
+        id_token = response_data["id_token"]
     except KeyError as caught_exc:
-        new_exc = exceptions.RefreshError(
-            'No ID token in response.', response_data)
+        new_exc = exceptions.RefreshError("No ID token in response.", response_data)
         six.raise_from(new_exc, caught_exc)
 
     payload = jwt.decode(id_token, verify=False)
-    expiry = datetime.datetime.utcfromtimestamp(payload['exp'])
+    expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
 
     return id_token, expiry, response_data
 
 
-def refresh_grant(request, token_uri, refresh_token, client_id, client_secret,
-                  scopes=None):
+def refresh_grant(
+    request, token_uri, refresh_token, client_id, client_secret, scopes=None
+):
     """Implements the OAuth 2.0 refresh token grant.
 
     For more details, see `rfc678 section 6`_.
@@ -243,24 +230,23 @@ def refresh_grant(request, token_uri, refresh_token, client_id, client_secret,
     .. _rfc6748 section 6: https://tools.ietf.org/html/rfc6749#section-6
     """
     body = {
-        'grant_type': _REFRESH_GRANT_TYPE,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'refresh_token': refresh_token,
+        "grant_type": _REFRESH_GRANT_TYPE,
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "refresh_token": refresh_token,
     }
     if scopes:
-        body['scope'] = ' '.join(scopes)
+        body["scope"] = " ".join(scopes)
 
     response_data = _token_endpoint_request(request, token_uri, body)
 
     try:
-        access_token = response_data['access_token']
+        access_token = response_data["access_token"]
     except KeyError as caught_exc:
-        new_exc = exceptions.RefreshError(
-            'No access token in response.', response_data)
+        new_exc = exceptions.RefreshError("No access token in response.", response_data)
         six.raise_from(new_exc, caught_exc)
 
-    refresh_token = response_data.get('refresh_token', refresh_token)
+    refresh_token = response_data.get("refresh_token", refresh_token)
     expiry = _parse_expiry(response_data)
 
     return access_token, refresh_token, expiry, response_data

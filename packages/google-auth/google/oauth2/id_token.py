@@ -67,13 +67,14 @@ from google.auth import jwt
 
 # The URL that provides public certificates for verifying ID tokens issued
 # by Google's OAuth 2.0 authorization server.
-_GOOGLE_OAUTH2_CERTS_URL = 'https://www.googleapis.com/oauth2/v1/certs'
+_GOOGLE_OAUTH2_CERTS_URL = "https://www.googleapis.com/oauth2/v1/certs"
 
 # The URL that provides public certificates for verifying ID tokens issued
 # by Firebase and the Google APIs infrastructure
 _GOOGLE_APIS_CERTS_URL = (
-    'https://www.googleapis.com/robot/v1/metadata/x509'
-    '/securetoken@system.gserviceaccount.com')
+    "https://www.googleapis.com/robot/v1/metadata/x509"
+    "/securetoken@system.gserviceaccount.com"
+)
 
 
 def _fetch_certs(request, certs_url):
@@ -91,17 +92,17 @@ def _fetch_certs(request, certs_url):
         Mapping[str, str]: A mapping of public key ID to x.509 certificate
             data.
     """
-    response = request(certs_url, method='GET')
+    response = request(certs_url, method="GET")
 
     if response.status != http_client.OK:
         raise exceptions.TransportError(
-            'Could not fetch certificates at {}'.format(certs_url))
+            "Could not fetch certificates at {}".format(certs_url)
+        )
 
-    return json.loads(response.data.decode('utf-8'))
+    return json.loads(response.data.decode("utf-8"))
 
 
-def verify_token(id_token, request, audience=None,
-                 certs_url=_GOOGLE_OAUTH2_CERTS_URL):
+def verify_token(id_token, request, audience=None, certs_url=_GOOGLE_OAUTH2_CERTS_URL):
     """Verifies an ID token and returns the decoded token.
 
     Args:
@@ -137,8 +138,8 @@ def verify_oauth2_token(id_token, request, audience=None):
         Mapping[str, Any]: The decoded token.
     """
     return verify_token(
-        id_token, request, audience=audience,
-        certs_url=_GOOGLE_OAUTH2_CERTS_URL)
+        id_token, request, audience=audience, certs_url=_GOOGLE_OAUTH2_CERTS_URL
+    )
 
 
 def verify_firebase_token(id_token, request, audience=None):
@@ -156,4 +157,5 @@ def verify_firebase_token(id_token, request, audience=None):
         Mapping[str, Any]: The decoded token.
     """
     return verify_token(
-        id_token, request, audience=audience, certs_url=_GOOGLE_APIS_CERTS_URL)
+        id_token, request, audience=audience, certs_url=_GOOGLE_APIS_CERTS_URL
+    )

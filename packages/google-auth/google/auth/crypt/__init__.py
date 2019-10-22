@@ -39,12 +39,7 @@ from google.auth.crypt import base
 from google.auth.crypt import rsa
 
 
-__all__ = [
-    'RSASigner',
-    'RSAVerifier',
-    'Signer',
-    'Verifier',
-]
+__all__ = ["RSASigner", "RSAVerifier", "Signer", "Verifier"]
 
 # Aliases to maintain the v1.0.0 interface, as the crypt module was split
 # into submodules.

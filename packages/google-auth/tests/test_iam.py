@@ -32,7 +32,7 @@ def make_request(status, data=None):
     response.status = status
 
     if data is not None:
-        response.data = json.dumps(data).encode('utf-8')
+        response.data = json.dumps(data).encode("utf-8")
 
     request = mock.create_autospec(transport.Request)
     request.return_value = response
@@ -43,7 +43,7 @@ def make_credentials():
     class CredentialsImpl(google.auth.credentials.Credentials):
         def __init__(self):
             super(CredentialsImpl, self).__init__()
-            self.token = 'token'
+            self.token = "token"
             # Force refresh
             self.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
 
@@ -57,35 +57,33 @@ class TestSigner(object):
     def test_constructor(self):
         request = mock.sentinel.request
         credentials = mock.create_autospec(
-            google.auth.credentials.Credentials, instance=True)
+            google.auth.credentials.Credentials, instance=True
+        )
 
-        signer = iam.Signer(
-            request, credentials, mock.sentinel.service_account_email)
+        signer = iam.Signer(request, credentials, mock.sentinel.service_account_email)
 
         assert signer._request == mock.sentinel.request
         assert signer._credentials == credentials
-        assert (signer._service_account_email ==
-                mock.sentinel.service_account_email)
+        assert signer._service_account_email == mock.sentinel.service_account_email
 
     def test_key_id(self):
         signer = iam.Signer(
             mock.sentinel.request,
             mock.sentinel.credentials,
-            mock.sentinel.service_account_email)
+            mock.sentinel.service_account_email,
+        )
 
         assert signer.key_id is None
 
     def test_sign_bytes(self):
-        signature = b'DEADBEEF'
-        encoded_signature = base64.b64encode(signature).decode('utf-8')
-        request = make_request(
-            http_client.OK, data={'signature': encoded_signature})
+        signature = b"DEADBEEF"
+        encoded_signature = base64.b64encode(signature).decode("utf-8")
+        request = make_request(http_client.OK, data={"signature": encoded_signature})
         credentials = make_credentials()
 
-        signer = iam.Signer(
-            request, credentials, mock.sentinel.service_account_email)
+        signer = iam.Signer(request, credentials, mock.sentinel.service_account_email)
 
-        returned_signature = signer.sign('123')
+        returned_signature = signer.sign("123")
 
         assert returned_signature == signature
 
@@ -93,8 +91,7 @@ class TestSigner(object):
         request = make_request(http_client.UNAUTHORIZED)
         credentials = make_credentials()
 
-        signer = iam.Signer(
-            request, credentials, mock.sentinel.service_account_email)
+        signer = iam.Signer(request, credentials, mock.sentinel.service_account_email)
 
         with pytest.raises(exceptions.TransportError):
-            signer.sign('123')
+            signer.sign("123")

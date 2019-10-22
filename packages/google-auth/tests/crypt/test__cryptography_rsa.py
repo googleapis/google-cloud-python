@@ -23,21 +23,21 @@ from google.auth.crypt import _cryptography_rsa
 from google.auth.crypt import base
 
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 # To generate privatekey.pem, privatekey.pub, and public_cert.pem:
 #   $ openssl req -new -newkey rsa:1024 -x509 -nodes -out public_cert.pem \
 #   >    -keyout privatekey.pem
 #   $ openssl rsa -in privatekey.pem -pubout -out privatekey.pub
 
-with open(os.path.join(DATA_DIR, 'privatekey.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "privatekey.pem"), "rb") as fh:
     PRIVATE_KEY_BYTES = fh.read()
     PKCS1_KEY_BYTES = PRIVATE_KEY_BYTES
 
-with open(os.path.join(DATA_DIR, 'privatekey.pub'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "privatekey.pub"), "rb") as fh:
     PUBLIC_KEY_BYTES = fh.read()
 
-with open(os.path.join(DATA_DIR, 'public_cert.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "public_cert.pem"), "rb") as fh:
     PUBLIC_CERT_BYTES = fh.read()
 
 # To generate pem_from_pkcs12.pem and privatekey.p12:
@@ -46,22 +46,22 @@ with open(os.path.join(DATA_DIR, 'public_cert.pem'), 'rb') as fh:
 #   $ openssl pkcs12 -in privatekey.p12 -nocerts -nodes \
 #   >   -out pem_from_pkcs12.pem
 
-with open(os.path.join(DATA_DIR, 'pem_from_pkcs12.pem'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "pem_from_pkcs12.pem"), "rb") as fh:
     PKCS8_KEY_BYTES = fh.read()
 
-with open(os.path.join(DATA_DIR, 'privatekey.p12'), 'rb') as fh:
+with open(os.path.join(DATA_DIR, "privatekey.p12"), "rb") as fh:
     PKCS12_KEY_BYTES = fh.read()
 
 # The service account JSON file can be generated from the Google Cloud Console.
-SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, 'service_account.json')
+SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
-with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 
 class TestRSAVerifier(object):
     def test_verify_success(self):
-        to_sign = b'foo'
+        to_sign = b"foo"
         signer = _cryptography_rsa.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
@@ -69,7 +69,7 @@ class TestRSAVerifier(object):
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_unicode_success(self):
-        to_sign = u'foo'
+        to_sign = u"foo"
         signer = _cryptography_rsa.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
@@ -78,10 +78,10 @@ class TestRSAVerifier(object):
 
     def test_verify_failure(self):
         verifier = _cryptography_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
-        bad_signature1 = b''
-        assert not verifier.verify(b'foo', bad_signature1)
-        bad_signature2 = b'a'
-        assert not verifier.verify(b'foo', bad_signature2)
+        bad_signature1 = b""
+        assert not verifier.verify(b"foo", bad_signature1)
+        bad_signature2 = b"a"
+        assert not verifier.verify(b"foo", bad_signature2)
 
     def test_from_string_pub_key(self):
         verifier = _cryptography_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
@@ -134,16 +134,16 @@ class TestRSASigner(object):
             _cryptography_rsa.RSASigner.from_string(PKCS12_KEY_BYTES)
 
     def test_from_string_bogus_key(self):
-        key_bytes = 'bogus-key'
+        key_bytes = "bogus-key"
         with pytest.raises(ValueError):
             _cryptography_rsa.RSASigner.from_string(key_bytes)
 
     def test_from_service_account_info(self):
         signer = _cryptography_rsa.RSASigner.from_service_account_info(
-            SERVICE_ACCOUNT_INFO)
+            SERVICE_ACCOUNT_INFO
+        )
 
-        assert signer.key_id == SERVICE_ACCOUNT_INFO[
-            base._JSON_FILE_PRIVATE_KEY_ID]
+        assert signer.key_id == SERVICE_ACCOUNT_INFO[base._JSON_FILE_PRIVATE_KEY_ID]
         assert isinstance(signer._key, rsa.RSAPrivateKey)
 
     def test_from_service_account_info_missing_key(self):
@@ -154,8 +154,8 @@ class TestRSASigner(object):
 
     def test_from_service_account_file(self):
         signer = _cryptography_rsa.RSASigner.from_service_account_file(
-            SERVICE_ACCOUNT_JSON_FILE)
+            SERVICE_ACCOUNT_JSON_FILE
+        )
 
-        assert signer.key_id == SERVICE_ACCOUNT_INFO[
-            base._JSON_FILE_PRIVATE_KEY_ID]
+        assert signer.key_id == SERVICE_ACCOUNT_INFO[base._JSON_FILE_PRIVATE_KEY_ID]
         assert isinstance(signer._key, rsa.RSAPrivateKey)

@@ -18,7 +18,4 @@ from google.auth.compute_engine.credentials import Credentials
 from google.auth.compute_engine.credentials import IDTokenCredentials
 
 
-__all__ = [
-    'Credentials',
-    'IDTokenCredentials',
-]
+__all__ = ["Credentials", "IDTokenCredentials"]

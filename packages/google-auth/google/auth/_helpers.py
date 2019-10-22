@@ -36,6 +36,7 @@ def copy_docstring(source_class):
         Callable: A decorator that will copy the docstring of the same
             named method in the source class to the decorated method.
     """
+
     def decorator(method):
         """Decorator implementation.
 
@@ -49,12 +50,13 @@ def copy_docstring(source_class):
             ValueError: if the method already has a docstring.
         """
         if method.__doc__:
-            raise ValueError('Method already has a docstring.')
+            raise ValueError("Method already has a docstring.")
 
         source_method = getattr(source_class, method.__name__)
         method.__doc__ = source_method.__doc__
 
         return method
+
     return decorator
 
 
@@ -79,7 +81,7 @@ def datetime_to_secs(value):
     return calendar.timegm(value.utctimetuple())
 
 
-def to_bytes(value, encoding='utf-8'):
+def to_bytes(value, encoding="utf-8"):
     """Converts a string value to bytes, if necessary.
 
     Unfortunately, ``six.b`` is insufficient for this task since in
@@ -97,12 +99,11 @@ def to_bytes(value, encoding='utf-8'):
     Raises:
         ValueError: If the value could not be converted to bytes.
     """
-    result = (value.encode(encoding)
-              if isinstance(value, six.text_type) else value)
+    result = value.encode(encoding) if isinstance(value, six.text_type) else value
     if isinstance(result, six.binary_type):
         return result
     else:
-        raise ValueError('{0!r} could not be converted to bytes'.format(value))
+        raise ValueError("{0!r} could not be converted to bytes".format(value))
 
 
 def from_bytes(value):
@@ -118,13 +119,11 @@ def from_bytes(value):
     Raises:
         ValueError: If the value could not be converted to unicode.
     """
-    result = (value.decode('utf-8')
-              if isinstance(value, six.binary_type) else value)
+    result = value.decode("utf-8") if isinstance(value, six.binary_type) else value
     if isinstance(result, six.text_type):
         return result
     else:
-        raise ValueError(
-            '{0!r} could not be converted to unicode'.format(value))
+        raise ValueError("{0!r} could not be converted to unicode".format(value))
 
 
 def update_query(url, params, remove=None):
@@ -163,9 +162,8 @@ def update_query(url, params, remove=None):
     query_params.update(params)
     # Remove any values specified in remove.
     query_params = {
-        key: value for key, value
-        in six.iteritems(query_params)
-        if key not in remove}
+        key: value for key, value in six.iteritems(query_params) if key not in remove
+    }
     # Re-encoded the query string.
     new_query = urllib.parse.urlencode(query_params, doseq=True)
     # Unsplit the url.
@@ -183,7 +181,7 @@ def scopes_to_string(scopes):
     Returns:
         str: The scopes formatted as a single string.
     """
-    return ' '.join(scopes)
+    return " ".join(scopes)
 
 
 def string_to_scopes(scopes):
@@ -198,7 +196,7 @@ def string_to_scopes(scopes):
     if not scopes:
         return []
 
-    return scopes.split(' ')
+    return scopes.split(" ")
 
 
 def padded_urlsafe_b64decode(value):
@@ -213,7 +211,7 @@ def padded_urlsafe_b64decode(value):
         bytes: The decoded value
     """
     b64string = to_bytes(value)
-    padded = b64string + b'=' * (-len(b64string) % 4)
+    padded = b64string + b"=" * (-len(b64string) % 4)
     return base64.urlsafe_b64decode(padded)
 
 
@@ -231,4 +229,4 @@ def unpadded_urlsafe_b64encode(value):
     Returns:
         Union[str|bytes]: The encoded value
     """
-    return base64.urlsafe_b64encode(value).rstrip(b'=')
+    return base64.urlsafe_b64encode(value).rstrip(b"=")

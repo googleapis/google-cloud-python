@@ -17,13 +17,14 @@
 from __future__ import absolute_import
 
 import six
+
 try:
     import grpc
 except ImportError as caught_exc:  # pragma: NO COVER
     six.raise_from(
         ImportError(
-            'gRPC is not installed, please install the grpcio package '
-            'to use the gRPC transport.'
+            "gRPC is not installed, please install the grpcio package "
+            "to use the gRPC transport."
         ),
         caught_exc,
     )
@@ -42,6 +43,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         request (google.auth.transport.Request): A HTTP transport request
             object used to refresh credentials as needed.
     """
+
     def __init__(self, credentials, request):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
@@ -59,10 +61,8 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         """
         headers = {}
         self._credentials.before_request(
-            self._request,
-            context.method_name,
-            context.service_url,
-            headers)
+            self._request, context.method_name, context.service_url, headers
+        )
 
         return list(six.iteritems(headers))
 
@@ -78,7 +78,8 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
 
 def secure_authorized_channel(
-        credentials, request, target, ssl_credentials=None, **kwargs):
+    credentials, request, target, ssl_credentials=None, **kwargs
+):
     """Creates a secure authorized gRPC channel.
 
     This creates a channel with SSL and :class:`AuthMetadataPlugin`. This
@@ -130,6 +131,7 @@ def secure_authorized_channel(
 
     # Combine the ssl credentials and the authorization credentials.
     composite_credentials = grpc.composite_channel_credentials(
-        ssl_credentials, google_auth_credentials)
+        ssl_credentials, google_auth_credentials
+    )
 
     return grpc.secure_channel(target, composite_credentials, **kwargs)

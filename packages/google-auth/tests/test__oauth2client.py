@@ -26,17 +26,23 @@ from six.moves import reload_module
 from google.auth import _oauth2client
 
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, 'service_account.json')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
 
 def test__convert_oauth2_credentials():
     old_credentials = oauth2client.client.OAuth2Credentials(
-        'access_token', 'client_id', 'client_secret', 'refresh_token',
-        datetime.datetime.min, 'token_uri', 'user_agent', scopes='one two')
+        "access_token",
+        "client_id",
+        "client_secret",
+        "refresh_token",
+        datetime.datetime.min,
+        "token_uri",
+        "user_agent",
+        scopes="one two",
+    )
 
-    new_credentials = _oauth2client._convert_oauth2_credentials(
-        old_credentials)
+    new_credentials = _oauth2client._convert_oauth2_credentials(old_credentials)
 
     assert new_credentials.token == old_credentials.access_token
     assert new_credentials._refresh_token == old_credentials.refresh_token
@@ -48,68 +54,74 @@ def test__convert_oauth2_credentials():
 
 def test__convert_service_account_credentials():
     old_class = oauth2client.service_account.ServiceAccountCredentials
-    old_credentials = old_class.from_json_keyfile_name(
-        SERVICE_ACCOUNT_JSON_FILE)
+    old_credentials = old_class.from_json_keyfile_name(SERVICE_ACCOUNT_JSON_FILE)
 
     new_credentials = _oauth2client._convert_service_account_credentials(
-        old_credentials)
+        old_credentials
+    )
 
-    assert (new_credentials.service_account_email ==
-            old_credentials.service_account_email)
+    assert (
+        new_credentials.service_account_email == old_credentials.service_account_email
+    )
     assert new_credentials._signer.key_id == old_credentials._private_key_id
     assert new_credentials._token_uri == old_credentials.token_uri
 
 
 def test__convert_service_account_credentials_with_jwt():
     old_class = oauth2client.service_account._JWTAccessCredentials
-    old_credentials = old_class.from_json_keyfile_name(
-        SERVICE_ACCOUNT_JSON_FILE)
+    old_credentials = old_class.from_json_keyfile_name(SERVICE_ACCOUNT_JSON_FILE)
 
     new_credentials = _oauth2client._convert_service_account_credentials(
-        old_credentials)
+        old_credentials
+    )
 
-    assert (new_credentials.service_account_email ==
-            old_credentials.service_account_email)
+    assert (
+        new_credentials.service_account_email == old_credentials.service_account_email
+    )
     assert new_credentials._signer.key_id == old_credentials._private_key_id
     assert new_credentials._token_uri == old_credentials.token_uri
 
 
 def test__convert_gce_app_assertion_credentials():
     old_credentials = oauth2client.contrib.gce.AppAssertionCredentials(
-        email='some_email')
+        email="some_email"
+    )
 
     new_credentials = _oauth2client._convert_gce_app_assertion_credentials(
-        old_credentials)
+        old_credentials
+    )
 
-    assert (new_credentials.service_account_email ==
-            old_credentials.service_account_email)
+    assert (
+        new_credentials.service_account_email == old_credentials.service_account_email
+    )
 
 
 @pytest.fixture
 def mock_oauth2client_gae_imports(mock_non_existent_module):
-    mock_non_existent_module('google.appengine.api.app_identity')
-    mock_non_existent_module('google.appengine.ext.ndb')
-    mock_non_existent_module('google.appengine.ext.webapp.util')
-    mock_non_existent_module('webapp2')
+    mock_non_existent_module("google.appengine.api.app_identity")
+    mock_non_existent_module("google.appengine.ext.ndb")
+    mock_non_existent_module("google.appengine.ext.webapp.util")
+    mock_non_existent_module("webapp2")
 
 
-@mock.patch('google.auth.app_engine.app_identity')
+@mock.patch("google.auth.app_engine.app_identity")
 def test__convert_appengine_app_assertion_credentials(
-        app_identity, mock_oauth2client_gae_imports):
+    app_identity, mock_oauth2client_gae_imports
+):
 
     import oauth2client.contrib.appengine
 
-    service_account_id = 'service_account_id'
+    service_account_id = "service_account_id"
     old_credentials = oauth2client.contrib.appengine.AppAssertionCredentials(
-        scope='one two', service_account_id=service_account_id)
+        scope="one two", service_account_id=service_account_id
+    )
 
-    new_credentials = (
-        _oauth2client._convert_appengine_app_assertion_credentials(
-            old_credentials))
+    new_credentials = _oauth2client._convert_appengine_app_assertion_credentials(
+        old_credentials
+    )
 
-    assert new_credentials.scopes == ['one', 'two']
-    assert (new_credentials._service_account_id ==
-            old_credentials.service_account_id)
+    assert new_credentials.scopes == ["one", "two"]
+    assert new_credentials._service_account_id == old_credentials.service_account_id
 
 
 class FakeCredentials(object):
@@ -117,10 +129,10 @@ class FakeCredentials(object):
 
 
 def test_convert_success():
-    convert_function = mock.Mock(spec=['__call__'])
+    convert_function = mock.Mock(spec=["__call__"])
     conversion_map_patch = mock.patch.object(
-        _oauth2client, '_CLASS_CONVERSION_MAP',
-        {FakeCredentials: convert_function})
+        _oauth2client, "_CLASS_CONVERSION_MAP", {FakeCredentials: convert_function}
+    )
     credentials = FakeCredentials()
 
     with conversion_map_patch:
@@ -132,9 +144,9 @@ def test_convert_success():
 
 def test_convert_not_found():
     with pytest.raises(ValueError) as excinfo:
-        _oauth2client.convert('a string is not a real credentials class')
+        _oauth2client.convert("a string is not a real credentials class")
 
-    assert excinfo.match('Unable to convert')
+    assert excinfo.match("Unable to convert")
 
 
 @pytest.fixture
@@ -144,14 +156,15 @@ def reset__oauth2client_module():
 
 
 def test_import_has_app_engine(
-        mock_oauth2client_gae_imports, reset__oauth2client_module):
+    mock_oauth2client_gae_imports, reset__oauth2client_module
+):
     reload_module(_oauth2client)
     assert _oauth2client._HAS_APPENGINE
 
 
 def test_import_without_oauth2client(monkeypatch, reset__oauth2client_module):
-    monkeypatch.setitem(sys.modules, 'oauth2client', None)
+    monkeypatch.setitem(sys.modules, "oauth2client", None)
     with pytest.raises(ImportError) as excinfo:
         reload_module(_oauth2client)
 
-    assert excinfo.match('oauth2client')
+    assert excinfo.match("oauth2client")
