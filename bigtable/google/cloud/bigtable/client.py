@@ -60,11 +60,13 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 """Scope for reading table data."""
 
 
-def _create_gapic_client(client_class):
+def _create_gapic_client(client_class, client_options=None):
     def inner(self):
         if self._emulator_host is None:
             return client_class(
-                credentials=self._credentials, client_info=self._client_info
+                credentials=self._credentials,
+                client_info=self._client_info,
+                client_options=client_options,
             )
         else:
             return client_class(
@@ -109,6 +111,17 @@ class Client(ClientWithProject):
         you only need to set this if you're developing your own library
         or partner tool.
 
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
+
+    :type admiN_client_options:
+        :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
+    :param admiN_client_options: (Optional) Client options used to set user
+        options on the client. API Endpoint for admin operations should be set
+        through admiN_client_options.
+
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
             A ``Channel`` instance through which to make calls.
@@ -130,6 +143,8 @@ class Client(ClientWithProject):
         read_only=False,
         admin=False,
         client_info=_CLIENT_INFO,
+        client_options=None,
+        admin_client_options=None,
         channel=None,
     ):
         if read_only and admin:
@@ -155,6 +170,8 @@ class Client(ClientWithProject):
                 stacklevel=2,
             )
 
+        self._client_options = client_options
+        self._admin_client_options = admin_client_options
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(project=project, credentials=credentials)
@@ -213,9 +230,10 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
-            self._table_data_client = _create_gapic_client(bigtable_v2.BigtableClient)(
-                self
+            klass = _create_gapic_client(
+                bigtable_v2.BigtableClient, client_options=self._client_options
             )
+            self._table_data_client = klass(self)
         return self._table_data_client
 
     @property
@@ -237,9 +255,11 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
-            self._table_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableTableAdminClient
-            )(self)
+            klass = _create_gapic_client(
+                bigtable_admin_v2.BigtableTableAdminClient,
+                client_options=self._admin_client_options,
+            )
+            self._table_admin_client = klass(self)
         return self._table_admin_client
 
     @property
@@ -261,9 +281,11 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
-            self._instance_admin_client = _create_gapic_client(
-                bigtable_admin_v2.BigtableInstanceAdminClient
-            )(self)
+            klass = _create_gapic_client(
+                bigtable_admin_v2.BigtableInstanceAdminClient,
+                client_options=self._admin_client_options,
+            )
+            self._instance_admin_client = klass(self)
         return self._instance_admin_client
 
     def instance(self, instance_id, display_name=None, instance_type=None, labels=None):
