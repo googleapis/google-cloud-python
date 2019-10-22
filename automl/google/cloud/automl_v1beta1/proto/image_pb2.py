@@ -33,7 +33,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1B\nImageProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/automl_v1beta1/proto/image.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x37google/cloud/automl_v1beta1/proto/annotation_spec.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1fgoogle/protobuf/timestamp.proto"r\n"ImageClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"%\n#ImageObjectDetectionDatasetMetadata"\x8c\x01\n ImageClassificationModelMetadata\x12\x15\n\rbase_model_id\x18\x01 \x01(\t\x12\x14\n\x0ctrain_budget\x18\x02 \x01(\x03\x12\x12\n\ntrain_cost\x18\x03 \x01(\x03\x12\x13\n\x0bstop_reason\x18\x05 \x01(\t\x12\x12\n\nmodel_type\x18\x07 \x01(\t"\xbe\x01\n!ImageObjectDetectionModelMetadata\x12\x12\n\nmodel_type\x18\x01 \x01(\t\x12\x12\n\nnode_count\x18\x03 \x01(\x03\x12\x10\n\x08node_qps\x18\x04 \x01(\x01\x12\x13\n\x0bstop_reason\x18\x05 \x01(\t\x12%\n\x1dtrain_budget_milli_node_hours\x18\x06 \x01(\x03\x12#\n\x1btrain_cost_milli_node_hours\x18\x07 \x01(\x03"@\n*ImageClassificationModelDeploymentMetadata\x12\x12\n\nnode_count\x18\x01 \x01(\x03"A\n+ImageObjectDetectionModelDeploymentMetadata\x12\x12\n\nnode_count\x18\x01 \x01(\x03\x42\xb1\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\nImageProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n-google/cloud/automl_v1beta1/proto/image.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x37google/cloud/automl_v1beta1/proto/annotation_spec.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1fgoogle/protobuf/timestamp.proto"r\n"ImageClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"%\n#ImageObjectDetectionDatasetMetadata"\xb2\x01\n ImageClassificationModelMetadata\x12\x15\n\rbase_model_id\x18\x01 \x01(\t\x12\x14\n\x0ctrain_budget\x18\x02 \x01(\x03\x12\x12\n\ntrain_cost\x18\x03 \x01(\x03\x12\x13\n\x0bstop_reason\x18\x05 \x01(\t\x12\x12\n\nmodel_type\x18\x07 \x01(\t\x12\x10\n\x08node_qps\x18\r \x01(\x01\x12\x12\n\nnode_count\x18\x0e \x01(\x03"\xbe\x01\n!ImageObjectDetectionModelMetadata\x12\x12\n\nmodel_type\x18\x01 \x01(\t\x12\x12\n\nnode_count\x18\x03 \x01(\x03\x12\x10\n\x08node_qps\x18\x04 \x01(\x01\x12\x13\n\x0bstop_reason\x18\x05 \x01(\t\x12%\n\x1dtrain_budget_milli_node_hours\x18\x06 \x01(\x03\x12#\n\x1btrain_cost_milli_node_hours\x18\x07 \x01(\x03"@\n*ImageClassificationModelDeploymentMetadata\x12\x12\n\nnode_count\x18\x01 \x01(\x03"A\n+ImageObjectDetectionModelDeploymentMetadata\x12\x12\n\nnode_count\x18\x01 \x01(\x03\x42\xb1\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\nImageProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -200,6 +200,42 @@ _IMAGECLASSIFICATIONMODELMETADATA = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="node_qps",
+            full_name="google.cloud.automl.v1beta1.ImageClassificationModelMetadata.node_qps",
+            index=5,
+            number=13,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="node_count",
+            full_name="google.cloud.automl.v1beta1.ImageClassificationModelMetadata.node_count",
+            index=6,
+            number=14,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -210,7 +246,7 @@ _IMAGECLASSIFICATIONMODELMETADATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=410,
-    serialized_end=550,
+    serialized_end=588,
 )
 
 
@@ -338,8 +374,8 @@ _IMAGEOBJECTDETECTIONMODELMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=553,
-    serialized_end=743,
+    serialized_start=591,
+    serialized_end=781,
 )
 
 
@@ -377,8 +413,8 @@ _IMAGECLASSIFICATIONMODELDEPLOYMENTMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=745,
-    serialized_end=809,
+    serialized_start=783,
+    serialized_end=847,
 )
 
 
@@ -416,8 +452,8 @@ _IMAGEOBJECTDETECTIONMODELDEPLOYMENTMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=811,
-    serialized_end=876,
+    serialized_start=849,
+    serialized_end=914,
 )
 
 _IMAGECLASSIFICATIONDATASETMETADATA.fields_by_name[
@@ -540,6 +576,14 @@ ImageClassificationModelMetadata = _reflection.GeneratedProtocolMessageType(
           xportModel]) and used on a mobile device with Core ML
           afterwards. Expected to have a higher latency, but should also
           have a higher prediction quality than other models.
+      node_qps:
+          Output only. An approximate number of online prediction QPS
+          that can be supported by this model per each node on which it
+          is deployed.
+      node_count:
+          Output only. The number of nodes this model is deployed on. A
+          node is an abstraction of a machine resource, which can handle
+          online prediction QPS as given in the node\_qps field.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ImageClassificationModelMetadata)
     ),
@@ -586,8 +630,8 @@ ImageObjectDetectionModelMetadata = _reflection.GeneratedProtocolMessageType(
           actual\_hour \* number\_of\_nodes\_invovled. For model type
           ``cloud-high-accuracy-1``\ (default) and ``cloud-low-
           latency-1``, the train budget must be between 20,000 and
-          2,000,000 milli node hours, inclusive. The default value is
-          216, 000 which represents one day in wall time. For model type
+          900,000 milli node hours, inclusive. The default value is 216,
+          000 which represents one day in wall time. For model type
           ``mobile-low-latency-1``, ``mobile-versatile-1``, ``mobile-
           high-accuracy-1``, ``mobile-core-ml-low-latency-1``, ``mobile-
           core-ml-versatile-1``, ``mobile-core-ml-high-accuracy-1``, the
@@ -617,8 +661,8 @@ ImageClassificationModelDeploymentMetadata = _reflection.GeneratedProtocolMessag
       node_count:
           Input only. The number of nodes to deploy the model on. A node
           is an abstraction of a machine resource, which can handle
-          online prediction QPS as given in the model's [node\_qps][goog
-          le.cloud.automl.v1p1beta.ImageClassificationModelMetadata.node
+          online prediction QPS as given in the model's  [node\_qps][goo
+          gle.cloud.automl.v1beta1.ImageClassificationModelMetadata.node
           \_qps]. Must be between 1 and 100, inclusive on both ends.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ImageClassificationModelDeploymentMetadata)

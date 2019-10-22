@@ -22,6 +22,7 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import automl_v1
+from google.cloud.automl_v1.proto import annotation_spec_pb2
 from google.cloud.automl_v1.proto import dataset_pb2
 from google.cloud.automl_v1.proto import io_pb2
 from google.cloud.automl_v1.proto import model_evaluation_pb2
@@ -435,15 +436,65 @@ class TestAutoMlClient(object):
         exception = response.exception()
         assert exception.errors[0] == error
 
+    def test_get_annotation_spec(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        example_count = 1517063674
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "example_count": example_count,
+        }
+        expected_response = annotation_spec_pb2.AnnotationSpec(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.annotation_spec_path(
+            "[PROJECT]", "[LOCATION]", "[DATASET]", "[ANNOTATION_SPEC]"
+        )
+
+        response = client.get_annotation_spec(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.GetAnnotationSpecRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_annotation_spec_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup request
+        name = client.annotation_spec_path(
+            "[PROJECT]", "[LOCATION]", "[DATASET]", "[ANNOTATION_SPEC]"
+        )
+
+        with pytest.raises(CustomException):
+            client.get_annotation_spec(name)
+
     def test_create_model(self):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
         dataset_id = "datasetId-2115646910"
+        etag = "etag3123477"
         expected_response = {
             "name": name,
             "display_name": display_name,
             "dataset_id": dataset_id,
+            "etag": etag,
         }
         expected_response = model_pb2.Model(**expected_response)
         operation = operations_pb2.Operation(
@@ -499,10 +550,12 @@ class TestAutoMlClient(object):
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
         dataset_id = "datasetId-2115646910"
+        etag = "etag3123477"
         expected_response = {
             "name": name_2,
             "display_name": display_name,
             "dataset_id": dataset_id,
+            "etag": etag,
         }
         expected_response = model_pb2.Model(**expected_response)
 
@@ -543,10 +596,12 @@ class TestAutoMlClient(object):
         name = "name3373707"
         display_name = "displayName1615086568"
         dataset_id = "datasetId-2115646910"
+        etag = "etag3123477"
         expected_response = {
             "name": name,
             "display_name": display_name,
             "dataset_id": dataset_id,
+            "etag": etag,
         }
         expected_response = model_pb2.Model(**expected_response)
 
@@ -679,14 +734,170 @@ class TestAutoMlClient(object):
         exception = response.exception()
         assert exception.errors[0] == error
 
+    def test_deploy_model(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_deploy_model", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+
+        response = client.deploy_model(name)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.DeployModelRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_deploy_model_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_deploy_model_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+
+        response = client.deploy_model(name)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_undeploy_model(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_undeploy_model", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+
+        response = client.undeploy_model(name)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.UndeployModelRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_undeploy_model_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_undeploy_model_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+
+        response = client.undeploy_model(name)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_export_model(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = empty_pb2.Empty(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_export_model", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+        output_config = {}
+
+        response = client.export_model(name, output_config)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = service_pb2.ExportModelRequest(
+            name=name, output_config=output_config
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_export_model_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_export_model_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = automl_v1.AutoMlClient()
+
+        # Setup Request
+        name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
+        output_config = {}
+
+        response = client.export_model(name, output_config)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
     def test_get_model_evaluation(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         annotation_spec_id = "annotationSpecId60690191"
+        display_name = "displayName1615086568"
         evaluated_example_count = 277565350
         expected_response = {
             "name": name_2,
             "annotation_spec_id": annotation_spec_id,
+            "display_name": display_name,
             "evaluated_example_count": evaluated_example_count,
         }
         expected_response = model_evaluation_pb2.ModelEvaluation(**expected_response)

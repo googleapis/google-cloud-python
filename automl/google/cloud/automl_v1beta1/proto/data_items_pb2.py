@@ -816,9 +816,11 @@ Image = _reflection.GeneratedProtocolMessageType(
   Attributes:
       data:
           Input only. The data representing the image. For Predict calls
-          [image\_bytes][] must be set, as other options are not
-          currently supported by prediction API. You can read the
-          contents of an uploaded image by using the [content\_uri][]
+          [image\_bytes][google.cloud.automl.v1beta1.Image.image\_bytes]
+          must be set, as other options are not currently supported by
+          prediction API. You can read the contents of an uploaded image
+          by using the
+          [content\_uri][google.cloud.automl.v1beta1.Image.content\_uri]
           field.
       image_bytes:
           Image content represented as a stream of bytes. Note: As with

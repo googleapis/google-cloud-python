@@ -26,14 +26,18 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
 import google.api_core.path_template
 import grpc
 
 from google.cloud.automl_v1.gapic import enums
 from google.cloud.automl_v1.gapic import prediction_service_client_config
 from google.cloud.automl_v1.gapic.transports import prediction_service_grpc_transport
+from google.cloud.automl_v1.proto import annotation_spec_pb2
 from google.cloud.automl_v1.proto import data_items_pb2
 from google.cloud.automl_v1.proto import dataset_pb2
+from google.cloud.automl_v1.proto import image_pb2
 from google.cloud.automl_v1.proto import io_pb2
 from google.cloud.automl_v1.proto import model_evaluation_pb2
 from google.cloud.automl_v1.proto import model_pb2
@@ -222,7 +226,17 @@ class PredictionServiceClient(object):
         returned in the response. Available for following ML problems, and their
         expected request payloads:
 
+        -  Image Classification - Image in .JPEG, .GIF or .PNG format,
+           image\_bytes up to 30MB.
+        -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
+           image\_bytes up to 30MB.
+        -  Text Classification - TextSnippet, content up to 60,000 characters,
+           UTF-8 encoded.
+        -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
+           NFC encoded.
         -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
+           encoded.
+        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
            encoded.
 
         Example:
@@ -246,6 +260,19 @@ class PredictionServiceClient(object):
                 message :class:`~google.cloud.automl_v1.types.ExamplePayload`
             params (dict[str -> str]): Additional domain-specific parameters, any string must be up to 25000
                 characters long.
+
+                -  For Image Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for an image, it will only produce results that
+                   have at least this confidence score. The default is 0.5.
+
+                -  For Image Object Detection: ``score_threshold`` - (float) When Model
+                   detects objects on the image, it will only produce bounding boxes
+                   which have at least this confidence score. Value in 0 to 1 range,
+                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
+                   this number of bounding boxes will be returned in the response.
+                   Default is 100, the requested value may be limited by server.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -294,4 +321,143 @@ class PredictionServiceClient(object):
 
         return self._inner_api_calls["predict"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def batch_predict(
+        self,
+        name,
+        input_config,
+        output_config,
+        params=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Perform a batch prediction. Unlike the online ``Predict``, batch
+        prediction result won't be immediately available in the response.
+        Instead, a long running operation object is returned. User can poll the
+        operation result via ``GetOperation`` method. Once the operation is
+        done, ``BatchPredictResult`` is returned in the ``response`` field.
+        Available for following ML problems:
+
+        -  Image Classification
+        -  Image Object Detection
+        -  Text Extraction
+
+        Example:
+            >>> from google.cloud import automl_v1
+            >>>
+            >>> client = automl_v1.PredictionServiceClient()
+            >>>
+            >>> name = client.model_path('[PROJECT]', '[LOCATION]', '[MODEL]')
+            >>>
+            >>> # TODO: Initialize `input_config`:
+            >>> input_config = {}
+            >>>
+            >>> # TODO: Initialize `output_config`:
+            >>> output_config = {}
+            >>>
+            >>> response = client.batch_predict(name, input_config, output_config)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            name (str): Name of the model requested to serve the batch prediction.
+            input_config (Union[dict, ~google.cloud.automl_v1.types.BatchPredictInputConfig]): Required. The input configuration for batch prediction.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.automl_v1.types.BatchPredictInputConfig`
+            output_config (Union[dict, ~google.cloud.automl_v1.types.BatchPredictOutputConfig]): Required. The Configuration specifying where output predictions should
+                be written.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.automl_v1.types.BatchPredictOutputConfig`
+            params (dict[str -> str]): Additional domain-specific parameters for the predictions, any string
+                must be up to 25000 characters long.
+
+                -  For Text Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for a text snippet, it will only produce results
+                   that have at least this confidence score. The default is 0.5.
+
+                -  For Image Classification:
+
+                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
+                   makes predictions for an image, it will only produce results that
+                   have at least this confidence score. The default is 0.5.
+
+                -  For Image Object Detection:
+
+                   ``score_threshold`` - (float) When Model detects objects on the
+                   image, it will only produce bounding boxes which have at least this
+                   confidence score. Value in 0 to 1 range, default is 0.5.
+                   ``max_bounding_box_count`` - (int64) No more than this number of
+                   bounding boxes will be produced per image. Default is 100, the
+                   requested value may be limited by server.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.automl_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_predict" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_predict"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_predict,
+                default_retry=self._method_configs["BatchPredict"].retry,
+                default_timeout=self._method_configs["BatchPredict"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = prediction_service_pb2.BatchPredictRequest(
+            name=name,
+            input_config=input_config,
+            output_config=output_config,
+            params=params,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["batch_predict"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            prediction_service_pb2.BatchPredictResult,
+            metadata_type=proto_operations_pb2.OperationMetadata,
         )

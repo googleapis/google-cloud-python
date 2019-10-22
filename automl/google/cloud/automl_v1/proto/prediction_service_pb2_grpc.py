@@ -4,6 +4,9 @@ import grpc
 from google.cloud.automl_v1.proto import (
     prediction_service_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2,
 )
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 
 
 class PredictionServiceStub(object):
@@ -24,6 +27,11 @@ class PredictionServiceStub(object):
             request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.PredictRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.PredictResponse.FromString,
         )
+        self.BatchPredict = channel.unary_unary(
+            "/google.cloud.automl.v1.PredictionService/BatchPredict",
+            request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.BatchPredictRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
 
 
 class PredictionServiceServicer(object):
@@ -37,8 +45,36 @@ class PredictionServiceServicer(object):
         """Perform an online prediction. The prediction result will be directly
     returned in the response.
     Available for following ML problems, and their expected request payloads:
+    * Image Classification - Image in .JPEG, .GIF or .PNG format, image_bytes
+    up to 30MB.
+    * Image Object Detection - Image in .JPEG, .GIF or .PNG format, image_bytes
+    up to 30MB.
+    * Text Classification - TextSnippet, content up to 60,000 characters,
+    UTF-8 encoded.
+    * Text Extraction - TextSnippet, content up to 30,000 characters,
+    UTF-8 NFC encoded.
     * Translation - TextSnippet, content up to 25,000 characters, UTF-8
     encoded.
+    * Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+    encoded.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def BatchPredict(self, request, context):
+        """Perform a batch prediction. Unlike the online
+    [Predict][google.cloud.automl.v1.PredictionService.Predict], batch
+    prediction result won't be immediately available in the response. Instead,
+    a long running operation object is returned. User can poll the operation
+    result via [GetOperation][google.longrunning.Operations.GetOperation]
+    method. Once the operation is done,
+    [BatchPredictResult][google.cloud.automl.v1.BatchPredictResult] is returned
+    in the [response][google.longrunning.Operation.response] field. Available
+    for following ML problems:
+    * Image Classification
+    * Image Object Detection
+    * Text Extraction
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -51,7 +87,12 @@ def add_PredictionServiceServicer_to_server(servicer, server):
             servicer.Predict,
             request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.PredictRequest.FromString,
             response_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.PredictResponse.SerializeToString,
-        )
+        ),
+        "BatchPredict": grpc.unary_unary_rpc_method_handler(
+            servicer.BatchPredict,
+            request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_prediction__service__pb2.BatchPredictRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
         "google.cloud.automl.v1.PredictionService", rpc_method_handlers
