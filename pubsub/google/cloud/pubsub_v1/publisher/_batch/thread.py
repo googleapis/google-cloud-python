@@ -75,6 +75,9 @@ class Batch(base.Batch):
         # These members are all communicated between threads; ensure that
         # any writes to them use the "state lock" to remain atomic.
         self._futures = []
+        # _futures list should remain unchanged after batch
+        # status changed from ACCEPTING_MESSAGES to any other
+        # in order to avoid race conditions
         self._messages = []
         self._size = 0
         self._status = base.BatchStatus.ACCEPTING_MESSAGES
@@ -138,13 +141,13 @@ class Batch(base.Batch):
         return self._status
 
     def wait(self):
-        """If commit in progress, waits until all of the futures resolved.
+        """If commit is in progress, waits until all of the futures resolved.
 
         .. note::
 
             This method blocks until all futures of this batch resolved.
         """
-        if self._status in (base.BatchStatus.STARTING, base.BatchStatus.IN_PROGRESS):
+        if self._status != base.BatchStatus.ACCEPTING_MESSAGES:
             for future in self._futures:
                 future.result()
 
