@@ -893,18 +893,18 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             {"contact_id": Type(code=INT64)},
         )
 
-        with session.transaction() as transaction:
+        def unit_of_work(transaction):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
             status, row_counts = transaction.batch_update(
                 [insert_statement, update_statement, delete_statement]
             )
+            self.assertEqual(status.code, code_pb2.INVALID_ARGUMENT)
+            self.assertEqual(len(row_counts), 1)
+            self.assertEqual(row_counts[0], 1)
 
-        self.assertEqual(status.code, 3)  # XXX: where are values defined?
-        self.assertEqual(len(row_counts), 1)
-        for row_count in row_counts:
-            self.assertEqual(row_count, 1)
+        session.run_in_transaction(unit_of_work)
 
     def test_transaction_batch_update_wo_statements(self):
         from google.api_core.exceptions import InvalidArgument
