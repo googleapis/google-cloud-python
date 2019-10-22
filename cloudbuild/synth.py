@@ -35,7 +35,6 @@ library = gapic.py_library(
 s.move(
     library,
     excludes=[
-        'docs/conf.py',
         'docs/index.rst',
         'nox*.py',
         'setup.py',
