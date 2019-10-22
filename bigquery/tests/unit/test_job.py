@@ -1077,7 +1077,7 @@ class _Base(object):
     TABLE_ID = "table_id"
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_ID = "JOB_ID"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -1276,7 +1276,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.destination_encryption_configuration)
 
     def test_destination_encryption_configuration_hit(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -1289,7 +1291,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         )
 
     def test_destination_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -1634,6 +1638,44 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.source_format = source_format
         self.assertEqual(config._properties["load"]["sourceFormat"], source_format)
 
+    def test_range_partitioning_w_none(self):
+        object_under_test = self._get_target_class()()
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_w_value(self):
+        object_under_test = self._get_target_class()()
+        object_under_test._properties["load"]["rangePartitioning"] = {
+            "field": "column_one",
+            "range": {"start": 1, "end": 1000, "interval": 10},
+        }
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter(self):
+        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangePartitioning
+
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = RangePartitioning(
+            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+        )
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter_w_none(self):
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = None
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_setter_w_wrong_type(self):
+        object_under_test = self._get_target_class()()
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
+
     def test_time_partitioning_miss(self):
         config = self._get_target_class()()
         self.assertIsNone(config.time_partitioning)
@@ -1888,6 +1930,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.destination_table_description)
         self.assertIsNone(job.destination_table_friendly_name)
+        self.assertIsNone(job.range_partitioning)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
@@ -2486,7 +2529,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(config.write_disposition, write_disposition)
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
@@ -3322,6 +3367,44 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         expected = table.TableReference.from_string(destination)
         self.assertEqual(config.destination, expected)
 
+    def test_range_partitioning_w_none(self):
+        object_under_test = self._get_target_class()()
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_w_value(self):
+        object_under_test = self._get_target_class()()
+        object_under_test._properties["query"]["rangePartitioning"] = {
+            "field": "column_one",
+            "range": {"start": 1, "end": 1000, "interval": 10},
+        }
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter(self):
+        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangePartitioning
+
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = RangePartitioning(
+            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+        )
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter_w_none(self):
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = None
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_setter_w_wrong_type(self):
+        object_under_test = self._get_target_class()()
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 
@@ -3411,7 +3494,9 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(resource["someNewProperty"], "Woohoo, alpha stuff.")
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
@@ -3620,6 +3705,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.range_partitioning)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)

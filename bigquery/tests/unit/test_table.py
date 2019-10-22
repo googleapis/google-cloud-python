@@ -71,7 +71,7 @@ class _SchemaBase(object):
 
 
 class TestEncryptionConfiguration(unittest.TestCase):
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -89,78 +89,6 @@ class TestEncryptionConfiguration(unittest.TestCase):
     def test_ctor_with_key(self):
         encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_kms_key_name_setter(self):
-        encryption_config = self._make_one()
-        self.assertIsNone(encryption_config.kms_key_name)
-        encryption_config.kms_key_name = self.KMS_KEY_NAME
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-        encryption_config.kms_key_name = None
-        self.assertIsNone(encryption_config.kms_key_name)
-
-    def test_from_api_repr(self):
-        RESOURCE = {"kmsKeyName": self.KMS_KEY_NAME}
-        klass = self._get_target_class()
-        encryption_config = klass.from_api_repr(RESOURCE)
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_to_api_repr(self):
-        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
-        resource = encryption_config.to_api_repr()
-        self.assertEqual(resource, {"kmsKeyName": self.KMS_KEY_NAME})
-
-    def test___eq___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___eq___kms_key_name_mismatch(self):
-        encryption_config = self._make_one()
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config, other)
-
-    def test___eq___hit(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertEqual(encryption_config, other)
-
-    def test___ne___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___ne___same_value(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        # unittest ``assertEqual`` uses ``==`` not ``!=``.
-        comparison_val = encryption_config1 != encryption_config2
-        self.assertFalse(comparison_val)
-
-    def test___ne___different_values(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config1, encryption_config2)
-
-    def test___hash__set_equality(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1, encryption_config2}
-        set_two = {encryption_config1, encryption_config2}
-        self.assertEqual(set_one, set_two)
-
-    def test___hash__not_equals(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1}
-        set_two = {encryption_config2}
-        self.assertNotEqual(set_one, set_two)
-
-    def test___repr__(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        expected = "EncryptionConfiguration({})".format(self.KMS_KEY_NAME)
-        self.assertEqual(repr(encryption_config), expected)
 
 
 class TestTableReference(unittest.TestCase):
@@ -339,7 +267,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -928,6 +856,29 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
 
+    def test_range_partitioning(self):
+        from google.cloud.bigquery.table import RangePartitioning
+        from google.cloud.bigquery.table import PartitionRange
+
+        table = self._make_one("proj.dset.tbl")
+        assert table.range_partitioning is None
+
+        table.range_partitioning = RangePartitioning(
+            field="col1", range_=PartitionRange(start=-512, end=1024, interval=128)
+        )
+        assert table.range_partitioning.field == "col1"
+        assert table.range_partitioning.range_.start == -512
+        assert table.range_partitioning.range_.end == 1024
+        assert table.range_partitioning.range_.interval == 128
+
+        table.range_partitioning = None
+        assert table.range_partitioning is None
+
+    def test_range_partitioning_w_wrong_type(self):
+        object_under_test = self._make_one("proj.dset.tbl")
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
+
     def test_require_partitioning_filter(self):
         table = self._make_one("proj.dset.tbl")
         assert table.require_partition_filter is None
@@ -1139,6 +1090,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
+        # Previously, the EncryptionConfiguration class was in the table module, not the
+        # encryption_configuration module. It was moved to support models encryption.
+        # This test import from the table module to ensure that the previous location
+        # continues to function as an alias.
         from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -2843,6 +2798,96 @@ class TestRowIterator(unittest.TestCase):
 
         with pytest.raises(ValueError):
             row_iterator.to_dataframe(bqstorage_client)
+
+
+class TestPartitionRange(unittest.TestCase):
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        return PartitionRange
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        object_under_test = self._make_one()
+        assert object_under_test.start is None
+        assert object_under_test.end is None
+        assert object_under_test.interval is None
+
+    def test_constructor_w_properties(self):
+        object_under_test = self._make_one(start=1, end=10, interval=2)
+        assert object_under_test.start == 1
+        assert object_under_test.end == 10
+        assert object_under_test.interval == 2
+
+    def test_constructor_w_resource(self):
+        object_under_test = self._make_one(
+            _properties={"start": -1234567890, "end": 1234567890, "interval": 1000000}
+        )
+        assert object_under_test.start == -1234567890
+        assert object_under_test.end == 1234567890
+        assert object_under_test.interval == 1000000
+
+    def test_repr(self):
+        object_under_test = self._make_one(start=1, end=10, interval=2)
+        assert repr(object_under_test) == "PartitionRange(end=10, interval=2, start=1)"
+
+
+class TestRangePartitioning(unittest.TestCase):
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import RangePartitioning
+
+        return RangePartitioning
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        object_under_test = self._make_one()
+        assert object_under_test.field is None
+        assert object_under_test.range_.start is None
+        assert object_under_test.range_.end is None
+        assert object_under_test.range_.interval is None
+
+    def test_constructor_w_properties(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        object_under_test = self._make_one(
+            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+        )
+        assert object_under_test.field == "integer_col"
+        assert object_under_test.range_.start == 1
+        assert object_under_test.range_.end == 10
+        assert object_under_test.range_.interval == 2
+
+    def test_constructor_w_resource(self):
+        object_under_test = self._make_one(
+            _properties={
+                "field": "some_column",
+                "range": {"start": -1234567890, "end": 1234567890, "interval": 1000000},
+            }
+        )
+        assert object_under_test.field == "some_column"
+        assert object_under_test.range_.start == -1234567890
+        assert object_under_test.range_.end == 1234567890
+        assert object_under_test.range_.interval == 1000000
+
+    def test_range_w_wrong_type(self):
+        object_under_test = self._make_one()
+        with pytest.raises(ValueError, match="PartitionRange"):
+            object_under_test.range_ = object()
+
+    def test_repr(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        object_under_test = self._make_one(
+            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+        )
+        assert (
+            repr(object_under_test)
+            == "RangePartitioning(field='integer_col', range_=PartitionRange(end=10, interval=2, start=1))"
+        )
 
 
 class TestTimePartitioning(unittest.TestCase):
