@@ -1716,11 +1716,12 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
       gcs_destination:
           The Google Cloud Storage location where the model is to be
           written to. This location may only be set for the following
-          model formats: "tflite", "edgetpu\_tflite", "core\_ml",
-          "docker".  Under the directory given as the destination a new
-          one with name "model-export--", where timestamp is in YYYY-MM-
-          DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
-          model and any of its supporting files will be written.
+          model formats: "tflite", "edgetpu\_tflite",
+          "tf\_saved\_model", "tf\_js", "core\_ml".  Under the directory
+          given as the destination a new one with name "model-export--",
+          where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601
+          format, will be created. Inside the model and any of its
+          supporting files will be written.
       gcr_destination:
           The GCR location where model image is to be pushed to. This
           location may only be set for the following model formats:
@@ -1733,17 +1734,19 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
           listed, it means its models are not exportable):  -  For Image
           Classification mobile-low-latency-1, mobile-versatile-1,
           mobile-high-accuracy-1: "tflite" (default), "edgetpu\_tflite",
-          "tf\_saved\_model", "docker".  -  For Image Classification
-          mobile-core-ml-low-latency-1,    mobile-core-ml-versatile-1,
-          mobile-core-ml-high-accuracy-1:    "core\_ml" (default).
-          Formats description:  -  tflite - Used for Android mobile
-          devices. -  edgetpu\_tflite - Used for `Edge    TPU
+          "tf\_saved\_model", "tf\_js", "docker".  -  For Image
+          Classification mobile-core-ml-low-latency-1,    mobile-core-
+          ml-versatile-1, mobile-core-ml-high-accuracy-1:    "core\_ml"
+          (default). Formats description:  -  tflite - Used for Android
+          mobile devices. -  edgetpu\_tflite - Used for `Edge    TPU
           <https://cloud.google.com/edge-tpu/>`__ devices. -
           tf\_saved\_model - A tensorflow model in SavedModel format. -
-          docker - Used for Docker containers. Use the params field to
-          customize the container. The container is verified to work
-          correctly    on ubuntu 16.04 operating system. See more at
-          [containers  quickstart](https:
+          tf\_js - A `TensorFlow.js <https://www.tensorflow.org/js>`__
+          model    that can be used in the browser and in Node.js using
+          JavaScript. -  docker - Used for Docker containers. Use the
+          params field to    customize the container. The container is
+          verified to work correctly    on ubuntu 16.04 operating
+          system. See more at [containers  quickstart](https:
           //cloud.google.com/vision/automl/docs/containers-gcs-
           quickstart) \* core\_ml - Used for iOS mobile devices.
       params:
