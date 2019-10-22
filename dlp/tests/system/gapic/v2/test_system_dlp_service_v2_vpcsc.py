@@ -163,7 +163,6 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_inspect_template(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -244,7 +243,6 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_deidentify_template(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -293,7 +291,6 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.create_dlp_job(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -358,7 +355,6 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.cancel_dlp_job(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
@@ -487,7 +483,6 @@ class TestSystemDlpService(object):
         delayed_outside = lambda: client.get_stored_info_type(name_outside)
         TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
     @pytest.mark.skipif(
         not IS_INSIDE_VPCSC,
         reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
