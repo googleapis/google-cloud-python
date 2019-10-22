@@ -34,7 +34,6 @@ class Build(object):
           TIMEOUT (int): Build or step took longer than was allowed.
           CANCELLED (int): Build or step was canceled by a user.
         """
-
         STATUS_UNKNOWN = 0
         QUEUED = 1
         WORKING = 2
@@ -56,10 +55,10 @@ class BuildOptions(object):
           STREAM_OFF (int): Build logs should not be streamed to Google Cloud Storage; they will be
           written when the build is completed.
         """
-
         STREAM_DEFAULT = 0
         STREAM_ON = 1
         STREAM_OFF = 2
+
 
     class LoggingMode(enum.IntEnum):
         """
@@ -71,10 +70,10 @@ class BuildOptions(object):
           LEGACY (int): Stackdriver logging and Cloud Storage logging are enabled.
           GCS_ONLY (int): Only Cloud Storage logging is enabled.
         """
-
         LOGGING_UNSPECIFIED = 0
         LEGACY = 1
         GCS_ONLY = 2
+
 
     class MachineType(enum.IntEnum):
         """
@@ -85,10 +84,10 @@ class BuildOptions(object):
           N1_HIGHCPU_8 (int): Highcpu machine with 8 CPUs.
           N1_HIGHCPU_32 (int): Highcpu machine with 32 CPUs.
         """
-
         UNSPECIFIED = 0
         N1_HIGHCPU_8 = 1
         N1_HIGHCPU_32 = 2
+
 
     class SubstitutionOption(enum.IntEnum):
         """
@@ -99,9 +98,9 @@ class BuildOptions(object):
           a substitution in the template or in the map.
           ALLOW_LOOSE (int): Do not fail the build if error in substitutions checks.
         """
-
         MUST_MATCH = 0
         ALLOW_LOOSE = 1
+
 
     class VerifyOption(enum.IntEnum):
         """
@@ -111,7 +110,6 @@ class BuildOptions(object):
           NOT_VERIFIED (int): Not a verifiable build. (default)
           VERIFIED (int): Verified build.
         """
-
         NOT_VERIFIED = 0
         VERIFIED = 1
 
@@ -126,7 +124,6 @@ class Hash(object):
           SHA256 (int): Use a sha256 hash.
           MD5 (int): Use a md5 hash.
         """
-
         NONE = 0
         SHA256 = 1
         MD5 = 2
@@ -142,7 +139,6 @@ class PullRequestFilter(object):
           COMMENTS_ENABLED (int): Enforce that repository owners or collaborators must comment on Pull
           Requests before builds are triggered.
         """
-
         COMMENTS_DISABLED = 0
         COMMENTS_ENABLED = 1
 
@@ -159,12 +155,12 @@ class WorkerPool(object):
           US_EAST1 (int): us-east1 region
           US_EAST4 (int): us-east4 region
         """
-
         REGION_UNSPECIFIED = 0
         US_CENTRAL1 = 1
         US_WEST1 = 2
         US_EAST1 = 3
         US_EAST4 = 4
+
 
     class Status(enum.IntEnum):
         """
@@ -178,9 +174,9 @@ class WorkerPool(object):
           workers.
           DELETED (int): ``WorkerPool`` is deleted.
         """
-
         STATUS_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
         DELETING = 3
         DELETED = 4
+    

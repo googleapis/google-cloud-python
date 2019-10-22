@@ -38,7 +38,9 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [cloudbuild_pb2]
+_local_modules = [
+    cloudbuild_pb2,
+]
 
 names = []
 
@@ -47,10 +49,10 @@ for module in _shared_modules:  # pragma: NO COVER
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 for module in _local_modules:
-    for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.devtools.cloudbuild_v1.types"
-        setattr(sys.modules[__name__], name, message)
-        names.append(name)
+      for name, message in get_messages(module).items():
+          message.__module__ = 'google.cloud.devtools.cloudbuild_v1.types'
+          setattr(sys.modules[__name__], name, message)
+          names.append(name)
 
 
 __all__ = tuple(sorted(names))

@@ -7,7 +7,7 @@
   "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-cloudbuild",
+  "distribution_name": "google-cloud-build",
   "api_id": "cloudbuild.googleapis.com",
   "requires_billing": false
 }

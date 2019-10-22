@@ -14,7 +14,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-cloudbuild`` releases:
+For a list of all ``google-cloud-build`` releases:
 
 .. toctree::
    :maxdepth: 2

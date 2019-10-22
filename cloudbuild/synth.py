@@ -61,7 +61,7 @@ s.replace(
     "google-cloud-build"
 )
 
-# Fix reference to cloudsite
+# Fix reference to product documentation
 s.replace(
     'README.rst',
     'https://cloud\.google\.com/cloudbuild',
