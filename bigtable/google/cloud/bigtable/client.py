@@ -116,11 +116,11 @@ class Client(ClientWithProject):
     :param client_options: (Optional) Client options used to set user options
         on the client. API Endpoint should be set through client_options.
 
-    :type admiN_client_options:
+    :type admin_client_options:
         :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
-    :param admiN_client_options: (Optional) Client options used to set user
+    :param admin_client_options: (Optional) Client options used to set user
         options on the client. API Endpoint for admin operations should be set
-        through admiN_client_options.
+        through admin_client_options.
 
     :type channel: :instance: grpc.Channel
     :param channel (grpc.Channel): (Optional) DEPRECATED:
