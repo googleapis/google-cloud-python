@@ -55,6 +55,7 @@ class TestClient(unittest.TestCase):
         expected_creds=None,
         client_info=None,
         user_agent=None,
+        client_options=None,
     ):
         from google.cloud.spanner_v1 import client as MUT
 
@@ -79,6 +80,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
         self.assertIs(client._client_info, expected_client_info)
         self.assertEqual(client.user_agent, user_agent)
+        self.assertEqual(client._client_options, client_options)
 
     def test_constructor_default_scopes(self):
         from google.cloud.spanner_v1 import client as MUT
@@ -130,8 +132,12 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
-            project=self.PROJECT, credentials=credentials, client_info=client_info
+            project=self.PROJECT,
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
         )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
@@ -146,7 +152,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         instance_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=client_info
+            credentials=credentials.with_scopes.return_value,
+            client_info=client_info,
+            client_options=client_options,
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
@@ -156,8 +164,12 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client_info = mock.Mock()
+        client_options = mock.Mock()
         client = self._make_one(
-            project=self.PROJECT, credentials=credentials, client_info=client_info
+            project=self.PROJECT,
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
         )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
@@ -172,7 +184,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         database_admin_client.assert_called_once_with(
-            credentials=credentials.with_scopes.return_value, client_info=client_info
+            credentials=credentials.with_scopes.return_value,
+            client_info=client_info,
+            client_options=client_options,
         )
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
