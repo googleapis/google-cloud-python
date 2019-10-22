@@ -545,6 +545,15 @@ class StreamingPullManager(object):
             self._messages_on_hold.qsize(),
         )
 
+        # Immediately (i.e. without waiting for the auto lease management)
+        # modack the messages we received, as this tells the server that we've
+        # received them.
+        items = [
+            requests.ModAckRequest(message.ack_id, self._ack_histogram.percentile(99))
+            for message in response.received_messages
+        ]
+        self._dispatcher.modify_ack_deadline(items)
+
         invoke_callbacks_for = []
 
         for received_message in response.received_messages:
@@ -552,23 +561,15 @@ class StreamingPullManager(object):
                 received_message.message, received_message.ack_id, self._scheduler.queue
             )
             if self.load < _MAX_LOAD:
-                req = requests.LeaseRequest(
-                    ack_id=message.ack_id, byte_size=message.size
-                )
-                self.leaser.add([req])
                 invoke_callbacks_for.append(message)
-                self.maybe_pause_consumer()
             else:
                 self._messages_on_hold.put(message)
 
-        # Immediately (i.e. without waiting for the auto lease management)
-        # modack the messages we received and not put on hold, as this tells
-        # the server that we've received them.
-        items = [
-            requests.ModAckRequest(message.ack_id, self._ack_histogram.percentile(99))
-            for message in invoke_callbacks_for
-        ]
-        self._dispatcher.modify_ack_deadline(items)
+            req = requests.LeaseRequest(
+                ack_id=message.ack_id, byte_size=message.size
+            )
+            self.leaser.add([req])
+            self.maybe_pause_consumer()
 
         _LOGGER.debug(
             "Scheduling callbacks for %s new messages, new total on hold %s.",

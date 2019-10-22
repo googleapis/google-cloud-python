@@ -668,13 +668,17 @@ def test__on_response_with_leaser_overload():
     # are called in the expected way.
     manager._on_response(response)
 
-    # only the messages that are added to the lease management and dispatched to
-    # callbacks should have their ACK deadline extended
+    # all messages should be added to the lease management and have their ACK
+    # deadline extended, even those not dispatched to callbacks
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest("fack", 10)]
+        [
+            requests.ModAckRequest("fack", 10),
+            requests.ModAckRequest("back", 10),
+            requests.ModAckRequest("zack", 10),
+        ]
     )
 
-    # one message should be scheduled, the leaser capacity allows for it
+    # one message should be scheduled, the flow control limits allow for it
     schedule_calls = scheduler.schedule.mock_calls
     assert len(schedule_calls) == 1
     call_args = schedule_calls[0][1]
