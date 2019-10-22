@@ -15,6 +15,7 @@
 """Client for interacting with the Google Cloud DNS API."""
 
 from google.api_core import page_iterator
+from google.api_core import client_options as client_options_mod
 from google.cloud.client import ClientWithProject
 
 from google.cloud.dns._http import Connection
@@ -50,16 +51,37 @@ class Client(ClientWithProject):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/ndev.clouddns.readwrite",)
     """The scopes required for authenticating as a Cloud DNS consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None, client_info=None):
+    def __init__(
+        self,
+        project=None,
+        credentials=None,
+        _http=None,
+        client_info=None,
+        client_options=None,
+    ):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http
         )
-        self._connection = Connection(self, client_info=client_info)
+
+        kwargs = {"client_info": client_info}
+        if client_options:
+            if isinstance(client_options, dict):
+                client_options = client_options_mod.from_dict(client_options)
+
+            if client_options.api_endpoint:
+                kwargs["api_endpoint"] = client_options.api_endpoint
+
+        self._connection = Connection(self, **kwargs)
 
     def quotas(self):
         """Return DNS quotas for the project associated with this client.
