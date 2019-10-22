@@ -92,7 +92,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_client_options_object(self):
         from google.api_core.client_options import ClientOptions
 
-        api_endpoint = "https://foo-runtimeconfig.googleapis.com"
+        api_endpoint = "https://foo-dns.googleapis.com"
         creds = _make_credentials()
         http = object()
         client_options = ClientOptions(api_endpoint=api_endpoint)
@@ -105,7 +105,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
 
     def test_ctor_w_client_options_dict(self):
-        api_endpoint = "https://foo-runtimeconfig.googleapis.com"
+        api_endpoint = "https://foo-dns.googleapis.com"
         creds = _make_credentials()
         http = object()
         client_options = {"api_endpoint": api_endpoint}
