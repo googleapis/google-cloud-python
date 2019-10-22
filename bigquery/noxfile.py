@@ -20,11 +20,7 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join("..", "api_core[grpc]"),
-    os.path.join("..", "core"),
-    os.path.join("..", "test_utils"),
-)
+LOCAL_DEPS = (os.path.join("..", "api_core[grpc]"), os.path.join("..", "core"))
 
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
@@ -42,6 +38,7 @@ def default(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
 
+    session.install("-e", os.path.join("..", "test_utils"))
     dev_install = ".[all]"
     session.install("-e", dev_install)
 
@@ -88,6 +85,7 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
+    session.install("-e", os.path.join("..", "test_utils"))
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
@@ -115,6 +113,7 @@ def snippets(session):
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))
+    session.install("-e", os.path.join("..", "test_utils"))
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
