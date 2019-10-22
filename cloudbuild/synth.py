@@ -37,7 +37,6 @@ s.move(
     excludes=[
         'docs/conf.py',
         'docs/index.rst',
-        # 'README.rst',
         'nox*.py',
         'setup.py',
         'setup.cfg',
@@ -55,9 +54,33 @@ s.replace(
 )
 
 
+# Rename package to `google-cloud-build`
+s.replace(
+    ['README.rst', 'google/**/*.py', 'docs/**/*.rst', 'tests/**/*.py'],
+    "google-cloud-cloudbuild",
+    "google-cloud-build"
+)
+
+# Fix reference to cloudsite
+s.replace(
+    'README.rst',
+    'https://cloud\.google\.com/cloudbuild',
+    'https://cloud.google.com/cloud-build'
+)
+
+# Fix link to auth
+s.replace(
+    'README.rst',
+    'https://googleapis\.github\.io/google-cloud-python/latest/core/auth\.html',
+    'https://googleapis.dev/python/google-api-core/latest/auth.html'
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
+
+# coverage level is low because of missing coverage for __init__.py files
+# 74 is the value 
 templated_files = common.py_library(unit_cov_level=74, cov_level=74)
 s.move(templated_files)
 

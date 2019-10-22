@@ -30,7 +30,6 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 if os.path.exists("samples"):
     BLACK_PATHS.append("samples")
 
-
 @nox.session(python="3.7")
 def lint(session):
     """Run linters.
@@ -39,11 +38,15 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", BLACK_VERSION, *LOCAL_DEPS)
-    session.run("black", "--check", *BLACK_PATHS)
+    session.run(
+        "black",
+        "--check",
+        *BLACK_PATHS,
+    )
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def blacken(session):
     """Run black.
 
@@ -54,7 +57,10 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install(BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    session.run(
+        "black",
+        *BLACK_PATHS,
+    )
 
 
 @nox.session(python="3.7")
@@ -125,6 +131,7 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
+
 @nox.session(python="3.7")
 def cover(session):
     """Run the final coverage report.
@@ -137,24 +144,21 @@ def cover(session):
 
     session.run("coverage", "erase")
 
-
 @nox.session(python="3.7")
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install('-e', '.')
+    session.install('sphinx', 'alabaster', 'recommonmark')
 
-    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    shutil.rmtree(os.path.join('docs', '_build'), ignore_errors=True)
     session.run(
-        "sphinx-build",
-        "-W",  # warnings as errors
-        "-T",  # show full traceback on exception
-        "-N",  # no colors
-        "-b",
-        "html",
-        "-d",
-        os.path.join("docs", "_build", "doctrees", ""),
-        os.path.join("docs", ""),
-        os.path.join("docs", "_build", "html", ""),
+        'sphinx-build',
+        '-W',  # warnings as errors
+        '-T',  # show full traceback on exception
+        '-N',  # no colors
+        '-b', 'html',
+        '-d', os.path.join('docs', '_build', 'doctrees', ''),
+        os.path.join('docs', ''),
+        os.path.join('docs', '_build', 'html', ''),
     )
