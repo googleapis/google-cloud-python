@@ -28,14 +28,14 @@ class CloudBuildGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
+
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
-    _OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-    )
+    _OAUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    def __init__(self, channel=None, credentials=None,
-                 address='cloudbuild.googleapis.com:443'):
+    def __init__(
+        self, channel=None, credentials=None, address="cloudbuild.googleapis.com:443"
+    ):
         """Instantiate the transport class.
 
         Args:
@@ -53,8 +53,7 @@ class CloudBuildGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'The `channel` and `credentials` arguments are mutually '
-                'exclusive.',
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
             )
 
         # Create the channel.
@@ -63,8 +62,8 @@ class CloudBuildGrpcTransport(object):
                 address=address,
                 credentials=credentials,
                 options={
-                    'grpc.max_send_message_length': -1,
-                    'grpc.max_receive_message_length': -1,
+                    "grpc.max_send_message_length": -1,
+                    "grpc.max_receive_message_length": -1,
                 }.items(),
             )
 
@@ -72,17 +71,12 @@ class CloudBuildGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {
-            'cloud_build_stub': cloudbuild_pb2_grpc.CloudBuildStub(channel),
-        }
-
+        self._stubs = {"cloud_build_stub": cloudbuild_pb2_grpc.CloudBuildStub(channel)}
 
     @classmethod
     def create_channel(
-                cls,
-                address='cloudbuild.googleapis.com:443',
-                credentials=None,
-                **kwargs):
+        cls, address="cloudbuild.googleapis.com:443", credentials=None, **kwargs
+    ):
         """Create and return a gRPC channel object.
 
         Args:
@@ -99,10 +93,7 @@ class CloudBuildGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address,
-            credentials=credentials,
-            scopes=cls._OAUTH_SCOPES,
-            **kwargs
+            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
         )
 
     @property
@@ -129,7 +120,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].CreateBuild
+        return self._stubs["cloud_build_stub"].CreateBuild
 
     @property
     def get_build(self):
@@ -145,7 +136,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].GetBuild
+        return self._stubs["cloud_build_stub"].GetBuild
 
     @property
     def list_builds(self):
@@ -161,7 +152,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].ListBuilds
+        return self._stubs["cloud_build_stub"].ListBuilds
 
     @property
     def cancel_build(self):
@@ -174,7 +165,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].CancelBuild
+        return self._stubs["cloud_build_stub"].CancelBuild
 
     @property
     def create_build_trigger(self):
@@ -189,7 +180,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].CreateBuildTrigger
+        return self._stubs["cloud_build_stub"].CreateBuildTrigger
 
     @property
     def get_build_trigger(self):
@@ -204,7 +195,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].GetBuildTrigger
+        return self._stubs["cloud_build_stub"].GetBuildTrigger
 
     @property
     def list_build_triggers(self):
@@ -219,7 +210,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].ListBuildTriggers
+        return self._stubs["cloud_build_stub"].ListBuildTriggers
 
     @property
     def delete_build_trigger(self):
@@ -234,7 +225,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].DeleteBuildTrigger
+        return self._stubs["cloud_build_stub"].DeleteBuildTrigger
 
     @property
     def update_build_trigger(self):
@@ -249,7 +240,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].UpdateBuildTrigger
+        return self._stubs["cloud_build_stub"].UpdateBuildTrigger
 
     @property
     def run_build_trigger(self):
@@ -262,7 +253,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].RunBuildTrigger
+        return self._stubs["cloud_build_stub"].RunBuildTrigger
 
     @property
     def retry_build(self):
@@ -302,7 +293,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].RetryBuild
+        return self._stubs["cloud_build_stub"].RetryBuild
 
     @property
     def create_worker_pool(self):
@@ -318,7 +309,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].CreateWorkerPool
+        return self._stubs["cloud_build_stub"].CreateWorkerPool
 
     @property
     def get_worker_pool(self):
@@ -333,7 +324,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].GetWorkerPool
+        return self._stubs["cloud_build_stub"].GetWorkerPool
 
     @property
     def delete_worker_pool(self):
@@ -348,7 +339,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].DeleteWorkerPool
+        return self._stubs["cloud_build_stub"].DeleteWorkerPool
 
     @property
     def update_worker_pool(self):
@@ -363,7 +354,7 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].UpdateWorkerPool
+        return self._stubs["cloud_build_stub"].UpdateWorkerPool
 
     @property
     def list_worker_pools(self):
@@ -378,4 +369,4 @@ class CloudBuildGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs['cloud_build_stub'].ListWorkerPools
+        return self._stubs["cloud_build_stub"].ListWorkerPools

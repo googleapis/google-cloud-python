@@ -32,17 +32,16 @@ import grpc
 
 from google.cloud.devtools.cloudbuild_v1.gapic import cloud_build_client_config
 from google.cloud.devtools.cloudbuild_v1.gapic import enums
-from google.cloud.devtools.cloudbuild_v1.gapic.transports import cloud_build_grpc_transport
+from google.cloud.devtools.cloudbuild_v1.gapic.transports import (
+    cloud_build_grpc_transport,
+)
 from google.cloud.devtools.cloudbuild_v1.proto import cloudbuild_pb2
 from google.cloud.devtools.cloudbuild_v1.proto import cloudbuild_pb2_grpc
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
-
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-build',
-).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-build").version
 
 
 class CloudBuildClient(object):
@@ -57,13 +56,12 @@ class CloudBuildClient(object):
     determine the status of the build.
     """
 
-    SERVICE_ADDRESS = 'cloudbuild.googleapis.com:443'
+    SERVICE_ADDRESS = "cloudbuild.googleapis.com:443"
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = 'google.devtools.cloudbuild.v1.CloudBuild'
-
+    _INTERFACE_NAME = "google.devtools.cloudbuild.v1.CloudBuild"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -79,15 +77,21 @@ class CloudBuildClient(object):
         Returns:
             CloudBuildClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(self, transport=None, channel=None, credentials=None,
-            client_config=None, client_info=None, client_options=None):
+    def __init__(
+        self,
+        transport=None,
+        channel=None,
+        credentials=None,
+        client_config=None,
+        client_info=None,
+        client_options=None,
+    ):
         """Constructor.
 
         Args:
@@ -123,20 +127,27 @@ class CloudBuildClient(object):
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
-            warnings.warn('The `client_config` argument is deprecated.',
-                          PendingDeprecationWarning, stacklevel=2)
+            warnings.warn(
+                "The `client_config` argument is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
         else:
             client_config = cloud_build_client_config.config
 
         if channel:
-            warnings.warn('The `channel` argument is deprecated; use '
-                          '`transport` instead.',
-                          PendingDeprecationWarning, stacklevel=2)
+            warnings.warn(
+                "The `channel` argument is deprecated; use " "`transport` instead.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
         api_endpoint = self.SERVICE_ADDRESS
         if client_options:
             if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(client_options)
+                client_options = google.api_core.client_options.from_dict(
+                    client_options
+                )
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
 
@@ -153,20 +164,18 @@ class CloudBuildClient(object):
             else:
                 if credentials:
                     raise ValueError(
-                        'Received both a transport instance and '
-                        'credentials; these are mutually exclusive.'
+                        "Received both a transport instance and "
+                        "credentials; these are mutually exclusive."
                     )
                 self.transport = transport
         else:
             self.transport = cloud_build_grpc_transport.CloudBuildGrpcTransport(
-                address=api_endpoint,
-                channel=channel,
-                credentials=credentials,
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION,
+                gapic_version=_GAPIC_LIBRARY_VERSION
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -177,7 +186,7 @@ class CloudBuildClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config['interfaces'][self._INTERFACE_NAME],
+            client_config["interfaces"][self._INTERFACE_NAME]
         )
 
         # Save a dictionary of cached API call functions.
@@ -188,12 +197,13 @@ class CloudBuildClient(object):
 
     # Service calls
     def create_build(
-            self,
-            project_id,
-            build,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        build,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Starts a build with the specified configuration.
 
@@ -240,38 +250,42 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_build' not in self._inner_api_calls:
-            self._inner_api_calls['create_build'] = google.api_core.gapic_v1.method.wrap_method(
+        if "create_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.create_build,
-                default_retry=self._method_configs['CreateBuild'].retry,
-                default_timeout=self._method_configs['CreateBuild'].timeout,
+                default_retry=self._method_configs["CreateBuild"].retry,
+                default_timeout=self._method_configs["CreateBuild"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.CreateBuildRequest(
-            project_id=project_id,
-            build=build,
-        )
+        request = cloudbuild_pb2.CreateBuildRequest(project_id=project_id, build=build)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('project_id', project_id)]
+            routing_header = [("project_id", project_id)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['create_build'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def get_build(
-            self,
-            project_id,
-            id_,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        id_,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about a previously requested build.
 
@@ -314,28 +328,30 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_build' not in self._inner_api_calls:
-            self._inner_api_calls['get_build'] = google.api_core.gapic_v1.method.wrap_method(
+        if "get_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_build,
-                default_retry=self._method_configs['GetBuild'].retry,
-                default_timeout=self._method_configs['GetBuild'].timeout,
+                default_retry=self._method_configs["GetBuild"].retry,
+                default_timeout=self._method_configs["GetBuild"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.GetBuildRequest(
-            project_id=project_id,
-            id=id_,
+        request = cloudbuild_pb2.GetBuildRequest(project_id=project_id, id=id_)
+        return self._inner_api_calls["get_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['get_build'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_builds(
-            self,
-            project_id,
-            page_size=None,
-            filter_=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        page_size=None,
+        filter_=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists previously requested builds.
 
@@ -395,47 +411,55 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_builds' not in self._inner_api_calls:
-            self._inner_api_calls['list_builds'] = google.api_core.gapic_v1.method.wrap_method(
+        if "list_builds" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_builds"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_builds,
-                default_retry=self._method_configs['ListBuilds'].retry,
-                default_timeout=self._method_configs['ListBuilds'].timeout,
+                default_retry=self._method_configs["ListBuilds"].retry,
+                default_timeout=self._method_configs["ListBuilds"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.ListBuildsRequest(
-            project_id=project_id,
-            page_size=page_size,
-            filter=filter_,
+            project_id=project_id, page_size=page_size, filter=filter_
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('project_id', project_id)]
+            routing_header = [("project_id", project_id)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
-            method=functools.partial(self._inner_api_calls['list_builds'], retry=retry, timeout=timeout, metadata=metadata),
+            method=functools.partial(
+                self._inner_api_calls["list_builds"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
             request=request,
-            items_field='builds',
-            request_token_field='page_token',
-            response_token_field='next_page_token',
+            items_field="builds",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
         return iterator
 
     def cancel_build(
-            self,
-            project_id,
-            id_,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        id_,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Cancels a build in progress.
 
@@ -475,27 +499,29 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'cancel_build' not in self._inner_api_calls:
-            self._inner_api_calls['cancel_build'] = google.api_core.gapic_v1.method.wrap_method(
+        if "cancel_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "cancel_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.cancel_build,
-                default_retry=self._method_configs['CancelBuild'].retry,
-                default_timeout=self._method_configs['CancelBuild'].timeout,
+                default_retry=self._method_configs["CancelBuild"].retry,
+                default_timeout=self._method_configs["CancelBuild"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.CancelBuildRequest(
-            project_id=project_id,
-            id=id_,
+        request = cloudbuild_pb2.CancelBuildRequest(project_id=project_id, id=id_)
+        return self._inner_api_calls["cancel_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['cancel_build'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_build_trigger(
-            self,
-            project_id,
-            trigger,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        trigger,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new ``BuildTrigger``.
 
@@ -540,38 +566,44 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_build_trigger' not in self._inner_api_calls:
-            self._inner_api_calls['create_build_trigger'] = google.api_core.gapic_v1.method.wrap_method(
+        if "create_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.create_build_trigger,
-                default_retry=self._method_configs['CreateBuildTrigger'].retry,
-                default_timeout=self._method_configs['CreateBuildTrigger'].timeout,
+                default_retry=self._method_configs["CreateBuildTrigger"].retry,
+                default_timeout=self._method_configs["CreateBuildTrigger"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.CreateBuildTriggerRequest(
-            project_id=project_id,
-            trigger=trigger,
+            project_id=project_id, trigger=trigger
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('project_id', project_id)]
+            routing_header = [("project_id", project_id)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['create_build_trigger'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def get_build_trigger(
-            self,
-            project_id,
-            trigger_id,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        trigger_id,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about a ``BuildTrigger``.
 
@@ -613,28 +645,32 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_build_trigger' not in self._inner_api_calls:
-            self._inner_api_calls['get_build_trigger'] = google.api_core.gapic_v1.method.wrap_method(
+        if "get_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_build_trigger,
-                default_retry=self._method_configs['GetBuildTrigger'].retry,
-                default_timeout=self._method_configs['GetBuildTrigger'].timeout,
+                default_retry=self._method_configs["GetBuildTrigger"].retry,
+                default_timeout=self._method_configs["GetBuildTrigger"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.GetBuildTriggerRequest(
-            project_id=project_id,
-            trigger_id=trigger_id,
+            project_id=project_id, trigger_id=trigger_id
         )
-        return self._inner_api_calls['get_build_trigger'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["get_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def list_build_triggers(
-            self,
-            project_id,
-            page_size=None,
-            page_token=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        page_size=None,
+        page_token=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Lists existing ``BuildTrigger``\ s.
 
@@ -674,39 +710,44 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_build_triggers' not in self._inner_api_calls:
-            self._inner_api_calls['list_build_triggers'] = google.api_core.gapic_v1.method.wrap_method(
+        if "list_build_triggers" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_build_triggers"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_build_triggers,
-                default_retry=self._method_configs['ListBuildTriggers'].retry,
-                default_timeout=self._method_configs['ListBuildTriggers'].timeout,
+                default_retry=self._method_configs["ListBuildTriggers"].retry,
+                default_timeout=self._method_configs["ListBuildTriggers"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.ListBuildTriggersRequest(
-            project_id=project_id,
-            page_size=page_size,
-            page_token=page_token,
+            project_id=project_id, page_size=page_size, page_token=page_token
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [('project_id', project_id)]
+            routing_header = [("project_id", project_id)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls['list_build_triggers'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["list_build_triggers"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def delete_build_trigger(
-            self,
-            project_id,
-            trigger_id,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        trigger_id,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a ``BuildTrigger`` by its project ID and trigger ID.
 
@@ -745,28 +786,32 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_build_trigger' not in self._inner_api_calls:
-            self._inner_api_calls['delete_build_trigger'] = google.api_core.gapic_v1.method.wrap_method(
+        if "delete_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.delete_build_trigger,
-                default_retry=self._method_configs['DeleteBuildTrigger'].retry,
-                default_timeout=self._method_configs['DeleteBuildTrigger'].timeout,
+                default_retry=self._method_configs["DeleteBuildTrigger"].retry,
+                default_timeout=self._method_configs["DeleteBuildTrigger"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.DeleteBuildTriggerRequest(
-            project_id=project_id,
-            trigger_id=trigger_id,
+            project_id=project_id, trigger_id=trigger_id
         )
-        self._inner_api_calls['delete_build_trigger'](request, retry=retry, timeout=timeout, metadata=metadata)
+        self._inner_api_calls["delete_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def update_build_trigger(
-            self,
-            project_id,
-            trigger_id,
-            trigger,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        trigger_id,
+        trigger,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Updates a ``BuildTrigger`` by its project ID and trigger ID.
 
@@ -815,29 +860,32 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_build_trigger' not in self._inner_api_calls:
-            self._inner_api_calls['update_build_trigger'] = google.api_core.gapic_v1.method.wrap_method(
+        if "update_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.update_build_trigger,
-                default_retry=self._method_configs['UpdateBuildTrigger'].retry,
-                default_timeout=self._method_configs['UpdateBuildTrigger'].timeout,
+                default_retry=self._method_configs["UpdateBuildTrigger"].retry,
+                default_timeout=self._method_configs["UpdateBuildTrigger"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.UpdateBuildTriggerRequest(
-            project_id=project_id,
-            trigger_id=trigger_id,
-            trigger=trigger,
+            project_id=project_id, trigger_id=trigger_id, trigger=trigger
         )
-        return self._inner_api_calls['update_build_trigger'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def run_build_trigger(
-            self,
-            project_id,
-            trigger_id,
-            source,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        trigger_id,
+        source,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Runs a ``BuildTrigger`` at a particular source revision.
 
@@ -884,28 +932,31 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'run_build_trigger' not in self._inner_api_calls:
-            self._inner_api_calls['run_build_trigger'] = google.api_core.gapic_v1.method.wrap_method(
+        if "run_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "run_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.run_build_trigger,
-                default_retry=self._method_configs['RunBuildTrigger'].retry,
-                default_timeout=self._method_configs['RunBuildTrigger'].timeout,
+                default_retry=self._method_configs["RunBuildTrigger"].retry,
+                default_timeout=self._method_configs["RunBuildTrigger"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.RunBuildTriggerRequest(
-            project_id=project_id,
-            trigger_id=trigger_id,
-            source=source,
+            project_id=project_id, trigger_id=trigger_id, source=source
         )
-        return self._inner_api_calls['run_build_trigger'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["run_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def retry_build(
-            self,
-            project_id,
-            id_,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        project_id,
+        id_,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a new build based on the specified build.
 
@@ -972,27 +1023,29 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'retry_build' not in self._inner_api_calls:
-            self._inner_api_calls['retry_build'] = google.api_core.gapic_v1.method.wrap_method(
+        if "retry_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "retry_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.retry_build,
-                default_retry=self._method_configs['RetryBuild'].retry,
-                default_timeout=self._method_configs['RetryBuild'].timeout,
+                default_retry=self._method_configs["RetryBuild"].retry,
+                default_timeout=self._method_configs["RetryBuild"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.RetryBuildRequest(
-            project_id=project_id,
-            id=id_,
+        request = cloudbuild_pb2.RetryBuildRequest(project_id=project_id, id=id_)
+        return self._inner_api_calls["retry_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['retry_build'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_worker_pool(
-            self,
-            parent=None,
-            worker_pool=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent=None,
+        worker_pool=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Creates a ``WorkerPool`` to run the builds, and returns the new worker
         pool.
@@ -1032,26 +1085,30 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'create_worker_pool' not in self._inner_api_calls:
-            self._inner_api_calls['create_worker_pool'] = google.api_core.gapic_v1.method.wrap_method(
+        if "create_worker_pool" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_worker_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.create_worker_pool,
-                default_retry=self._method_configs['CreateWorkerPool'].retry,
-                default_timeout=self._method_configs['CreateWorkerPool'].timeout,
+                default_retry=self._method_configs["CreateWorkerPool"].retry,
+                default_timeout=self._method_configs["CreateWorkerPool"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.CreateWorkerPoolRequest(
-            parent=parent,
-            worker_pool=worker_pool,
+            parent=parent, worker_pool=worker_pool
         )
-        return self._inner_api_calls['create_worker_pool'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["create_worker_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def get_worker_pool(
-            self,
-            name=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Returns information about a ``WorkerPool``.
 
@@ -1087,25 +1144,28 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'get_worker_pool' not in self._inner_api_calls:
-            self._inner_api_calls['get_worker_pool'] = google.api_core.gapic_v1.method.wrap_method(
+        if "get_worker_pool" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_worker_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_worker_pool,
-                default_retry=self._method_configs['GetWorkerPool'].retry,
-                default_timeout=self._method_configs['GetWorkerPool'].timeout,
+                default_retry=self._method_configs["GetWorkerPool"].retry,
+                default_timeout=self._method_configs["GetWorkerPool"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.GetWorkerPoolRequest(
-            name=name,
+        request = cloudbuild_pb2.GetWorkerPoolRequest(name=name)
+        return self._inner_api_calls["get_worker_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['get_worker_pool'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def delete_worker_pool(
-            self,
-            name=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Deletes a ``WorkerPool`` by its project ID and WorkerPool name.
 
@@ -1138,26 +1198,29 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'delete_worker_pool' not in self._inner_api_calls:
-            self._inner_api_calls['delete_worker_pool'] = google.api_core.gapic_v1.method.wrap_method(
+        if "delete_worker_pool" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_worker_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.delete_worker_pool,
-                default_retry=self._method_configs['DeleteWorkerPool'].retry,
-                default_timeout=self._method_configs['DeleteWorkerPool'].timeout,
+                default_retry=self._method_configs["DeleteWorkerPool"].retry,
+                default_timeout=self._method_configs["DeleteWorkerPool"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.DeleteWorkerPoolRequest(
-            name=name,
+        request = cloudbuild_pb2.DeleteWorkerPoolRequest(name=name)
+        self._inner_api_calls["delete_worker_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        self._inner_api_calls['delete_worker_pool'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_worker_pool(
-            self,
-            name=None,
-            worker_pool=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        name=None,
+        worker_pool=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         Update a ``WorkerPool``.
 
@@ -1197,26 +1260,30 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'update_worker_pool' not in self._inner_api_calls:
-            self._inner_api_calls['update_worker_pool'] = google.api_core.gapic_v1.method.wrap_method(
+        if "update_worker_pool" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_worker_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.update_worker_pool,
-                default_retry=self._method_configs['UpdateWorkerPool'].retry,
-                default_timeout=self._method_configs['UpdateWorkerPool'].timeout,
+                default_retry=self._method_configs["UpdateWorkerPool"].retry,
+                default_timeout=self._method_configs["UpdateWorkerPool"].timeout,
                 client_info=self._client_info,
             )
 
         request = cloudbuild_pb2.UpdateWorkerPoolRequest(
-            name=name,
-            worker_pool=worker_pool,
+            name=name, worker_pool=worker_pool
         )
-        return self._inner_api_calls['update_worker_pool'](request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._inner_api_calls["update_worker_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def list_worker_pools(
-            self,
-            parent=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):
+        self,
+        parent=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
         """
         List project's ``WorkerPool``\ s.
 
@@ -1251,15 +1318,17 @@ class CloudBuildClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if 'list_worker_pools' not in self._inner_api_calls:
-            self._inner_api_calls['list_worker_pools'] = google.api_core.gapic_v1.method.wrap_method(
+        if "list_worker_pools" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_worker_pools"
+            ] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_worker_pools,
-                default_retry=self._method_configs['ListWorkerPools'].retry,
-                default_timeout=self._method_configs['ListWorkerPools'].timeout,
+                default_retry=self._method_configs["ListWorkerPools"].retry,
+                default_timeout=self._method_configs["ListWorkerPools"].timeout,
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.ListWorkerPoolsRequest(
-            parent=parent,
+        request = cloudbuild_pb2.ListWorkerPoolsRequest(parent=parent)
+        return self._inner_api_calls["list_worker_pools"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return self._inner_api_calls['list_worker_pools'](request, retry=retry, timeout=timeout, metadata=metadata)

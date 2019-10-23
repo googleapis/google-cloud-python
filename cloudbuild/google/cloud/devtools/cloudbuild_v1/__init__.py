@@ -27,8 +27,4 @@ class CloudBuildClient(cloud_build_client.CloudBuildClient):
     enums = enums
 
 
-__all__ = (
-    'enums',
-    'types',
-    'CloudBuildClient',
-)
+__all__ = ("enums", "types", "CloudBuildClient")
