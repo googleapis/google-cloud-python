@@ -18,7 +18,7 @@ import unittest
 class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.translate import Client
+        from google.cloud.translate_v2 import Client
 
         return Client
 

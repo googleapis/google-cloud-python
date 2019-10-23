@@ -48,6 +48,9 @@ for version in versions:
         f"google.cloud.translate_{version}.proto",
     )
 
+# Use the highest version library to generate documentation import alias.
+s.move(library / "google/cloud/translate.py")
+
 s.replace(
     "google/cloud/**/translation_service_pb2.py",
     r"""record delimiters are ':raw-latex:`\\n`' instead of
