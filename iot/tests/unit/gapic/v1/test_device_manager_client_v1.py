@@ -123,7 +123,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        name = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        name = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         response = client.get_device_registry(name)
         assert expected_response == response
@@ -142,7 +142,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        name = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        name = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         with pytest.raises(CustomException):
             client.get_device_registry(name)
@@ -198,7 +198,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        name = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        name = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         client.delete_device_registry(name)
 
@@ -216,7 +216,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        name = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        name = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         with pytest.raises(CustomException):
             client.delete_device_registry(name)
@@ -291,7 +291,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         device = {}
 
         response = client.create_device(parent, device)
@@ -313,7 +313,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         device = {}
 
         with pytest.raises(CustomException):
@@ -462,7 +462,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         paged_list_response = client.list_devices(parent)
         resources = list(paged_list_response)
@@ -483,7 +483,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
 
         paged_list_response = client.list_devices(parent)
         with pytest.raises(CustomException):
@@ -625,7 +625,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -647,7 +647,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -668,7 +668,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -687,7 +687,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -707,16 +707,13 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
-        permissions = []
+        resource = "resource-341064690"
 
-        response = client.test_iam_permissions(resource, permissions)
+        response = client.test_iam_permissions(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
-        )
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -729,11 +726,10 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        resource = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
-        permissions = []
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
-            client.test_iam_permissions(resource, permissions)
+            client.test_iam_permissions(resource)
 
     def test_send_command_to_device(self):
         # Setup Expected Response
@@ -793,7 +789,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         gateway_id = "gatewayId955798774"
         device_id = "deviceId25209764"
 
@@ -816,7 +812,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         gateway_id = "gatewayId955798774"
         device_id = "deviceId25209764"
 
@@ -838,7 +834,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup Request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         gateway_id = "gatewayId955798774"
         device_id = "deviceId25209764"
 
@@ -861,7 +857,7 @@ class TestDeviceManagerClient(object):
             client = iot_v1.DeviceManagerClient()
 
         # Setup request
-        parent = client.registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
+        parent = client.device_registry_path("[PROJECT]", "[LOCATION]", "[REGISTRY]")
         gateway_id = "gatewayId955798774"
         device_id = "deviceId25209764"
 
