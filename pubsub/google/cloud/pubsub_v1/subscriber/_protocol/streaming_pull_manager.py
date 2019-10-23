@@ -135,9 +135,15 @@ class StreamingPullManager(object):
         # because the FlowControl limits have been hit.
         self._messages_on_hold = queue.Queue()
 
+        # the total number of bytes consumed by the messages currently on hold
+        self._on_hold_bytes = 0
+
         # A lock ensuring that pausing / resuming the consumer are both atomic
         # operations that cannot be executed concurrently. Needed for properly
-        # syncing these operations with the current leaser load.
+        # syncing these operations with the current leaser load. Additionally,
+        # the lock is used to protect modifications of internal data that
+        # affects the load computation, i.e. the count and size of the messages
+        # currently on hold.
         self._pause_resume_lock = threading.Lock()
 
         # The threads created in ``.open()``.
@@ -218,10 +224,18 @@ class StreamingPullManager(object):
         if self._leaser is None:
             return 0.0
 
+        # Messages that are temporarily put on hold are not being delivered to
+        # user's callbacks, thus they should not contribute to the flow control
+        # load calculation.
+        # However, since these messages must still be lease-managed to avoid
+        # unnecessary ACK deadline expirations, their count and total size must
+        # be subtracted from the leaser's values.
         return max(
             [
-                self._leaser.message_count / self._flow_control.max_messages,
-                self._leaser.bytes / self._flow_control.max_bytes,
+                (self._leaser.message_count - self._messages_on_hold.qsize())
+                / self._flow_control.max_messages,
+                (self._leaser.bytes - self._on_hold_bytes)
+                / self._flow_control.max_bytes,
             ]
         )
 
@@ -292,13 +306,12 @@ class StreamingPullManager(object):
             except queue.Empty:
                 break
 
-            self.leaser.add(
-                [requests.LeaseRequest(ack_id=msg.ack_id, byte_size=msg.size)]
-            )
+            self._on_hold_bytes -= msg.size
             _LOGGER.debug(
-                "Released held message to leaser, scheduling callback for it, "
-                "still on hold %s.",
+                "Released held message, scheduling callback for it, "
+                "still on hold %s (bytes %s).",
                 self._messages_on_hold.qsize(),
+                self._on_hold_bytes,
             )
             self._scheduler.schedule(self._callback, msg)
 
@@ -540,9 +553,10 @@ class StreamingPullManager(object):
         the callback for each message using the executor.
         """
         _LOGGER.debug(
-            "Processing %s received message(s), currenty on hold %s.",
+            "Processing %s received message(s), currenty on hold %s (bytes %s).",
             len(response.received_messages),
             self._messages_on_hold.qsize(),
+            self._on_hold_bytes,
         )
 
         # Immediately (i.e. without waiting for the auto lease management)
@@ -560,21 +574,25 @@ class StreamingPullManager(object):
             message = google.cloud.pubsub_v1.subscriber.message.Message(
                 received_message.message, received_message.ack_id, self._scheduler.queue
             )
-            if self.load < _MAX_LOAD:
-                invoke_callbacks_for.append(message)
-            else:
-                self._messages_on_hold.put(message)
+            # Making a decision based on the load, and modifying the data that
+            # affects the load -> needs a lock, as that state can be modified
+            # by different threads.
+            with self._pause_resume_lock:
+                if self.load < _MAX_LOAD:
+                    invoke_callbacks_for.append(message)
+                else:
+                    self._messages_on_hold.put(message)
+                    self._on_hold_bytes += message.size
 
-            req = requests.LeaseRequest(
-                ack_id=message.ack_id, byte_size=message.size
-            )
+            req = requests.LeaseRequest(ack_id=message.ack_id, byte_size=message.size)
             self.leaser.add([req])
             self.maybe_pause_consumer()
 
         _LOGGER.debug(
-            "Scheduling callbacks for %s new messages, new total on hold %s.",
+            "Scheduling callbacks for %s new messages, new total on hold %s (bytes %s).",
             len(invoke_callbacks_for),
             self._messages_on_hold.qsize(),
+            self._on_hold_bytes,
         )
         for msg in invoke_callbacks_for:
             self._scheduler.schedule(self._callback, msg)

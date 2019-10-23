@@ -233,13 +233,15 @@ def test__maybe_release_messages_on_overload():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
-    # Ensure load is exactly 1.0 (to verify that >= condition is used)
-    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
-    _leaser.message_count = 10
-    _leaser.bytes = 1000
 
     msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=11)
     manager._messages_on_hold.put(msg)
+    manager._on_hold_bytes = msg.size
+
+    # Ensure load is exactly 1.0 (to verify that >= condition is used)
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 10
+    _leaser.bytes = 1000 + msg.size
 
     manager._maybe_release_messages()
 
@@ -254,18 +256,20 @@ def test__maybe_release_messages_below_overload():
     )
     manager._callback = mock.sentinel.callback
 
-    # init leaser message count to 8 to leave room for 2 more messages
+    # Init leaser message count to 11, so that when subtracting the 3 messages
+    # that are on hold, there is still room for another 2 messages before the
+    # max load is hit.
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
-    fake_leaser_add(_leaser, init_msg_count=8, assumed_msg_size=25)
-    _leaser.add = mock.Mock(wraps=_leaser.add)  # to spy on calls
+    fake_leaser_add(_leaser, init_msg_count=11, assumed_msg_size=10)
 
     messages = [
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo", size=11),
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar", size=22),
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_baz", size=33),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo", size=10),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar", size=10),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_baz", size=10),
     ]
     for msg in messages:
         manager._messages_on_hold.put(msg)
+        manager._on_hold_bytes = 3 * 10
 
     # the actual call of MUT
     manager._maybe_release_messages()
@@ -273,13 +277,6 @@ def test__maybe_release_messages_below_overload():
     assert manager._messages_on_hold.qsize() == 1
     msg = manager._messages_on_hold.get_nowait()
     assert msg.ack_id == "ack_baz"
-
-    assert len(_leaser.add.mock_calls) == 2
-    expected_calls = [
-        mock.call([requests.LeaseRequest(ack_id="ack_foo", byte_size=11)]),
-        mock.call([requests.LeaseRequest(ack_id="ack_bar", byte_size=22)]),
-    ]
-    _leaser.add.assert_has_calls(expected_calls)
 
     schedule_calls = manager._scheduler.schedule.mock_calls
     assert len(schedule_calls) == 2
