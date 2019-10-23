@@ -21,19 +21,24 @@ import enum
 
 class EntryType(enum.IntEnum):
     """
-    Entry resources in Data Catalog can be of different types e.g. BigQuery
-    Table entry is of type 'TABLE'. This enum describes all the possible types
-    Data Catalog contains.
+    Entry resources in Data Catalog can be of different types e.g. a
+    BigQuery Table entry is of type ``TABLE``. This enum describes all the
+    possible types Data Catalog contains.
 
     Attributes:
       ENTRY_TYPE_UNSPECIFIED (int): Default unknown type
-      TABLE (int): The type of entry that has a GoogleSQL schema, including logical views.
-      DATA_STREAM (int): An entry type which is used for streaming entries. Example - Pub/Sub.
+      TABLE (int): Output only. The type of entry that has a GoogleSQL schema, including
+      logical views.
+      DATA_STREAM (int): Output only. An entry type which is used for streaming entries. Example:
+      Cloud Pub/Sub topic.
+      FILESET (int): Alpha feature. An entry type which is a set of files or objects. Example:
+      Cloud Storage fileset.
     """
 
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
     DATA_STREAM = 3
+    FILESET = 4
 
 
 class SearchResultType(enum.IntEnum):

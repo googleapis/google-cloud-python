@@ -16,6 +16,10 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/datacatalog_v1beta1/proto/table_spec.proto",
     package="google.cloud.datacatalog.v1beta1",
@@ -24,8 +28,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.datacatalogP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/datacatalog_v1beta1/proto/table_spec.proto\x12 google.cloud.datacatalog.v1beta1"\xf2\x01\n\x11\x42igQueryTableSpec\x12L\n\x11table_source_type\x18\x01 \x01(\x0e\x32\x31.google.cloud.datacatalog.v1beta1.TableSourceType\x12?\n\tview_spec\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.ViewSpecH\x00\x12\x41\n\ntable_spec\x18\x03 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.TableSpecH\x00\x42\x0b\n\ttype_spec"\x1e\n\x08ViewSpec\x12\x12\n\nview_query\x18\x01 \x01(\t""\n\tTableSpec\x12\x15\n\rgrouped_entry\x18\x01 \x01(\t"U\n\x17\x42igQueryDateShardedSpec\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12\x14\n\x0ctable_prefix\x18\x02 \x01(\t\x12\x13\n\x0bshard_count\x18\x03 \x01(\x03*[\n\x0fTableSourceType\x12!\n\x1dTABLE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rBIGQUERY_VIEW\x10\x02\x12\x12\n\x0e\x42IGQUERY_TABLE\x10\x05\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n7google/cloud/datacatalog_v1beta1/proto/table_spec.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto"\xf7\x01\n\x11\x42igQueryTableSpec\x12Q\n\x11table_source_type\x18\x01 \x01(\x0e\x32\x31.google.cloud.datacatalog.v1beta1.TableSourceTypeB\x03\xe0\x41\x03\x12?\n\tview_spec\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.ViewSpecH\x00\x12\x41\n\ntable_spec\x18\x03 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.TableSpecH\x00\x42\x0b\n\ttype_spec"#\n\x08ViewSpec\x12\x17\n\nview_query\x18\x01 \x01(\tB\x03\xe0\x41\x03"L\n\tTableSpec\x12?\n\rgrouped_entry\x18\x01 \x01(\tB(\xe0\x41\x03\xfa\x41"\n datacatalog.googleapis.com/Entry"\x89\x01\n\x17\x42igQueryDateShardedSpec\x12\x39\n\x07\x64\x61taset\x18\x01 \x01(\tB(\xe0\x41\x03\xfa\x41"\n datacatalog.googleapis.com/Entry\x12\x19\n\x0ctable_prefix\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x18\n\x0bshard_count\x18\x03 \x01(\x03\x42\x03\xe0\x41\x03*[\n\x0fTableSourceType\x12!\n\x1dTABLE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rBIGQUERY_VIEW\x10\x02\x12\x12\n\x0e\x42IGQUERY_TABLE\x10\x05\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
+    dependencies=[
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+    ],
 )
 
 _TABLESOURCETYPE = _descriptor.EnumDescriptor(
@@ -50,8 +58,8 @@ _TABLESOURCETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=493,
-    serialized_end=584,
+    serialized_start=658,
+    serialized_end=749,
 )
 _sym_db.RegisterEnumDescriptor(_TABLESOURCETYPE)
 
@@ -83,7 +91,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -139,8 +147,8 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=94,
-    serialized_end=336,
+    serialized_start=154,
+    serialized_end=401,
 )
 
 
@@ -166,7 +174,7 @@ _VIEWSPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         )
     ],
@@ -178,8 +186,8 @@ _VIEWSPEC = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=338,
-    serialized_end=368,
+    serialized_start=403,
+    serialized_end=438,
 )
 
 
@@ -205,7 +213,7 @@ _TABLESPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\003\372A"\n datacatalog.googleapis.com/Entry'),
             file=DESCRIPTOR,
         )
     ],
@@ -217,8 +225,8 @@ _TABLESPEC = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=370,
-    serialized_end=404,
+    serialized_start=440,
+    serialized_end=516,
 )
 
 
@@ -244,7 +252,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\003\372A"\n datacatalog.googleapis.com/Entry'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -262,7 +270,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -280,7 +288,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -292,8 +300,8 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=406,
-    serialized_end=491,
+    serialized_start=519,
+    serialized_end=656,
 )
 
 _BIGQUERYTABLESPEC.fields_by_name["table_source_type"].enum_type = _TABLESOURCETYPE
@@ -334,10 +342,10 @@ BigQueryTableSpec = _reflection.GeneratedProtocolMessageType(
           Output only.
       view_spec:
           Table view specification. This field should only be populated
-          if table\_source\_type is BIGQUERY\_VIEW.
+          if ``table_source_type`` is ``BIGQUERY_VIEW``.
       table_spec:
           Spec of a BigQuery table. This field should only be populated
-          if table\_source\_type is BIGQUERY\_TABLE.
+          if ``table_source_type`` is ``BIGQUERY_TABLE``.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.BigQueryTableSpec)
     ),
@@ -373,12 +381,12 @@ TableSpec = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       grouped_entry:
-          Output only. If the table is a dated shard, i.e. with name
-          pattern [prefix]YYYYMMDD, grouped\_entry is the Data Catalog
-          resource name of the date sharded grouped entry, e.g. projects
-          /{project\_id}/locations/{location}/entrygroups/{entry\_group\
-          _id} /entries/{entry\_id}. Otherwise, grouped\_entry will be
-          empty.
+          Output only. If the table is a dated shard, i.e., with name
+          pattern ``[prefix]YYYYMMDD``, ``grouped_entry`` is the Data
+          Catalog resource name of the date sharded grouped entry, for
+          example, ``projects/{project_id}/locations/{location}/entrygro
+          ups/{entry_group_id}/entries/{entry_id}``. Otherwise,
+          ``grouped_entry`` is empty.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.TableSpec)
     ),
@@ -391,21 +399,22 @@ BigQueryDateShardedSpec = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BIGQUERYDATESHARDEDSPEC,
         __module__="google.cloud.datacatalog_v1beta1.proto.table_spec_pb2",
-        __doc__="""Spec for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
-  Context:
+        __doc__="""Spec for a group of BigQuery tables with name pattern
+  ``[prefix]YYYYMMDD``. Context:
   https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning\_versus\_sharding
   
   
   Attributes:
       dataset:
           Output only. The Data Catalog resource name of the dataset
-          entry the current table belongs to, e.g. projects/{project\_id
-          }/locations/{location}/entrygroups/{entry\_group\_id}
-          /entries/{entry\_id}
+          entry the current table belongs to, for example, ``projects/{p
+          roject_id}/locations/{location}/entrygroups/{entry_group_id}/e
+          ntries/{entry_id}``.
       table_prefix:
           Output only. The table name prefix of the shards. The name of
-          any given shard is [table\_prefix]YYYYMMDD, e.g. for shard
-          MyTable20180101, the table\_prefix is "MyTable"
+          any given shard is ``[table_prefix]YYYYMMDD``, for example,
+          for shard ``MyTable20180101``, the ``table_prefix`` is
+          ``MyTable``.
       shard_count:
           Output only. Total number of shards.
   """,
@@ -416,4 +425,10 @@ _sym_db.RegisterMessage(BigQueryDateShardedSpec)
 
 
 DESCRIPTOR._options = None
+_BIGQUERYTABLESPEC.fields_by_name["table_source_type"]._options = None
+_VIEWSPEC.fields_by_name["view_query"]._options = None
+_TABLESPEC.fields_by_name["grouped_entry"]._options = None
+_BIGQUERYDATESHARDEDSPEC.fields_by_name["dataset"]._options = None
+_BIGQUERYDATESHARDEDSPEC.fields_by_name["table_prefix"]._options = None
+_BIGQUERYDATESHARDEDSPEC.fields_by_name["shard_count"]._options = None
 # @@protoc_insertion_point(module_scope)
