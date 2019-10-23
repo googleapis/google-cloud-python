@@ -16,8 +16,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -25,14 +25,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.scheduler.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        '\n"com.google.cloud.scheduler.v1beta1B\013TargetProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler'
+        '\n"com.google.cloud.scheduler.v1beta1B\013TargetProtoP\001ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\352A@\n\033pubsub.googleapis.com/Topic\022!projects/{project}/topics/{topic}'
     ),
     serialized_pb=_b(
-        '\n1google/cloud/scheduler_v1beta1/proto/target.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto"\xfe\x02\n\nHttpTarget\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12?\n\x0bhttp_method\x18\x02 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12H\n\x07headers\x18\x03 \x03(\x0b\x32\x37.google.cloud.scheduler.v1beta1.HttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x04 \x01(\x0c\x12\x41\n\x0boauth_token\x18\x05 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.OAuthTokenH\x00\x12?\n\noidc_token\x18\x06 \x01(\x0b\x32).google.cloud.scheduler.v1beta1.OidcTokenH\x00\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x16\n\x14\x61uthorization_header"\xcb\x02\n\x13\x41ppEngineHttpTarget\x12?\n\x0bhttp_method\x18\x01 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12L\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32\x30.google.cloud.scheduler.v1beta1.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12Q\n\x07headers\x18\x04 \x03(\x0b\x32@.google.cloud.scheduler.v1beta1.AppEngineHttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb5\x01\n\x0cPubsubTarget\x12\x12\n\ntopic_name\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\x12P\n\nattributes\x18\x04 \x03(\x0b\x32<.google.cloud.scheduler.v1beta1.PubsubTarget.AttributesEntry\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t":\n\nOAuthToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\r\n\x05scope\x18\x02 \x01(\t"<\n\tOidcToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\x10\n\x08\x61udience\x18\x02 \x01(\t*s\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\t\n\x05PATCH\x10\x06\x12\x0b\n\x07OPTIONS\x10\x07\x42|\n"com.google.cloud.scheduler.v1beta1B\x0bTargetProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;schedulerb\x06proto3'
+        '\n1google/cloud/scheduler_v1beta1/proto/target.proto\x12\x1egoogle.cloud.scheduler.v1beta1\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto"\xfe\x02\n\nHttpTarget\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12?\n\x0bhttp_method\x18\x02 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12H\n\x07headers\x18\x03 \x03(\x0b\x32\x37.google.cloud.scheduler.v1beta1.HttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x04 \x01(\x0c\x12\x41\n\x0boauth_token\x18\x05 \x01(\x0b\x32*.google.cloud.scheduler.v1beta1.OAuthTokenH\x00\x12?\n\noidc_token\x18\x06 \x01(\x0b\x32).google.cloud.scheduler.v1beta1.OidcTokenH\x00\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x16\n\x14\x61uthorization_header"\xcb\x02\n\x13\x41ppEngineHttpTarget\x12?\n\x0bhttp_method\x18\x01 \x01(\x0e\x32*.google.cloud.scheduler.v1beta1.HttpMethod\x12L\n\x12\x61pp_engine_routing\x18\x02 \x01(\x0b\x32\x30.google.cloud.scheduler.v1beta1.AppEngineRouting\x12\x14\n\x0crelative_uri\x18\x03 \x01(\t\x12Q\n\x07headers\x18\x04 \x03(\x0b\x32@.google.cloud.scheduler.v1beta1.AppEngineHttpTarget.HeadersEntry\x12\x0c\n\x04\x62ody\x18\x05 \x01(\x0c\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd7\x01\n\x0cPubsubTarget\x12\x34\n\ntopic_name\x18\x01 \x01(\tB \xfa\x41\x1d\n\x1bpubsub.googleapis.com/Topic\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c\x12P\n\nattributes\x18\x04 \x03(\x0b\x32<.google.cloud.scheduler.v1beta1.PubsubTarget.AttributesEntry\x1a\x31\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"T\n\x10\x41ppEngineRouting\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08instance\x18\x03 \x01(\t\x12\x0c\n\x04host\x18\x04 \x01(\t":\n\nOAuthToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\r\n\x05scope\x18\x02 \x01(\t"<\n\tOidcToken\x12\x1d\n\x15service_account_email\x18\x01 \x01(\t\x12\x10\n\x08\x61udience\x18\x02 \x01(\t*s\n\nHttpMethod\x12\x1b\n\x17HTTP_METHOD_UNSPECIFIED\x10\x00\x12\x08\n\x04POST\x10\x01\x12\x07\n\x03GET\x10\x02\x12\x08\n\x04HEAD\x10\x03\x12\x07\n\x03PUT\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\t\n\x05PATCH\x10\x06\x12\x0b\n\x07OPTIONS\x10\x07\x42\xbf\x01\n"com.google.cloud.scheduler.v1beta1B\x0bTargetProtoP\x01ZGgoogle.golang.org/genproto/googleapis/cloud/scheduler/v1beta1;scheduler\xea\x41@\n\x1bpubsub.googleapis.com/Topic\x12!projects/{project}/topics/{topic}b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
     ],
 )
 
@@ -73,8 +73,8 @@ _HTTPMETHOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1253,
-    serialized_end=1368,
+    serialized_start=1287,
+    serialized_end=1402,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPMETHOD)
 
@@ -501,8 +501,8 @@ _PUBSUBTARGET_ATTRIBUTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=994,
-    serialized_end=1043,
+    serialized_start=1028,
+    serialized_end=1077,
 )
 
 _PUBSUBTARGET = _descriptor.Descriptor(
@@ -527,7 +527,7 @@ _PUBSUBTARGET = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A\035\n\033pubsub.googleapis.com/Topic"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -576,7 +576,7 @@ _PUBSUBTARGET = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=862,
-    serialized_end=1043,
+    serialized_end=1077,
 )
 
 
@@ -668,8 +668,8 @@ _APPENGINEROUTING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1045,
-    serialized_end=1129,
+    serialized_start=1079,
+    serialized_end=1163,
 )
 
 
@@ -725,8 +725,8 @@ _OAUTHTOKEN = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1131,
-    serialized_end=1189,
+    serialized_start=1165,
+    serialized_end=1223,
 )
 
 
@@ -782,8 +782,8 @@ _OIDCTOKEN = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1191,
-    serialized_end=1251,
+    serialized_start=1225,
+    serialized_end=1285,
 )
 
 _HTTPTARGET_HEADERSENTRY.containing_type = _HTTPTARGET
@@ -848,7 +848,7 @@ HttpTarget = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       uri:
-          Required.  The full URI path that the request will be sent to.
+          Required. The full URI path that the request will be sent to.
           This string must begin with either "http://" or "https://".
           Some examples of valid values for
           [uri][google.cloud.scheduler.v1beta1.HttpTarget.uri] are:
@@ -887,14 +887,16 @@ HttpTarget = _reflection.GeneratedProtocolMessageType(
           If specified, an `OAuth token
           <https://developers.google.com/identity/protocols/OAuth2>`__
           will be generated and attached as an ``Authorization`` header
-          in the HTTP request.  This type of authorization should be
-          used when sending requests to a GCP endpoint.
+          in the HTTP request.  This type of authorization should
+          generally only be used when calling Google APIs hosted on
+          \*.googleapis.com.
       oidc_token:
           If specified, an `OIDC <https://developers.google.com/identity
           /protocols/OpenIDConnect>`__ token will be generated and
           attached as an ``Authorization`` header in the HTTP request.
-          This type of authorization should be used when sending
-          requests to third party endpoints.
+          This type of authorization can be used for many scenarios,
+          including calling Cloud Run, or endpoints where you intend to
+          validate the token yourself.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.scheduler.v1beta1.HttpTarget)
     ),
@@ -999,7 +1001,7 @@ PubsubTarget = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       topic_name:
-          Required.  The name of the Cloud Pub/Sub topic to which
+          Required. The name of the Cloud Pub/Sub topic to which
           messages will be published when a job is delivered. The topic
           name must be in the same format as required by PubSub's
           `PublishRequest.name <https://cloud.google.com/pubsub/docs/ref
@@ -1121,8 +1123,8 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
         __doc__="""Contains information needed for generating an `OAuth
   token <https://developers.google.com/identity/protocols/OAuth2>`__. This
-  type of authorization should be used when sending requests to a GCP
-  endpoint.
+  type of authorization should generally only be used when calling Google
+  APIs hosted on \*.googleapis.com.
   
   
   Attributes:
@@ -1150,8 +1152,9 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
         __doc__="""Contains information needed for generating an `OpenID Connect
   token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
-  This type of authorization should be used when sending requests to third
-  party endpoints.
+  This type of authorization can be used for many scenarios, including
+  calling Cloud Run, or endpoints where you intend to validate the token
+  yourself.
   
   
   Attributes:
@@ -1175,4 +1178,5 @@ DESCRIPTOR._options = None
 _HTTPTARGET_HEADERSENTRY._options = None
 _APPENGINEHTTPTARGET_HEADERSENTRY._options = None
 _PUBSUBTARGET_ATTRIBUTESENTRY._options = None
+_PUBSUBTARGET.fields_by_name["topic_name"]._options = None
 # @@protoc_insertion_point(module_scope)
