@@ -286,6 +286,34 @@ def test__maybe_release_messages_below_overload():
         assert call_args[1].ack_id in ("ack_foo", "ack_bar")
 
 
+def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+
+    msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=17)
+    manager._messages_on_hold.put(msg)
+    manager._on_hold_bytes = 5  # too low for some reason
+
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 3
+    _leaser.bytes = 150
+
+    with caplog.at_level(logging.WARNING):
+        manager._maybe_release_messages()
+
+    expected_warnings = [
+        record.message.lower()
+        for record in caplog.records
+        if "unexpectedly negative" in record.message
+    ]
+    assert len(expected_warnings) == 1
+    assert "on hold bytes" in expected_warnings[0]
+    assert "-12" in expected_warnings[0]
+
+    assert manager._on_hold_bytes == 0  # should be auto-corrected
+
+
 def test_send_unary():
     manager = make_manager()
     manager._UNARY_REQUESTS = True

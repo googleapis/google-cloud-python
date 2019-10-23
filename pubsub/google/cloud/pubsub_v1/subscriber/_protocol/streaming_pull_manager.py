@@ -307,6 +307,13 @@ class StreamingPullManager(object):
                 break
 
             self._on_hold_bytes -= msg.size
+
+            if self._on_hold_bytes < 0:
+                _LOGGER.warning(
+                    "On hold bytes was unexpectedly negative: %s", self._on_hold_bytes
+                )
+                self._on_hold_bytes = 0
+
             _LOGGER.debug(
                 "Released held message, scheduling callback for it, "
                 "still on hold %s (bytes %s).",
