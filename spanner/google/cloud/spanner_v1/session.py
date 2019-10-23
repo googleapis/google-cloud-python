@@ -275,7 +275,7 @@ class Session(object):
         :type kw: dict
         :param kw: (Optional) keyword arguments to be passed to ``func``.
                    If passed, "timeout_secs" will be removed and used to
-                   override the default timeout which defines maximum timestamp
+                   override the default retry timeout which defines maximum timestamp
                    to continue retrying the transaction.
 
         :rtype: Any
