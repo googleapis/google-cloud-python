@@ -179,7 +179,7 @@ def test_create_table_cmek(client, to_delete):
     # Set the encryption key to use for the table.
     # TODO: Replace this key with a key you have created in Cloud KMS.
     kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=kms_key_name
@@ -500,7 +500,7 @@ def test_update_table_cmek(client, to_delete):
 
     table = bigquery.Table(dataset.table(table_id))
     original_kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=original_kms_key_name
@@ -516,8 +516,7 @@ def test_update_table_cmek(client, to_delete):
     # Set a new encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
     updated_kms_key_name = (
-        "projects/cloud-samples-tests/locations/us-central1/"
-        "keyRings/test/cryptoKeys/otherkey"
+        "projects/cloud-samples-tests/locations/us/keyRings/test/cryptoKeys/otherkey"
     )
     table.encryption_configuration = bigquery.EncryptionConfiguration(
         kms_key_name=updated_kms_key_name
@@ -831,7 +830,7 @@ def test_load_table_from_uri_cmek(client, to_delete):
     # Set the encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
     kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
     job_config.destination_encryption_configuration = encryption_config
@@ -1305,7 +1304,7 @@ def test_copy_table_cmek(client, to_delete):
     # Set the encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
     kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
     job_config = bigquery.CopyJobConfig()
@@ -1685,7 +1684,7 @@ def test_client_query_destination_table_cmek(client, to_delete):
     # Set the encryption key to use for the destination.
     # TODO: Replace this key with a key you have created in KMS.
     kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
-        "cloud-samples-tests", "us-central1", "test", "test"
+        "cloud-samples-tests", "us", "test", "test"
     )
     encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
     job_config.destination_encryption_configuration = encryption_config
