@@ -19,7 +19,7 @@ import os
 
 import setuptools
 
-name = "google-cloud-cloudbuild"
+name = "google-cloud-build"
 description = "Google Cloud Build API client library"
 version = "0.1.0"
 # Should be one of:
