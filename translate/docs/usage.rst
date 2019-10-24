@@ -1,4 +1,4 @@
-Using the Translate Client
+Translation v2 Usage Guide
 --------------------------
 
 To create a client:
