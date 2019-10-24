@@ -35,11 +35,7 @@ def create_table_range_partitioned(client, table_id):
         # To use integer range partitioning, select a top-level REQUIRED /
         # NULLABLE column with INTEGER / INT64 data type.
         field="zipcode",
-        range_=bigquery.PartitionRange(
-            start=0,
-            end=100000,
-            interval=10,
-        ),
+        range_=bigquery.PartitionRange(start=0, end=100000, interval=10),
     )
     table = client.create_table(table)  # Make an API request.
     print(
