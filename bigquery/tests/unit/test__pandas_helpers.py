@@ -993,7 +993,7 @@ def test_dataframe_to_bq_schema_pyarrow_fallback_fails(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_currate_schema_type_detection_succeeds(module_under_test):
+def test_augment_schema_type_detection_succeeds(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
             {
@@ -1028,7 +1028,7 @@ def test_currate_schema_type_detection_succeeds(module_under_test):
     )
 
     with warnings.catch_warnings(record=True) as warned:
-        currated_schema = module_under_test.currate_schema(dataframe, current_schema)
+        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
 
     # there should be no relevant warnings
     unwanted_warnings = [
@@ -1036,7 +1036,7 @@ def test_currate_schema_type_detection_succeeds(module_under_test):
     ]
     assert not unwanted_warnings
 
-    # the currated schema must match the expected
+    # the augmented schema must match the expected
     expected_schema = (
         schema.SchemaField("bool_field", field_type="BOOL", mode="NULLABLE"),
         schema.SchemaField("int_field", field_type="INT64", mode="NULLABLE"),
@@ -1049,12 +1049,12 @@ def test_currate_schema_type_detection_succeeds(module_under_test):
         schema.SchemaField("numeric_field", field_type="NUMERIC", mode="NULLABLE"),
     )
     by_name = operator.attrgetter("name")
-    assert sorted(currated_schema, key=by_name) == sorted(expected_schema, key=by_name)
+    assert sorted(augmented_schema, key=by_name) == sorted(expected_schema, key=by_name)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_currate_schema_type_detection_fails(module_under_test):
+def test_augment_schema_type_detection_fails(module_under_test):
     dataframe = pandas.DataFrame(
         data=[
             {
@@ -1076,9 +1076,9 @@ def test_currate_schema_type_detection_fails(module_under_test):
     ]
 
     with warnings.catch_warnings(record=True) as warned:
-        currated_schema = module_under_test.currate_schema(dataframe, current_schema)
+        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
 
-    assert currated_schema is None
+    assert augmented_schema is None
 
     expected_warnings = [
         warning for warning in warned if "could not determine" in str(warning)

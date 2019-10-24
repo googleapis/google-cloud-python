@@ -329,14 +329,14 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             warnings.warn(msg)
             return None  # We cannot detect the schema in full.
 
-        # The currate_schema() helper itself will also issue unknown type
+        # The augment_schema() helper itself will also issue unknown type
         # warnings if detection still fails for any of the fields.
-        bq_schema_out = currate_schema(dataframe, bq_schema_out)
+        bq_schema_out = augment_schema(dataframe, bq_schema_out)
 
     return tuple(bq_schema_out) if bq_schema_out else None
 
 
-def currate_schema(dataframe, current_bq_schema):
+def augment_schema(dataframe, current_bq_schema):
     """Try to deduce the unknown field types and return an improved schema.
 
     This function requires ``pyarrow`` to run. If all the missing types still
@@ -352,12 +352,12 @@ def currate_schema(dataframe, current_bq_schema):
     Returns:
         Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]
     """
-    currated_schema = []
+    augmented_schema = []
     unknown_type_fields = []
 
     for field in current_bq_schema:
         if field.field_type is not None:
-            currated_schema.append(field)
+            augmented_schema.append(field)
             continue
 
         arrow_table = pyarrow.array(dataframe[field.name])
@@ -374,7 +374,7 @@ def currate_schema(dataframe, current_bq_schema):
             description=field.description,
             fields=field.fields,
         )
-        currated_schema.append(new_field)
+        augmented_schema.append(new_field)
 
     if unknown_type_fields:
         warnings.warn(
@@ -384,7 +384,7 @@ def currate_schema(dataframe, current_bq_schema):
         )
         return None
 
-    return currated_schema
+    return augmented_schema
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
