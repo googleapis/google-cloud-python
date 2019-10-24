@@ -21,7 +21,7 @@ from .transports.base import {{ service.name }}Transport
 from .transports.grpc import {{ service.name }}GrpcTransport
 
 
-class {{ service.name }}Meta(type):
+class {{ service.client_name }}Meta(type):
     """Metaclass for the {{ service.name }} client.
 
     This provides class-level methods for building and retrieving
@@ -52,14 +52,14 @@ class {{ service.name }}Meta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class {{ service.name }}(metaclass={{ service.name }}Meta):
+class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = None
             ) -> None:
-        """Instantiate the {{ (service.name|snake_case).replace('_', ' ') }}.
+        """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
@@ -214,6 +214,6 @@ except pkg_resources.DistributionNotFound:
 
 
 __all__ = (
-    '{{ service.name }}',
+    '{{ service.client_name }}',
 )
 {% endblock %}

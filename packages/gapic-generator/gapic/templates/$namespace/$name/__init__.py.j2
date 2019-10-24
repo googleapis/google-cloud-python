@@ -11,7 +11,7 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
 {% for service in api.services.values()|sort(attribute='name')
         if service.meta.address.subpackage == api.subpackage_view -%}
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
-    {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.name }}
+    {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.client_name }}
 {% endfor -%}
 
 {#  Import messages from each proto.
@@ -36,7 +36,7 @@ __all__ = (
     {%- endfor %}
     {%- for service in api.services.values()|sort(attribute='name')
             if service.meta.address.subpackage == api.subpackage_view %}
-    '{{ service.name }}',
+    '{{ service.client_name }}',
     {%- endfor %}
     {%- for proto in api.protos.values()|sort(attribute='module_name')
             if proto.meta.address.subpackage == api.subpackage_view %}

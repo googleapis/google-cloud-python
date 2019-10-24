@@ -14,23 +14,23 @@
 
 import pytest
 
-from google.showcase import Echo
-from google.showcase import Identity
+from google.showcase import EchoClient
+from google.showcase import IdentityClient
 
 import grpc
 
 
 @pytest.fixture
 def echo():
-    transport = Echo.get_transport_class('grpc')(
+    transport = EchoClient.get_transport_class('grpc')(
         channel=grpc.insecure_channel('localhost:7469'),
     )
-    return Echo(transport=transport)
+    return EchoClient(transport=transport)
 
 
 @pytest.fixture
 def identity():
-    transport = Identity.get_transport_class('grpc')(
+    transport = IdentityClient.get_transport_class('grpc')(
         channel=grpc.insecure_channel('localhost:7469'),
     )
-    return Identity(transport=transport)
+    return IdentityClient(transport=transport)

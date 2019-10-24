@@ -11,7 +11,7 @@ import pytest
 {% filter sort_lines -%}
 from google import auth
 from google.auth import credentials
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.name }}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 {% if service.has_lro -%}
 from google.api_core import future
@@ -28,7 +28,7 @@ from google.longrunning import operations_pb2
 
 {% for method in service.methods.values() -%}
 def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -79,7 +79,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
 
 {% if method.field_headers %}
 def test_{{ method.name|snake_case }}_field_headers():
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
     )
 
@@ -116,7 +116,7 @@ def test_{{ method.name|snake_case }}_field_headers():
 
 {% if method.flattened_fields %}
 def test_{{ method.name|snake_case }}_flattened():
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
     )
 
@@ -152,7 +152,7 @@ def test_{{ method.name|snake_case }}_flattened():
 
 
 def test_{{ method.name|snake_case }}_flattened_error():
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
     )
 
@@ -170,7 +170,7 @@ def test_{{ method.name|snake_case }}_flattened_error():
 
 {% if method.paged_result_field %}
 def test_{{ method.name|snake_case }}_pager():
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials,
     )
 
@@ -222,7 +222,7 @@ def test_credentials_transport_error():
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = {{ service.name }}(
+        client = {{ service.client_name }}(
             credentials=credentials.AnonymousCredentials(),
             transport=transport,
         )
@@ -233,13 +233,13 @@ def test_transport_instance():
     transport = transports.{{ service.name }}GrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
-    client = {{ service.name }}(transport=transport)
+    client = {{ service.client_name }}(transport=transport)
     assert client._transport is transport
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
@@ -277,7 +277,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        client = {{ service.name }}()
+        client = {{ service.client_name }}()
         adc.assert_called_once_with(scopes=(
             {%- for scope in service.oauth_scopes %}
             '{{ scope }}',
@@ -287,7 +287,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
 
 def test_{{ service.name|snake_case }}_host_no_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         host='{{ host }}',
         transport='grpc',
@@ -298,7 +298,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
 
 def test_{{ service.name|snake_case }}_host_with_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         host='{{ host }}:8000',
         transport='grpc',
@@ -317,7 +317,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel():
 
 {% if service.has_lro -%}
 def test_{{ service.name|snake_case }}_grpc_lro_client():
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         transport='grpc',
     )

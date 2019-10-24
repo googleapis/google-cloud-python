@@ -628,6 +628,11 @@ class Service:
         return getattr(self.service_pb, name)
 
     @property
+    def client_name(self) -> str:
+        """Returns the name of the generated client class"""
+        return self.name + "Client"
+
+    @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
         return any([m.lro for m in self.methods.values()])
@@ -672,8 +677,9 @@ class Service:
         used for imports.
         """
         # Put together a set of the service and method names.
-        answer = {self.name}.union(
-            {utils.to_snake_case(i.name) for i in self.methods.values()}
+        answer = {self.name, self.client_name}
+        answer.update(
+            utils.to_snake_case(i.name) for i in self.methods.values()
         )
 
         # Identify any import module names where the same module name is used

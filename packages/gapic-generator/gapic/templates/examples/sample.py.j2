@@ -28,13 +28,13 @@
 {% for import_statement in imports %}
 {{ import_statement }}
 {% endfor %}
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.name }}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 
 {# also need calling form #}
 def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input_params(sample.request)|trim -}}):
     """{{ sample.description }}"""
 
-    client = {{ service.name }}(
+    client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         transport="grpc",
     )

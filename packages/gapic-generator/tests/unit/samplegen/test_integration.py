@@ -71,7 +71,7 @@ def test_generate_sample_basic():
     api_naming = naming.Naming(
         name="MolluscClient", namespace=("molluscs", "v1"))
     service = wrappers.Service(
-        service_pb=namedtuple('service_pb', ['name'])('MolluscClient'),
+        service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
         methods={
             "Classify": DummyMethod(
                 input=input_type,
@@ -119,12 +119,12 @@ def test_generate_sample_basic():
 # [START %s]
 from google import auth
 from google.auth import credentials
-from molluscs.v1.molluscclient.services.mollusc_client import MolluscClient
+from molluscs.v1.molluscclient.services.mollusc_service import MolluscServiceClient
 
 def sample_classify(video, location):
     """Determine the full taxonomy of input mollusc"""
 
-    client = MolluscClient(
+    client = MolluscServiceClient(
         credentials=credentials.AnonymousCredentials(),
         transport="grpc",
     )

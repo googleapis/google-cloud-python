@@ -10,7 +10,7 @@ from . import {{ subpackage }}
 {% filter sort_lines -%}
 {% for service in api.services.values()|sort(attribute='name')
         if service.meta.address.subpackage == api.subpackage_view -%}
-from .services.{{ service.name|snake_case }} import {{ service.name }}
+from .services.{{ service.name|snake_case }} import {{ service.client_name }}
 {% endfor -%}
 {% endfilter -%}
 
@@ -42,7 +42,7 @@ __all__ = (
     {%- endfor %}
     {%- for service in api.services.values()
             if service.meta.address.subpackage == api.subpackage_view %}
-    '{{ service.name }}',
+    '{{ service.client_name }}',
     {%- endfor %}
     {%- for proto in api.protos.values()
             if proto.meta.address.subpackage == api.subpackage_view %}
