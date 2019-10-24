@@ -39,11 +39,12 @@ s.move(
         'nox*.py',
         'setup.py',
         'setup.cfg',
+        '**/*.proto'
     ],
 )
 
 # Move protos to the right directory
-s.move("google/cloud/cloudbuild_v1/proto/", "google/cloud/devtools/cloudbuild_v1/")
+s.move(library / "google/cloud/cloudbuild_v1/proto/*.proto", "google/cloud/devtools/cloudbuild_v1/proto")
 
 # Fix up imports
 s.replace(
@@ -55,8 +56,8 @@ s.replace(
 
 # Rename package to `google-cloud-build`
 s.replace(
-    ['README.rst', 'google/**/*.py', 'docs/**/*.rst', 'tests/**/*.py'],
-    "google-cloud-cloudbuild",
+    ["**/*.rst", "**/*.py", "**/*.md"],
+    "google-cloud-build",
     "google-cloud-build"
 )
 

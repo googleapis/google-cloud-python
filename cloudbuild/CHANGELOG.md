@@ -2,5 +2,5 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/google-cloud-cloudbuild/#history
+[1]: https://pypi.org/project/google-cloud-build/#history
 
