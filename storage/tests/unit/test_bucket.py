@@ -1773,6 +1773,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.storage_class, COLDLINE_STORAGE_CLASS)
         self.assertTrue("storageClass" in bucket._changes)
 
+    def test_storage_class_setter_ARCHIVE(self):
+        from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
+
+        NAME = "name"
+        bucket = self._make_one(name=NAME)
+        bucket.storage_class = ARCHIVE_STORAGE_CLASS
+        self.assertEqual(bucket.storage_class, ARCHIVE_STORAGE_CLASS)
+        self.assertTrue("storageClass" in bucket._changes)
+
     def test_storage_class_setter_MULTI_REGIONAL(self):
         from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
 

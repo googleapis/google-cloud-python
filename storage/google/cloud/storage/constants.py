@@ -24,6 +24,9 @@ NEARLINE_STORAGE_CLASS = "NEARLINE"
 COLDLINE_STORAGE_CLASS = "COLDLINE"
 """Storage class for objects accessed at most once per year."""
 
+ARCHIVE_STORAGE_CLASS = "ARCHIVE"
+"""Storage class for objects accessed less frequently than once per year."""
+
 MULTI_REGIONAL_LEGACY_STORAGE_CLASS = "MULTI_REGIONAL"
 """Legacy storage class.
 
