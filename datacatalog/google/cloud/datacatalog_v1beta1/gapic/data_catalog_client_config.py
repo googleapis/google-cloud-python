@@ -22,9 +22,34 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
+                "CreateEntryGroup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetEntryGroup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteEntryGroup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "CreateEntry": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "UpdateEntry": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteEntry": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetEntry": {

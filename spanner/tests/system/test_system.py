@@ -24,9 +24,11 @@ import unittest
 import uuid
 
 import pytest
+from google.rpc import code_pb2
 
 from google.api_core import exceptions
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
@@ -146,7 +148,13 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
-        instance.reload()
+        def _expected_display_name(instance):
+            return instance.display_name == Config.INSTANCE.display_name
+
+        retry = RetryInstanceState(_expected_display_name)
+
+        retry(instance.reload)()
+
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
     @unittest.skipUnless(CREATE_INSTANCE, "Skipping instance creation")
@@ -776,6 +784,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # [END spanner_test_dml_update]
         # [END spanner_test_dml_with_mutation]
 
+    @staticmethod
+    def _check_batch_status(status_code):
+        if status_code != code_pb2.OK:
+            raise exceptions.from_grpc_status(status_code, "batch_update failed")
+
     def test_transaction_batch_update_success(self):
         # [START spanner_test_dml_with_mutation]
         # [START spanner_test_dml_update]
@@ -808,7 +821,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             status, row_counts = transaction.batch_update(
                 [insert_statement, update_statement, delete_statement]
             )
-            self.assertEqual(status.code, 0)  # XXX: where are values defined?
+            self._check_batch_status(status.code)
             self.assertEqual(len(row_counts), 3)
             for row_count in row_counts:
                 self.assertEqual(row_count, 1)
@@ -849,7 +862,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             status, row_counts = transaction.batch_update(
                 insert_statements + update_statements
             )
-            self.assertEqual(status.code, 0)  # XXX: where are values defined?
+            self._check_batch_status(status.code)
             self.assertEqual(len(row_counts), len(insert_statements) + 1)
             for row_count in row_counts:
                 self.assertEqual(row_count, 1)
@@ -886,18 +899,18 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             {"contact_id": Type(code=INT64)},
         )
 
-        with session.transaction() as transaction:
+        def unit_of_work(transaction):
             rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
             status, row_counts = transaction.batch_update(
                 [insert_statement, update_statement, delete_statement]
             )
+            self.assertEqual(status.code, code_pb2.INVALID_ARGUMENT)
+            self.assertEqual(len(row_counts), 1)
+            self.assertEqual(row_counts[0], 1)
 
-        self.assertEqual(status.code, 3)  # XXX: where are values defined?
-        self.assertEqual(len(row_counts), 1)
-        for row_count in row_counts:
-            self.assertEqual(row_count, 1)
+        session.run_in_transaction(unit_of_work)
 
     def test_transaction_batch_update_wo_statements(self):
         from google.api_core.exceptions import InvalidArgument

@@ -55,6 +55,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -111,73 +112,6 @@ def _view_use_legacy_sql_getter(table):
     if table.table_type == "VIEW":
         # The server-side default for useLegacySql is True.
         return True
-
-
-class EncryptionConfiguration(object):
-    """Custom encryption configuration (e.g., Cloud KMS keys).
-
-    Args:
-        kms_key_name (str): resource ID of Cloud KMS key used for encryption
-    """
-
-    def __init__(self, kms_key_name=None):
-        self._properties = {}
-        if kms_key_name is not None:
-            self._properties["kmsKeyName"] = kms_key_name
-
-    @property
-    def kms_key_name(self):
-        """str: Resource ID of Cloud KMS key
-
-        Resource ID of Cloud KMS key or :data:`None` if using default
-        encryption.
-        """
-        return self._properties.get("kmsKeyName")
-
-    @kms_key_name.setter
-    def kms_key_name(self, value):
-        self._properties["kmsKeyName"] = value
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Construct an encryption configuration from its API representation
-
-        Args:
-            resource (Dict[str, object]):
-                An encryption configuration representation as returned from
-                the API.
-
-        Returns:
-            google.cloud.bigquery.table.EncryptionConfiguration:
-                An encryption configuration parsed from ``resource``.
-        """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
-
-    def to_api_repr(self):
-        """Construct the API resource representation of this encryption
-        configuration.
-
-        Returns:
-            Dict[str, object]:
-                Encryption configuration as represented as an API resource
-        """
-        return copy.deepcopy(self._properties)
-
-    def __eq__(self, other):
-        if not isinstance(other, EncryptionConfiguration):
-            return NotImplemented
-        return self.kms_key_name == other.kms_key_name
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __hash__(self):
-        return hash(self.kms_key_name)
-
-    def __repr__(self):
-        return "EncryptionConfiguration({})".format(self.kms_key_name)
 
 
 class TableReference(object):
@@ -479,7 +413,7 @@ class Table(object):
 
     @property
     def encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -572,13 +506,53 @@ class Table(object):
         return self._properties.get("type")
 
     @property
-    def time_partitioning(self):
-        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
-        partitioning for a table.
+    def range_partitioning(self):
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for a table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.table.Table.time_partitioning` or
+        :attr:`~google.cloud.bigquery.table.Table.range_partitioning`.
 
         Raises:
             ValueError:
-                If the value is not :class:`TimePartitioning` or :data:`None`.
+                If the value is not
+                :class:`~google.cloud.bigquery.table.RangePartitioning` or
+                :data:`None`.
+        """
+        resource = self._properties.get("rangePartitioning")
+        if resource is not None:
+            return RangePartitioning(_properties=resource)
+
+    @range_partitioning.setter
+    def range_partitioning(self, value):
+        resource = value
+        if isinstance(value, RangePartitioning):
+            resource = value._properties
+        elif value is not None:
+            raise ValueError(
+                "Expected value to be RangePartitioning or None, got {}.".format(value)
+            )
+        self._properties["rangePartitioning"] = resource
+
+    @property
+    def time_partitioning(self):
+        """Optional[google.cloud.bigquery.table.TimePartitioning]: Configures time-based
+        partitioning for a table.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.table.Table.time_partitioning` or
+        :attr:`~google.cloud.bigquery.table.Table.range_partitioning`.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.table.TimePartitioning` or
+                :data:`None`.
         """
         prop = self._properties.get("timePartitioning")
         if prop is not None:
@@ -1709,6 +1683,147 @@ class _EmptyRowIterator(object):
 
     def __iter__(self):
         return iter(())
+
+
+class PartitionRange(object):
+    """Definition of the ranges for range partitioning.
+
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
+
+    Args:
+        start (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.start`
+            property.
+        end (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.end`
+            property.
+        interval (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.interval`
+            property.
+        _properties (Optional[dict]):
+            Private. Used to construct object from API resource.
+    """
+
+    def __init__(self, start=None, end=None, interval=None, _properties=None):
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if start is not None:
+            self.start = start
+        if end is not None:
+            self.end = end
+        if interval is not None:
+            self.interval = interval
+
+    @property
+    def start(self):
+        """int: The start of range partitioning, inclusive."""
+        return _helpers._int_or_none(self._properties.get("start"))
+
+    @start.setter
+    def start(self, value):
+        self._properties["start"] = _helpers._str_or_none(value)
+
+    @property
+    def end(self):
+        """int: The end of range partitioning, exclusive."""
+        return _helpers._int_or_none(self._properties.get("end"))
+
+    @end.setter
+    def end(self, value):
+        self._properties["end"] = _helpers._str_or_none(value)
+
+    @property
+    def interval(self):
+        """int: The width of each interval."""
+        return _helpers._int_or_none(self._properties.get("interval"))
+
+    @interval.setter
+    def interval(self, value):
+        self._properties["interval"] = _helpers._str_or_none(value)
+
+    def _key(self):
+        return tuple(sorted(self._properties.items()))
+
+    def __repr__(self):
+        key_vals = ["{}={}".format(key, val) for key, val in self._key()]
+        return "PartitionRange({})".format(", ".join(key_vals))
+
+
+class RangePartitioning(object):
+    """Range-based partitioning configuration for a table.
+
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
+
+    Args:
+        range_ (Optional[google.cloud.bigquery.table.PartitionRange]):
+            Sets the
+            :attr:`google.cloud.bigquery.table.RangePartitioning.range_`
+            property.
+        field (Optional[str]):
+            Sets the
+            :attr:`google.cloud.bigquery.table.RangePartitioning.field`
+            property.
+        _properties (Optional[dict]):
+            Private. Used to construct object from API resource.
+    """
+
+    def __init__(self, range_=None, field=None, _properties=None):
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if range_ is not None:
+            self.range_ = range_
+        if field is not None:
+            self.field = field
+
+    # Trailing underscore to prevent conflict with built-in range() function.
+    @property
+    def range_(self):
+        """google.cloud.bigquery.table.PartitionRange: Defines the
+        ranges for range partitioning.
+
+        Raises:
+            ValueError:
+                If the value is not a :class:`PartitionRange`.
+        """
+        range_properties = self._properties.setdefault("range", {})
+        return PartitionRange(_properties=range_properties)
+
+    @range_.setter
+    def range_(self, value):
+        if not isinstance(value, PartitionRange):
+            raise ValueError("Expected a PartitionRange, but got {}.".format(value))
+        self._properties["range"] = value._properties
+
+    @property
+    def field(self):
+        """str: The table is partitioned by this field.
+
+        The field must be a top-level ``NULLABLE`` / ``REQUIRED`` field. The
+        only supported type is ``INTEGER`` / ``INT64``.
+        """
+        return self._properties.get("field")
+
+    @field.setter
+    def field(self, value):
+        self._properties["field"] = value
+
+    def _key(self):
+        return (("field", self.field), ("range_", self.range_))
+
+    def __repr__(self):
+        key_vals = ["{}={}".format(key, repr(val)) for key, val in self._key()]
+        return "RangePartitioning({})".format(", ".join(key_vals))
 
 
 class TimePartitioningType(object):

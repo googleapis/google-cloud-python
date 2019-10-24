@@ -73,12 +73,14 @@ from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineArgument
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.table import PartitionRange
+from google.cloud.bigquery.table import RangePartitioning
+from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 __all__ = [
     "__version__",
@@ -94,10 +96,14 @@ __all__ = [
     "DatasetReference",
     "AccessEntry",
     # Tables
-    "EncryptionConfiguration",
     "Table",
     "TableReference",
+    "PartitionRange",
+    "RangePartitioning",
     "Row",
+    "TimePartitioning",
+    "TimePartitioningType",
+    # Jobs
     "CopyJob",
     "CopyJobConfig",
     "ExtractJob",
@@ -105,8 +111,6 @@ __all__ = [
     "LoadJob",
     "LoadJobConfig",
     "UnknownJob",
-    "TimePartitioningType",
-    "TimePartitioning",
     # Models
     "Model",
     "ModelReference",
@@ -136,6 +140,8 @@ __all__ = [
     "StandardSqlDataTypes",
     "SourceFormat",
     "WriteDisposition",
+    # EncryptionConfiguration
+    "EncryptionConfiguration",
 ]
 
 

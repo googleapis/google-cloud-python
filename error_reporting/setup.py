@@ -22,13 +22,13 @@ import setuptools
 
 name = "google-cloud-error-reporting"
 description = "Stackdriver Error Reporting API client library"
-version = "0.32.1"
+version = "0.33.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
-dependencies = ["google-cloud-logging>=1.11.0, <2.0dev"]
+dependencies = ["google-cloud-logging>=1.14.0, <2.0dev"]
 extras = {}
 
 

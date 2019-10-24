@@ -275,6 +275,7 @@ class TestDataset(unittest.TestCase):
     PROJECT = "project"
     DS_ID = "dataset-id"
     DS_REF = DatasetReference(PROJECT, DS_ID)
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -314,6 +315,7 @@ class TestDataset(unittest.TestCase):
                 {"role": "WRITER", "specialGroup": "projectWriters"},
                 {"role": "READER", "specialGroup": "projectReaders"},
             ],
+            "defaultEncryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
         }
 
     def _verify_access_entry(self, access_entries, resource):
@@ -369,6 +371,13 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.description, resource.get("description"))
         self.assertEqual(dataset.friendly_name, resource.get("friendlyName"))
         self.assertEqual(dataset.location, resource.get("location"))
+        if "defaultEncryptionConfiguration" in resource:
+            self.assertEqual(
+                dataset.default_encryption_configuration.kms_key_name,
+                resource.get("defaultEncryptionConfiguration")["kmsKeyName"],
+            )
+        else:
+            self.assertIsNone(dataset.default_encryption_configuration)
 
         if "access" in resource:
             self._verify_access_entry(dataset.access_entries, resource)
@@ -557,6 +566,22 @@ class TestDataset(unittest.TestCase):
             "newAlphaProperty": "unreleased property",
         }
         self.assertEqual(resource, exp_resource)
+
+    def test_default_encryption_configuration_setter(self):
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
+
+        dataset = self._make_one(self.DS_REF)
+        encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME
+        )
+        dataset.default_encryption_configuration = encryption_configuration
+        self.assertEqual(
+            dataset.default_encryption_configuration.kms_key_name, self.KMS_KEY_NAME
+        )
+        dataset.default_encryption_configuration = None
+        self.assertIsNone(dataset.default_encryption_configuration)
 
     def test_from_string(self):
         cls = self._get_target_class()

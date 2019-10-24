@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## 0.4.0
+
+10-23-2019 08:54 PDT
+
+### Implementation Changes
+
+- remove send/recv msg size limit (via synth) ([#8949](https://github.com/googleapis/google-cloud-python/pull/8949))
+
+### New Features
+
+- add entry group operations ([#9520](https://github.com/googleapis/google-cloud-python/pull/9520))
+
+### Documentation
+
+- fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- remove unused import from samples (via synth). ([#9110](https://github.com/googleapis/google-cloud-python/pull/9110))
+- remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- add 'search' sample (via synth). ([#8793](https://github.com/googleapis/google-cloud-python/pull/8793))
+
 ## 0.3.0
 
 07-24-2019 15:58 PDT
