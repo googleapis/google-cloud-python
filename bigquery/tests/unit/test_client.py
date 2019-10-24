@@ -2973,7 +2973,7 @@ class TestClient(unittest.TestCase):
             conn.api_request.reset_mock()
 
     def test_load_table_from_uri(self):
-        from google.cloud.bigquery.job import LoadJob
+        from google.cloud.bigquery.job import LoadJob, LoadJobConfig
 
         JOB = "job_name"
         DESTINATION = "destination_table"
@@ -2993,11 +2993,14 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
+        job_config = LoadJobConfig()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
         destination = client.dataset(self.DS_ID).table(DESTINATION)
 
-        job = client.load_table_from_uri(SOURCE_URI, destination, job_id=JOB)
+        job = client.load_table_from_uri(
+            SOURCE_URI, destination, job_id=JOB, job_config=job_config
+        )
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
@@ -3005,6 +3008,7 @@ class TestClient(unittest.TestCase):
         )
 
         self.assertIsInstance(job, LoadJob)
+        self.assertIsInstance(job._configuration, LoadJobConfig)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
@@ -3099,6 +3103,26 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="POST", path="/projects/other-project/jobs", data=resource
         )
+
+    def test_load_table_from_uri_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
+        JOB = "job_name"
+        DESTINATION = "destination_table"
+        SOURCE_URI = "http://example.com/source.csv"
+
+        creds = _make_credentials()
+        http = object()
+        job_config = job.CopyJobConfig()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        destination = client.dataset(self.DS_ID).table(DESTINATION)
+
+        with self.assertRaises(TypeError) as exc:
+            client.load_table_from_uri(
+                SOURCE_URI, destination, job_id=JOB, job_config=job_config
+            )
+
+        self.assertIn("Expected an instance of LoadJobConfig", exc.exception.args[0])
 
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b""):
@@ -3422,6 +3446,66 @@ class TestClient(unittest.TestCase):
         ).table("destination_table")
         self.assertEqual(job.destination, expected_destination)
 
+    def test_copy_table_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
+        JOB = "job_name"
+        SOURCE = "source_table"
+        DESTINATION = "destination_table"
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        job_config = job.ExtractJobConfig()
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(SOURCE)
+        destination = dataset.table(DESTINATION)
+        with self.assertRaises(TypeError) as exc:
+            client.copy_table(source, destination, job_id=JOB, job_config=job_config)
+
+        self.assertIn("Expected an instance of CopyJobConfig", exc.exception.args[0])
+
+    def test_copy_table_w_valid_job_config(self):
+        from google.cloud.bigquery.job import CopyJobConfig
+
+        JOB = "job_name"
+        SOURCE = "source_table"
+        DESTINATION = "destination_table"
+        RESOURCE = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": JOB},
+            "configuration": {
+                "copy": {
+                    "sourceTables": [
+                        {
+                            "projectId": self.PROJECT,
+                            "datasetId": self.DS_ID,
+                            "tableId": SOURCE,
+                        }
+                    ],
+                    "destinationTable": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": DESTINATION,
+                    },
+                }
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        job_config = CopyJobConfig()
+        conn = client._connection = make_connection(RESOURCE)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(SOURCE)
+        destination = dataset.table(DESTINATION)
+
+        job = client.copy_table(source, destination, job_id=JOB, job_config=job_config)
+        # Check that copy_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+        )
+        self.assertIsInstance(job._configuration, CopyJobConfig)
+
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
 
@@ -3461,6 +3545,24 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
+
+    def test_extract_table_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
+        JOB = "job_id"
+        SOURCE = "source_table"
+        DESTINATION = "gs://bucket_name/object_name"
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(SOURCE)
+        job_config = job.LoadJobConfig()
+        with self.assertRaises(TypeError) as exc:
+            client.extract_table(source, DESTINATION, job_id=JOB, job_config=job_config)
+
+        self.assertIn("Expected an instance of ExtractJobConfig", exc.exception.args[0])
 
     def test_extract_table_w_explicit_project(self):
         job_id = "job_id"
@@ -3745,6 +3847,35 @@ class TestClient(unittest.TestCase):
             method="POST", path="/projects/PROJECT/jobs", data=resource
         )
 
+    def test_query_w_invalid_job_config(self):
+        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        from google.cloud.bigquery import job
+
+        job_id = "some-job-id"
+        query = "select count(*) from persons"
+        creds = _make_credentials()
+        http = object()
+        default_job_config = QueryJobConfig()
+        default_job_config.default_dataset = DatasetReference(
+            self.PROJECT, "some-dataset"
+        )
+        default_job_config.maximum_bytes_billed = 1000
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_query_job_config=default_job_config,
+        )
+
+        job_config = job.LoadJobConfig()
+
+        with self.assertRaises(TypeError) as exc:
+            client.query(
+                query, job_id=job_id, location=self.LOCATION, job_config=job_config
+            )
+        self.assertIn("Expected an instance of QueryJobConfig", exc.exception.args[0])
+
     def test_query_w_explicit_job_config_override(self):
         job_id = "some-job-id"
         query = "select count(*) from persons"
@@ -3838,6 +3969,23 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="POST", path="/projects/PROJECT/jobs", data=resource
         )
+
+    def test_query_w_invalid_default_job_config(self):
+        job_id = "some-job-id"
+        query = "select count(*) from persons"
+        creds = _make_credentials()
+        http = object()
+        default_job_config = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_query_job_config=default_job_config,
+        )
+
+        with self.assertRaises(TypeError) as exc:
+            client.query(query, job_id=job_id, location=self.LOCATION)
+        self.assertIn("Expected an instance of QueryJobConfig", exc.exception.args[0])
 
     def test_query_w_client_location(self):
         job_id = "some-job-id"
@@ -5419,6 +5567,19 @@ class TestClientUpload(object):
         with pytest.raises(ValueError):
             client.load_table_from_file(file_obj, self.TABLE_REF)
 
+    def test_load_table_from_file_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        gzip_file = self._make_gzip_file_obj(writable=True)
+        config = job.QueryJobConfig()
+        with pytest.raises(TypeError) as exc:
+            client.load_table_from_file(
+                gzip_file, self.TABLE_REF, job_id="job_id", job_config=config
+            )
+        err_msg = str(exc.value)
+        assert "Expected an instance of LoadJobConfig" in err_msg
+
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe(self):
@@ -6118,6 +6279,24 @@ class TestClientUpload(object):
         assert sent_config.schema == schema
         assert sent_config.source_format == job.SourceFormat.PARQUET
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_load_table_from_dataframe_w_invaild_job_config(self):
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+
+        records = [{"float_column": 3.14, "struct_column": [{"foo": 1}, {"bar": -1}]}]
+        dataframe = pandas.DataFrame(data=records)
+        job_config = job.CopyJobConfig()
+
+        with pytest.raises(TypeError) as exc:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
+            )
+
+        err_msg = str(exc.value)
+        assert "Expected an instance of LoadJobConfig" in err_msg
+
     def test_load_table_from_json_basic_use(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -6205,6 +6384,26 @@ class TestClientUpload(object):
         assert not sent_config.autodetect
         # all properties should have been cloned and sent to the backend
         assert sent_config._properties.get("load", {}).get("unknown_field") == "foobar"
+
+    def test_load_table_from_json_w_invalid_job_config(self):
+        from google.cloud.bigquery import job
+
+        client = self._make_client()
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+        job_config = job.CopyJobConfig()
+        with pytest.raises(TypeError) as exc:
+            client.load_table_from_json(
+                json_rows,
+                self.TABLE_REF,
+                job_config=job_config,
+                project="project-x",
+                location="EU",
+            )
+        err_msg = str(exc.value)
+        assert "Expected an instance of LoadJobConfig" in err_msg
 
     # Low-level tests
 

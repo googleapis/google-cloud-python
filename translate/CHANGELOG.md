@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## 2.0.0
+
+10-23-2019 11:13 PDT
+
+### New Features
+- Make v3 the default client. ([#9498](https://github.com/googleapis/google-cloud-python/pull/9498))
+
+### Internal / Testing Changes
+- Add VPC-SC system tests. ([#9272](https://github.com/googleapis/google-cloud-python/pull/9272))
+
 ## 1.7.0
 
 10-07-2019 14:57 PDT
