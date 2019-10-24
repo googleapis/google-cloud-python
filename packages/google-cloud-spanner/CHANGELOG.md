@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.12.0
+
+10-23-2019 19:09 PDT
+
+
+### Implementation Changes
+- Add `batch_create_session` calls to session pools. ([#9488](https://github.com/googleapis/google-cloud-python/pull/9488))
+
+### New Features
+- Add `client_options` to client constructor. ([#9151](https://github.com/googleapis/google-cloud-python/pull/9151))
+
+### Internal / Testing Changes
+- Harden 'test_reload_instance' systest against eventual consistency failures. ([#9394](https://github.com/googleapis/google-cloud-python/pull/9394))
+- Harden 'test_transaction_batch_update_w_syntax_error' systest. ([#9395](https://github.com/googleapis/google-cloud-python/pull/9395))
+- Propagate errors from 'Transaction.batch_update' in systest. ([#9393](https://github.com/googleapis/google-cloud-python/pull/9393))
+
 ## 1.11.0
 
 10-15-2019 06:55 PDT
