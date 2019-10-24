@@ -19,6 +19,8 @@ API Reference
   acl
   batch
   constants
+  hmac_key
+  notification
 
 Changelog
 ---------
