@@ -105,7 +105,7 @@ Example Usage
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Datastore API
+-  Read the `Client Library Documentation`_ for Google Cloud Datastore
    API to see other available methods on the client.
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.

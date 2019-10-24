@@ -83,11 +83,13 @@ Table
 .. autosummary::
     :toctree: generated
 
+    table.PartitionRange
+    table.RangePartitioning
+    table.Row
+    table.RowIterator
     table.Table
     table.TableListItem
     table.TableReference
-    table.Row
-    table.RowIterator
     table.TimePartitioning
     table.TimePartitioningType
 

@@ -16,7 +16,7 @@
 
 import unittest
 
-from google.cloud import translate
+from google.cloud import translate_v2
 
 
 class Config(object):
@@ -30,7 +30,7 @@ class Config(object):
 
 
 def setUpModule():
-    Config.CLIENT = translate.Client()
+    Config.CLIENT = translate_v2.Client()
 
 
 class TestTranslate(unittest.TestCase):

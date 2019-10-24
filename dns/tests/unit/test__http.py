@@ -44,6 +44,12 @@ class TestConnection(unittest.TestCase):
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms["bar"], "baz")
 
+    def test_build_api_url_w_custom_endpoint(self):
+        custom_endpoint = "https://foo-dns.googleapis.com"
+        conn = self._make_one(object(), api_endpoint=custom_endpoint)
+        URI = "/".join([custom_endpoint, "dns", conn.API_VERSION, "foo"])
+        self.assertEqual(conn.build_api_url("/foo"), URI)
+
     def test_extra_headers(self):
         import requests
         from google.cloud import _http as base_http

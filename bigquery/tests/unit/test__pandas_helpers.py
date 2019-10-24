@@ -35,6 +35,7 @@ except ImportError:  # pragma: NO COVER
 import pytest
 import pytz
 
+from google import api_core
 from google.cloud.bigquery import schema
 
 
@@ -1086,3 +1087,74 @@ def test_currate_schema_type_detection_fails(module_under_test):
     warning_msg = str(expected_warnings[0])
     assert "pyarrow" in warning_msg.lower()
     assert "struct_field" in warning_msg and "struct_field_2" in warning_msg
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], [2.2, 22.22, 222.222]]
+    pages = [fake_page]
+
+    bq_schema = [
+        schema.SchemaField("population_size", "INTEGER"),
+        schema.SchemaField("alien_field", "ALIEN_FLOAT_TYPE"),
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+
+    with warnings.catch_warnings(record=True) as warned:
+        result = next(results_gen)
+
+    unwanted_warnings = [
+        warning
+        for warning in warned
+        if "please pass schema= explicitly" in str(warning).lower()
+    ]
+    assert not unwanted_warnings
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.DoubleArray
+    assert list(col) == [2.2, 22.22, 222.222]
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_known_field_type(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    bq_schema = [
+        schema.SchemaField("population_size", "INTEGER"),
+        schema.SchemaField("non_alien_field", "STRING"),
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+    with warnings.catch_warnings(record=True) as warned:
+        result = next(results_gen)
+
+    unwanted_warnings = [
+        warning
+        for warning in warned
+        if "please pass schema= explicitly" in str(warning).lower()
+    ]
+    assert not unwanted_warnings
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.StringArray
+    assert list(col) == ["2.2", "22.22", "222.222"]
