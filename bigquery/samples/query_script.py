@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def query_script(client):
     # [START bigquery_query_script]
     # TODO(developer): Import the client library.
@@ -49,12 +50,20 @@ def query_script(client):
 
     # Fetch result rows for the final sub-job in the script.
     rows = list(rows_iterable)
-    print("{} of the top 100 names from year 2000 also appear in Shakespeare's works.".format(len(rows)))
+    print(
+        "{} of the top 100 names from year 2000 also appear in Shakespeare's works.".format(
+            len(rows)
+        )
+    )
 
     # Fetch jobs created by the SQL script.
     child_jobs_iterable = client.list_jobs(parent_job=parent_job)
     for child_job in child_jobs_iterable:
         child_rows = list(child_job.result())
-        print("Child job with ID {} produced {} row(s).".format(child_job.job_id, len(child_rows)))
+        print(
+            "Child job with ID {} produced {} row(s).".format(
+                child_job.job_id, len(child_rows)
+            )
+        )
 
     # [END bigquery_query_script]

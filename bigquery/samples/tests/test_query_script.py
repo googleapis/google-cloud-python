@@ -20,6 +20,9 @@ def test_query_script(capsys, client):
     query_script.query_script(client)
     out, _ = capsys.readouterr()
     assert "Script created 2 child jobs." in out
-    assert "53 of the top 100 names from year 2000 also appear in Shakespeare's works." in out
+    assert (
+        "53 of the top 100 names from year 2000 also appear in Shakespeare's works."
+        in out
+    )
     assert "produced 53 row(s)" in out
     assert "produced 1 row(s)" in out
