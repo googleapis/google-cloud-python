@@ -21,12 +21,12 @@ from ._testing import _make_credentials
 
 
 class Test__create_gapic_client(unittest.TestCase):
-    def _invoke_client_factory(self, client_class):
+    def _invoke_client_factory(self, client_class, **kw):
         from google.cloud.bigtable.client import _create_gapic_client
 
-        return _create_gapic_client(client_class)
+        return _create_gapic_client(client_class, **kw)
 
-    def test_without_emulator(self):
+    def test_wo_emulator(self):
         client_class = mock.Mock()
         credentials = _make_credentials()
         client = _Client(credentials)
@@ -36,10 +36,30 @@ class Test__create_gapic_client(unittest.TestCase):
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            credentials=client._credentials, client_info=client_info
+            credentials=client._credentials,
+            client_info=client_info,
+            client_options=None,
         )
 
-    def test_with_emulator(self):
+    def test_wo_emulator_w_client_options(self):
+        client_class = mock.Mock()
+        credentials = _make_credentials()
+        client = _Client(credentials)
+        client_info = client._client_info = mock.Mock()
+        client_options = mock.Mock()
+
+        result = self._invoke_client_factory(
+            client_class, client_options=client_options
+        )(client)
+
+        self.assertIs(result, client_class.return_value)
+        client_class.assert_called_once_with(
+            credentials=client._credentials,
+            client_info=client_info,
+            client_options=client_options,
+        )
+
+    def test_w_emulator(self):
         client_class = mock.Mock()
         emulator_host = emulator_channel = object()
         credentials = _make_credentials()
@@ -210,6 +230,25 @@ class TestClient(unittest.TestCase):
         self.assertIs(table_data_client._client_info, client_info)
         self.assertIs(client._table_data_client, table_data_client)
 
+    def test_table_data_client_not_initialized_w_client_options(self):
+        credentials = _make_credentials()
+        client_options = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, client_options=client_options
+        )
+
+        patch = mock.patch("google.cloud.bigtable_v2.BigtableClient")
+        with patch as mocked:
+            table_data_client = client.table_data_client
+
+        self.assertIs(table_data_client, mocked.return_value)
+        self.assertIs(client._table_data_client, table_data_client)
+        mocked.assert_called_once_with(
+            client_info=client._client_info,
+            credentials=mock.ANY,  # added scopes
+            client_options=client_options,
+        )
+
     def test_table_data_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(
@@ -257,6 +296,28 @@ class TestClient(unittest.TestCase):
         self.assertIs(table_admin_client._client_info, client_info)
         self.assertIs(client._table_admin_client, table_admin_client)
 
+    def test_table_admin_client_not_initialized_w_client_options(self):
+        credentials = _make_credentials()
+        admin_client_options = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            admin_client_options=admin_client_options,
+        )
+
+        patch = mock.patch("google.cloud.bigtable_admin_v2.BigtableTableAdminClient")
+        with patch as mocked:
+            table_admin_client = client.table_admin_client
+
+        self.assertIs(table_admin_client, mocked.return_value)
+        self.assertIs(client._table_admin_client, table_admin_client)
+        mocked.assert_called_once_with(
+            client_info=client._client_info,
+            credentials=mock.ANY,  # added scopes
+            client_options=admin_client_options,
+        )
+
     def test_table_admin_client_initialized(self):
         credentials = _make_credentials()
         client = self._make_one(
@@ -287,7 +348,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance_admin_client._client_info, _CLIENT_INFO)
         self.assertIs(client._instance_admin_client, instance_admin_client)
 
-    def test_instance_admin_client_not_initialized_w_admin_and_client_info(self):
+    def test_instance_admin_client_not_initialized_w_client_info(self):
         from google.cloud.bigtable_admin_v2 import BigtableInstanceAdminClient
 
         credentials = _make_credentials()
@@ -303,6 +364,28 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(instance_admin_client, BigtableInstanceAdminClient)
         self.assertIs(instance_admin_client._client_info, client_info)
         self.assertIs(client._instance_admin_client, instance_admin_client)
+
+    def test_instance_admin_client_not_initialized_w_client_options(self):
+        credentials = _make_credentials()
+        admin_client_options = mock.Mock()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            admin_client_options=admin_client_options,
+        )
+
+        patch = mock.patch("google.cloud.bigtable_admin_v2.BigtableInstanceAdminClient")
+        with patch as mocked:
+            instance_admin_client = client.instance_admin_client
+
+        self.assertIs(instance_admin_client, mocked.return_value)
+        self.assertIs(client._instance_admin_client, instance_admin_client)
+        mocked.assert_called_once_with(
+            client_info=client._client_info,
+            credentials=mock.ANY,  # added scopes
+            client_options=admin_client_options,
+        )
 
     def test_instance_admin_client_initialized(self):
         credentials = _make_credentials()
