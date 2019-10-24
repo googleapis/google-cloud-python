@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+import re
+
 from .. import client_query_legacy_sql
 
 
@@ -20,4 +22,4 @@ def test_client_query_legacy_sql(capsys, client):
 
     client_query_legacy_sql.client_query_legacy_sql(client)
     out, err = capsys.readouterr()
-    assert "Row((" in out
+    assert re.search(r"(Row[\w(){}:', ]+)$", out)
