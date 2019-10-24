@@ -9,10 +9,10 @@
 10-23-2019 11:13 PDT
 
 ### New Features
-- make v3 the default client ([#9498](https://github.com/googleapis/google-cloud-python/pull/9498))
+- Make v3 the default client. ([#9498](https://github.com/googleapis/google-cloud-python/pull/9498))
 
 ### Internal / Testing Changes
-- add VPC-SC system tests ([#9272](https://github.com/googleapis/google-cloud-python/pull/9272))
+- Add VPC-SC system tests. ([#9272](https://github.com/googleapis/google-cloud-python/pull/9272))
 
 ## 1.7.0
 
