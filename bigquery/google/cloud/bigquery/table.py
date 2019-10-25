@@ -51,9 +51,9 @@ from google.api_core.page_iterator import HTTPIterator
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
+from google.cloud.bigquery.schema import _to_schema_fields
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
@@ -305,8 +305,13 @@ class Table(object):
             A pointer to a table. If ``table_ref`` is a string, it must
             included a project ID, dataset ID, and table ID, each separated
             by ``.``.
-        schema (List[google.cloud.bigquery.schema.SchemaField]):
-            The table's schema
+        schema (Optional[Union[ \
+                Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
+                Sequence[Mapping[str, str]] \
+        ]]):
+            The table's schema. If given as a sequence of dicts, their content
+            must be compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
     """
 
     _PROPERTY_TO_API_FIELD = {
@@ -369,13 +374,17 @@ class Table(object):
 
     @property
     def schema(self):
-        """List[google.cloud.bigquery.schema.SchemaField]: Table's schema.
+        """Union[ \
+               Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
+               Sequence[Mapping[str, str]] \
+        ]: Table's schema.
 
         Raises:
-            TypeError: If 'value' is not a sequence
+            TypeError: If `value` is not a sequence
             ValueError:
                 If any item in the sequence is not a
-                :class:`~google.cloud.bigquery.schema.SchemaField`
+                :class:`~google.cloud.bigquery.schema.SchemaField` or a
+                compatible mapping representation.
         """
         prop = self._properties.get("schema")
         if not prop:
@@ -387,10 +396,10 @@ class Table(object):
     def schema(self, value):
         if value is None:
             self._properties["schema"] = None
-        elif not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError("Schema items must be fields")
-        else:
-            self._properties["schema"] = {"fields": _build_schema_resource(value)}
+            return
+
+        value = _to_schema_fields(value)
+        self._properties["schema"] = {"fields": _build_schema_resource(value)}
 
     @property
     def labels(self):
@@ -1284,6 +1293,13 @@ class RowIterator(HTTPIterator):
         api_request (Callable[google.cloud._http.JSONConnection.api_request]):
             The function to use to make API requests.
         path (str): The method path to query for the list of items.
+        schema (Union[ \
+                Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
+                Sequence[Mapping[str, str]] \
+        ]):
+            The table's schema. If given as a sequence of dicts, their content
+            must be compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
         max_results (int, optional): The maximum number of results to fetch.
@@ -1328,6 +1344,7 @@ class RowIterator(HTTPIterator):
             page_start=_rows_page_start,
             next_token="pageToken",
         )
+        schema = _to_schema_fields(schema)
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._page_size = page_size
         self._preserve_order = False
