@@ -36,7 +36,9 @@ def client_query_batch(client):
 
     # Check on the progress by getting the job's updated state. Once the state
     # is `DONE`, the results are ready.
-    query_job = client.get_job(query_job.job_id)  # Make an API request.
+    query_job = client.get_job(
+        query_job.job_id, location=query_job.location
+    )  # Make an API request.
 
     print("Job {} is currently in state {}".format(query_job.job_id, query_job.state))
     # [END bigquery_query_batch]
