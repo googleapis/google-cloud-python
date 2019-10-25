@@ -134,6 +134,7 @@ class Client(object):
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
         self._batches = {}
+        self._is_stopped = False
 
     @classmethod
     def from_service_account_file(cls, filename, batch_settings=(), **kwargs):
@@ -242,7 +243,14 @@ class Client(object):
             instance that conforms to Python Standard library's
             :class:`~concurrent.futures.Future` interface (but not an
             instance of that class).
+
+        Raises:
+            ValueError:
+                If called after publisher has been stopped
+                by a `stop()` method call.
         """
+        if self._is_stopped:
+            raise ValueError("Cannot publish on a stopped publisher.")
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
@@ -276,20 +284,22 @@ class Client(object):
         return future
 
     def stop(self):
-        """Immediately publish all outstanding batches.
+        """Immediately publish all outstanding messages.
 
-        This asynchronously pushes all outstanding messages
-        and waits until all futures resolved. Method should be
-        invoked prior to deleting this Client object in order
-        to ensure that no pending messages are lost.
+        Asynchronously sends all outstanding messages and
+        prevents future calls to `publish()`. Method should
+        be invoked prior to deleting this `Client()` object
+        in order to ensure that no pending messages are lost.
 
         .. note::
 
-            This method blocks until all futures of all
-            batches resolved.
+            This method is non-blocking. Use `Future()` objects
+            returned by `publish()` to make sure all messages
+            sent or failed to.
         """
+        if self._is_stopped:
+            raise ValueError("Cannot stop a publisher already stopped.")
+
+        self._is_stopped = True
         for topic in self._batches:
             self._batches[topic].commit()
-
-        for topic in self._batches:
-            self._batches[topic].wait()

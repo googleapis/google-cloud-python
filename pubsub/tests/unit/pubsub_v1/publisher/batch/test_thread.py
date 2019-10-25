@@ -252,31 +252,6 @@ def test_block__commmit_api_error():
         assert future.exception() == error
 
 
-def test_wait():
-    batch = create_batch()
-    with mock.patch(
-        "google.cloud.pubsub_v1.publisher.futures.Future.result", return_value=True
-    ) as result_mock:
-        futures = (batch.publish({"data": b"msg"}),)
-
-        batch._status = BatchStatus.IN_PROGRESS
-        futures[0]._completed.set()
-        batch.wait()
-
-        result_mock.assert_called()
-
-
-def test_wait_not_started():
-    batch = create_batch()
-    with mock.patch(
-        "google.cloud.pubsub_v1.publisher.futures.Future.result", return_value=True
-    ) as result_mock:
-        batch.publish({"data": b"msg"})
-        batch.wait()
-
-        result_mock.assert_not_called()
-
-
 def test_block__commmit_retry_error():
     batch = create_batch()
     futures = (

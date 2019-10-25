@@ -210,24 +210,22 @@ def test_stop():
 
     pubsub_msg = types.PubsubMessage(data=b"msg")
 
-    cp = mock.patch.object(batch, "commit")
-    wp = mock.patch.object(batch, "wait")
-    cp2 = mock.patch.object(batch2, "commit")
-    wp2 = mock.patch.object(batch2, "wait")
+    patch = mock.patch.object(batch, "commit")
+    patch2 = mock.patch.object(batch2, "commit")
 
-    with cp as c_mock, cp2 as c_mock2, wp as w_mock, wp2 as w_mock2:
+    with patch as commit_mock, patch2 as commit_mock2:
         batch.publish(pubsub_msg)
         batch2.publish(pubsub_msg)
 
         client.stop()
 
         # check if commit() called
-        c_mock.assert_called()
-        c_mock2.assert_called()
+        commit_mock.assert_called()
+        commit_mock2.assert_called()
 
-        # check if wait() called
-        w_mock.assert_called()
-        w_mock2.assert_called()
+    # check that closed publisher doesn't accept new messages
+    with pytest.raises(ValueError):
+        client.publish("topic1", pubsub_msg)
 
 
 def test_gapic_instance_method():
