@@ -507,6 +507,7 @@ def query_docs(client):
             document_data = {
                 "a": a_val,
                 "b": b_val,
+                "c": [a_val, num_vals * 100],
                 "stats": {"sum": a_val + b_val, "product": a_val * b_val},
             }
             _, doc_ref = collection.add(document_data)
@@ -520,9 +521,19 @@ def query_docs(client):
         operation()
 
 
-def test_query_stream_w_simple_field(query_docs):
+def test_query_stream_w_simple_field_eq_op(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.where("a", "==", 1)
+    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    assert len(values) == len(allowed_vals)
+    for key, value in six.iteritems(values):
+        assert stored[key] == value
+        assert value["a"] == 1
+
+
+def test_query_stream_w_simple_field_array_contains_op(query_docs):
+    collection, stored, allowed_vals = query_docs
+    query = collection.where("c", "array_contains", 1)
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in six.iteritems(values):
