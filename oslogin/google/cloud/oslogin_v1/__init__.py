@@ -18,11 +18,13 @@
 from __future__ import absolute_import
 
 from google.cloud.oslogin_v1 import types
+from google.cloud.oslogin_v1.gapic import enums
 from google.cloud.oslogin_v1.gapic import os_login_service_client
 
 
 class OsLoginServiceClient(os_login_service_client.OsLoginServiceClient):
     __doc__ = os_login_service_client.OsLoginServiceClient.__doc__
+    enums = enums
 
 
-__all__ = ("types", "OsLoginServiceClient")
+__all__ = ("enums", "types", "OsLoginServiceClient")

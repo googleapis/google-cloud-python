@@ -29,9 +29,20 @@ library = gapic.py_library(
     artman_output_name="os-login-v1",
     include_protos=True,
 )
+# pb2's are incorrectly generated into deeper directories, so copy separately into proto/
+s.move(
+    library,
+    excludes=[
+        "nox.py",
+        "setup.py",
+        "README.rst",
+        "docs/index.rst",
+        "**/proto/oslogin/**",
+        "**/proto/oslogin_v1/**",
+    ],
+)
+s.move(library / "google/cloud/oslogin_v1/proto/**/*", "google/cloud/oslogin_v1/proto")
 
-s.move(library / "google/cloud/oslogin_v1")
-s.move(library / "tests/unit/gapic/v1")
 
 # Fix up imports
 s.replace(
