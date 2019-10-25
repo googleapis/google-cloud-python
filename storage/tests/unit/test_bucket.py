@@ -1167,7 +1167,9 @@ class Test_Bucket(unittest.TestCase):
         dest = self._make_one(client=client, name=DEST)
         blob = self._make_blob(SOURCE, BLOB_NAME)
 
-        new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client, preserve_acl=False)
+        new_blob = source.copy_blob(
+            blob, dest, NEW_NAME, client=client, preserve_acl=False
+        )
 
         mock_warn.assert_called_with(
             "The 'preserve_acl' argument is deprecated. For forward compatibility, "
