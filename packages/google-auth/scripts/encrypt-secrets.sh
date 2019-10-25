@@ -20,13 +20,13 @@ ROOT=$( dirname "$DIR" )
 # Work from the project root.
 cd $ROOT
 
-read -s -p "Enter password for encryption: " PASSWORD
-echo
-
 tar cvf system_tests/secrets.tar system_tests/data
-openssl aes-256-cbc -k "$PASSWORD" \
-    -in system_tests/secrets.tar \
-    -out system_tests/secrets.tar.enc
-rm system_tests/secrets.tar
 
-travis encrypt "SECRETS_PASSWORD=$PASSWORD" --add --override
+gcloud kms encrypt \
+  --location=global  \
+  --keyring=ci \
+  --key=kokoro-secrets \
+  --plaintext-file=system_tests/secrets.tar \
+  --ciphertext-file=system_tests/secrets.tar.enc
+
+rm system_tests/secrets.tar

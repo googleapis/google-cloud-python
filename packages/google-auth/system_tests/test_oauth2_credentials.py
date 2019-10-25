@@ -17,7 +17,7 @@ import json
 from google.auth import _helpers
 import google.oauth2.credentials
 
-GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://accounts.google.com/o/oauth2/token"
+GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 def test_refresh(authorized_user_file, http_request, token_info):
@@ -39,9 +39,13 @@ def test_refresh(authorized_user_file, http_request, token_info):
     info = token_info(credentials.token)
 
     info_scopes = _helpers.string_to_scopes(info["scope"])
+
+    # Canonical list of scopes at https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login
+    # or do `gcloud auth application-defaut login --help`
     assert set(info_scopes) == set(
         [
             "https://www.googleapis.com/auth/userinfo.email",
-            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/cloud-platform",
+            "openid",
         ]
     )

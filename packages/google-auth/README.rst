@@ -6,16 +6,10 @@ Google Auth Python Library
 This library simplifies using Google's various server-to-server authentication
 mechanisms to access Google APIs.
 
-.. |build| image:: https://travis-ci.org/GoogleCloudPlatform/google-auth-library-python.svg?branch=master
-   :target: https://travis-ci.org/GoogleCloudPlatform/google-auth-library-python
 .. |docs| image:: https://readthedocs.org/projects/google-auth/badge/?version=latest
    :target: https://google-auth.readthedocs.io/en/latest/
 .. |pypi| image:: https://img.shields.io/pypi/v/google-auth.svg
    :target: https://pypi.python.org/pypi/google-auth
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-auth
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-auth
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-auth-library-python.git
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-auth-library-python.git
 
 Installing
 ----------

@@ -368,7 +368,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.5", None),
     "urllib3": ("https://urllib3.readthedocs.io/en/stable", None),
-    "requests": ("http://docs.python-requests.org/en/stable", None),
+    "requests": ("https://requests.kennethreitz.org/en/master/", None),
     "requests-oauthlib": ("http://requests-oauthlib.readthedocs.io/en/stable", None),
 }
 

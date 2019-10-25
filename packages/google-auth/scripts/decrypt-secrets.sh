@@ -20,8 +20,11 @@ ROOT=$( dirname "$DIR" )
 # Work from the project root.
 cd $ROOT
 
-openssl aes-256-cbc -k "$1" \
-    -in system_tests/secrets.tar.enc \
-    -out system_tests/secrets.tar -d
+gcloud kms decrypt \
+  --location=global \
+  --keyring=ci \
+  --key=kokoro-secrets \
+  --ciphertext-file=system_tests/secrets.tar.enc \
+  --plaintext-file=system_tests/secrets.tar
 tar xvf system_tests/secrets.tar
 rm system_tests/secrets.tar

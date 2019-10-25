@@ -15,8 +15,8 @@
 import pytest
 
 import google.auth
-from google.auth import _helpers
 from google.auth import compute_engine
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth.compute_engine import _metadata
 

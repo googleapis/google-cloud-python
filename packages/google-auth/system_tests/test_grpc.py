@@ -16,7 +16,9 @@ import google.auth
 import google.auth.credentials
 import google.auth.jwt
 import google.auth.transport.grpc
-from google.cloud.gapic.pubsub.v1 import publisher_client
+from google.cloud import pubsub_v1
+from google.cloud.pubsub_v1.gapic import publisher_client
+from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 
 
 def test_grpc_request_with_regular_credentials(http_request):
@@ -25,12 +27,13 @@ def test_grpc_request_with_regular_credentials(http_request):
         credentials, ["https://www.googleapis.com/auth/pubsub"]
     )
 
-    channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, http_request, publisher_client.PublisherClient.SERVICE_ADDRESS
+    transport = publisher_grpc_transport.PublisherGrpcTransport(
+        address=publisher_client.PublisherClient.SERVICE_ADDRESS,
+        credentials=credentials,
     )
 
     # Create a pub/sub client.
-    client = publisher_client.PublisherClient(channel=channel)
+    client = pubsub_v1.PublisherClient(transport=transport)
 
     # list the topics and drain the iterator to test that an authorized API
     # call works.
@@ -40,19 +43,18 @@ def test_grpc_request_with_regular_credentials(http_request):
 
 def test_grpc_request_with_jwt_credentials():
     credentials, project_id = google.auth.default()
-    audience = "https://{}/google.pubsub.v1.Publisher".format(
-        publisher_client.PublisherClient.SERVICE_ADDRESS
-    )
+    audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
     credentials = google.auth.jwt.Credentials.from_signing_credentials(
         credentials, audience=audience
     )
 
-    channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, None, publisher_client.PublisherClient.SERVICE_ADDRESS
+    transport = publisher_grpc_transport.PublisherGrpcTransport(
+        address=publisher_client.PublisherClient.SERVICE_ADDRESS,
+        credentials=credentials,
     )
 
     # Create a pub/sub client.
-    client = publisher_client.PublisherClient(channel=channel)
+    client = pubsub_v1.PublisherClient(transport=transport)
 
     # list the topics and drain the iterator to test that an authorized API
     # call works.
@@ -66,12 +68,13 @@ def test_grpc_request_with_on_demand_jwt_credentials():
         credentials
     )
 
-    channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, None, publisher_client.PublisherClient.SERVICE_ADDRESS
+    transport = publisher_grpc_transport.PublisherGrpcTransport(
+        address=publisher_client.PublisherClient.SERVICE_ADDRESS,
+        credentials=credentials,
     )
 
     # Create a pub/sub client.
-    client = publisher_client.PublisherClient(channel=channel)
+    client = pubsub_v1.PublisherClient(transport=transport)
 
     # list the topics and drain the iterator to test that an authorized API
     # call works.

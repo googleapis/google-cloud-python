@@ -1,0 +1,10 @@
+{
+  "name": "google-auth-library-python",
+  "name_pretty": "Google Auth Python Library",
+  "client_documentation": "https://googleapis.dev/python/google-auth-library-python/latest",
+  "issue_tracker": "https://github.com/googleapis/google-auth-library-python/issues",
+  "release_level": "ga",
+  "language": "python",
+  "repo": "googleapis/google-auth-library-python",
+  "distribution_name": "google-auth"
+}
