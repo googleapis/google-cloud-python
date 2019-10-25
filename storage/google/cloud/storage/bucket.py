@@ -1122,10 +1122,13 @@ class Bucket(_PropertyMixin):
 
         if preserve_acl is not None:
             warnings.warn(
-                "The 'preserve_acl' argument is deprecated. Please update the bucket's ACL manually.",
+                "The 'preserve_acl' argument is deprecated. For forward compatibility, "
+                "please update the blob's ACL manually.",
                 DeprecationWarning,
                 stacklevel=2,
             )
+        if not preserve_acl and preserve_acl is not None:
+            new_blob.acl.save(acl={}, client=client)
 
         new_blob._set_properties(copy_result)
         return new_blob

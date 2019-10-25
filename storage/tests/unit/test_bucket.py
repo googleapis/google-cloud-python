@@ -1154,6 +1154,7 @@ class Test_Bucket(unittest.TestCase):
 
     @mock.patch("warnings.warn")
     def test_copy_blobs_preserve_acl_deprecated(self, mock_warn):
+        from google.cloud.storage.acl import ObjectACL
 
         SOURCE = "source"
         DEST = "dest"
@@ -1166,12 +1167,32 @@ class Test_Bucket(unittest.TestCase):
         dest = self._make_one(client=client, name=DEST)
         blob = self._make_blob(SOURCE, BLOB_NAME)
 
-        source.copy_blob(blob, dest, NEW_NAME, client=client, preserve_acl=False)
-        mock_warn.assert_called_once_with(
-            "The 'preserve_acl' argument is deprecated. Please update the bucket's ACL manually.",
+        new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client, preserve_acl=False)
+
+        mock_warn.assert_called_with(
+            "The 'preserve_acl' argument is deprecated. For forward compatibility, "
+            "please update the blob's ACL manually.",
             DeprecationWarning,
             stacklevel=2,
         )
+
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, NEW_NAME)
+        self.assertIsInstance(new_blob.acl, ObjectACL)
+
+        kw1, kw2 = connection._requested
+        COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
+            SOURCE, BLOB_NAME, DEST, NEW_NAME
+        )
+        NEW_BLOB_PATH = "/b/{}/o/{}".format(DEST, NEW_NAME)
+
+        self.assertEqual(kw1["method"], "POST")
+        self.assertEqual(kw1["path"], COPY_PATH)
+        self.assertEqual(kw1["query_params"], {})
+
+        self.assertEqual(kw2["method"], "PATCH")
+        self.assertEqual(kw2["path"], NEW_BLOB_PATH)
+        self.assertEqual(kw2["query_params"], {"projection": "full"})
 
     def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = "source"
