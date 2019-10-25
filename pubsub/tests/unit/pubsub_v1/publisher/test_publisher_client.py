@@ -227,6 +227,9 @@ def test_stop():
     with pytest.raises(ValueError):
         client.publish("topic1", pubsub_msg)
 
+    with pytest.raises(ValueError):
+        client.stop()
+
 
 def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
