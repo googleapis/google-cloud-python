@@ -725,7 +725,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "buhkit/o/bzzz-fly.txt?alt=media"
         )
         self.assertEqual(download_url, expected_url)
@@ -741,7 +741,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "fictional/o/pretend.txt?alt=media&generation=1493058489532987"
         )
         self.assertEqual(download_url, expected_url)
@@ -755,7 +755,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "fictional/o/pretend.txt?alt=media&userProject={}".format(user_project)
         )
         self.assertEqual(download_url, expected_url)
@@ -774,7 +774,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "buhkit/o/bzzz-fly.txt?alt=media"
         )
         self.assertEqual(download_url, expected_url)
@@ -1020,7 +1020,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
 
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "name/o/blob-name?alt=media"
         )
         self._check_session_mocks(client, transport, expected_url)
@@ -1375,7 +1375,9 @@ class Test_Blob(unittest.TestCase):
 
         mock_get_boundary.assert_called_once_with()
 
-        upload_url = "https://www.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        upload_url = (
+            "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        )
 
         qs_params = [("uploadType", "multipart")]
 
@@ -1498,7 +1500,9 @@ class Test_Blob(unittest.TestCase):
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
 
-        upload_url = "https://www.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        upload_url = (
+            "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        )
         qs_params = [("uploadType", "resumable")]
 
         if user_project is not None:
@@ -1621,7 +1625,7 @@ class Test_Blob(unittest.TestCase):
     def _do_resumable_upload_call0(blob, content_type, size=None, predefined_acl=None):
         # First mock transport.request() does initiates upload.
         upload_url = (
-            "https://www.googleapis.com/upload/storage/v1"
+            "https://storage.googleapis.com/upload/storage/v1"
             + blob.bucket.path
             + "/o?uploadType=resumable"
         )
@@ -1980,7 +1984,7 @@ class Test_Blob(unittest.TestCase):
 
         # Check the mocks.
         upload_url = (
-            "https://www.googleapis.com/upload/storage/v1"
+            "https://storage.googleapis.com/upload/storage/v1"
             + bucket.path
             + "/o?uploadType=resumable"
         )
