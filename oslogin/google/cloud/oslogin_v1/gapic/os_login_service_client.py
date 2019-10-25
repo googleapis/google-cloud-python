@@ -78,19 +78,19 @@ class OsLoginServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def fingerprint_path(cls, user, fingerprint):
-        """Return a fully-qualified fingerprint string."""
+    def posix_account_path(cls, user, project):
+        """Return a fully-qualified posix_account string."""
+        return google.api_core.path_template.expand(
+            "users/{user}/projects/{project}", user=user, project=project
+        )
+
+    @classmethod
+    def ssh_public_key_path(cls, user, fingerprint):
+        """Return a fully-qualified ssh_public_key string."""
         return google.api_core.path_template.expand(
             "users/{user}/sshPublicKeys/{fingerprint}",
             user=user,
             fingerprint=fingerprint,
-        )
-
-    @classmethod
-    def project_path(cls, user, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "users/{user}/projects/{project}", user=user, project=project
         )
 
     @classmethod
@@ -226,7 +226,7 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.project_path('[USER]', '[PROJECT]')
+            >>> name = client.posix_account_path('[USER]', '[PROJECT]')
             >>>
             >>> client.delete_posix_account(name)
 
@@ -294,7 +294,7 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> client.delete_ssh_public_key(name)
 
@@ -438,12 +438,12 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> response = client.get_ssh_public_key(name)
 
         Args:
-            name (str): The fingerprint of the public key to retrieve. Public keys are
+            name (str): Required. The fingerprint of the public key to retrieve. Public keys are
                 identified by their SHA-256 fingerprint. The fingerprint of the public
                 key is in format ``users/{user}/sshPublicKeys/{fingerprint}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -497,7 +497,7 @@ class OsLoginServiceClient(object):
     def import_ssh_public_key(
         self,
         parent,
-        ssh_public_key,
+        ssh_public_key=None,
         project_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -515,10 +515,7 @@ class OsLoginServiceClient(object):
             >>>
             >>> parent = client.user_path('[USER]')
             >>>
-            >>> # TODO: Initialize `ssh_public_key`:
-            >>> ssh_public_key = {}
-            >>>
-            >>> response = client.import_ssh_public_key(parent, ssh_public_key)
+            >>> response = client.import_ssh_public_key(parent)
 
         Args:
             parent (str): Required. The unique ID for the user in format ``users/{user}``.
@@ -595,7 +592,7 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> # TODO: Initialize `ssh_public_key`:
             >>> ssh_public_key = {}
