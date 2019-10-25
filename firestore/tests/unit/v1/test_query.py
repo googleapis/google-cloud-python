@@ -1494,6 +1494,10 @@ class Test__enum_from_op_string(unittest.TestCase):
         op_class = self._get_op_class()
         self.assertEqual(self._call_fut("array_contains"), op_class.ARRAY_CONTAINS)
 
+    def test_in(self):
+        op_class = self._get_op_class()
+        self.assertEqual(self._call_fut("in"), op_class.IN)
+
     def test_invalid(self):
         with self.assertRaises(ValueError):
             self._call_fut("?")

@@ -43,6 +43,7 @@ _COMPARISON_OPERATORS = {
     ">=": _operator_enum.GREATER_THAN_OR_EQUAL,
     ">": _operator_enum.GREATER_THAN,
     "array_contains": _operator_enum.ARRAY_CONTAINS,
+    "in": _operator_enum.IN,
 }
 _BAD_OP_STRING = "Operator string {!r} is invalid. Valid choices are: {}."
 _BAD_OP_NAN_NULL = 'Only an equality filter ("==") can be used with None or NaN values'
