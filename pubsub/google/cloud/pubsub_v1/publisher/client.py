@@ -294,8 +294,8 @@ class Client(object):
         .. note::
 
             This method is non-blocking. Use `Future()` objects
-            returned by `publish()` to make sure all messages
-            sent or failed.
+            returned by `publish()` to make sure all publish
+            requests completed, either in success or error.
         """
         if self._is_stopped:
             raise ValueError("Cannot stop a publisher already stopped.")
