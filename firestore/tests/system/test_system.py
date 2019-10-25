@@ -552,6 +552,17 @@ def test_query_stream_w_simple_field_in_op(query_docs):
         assert value["a"] == 1
 
 
+def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
+    collection, stored, allowed_vals = query_docs
+    num_vals = len(allowed_vals)
+    query = collection.where("c", "array_contains_any", [1, num_vals * 200])
+    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    assert len(values) == len(allowed_vals)
+    for key, value in six.iteritems(values):
+        assert stored[key] == value
+        assert value["a"] == 1
+
+
 def test_query_stream_w_order_by(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.order_by("b", direction=firestore.Query.DESCENDING)
