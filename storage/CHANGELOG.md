@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.21.0
+
+10-25-2019 16:59 PDT
+
+
+### Implementation Changes
+- Update storage endpoint from www.googleapis.com to storage.googleapis.com ([#9543](https://github.com/googleapis/google-cloud-python/pull/9543))
+- Call anonymous client method to remove dependency of google application credentials ([#9455](https://github.com/googleapis/google-cloud-python/pull/9455))
+- Enable CSEK w/ V4 signed URLs ([#9450](https://github.com/googleapis/google-cloud-python/pull/9450))
+
+### New Features
+- Support predefined ACLs in `Bucket.create` ([#9334](https://github.com/googleapis/google-cloud-python/pull/9334))
+
+### Documentation
+- Clarify docstring for `Blob.download_as_string` ([#9332](https://github.com/googleapis/google-cloud-python/pull/9332))
+- Add `hmac_key` and notification documentation rst files ([#9529](https://github.com/googleapis/google-cloud-python/pull/9529))
+- Remove references to the old authentication credentials ([#9456](https://github.com/googleapis/google-cloud-python/pull/9456))
+
 ## 1.20.0
 
 09-26-2019 06:45 PDT
