@@ -15,7 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import distribution_pb2 as google_dot_api_dot_distribution__pb2
 from google.api import label_pb2 as google_dot_api_dot_label__pb2
 from google.api import metric_pb2 as google_dot_api_dot_metric__pb2
 from google.api import (
@@ -34,10 +34,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\013MetricProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/monitoring_v3/proto/metric.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x16google/api/label.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto"n\n\x05Point\x12\x34\n\x08interval\x18\x01 \x01(\x0b\x32".google.monitoring.v3.TimeInterval\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .google.monitoring.v3.TypedValue"\xc1\x02\n\nTimeSeries\x12"\n\x06metric\x18\x01 \x01(\x0b\x32\x12.google.api.Metric\x12/\n\x08resource\x18\x02 \x01(\x0b\x32\x1d.google.api.MonitoredResource\x12\x37\n\x08metadata\x18\x07 \x01(\x0b\x32%.google.api.MonitoredResourceMetadata\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12+\n\x06points\x18\x05 \x03(\x0b\x32\x1b.google.monitoring.v3.PointB\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bMetricProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n-google/cloud/monitoring_v3/proto/metric.proto\x12\x14google.monitoring.v3\x1a\x1dgoogle/api/distribution.proto\x1a\x16google/api/label.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto"n\n\x05Point\x12\x34\n\x08interval\x18\x01 \x01(\x0b\x32".google.monitoring.v3.TimeInterval\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .google.monitoring.v3.TypedValue"\xc1\x02\n\nTimeSeries\x12"\n\x06metric\x18\x01 \x01(\x0b\x32\x12.google.api.Metric\x12/\n\x08resource\x18\x02 \x01(\x0b\x32\x1d.google.api.MonitoredResource\x12\x37\n\x08metadata\x18\x07 \x01(\x0b\x32%.google.api.MonitoredResourceMetadata\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12+\n\x06points\x18\x05 \x03(\x0b\x32\x1b.google.monitoring.v3.PointB\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bMetricProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_distribution__pb2.DESCRIPTOR,
         google_dot_api_dot_label__pb2.DESCRIPTOR,
         google_dot_api_dot_metric__pb2.DESCRIPTOR,
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
@@ -98,8 +98,8 @@ _POINT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=234,
-    serialized_end=344,
+    serialized_start=235,
+    serialized_end=345,
 )
 
 
@@ -227,8 +227,8 @@ _TIMESERIES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=347,
-    serialized_end=668,
+    serialized_start=348,
+    serialized_end=669,
 )
 
 _POINT.fields_by_name[
@@ -273,15 +273,16 @@ Point = _reflection.GeneratedProtocolMessageType(
   Attributes:
       interval:
           The time interval to which the data point applies. For
-          ``GAUGE`` metrics, only the end time of the interval is used.
-          For ``DELTA`` metrics, the start and end time should specify a
-          non-zero interval, with subsequent points specifying
-          contiguous and non-overlapping intervals. For ``CUMULATIVE``
-          metrics, the start and end time should specify a non-zero
-          interval, with subsequent points specifying the same start
-          time and increasing end times, until an event resets the
-          cumulative value to zero and sets a new start time for the
-          following points.
+          ``GAUGE`` metrics, the start time is optional, but if it is
+          supplied, it must equal the end time. For ``DELTA`` metrics,
+          the start and end time should specify a non-zero interval,
+          with subsequent points specifying contiguous and non-
+          overlapping intervals. For ``CUMULATIVE`` metrics, the start
+          and end time should specify a non-zero interval, with
+          subsequent points specifying the same start time and
+          increasing end times, until an event resets the cumulative
+          value to zero and sets a new start time for the following
+          points.
       value:
           The value of the data point.
   """,
