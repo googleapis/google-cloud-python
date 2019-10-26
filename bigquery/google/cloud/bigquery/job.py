@@ -81,11 +81,11 @@ def _error_result_to_exception(error_result):
     .. _troubleshooting errors: https://cloud.google.com/bigquery\
         /troubleshooting-errors
 
-    :type error_result: Mapping[str, str]
-    :param error_result: The error result from BigQuery.
+    Args:
+        error_result (Mapping[str, str]): The error result from BigQuery.
 
-    :rtype google.cloud.exceptions.GoogleCloudError:
-    :returns: The mapped exception.
+    Returns:
+        google.cloud.exceptions.GoogleCloudError: The mapped exception.
     """
     reason = error_result.get("reason")
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
@@ -341,7 +341,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics.FIELDS.parent_job_id
 
         Returns:
-            Optional[str]
+            Optional[str]: parent job id.
         """
         return _helpers._get_sub_prop(self._properties, ["statistics", "parentJobId"])
 
@@ -371,8 +371,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def project(self):
         """Project bound to the job.
 
-        :rtype: str
-        :returns: the project (derived from the client).
+        Returns:
+            str: the project (derived from the client).
         """
         return _helpers._get_sub_prop(self._properties, ["jobReference", "projectId"])
 
@@ -384,13 +384,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                the client to use.  If not passed, falls back to the
+                ``client`` stored on the current dataset.
 
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
+        Returns:
+            google.cloud.bigquery.client.Client:
+                The client passed in or the currently bound client.
         """
         if client is None:
             client = self._client
@@ -398,10 +399,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
     @property
     def job_type(self):
-        """Type of job
+        """Type of job.
 
-        :rtype: str
-        :returns: one of 'load', 'copy', 'extract', 'query'
+        Returns:
+            str: one of 'load', 'copy', 'extract', 'query'.
         """
         return self._JOB_TYPE
 
@@ -409,8 +410,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def path(self):
         """URL path for the job's APIs.
 
-        :rtype: str
-        :returns: the path based on project and job ID.
+        Returns:
+            str: the path based on project and job ID.
         """
         return "/projects/%s/jobs/%s" % (self.project, self.job_id)
 
@@ -423,8 +424,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def etag(self):
         """ETag for the job resource.
 
-        :rtype: str, or ``NoneType``
-        :returns: the ETag (None until set from the server).
+        Returns:
+            Optional[str]: the ETag (None until set from the server).
         """
         return self._properties.get("etag")
 
@@ -432,8 +433,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def self_link(self):
         """URL for the job resource.
 
-        :rtype: str, or ``NoneType``
-        :returns: the URL (None until set from the server).
+        Returns:
+            Optional[str]: the URL (None until set from the server).
         """
         return self._properties.get("selfLink")
 
@@ -441,8 +442,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def user_email(self):
         """E-mail address of user who submitted the job.
 
-        :rtype: str, or ``NoneType``
-        :returns: the URL (None until set from the server).
+        Returns:
+            Optional[str]: the URL (None until set from the server).
         """
         return self._properties.get("user_email")
 
@@ -450,8 +451,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def created(self):
         """Datetime at which the job was created.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the creation time (None until set from the server).
+        Returns:
+            Optional[datetime.datetime]:
+                the creation time (None until set from the server).
         """
         statistics = self._properties.get("statistics")
         if statistics is not None:
@@ -463,8 +465,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def started(self):
         """Datetime at which the job was started.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the start time (None until set from the server).
+        Returns:
+            Optional[datetime.datetime]:
+                the start time (None until set from the server).
         """
         statistics = self._properties.get("statistics")
         if statistics is not None:
@@ -476,8 +479,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def ended(self):
         """Datetime at which the job finished.
 
-        :rtype: ``datetime.datetime``, or ``NoneType``
-        :returns: the end time (None until set from the server).
+        Returns:
+            Optional[datetime.datetime]:
+                the end time (None until set from the server).
         """
         statistics = self._properties.get("statistics")
         if statistics is not None:
@@ -494,8 +498,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def error_result(self):
         """Error information about the job as a whole.
 
-        :rtype: mapping, or ``NoneType``
-        :returns: the error information (None until set from the server).
+        Returns:
+            Optional[Mapping]: the error information (None until set from the server).
         """
         status = self._properties.get("status")
         if status is not None:
@@ -505,8 +509,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def errors(self):
         """Information about individual errors generated by the job.
 
-        :rtype: list of mappings, or ``NoneType``
-        :returns: the error information (None until set from the server).
+        Returns:
+            Optional[List[Mapping]]:
+                the error information (None until set from the server).
         """
         status = self._properties.get("status")
         if status is not None:
@@ -516,8 +521,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def state(self):
         """Status of the job.
 
-        :rtype: str, or ``NoneType``
-        :returns: the state (None until set from the server).
+        Returns:
+            Optional[str]:
+                the state (None until set from the server).
         """
         status = self._properties.get("status")
         if status is not None:
@@ -534,8 +540,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: dict
-        :param api_response: response returned from an API call
+        Args:
+            api_response (Dict): response returned from an API call.
         """
         cleaned = api_response.copy()
         self._scrub_local_properties(cleaned)
@@ -559,14 +565,18 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _get_resource_config(cls, resource):
         """Helper for :meth:`from_api_repr`
 
-        :type resource: dict
-        :param resource: resource for the job
+        Args:
+            resource (Dict): resource for the job.
 
-        :rtype: dict
-        :returns: tuple (string, dict), where the first element is the
-                  job ID and the second contains job-specific configuration.
-        :raises: :class:`KeyError` if the resource has no identifier, or
-                 is missing the appropriate configuration.
+        Returns:
+            (str, Dict):
+                tuple (string, dict), where the first element is the
+                job ID and the second contains job-specific configuration.
+
+        Raises:
+            KeyError:
+                If the resource has no identifier, or
+                is missing the appropriate configuration.
         """
         if "jobReference" not in resource or "jobId" not in resource["jobReference"]:
             raise KeyError(
@@ -626,16 +636,15 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                the client to use.  If not passed, falls back to the
+                ``client`` stored on the current dataset.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
-        :rtype: bool
-        :returns: Boolean indicating existence of the job.
+        Returns:
+            bool: Boolean indicating existence of the job.
         """
         client = self._require_client(client)
 
@@ -658,13 +667,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                the client to use.  If not passed, falls back to the
+                ``client`` stored on the current dataset.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
         """
         client = self._require_client(client)
 
@@ -683,13 +691,13 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        Args:
+            client (Optional[google.cloud.bigquery.client.Client]):
+                the client to use.  If not passed, falls back to the
+                ``client`` stored on the current dataset.
 
-        :rtype: bool
-        :returns: Boolean indicating that the cancel request was sent.
+        Returns:
+            bool: Boolean indicating that the cancel request was sent.
         """
         client = self._require_client(client)
 
@@ -732,11 +740,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        Args:
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
-        :rtype: bool
-        :returns: True if the job is complete, False otherwise.
+        Returns:
+            bool: True if the job is complete, False otherwise.
         """
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
@@ -747,21 +755,21 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
-        :type timeout: float
-        :param timeout:
-            How long (in seconds) to wait for job to complete before raising
-            a :class:`concurrent.futures.TimeoutError`.
+        Args:
+            timeout (float):
+                How long (in seconds) to wait for job to complete before raising
+                a :class:`concurrent.futures.TimeoutError`.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
-        :rtype: _AsyncJob
-        :returns: This instance.
+        Returns:
+            _AsyncJob: This instance.
 
-        :raises:
-            :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or :class:`concurrent.futures.TimeoutError` if the job did
-            not complete in the given timeout.
+        Raises:
+            google.cloud.exceptions.GoogleCloudError:
+                if the job failed.
+            concurrent.futures.TimeoutError:
+                if the job did not complete in the given timeout.
         """
         if self.state is None:
             self._begin(retry=retry)
@@ -775,8 +783,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         cancelled in the API. This method is here to satisfy the interface
         for :class:`google.api_core.future.Future`.
 
-        :rtype: bool
-        :returns: False
+        Returns:
+            bool: False
         """
         return (
             self.error_result is not None
@@ -787,7 +795,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 class _JobConfig(object):
     """Abstract base class for job configuration objects.
 
-    Arguments:
+    Args:
         job_type (str): The key to use for the job configuration.
     """
 
@@ -830,10 +838,10 @@ class _JobConfig(object):
             _helpers._get_sub_prop(
                 self._properties, ['query', 'destinationTable'])
 
-        Arguments:
+        Args:
             key (str):
-                 Key for the value to get in the
-                 ``self._properties[self._job_type]`` dictionary.
+                Key for the value to get in the
+                ``self._properties[self._job_type]`` dictionary.
             default (object):
                 (Optional) Default value to return if the key is not found.
                 Defaults to :data:`None`.
@@ -859,10 +867,10 @@ class _JobConfig(object):
             _helper._set_sub_prop(
                 self._properties, ['query', 'useLegacySql'], False)
 
-        Arguments:
+        Args:
             key (str):
-                 Key to set in the ``self._properties[self._job_type]``
-                 dictionary.
+                Key to set in the ``self._properties[self._job_type]``
+                dictionary.
             value (object): Value to set.
         """
         _helpers._set_sub_prop(self._properties, [self._job_type, key], value)
@@ -881,18 +889,18 @@ class _JobConfig(object):
             _helper._del_sub_prop(
                 self._properties, ['query', 'useLegacySql'])
 
-        Arguments:
+        Args:
             key (str):
-                 Key to remove in the ``self._properties[self._job_type]``
-                 dictionary.
+                Key to remove in the ``self._properties[self._job_type]``
+                dictionary.
         """
         _helpers._del_sub_prop(self._properties, [self._job_type, key])
 
     def to_api_repr(self):
         """Build an API representation of the job config.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            Dict: A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
@@ -903,12 +911,12 @@ class _JobConfig(object):
         config. The merge is done at the top-level as well as for keys one
         level below the job type.
 
-        Arguments:
+        Args:
             default_job_config (google.cloud.bigquery.job._JobConfig):
                 The default job config that will be used to fill in self.
 
         Returns:
-            google.cloud.bigquery.job._JobConfig A new (merged) job config.
+            google.cloud.bigquery.job._JobConfig: A new (merged) job config.
         """
         if self._job_type != default_job_config._job_type:
             raise TypeError(
@@ -934,13 +942,13 @@ class _JobConfig(object):
     def from_api_repr(cls, resource):
         """Factory: construct a job configuration given its API representation
 
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
+        Args:
+            resource (Dict):
+                An extract job configuration in the same representation as is
+                returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.job._JobConfig`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.job._JobConfig: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -1335,21 +1343,19 @@ class LoadJob(_AsyncJob):
 
     Can load from Google Cloud Storage URIs or from a file.
 
-    :type job_id: str
-    :param job_id: the job's ID
+    Args:
+        job_id (str): the job's ID
 
-    :type source_uris: sequence of string or ``NoneType``
-    :param source_uris:
-        URIs of one or more data files to be loaded.  See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_uris
-        for supported URI formats. Pass None for jobs that load from a file.
+        source_uris (Optional[Sequence[str]]):
+            URIs of one or more data files to be loaded.  See
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_uris
+            for supported URI formats. Pass None for jobs that load from a file.
 
-    :type destination: :class:`google.cloud.bigquery.table.TableReference`
-    :param destination: reference to table into which data is to be loaded.
+        destination (google.cloud.bigquery.table.TableReference): reference to table into which data is to be loaded.
 
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
+        client (google.cloud.bigquery.client.Client):
+            A client which holds credentials and project configuration
+            for the dataset (which requires a project).
     """
 
     _JOB_TYPE = "load"
@@ -1486,7 +1492,7 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination_table_description(self):
-        """Union[str, None] name given to destination table.
+        """Optional[str] name given to destination table.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.description
@@ -1495,7 +1501,7 @@ class LoadJob(_AsyncJob):
 
     @property
     def destination_table_friendly_name(self):
-        """Union[str, None] name given to destination table.
+        """Optional[str] name given to destination table.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.friendly_name
@@ -1541,9 +1547,11 @@ class LoadJob(_AsyncJob):
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
-        :rtype: int, or ``NoneType``
-        :returns: the count (None until set from the server).
-        :raises: ValueError for invalid value types.
+        Returns:
+            Optional[int]: the count (None until set from the server).
+
+        Raises:
+            ValueError: for invalid value types.
         """
         return _helpers._int_or_none(
             _helpers._get_sub_prop(
@@ -1555,8 +1563,8 @@ class LoadJob(_AsyncJob):
     def input_files(self):
         """Count of source files.
 
-        :rtype: int, or ``NoneType``
-        :returns: the count (None until set from the server).
+        Returns:
+            Optional[int]: the count (None until set from the server).
         """
         return _helpers._int_or_none(
             _helpers._get_sub_prop(
@@ -1568,8 +1576,8 @@ class LoadJob(_AsyncJob):
     def output_bytes(self):
         """Count of bytes saved to destination table.
 
-        :rtype: int, or ``NoneType``
-        :returns: the count (None until set from the server).
+        Returns:
+            Optional[int]: the count (None until set from the server).
         """
         return _helpers._int_or_none(
             _helpers._get_sub_prop(
@@ -1581,8 +1589,8 @@ class LoadJob(_AsyncJob):
     def output_rows(self):
         """Count of rows saved to destination table.
 
-        :rtype: int, or ``NoneType``
-        :returns: the count (None until set from the server).
+        Returns:
+            Optional[int]: the count (None until set from the server).
         """
         return _helpers._int_or_none(
             _helpers._get_sub_prop(
@@ -1619,15 +1627,15 @@ class LoadJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-        :type resource: dict
-        :param resource: dataset job representation returned from the API
+        Args:
+            resource (Dict): dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
+            client (google.cloud.bigquery.client.Client):
+                Client which holds credentials and project
+                configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.LoadJob`
-        :returns: Job parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.job.LoadJob: Job parsed from ``resource``.
         """
         config_resource = resource.get("configuration", {})
         config = LoadJobConfig.from_api_repr(config_resource)
@@ -1709,22 +1717,19 @@ class CopyJobConfig(_JobConfig):
 class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.
 
-    :type job_id: str
-    :param job_id: the job's ID, within the project belonging to ``client``.
+    Args:
+        job_id (str): the job's ID, within the project belonging to ``client``.
 
-    :type sources: list of :class:`google.cloud.bigquery.table.TableReference`
-    :param sources: Table from which data is to be loaded.
+        sources (List[google.cloud.bigquery.table.TableReference]): Table from which data is to be loaded.
 
-    :type destination: :class:`google.cloud.bigquery.table.TableReference`
-    :param destination: Table into which data is to be loaded.
+        destination (google.cloud.bigquery.table.TableReference): Table into which data is to be loaded.
 
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
+        client (google.cloud.bigquery.client.Client):
+            A client which holds credentials and project configuration
+            for the dataset (which requires a project).
 
-    :type job_config: :class:`~google.cloud.bigquery.job.CopyJobConfig`
-    :param job_config:
-        (Optional) Extra configuration options for the copy job.
+        job_config (google.cloud.bigquery.job.CopyJobConfig):
+            (Optional) Extra configuration options for the copy job.
     """
 
     _JOB_TYPE = "copy"
@@ -1808,15 +1813,15 @@ class CopyJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-        :type resource: dict
-        :param resource: dataset job representation returned from the API
+        Args:
+            resource (Dict): dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
+            client (google.cloud.bigquery.client.Client):
+                Client which holds credentials and project
+                configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.CopyJob`
-        :returns: Job parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.job.CopyJob: Job parsed from ``resource``.
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = CopyJobConfig.from_api_repr(config_resource)
@@ -1906,24 +1911,21 @@ class ExtractJobConfig(_JobConfig):
 class ExtractJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
-    :type job_id: str
-    :param job_id: the job's ID
+    Args:
+        job_id (str): the job's ID.
 
-    :type source: :class:`google.cloud.bigquery.table.TableReference`
-    :param source: Table into which data is to be loaded.
+        source (google.cloud.bigquery.table.TableReference):
+            Table into which data is to be loaded.
 
-    :type destination_uris: list of string
-    :param destination_uris:
-        URIs describing where the extracted data will be written in Cloud
-        Storage, using the format ``gs://<bucket_name>/<object_name_or_glob>``.
+        destination_uris (List[str]):
+            URIs describing where the extracted data will be written in Cloud
+            Storage, using the format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client:
-        A client which holds credentials and project configuration.
+        client (google.cloud.bigquery.client.Client):
+            A client which holds credentials and project configuration.
 
-    :type job_config: :class:`~google.cloud.bigquery.job.ExtractJobConfig`
-    :param job_config:
-        (Optional) Extra configuration options for the extract job.
+        job_config (google.cloud.bigquery.job.ExtractJobConfig):
+            (Optional) Extra configuration options for the extract job.
     """
 
     _JOB_TYPE = "extract"
@@ -1974,11 +1976,12 @@ class ExtractJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics4.FIELDS.destination_uri_file_counts
 
         Returns:
-            a list of integer counts, each representing the number of files
-            per destination URI or URI pattern specified in the extract
-            configuration. These values will be in the same order as the URIs
-            specified in the 'destinationUris' field.  Returns None if job is
-            not yet complete.
+            List[int]:
+                A list of integer counts, each representing the number of files
+                per destination URI or URI pattern specified in the extract
+                configuration. These values will be in the same order as the URIs
+                specified in the 'destinationUris' field.  Returns None if job is
+                not yet complete.
         """
         counts = self._job_statistics().get("destinationUriFileCounts")
         if counts is not None:
@@ -2018,15 +2021,15 @@ class ExtractJob(_AsyncJob):
            This method assumes that the project found in the resource matches
            the client's project.
 
-        :type resource: dict
-        :param resource: dataset job representation returned from the API
+        Args:
+            resource (Dict): dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
+            client (google.cloud.bigquery.client.Client):
+                Client which holds credentials and project
+                configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
-        :returns: Job parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.job.ExtractJob: Job parsed from ``resource``.
         """
         job_id, config_resource = cls._get_resource_config(resource)
         config = ExtractJobConfig.from_api_repr(config_resource)
@@ -2425,7 +2428,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def clustering_fields(self):
-        """Union[List[str], None]: Fields defining clustering for the table
+        """Optional[List[str]]: Fields defining clustering for the table
 
         (Defaults to :data:`None`).
 
@@ -2442,7 +2445,7 @@ class QueryJobConfig(_JobConfig):
 
     @clustering_fields.setter
     def clustering_fields(self, value):
-        """Union[List[str], None]: Fields defining clustering for the table
+        """Optional[List[str]]: Fields defining clustering for the table
 
         (Defaults to :data:`None`).
         """
@@ -2467,7 +2470,7 @@ class QueryJobConfig(_JobConfig):
         """Build an API representation of the query job config.
 
         Returns:
-            dict: A dictionary in the format used by the BigQuery API.
+            Dict: A dictionary in the format used by the BigQuery API.
         """
         resource = copy.deepcopy(self._properties)
 
@@ -2486,19 +2489,17 @@ class QueryJobConfig(_JobConfig):
 class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
-    :type job_id: str
-    :param job_id: the job's ID, within the project belonging to ``client``.
+    Args:
+        job_id (str): the job's ID, within the project belonging to ``client``.
 
-    :type query: str
-    :param query: SQL query string
+        query (str): SQL query string.
 
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
+        client (google.cloud.bigquery.client.Client):
+            A client which holds credentials and project configuration
+            for the dataset (which requires a project).
 
-    :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
-    :param job_config:
-        (Optional) Extra configuration options for the query job.
+        job_config (google.cloud.bigquery.job.QueryJobConfig):
+            (Optional) Extra configuration options for the query job.
     """
 
     _JOB_TYPE = "query"
@@ -2697,15 +2698,15 @@ class QueryJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory:  construct a job given its API representation
 
-        :type resource: dict
-        :param resource: dataset job representation returned from the API
+        Args:
+            resource (Dict): dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
+            client (google.cloud.bigquery.client.Client):
+                Client which holds credentials and project
+                configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.QueryJob`
-        :returns: Job parsed from ``resource``.
+        Returns:
+            google.cloud.bigquery.job.QueryJob: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
         query = _helpers._get_sub_prop(config, ["query", "query"])
@@ -2720,9 +2721,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.query_plan
 
-        :rtype: list of :class:`QueryPlanEntry`
-        :returns: mappings describing the query plan, or an empty list
-                  if the query has not yet completed.
+        Returns:
+            List[QueryPlanEntry]:
+                mappings describing the query plan, or an empty list
+                if the query has not yet completed.
         """
         plan_entries = self._job_statistics().get("queryPlan", ())
         return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
@@ -2742,9 +2744,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.total_bytes_processed
 
-        :rtype: int or None
-        :returns: total bytes processed by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[int]:
+                Total bytes processed by the job, or None if job is not
+                yet complete.
         """
         result = self._job_statistics().get("totalBytesProcessed")
         if result is not None:
@@ -2758,9 +2761,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.total_bytes_billed
 
-        :rtype: int or None
-        :returns: total bytes processed by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[int]:
+                Total bytes processed by the job, or None if job is not
+                yet complete.
         """
         result = self._job_statistics().get("totalBytesBilled")
         if result is not None:
@@ -2774,9 +2778,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.billing_tier
 
-        :rtype: int or None
-        :returns: billing tier used by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[int]:
+                Billing tier used by the job, or None if job is not
+                yet complete.
         """
         return self._job_statistics().get("billingTier")
 
@@ -2787,9 +2792,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.cache_hit
 
-        :rtype: bool or None
-        :returns: whether the query results were returned from cache, or None
-                  if job is not yet complete.
+        Returns:
+            Optional[bool]:
+                whether the query results were returned from cache, or None
+                if job is not yet complete.
         """
         return self._job_statistics().get("cacheHit")
 
@@ -2836,9 +2842,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.num_dml_affected_rows
 
-        :rtype: int or None
-        :returns: number of DML rows affected by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[int]:
+                number of DML rows affected by the job, or None if job is not
+                yet complete.
         """
         result = self._job_statistics().get("numDmlAffectedRows")
         if result is not None:
@@ -2857,9 +2864,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.statement_type
 
-        :rtype: str or None
-        :returns: type of statement used by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[str]:
+                type of statement used by the job, or None if job is not
+                yet complete.
         """
         return self._job_statistics().get("statementType")
 
@@ -2870,9 +2878,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.referenced_tables
 
-        :rtype: list of dict
-        :returns: mappings describing the query plan, or an empty list
-                  if the query has not yet completed.
+        Returns:
+            List[Dict]:
+                mappings describing the query plan, or an empty list
+                if the query has not yet completed.
         """
         tables = []
         datasets_by_project_name = {}
@@ -2899,13 +2908,14 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.undeclared_query_parameters
 
-        :rtype:
-            list of
-            :class:`~google.cloud.bigquery.ArrayQueryParameter`,
-            :class:`~google.cloud.bigquery.ScalarQueryParameter`, or
-            :class:`~google.cloud.bigquery.StructQueryParameter`
-        :returns: undeclared parameters, or an empty list if the query has
-                  not yet completed.
+        Returns:
+            List[Union[ \
+                google.cloud.bigquery.query.ArrayQueryParameter, \
+                google.cloud.bigquery.query.ScalarQueryParameter, \
+                google.cloud.bigquery.query.StructQueryParameter \
+            ]]:
+                Undeclared parameters, or an empty list if the query has
+                not yet completed.
         """
         parameters = []
         undeclared = self._job_statistics().get("undeclaredQueryParameters", ())
@@ -2931,9 +2941,10 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.estimated_bytes_processed
 
-        :rtype: int or None
-        :returns: number of DML rows affected by the job, or None if job is not
-                  yet complete.
+        Returns:
+            Optional[int]:
+                number of DML rows affected by the job, or None if job is not
+                yet complete.
         """
         result = self._job_statistics().get("estimatedBytesProcessed")
         if result is not None:
@@ -2943,8 +2954,8 @@ class QueryJob(_AsyncJob):
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
-        :rtype: bool
-        :returns: True if the job is complete, False otherwise.
+        Returns:
+            bool: True if the job is complete, False otherwise.
         """
         # Since the API to getQueryResults can hang up to the timeout value
         # (default of 10 seconds), set the timeout parameter to ensure that
@@ -2990,8 +3001,8 @@ class QueryJob(_AsyncJob):
             query (str): The SQL query to format.
             job_id (str): The ID of the job that ran the query.
 
-        Returns: (str)
-            A formatted query text.
+        Returns:
+            str: A formatted query text.
         """
         template = "\n\n(job ID: {job_id})\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
 
@@ -3026,8 +3037,7 @@ class QueryJob(_AsyncJob):
                 How to retry the RPC.
 
         Raises:
-            ValueError:
-                If the job has already begun.
+            ValueError: If the job has already begun.
         """
 
         try:
@@ -3122,9 +3132,7 @@ class QueryJob(_AsyncJob):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
@@ -3157,9 +3165,7 @@ class QueryJob(_AsyncJob):
         """Return a pandas DataFrame from a QueryJob
 
         Args:
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Alpha Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
@@ -3173,9 +3179,7 @@ class QueryJob(_AsyncJob):
                 **Caution**: There is a known issue reading small anonymous
                 query result tables with the BQ Storage API. Write your query
                 results to a destination table to work around this issue.
-            dtypes ( \
-                Map[str, Union[str, pandas.Series.dtype]] \
-            ):
+            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for
                 the column specified. Otherwise, the default pandas behavior
@@ -3212,11 +3216,10 @@ class QueryJob(_AsyncJob):
 class QueryPlanEntryStep(object):
     """Map a single step in a query plan entry.
 
-    :type kind: str
-    :param kind: step type
+    Args:
+        kind (str): step type.
 
-    :type substeps:
-    :param substeps: names of substeps
+        substeps (List): names of substeps.
     """
 
     def __init__(self, kind, substeps):
@@ -3227,11 +3230,11 @@ class QueryPlanEntryStep(object):
     def from_api_repr(cls, resource):
         """Factory: construct instance from the JSON repr.
 
-        :type resource: dict
-        :param resource: JSON representation of the entry
+        Args:
+            resource (Dict): JSON representation of the entry.
 
-        :rtype: :class:`QueryPlanEntryStep`
-        :return: new instance built from the resource
+        Returns:
+            QueryPlanEntryStep: new instance built from the resource.
         """
         return cls(kind=resource.get("kind"), substeps=resource.get("substeps", ()))
 
@@ -3247,7 +3250,6 @@ class QueryPlanEntry(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#ExplainQueryStage
     for the underlying API representation within query statistics.
-
     """
 
     def __init__(self):
@@ -3259,11 +3261,11 @@ class QueryPlanEntry(object):
 
         Args:
             resource(Dict[str: object]):
-                ExplainQueryStage representation returned from API
+                ExplainQueryStage representation returned from API.
 
         Returns:
             google.cloud.bigquery.QueryPlanEntry:
-                Query plan entry parsed from ``resource``
+                Query plan entry parsed from ``resource``.
         """
         entry = cls()
         entry._properties = resource
@@ -3271,17 +3273,17 @@ class QueryPlanEntry(object):
 
     @property
     def name(self):
-        """Union[str, None]: Human-readable name of the stage."""
+        """Optional[str]: Human-readable name of the stage."""
         return self._properties.get("name")
 
     @property
     def entry_id(self):
-        """Union[str, None]: Unique ID for the stage within the plan."""
+        """Optional[str]: Unique ID for the stage within the plan."""
         return self._properties.get("id")
 
     @property
     def start(self):
-        """Union[Datetime, None]: Datetime when the stage started."""
+        """Optional[Datetime]: Datetime when the stage started."""
         if self._properties.get("startMs") is None:
             return None
         return _helpers._datetime_from_microseconds(
@@ -3290,7 +3292,7 @@ class QueryPlanEntry(object):
 
     @property
     def end(self):
-        """Union[Datetime, None]: Datetime when the stage ended."""
+        """Optional[Datetime]: Datetime when the stage ended."""
         if self._properties.get("endMs") is None:
             return None
         return _helpers._datetime_from_microseconds(
@@ -3309,33 +3311,33 @@ class QueryPlanEntry(object):
 
     @property
     def parallel_inputs(self):
-        """Union[int, None]: Number of parallel input segments within
+        """Optional[int]: Number of parallel input segments within
         the stage.
         """
         return _helpers._int_or_none(self._properties.get("parallelInputs"))
 
     @property
     def completed_parallel_inputs(self):
-        """Union[int, None]: Number of parallel input segments completed."""
+        """Optional[int]: Number of parallel input segments completed."""
         return _helpers._int_or_none(self._properties.get("completedParallelInputs"))
 
     @property
     def wait_ms_avg(self):
-        """Union[int, None]: Milliseconds the average worker spent waiting to
+        """Optional[int]: Milliseconds the average worker spent waiting to
         be scheduled.
         """
         return _helpers._int_or_none(self._properties.get("waitMsAvg"))
 
     @property
     def wait_ms_max(self):
-        """Union[int, None]: Milliseconds the slowest worker spent waiting to
+        """Optional[int]: Milliseconds the slowest worker spent waiting to
         be scheduled.
         """
         return _helpers._int_or_none(self._properties.get("waitMsMax"))
 
     @property
     def wait_ratio_avg(self):
-        """Union[float, None]: Ratio of time the average worker spent waiting
+        """Optional[float]: Ratio of time the average worker spent waiting
         to be scheduled, relative to the longest time spent by any worker in
         any stage of the overall plan.
         """
@@ -3343,7 +3345,7 @@ class QueryPlanEntry(object):
 
     @property
     def wait_ratio_max(self):
-        """Union[float, None]: Ratio of time the slowest worker spent waiting
+        """Optional[float]: Ratio of time the slowest worker spent waiting
         to be scheduled, relative to the longest time spent by any worker in
         any stage of the overall plan.
         """
@@ -3351,21 +3353,21 @@ class QueryPlanEntry(object):
 
     @property
     def read_ms_avg(self):
-        """Union[int, None]: Milliseconds the average worker spent reading
+        """Optional[int]: Milliseconds the average worker spent reading
         input.
         """
         return _helpers._int_or_none(self._properties.get("readMsAvg"))
 
     @property
     def read_ms_max(self):
-        """Union[int, None]: Milliseconds the slowest worker spent reading
+        """Optional[int]: Milliseconds the slowest worker spent reading
         input.
         """
         return _helpers._int_or_none(self._properties.get("readMsMax"))
 
     @property
     def read_ratio_avg(self):
-        """Union[float, None]: Ratio of time the average worker spent reading
+        """Optional[float]: Ratio of time the average worker spent reading
         input, relative to the longest time spent by any worker in any stage
         of the overall plan.
         """
@@ -3373,7 +3375,7 @@ class QueryPlanEntry(object):
 
     @property
     def read_ratio_max(self):
-        """Union[float, None]: Ratio of time the slowest worker spent reading
+        """Optional[float]: Ratio of time the slowest worker spent reading
         to be scheduled, relative to the longest time spent by any worker in
         any stage of the overall plan.
         """
@@ -3381,21 +3383,21 @@ class QueryPlanEntry(object):
 
     @property
     def compute_ms_avg(self):
-        """Union[int, None]: Milliseconds the average worker spent on CPU-bound
+        """Optional[int]: Milliseconds the average worker spent on CPU-bound
         processing.
         """
         return _helpers._int_or_none(self._properties.get("computeMsAvg"))
 
     @property
     def compute_ms_max(self):
-        """Union[int, None]: Milliseconds the slowest worker spent on CPU-bound
+        """Optional[int]: Milliseconds the slowest worker spent on CPU-bound
         processing.
         """
         return _helpers._int_or_none(self._properties.get("computeMsMax"))
 
     @property
     def compute_ratio_avg(self):
-        """Union[float, None]: Ratio of time the average worker spent on
+        """Optional[float]: Ratio of time the average worker spent on
         CPU-bound processing, relative to the longest time spent by any
         worker in any stage of the overall plan.
         """
@@ -3403,7 +3405,7 @@ class QueryPlanEntry(object):
 
     @property
     def compute_ratio_max(self):
-        """Union[float, None]: Ratio of time the slowest worker spent on
+        """Optional[float]: Ratio of time the slowest worker spent on
         CPU-bound processing, relative to the longest time spent by any
         worker in any stage of the overall plan.
         """
@@ -3411,21 +3413,21 @@ class QueryPlanEntry(object):
 
     @property
     def write_ms_avg(self):
-        """Union[int, None]: Milliseconds the average worker spent writing
+        """Optional[int]: Milliseconds the average worker spent writing
         output data.
         """
         return _helpers._int_or_none(self._properties.get("writeMsAvg"))
 
     @property
     def write_ms_max(self):
-        """Union[int, None]: Milliseconds the slowest worker spent writing
+        """Optional[int]: Milliseconds the slowest worker spent writing
         output data.
         """
         return _helpers._int_or_none(self._properties.get("writeMsMax"))
 
     @property
     def write_ratio_avg(self):
-        """Union[float, None]: Ratio of time the average worker spent writing
+        """Optional[float]: Ratio of time the average worker spent writing
         output data, relative to the longest time spent by any worker in any
         stage of the overall plan.
         """
@@ -3433,7 +3435,7 @@ class QueryPlanEntry(object):
 
     @property
     def write_ratio_max(self):
-        """Union[float, None]: Ratio of time the slowest worker spent writing
+        """Optional[float]: Ratio of time the slowest worker spent writing
         output data, relative to the longest time spent by any worker in any
         stage of the overall plan.
         """
@@ -3441,29 +3443,29 @@ class QueryPlanEntry(object):
 
     @property
     def records_read(self):
-        """Union[int, None]: Number of records read by this stage."""
+        """Optional[int]: Number of records read by this stage."""
         return _helpers._int_or_none(self._properties.get("recordsRead"))
 
     @property
     def records_written(self):
-        """Union[int, None]: Number of records written by this stage."""
+        """Optional[int]: Number of records written by this stage."""
         return _helpers._int_or_none(self._properties.get("recordsWritten"))
 
     @property
     def status(self):
-        """Union[str, None]: status of this stage."""
+        """Optional[str]: status of this stage."""
         return self._properties.get("status")
 
     @property
     def shuffle_output_bytes(self):
-        """Union[int, None]: Number of bytes written by this stage to
+        """Optional[int]: Number of bytes written by this stage to
         intermediate shuffle.
         """
         return _helpers._int_or_none(self._properties.get("shuffleOutputBytes"))
 
     @property
     def shuffle_output_bytes_spilled(self):
-        """Union[int, None]: Number of bytes written by this stage to
+        """Optional[int]: Number of bytes written by this stage to
         intermediate shuffle and spilled to disk.
         """
         return _helpers._int_or_none(self._properties.get("shuffleOutputBytesSpilled"))
@@ -3486,7 +3488,6 @@ class TimelineEntry(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#querytimelinesample
     for the underlying API representation within query statistics.
-
     """
 
     def __init__(self):
@@ -3498,11 +3499,11 @@ class TimelineEntry(object):
 
         Args:
             resource(Dict[str: object]):
-                QueryTimelineSample representation returned from API
+                QueryTimelineSample representation returned from API.
 
         Returns:
             google.cloud.bigquery.TimelineEntry:
-                Timeline sample parsed from ``resource``
+                Timeline sample parsed from ``resource``.
         """
         entry = cls()
         entry._properties = resource
@@ -3510,31 +3511,31 @@ class TimelineEntry(object):
 
     @property
     def elapsed_ms(self):
-        """Union[int, None]: Milliseconds elapsed since start of query
+        """Optional[int]: Milliseconds elapsed since start of query
         execution."""
         return _helpers._int_or_none(self._properties.get("elapsedMs"))
 
     @property
     def active_units(self):
-        """Union[int, None]: Current number of input units being processed
+        """Optional[int]: Current number of input units being processed
         by workers, reported as largest value since the last sample."""
         return _helpers._int_or_none(self._properties.get("activeUnits"))
 
     @property
     def pending_units(self):
-        """Union[int, None]: Current number of input units remaining for
+        """Optional[int]: Current number of input units remaining for
         query stages active at this sample time."""
         return _helpers._int_or_none(self._properties.get("pendingUnits"))
 
     @property
     def completed_units(self):
-        """Union[int, None]: Current number of input units completed by
+        """Optional[int]: Current number of input units completed by
         this query."""
         return _helpers._int_or_none(self._properties.get("completedUnits"))
 
     @property
     def slot_millis(self):
-        """Union[int, None]: Cumulative slot-milliseconds consumed by
+        """Optional[int]: Cumulative slot-milliseconds consumed by
         this query."""
         return _helpers._int_or_none(self._properties.get("totalSlotMs"))
 
@@ -3547,7 +3548,7 @@ class UnknownJob(_AsyncJob):
         """Construct an UnknownJob from the JSON representation.
 
         Args:
-            resource (dict): JSON representation of a job.
+            resource (Dict): JSON representation of a job.
             client (google.cloud.bigquery.client.Client):
                 Client connected to BigQuery API.
 
@@ -3569,8 +3570,7 @@ class ScriptStackFrame(object):
     evaluation happened.
 
     Args:
-        resource (Map[str, Any]):
-            JSON representation of object.
+        resource (Map[str, Any]): JSON representation of object.
     """
 
     def __init__(self, resource):
@@ -3614,8 +3614,7 @@ class ScriptStatistics(object):
     """Statistics for a child job of a script.
 
     Args:
-        resource (Map[str, Any]):
-            JSON representation of object.
+        resource (Map[str, Any]): JSON representation of object.
     """
 
     def __init__(self, resource):
