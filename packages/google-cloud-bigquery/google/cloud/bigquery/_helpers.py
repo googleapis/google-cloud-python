@@ -90,12 +90,15 @@ def _timestamp_query_param_from_json(value, field):
 
     Args:
         value (str): The timestamp.
-        field (.SchemaField): The field corresponding to the value.
+
+        field (google.cloud.bigquery.schema.SchemaField):
+            The field corresponding to the value.
 
     Returns:
-        Optional[datetime.datetime]: The parsed datetime object from
-        ``value`` if the ``field`` is not null (otherwise it is
-        :data:`None`).
+        Optional[datetime.datetime]:
+            The parsed datetime object from
+            ``value`` if the ``field`` is not null (otherwise it is
+            :data:`None`).
     """
     if _not_null(value, field):
         # Canonical formats for timestamps in BigQuery are flexible. See:
@@ -125,12 +128,14 @@ def _datetime_from_json(value, field):
 
     Args:
         value (str): The timestamp.
-        field (.SchemaField): The field corresponding to the value.
+        field (google.cloud.bigquery.schema.SchemaField):
+            The field corresponding to the value.
 
     Returns:
-        Optional[datetime.datetime]: The parsed datetime object from
-        ``value`` if the ``field`` is not null (otherwise it is
-        :data:`None`).
+        Optional[datetime.datetime]:
+            The parsed datetime object from
+            ``value`` if the ``field`` is not null (otherwise it is
+            :data:`None`).
     """
     if _not_null(value, field):
         if "." in value:
@@ -217,15 +222,12 @@ def _row_tuple_from_json(row, schema):
 
     Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
 
-    :type row: dict
-    :param row: A JSON response row to be converted.
+    Args:
+        row (Dict): A JSON response row to be converted.
+        schema (Tuple): A tuple of :class:`~google.cloud.bigquery.schema.SchemaField`.
 
-    :type schema: tuple
-    :param schema: A tuple of
-                   :class:`~google.cloud.bigquery.schema.SchemaField`.
-
-    :rtype: tuple
-    :returns: A tuple of data converted to native types.
+    Returns:
+        Tuple: A tuple of data converted to native types.
     """
     row_data = []
     for field, cell in zip(schema, row["f"]):
@@ -344,16 +346,13 @@ def _scalar_field_to_json(field, row_value):
     """Maps a field and value to a JSON-safe value.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name.
-        row_value (any):
+        row_value (Any):
             Value to be converted, based on the field's type.
 
     Returns:
-        any:
-            A JSON-serializable object.
+        Any: A JSON-serializable object.
     """
     converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
     if converter is None:  # STRING doesn't need converting
@@ -365,17 +364,14 @@ def _repeated_field_to_json(field, row_value):
     """Convert a repeated/array field to its JSON representation.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name. The
             field mode must equal ``REPEATED``.
-        row_value (Sequence[any]):
+        row_value (Sequence[Any]):
             A sequence of values to convert to JSON-serializable values.
 
     Returns:
-        List[any]:
-            A list of JSON-serializable objects.
+        List[Any]: A list of JSON-serializable objects.
     """
     # Remove the REPEATED, but keep the other fields. This allows us to process
     # each item as if it were a top-level field.
@@ -391,17 +387,14 @@ def _record_field_to_json(fields, row_value):
     """Convert a record/struct field to its JSON representation.
 
     Args:
-        fields ( \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-        ):
+        fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
             The :class:`~google.cloud.bigquery.schema.SchemaField`s of the
             record's subfields to use for type conversion and field names.
         row_value (Union[Tuple[Any], Mapping[str, Any]):
             A tuple or dictionary to convert to JSON-serializable values.
 
     Returns:
-        Mapping[str, any]:
-            A JSON-serializable dictionary.
+        Mapping[str, Any]: A JSON-serializable dictionary.
     """
     record = {}
     isdict = isinstance(row_value, dict)
@@ -420,22 +413,16 @@ def _field_to_json(field, row_value):
     """Convert a field into JSON-serializable values.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name.
 
-        row_value (Union[ \
-            Sequence[list], \
-            any, \
-        ]):
+        row_value (Union[Sequence[List], Any]):
             Row data to be inserted. If the SchemaField's mode is
             REPEATED, assume this is a list. If not, the type
             is inferred from the SchemaField's field_type.
 
     Returns:
-        any:
-            A JSON-serializable object.
+        Any: A JSON-serializable object.
     """
     if row_value is None:
         return None
@@ -461,9 +448,9 @@ def _get_sub_prop(container, keys, default=None):
     This method works like ``dict.get(key)``, but for nested values.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to get the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -504,9 +491,9 @@ def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to set the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -547,9 +534,9 @@ def _del_sub_prop(container, keys):
     """Remove a nested key fro a dictionary.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to clear the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key

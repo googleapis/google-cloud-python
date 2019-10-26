@@ -1292,9 +1292,9 @@ class RowIterator(HTTPIterator):
             Defaults to a sensible value set by the API.
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
-        table (Union[
-            google.cloud.bigquery.table.Table,
-            google.cloud.bigquery.table.TableReference,
+        table (Union[ \
+            google.cloud.bigquery.table.Table, \
+            google.cloud.bigquery.table.TableReference, \
         ]):
             Optional. The table which these rows belong to, or a reference to
             it. Used to call the BigQuery Storage API to fetch rows.
@@ -1463,9 +1463,7 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client (
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
