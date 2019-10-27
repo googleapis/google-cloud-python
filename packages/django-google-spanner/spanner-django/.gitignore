@@ -4,3 +4,4 @@ build/
 *.sw[op]
 .tox/
 MANIFEST
+dist/
