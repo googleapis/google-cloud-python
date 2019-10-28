@@ -644,7 +644,13 @@ class Bucket(_PropertyMixin):
             raise ValueError("Cannot create bucket with 'user_project' set.")
 
         client = self._require_client(client)
-        client.create_bucket(self, project=project, location=location, predefined_acl=predefined_acl, predefined_default_object_acl=predefined_default_object_acl)
+        client.create_bucket(
+            self,
+            project=project,
+            location=location,
+            predefined_acl=predefined_acl,
+            predefined_default_object_acl=predefined_default_object_acl,
+        )
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.

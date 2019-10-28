@@ -699,6 +699,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_create_w_predefined_acl_valid(self):
         from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
@@ -717,6 +718,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_create_w_predefined_default_object_acl_invalid(self):
         from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
@@ -730,6 +732,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_create_w_predefined_default_object_acl_valid(self):
         from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
