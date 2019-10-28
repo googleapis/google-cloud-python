@@ -1,7 +1,7 @@
 Python Client for BigQuery Data Transfer API
 ============================================
 
-|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|alpha| |pypi| |versions| 
 
 The `BigQuery Data Transfer API`_ allows users to transfer data from partner
 SaaS applications to Google BigQuery on a scheduled, managed basis.
@@ -15,10 +15,6 @@ SaaS applications to Google BigQuery on a scheduled, managed basis.
    :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datatransfer.svg
    :target: https://pypi.org/project/google-cloud-bigquery-datatransfer/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-bigquery-datatransfer
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-bigquery-datatransfer
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_datatransfer
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigquery_datatransfer
 .. _BigQuery Data Transfer API: https://cloud.google.com/bigquery/transfer
 .. _Client Library Documentation: https://googleapis.dev/python/bigquerydatatransfer/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/transfer-service-overview

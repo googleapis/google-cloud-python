@@ -24,14 +24,16 @@ class RecognitionConfig(object):
         """
         The encoding of the audio data sent in the request.
 
-        All encodings support only 1 channel (mono) audio.
+        All encodings support only 1 channel (mono) audio, unless the
+        ``audio_channel_count`` and ``enable_separate_recognition_per_channel``
+        fields are set.
 
         For best results, the audio source should be captured and transmitted
         using a lossless encoding (``FLAC`` or ``LINEAR16``). The accuracy of
         the speech recognition can be reduced if lossy codecs are used to
         capture or transmit audio, particularly if background noise is present.
-        Lossy codecs include ``MULAW``, ``AMR``, ``AMR_WB``, ``OGG_OPUS``, and
-        ``SPEEX_WITH_HEADER_BYTE``.
+        Lossy codecs include ``MULAW``, ``AMR``, ``AMR_WB``, ``OGG_OPUS``,
+        ``SPEEX_WITH_HEADER_BYTE``, and ``MP3``.
 
         The ``FLAC`` and ``WAV`` audio file formats include a header that
         describes the included audio content. You can request recognition for

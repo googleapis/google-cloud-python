@@ -93,11 +93,12 @@ class Client(ClientWithProject):
                     attempt to determine from the environment.
 
     :type credentials:
-        :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
+        :class:`Credentials <google.auth.credentials.Credentials>` or
         :data:`NoneType <types.NoneType>`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not provided, defaults to the Google
-                        Application Default Credentials.
+    :param credentials: (Optional) The authorization credentials to attach to requests.
+                        These credentials identify this application to the service.
+                        If none are specified, the client will attempt to ascertain
+                        the credentials from the environment.
 
     :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
     :param client_info:
@@ -110,6 +111,10 @@ class Client(ClientWithProject):
     :param user_agent:
         (Deprecated) The user agent to be used with API request.
         Not used.
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -124,7 +129,12 @@ class Client(ClientWithProject):
     """The scopes required for Google Cloud Spanner."""
 
     def __init__(
-        self, project=None, credentials=None, client_info=_CLIENT_INFO, user_agent=None
+        self,
+        project=None,
+        credentials=None,
+        client_info=_CLIENT_INFO,
+        user_agent=None,
+        client_options=None,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
@@ -133,6 +143,7 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
+        self._client_options = client_options
 
         if user_agent is not None:
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)
@@ -143,7 +154,7 @@ class Client(ClientWithProject):
         """Getter for client's credentials.
 
         :rtype:
-            :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>`
+            :class:`Credentials <google.auth.credentials.Credentials>`
         :returns: The credentials stored on the client.
         """
         return self._credentials
@@ -172,7 +183,9 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials, client_info=self._client_info
+                credentials=self.credentials,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
         return self._instance_admin_api
 
@@ -181,7 +194,9 @@ class Client(ClientWithProject):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials, client_info=self._client_info
+                credentials=self.credentials,
+                client_info=self._client_info,
+                client_options=self._client_options,
             )
         return self._database_admin_api
 

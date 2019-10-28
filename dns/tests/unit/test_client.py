@@ -37,7 +37,7 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         from google.api_core.client_info import ClientInfo
         from google.cloud.dns._http import Connection
 
@@ -48,6 +48,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
         self.assertIsInstance(client._connection._client_info, ClientInfo)
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
 
     def test_ctor_w_client_info(self):
         from google.api_core.client_info import ClientInfo
@@ -64,6 +67,55 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
         self.assertIs(client._connection._client_info, client_info)
+
+    def test_ctor_w_empty_client_options_object(self):
+        from google.api_core.client_info import ClientInfo
+        from google.api_core.client_options import ClientOptions
+        from google.cloud.dns._http import Connection
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            client_options=ClientOptions(),
+        )
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
+        self.assertIsInstance(client._connection._client_info, ClientInfo)
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+
+    def test_ctor_w_client_options_object(self):
+        from google.api_core.client_options import ClientOptions
+
+        api_endpoint = "https://foo-dns.googleapis.com"
+        creds = _make_credentials()
+        http = object()
+        client_options = ClientOptions(api_endpoint=api_endpoint)
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
+
+    def test_ctor_w_client_options_dict(self):
+        api_endpoint = "https://foo-dns.googleapis.com"
+        creds = _make_credentials()
+        http = object()
+        client_options = {"api_endpoint": api_endpoint}
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
 
     def test_quotas_defaults(self):
         PATH = "projects/%s" % (self.PROJECT,)

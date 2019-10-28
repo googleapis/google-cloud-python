@@ -1,7 +1,7 @@
 Python Client for Google Cloud Firestore
 ========================================
 
-|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|beta| |pypi| |versions| 
 
 The `Google Cloud Firestore`_ API is a flexible, scalable
 database for mobile, web, and server development from Firebase and Google
@@ -20,10 +20,6 @@ including Cloud Functions.
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
    :target: https://pypi.org/project/google-cloud-firestore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-firestore
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-firestore
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dfirestore
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dfirestore
 .. _Google Cloud Firestore: https://cloud.google.com/firestore/
 .. _Product Documentation: https://cloud.google.com/firestore/docs/
 .. _Client Library Documentation: https://googleapis.dev/python/firestore/latest
@@ -106,15 +102,14 @@ Example Usage
 
     # Then query for documents
     users_ref = db.collection(u'users')
-    docs = users_ref.get()
 
-    for doc in docs:
+    for doc in users_ref.stream():
         print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
 Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Google Cloud Firestore API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Product Documentation`_ to learn
    more about the product and see How-to Guides.

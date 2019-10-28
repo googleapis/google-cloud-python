@@ -17,6 +17,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.dataproc_v1beta2.proto import (
     operations_pb2 as google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_operations__pb2,
 )
@@ -39,10 +41,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/dataproc_v1beta2/proto/clusters.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x34google/cloud/dataproc_v1beta2/proto/operations.proto\x1a\x30google/cloud/dataproc_v1beta2/proto/shared.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbe\x03\n\x07\x43luster\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12<\n\x06\x63onfig\x18\x03 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterConfig\x12\x42\n\x06labels\x18\x08 \x03(\x0b\x32\x32.google.cloud.dataproc.v1beta2.Cluster.LabelsEntry\x12<\n\x06status\x18\x04 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatus\x12\x44\n\x0estatus_history\x18\x07 \x03(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatus\x12\x14\n\x0c\x63luster_uuid\x18\x06 \x01(\t\x12>\n\x07metrics\x18\t \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.ClusterMetrics\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xf3\x06\n\rClusterConfig\x12\x15\n\rconfig_bucket\x18\x01 \x01(\t\x12K\n\x12gce_cluster_config\x18\x08 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.GceClusterConfig\x12I\n\rmaster_config\x18\t \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12I\n\rworker_config\x18\n \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12S\n\x17secondary_worker_config\x18\x0c \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfig\x12\x46\n\x0fsoftware_config\x18\r \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.SoftwareConfig\x12H\n\x10lifecycle_config\x18\x0e \x01(\x0b\x32..google.cloud.dataproc.v1beta2.LifecycleConfig\x12W\n\x16initialization_actions\x18\x0b \x03(\x0b\x32\x37.google.cloud.dataproc.v1beta2.NodeInitializationAction\x12J\n\x11\x65ncryption_config\x18\x0f \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.EncryptionConfig\x12L\n\x12\x61utoscaling_config\x18\x10 \x01(\x0b\x32\x30.google.cloud.dataproc.v1beta2.AutoscalingConfig\x12\x46\n\x0f\x65ndpoint_config\x18\x11 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.EndpointConfig\x12\x46\n\x0fsecurity_config\x18\x12 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.SecurityConfig"\xb5\x01\n\x0e\x45ndpointConfig\x12P\n\nhttp_ports\x18\x01 \x03(\x0b\x32<.google.cloud.dataproc.v1beta2.EndpointConfig.HttpPortsEntry\x12\x1f\n\x17\x65nable_http_port_access\x18\x02 \x01(\x08\x1a\x30\n\x0eHttpPortsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\'\n\x11\x41utoscalingConfig\x12\x12\n\npolicy_uri\x18\x01 \x01(\t"/\n\x10\x45ncryptionConfig\x12\x1b\n\x13gce_pd_kms_key_name\x18\x01 \x01(\t"\x86\x03\n\x10GceClusterConfig\x12\x10\n\x08zone_uri\x18\x01 \x01(\t\x12\x13\n\x0bnetwork_uri\x18\x02 \x01(\t\x12\x16\n\x0esubnetwork_uri\x18\x06 \x01(\t\x12\x18\n\x10internal_ip_only\x18\x07 \x01(\x08\x12\x17\n\x0fservice_account\x18\x08 \x01(\t\x12\x1e\n\x16service_account_scopes\x18\x03 \x03(\t\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12O\n\x08metadata\x18\x05 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.GceClusterConfig.MetadataEntry\x12P\n\x14reservation_affinity\x18\x0b \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.ReservationAffinity\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xfc\x02\n\x13InstanceGroupConfig\x12\x15\n\rnum_instances\x18\x01 \x01(\x05\x12\x16\n\x0einstance_names\x18\x02 \x03(\t\x12\x11\n\timage_uri\x18\x03 \x01(\t\x12\x18\n\x10machine_type_uri\x18\x04 \x01(\t\x12>\n\x0b\x64isk_config\x18\x05 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.DiskConfig\x12\x16\n\x0eis_preemptible\x18\x06 \x01(\x08\x12O\n\x14managed_group_config\x18\x07 \x01(\x0b\x32\x31.google.cloud.dataproc.v1beta2.ManagedGroupConfig\x12\x46\n\x0c\x61\x63\x63\x65lerators\x18\x08 \x03(\x0b\x32\x30.google.cloud.dataproc.v1beta2.AcceleratorConfig\x12\x18\n\x10min_cpu_platform\x18\t \x01(\t"Y\n\x12ManagedGroupConfig\x12\x1e\n\x16instance_template_name\x18\x01 \x01(\t\x12#\n\x1binstance_group_manager_name\x18\x02 \x01(\t"L\n\x11\x41\x63\x63\x65leratorConfig\x12\x1c\n\x14\x61\x63\x63\x65lerator_type_uri\x18\x01 \x01(\t\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x02 \x01(\x05"W\n\nDiskConfig\x12\x16\n\x0e\x62oot_disk_type\x18\x03 \x01(\t\x12\x19\n\x11\x62oot_disk_size_gb\x18\x01 \x01(\x05\x12\x16\n\x0enum_local_ssds\x18\x02 \x01(\x05"\xba\x01\n\x0fLifecycleConfig\x12\x32\n\x0fidle_delete_ttl\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x36\n\x10\x61uto_delete_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x61uto_delete_ttl\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x42\x05\n\x03ttl"X\n\x0eSecurityConfig\x12\x46\n\x0fkerberos_config\x18\x01 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.KerberosConfig"\xb6\x03\n\x0eKerberosConfig\x12\x17\n\x0f\x65nable_kerberos\x18\x01 \x01(\x08\x12#\n\x1broot_principal_password_uri\x18\x02 \x01(\t\x12\x13\n\x0bkms_key_uri\x18\x03 \x01(\t\x12\x14\n\x0ckeystore_uri\x18\x04 \x01(\t\x12\x16\n\x0etruststore_uri\x18\x05 \x01(\t\x12\x1d\n\x15keystore_password_uri\x18\x06 \x01(\t\x12\x18\n\x10key_password_uri\x18\x07 \x01(\t\x12\x1f\n\x17truststore_password_uri\x18\x08 \x01(\t\x12\x1f\n\x17\x63ross_realm_trust_realm\x18\t \x01(\t\x12\x1d\n\x15\x63ross_realm_trust_kdc\x18\n \x01(\t\x12&\n\x1e\x63ross_realm_trust_admin_server\x18\x0b \x01(\t\x12-\n%cross_realm_trust_shared_password_uri\x18\x0c \x01(\t\x12\x16\n\x0ekdc_db_key_uri\x18\r \x01(\t\x12\x1a\n\x12tgt_lifetime_hours\x18\x0e \x01(\x05"i\n\x18NodeInitializationAction\x12\x17\n\x0f\x65xecutable_file\x18\x01 \x01(\t\x12\x34\n\x11\x65xecution_timeout\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\xf7\x02\n\rClusterStatus\x12\x41\n\x05state\x18\x01 \x01(\x0e\x32\x32.google.cloud.dataproc.v1beta2.ClusterStatus.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x34\n\x10state_start_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12G\n\x08substate\x18\x04 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.ClusterStatus.Substate"V\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\x0c\n\x08UPDATING\x10\x05"<\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tUNHEALTHY\x10\x01\x12\x10\n\x0cSTALE_STATUS\x10\x02"\xf4\x01\n\x0eSoftwareConfig\x12\x15\n\rimage_version\x18\x01 \x01(\t\x12Q\n\nproperties\x18\x02 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.SoftwareConfig.PropertiesEntry\x12\x45\n\x13optional_components\x18\x03 \x03(\x0e\x32(.google.cloud.dataproc.v1beta2.Component\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa4\x02\n\x0e\x43lusterMetrics\x12T\n\x0chdfs_metrics\x18\x01 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.HdfsMetricsEntry\x12T\n\x0cyarn_metrics\x18\x02 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.YarnMetricsEntry\x1a\x32\n\x10HdfsMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a\x32\n\x10YarnMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01"\x87\x01\n\x14\x43reateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x37\n\x07\x63luster\x18\x02 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12\x12\n\nrequest_id\x18\x04 \x01(\t"\x90\x02\n\x14UpdateClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x05 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x37\n\x07\x63luster\x18\x03 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12@\n\x1dgraceful_decommission_timeout\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12/\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\nrequest_id\x18\x07 \x01(\t"z\n\x14\x44\x65leteClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x14\n\x0c\x63luster_uuid\x18\x04 \x01(\t\x12\x12\n\nrequest_id\x18\x05 \x01(\t"M\n\x11GetClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t"p\n\x13ListClustersRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"i\n\x14ListClustersResponse\x12\x38\n\x08\x63lusters\x18\x01 \x03(\x0b\x32&.google.cloud.dataproc.v1beta2.Cluster\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"R\n\x16\x44iagnoseClusterRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x0e\n\x06region\x18\x03 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t",\n\x16\x44iagnoseClusterResults\x12\x12\n\noutput_uri\x18\x01 \x01(\t"\xee\x01\n\x13ReservationAffinity\x12Y\n\x18\x63onsume_reservation_type\x18\x01 \x01(\x0e\x32\x37.google.cloud.dataproc.v1beta2.ReservationAffinity.Type\x12\x0b\n\x03key\x18\x02 \x01(\t\x12\x0e\n\x06values\x18\x03 \x03(\t"_\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eNO_RESERVATION\x10\x01\x12\x13\n\x0f\x41NY_RESERVATION\x10\x02\x12\x18\n\x14SPECIFIC_RESERVATION\x10\x03\x32\xf8\x08\n\x11\x43lusterController\x12\xae\x01\n\rCreateCluster\x12\x33.google.cloud.dataproc.v1beta2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation"I\x82\xd3\xe4\x93\x02\x43"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\x07\x63luster\x12\xbd\x01\n\rUpdateCluster\x12\x33.google.cloud.dataproc.v1beta2.UpdateClusterRequest\x1a\x1d.google.longrunning.Operation"X\x82\xd3\xe4\x93\x02R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\x07\x63luster\x12\xb4\x01\n\rDeleteCluster\x12\x33.google.cloud.dataproc.v1beta2.DeleteClusterRequest\x1a\x1d.google.longrunning.Operation"O\x82\xd3\xe4\x93\x02I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\x12\xb7\x01\n\nGetCluster\x12\x30.google.cloud.dataproc.v1beta2.GetClusterRequest\x1a&.google.cloud.dataproc.v1beta2.Cluster"O\x82\xd3\xe4\x93\x02I\x12G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\x12\xb9\x01\n\x0cListClusters\x12\x32.google.cloud.dataproc.v1beta2.ListClustersRequest\x1a\x33.google.cloud.dataproc.v1beta2.ListClustersResponse"@\x82\xd3\xe4\x93\x02:\x12\x38/v1beta2/projects/{project_id}/regions/{region}/clusters\x12\xc4\x01\n\x0f\x44iagnoseCluster\x12\x35.google.cloud.dataproc.v1beta2.DiagnoseClusterRequest\x1a\x1d.google.longrunning.Operation"[\x82\xd3\xe4\x93\x02U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\x01*B{\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
+        '\n2google/cloud/dataproc_v1beta2/proto/clusters.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x34google/cloud/dataproc_v1beta2/proto/operations.proto\x1a\x30google/cloud/dataproc_v1beta2/proto/shared.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe6\x03\n\x07\x43luster\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x06\x63onfig\x18\x03 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterConfigB\x03\xe0\x41\x02\x12G\n\x06labels\x18\x08 \x03(\x0b\x32\x32.google.cloud.dataproc.v1beta2.Cluster.LabelsEntryB\x03\xe0\x41\x01\x12\x41\n\x06status\x18\x04 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatusB\x03\xe0\x41\x03\x12I\n\x0estatus_history\x18\x07 \x03(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterStatusB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_uuid\x18\x06 \x01(\tB\x03\xe0\x41\x03\x12\x43\n\x07metrics\x18\t \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.ClusterMetricsB\x03\xe0\x41\x03\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xaf\x07\n\rClusterConfig\x12\x1a\n\rconfig_bucket\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12P\n\x12gce_cluster_config\x18\x08 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.GceClusterConfigB\x03\xe0\x41\x01\x12N\n\rmaster_config\x18\t \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfigB\x03\xe0\x41\x01\x12N\n\rworker_config\x18\n \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfigB\x03\xe0\x41\x01\x12X\n\x17secondary_worker_config\x18\x0c \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.InstanceGroupConfigB\x03\xe0\x41\x01\x12K\n\x0fsoftware_config\x18\r \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.SoftwareConfigB\x03\xe0\x41\x01\x12M\n\x10lifecycle_config\x18\x0e \x01(\x0b\x32..google.cloud.dataproc.v1beta2.LifecycleConfigB\x03\xe0\x41\x01\x12\\\n\x16initialization_actions\x18\x0b \x03(\x0b\x32\x37.google.cloud.dataproc.v1beta2.NodeInitializationActionB\x03\xe0\x41\x01\x12O\n\x11\x65ncryption_config\x18\x0f \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.EncryptionConfigB\x03\xe0\x41\x01\x12Q\n\x12\x61utoscaling_config\x18\x10 \x01(\x0b\x32\x30.google.cloud.dataproc.v1beta2.AutoscalingConfigB\x03\xe0\x41\x01\x12K\n\x0f\x65ndpoint_config\x18\x11 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.EndpointConfigB\x03\xe0\x41\x01\x12K\n\x0fsecurity_config\x18\x12 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.SecurityConfigB\x03\xe0\x41\x01"\xbf\x01\n\x0e\x45ndpointConfig\x12U\n\nhttp_ports\x18\x01 \x03(\x0b\x32<.google.cloud.dataproc.v1beta2.EndpointConfig.HttpPortsEntryB\x03\xe0\x41\x03\x12$\n\x17\x65nable_http_port_access\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01\x1a\x30\n\x0eHttpPortsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01",\n\x11\x41utoscalingConfig\x12\x17\n\npolicy_uri\x18\x01 \x01(\tB\x03\xe0\x41\x01"4\n\x10\x45ncryptionConfig\x12 \n\x13gce_pd_kms_key_name\x18\x01 \x01(\tB\x03\xe0\x41\x01"\xa9\x03\n\x10GceClusterConfig\x12\x15\n\x08zone_uri\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0bnetwork_uri\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x1b\n\x0esubnetwork_uri\x18\x06 \x01(\tB\x03\xe0\x41\x01\x12\x1d\n\x10internal_ip_only\x18\x07 \x01(\x08\x42\x03\xe0\x41\x01\x12\x1c\n\x0fservice_account\x18\x08 \x01(\tB\x03\xe0\x41\x01\x12#\n\x16service_account_scopes\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12O\n\x08metadata\x18\x05 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.GceClusterConfig.MetadataEntry\x12U\n\x14reservation_affinity\x18\x0b \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.ReservationAffinityB\x03\xe0\x41\x01\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa4\x03\n\x13InstanceGroupConfig\x12\x1a\n\rnum_instances\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01\x12\x1b\n\x0einstance_names\x18\x02 \x03(\tB\x03\xe0\x41\x03\x12\x16\n\timage_uri\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x1d\n\x10machine_type_uri\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12\x43\n\x0b\x64isk_config\x18\x05 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.DiskConfigB\x03\xe0\x41\x01\x12\x1b\n\x0eis_preemptible\x18\x06 \x01(\x08\x42\x03\xe0\x41\x01\x12T\n\x14managed_group_config\x18\x07 \x01(\x0b\x32\x31.google.cloud.dataproc.v1beta2.ManagedGroupConfigB\x03\xe0\x41\x03\x12K\n\x0c\x61\x63\x63\x65lerators\x18\x08 \x03(\x0b\x32\x30.google.cloud.dataproc.v1beta2.AcceleratorConfigB\x03\xe0\x41\x01\x12\x18\n\x10min_cpu_platform\x18\t \x01(\t"c\n\x12ManagedGroupConfig\x12#\n\x16instance_template_name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12(\n\x1binstance_group_manager_name\x18\x02 \x01(\tB\x03\xe0\x41\x03"L\n\x11\x41\x63\x63\x65leratorConfig\x12\x1c\n\x14\x61\x63\x63\x65lerator_type_uri\x18\x01 \x01(\t\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x02 \x01(\x05"a\n\nDiskConfig\x12\x1b\n\x0e\x62oot_disk_type\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x1e\n\x11\x62oot_disk_size_gb\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01\x12\x16\n\x0enum_local_ssds\x18\x02 \x01(\x05"\xf9\x01\n\x0fLifecycleConfig\x12\x37\n\x0fidle_delete_ttl\x18\x01 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01\x12\x36\n\x10\x61uto_delete_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x61uto_delete_ttl\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x38\n\x0fidle_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x42\x05\n\x03ttl"X\n\x0eSecurityConfig\x12\x46\n\x0fkerberos_config\x18\x01 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.KerberosConfig"\x90\x04\n\x0eKerberosConfig\x12\x1c\n\x0f\x65nable_kerberos\x18\x01 \x01(\x08\x42\x03\xe0\x41\x01\x12(\n\x1broot_principal_password_uri\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0bkms_key_uri\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0ckeystore_uri\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12\x1b\n\x0etruststore_uri\x18\x05 \x01(\tB\x03\xe0\x41\x01\x12"\n\x15keystore_password_uri\x18\x06 \x01(\tB\x03\xe0\x41\x01\x12\x1d\n\x10key_password_uri\x18\x07 \x01(\tB\x03\xe0\x41\x01\x12$\n\x17truststore_password_uri\x18\x08 \x01(\tB\x03\xe0\x41\x01\x12$\n\x17\x63ross_realm_trust_realm\x18\t \x01(\tB\x03\xe0\x41\x01\x12"\n\x15\x63ross_realm_trust_kdc\x18\n \x01(\tB\x03\xe0\x41\x01\x12+\n\x1e\x63ross_realm_trust_admin_server\x18\x0b \x01(\tB\x03\xe0\x41\x01\x12\x32\n%cross_realm_trust_shared_password_uri\x18\x0c \x01(\tB\x03\xe0\x41\x01\x12\x1b\n\x0ekdc_db_key_uri\x18\r \x01(\tB\x03\xe0\x41\x01\x12\x1f\n\x12tgt_lifetime_hours\x18\x0e \x01(\x05\x42\x03\xe0\x41\x01\x12\x12\n\x05realm\x18\x0f \x01(\tB\x03\xe0\x41\x01"s\n\x18NodeInitializationAction\x12\x1c\n\x0f\x65xecutable_file\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x39\n\x11\x65xecution_timeout\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01"\x8b\x03\n\rClusterStatus\x12\x46\n\x05state\x18\x01 \x01(\x0e\x32\x32.google.cloud.dataproc.v1beta2.ClusterStatus.StateB\x03\xe0\x41\x03\x12\x13\n\x06\x64\x65tail\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x39\n\x10state_start_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12L\n\x08substate\x18\x04 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.ClusterStatus.SubstateB\x03\xe0\x41\x03"V\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03\x12\x0c\n\x08\x44\x45LETING\x10\x04\x12\x0c\n\x08UPDATING\x10\x05"<\n\x08Substate\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tUNHEALTHY\x10\x01\x12\x10\n\x0cSTALE_STATUS\x10\x02"\xfe\x01\n\x0eSoftwareConfig\x12\x1a\n\rimage_version\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12V\n\nproperties\x18\x02 \x03(\x0b\x32=.google.cloud.dataproc.v1beta2.SoftwareConfig.PropertiesEntryB\x03\xe0\x41\x01\x12\x45\n\x13optional_components\x18\x03 \x03(\x0e\x32(.google.cloud.dataproc.v1beta2.Component\x1a\x31\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa4\x02\n\x0e\x43lusterMetrics\x12T\n\x0chdfs_metrics\x18\x01 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.HdfsMetricsEntry\x12T\n\x0cyarn_metrics\x18\x02 \x03(\x0b\x32>.google.cloud.dataproc.v1beta2.ClusterMetrics.YarnMetricsEntry\x1a\x32\n\x10HdfsMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a\x32\n\x10YarnMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01"\x9b\x01\n\x14\x43reateClusterRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12<\n\x07\x63luster\x18\x02 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.ClusterB\x03\xe0\x41\x02\x12\x17\n\nrequest_id\x18\x04 \x01(\tB\x03\xe0\x41\x01"\xb3\x02\n\x14UpdateClusterRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12<\n\x07\x63luster\x18\x03 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.ClusterB\x03\xe0\x41\x02\x12\x45\n\x1dgraceful_decommission_timeout\x18\x06 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01\x12\x34\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02\x12\x17\n\nrequest_id\x18\x07 \x01(\tB\x03\xe0\x41\x01"\x93\x01\n\x14\x44\x65leteClusterRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_uuid\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12\x17\n\nrequest_id\x18\x05 \x01(\tB\x03\xe0\x41\x01"\\\n\x11GetClusterRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02"\x89\x01\n\x13ListClustersRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06\x66ilter\x18\x05 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"s\n\x14ListClustersResponse\x12=\n\x08\x63lusters\x18\x01 \x03(\x0b\x32&.google.cloud.dataproc.v1beta2.ClusterB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"a\n\x16\x44iagnoseClusterRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x06region\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x19\n\x0c\x63luster_name\x18\x02 \x01(\tB\x03\xe0\x41\x02"1\n\x16\x44iagnoseClusterResults\x12\x17\n\noutput_uri\x18\x01 \x01(\tB\x03\xe0\x41\x03"\xfd\x01\n\x13ReservationAffinity\x12^\n\x18\x63onsume_reservation_type\x18\x01 \x01(\x0e\x32\x37.google.cloud.dataproc.v1beta2.ReservationAffinity.TypeB\x03\xe0\x41\x01\x12\x10\n\x03key\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x13\n\x06values\x18\x03 \x03(\tB\x03\xe0\x41\x01"_\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eNO_RESERVATION\x10\x01\x12\x13\n\x0f\x41NY_RESERVATION\x10\x02\x12\x18\n\x14SPECIFIC_RESERVATION\x10\x03\x32\xe7\r\n\x11\x43lusterController\x12\x91\x02\n\rCreateCluster\x12\x33.google.cloud.dataproc.v1beta2.CreateClusterRequest\x1a\x1d.google.longrunning.Operation"\xab\x01\x82\xd3\xe4\x93\x02\x43"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\x07\x63luster\xda\x41\x1bproject_id, region, cluster\xca\x41\x41\n\x07\x43luster\x12\x36google.cloud.dataproc.v1beta2.ClusterOperationMetadata\x12\xbb\x02\n\rUpdateCluster\x12\x33.google.cloud.dataproc.v1beta2.UpdateClusterRequest\x1a\x1d.google.longrunning.Operation"\xd5\x01\x82\xd3\xe4\x93\x02R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\x07\x63luster\xda\x41\x36project_id, region, cluster_name, cluster, update_mask\xca\x41\x41\n\x07\x43luster\x12\x36google.cloud.dataproc.v1beta2.ClusterOperationMetadata\x12\xaa\x02\n\rDeleteCluster\x12\x33.google.cloud.dataproc.v1beta2.DeleteClusterRequest\x1a\x1d.google.longrunning.Operation"\xc4\x01\x82\xd3\xe4\x93\x02I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\xda\x41 project_id, region, cluster_name\xca\x41O\n\x15google.protobuf.Empty\x12\x36google.cloud.dataproc.v1beta2.ClusterOperationMetadata\x12\xda\x01\n\nGetCluster\x12\x30.google.cloud.dataproc.v1beta2.GetClusterRequest\x1a&.google.cloud.dataproc.v1beta2.Cluster"r\x82\xd3\xe4\x93\x02I\x12G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\xda\x41 project_id, region, cluster_name\x12\xeb\x01\n\x0cListClusters\x12\x32.google.cloud.dataproc.v1beta2.ListClustersRequest\x1a\x33.google.cloud.dataproc.v1beta2.ListClustersResponse"r\x82\xd3\xe4\x93\x02:\x12\x38/v1beta2/projects/{project_id}/regions/{region}/clusters\xda\x41\x12project_id, region\xda\x41\x1aproject_id, region, filter\x12\xba\x02\n\x0f\x44iagnoseCluster\x12\x35.google.cloud.dataproc.v1beta2.DiagnoseClusterRequest\x1a\x1d.google.longrunning.Operation"\xd0\x01\x82\xd3\xe4\x93\x02U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\x01*\xda\x41 project_id, region, cluster_name\xca\x41O\n\x15google.protobuf.Empty\x12\x36google.cloud.dataproc.v1beta2.ClusterOperationMetadata\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB{\n!com.google.cloud.dataproc.v1beta2B\rClustersProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_operations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_shared__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
@@ -80,8 +84,8 @@ _CLUSTERSTATUS_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4053,
-    serialized_end=4139,
+    serialized_start=4509,
+    serialized_end=4595,
 )
 _sym_db.RegisterEnumDescriptor(_CLUSTERSTATUS_STATE)
 
@@ -103,8 +107,8 @@ _CLUSTERSTATUS_SUBSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4141,
-    serialized_end=4201,
+    serialized_start=4597,
+    serialized_end=4657,
 )
 _sym_db.RegisterEnumDescriptor(_CLUSTERSTATUS_SUBSTATE)
 
@@ -141,8 +145,8 @@ _RESERVATIONAFFINITY_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=5856,
-    serialized_end=5951,
+    serialized_start=6489,
+    serialized_end=6584,
 )
 _sym_db.RegisterEnumDescriptor(_RESERVATIONAFFINITY_TYPE)
 
@@ -199,8 +203,8 @@ _CLUSTER_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=757,
-    serialized_end=802,
+    serialized_start=855,
+    serialized_end=900,
 )
 
 _CLUSTER = _descriptor.Descriptor(
@@ -225,7 +229,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -243,7 +247,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -261,7 +265,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -279,7 +283,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -297,7 +301,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -315,7 +319,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -333,7 +337,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -351,7 +355,7 @@ _CLUSTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -363,8 +367,8 @@ _CLUSTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=356,
-    serialized_end=802,
+    serialized_start=414,
+    serialized_end=900,
 )
 
 
@@ -390,7 +394,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -408,7 +412,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -426,7 +430,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -444,7 +448,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -462,7 +466,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -480,7 +484,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -498,7 +502,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -516,7 +520,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -534,7 +538,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -552,7 +556,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -570,7 +574,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -588,7 +592,7 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -600,8 +604,8 @@ _CLUSTERCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=805,
-    serialized_end=1688,
+    serialized_start=903,
+    serialized_end=1846,
 )
 
 
@@ -657,8 +661,8 @@ _ENDPOINTCONFIG_HTTPPORTSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1824,
-    serialized_end=1872,
+    serialized_start=1992,
+    serialized_end=2040,
 )
 
 _ENDPOINTCONFIG = _descriptor.Descriptor(
@@ -683,7 +687,7 @@ _ENDPOINTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -701,7 +705,7 @@ _ENDPOINTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -713,8 +717,8 @@ _ENDPOINTCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1691,
-    serialized_end=1872,
+    serialized_start=1849,
+    serialized_end=2040,
 )
 
 
@@ -740,7 +744,7 @@ _AUTOSCALINGCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         )
     ],
@@ -752,8 +756,8 @@ _AUTOSCALINGCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1874,
-    serialized_end=1913,
+    serialized_start=2042,
+    serialized_end=2086,
 )
 
 
@@ -779,7 +783,7 @@ _ENCRYPTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         )
     ],
@@ -791,8 +795,8 @@ _ENCRYPTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1915,
-    serialized_end=1962,
+    serialized_start=2088,
+    serialized_end=2140,
 )
 
 
@@ -848,8 +852,8 @@ _GCECLUSTERCONFIG_METADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2308,
-    serialized_end=2355,
+    serialized_start=2521,
+    serialized_end=2568,
 )
 
 _GCECLUSTERCONFIG = _descriptor.Descriptor(
@@ -874,7 +878,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -892,7 +896,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -910,7 +914,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -928,7 +932,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -946,7 +950,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -964,7 +968,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1018,7 +1022,7 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1030,8 +1034,8 @@ _GCECLUSTERCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1965,
-    serialized_end=2355,
+    serialized_start=2143,
+    serialized_end=2568,
 )
 
 
@@ -1057,7 +1061,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1075,7 +1079,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1093,7 +1097,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1111,7 +1115,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1129,7 +1133,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1147,7 +1151,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1165,7 +1169,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1183,7 +1187,7 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1213,8 +1217,8 @@ _INSTANCEGROUPCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2358,
-    serialized_end=2738,
+    serialized_start=2571,
+    serialized_end=2991,
 )
 
 
@@ -1240,7 +1244,7 @@ _MANAGEDGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1258,7 +1262,7 @@ _MANAGEDGROUPCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1270,8 +1274,8 @@ _MANAGEDGROUPCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2740,
-    serialized_end=2829,
+    serialized_start=2993,
+    serialized_end=3092,
 )
 
 
@@ -1327,8 +1331,8 @@ _ACCELERATORCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2831,
-    serialized_end=2907,
+    serialized_start=3094,
+    serialized_end=3170,
 )
 
 
@@ -1354,7 +1358,7 @@ _DISKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1372,7 +1376,7 @@ _DISKCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1402,8 +1406,8 @@ _DISKCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2909,
-    serialized_end=2996,
+    serialized_start=3172,
+    serialized_end=3269,
 )
 
 
@@ -1429,7 +1433,7 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1468,6 +1472,24 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="idle_start_time",
+            full_name="google.cloud.dataproc.v1beta2.LifecycleConfig.idle_start_time",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1485,8 +1507,8 @@ _LIFECYCLECONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2999,
-    serialized_end=3185,
+    serialized_start=3272,
+    serialized_end=3521,
 )
 
 
@@ -1524,8 +1546,8 @@ _SECURITYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3187,
-    serialized_end=3275,
+    serialized_start=3523,
+    serialized_end=3611,
 )
 
 
@@ -1551,7 +1573,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1569,7 +1591,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1587,7 +1609,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1605,7 +1627,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1623,7 +1645,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1641,7 +1663,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1659,7 +1681,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1677,7 +1699,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1695,7 +1717,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1713,7 +1735,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1731,7 +1753,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1749,7 +1771,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1767,7 +1789,7 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1785,7 +1807,25 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="realm",
+            full_name="google.cloud.dataproc.v1beta2.KerberosConfig.realm",
+            index=14,
+            number=15,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1797,8 +1837,8 @@ _KERBEROSCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3278,
-    serialized_end=3716,
+    serialized_start=3614,
+    serialized_end=4142,
 )
 
 
@@ -1824,7 +1864,7 @@ _NODEINITIALIZATIONACTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1842,7 +1882,7 @@ _NODEINITIALIZATIONACTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1854,8 +1894,8 @@ _NODEINITIALIZATIONACTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3718,
-    serialized_end=3823,
+    serialized_start=4144,
+    serialized_end=4259,
 )
 
 
@@ -1881,7 +1921,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1899,7 +1939,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1917,7 +1957,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1935,7 +1975,7 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1947,8 +1987,8 @@ _CLUSTERSTATUS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3826,
-    serialized_end=4201,
+    serialized_start=4262,
+    serialized_end=4657,
 )
 
 
@@ -2004,8 +2044,8 @@ _SOFTWARECONFIG_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4399,
-    serialized_end=4448,
+    serialized_start=4865,
+    serialized_end=4914,
 )
 
 _SOFTWARECONFIG = _descriptor.Descriptor(
@@ -2030,7 +2070,7 @@ _SOFTWARECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2048,7 +2088,7 @@ _SOFTWARECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2078,8 +2118,8 @@ _SOFTWARECONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4204,
-    serialized_end=4448,
+    serialized_start=4660,
+    serialized_end=4914,
 )
 
 
@@ -2135,8 +2175,8 @@ _CLUSTERMETRICS_HDFSMETRICSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4641,
-    serialized_end=4691,
+    serialized_start=5107,
+    serialized_end=5157,
 )
 
 _CLUSTERMETRICS_YARNMETRICSENTRY = _descriptor.Descriptor(
@@ -2191,8 +2231,8 @@ _CLUSTERMETRICS_YARNMETRICSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4693,
-    serialized_end=4743,
+    serialized_start=5159,
+    serialized_end=5209,
 )
 
 _CLUSTERMETRICS = _descriptor.Descriptor(
@@ -2247,8 +2287,8 @@ _CLUSTERMETRICS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4451,
-    serialized_end=4743,
+    serialized_start=4917,
+    serialized_end=5209,
 )
 
 
@@ -2274,7 +2314,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2292,7 +2332,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2310,7 +2350,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2328,7 +2368,7 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2340,8 +2380,8 @@ _CREATECLUSTERREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4746,
-    serialized_end=4881,
+    serialized_start=5212,
+    serialized_end=5367,
 )
 
 
@@ -2367,7 +2407,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2385,7 +2425,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2403,7 +2443,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2421,7 +2461,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2439,7 +2479,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2457,7 +2497,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2475,7 +2515,7 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2487,8 +2527,8 @@ _UPDATECLUSTERREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4884,
-    serialized_end=5156,
+    serialized_start=5370,
+    serialized_end=5677,
 )
 
 
@@ -2514,7 +2554,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2532,7 +2572,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2550,7 +2590,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2568,7 +2608,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2586,7 +2626,7 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2598,8 +2638,8 @@ _DELETECLUSTERREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5158,
-    serialized_end=5280,
+    serialized_start=5680,
+    serialized_end=5827,
 )
 
 
@@ -2625,7 +2665,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2643,7 +2683,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2661,7 +2701,7 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2673,8 +2713,8 @@ _GETCLUSTERREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5282,
-    serialized_end=5359,
+    serialized_start=5829,
+    serialized_end=5921,
 )
 
 
@@ -2700,7 +2740,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2718,7 +2758,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2736,7 +2776,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2754,7 +2794,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2772,7 +2812,7 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2784,8 +2824,8 @@ _LISTCLUSTERSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5361,
-    serialized_end=5473,
+    serialized_start=5924,
+    serialized_end=6061,
 )
 
 
@@ -2811,7 +2851,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2829,7 +2869,7 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2841,8 +2881,8 @@ _LISTCLUSTERSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5475,
-    serialized_end=5580,
+    serialized_start=6063,
+    serialized_end=6178,
 )
 
 
@@ -2868,7 +2908,7 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2886,7 +2926,7 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2904,7 +2944,7 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2916,8 +2956,8 @@ _DIAGNOSECLUSTERREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5582,
-    serialized_end=5664,
+    serialized_start=6180,
+    serialized_end=6277,
 )
 
 
@@ -2943,7 +2983,7 @@ _DIAGNOSECLUSTERRESULTS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         )
     ],
@@ -2955,8 +2995,8 @@ _DIAGNOSECLUSTERRESULTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5666,
-    serialized_end=5710,
+    serialized_start=6279,
+    serialized_end=6328,
 )
 
 
@@ -2982,7 +3022,7 @@ _RESERVATIONAFFINITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3000,7 +3040,7 @@ _RESERVATIONAFFINITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3018,7 +3058,7 @@ _RESERVATIONAFFINITY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -3030,8 +3070,8 @@ _RESERVATIONAFFINITY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5713,
-    serialized_end=5951,
+    serialized_start=6331,
+    serialized_end=6584,
 )
 
 _CLUSTER_LABELSENTRY.containing_type = _CLUSTER
@@ -3080,6 +3120,9 @@ _LIFECYCLECONFIG.fields_by_name[
 _LIFECYCLECONFIG.fields_by_name[
     "auto_delete_ttl"
 ].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_LIFECYCLECONFIG.fields_by_name[
+    "idle_start_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _LIFECYCLECONFIG.oneofs_by_name["ttl"].fields.append(
     _LIFECYCLECONFIG.fields_by_name["auto_delete_time"]
 )
@@ -3458,8 +3501,8 @@ InstanceGroupConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTANCEGROUPCONFIG,
         __module__="google.cloud.dataproc_v1beta2.proto.clusters_pb2",
-        __doc__="""Optional. The config settings for Compute Engine resources in an
-  instance group, such as a master or worker group.
+        __doc__="""The config settings for Compute Engine resources in an instance group,
+  such as a master or worker group.
   
   
   Attributes:
@@ -3497,11 +3540,10 @@ InstanceGroupConfig = _reflection.GeneratedProtocolMessageType(
           preemptible instance groups.
       accelerators:
           Optional. The Compute Engine accelerator configuration for
-          these instances.  **Beta Feature**: This feature is still
-          under development. It may be changed before final release.
+          these instances.
       min_cpu_platform:
-          Optional. Specifies the minimum cpu platform for the Instance
-          Group. See [Cloud Dataproc→Minimum CPU Platform]
+          Specifies the minimum cpu platform for the Instance Group. See
+          [Cloud Dataproc→Minimum CPU Platform]
           (/dataproc/docs/concepts/compute/dataproc-min-cpu).
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.InstanceGroupConfig)
@@ -3584,13 +3626,12 @@ DiskConfig = _reflection.GeneratedProtocolMessageType(
       boot_disk_size_gb:
           Optional. Size in GB of the boot disk (default is 500GB).
       num_local_ssds:
-          Optional. Number of attached SSDs, from 0 to 4 (default is 0).
-          If SSDs are not attached, the boot disk is used to store
-          runtime logs and `HDFS <https://hadoop.apache.org/docs/r1.2.1/
-          hdfs_user_guide.html>`__ data. If one or more SSDs are
-          attached, this runtime bulk data is spread across them, and
-          the boot disk contains only basic config and installed
-          binaries.
+          Number of attached SSDs, from 0 to 4 (default is 0). If SSDs
+          are not attached, the boot disk is used to store runtime logs
+          and `HDFS <https://hadoop.apache.org/docs/r1.2.1/hdfs_user_gui
+          de.html>`__ data. If one or more SSDs are attached, this
+          runtime bulk data is spread across them, and the boot disk
+          contains only basic config and installed binaries.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.DiskConfig)
     ),
@@ -3614,8 +3655,8 @@ LifecycleConfig = _reflection.GeneratedProtocolMessageType(
           value, to delete the cluster when it has had no jobs running
           for 10 minutes.
       ttl:
-          Optional. Either the exact time the cluster should be deleted
-          at or the cluster maximum age.
+          Either the exact time the cluster should be deleted at or the
+          cluster maximum age.
       auto_delete_time:
           Optional. The time when cluster will be auto-deleted.
       auto_delete_ttl:
@@ -3623,6 +3664,10 @@ LifecycleConfig = _reflection.GeneratedProtocolMessageType(
           be auto-deleted at the end of this period. Valid range:
           **[10m, 14d]**.  Example: **"1d"**, to delete the cluster 1
           day after its creation..
+      idle_start_time:
+          Output only. The time when cluster became idle (most recent
+          job finished) and became eligible for deletion due to
+          idleness.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.LifecycleConfig)
     ),
@@ -3709,6 +3754,10 @@ KerberosConfig = _reflection.GeneratedProtocolMessageType(
           Optional. The lifetime of the ticket granting ticket, in
           hours. If not specified, or user specifies 0, then default
           value 10 will be used.
+      realm:
+          Optional. The name of the on-cluster Kerberos realm. If not
+          specified, the uppercased domain of hostnames will be the
+          realm.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1beta2.KerberosConfig)
     ),
@@ -4186,20 +4235,123 @@ _sym_db.RegisterMessage(ReservationAffinity)
 
 DESCRIPTOR._options = None
 _CLUSTER_LABELSENTRY._options = None
+_CLUSTER.fields_by_name["project_id"]._options = None
+_CLUSTER.fields_by_name["cluster_name"]._options = None
+_CLUSTER.fields_by_name["config"]._options = None
+_CLUSTER.fields_by_name["labels"]._options = None
+_CLUSTER.fields_by_name["status"]._options = None
+_CLUSTER.fields_by_name["status_history"]._options = None
+_CLUSTER.fields_by_name["cluster_uuid"]._options = None
+_CLUSTER.fields_by_name["metrics"]._options = None
+_CLUSTERCONFIG.fields_by_name["config_bucket"]._options = None
+_CLUSTERCONFIG.fields_by_name["gce_cluster_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["master_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["worker_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["secondary_worker_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["software_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["lifecycle_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["initialization_actions"]._options = None
+_CLUSTERCONFIG.fields_by_name["encryption_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["autoscaling_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["endpoint_config"]._options = None
+_CLUSTERCONFIG.fields_by_name["security_config"]._options = None
 _ENDPOINTCONFIG_HTTPPORTSENTRY._options = None
+_ENDPOINTCONFIG.fields_by_name["http_ports"]._options = None
+_ENDPOINTCONFIG.fields_by_name["enable_http_port_access"]._options = None
+_AUTOSCALINGCONFIG.fields_by_name["policy_uri"]._options = None
+_ENCRYPTIONCONFIG.fields_by_name["gce_pd_kms_key_name"]._options = None
 _GCECLUSTERCONFIG_METADATAENTRY._options = None
+_GCECLUSTERCONFIG.fields_by_name["zone_uri"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["network_uri"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["subnetwork_uri"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["internal_ip_only"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["service_account"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["service_account_scopes"]._options = None
+_GCECLUSTERCONFIG.fields_by_name["reservation_affinity"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["num_instances"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["instance_names"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["image_uri"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["machine_type_uri"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["disk_config"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["is_preemptible"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["managed_group_config"]._options = None
+_INSTANCEGROUPCONFIG.fields_by_name["accelerators"]._options = None
+_MANAGEDGROUPCONFIG.fields_by_name["instance_template_name"]._options = None
+_MANAGEDGROUPCONFIG.fields_by_name["instance_group_manager_name"]._options = None
+_DISKCONFIG.fields_by_name["boot_disk_type"]._options = None
+_DISKCONFIG.fields_by_name["boot_disk_size_gb"]._options = None
+_LIFECYCLECONFIG.fields_by_name["idle_delete_ttl"]._options = None
+_LIFECYCLECONFIG.fields_by_name["idle_start_time"]._options = None
+_KERBEROSCONFIG.fields_by_name["enable_kerberos"]._options = None
+_KERBEROSCONFIG.fields_by_name["root_principal_password_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["kms_key_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["keystore_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["truststore_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["keystore_password_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["key_password_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["truststore_password_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["cross_realm_trust_realm"]._options = None
+_KERBEROSCONFIG.fields_by_name["cross_realm_trust_kdc"]._options = None
+_KERBEROSCONFIG.fields_by_name["cross_realm_trust_admin_server"]._options = None
+_KERBEROSCONFIG.fields_by_name["cross_realm_trust_shared_password_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["kdc_db_key_uri"]._options = None
+_KERBEROSCONFIG.fields_by_name["tgt_lifetime_hours"]._options = None
+_KERBEROSCONFIG.fields_by_name["realm"]._options = None
+_NODEINITIALIZATIONACTION.fields_by_name["executable_file"]._options = None
+_NODEINITIALIZATIONACTION.fields_by_name["execution_timeout"]._options = None
+_CLUSTERSTATUS.fields_by_name["state"]._options = None
+_CLUSTERSTATUS.fields_by_name["detail"]._options = None
+_CLUSTERSTATUS.fields_by_name["state_start_time"]._options = None
+_CLUSTERSTATUS.fields_by_name["substate"]._options = None
 _SOFTWARECONFIG_PROPERTIESENTRY._options = None
+_SOFTWARECONFIG.fields_by_name["image_version"]._options = None
+_SOFTWARECONFIG.fields_by_name["properties"]._options = None
 _CLUSTERMETRICS_HDFSMETRICSENTRY._options = None
 _CLUSTERMETRICS_YARNMETRICSENTRY._options = None
+_CREATECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_CREATECLUSTERREQUEST.fields_by_name["region"]._options = None
+_CREATECLUSTERREQUEST.fields_by_name["cluster"]._options = None
+_CREATECLUSTERREQUEST.fields_by_name["request_id"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["region"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["cluster_name"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["cluster"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["graceful_decommission_timeout"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["update_mask"]._options = None
+_UPDATECLUSTERREQUEST.fields_by_name["request_id"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["region"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["cluster_name"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["cluster_uuid"]._options = None
+_DELETECLUSTERREQUEST.fields_by_name["request_id"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["region"]._options = None
+_GETCLUSTERREQUEST.fields_by_name["cluster_name"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["project_id"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["region"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["filter"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["page_size"]._options = None
+_LISTCLUSTERSREQUEST.fields_by_name["page_token"]._options = None
+_LISTCLUSTERSRESPONSE.fields_by_name["clusters"]._options = None
+_LISTCLUSTERSRESPONSE.fields_by_name["next_page_token"]._options = None
+_DIAGNOSECLUSTERREQUEST.fields_by_name["project_id"]._options = None
+_DIAGNOSECLUSTERREQUEST.fields_by_name["region"]._options = None
+_DIAGNOSECLUSTERREQUEST.fields_by_name["cluster_name"]._options = None
+_DIAGNOSECLUSTERRESULTS.fields_by_name["output_uri"]._options = None
+_RESERVATIONAFFINITY.fields_by_name["consume_reservation_type"]._options = None
+_RESERVATIONAFFINITY.fields_by_name["key"]._options = None
+_RESERVATIONAFFINITY.fields_by_name["values"]._options = None
 
 _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
     name="ClusterController",
     full_name="google.cloud.dataproc.v1beta2.ClusterController",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=5954,
-    serialized_end=7098,
+    serialized_options=_b(
+        "\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=6587,
+    serialized_end=8354,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateCluster",
@@ -4209,7 +4361,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_CREATECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002C"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\007cluster'
+                '\202\323\344\223\002C"8/v1beta2/projects/{project_id}/regions/{region}/clusters:\007cluster\332A\033project_id, region, cluster\312AA\n\007Cluster\0226google.cloud.dataproc.v1beta2.ClusterOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4220,7 +4372,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_UPDATECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                "\202\323\344\223\002R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\007cluster"
+                "\202\323\344\223\002R2G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:\007cluster\332A6project_id, region, cluster_name, cluster, update_mask\312AA\n\007Cluster\0226google.cloud.dataproc.v1beta2.ClusterOperationMetadata"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4231,7 +4383,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_DELETECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                "\202\323\344\223\002I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
+                "\202\323\344\223\002I*G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\332A project_id, region, cluster_name\312AO\n\025google.protobuf.Empty\0226google.cloud.dataproc.v1beta2.ClusterOperationMetadata"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4242,7 +4394,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_GETCLUSTERREQUEST,
             output_type=_CLUSTER,
             serialized_options=_b(
-                "\202\323\344\223\002I\022G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}"
+                "\202\323\344\223\002I\022G/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}\332A project_id, region, cluster_name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4253,7 +4405,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_LISTCLUSTERSREQUEST,
             output_type=_LISTCLUSTERSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002:\0228/v1beta2/projects/{project_id}/regions/{region}/clusters"
+                "\202\323\344\223\002:\0228/v1beta2/projects/{project_id}/regions/{region}/clusters\332A\022project_id, region\332A\032project_id, region, filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4264,7 +4416,7 @@ _CLUSTERCONTROLLER = _descriptor.ServiceDescriptor(
             input_type=_DIAGNOSECLUSTERREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\001*'
+                '\202\323\344\223\002U"P/v1beta2/projects/{project_id}/regions/{region}/clusters/{cluster_name}:diagnose:\001*\332A project_id, region, cluster_name\312AO\n\025google.protobuf.Empty\0226google.cloud.dataproc.v1beta2.ClusterOperationMetadata'
             ),
         ),
     ],

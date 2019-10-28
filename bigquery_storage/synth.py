@@ -117,18 +117,26 @@ s.replace(
     r"google.api_core.grpc_helpers.create_channel\(",
     "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",
 )
+
+# Fix up proto docs that are missing summary line.
+s.replace(
+    "google/cloud/bigquery_storage_v1beta1/proto/storage_pb2.py",
+    '"""Attributes:',
+    '"""Protocol buffer.\n\n  Attributes:',
+)
 # END: Ignore lint and coverage
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-extra_deps = [".[fastavro,pandas,pyarrow]"]
+optional_deps = [".[fastavro,pandas,pyarrow]"]
+system_test_deps = optional_deps + ["../bigquery/"]
 templated_files = common.py_library(
     unit_cov_level=79,
     cov_level=79,
     samples_test=True,
-    system_test_dependencies=extra_deps,
-    unit_test_dependencies=extra_deps,
+    system_test_dependencies=system_test_deps,
+    unit_test_dependencies=optional_deps,
 )
 s.move(templated_files)
 

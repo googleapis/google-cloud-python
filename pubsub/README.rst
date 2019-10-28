@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|GA| |pypi| |versions| 
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -19,16 +19,12 @@ independently written applications.
 - `Product Documentation`_
 - `Client Library Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-pubsub
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-pubsub
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dpubsub
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
 .. _Product Documentation: https://cloud.google.com/pubsub/docs
 .. _Client Library Documentation: https://googleapis.dev/python/pubsub/latest
@@ -196,3 +192,38 @@ For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ in
 .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
 .. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
 .. _google.auth.jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
+
+
+Versioning
+----------
+
+This library follows `Semantic Versioning`_.
+
+It is currently in major version one (1.y.z), which means that the public API should be considered stable.
+
+.. _Semantic Versioning: http://semver.org/
+
+Contributing
+------------
+
+Contributions to this library are always welcome and highly encouraged.
+
+See the `CONTRIBUTING doc`_ for more information on how to get started.
+
+.. _CONTRIBUTING doc: https://github.com/googleapis/google-cloud-python/blob/master/CONTRIBUTING.rst
+
+Community
+---------
+
+Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
+channel, click here to `get an invitation`_.
+
+.. _Slack: https://googlecloud-community.slack.com
+.. _get an invitation: https://gcp-slack.appspot.com/
+
+License
+-------
+
+Apache 2.0 - See `the LICENSE`_ for more information.
+
+.. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/master/LICENSE

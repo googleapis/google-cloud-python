@@ -28,10 +28,19 @@ Get a table resource with the
    :start-after: [START bigquery_get_table]
    :end-before: [END bigquery_get_table]
 
+Determine if a table exists with the
+:func:`~google.cloud.bigquery.client.Client.get_table` method:
+
+.. literalinclude:: ../samples/table_exists.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_table_exists]
+   :end-before: [END bigquery_table_exists]
+
 Browse data rows in a table with the
 :func:`~google.cloud.bigquery.client.Client.list_rows` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/browse_table_data.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_browse_table]
@@ -107,11 +116,20 @@ Update a property in a table's metadata with the
 Insert rows into a table's data with the
 :func:`~google.cloud.bigquery.client.Client.insert_rows` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/table_insert_rows.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
+
+Add an empty column to the existing table with the
+:func:`~google.cloud.bigquery.update_table` method:
+
+.. literalinclude:: ../samples/add_empty_column.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_add_empty_column]
+   :end-before: [END bigquery_add_empty_column]
 
 Copying a Table
 ^^^^^^^^^^^^^^^
@@ -119,7 +137,7 @@ Copying a Table
 Copy a table with the
 :func:`~google.cloud.bigquery.client.Client.copy_table` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/copy_table.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_copy_table]

@@ -73,7 +73,7 @@ def _make_job_resource(
     started=False,
     ended=False,
     etag="abc-def-hjk",
-    endpoint="https://www.googleapis.com",
+    endpoint="https://bigquery.googleapis.com",
     job_type="load",
     job_id="a-random-id",
     project_id="some-project",
@@ -267,6 +267,53 @@ class Test_AsyncJob(unittest.TestCase):
         derived = self._make_derived(self.JOB_ID, client)
 
         self.assertEqual(derived.job_type, "derived")
+
+    def test_parent_job_id(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.parent_job_id)
+        job._properties["statistics"] = {"parentJobId": "parent-job-123"}
+        self.assertEqual(job.parent_job_id, "parent-job-123")
+
+    def test_script_statistics(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.script_statistics)
+        job._properties["statistics"] = {
+            "scriptStatistics": {
+                "evaluationKind": "EXPRESSION",
+                "stackFrames": [
+                    {
+                        "startLine": 5,
+                        "startColumn": 29,
+                        "endLine": 9,
+                        "endColumn": 14,
+                        "text": "QUERY TEXT",
+                    }
+                ],
+            }
+        }
+        script_stats = job.script_statistics
+        self.assertEqual(script_stats.evaluation_kind, "EXPRESSION")
+        stack_frames = script_stats.stack_frames
+        self.assertEqual(len(stack_frames), 1)
+        stack_frame = stack_frames[0]
+        self.assertIsNone(stack_frame.procedure_id)
+        self.assertEqual(stack_frame.start_line, 5)
+        self.assertEqual(stack_frame.start_column, 29)
+        self.assertEqual(stack_frame.end_line, 9)
+        self.assertEqual(stack_frame.end_column, 14)
+        self.assertEqual(stack_frame.text, "QUERY TEXT")
+
+    def test_num_child_jobs(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertEqual(job.num_child_jobs, 0)
+        job._properties["statistics"] = {"numChildJobs": "17"}
+        self.assertEqual(job.num_child_jobs, 17)
 
     def test_labels_miss(self):
         client = _make_client(project=self.PROJECT)
@@ -1022,7 +1069,7 @@ class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
     from google.cloud.bigquery.table import TableReference
 
-    ENDPOINT = "https://www.googleapis.com"
+    ENDPOINT = "https://bigquery.googleapis.com"
     PROJECT = "project"
     SOURCE1 = "http://example.com/source1.csv"
     DS_ID = "dataset_id"
@@ -1030,7 +1077,7 @@ class _Base(object):
     TABLE_ID = "table_id"
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_ID = "JOB_ID"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -1229,7 +1276,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertIsNone(config.destination_encryption_configuration)
 
     def test_destination_encryption_configuration_hit(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -1242,7 +1291,9 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         )
 
     def test_destination_encryption_configuration_setter(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         kms_key_name = "kms-key-name"
         encryption_configuration = EncryptionConfiguration(kms_key_name)
@@ -1504,6 +1555,19 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )
 
+    def test_schema_setter_unsetting_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        config = self._get_target_class()()
+        config._properties["load"]["schema"] = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        config.schema = None
+        self.assertNotIn("schema", config._properties["load"])
+        config.schema = None  # no error, idempotent operation
+
     def test_schema_update_options_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.schema_update_options)
@@ -1573,6 +1637,44 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config = self._get_target_class()()
         config.source_format = source_format
         self.assertEqual(config._properties["load"]["sourceFormat"], source_format)
+
+    def test_range_partitioning_w_none(self):
+        object_under_test = self._get_target_class()()
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_w_value(self):
+        object_under_test = self._get_target_class()()
+        object_under_test._properties["load"]["rangePartitioning"] = {
+            "field": "column_one",
+            "range": {"start": 1, "end": 1000, "interval": 10},
+        }
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter(self):
+        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangePartitioning
+
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = RangePartitioning(
+            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+        )
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter_w_none(self):
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = None
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_setter_w_wrong_type(self):
+        object_under_test = self._get_target_class()()
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
 
     def test_time_partitioning_miss(self):
         config = self._get_target_class()()
@@ -1828,6 +1930,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.destination_encryption_configuration)
         self.assertIsNone(job.destination_table_description)
         self.assertIsNone(job.destination_table_friendly_name)
+        self.assertIsNone(job.range_partitioning)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.use_avro_logical_types)
         self.assertIsNone(job.clustering_fields)
@@ -2426,7 +2529,9 @@ class TestCopyJobConfig(unittest.TestCase, _Base):
         self.assertEqual(config.write_disposition, write_disposition)
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
@@ -3262,6 +3367,44 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         expected = table.TableReference.from_string(destination)
         self.assertEqual(config.destination, expected)
 
+    def test_range_partitioning_w_none(self):
+        object_under_test = self._get_target_class()()
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_w_value(self):
+        object_under_test = self._get_target_class()()
+        object_under_test._properties["query"]["rangePartitioning"] = {
+            "field": "column_one",
+            "range": {"start": 1, "end": 1000, "interval": 10},
+        }
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter(self):
+        from google.cloud.bigquery.table import PartitionRange
+        from google.cloud.bigquery.table import RangePartitioning
+
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = RangePartitioning(
+            field="column_one", range_=PartitionRange(start=1, end=1000, interval=10)
+        )
+        object_under_test.range_partitioning.field == "column_one"
+        object_under_test.range_partitioning.range_.start == 1
+        object_under_test.range_partitioning.range_.end == 1000
+        object_under_test.range_partitioning.range_.interval == 10
+
+    def test_range_partitioning_setter_w_none(self):
+        object_under_test = self._get_target_class()()
+        object_under_test.range_partitioning = None
+        assert object_under_test.range_partitioning is None
+
+    def test_range_partitioning_setter_w_wrong_type(self):
+        object_under_test = self._get_target_class()()
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
+
     def test_time_partitioning(self):
         from google.cloud.bigquery import table
 
@@ -3351,7 +3494,9 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
         self.assertEqual(resource["someNewProperty"], "Woohoo, alpha stuff.")
 
     def test_to_api_repr_with_encryption(self):
-        from google.cloud.bigquery.table import EncryptionConfiguration
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
 
         config = self._make_one()
         config.destination_encryption_configuration = EncryptionConfiguration(
@@ -3560,6 +3705,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
         self.assertIsNone(job.table_definitions)
         self.assertIsNone(job.destination_encryption_configuration)
+        self.assertIsNone(job.range_partitioning)
         self.assertIsNone(job.time_partitioning)
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
@@ -4120,6 +4266,45 @@ class TestQueryJob(unittest.TestCase, _Base):
         # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
 
+    def test_result_with_max_results(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "5",
+        }
+        tabledata_resource = {
+            "totalRows": "5",
+            "pageToken": None,
+            "rows": [
+                {"f": [{"v": "abc"}]},
+                {"f": [{"v": "def"}]},
+                {"f": [{"v": "ghi"}]},
+            ],
+        }
+        connection = _make_connection(query_resource, tabledata_resource)
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        max_results = 3
+
+        result = job.result(max_results=max_results)
+
+        self.assertIsInstance(result, RowIterator)
+        self.assertEqual(result.total_rows, 5)
+
+        rows = list(result)
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(len(connection.api_request.call_args_list), 2)
+        tabledata_list_request = connection.api_request.call_args_list[1]
+        self.assertEqual(
+            tabledata_list_request[1]["query_params"]["maxResults"], max_results
+        )
+
     def test_result_w_empty_schema(self):
         from google.cloud.bigquery.table import _EmptyRowIterator
 
@@ -4285,8 +4470,45 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
-        full_text = str(exc_info.exception)
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
 
+        full_text = str(exc_info.exception)
+        assert job.job_id in full_text
+        assert "Query Job SQL Follows" in full_text
+
+        for i, line in enumerate(query.splitlines(), start=1):
+            expected_line = "{}:{}".format(i, line)
+            assert expected_line in full_text
+
+    def test__begin_error(self):
+        from google.cloud import exceptions
+
+        query = textwrap.dedent(
+            """
+            SELECT foo, bar
+            FROM table_baz
+            WHERE foo == bar"""
+        )
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, query, client)
+        call_api_patch = mock.patch(
+            "google.cloud.bigquery.client.Client._call_api",
+            autospec=True,
+            side_effect=exceptions.BadRequest("Syntax error in SQL query"),
+        )
+
+        with call_api_patch, self.assertRaises(exceptions.GoogleCloudError) as exc_info:
+            job.result()
+
+        self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
+        self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
+
+        exc_job_instance = getattr(exc_info.exception, "query_job", None)
+        self.assertIs(exc_job_instance, job)
+
+        full_text = str(exc_info.exception)
         assert job.job_id in full_text
         assert "Query Job SQL Follows" in full_text
 
@@ -5232,6 +5454,92 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
 
         entry._properties["endMs"] = self.END_MS
         self.assertEqual(entry.end.strftime(_RFC3339_MICROS), self.END_RFC3339_MICROS)
+
+
+class TestScriptStackFrame(unittest.TestCase, _Base):
+    def _make_one(self, resource):
+        from google.cloud.bigquery.job import ScriptStackFrame
+
+        return ScriptStackFrame(resource)
+
+    def test_procedure_id(self):
+        frame = self._make_one({"procedureId": "some-procedure"})
+        self.assertEqual(frame.procedure_id, "some-procedure")
+        del frame._properties["procedureId"]
+        self.assertIsNone(frame.procedure_id)
+
+    def test_start_line(self):
+        frame = self._make_one({"startLine": 5})
+        self.assertEqual(frame.start_line, 5)
+        frame._properties["startLine"] = "5"
+        self.assertEqual(frame.start_line, 5)
+
+    def test_start_column(self):
+        frame = self._make_one({"startColumn": 29})
+        self.assertEqual(frame.start_column, 29)
+        frame._properties["startColumn"] = "29"
+        self.assertEqual(frame.start_column, 29)
+
+    def test_end_line(self):
+        frame = self._make_one({"endLine": 9})
+        self.assertEqual(frame.end_line, 9)
+        frame._properties["endLine"] = "9"
+        self.assertEqual(frame.end_line, 9)
+
+    def test_end_column(self):
+        frame = self._make_one({"endColumn": 14})
+        self.assertEqual(frame.end_column, 14)
+        frame._properties["endColumn"] = "14"
+        self.assertEqual(frame.end_column, 14)
+
+    def test_text(self):
+        frame = self._make_one({"text": "QUERY TEXT"})
+        self.assertEqual(frame.text, "QUERY TEXT")
+
+
+class TestScriptStatistics(unittest.TestCase, _Base):
+    def _make_one(self, resource):
+        from google.cloud.bigquery.job import ScriptStatistics
+
+        return ScriptStatistics(resource)
+
+    def test_evalutation_kind(self):
+        stats = self._make_one({"evaluationKind": "EXPRESSION"})
+        self.assertEqual(stats.evaluation_kind, "EXPRESSION")
+        self.assertEqual(stats.stack_frames, [])
+
+    def test_stack_frames(self):
+        stats = self._make_one(
+            {
+                "stackFrames": [
+                    {
+                        "procedureId": "some-procedure",
+                        "startLine": 5,
+                        "startColumn": 29,
+                        "endLine": 9,
+                        "endColumn": 14,
+                        "text": "QUERY TEXT",
+                    },
+                    {},
+                ]
+            }
+        )
+        stack_frames = stats.stack_frames
+        self.assertEqual(len(stack_frames), 2)
+        stack_frame = stack_frames[0]
+        self.assertEqual(stack_frame.procedure_id, "some-procedure")
+        self.assertEqual(stack_frame.start_line, 5)
+        self.assertEqual(stack_frame.start_column, 29)
+        self.assertEqual(stack_frame.end_line, 9)
+        self.assertEqual(stack_frame.end_column, 14)
+        self.assertEqual(stack_frame.text, "QUERY TEXT")
+        stack_frame = stack_frames[1]
+        self.assertIsNone(stack_frame.procedure_id)
+        self.assertIsNone(stack_frame.start_line)
+        self.assertIsNone(stack_frame.start_column)
+        self.assertIsNone(stack_frame.end_line)
+        self.assertIsNone(stack_frame.end_column)
+        self.assertIsNone(stack_frame.text)
 
 
 class TestTimelineEntry(unittest.TestCase, _Base):

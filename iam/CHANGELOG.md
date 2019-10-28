@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## 0.2.1
+
+08-23-2019 10:10 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8936](https://github.com/googleapis/google-cloud-python/pull/8936))
+
+### Documentation
+- Fix documentation links for iam and error-reporting. ([#9073](https://github.com/googleapis/google-cloud-python/pull/9073))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.2.0
 
 07-24-2019 16:22 PDT

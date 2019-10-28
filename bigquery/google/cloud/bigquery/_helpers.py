@@ -18,6 +18,7 @@ import base64
 import copy
 import datetime
 import decimal
+import re
 
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
@@ -29,6 +30,12 @@ from google.cloud._helpers import _to_bytes
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
 _TIMEONLY_W_MICROS = "%H:%M:%S.%f"
+_PROJECT_PREFIX_PATTERN = re.compile(
+    r"""
+    (?P<project_id>\S+\:[^.]+)\.(?P<dataset_id>[^.]+)(?:$|\.(?P<custom_id>[^.]+)$)
+""",
+    re.VERBOSE,
+)
 
 
 def _not_null(value, field):
@@ -83,12 +90,15 @@ def _timestamp_query_param_from_json(value, field):
 
     Args:
         value (str): The timestamp.
-        field (.SchemaField): The field corresponding to the value.
+
+        field (google.cloud.bigquery.schema.SchemaField):
+            The field corresponding to the value.
 
     Returns:
-        Optional[datetime.datetime]: The parsed datetime object from
-        ``value`` if the ``field`` is not null (otherwise it is
-        :data:`None`).
+        Optional[datetime.datetime]:
+            The parsed datetime object from
+            ``value`` if the ``field`` is not null (otherwise it is
+            :data:`None`).
     """
     if _not_null(value, field):
         # Canonical formats for timestamps in BigQuery are flexible. See:
@@ -118,12 +128,14 @@ def _datetime_from_json(value, field):
 
     Args:
         value (str): The timestamp.
-        field (.SchemaField): The field corresponding to the value.
+        field (google.cloud.bigquery.schema.SchemaField):
+            The field corresponding to the value.
 
     Returns:
-        Optional[datetime.datetime]: The parsed datetime object from
-        ``value`` if the ``field`` is not null (otherwise it is
-        :data:`None`).
+        Optional[datetime.datetime]:
+            The parsed datetime object from
+            ``value`` if the ``field`` is not null (otherwise it is
+            :data:`None`).
     """
     if _not_null(value, field):
         if "." in value:
@@ -210,15 +222,12 @@ def _row_tuple_from_json(row, schema):
 
     Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
 
-    :type row: dict
-    :param row: A JSON response row to be converted.
+    Args:
+        row (Dict): A JSON response row to be converted.
+        schema (Tuple): A tuple of :class:`~google.cloud.bigquery.schema.SchemaField`.
 
-    :type schema: tuple
-    :param schema: A tuple of
-                   :class:`~google.cloud.bigquery.schema.SchemaField`.
-
-    :rtype: tuple
-    :returns: A tuple of data converted to native types.
+    Returns:
+        Tuple: A tuple of data converted to native types.
     """
     row_data = []
     for field, cell in zip(schema, row["f"]):
@@ -337,16 +346,13 @@ def _scalar_field_to_json(field, row_value):
     """Maps a field and value to a JSON-safe value.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name.
-        row_value (any):
+        row_value (Any):
             Value to be converted, based on the field's type.
 
     Returns:
-        any:
-            A JSON-serializable object.
+        Any: A JSON-serializable object.
     """
     converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
     if converter is None:  # STRING doesn't need converting
@@ -358,17 +364,14 @@ def _repeated_field_to_json(field, row_value):
     """Convert a repeated/array field to its JSON representation.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name. The
             field mode must equal ``REPEATED``.
-        row_value (Sequence[any]):
+        row_value (Sequence[Any]):
             A sequence of values to convert to JSON-serializable values.
 
     Returns:
-        List[any]:
-            A list of JSON-serializable objects.
+        List[Any]: A list of JSON-serializable objects.
     """
     # Remove the REPEATED, but keep the other fields. This allows us to process
     # each item as if it were a top-level field.
@@ -384,17 +387,14 @@ def _record_field_to_json(fields, row_value):
     """Convert a record/struct field to its JSON representation.
 
     Args:
-        fields ( \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-        ):
+        fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
             The :class:`~google.cloud.bigquery.schema.SchemaField`s of the
             record's subfields to use for type conversion and field names.
         row_value (Union[Tuple[Any], Mapping[str, Any]):
             A tuple or dictionary to convert to JSON-serializable values.
 
     Returns:
-        Mapping[str, any]:
-            A JSON-serializable dictionary.
+        Mapping[str, Any]: A JSON-serializable dictionary.
     """
     record = {}
     isdict = isinstance(row_value, dict)
@@ -413,22 +413,16 @@ def _field_to_json(field, row_value):
     """Convert a field into JSON-serializable values.
 
     Args:
-        field ( \
-            :class:`~google.cloud.bigquery.schema.SchemaField`, \
-        ):
+        field (google.cloud.bigquery.schema.SchemaField):
             The SchemaField to use for type conversion and field name.
 
-        row_value (Union[ \
-            Sequence[list], \
-            any, \
-        ]):
+        row_value (Union[Sequence[List], Any]):
             Row data to be inserted. If the SchemaField's mode is
             REPEATED, assume this is a list. If not, the type
             is inferred from the SchemaField's field_type.
 
     Returns:
-        any:
-            A JSON-serializable object.
+        Any: A JSON-serializable object.
     """
     if row_value is None:
         return None
@@ -454,9 +448,9 @@ def _get_sub_prop(container, keys, default=None):
     This method works like ``dict.get(key)``, but for nested values.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to get the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -497,9 +491,9 @@ def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to set the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -540,9 +534,9 @@ def _del_sub_prop(container, keys):
     """Remove a nested key fro a dictionary.
 
     Arguments:
-        container (dict):
+        container (Dict):
             A dictionary which may contain other dictionaries as values.
-        keys (iterable):
+        keys (Iterable):
             A sequence of keys to attempt to clear the value for. Each item in
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
@@ -586,24 +580,42 @@ def _str_or_none(value):
         return str(value)
 
 
+def _split_id(full_id):
+    """Helper: split full_id into composite parts.
+
+    Args:
+        full_id (str): Fully-qualified ID in standard SQL format.
+
+    Returns:
+        List[str]: ID's parts separated into components.
+    """
+    with_prefix = _PROJECT_PREFIX_PATTERN.match(full_id)
+    if with_prefix is None:
+        parts = full_id.split(".")
+    else:
+        parts = with_prefix.groups()
+        parts = [part for part in parts if part]
+    return parts
+
+
 def _parse_3_part_id(full_id, default_project=None, property_name="table_id"):
     output_project_id = default_project
     output_dataset_id = None
     output_resource_id = None
-    parts = full_id.split(".")
+    parts = _split_id(full_id)
 
     if len(parts) != 2 and len(parts) != 3:
         raise ValueError(
             "{property_name} must be a fully-qualified ID in "
-            'standard SQL format. e.g. "project.dataset.{property_name}", '
+            'standard SQL format, e.g., "project.dataset.{property_name}", '
             "got {}".format(full_id, property_name=property_name)
         )
 
     if len(parts) == 2 and not default_project:
         raise ValueError(
             "When default_project is not set, {property_name} must be a "
-            "fully-qualified ID in standard SQL format. "
-            'e.g. "project.dataset_id.{property_name}", got {}'.format(
+            "fully-qualified ID in standard SQL format, "
+            'e.g., "project.dataset_id.{property_name}", got {}'.format(
                 full_id, property_name=property_name
             )
         )
@@ -633,3 +645,18 @@ def _build_resource_from_properties(obj, filter_fields):
             partial[filter_field] = obj._properties[filter_field]
 
     return partial
+
+
+def _verify_job_config_type(job_config, expected_type, param_name="job_config"):
+    if not isinstance(job_config, expected_type):
+        msg = (
+            "Expected an instance of {expected_type} class for the {param_name} parameter, "
+            "but received {param_name} = {job_config}"
+        )
+        raise TypeError(
+            msg.format(
+                expected_type=expected_type.__name__,
+                param_name=param_name,
+                job_config=job_config,
+            )
+        )

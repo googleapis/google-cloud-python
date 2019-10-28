@@ -24,6 +24,8 @@ from google.rpc import status_pb2
 from google.cloud import bigtable_admin_v2
 from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import table_pb2
+from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
@@ -438,6 +440,131 @@ class TestBigtableTableAdminClient(object):
 
         with pytest.raises(CustomException):
             client.check_consistency(name, consistency_token)
+
+    def test_get_iam_policy(self):
+        # Setup Expected Response
+        version = 351608024
+        etag = b"etag3123477"
+        expected_response = {"version": version, "etag": etag}
+        expected_response = policy_pb2.Policy(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+
+        response = client.get_iam_policy(resource)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+
+        with pytest.raises(CustomException):
+            client.get_iam_policy(resource)
+
+    def test_set_iam_policy(self):
+        # Setup Expected Response
+        version = 351608024
+        etag = b"etag3123477"
+        expected_response = {"version": version, "etag": etag}
+        expected_response = policy_pb2.Policy(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        policy = {}
+
+        response = client.set_iam_policy(resource, policy)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=resource, policy=policy
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_set_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        policy = {}
+
+        with pytest.raises(CustomException):
+            client.set_iam_policy(resource, policy)
+
+    def test_test_iam_permissions(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = iam_policy_pb2.TestIamPermissionsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        permissions = []
+
+        response = client.test_iam_permissions(resource, permissions)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=resource, permissions=permissions
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_test_iam_permissions_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        permissions = []
+
+        with pytest.raises(CustomException):
+            client.test_iam_permissions(resource, permissions)
 
     def test_snapshot_table(self):
         # Setup Expected Response

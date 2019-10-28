@@ -214,11 +214,12 @@ class TranslationServiceClient(object):
         self,
         contents,
         target_language_code,
+        parent,
         mime_type=None,
         source_language_code=None,
-        parent=None,
         model=None,
         glossary_config=None,
+        labels=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -236,8 +237,9 @@ class TranslationServiceClient(object):
             >>>
             >>> # TODO: Initialize `target_language_code`:
             >>> target_language_code = ''
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
-            >>> response = client.translate_text(contents, target_language_code)
+            >>> response = client.translate_text(contents, target_language_code, parent)
 
         Args:
             contents (list[str]): Required. The content of the input in string format.
@@ -245,6 +247,20 @@ class TranslationServiceClient(object):
                 Use BatchTranslateText for larger text.
             target_language_code (str): Required. The BCP-47 language code to use for translation of the input
                 text, set to one of the language codes listed in Language Support.
+            parent (str): Required. Project or location to make a call. Must refer to a caller's
+                project.
+
+                Format: ``projects/{project-id}`` or
+                ``projects/{project-id}/locations/{location-id}``.
+
+                For global calls, use ``projects/{project-id}/locations/global`` or
+                ``projects/{project-id}``.
+
+                Non-global location is required for requests using AutoML models or
+                custom glossaries.
+
+                Models and glossaries must be within the same region (have same
+                location-id), otherwise an INVALID\_ARGUMENT (400) error is returned.
             mime_type (str): Optional. The format of the source text, for example, "text/html",
                  "text/plain". If left blank, the MIME type defaults to "text/html".
             source_language_code (str): Optional. The BCP-47 language code of the input text if
@@ -252,14 +268,6 @@ class TranslationServiceClient(object):
                 listed in Language Support. If the source language isn't specified, the API
                 attempts to identify the source language automatically and returns the
                 source language within the response.
-            parent (str): Required. Location to make a regional or global call.
-
-                Format: ``projects/{project-id}/locations/{location-id}``.
-
-                For global calls, use ``projects/{project-id}/locations/global``.
-
-                Models and glossaries must be within the same region (have same
-                location-id), otherwise an INVALID\_ARGUMENT (400) error is returned.
             model (str): Optional. The ``model`` type requested for this translation.
 
                 The format depends on model type:
@@ -282,6 +290,14 @@ class TranslationServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`
+            labels (dict[str -> str]): Optional. The labels with user-defined metadata for the request.
+
+                Label keys and values can be no longer than 63 characters
+                (Unicode codepoints), can only contain lowercase letters, numeric
+                characters, underscores and dashes. International characters are allowed.
+                Label values are optional. Label keys must start with a letter.
+
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -315,11 +331,12 @@ class TranslationServiceClient(object):
         request = translation_service_pb2.TranslateTextRequest(
             contents=contents,
             target_language_code=target_language_code,
+            parent=parent,
             mime_type=mime_type,
             source_language_code=source_language_code,
-            parent=parent,
             model=model,
             glossary_config=glossary_config,
+            labels=labels,
         )
         if metadata is None:
             metadata = []
@@ -340,10 +357,11 @@ class TranslationServiceClient(object):
 
     def detect_language(
         self,
-        parent=None,
+        parent,
         model=None,
         content=None,
         mime_type=None,
+        labels=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -356,14 +374,19 @@ class TranslationServiceClient(object):
             >>>
             >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
-            >>> response = client.detect_language()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> response = client.detect_language(parent)
 
         Args:
-            parent (str): Required. Location to make a regional or global call.
+            parent (str): Required. Project or location to make a call. Must refer to a caller's
+                project.
 
-                Format: ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-id}/locations/{location-id}`` or
+                ``projects/{project-id}``.
 
-                For global calls, use ``projects/{project-id}/locations/global``.
+                For global calls, use ``projects/{project-id}/locations/global`` or
+                ``projects/{project-id}``.
 
                 Only models within the same region (has same location-id) can be used.
                 Otherwise an INVALID\_ARGUMENT (400) error is returned.
@@ -379,6 +402,14 @@ class TranslationServiceClient(object):
             content (str): The content of the input stored as a string.
             mime_type (str): Optional. The format of the source text, for example, "text/html",
                 "text/plain". If left blank, the MIME type defaults to "text/html".
+            labels (dict[str -> str]): Optional. The labels with user-defined metadata for the request.
+
+                Label keys and values can be no longer than 63 characters
+                (Unicode codepoints), can only contain lowercase letters, numeric
+                characters, underscores and dashes. International characters are allowed.
+                Label values are optional. Label keys must start with a letter.
+
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -414,7 +445,11 @@ class TranslationServiceClient(object):
         google.api_core.protobuf_helpers.check_oneof(content=content)
 
         request = translation_service_pb2.DetectLanguageRequest(
-            parent=parent, model=model, content=content, mime_type=mime_type
+            parent=parent,
+            model=model,
+            content=content,
+            mime_type=mime_type,
+            labels=labels,
         )
         if metadata is None:
             metadata = []
@@ -435,7 +470,7 @@ class TranslationServiceClient(object):
 
     def get_supported_languages(
         self,
-        parent=None,
+        parent,
         display_language_code=None,
         model=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -450,14 +485,21 @@ class TranslationServiceClient(object):
             >>>
             >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
-            >>> response = client.get_supported_languages()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> response = client.get_supported_languages(parent)
 
         Args:
-            parent (str): Required. Location to make a regional or global call.
+            parent (str): Required. Project or location to make a call. Must refer to a caller's
+                project.
 
-                Format: ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-id}`` or
+                ``projects/{project-id}/locations/{location-id}``.
 
-                For global calls, use ``projects/{project-id}/locations/global``.
+                For global calls, use ``projects/{project-id}/locations/global`` or
+                ``projects/{project-id}``.
+
+                Non-global location is required for AutoML models.
 
                 Only models within the same region (have same location-id) can be used,
                 otherwise an INVALID\_ARGUMENT (400) error is returned.
@@ -529,13 +571,14 @@ class TranslationServiceClient(object):
 
     def batch_translate_text(
         self,
+        parent,
         source_language_code,
         target_language_codes,
         input_configs,
         output_config,
-        parent=None,
         models=None,
         glossaries=None,
+        labels=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -554,6 +597,8 @@ class TranslationServiceClient(object):
             >>>
             >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
             >>> # TODO: Initialize `source_language_code`:
             >>> source_language_code = ''
             >>>
@@ -566,7 +611,7 @@ class TranslationServiceClient(object):
             >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
             >>>
-            >>> response = client.batch_translate_text(source_language_code, target_language_codes, input_configs, output_config)
+            >>> response = client.batch_translate_text(parent, source_language_code, target_language_codes, input_configs, output_config)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -578,6 +623,15 @@ class TranslationServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
+            parent (str): Required. Location to make a call. Must refer to a caller's project.
+
+                Format: ``projects/{project-id}/locations/{location-id}``.
+
+                The ``global`` location is not supported for batch translation.
+
+                Only AutoML Translation models or glossaries within the same region
+                (have the same location-id) can be used, otherwise an INVALID\_ARGUMENT
+                (400) error is returned.
             source_language_code (str): Required. Source language code.
             target_language_codes (list[str]): Required. Specify up to 10 language codes here.
             input_configs (list[Union[dict, ~google.cloud.translate_v3beta1.types.InputConfig]]): Required. Input configurations.
@@ -593,15 +647,6 @@ class TranslationServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3beta1.types.OutputConfig`
-            parent (str): Required. Location to make a regional call.
-
-                Format: ``projects/{project-id}/locations/{location-id}``.
-
-                The ``global`` location is not supported for batch translation.
-
-                Only AutoML Translation models or glossaries within the same region
-                (have the same location-id) can be used, otherwise an INVALID\_ARGUMENT
-                (400) error is returned.
             models (dict[str -> str]): Optional. The models to use for translation. Map's key is target
                 language code. Map's value is model name. Value can be a built-in
                 general model, or an AutoML Translation model.
@@ -622,6 +667,14 @@ class TranslationServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig`
+            labels (dict[str -> str]): Optional. The labels with user-defined metadata for the request.
+
+                Label keys and values can be no longer than 63 characters
+                (Unicode codepoints), can only contain lowercase letters, numeric
+                characters, underscores and dashes. International characters are allowed.
+                Label values are optional. Label keys must start with a letter.
+
+                See https://cloud.google.com/translate/docs/labels for more information.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -653,13 +706,14 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.BatchTranslateTextRequest(
+            parent=parent,
             source_language_code=source_language_code,
             target_language_codes=target_language_codes,
             input_configs=input_configs,
             output_config=output_config,
-            parent=parent,
             models=models,
             glossaries=glossaries,
+            labels=labels,
         )
         if metadata is None:
             metadata = []
@@ -781,7 +835,7 @@ class TranslationServiceClient(object):
 
     def list_glossaries(
         self,
-        parent=None,
+        parent,
         page_size=None,
         filter_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -797,8 +851,10 @@ class TranslationServiceClient(object):
             >>>
             >>> client = translate_v3beta1.TranslationServiceClient()
             >>>
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
             >>> # Iterate over all results
-            >>> for element in client.list_glossaries():
+            >>> for element in client.list_glossaries(parent):
             ...     # process element
             ...     pass
             >>>
@@ -806,7 +862,7 @@ class TranslationServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_glossaries().pages:
+            >>> for page in client.list_glossaries(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass

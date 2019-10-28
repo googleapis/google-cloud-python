@@ -70,7 +70,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup Request
-        name = client.project_path("[USER]", "[PROJECT]")
+        name = client.posix_account_path("[USER]", "[PROJECT]")
 
         client.delete_posix_account(name)
 
@@ -88,7 +88,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup request
-        name = client.project_path("[USER]", "[PROJECT]")
+        name = client.posix_account_path("[USER]", "[PROJECT]")
 
         with pytest.raises(CustomException):
             client.delete_posix_account(name)
@@ -101,7 +101,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup Request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
 
         client.delete_ssh_public_key(name)
 
@@ -119,7 +119,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
 
         with pytest.raises(CustomException):
             client.delete_ssh_public_key(name)
@@ -127,8 +127,7 @@ class TestOsLoginServiceClient(object):
     def test_get_login_profile(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
-        suspended = False
-        expected_response = {"name": name_2, "suspended": suspended}
+        expected_response = {"name": name_2}
         expected_response = oslogin_pb2.LoginProfile(**expected_response)
 
         # Mock the API response
@@ -168,10 +167,12 @@ class TestOsLoginServiceClient(object):
         key = "key106079"
         expiration_time_usec = 2058878882
         fingerprint = "fingerprint-1375934236"
+        name_2 = "name2-1052831874"
         expected_response = {
             "key": key,
             "expiration_time_usec": expiration_time_usec,
             "fingerprint": fingerprint,
+            "name": name_2,
         }
         expected_response = common_pb2.SshPublicKey(**expected_response)
 
@@ -183,7 +184,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup Request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
 
         response = client.get_ssh_public_key(name)
         assert expected_response == response
@@ -202,7 +203,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
 
         with pytest.raises(CustomException):
             client.get_ssh_public_key(name)
@@ -221,15 +222,12 @@ class TestOsLoginServiceClient(object):
 
         # Setup Request
         parent = client.user_path("[USER]")
-        ssh_public_key = {}
 
-        response = client.import_ssh_public_key(parent, ssh_public_key)
+        response = client.import_ssh_public_key(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = oslogin_pb2.ImportSshPublicKeyRequest(
-            parent=parent, ssh_public_key=ssh_public_key
-        )
+        expected_request = oslogin_pb2.ImportSshPublicKeyRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -243,20 +241,21 @@ class TestOsLoginServiceClient(object):
 
         # Setup request
         parent = client.user_path("[USER]")
-        ssh_public_key = {}
 
         with pytest.raises(CustomException):
-            client.import_ssh_public_key(parent, ssh_public_key)
+            client.import_ssh_public_key(parent)
 
     def test_update_ssh_public_key(self):
         # Setup Expected Response
         key = "key106079"
         expiration_time_usec = 2058878882
         fingerprint = "fingerprint-1375934236"
+        name_2 = "name2-1052831874"
         expected_response = {
             "key": key,
             "expiration_time_usec": expiration_time_usec,
             "fingerprint": fingerprint,
+            "name": name_2,
         }
         expected_response = common_pb2.SshPublicKey(**expected_response)
 
@@ -268,7 +267,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup Request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
         ssh_public_key = {}
 
         response = client.update_ssh_public_key(name, ssh_public_key)
@@ -290,7 +289,7 @@ class TestOsLoginServiceClient(object):
             client = oslogin_v1.OsLoginServiceClient()
 
         # Setup request
-        name = client.fingerprint_path("[USER]", "[FINGERPRINT]")
+        name = client.ssh_public_key_path("[USER]", "[FINGERPRINT]")
         ssh_public_key = {}
 
         with pytest.raises(CustomException):

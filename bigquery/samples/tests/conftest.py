@@ -57,7 +57,7 @@ def random_routine_id(client, dataset_id):
 @pytest.fixture
 def dataset_id(client):
     now = datetime.datetime.now()
-    dataset_id = "python_samples_{}_{}".format(
+    dataset_id = "python_dataset_sample_{}_{}".format(
         now.strftime("%Y%m%d%H%M%S"), uuid.uuid4().hex[:8]
     )
     dataset = client.create_dataset(dataset_id)
@@ -68,7 +68,7 @@ def dataset_id(client):
 @pytest.fixture
 def table_id(client, dataset_id):
     now = datetime.datetime.now()
-    table_id = "python_samples_{}_{}".format(
+    table_id = "python_table_sample_{}_{}".format(
         now.strftime("%Y%m%d%H%M%S"), uuid.uuid4().hex[:8]
     )
 
@@ -79,9 +79,14 @@ def table_id(client, dataset_id):
 
 
 @pytest.fixture
+def table_with_data_id(client):
+    return "bigquery-public-data.samples.shakespeare"
+
+
+@pytest.fixture
 def routine_id(client, dataset_id):
     now = datetime.datetime.now()
-    routine_id = "python_samples_{}_{}".format(
+    routine_id = "python_routine_sample_{}_{}".format(
         now.strftime("%Y%m%d%H%M%S"), uuid.uuid4().hex[:8]
     )
 

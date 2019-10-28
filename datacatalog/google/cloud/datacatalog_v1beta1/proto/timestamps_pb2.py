@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -26,9 +27,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.datacatalogP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/datacatalog_v1beta1/proto/timestamps.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/protobuf/timestamp.proto"\xa5\x01\n\x10SystemTimestamps\x12/\n\x0b\x63reate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampBp\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n7google/cloud/datacatalog_v1beta1/proto/timestamps.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xaa\x01\n\x10SystemTimestamps\x12/\n\x0b\x63reate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
+    dependencies=[
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -90,7 +94,7 @@ _SYSTEMTIMESTAMPS = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -102,8 +106,8 @@ _SYSTEMTIMESTAMPS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=127,
-    serialized_end=292,
+    serialized_start=160,
+    serialized_end=330,
 )
 
 _SYSTEMTIMESTAMPS.fields_by_name[
@@ -129,14 +133,13 @@ SystemTimestamps = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       create_time:
-          Output only. The creation time of the resource within the
-          given system.
+          The creation time of the resource within the given system.
       update_time:
-          Output only. The last-modified time of the resource within the
-          given system.
+          The last-modified time of the resource within the given
+          system.
       expire_time:
           Output only. The expiration time of the resource within the
-          given system.
+          given system. Currently only apllicable to BigQuery resources.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.SystemTimestamps)
     ),
@@ -145,4 +148,5 @@ _sym_db.RegisterMessage(SystemTimestamps)
 
 
 DESCRIPTOR._options = None
+_SYSTEMTIMESTAMPS.fields_by_name["expire_time"]._options = None
 # @@protoc_insertion_point(module_scope)

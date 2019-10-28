@@ -20,6 +20,7 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.bigquery_v2.proto import encryption_config_pb2
 from google.cloud.bigquery_v2.proto import model_pb2
 from google.cloud.bigquery_v2.proto import model_reference_pb2
 from google.cloud.bigquery_v2.proto import standard_sql_pb2
@@ -30,7 +31,12 @@ from google.protobuf import wrappers_pb2
 
 _shared_modules = [empty_pb2, timestamp_pb2, wrappers_pb2]
 
-_local_modules = [model_pb2, model_reference_pb2, standard_sql_pb2]
+_local_modules = [
+    encryption_config_pb2,
+    model_pb2,
+    model_reference_pb2,
+    standard_sql_pb2,
+]
 
 names = []
 

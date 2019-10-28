@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.2.1
+
+08-12-2019 13:50 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8971](https://github.com/googleapis/google-cloud-python/pull/8971))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.2.0
 
 07-24-2019 17:41 PDT

@@ -186,10 +186,26 @@ class TestDatasetReference(unittest.TestCase):
         self.assertEqual(got.project, "string-project")
         self.assertEqual(got.dataset_id, "string_dataset")
 
+    def test_from_string_w_prefix(self):
+        cls = self._get_target_class()
+        got = cls.from_string("google.com:string-project.string_dataset")
+        self.assertEqual(got.project, "google.com:string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
+
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
             cls.from_string("string-project:string_dataset")
+
+    def test_from_string_w_incorrect_prefix(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com.string-project.dataset_id")
+
+    def test_from_string_w_prefix_and_too_many_parts(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com:string-project.dataset_id.table_id")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
@@ -259,6 +275,7 @@ class TestDataset(unittest.TestCase):
     PROJECT = "project"
     DS_ID = "dataset-id"
     DS_REF = DatasetReference(PROJECT, DS_ID)
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -298,6 +315,7 @@ class TestDataset(unittest.TestCase):
                 {"role": "WRITER", "specialGroup": "projectWriters"},
                 {"role": "READER", "specialGroup": "projectReaders"},
             ],
+            "defaultEncryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
         }
 
     def _verify_access_entry(self, access_entries, resource):
@@ -353,6 +371,13 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.description, resource.get("description"))
         self.assertEqual(dataset.friendly_name, resource.get("friendlyName"))
         self.assertEqual(dataset.location, resource.get("location"))
+        if "defaultEncryptionConfiguration" in resource:
+            self.assertEqual(
+                dataset.default_encryption_configuration.kms_key_name,
+                resource.get("defaultEncryptionConfiguration")["kmsKeyName"],
+            )
+        else:
+            self.assertIsNone(dataset.default_encryption_configuration)
 
         if "access" in resource:
             self._verify_access_entry(dataset.access_entries, resource)
@@ -437,6 +462,14 @@ class TestDataset(unittest.TestCase):
         bharney = AccessEntry("OWNER", "userByEmail", "bharney@example.com")
         dataset.access_entries = [phred, bharney]
         self.assertEqual(dataset.access_entries, [phred, bharney])
+
+    def test_default_partition_expiration_ms(self):
+        dataset = self._make_one("proj.dset")
+        assert dataset.default_partition_expiration_ms is None
+        dataset.default_partition_expiration_ms = 12345
+        assert dataset.default_partition_expiration_ms == 12345
+        dataset.default_partition_expiration_ms = None
+        assert dataset.default_partition_expiration_ms is None
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         dataset = self._make_one(self.DS_REF)
@@ -533,6 +566,22 @@ class TestDataset(unittest.TestCase):
             "newAlphaProperty": "unreleased property",
         }
         self.assertEqual(resource, exp_resource)
+
+    def test_default_encryption_configuration_setter(self):
+        from google.cloud.bigquery.encryption_configuration import (
+            EncryptionConfiguration,
+        )
+
+        dataset = self._make_one(self.DS_REF)
+        encryption_configuration = EncryptionConfiguration(
+            kms_key_name=self.KMS_KEY_NAME
+        )
+        dataset.default_encryption_configuration = encryption_configuration
+        self.assertEqual(
+            dataset.default_encryption_configuration.kms_key_name, self.KMS_KEY_NAME
+        )
+        dataset.default_encryption_configuration = None
+        self.assertIsNone(dataset.default_encryption_configuration)
 
     def test_from_string(self):
         cls = self._get_target_class()

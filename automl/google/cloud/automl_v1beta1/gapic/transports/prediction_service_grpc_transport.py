@@ -140,6 +140,9 @@ class PredictionServiceGrpcTransport(object):
 
         ``prediction_type``.
 
+        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+           encoded.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -158,9 +161,10 @@ class PredictionServiceGrpcTransport(object):
         done, ``BatchPredictResult`` is returned in the ``response`` field.
         Available for following ML problems:
 
+        -  Image Classification
+        -  Image Object Detection
         -  Video Classification
-        -  Video Object Tracking
-        -  Text Extraction
+        -  Video Object Tracking \* Text Extraction
         -  Tables
 
         Returns:

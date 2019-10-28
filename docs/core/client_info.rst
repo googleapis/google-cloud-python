@@ -1,1 +1,0 @@
-../../api_core/docs/client_info.rst

@@ -177,8 +177,11 @@ class Database(object):
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             client_info = self._instance._client._client_info
+            client_options = self._instance._client._client_options
             self._spanner_api = SpannerClient(
-                credentials=credentials, client_info=client_info
+                credentials=credentials,
+                client_info=client_info,
+                client_options=client_options,
             )
         return self._spanner_api
 
@@ -420,8 +423,11 @@ class Database(object):
                    If passed, "timeout_secs" will be removed and used to
                    override the default timeout.
 
-        :rtype: :class:`datetime.datetime`
-        :returns: timestamp of committed transaction
+        :rtype: Any
+        :returns: The return value of ``func``.
+
+        :raises Exception:
+            reraises any non-ABORT execptions raised by ``func``.
         """
         # Sanity check: Is there a transaction already running?
         # If there is, then raise a red flag. Otherwise, mark that this one

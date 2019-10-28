@@ -17,6 +17,8 @@
 from google.cloud.bigquery_v2 import types
 
 
+_STRUCT_TYPES = ("RECORD", "STRUCT")
+
 # SQL types reference:
 # https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
 # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
@@ -49,14 +51,14 @@ class SchemaField(object):
         name (str): the name of the field.
 
         field_type (str): the type of the field. See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
 
         mode (str): the mode of the field.  See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
 
-        description (Optional[str]):description for the field.
+        description (Optional[str]): description for the field.
 
-        fields (Tuple[:class:`~google.cloud.bigquery.schema.SchemaField`]):
+        fields (Tuple[google.cloud.bigquery.schema.SchemaField]):
             subfields (requires ``field_type`` of 'RECORD').
     """
 
@@ -77,8 +79,7 @@ class SchemaField(object):
                 :meth:`to_api_repr`.
 
         Returns:
-            google.cloud.biquery.schema.SchemaField:
-                The ``SchemaField`` object.
+            google.cloud.biquery.schema.SchemaField: The ``SchemaField`` object.
         """
         # Handle optional properties with default values
         mode = api_repr.get("mode", "NULLABLE")
@@ -102,7 +103,7 @@ class SchemaField(object):
         """str: The type of the field.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.type
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
         """
         return self._field_type
 
@@ -111,7 +112,7 @@ class SchemaField(object):
         """str: The mode of the field.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#schema.fields.mode
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
         """
         return self._mode
 
@@ -137,8 +138,7 @@ class SchemaField(object):
         """Return a dictionary representing this schema field.
 
         Returns:
-            dict: A dictionary representing the SchemaField in a serialized
-                form.
+            Dict: A dictionary representing the SchemaField in a serialized form.
         """
         # Put together the basic representation. See http://bit.ly/2hOAT5u.
         answer = {
@@ -150,7 +150,7 @@ class SchemaField(object):
 
         # If this is a RECORD type, then sub-fields are also included,
         # add this to the serialized representation.
-        if self.field_type.upper() == "RECORD":
+        if self.field_type.upper() in _STRUCT_TYPES:
             answer["fields"] = [f.to_api_repr() for f in self.fields]
 
         # Done; return the serialized dictionary.
@@ -162,8 +162,7 @@ class SchemaField(object):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this
-                   :class:`~google.cloud.bigquery.schema.SchemaField`.
+            Tuple: The contents of this :class:`~google.cloud.bigquery.schema.SchemaField`.
         """
         return (
             self._name,
@@ -227,11 +226,11 @@ def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
 
     Args:
-        info: (Mapping[str->dict]): should contain a "fields" key to be parsed
+        info: (Mapping[str, Dict]): should contain a "fields" key to be parsed
 
     Returns:
-        (Union[Sequence[:class:`google.cloud.bigquery.schema.SchemaField`],None])
-            a list of parsed fields, or ``None`` if no "fields" key found.
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField`]:
+            A list of parsed fields, or ``None`` if no "fields" key found.
     """
     if "fields" not in info:
         return ()
@@ -251,10 +250,9 @@ def _build_schema_resource(fields):
     """Generate a resource fragment for a schema.
 
     Args:
-        fields [Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]):
-            schema to be dumped
+        fields (Sequence[google.cloud.bigquery.schema.SchemaField): schema to be dumped.
 
-    Returns: (Sequence[dict])
-        mappings describing the schema of the supplied fields.
+    Returns:
+        Sequence[Dict]: Mappings describing the schema of the supplied fields.
     """
     return [field.to_api_repr() for field in fields]

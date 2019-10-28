@@ -7,6 +7,8 @@ from google.cloud.bigtable_admin_v2.proto import (
 from google.cloud.bigtable_admin_v2.proto import (
     table_pb2 as google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_table__pb2,
 )
+from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
+from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -91,6 +93,21 @@ class BigtableTableAdminStub(object):
             "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteSnapshot",
             request_serializer=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_bigtable__table__admin__pb2.DeleteSnapshotRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.GetIamPolicy = channel.unary_unary(
+            "/google.bigtable.admin.v2.BigtableTableAdmin/GetIamPolicy",
+            request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
+            response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
+        )
+        self.SetIamPolicy = channel.unary_unary(
+            "/google.bigtable.admin.v2.BigtableTableAdmin/SetIamPolicy",
+            request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.SerializeToString,
+            response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
+        )
+        self.TestIamPermissions = channel.unary_unary(
+            "/google.bigtable.admin.v2.BigtableTableAdmin/TestIamPermissions",
+            request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
+            response_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
         )
 
 
@@ -237,6 +254,29 @@ class BigtableTableAdminServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def GetIamPolicy(self, request, context):
+        """Gets the access control policy for an instance resource. Returns an empty
+    policy if an table exists but does not have a policy set.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SetIamPolicy(self, request, context):
+        """Sets the access control policy on a table resource. Replaces any existing
+    policy.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def TestIamPermissions(self, request, context):
+        """Returns permissions that the caller has on the specified table resource.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_BigtableTableAdminServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -304,6 +344,21 @@ def add_BigtableTableAdminServicer_to_server(servicer, server):
             servicer.DeleteSnapshot,
             request_deserializer=google_dot_cloud_dot_bigtable_dot_admin__v2_dot_proto_dot_bigtable__table__admin__pb2.DeleteSnapshotRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "GetIamPolicy": grpc.unary_unary_rpc_method_handler(
+            servicer.GetIamPolicy,
+            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
+            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
+        ),
+        "SetIamPolicy": grpc.unary_unary_rpc_method_handler(
+            servicer.SetIamPolicy,
+            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.SetIamPolicyRequest.FromString,
+            response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
+        ),
+        "TestIamPermissions": grpc.unary_unary_rpc_method_handler(
+            servicer.TestIamPermissions,
+            request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
+            response_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

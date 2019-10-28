@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from .. import get_dataset
 
 
@@ -19,4 +20,4 @@ def test_get_dataset(capsys, client, dataset_id):
 
     get_dataset.get_dataset(client, dataset_id)
     out, err = capsys.readouterr()
-    assert "{}".format(dataset_id) in out
+    assert dataset_id in out

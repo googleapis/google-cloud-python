@@ -1,7 +1,7 @@
 Python Client for Cloud IoT API
 ===============================
 
-|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|alpha| |pypi| |versions| 
 
 `Cloud IoT API`_: Registers and manages IoT (Internet of Things) devices that
 connect to the Google Cloud Platform.
@@ -15,10 +15,6 @@ connect to the Google Cloud Platform.
    :target: https://pypi.org/project/google-cloud-iot/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iot.svg
    :target: https://pypi.org/project/google-cloud-iot/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-iot
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-iot
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diot
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Diot
 .. _Cloud IoT API: https://cloud.google.com/iot
 .. _Client Library Documentation: https://googleapis.dev/python/iot/latest
 .. _Product Documentation:  https://cloud.google.com/iot

@@ -1,17 +1,13 @@
 Python Client for Google Cloud OS Login API (unreleased)
 ========================================================
 
-|pypi| |versions| |compat_check_pypi| |compat_check_github|
+|pypi| |versions| 
 
 `Google Cloud OS Login API`_: Manages OS login configuration for Google account users.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-os-login
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-os-login
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Doslogin
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Doslogin
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
    :target: https://pypi.org/project/google-cloud-oslogin/

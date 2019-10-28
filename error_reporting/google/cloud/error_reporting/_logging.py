@@ -30,12 +30,12 @@ class _ErrorReportingLoggingAPI(object):
                     passed falls back to the default inferred from the
                     environment.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no
-                        ``_http`` object is passed), falls back to the default
-                        inferred from the environment.
+    :param credentials: The authorization credentials to attach to requests.
+                        These credentials identify this application to the service.
+                        If none are specified, the client will attempt to ascertain
+                        the credentials from the environment.
 
     :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
@@ -54,11 +54,27 @@ class _ErrorReportingLoggingAPI(object):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
+        or :class:`dict`
+    :param client_options: (Optional) Client options used to set user options
+        on the client. API Endpoint should be set through client_options.
     """
 
-    def __init__(self, project, credentials=None, _http=None, client_info=None):
+    def __init__(
+        self,
+        project,
+        credentials=None,
+        _http=None,
+        client_info=None,
+        client_options=None,
+    ):
         self.logging_client = google.cloud.logging.client.Client(
-            project, credentials, _http=_http, client_info=client_info
+            project,
+            credentials,
+            _http=_http,
+            client_info=client_info,
+            client_options=client_options,
         )
 
     def report_error_event(self, error_report):

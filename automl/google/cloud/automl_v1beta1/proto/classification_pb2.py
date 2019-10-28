@@ -30,7 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1B\023ClassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n6google/cloud/automl_v1beta1/proto/classification.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x30google/cloud/automl_v1beta1/proto/temporal.proto\x1a\x1cgoogle/api/annotations.proto")\n\x18\x43lassificationAnnotation\x12\r\n\x05score\x18\x01 \x01(\x02"\xc7\x01\n\x1dVideoClassificationAnnotation\x12\x0c\n\x04type\x18\x01 \x01(\t\x12X\n\x19\x63lassification_annotation\x18\x02 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotation\x12>\n\x0ctime_segment\x18\x03 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TimeSegment"\x93\x07\n\x1f\x43lassificationEvaluationMetrics\x12\x0e\n\x06\x61u_prc\x18\x01 \x01(\x02\x12\x17\n\x0b\x62\x61se_au_prc\x18\x02 \x01(\x02\x42\x02\x18\x01\x12\x0e\n\x06\x61u_roc\x18\x06 \x01(\x02\x12\x10\n\x08log_loss\x18\x07 \x01(\x02\x12u\n\x18\x63onfidence_metrics_entry\x18\x03 \x03(\x0b\x32S.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry\x12\x66\n\x10\x63onfusion_matrix\x18\x04 \x01(\x0b\x32L.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x05 \x03(\t\x1a\xfc\x02\n\x16\x43onfidenceMetricsEntry\x12\x1c\n\x14\x63onfidence_threshold\x18\x01 \x01(\x02\x12\x1a\n\x12position_threshold\x18\x0e \x01(\x05\x12\x0e\n\x06recall\x18\x02 \x01(\x02\x12\x11\n\tprecision\x18\x03 \x01(\x02\x12\x1b\n\x13\x66\x61lse_positive_rate\x18\x08 \x01(\x02\x12\x10\n\x08\x66\x31_score\x18\x04 \x01(\x02\x12\x12\n\nrecall_at1\x18\x05 \x01(\x02\x12\x15\n\rprecision_at1\x18\x06 \x01(\x02\x12\x1f\n\x17\x66\x61lse_positive_rate_at1\x18\t \x01(\x02\x12\x14\n\x0c\x66\x31_score_at1\x18\x07 \x01(\x02\x12\x1b\n\x13true_positive_count\x18\n \x01(\x03\x12\x1c\n\x14\x66\x61lse_positive_count\x18\x0b \x01(\x03\x12\x1c\n\x14\x66\x61lse_negative_count\x18\x0c \x01(\x03\x12\x1b\n\x13true_negative_count\x18\r \x01(\x03\x1a\xaa\x01\n\x0f\x43onfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x03(\t\x12]\n\x03row\x18\x02 \x03(\x0b\x32P.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row\x1a\x1c\n\x03Row\x12\x15\n\rexample_count\x18\x01 \x03(\x05*Y\n\x12\x43lassificationType\x12#\n\x1f\x43LASSIFICATION_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nMULTICLASS\x10\x01\x12\x0e\n\nMULTILABEL\x10\x02\x42\xb8\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x13\x43lassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n6google/cloud/automl_v1beta1/proto/classification.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x30google/cloud/automl_v1beta1/proto/temporal.proto\x1a\x1cgoogle/api/annotations.proto")\n\x18\x43lassificationAnnotation\x12\r\n\x05score\x18\x01 \x01(\x02"\xc7\x01\n\x1dVideoClassificationAnnotation\x12\x0c\n\x04type\x18\x01 \x01(\t\x12X\n\x19\x63lassification_annotation\x18\x02 \x01(\x0b\x32\x35.google.cloud.automl.v1beta1.ClassificationAnnotation\x12>\n\x0ctime_segment\x18\x03 \x01(\x0b\x32(.google.cloud.automl.v1beta1.TimeSegment"\xa9\x07\n\x1f\x43lassificationEvaluationMetrics\x12\x0e\n\x06\x61u_prc\x18\x01 \x01(\x02\x12\x17\n\x0b\x62\x61se_au_prc\x18\x02 \x01(\x02\x42\x02\x18\x01\x12\x0e\n\x06\x61u_roc\x18\x06 \x01(\x02\x12\x10\n\x08log_loss\x18\x07 \x01(\x02\x12u\n\x18\x63onfidence_metrics_entry\x18\x03 \x03(\x0b\x32S.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry\x12\x66\n\x10\x63onfusion_matrix\x18\x04 \x01(\x0b\x32L.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x05 \x03(\t\x1a\xfc\x02\n\x16\x43onfidenceMetricsEntry\x12\x1c\n\x14\x63onfidence_threshold\x18\x01 \x01(\x02\x12\x1a\n\x12position_threshold\x18\x0e \x01(\x05\x12\x0e\n\x06recall\x18\x02 \x01(\x02\x12\x11\n\tprecision\x18\x03 \x01(\x02\x12\x1b\n\x13\x66\x61lse_positive_rate\x18\x08 \x01(\x02\x12\x10\n\x08\x66\x31_score\x18\x04 \x01(\x02\x12\x12\n\nrecall_at1\x18\x05 \x01(\x02\x12\x15\n\rprecision_at1\x18\x06 \x01(\x02\x12\x1f\n\x17\x66\x61lse_positive_rate_at1\x18\t \x01(\x02\x12\x14\n\x0c\x66\x31_score_at1\x18\x07 \x01(\x02\x12\x1b\n\x13true_positive_count\x18\n \x01(\x03\x12\x1c\n\x14\x66\x61lse_positive_count\x18\x0b \x01(\x03\x12\x1c\n\x14\x66\x61lse_negative_count\x18\x0c \x01(\x03\x12\x1b\n\x13true_negative_count\x18\r \x01(\x03\x1a\xc0\x01\n\x0f\x43onfusionMatrix\x12\x1a\n\x12\x61nnotation_spec_id\x18\x01 \x03(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x03(\t\x12]\n\x03row\x18\x02 \x03(\x0b\x32P.google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.Row\x1a\x1c\n\x03Row\x12\x15\n\rexample_count\x18\x01 \x03(\x05*Y\n\x12\x43lassificationType\x12#\n\x1f\x43LASSIFICATION_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nMULTICLASS\x10\x01\x12\x0e\n\nMULTILABEL\x10\x02\x42\xb8\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\x13\x43lassificationProtoZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_temporal__pb2.DESCRIPTOR,
@@ -60,8 +60,8 @@ _CLASSIFICATIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1330,
-    serialized_end=1419,
+    serialized_start=1352,
+    serialized_end=1441,
 )
 _sym_db.RegisterEnumDescriptor(_CLASSIFICATIONTYPE)
 
@@ -491,8 +491,8 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX_ROW = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1300,
-    serialized_end=1328,
+    serialized_start=1322,
+    serialized_end=1350,
 )
 
 _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
@@ -521,9 +521,27 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name",
+            index=1,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="row",
             full_name="google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.row",
-            index=1,
+            index=2,
             number=2,
             type=11,
             cpp_type=10,
@@ -548,7 +566,7 @@ _CLASSIFICATIONEVALUATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=1158,
-    serialized_end=1328,
+    serialized_end=1350,
 )
 
 _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
@@ -697,7 +715,7 @@ _CLASSIFICATIONEVALUATIONMETRICS = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=413,
-    serialized_end=1328,
+    serialized_end=1350,
 )
 
 _VIDEOCLASSIFICATIONANNOTATION.fields_by_name[
@@ -906,6 +924,13 @@ ClassificationEvaluationMetrics = _reflection.GeneratedProtocolMessageType(
             matrix. For Tables CLASSIFICATION  [prediction\_type][google.c
             loud.automl.v1beta1.TablesModelMetadata.prediction\_type] only
             list of [annotation\_spec\_display\_name-s][] is populated.
+        display_name:
+            Output only. Display name of the annotation specs used in the
+            confusion matrix, as they were at the moment of the
+            evaluation. For Tables CLASSIFICATION  [prediction\_type-s][go
+            ogle.cloud.automl.v1beta1.TablesModelMetadata.prediction\_type
+            ], distinct values of the target column at the moment of the
+            model evaluation are populated here.
         row:
             Output only. Rows in the confusion matrix. The number of rows
             is equal to the size of ``annotation_spec_id``.

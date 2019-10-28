@@ -18,6 +18,9 @@ API Reference
   buckets
   acl
   batch
+  constants
+  hmac_key
+  notification
 
 Changelog
 ---------

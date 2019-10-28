@@ -4,6 +4,46 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 1.0.2
+
+09-30-2019 11:57 PDT
+
+
+### Implementation Changes
+
+- Streaming pull shouldn't need `subscriptions.get` permission ([#9360](https://github.com/googleapis/google-cloud-python/pull/9360)).
+
+## 1.0.1
+
+09-27-2019 07:01 PDT
+
+
+### Implementation Changes
+- Set default stream ACK deadline to subscriptions'. ([#9268](https://github.com/googleapis/google-cloud-python/pull/9268))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Link to correct TimeoutError in futures docs. ([#9216](https://github.com/googleapis/google-cloud-python/pull/9216))
+
+### Internal / Testing Changes
+- Adjust messaging RPC timeout settings (via synth). [#9279](https://github.com/googleapis/google-cloud-python/pull/9279)
+
+## 1.0.0
+
+08-29-2019 09:27 PDT
+
+### Implementation Changes
+- Add 'ReceivedMessage.delivery_attempt' field (via synth). ([#9098](https://github.com/googleapis/google-cloud-python/pull/9098))
+- Remove send/recv msg size limit, update docstrings (via synth). ([#8964](https://github.com/googleapis/google-cloud-python/pull/8964))
+
+### Documentation
+- Update docstrings for client kwargs and fix return types uris ([#9037](https://github.com/googleapis/google-cloud-python/pull/9037))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Add dead-letter-policy field in preparation for its implementation (via synth) ([#9078](https://github.com/googleapis/google-cloud-python/pull/9078))
+
 ## 0.45.0
 
 07-31-2019 02:03 PDT

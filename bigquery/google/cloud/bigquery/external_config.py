@@ -26,6 +26,7 @@ import copy
 from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _int_or_none
+from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery.schema import SchemaField
 
 
@@ -175,8 +176,7 @@ class BigtableColumn(object):
                 API.
 
         Returns:
-            :class:`~.external_config.BigtableColumn`:
-                Configuration parsed from ``resource``.
+            external_config.BigtableColumn: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -248,7 +248,7 @@ class BigtableColumnFamily(object):
 
     @property
     def columns(self):
-        """List[:class:`~.external_config.BigtableColumn`]: Lists of columns
+        """List[BigtableColumn]: Lists of columns
         that should be exposed as individual fields.
 
         See
@@ -368,8 +368,7 @@ class BigtableOptions(object):
                 API.
 
         Returns:
-            :class:`~.external_config.BigtableOptions`:
-                Configuration parsed from ``resource``.
+            BigtableOptions: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -475,8 +474,7 @@ class CSVOptions(object):
         """Build an API representation of this object.
 
         Returns:
-            Dict[str, Any]:
-                A dictionary in the format used by the BigQuery API.
+            Dict[str, Any]: A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
@@ -492,8 +490,7 @@ class CSVOptions(object):
                 API.
 
         Returns:
-            :class:`~.external_config.CSVOptions`:
-                Configuration parsed from ``resource``.
+            CSVOptions: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -524,12 +521,24 @@ class GoogleSheetsOptions(object):
     def skip_leading_rows(self, value):
         self._properties["skipLeadingRows"] = str(value)
 
+    @property
+    def range(self):
+        """str: The range of a sheet that BigQuery will query from.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#GoogleSheetsOptions
+        """
+        return _str_or_none(self._properties.get("range"))
+
+    @range.setter
+    def range(self, value):
+        self._properties["range"] = value
+
     def to_api_repr(self):
         """Build an API representation of this object.
 
         Returns:
-            Dict[str, Any]:
-                A dictionary in the format used by the BigQuery API.
+            Dict[str, Any]: A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
 
@@ -545,8 +554,7 @@ class GoogleSheetsOptions(object):
                 API.
 
         Returns:
-            :class:`~.external_config.GoogleSheetsOptions`:
-                Configuration parsed from ``resource``.
+            GoogleSheetsOptions: Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -560,7 +568,7 @@ class ExternalConfig(object):
     """Description of an external data source.
 
     Args:
-        source_format (:class:`~.external_config.ExternalSourceFormat`):
+        source_format (ExternalSourceFormat):
             See :attr:`source_format`.
     """
 
@@ -705,8 +713,7 @@ class ExternalConfig(object):
                 API.
 
         Returns:
-            :class:`~.external_config.ExternalConfig`:
-                Configuration parsed from ``resource``.
+            ExternalConfig: Configuration parsed from ``resource``.
         """
         config = cls(resource["sourceFormat"])
         for optcls in _OPTION_CLASSES:
