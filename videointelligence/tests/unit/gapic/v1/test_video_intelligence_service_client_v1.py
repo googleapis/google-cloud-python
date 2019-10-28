@@ -93,7 +93,7 @@ class TestVideoIntelligenceServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            features=features
+            features=features, input_uri=input_uri
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
