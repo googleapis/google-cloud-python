@@ -92,5 +92,6 @@ class ClientInfo(object):
 
         if self.client_library_version is not None:
             ua += "gccl/{client_library_version} "
+            ua += "gcloud-python/{client_library_version} "
 
         return ua.format(**self.__dict__).strip()
