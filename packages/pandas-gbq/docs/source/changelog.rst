@@ -11,6 +11,9 @@ Changelog
   ``max_results`` to 0 to ignore query outputs, such as for DML or DDL
   queries. (:issue:`102`)
 
+- Add ``progress_bar_type`` argument to :func:`~pandas_gbq.read_gbq()`. Use this
+  argument to display a progress bar when downloading data. (:issue:`182`)
+
 Documentation
 ~~~~~~~~~~~~~
 
