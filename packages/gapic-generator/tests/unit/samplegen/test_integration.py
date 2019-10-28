@@ -197,7 +197,7 @@ def test_generate_sample_config_fpaths(fs):
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
@@ -243,7 +243,7 @@ def test_generate_sample_config_fpaths_bad_contents_old(fs):
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.1.0
             samples:
             - service: google.cloud.language.v1.LanguageService
@@ -258,7 +258,7 @@ def test_generate_sample_config_fpaths_bad_contents_no_samples(fs):
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             '''
         )
@@ -274,13 +274,13 @@ def test_generate_sample_config_partial_config(fs):
             '''
             ---
             # Note: not a valid config because of the type.
-            type: com.google.api.codegen.SampleConfigPronto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigPronto
             schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
             ---
             # Note: this one IS a valid config
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService

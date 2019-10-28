@@ -25,7 +25,7 @@ from gapic.samplegen_utils import types
 
 MIN_SCHEMA_VERSION = (1, 2, 0)
 
-VALID_CONFIG_TYPE = "com.google.api.codegen.SampleConfigProto"
+VALID_CONFIG_TYPE = "com.google.api.codegen.samplegen.v1p2.SampleConfigProto"
 
 
 def coerce_response_name(s: str) -> str:

@@ -278,7 +278,7 @@ def test_parse_sample_paths(fs):
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - service: google.cloud.language.v1.LanguageService
@@ -318,7 +318,7 @@ def test_samplegen_config_to_output_files(
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - id: squid_sample
@@ -406,7 +406,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
         contents=dedent(
             '''
             ---
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - id: squid_sample
@@ -478,7 +478,7 @@ def test_generator_duplicate_samples(fs):
         contents=dedent(
             '''
             # Note: the samples are duplicates.
-            type: com.google.api.codegen.SampleConfigProto
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
             schema_version: 1.2.0
             samples:
             - id: squid_sample
