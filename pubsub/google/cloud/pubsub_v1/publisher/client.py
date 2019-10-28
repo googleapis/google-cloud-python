@@ -17,6 +17,7 @@ from __future__ import absolute_import
 import copy
 import os
 import pkg_resources
+import threading
 
 import grpc
 import six
@@ -133,6 +134,7 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
+        self._stoping_lock = threading.Lock()
         self._batches = {}
         self._is_stopped = False
 
@@ -249,8 +251,9 @@ class Client(object):
                 If called after publisher has been stopped
                 by a `stop()` method call.
         """
-        if self._is_stopped:
-            raise ValueError("Cannot publish on a stopped publisher.")
+        with self._stoping_lock:
+            if self._is_stopped:
+                raise ValueError("Cannot publish on a stopped publisher.")
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
@@ -297,9 +300,11 @@ class Client(object):
             returned by `publish()` to make sure all publish
             requests completed, either in success or error.
         """
-        if self._is_stopped:
-            raise ValueError("Cannot stop a publisher already stopped.")
+        with self._stoping_lock:
+            if self._is_stopped:
+                raise ValueError("Cannot stop a publisher already stopped.")
 
-        self._is_stopped = True
+            self._is_stopped = True
+
         for topic in self._batches:
             self._batches[topic].commit()
