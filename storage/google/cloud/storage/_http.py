@@ -35,7 +35,7 @@ class Connection(_http.JSONConnection):
         super(Connection, self).__init__(client, client_info)
         self.API_BASE_URL = api_endpoint
         self._client_info.client_library_version = __version__
-        
+
         # TODO: When metrics all use gccl, this should be removed #9552
         if self._client_info.user_agent is None:
             self._client_info.user_agent = ""
