@@ -37,7 +37,7 @@ class Connection(_http.JSONConnection):
         self._client_info.client_library_version = __version__
 
         # TODO: When metrics all use gccl, this should be removed #9552
-        if self._client_info.user_agent is None:
+        if self._client_info.user_agent is None:  # pragma: no branch
             self._client_info.user_agent = ""
         self._client_info.user_agent += " gcloud-python/{} ".format(__version__)
 
