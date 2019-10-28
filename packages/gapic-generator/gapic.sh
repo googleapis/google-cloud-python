@@ -64,8 +64,8 @@ if [ -z "$IMAGE" ] || [ -z "$IN" ] || [ -z "$OUT" ]; then
 fi
 
 # Ensure that the input directory exists (and is a directory).
-if ! [ -d $IN ]; then
-  >&2 echo "Directory does not exist: $IN"
+if ! [ -d "${PROTO_PATH}/$IN" ]; then
+  >&2 echo "Directory does not exist: ${PROTO_PATH}/$IN"
   exit 2
 fi
 
@@ -85,10 +85,19 @@ if [ "$(ls -A $OUT )"]; then
   >&2 echo "Warning: Output directory is not empty."
 fi
 
+# Convert IN and OUT to absolute paths for Docker
+CWD=`pwd`
+cd ${PROTO_PATH}/$IN
+ABS_IN=`pwd`
+cd $CWD
+cd $OUT
+ABS_OUT=`pwd`
+cd $CWD
+
 # Generate the client library.
 docker run \
-  --mount type=bind,source=${PROTO_PATH}/${IN},destination=/in/${IN},readonly \
-  --mount type=bind,source=$OUT,destination=/out \
+  --mount type=bind,source=${ABS_IN},destination=/in/${IN},readonly \
+  --mount type=bind,source=${ABS_OUT},destination=/out \
   --rm \
   --user $UID \
   $IMAGE \
