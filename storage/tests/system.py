@@ -172,6 +172,20 @@ class TestStorageBuckets(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
+    def test_bucket_create_w_alt_storage_class(self):
+        from google.cloud.storage import constants
+
+        new_bucket_name = "bucket-w-archive" + unique_resource_id("-")
+        self.assertRaises(
+            exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
+        )
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.storage_class = constants.ARCHIVE_STORAGE_CLASS
+        retry_429_503(bucket.create)()
+        self.case_buckets_to_delete.append(new_bucket_name)
+        created = Config.CLIENT.get_bucket(new_bucket_name)
+        self.assertEqual(created.storage_class, constants.ARCHIVE_STORAGE_CLASS)
+
     def test_lifecycle_rules(self):
         from google.cloud.storage import constants
 
