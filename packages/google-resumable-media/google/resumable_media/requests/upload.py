@@ -169,7 +169,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
        fake_response.headers[u'location'] = resumable_url
 
        post_method = mock.Mock(return_value=fake_response, spec=[])
-       transport = mock.Mock(request=post_method, spec=[u'request'])
+       transport = mock.Mock(request=post_method, spec=['request'])
 
     .. doctest:: resumable-explicit-size
 
@@ -219,7 +219,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
        fake_response.headers[u'location'] = resumable_url
 
        post_method = mock.Mock(return_value=fake_response, spec=[])
-       transport = mock.Mock(request=post_method, spec=[u'request'])
+       transport = mock.Mock(request=post_method, spec=['request'])
 
        data = b'some MOAR bytes!'
        metadata = {u'name': u'some-file.jpg'}
@@ -260,7 +260,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
        fake_response.headers[u'location'] = resumable_url
 
        post_method = mock.Mock(return_value=fake_response, spec=[])
-       transport = mock.Mock(request=post_method, spec=[u'request'])
+       transport = mock.Mock(request=post_method, spec=['request'])
 
        metadata = {u'name': u'some-file.jpg'}
        content_type = u'application/octet-stream'
@@ -375,7 +375,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
            from google import resumable_media
            import google.resumable_media.requests.upload as upload_mod
 
-           transport = mock.Mock(spec=[u'request'])
+           transport = mock.Mock(spec=['request'])
            fake_response = requests.Response()
            fake_response.status_code = int(http_client.BAD_REQUEST)
            transport.request.return_value = fake_response

@@ -56,9 +56,35 @@ def cleanup():
         assert response.status_code == http_client.NO_CONTENT
 
 
+@pytest.fixture
+def img_stream():
+    """Open-file as a fixture.
+
+    This is so that an entire test can execute in the context of
+    the context manager without worrying about closing the file.
+    """
+    with open(IMAGE_FILE, u"rb") as file_obj:
+        yield file_obj
+
+
 def get_md5(data):
     hash_obj = hashlib.md5(data)
     return base64.b64encode(hash_obj.digest())
+
+
+def get_upload_id(upload_url):
+    parse_result = urllib_parse.urlparse(upload_url)
+    parsed_query = urllib_parse.parse_qs(parse_result.query)
+    # NOTE: We are unpacking here, so asserting exactly one match.
+    upload_id, = parsed_query[u"upload_id"]
+    return upload_id
+
+
+def get_num_chunks(total_bytes, chunk_size):
+    expected_chunks, remainder = divmod(total_bytes, chunk_size)
+    if remainder > 0:
+        expected_chunks += 1
+    return expected_chunks
 
 
 def check_response(
@@ -111,6 +137,50 @@ def check_does_not_exist(transport, blob_name):
     # Make sure we are creating a **new** object.
     response = transport.get(metadata_url)
     assert response.status_code == http_client.NOT_FOUND
+
+
+def check_initiate(response, upload, stream, transport, metadata):
+    assert response.status_code == http_client.OK
+    assert response.content == b""
+    upload_id = get_upload_id(upload.resumable_url)
+    assert response.headers[u"x-guploader-uploadid"] == upload_id
+    assert stream.tell() == 0
+    # Make sure the upload cannot be re-initiated.
+    with pytest.raises(ValueError) as exc_info:
+        upload.initiate(transport, stream, metadata, JPEG_CONTENT_TYPE)
+
+    exc_info.match(u"This upload has already been initiated.")
+
+
+def check_bad_chunk(upload, transport):
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
+        upload.transmit_next_chunk(transport)
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == http_client.BAD_REQUEST
+    assert response.content == BAD_CHUNK_SIZE_MSG
+
+
+def transmit_chunks(
+    upload, transport, blob_name, metadata, num_chunks=0, content_type=JPEG_CONTENT_TYPE
+):
+    while not upload.finished:
+        num_chunks += 1
+        response = upload.transmit_next_chunk(transport)
+        if upload.finished:
+            assert upload.bytes_uploaded == upload.total_bytes
+            check_response(
+                response,
+                blob_name,
+                total_bytes=upload.total_bytes,
+                metadata=metadata,
+                content_type=content_type,
+            )
+        else:
+            assert upload.bytes_uploaded == num_chunks * upload.chunk_size
+            assert response.status_code == resumable_media.PERMANENT_REDIRECT
+
+    return num_chunks
 
 
 def test_simple_upload(authorized_transport, bucket, cleanup):
@@ -210,67 +280,6 @@ def test_multipart_upload_with_headers(authorized_transport, bucket, cleanup):
     check_tombstoned(upload, authorized_transport, data, metadata, BYTES_CONTENT_TYPE)
 
 
-@pytest.fixture
-def img_stream():
-    """Open-file as a fixture.
-
-    This is so that an entire test can execute in the context of
-    the context manager without worrying about closing the file.
-    """
-    with open(IMAGE_FILE, u"rb") as file_obj:
-        yield file_obj
-
-
-def get_upload_id(upload_url):
-    parse_result = urllib_parse.urlparse(upload_url)
-    parsed_query = urllib_parse.parse_qs(parse_result.query)
-    # NOTE: We are unpacking here, so asserting exactly one match.
-    upload_id, = parsed_query[u"upload_id"]
-    return upload_id
-
-
-def get_num_chunks(total_bytes, chunk_size):
-    expected_chunks, remainder = divmod(total_bytes, chunk_size)
-    if remainder > 0:
-        expected_chunks += 1
-    return expected_chunks
-
-
-def transmit_chunks(
-    upload, transport, blob_name, metadata, num_chunks=0, content_type=JPEG_CONTENT_TYPE
-):
-    while not upload.finished:
-        num_chunks += 1
-        response = upload.transmit_next_chunk(transport)
-        if upload.finished:
-            assert upload.bytes_uploaded == upload.total_bytes
-            check_response(
-                response,
-                blob_name,
-                total_bytes=upload.total_bytes,
-                metadata=metadata,
-                content_type=content_type,
-            )
-        else:
-            assert upload.bytes_uploaded == num_chunks * upload.chunk_size
-            assert response.status_code == resumable_media.PERMANENT_REDIRECT
-
-    return num_chunks
-
-
-def check_initiate(response, upload, stream, transport, metadata):
-    assert response.status_code == http_client.OK
-    assert response.content == b""
-    upload_id = get_upload_id(upload.resumable_url)
-    assert response.headers[u"x-guploader-uploadid"] == upload_id
-    assert stream.tell() == 0
-    # Make sure the upload cannot be re-initiated.
-    with pytest.raises(ValueError) as exc_info:
-        upload.initiate(transport, stream, metadata, JPEG_CONTENT_TYPE)
-
-    exc_info.match(u"This upload has already been initiated.")
-
-
 def _resumable_upload_helper(authorized_transport, stream, cleanup, headers=None):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
@@ -310,15 +319,6 @@ def test_resumable_upload_with_headers(
 ):
     headers = utils.get_encryption_headers()
     _resumable_upload_helper(authorized_transport, img_stream, cleanup, headers=headers)
-
-
-def check_bad_chunk(upload, transport):
-    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
-        upload.transmit_next_chunk(transport)
-    error = exc_info.value
-    response = error.response
-    assert response.status_code == http_client.BAD_REQUEST
-    assert response.content == BAD_CHUNK_SIZE_MSG
 
 
 def test_resumable_upload_bad_chunk_size(authorized_transport, img_stream):

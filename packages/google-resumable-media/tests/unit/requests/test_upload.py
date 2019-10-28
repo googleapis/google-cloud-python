@@ -47,7 +47,7 @@ class TestSimpleUpload(object):
         content_type = BASIC_CONTENT
         upload = upload_mod.SimpleUpload(SIMPLE_URL)
 
-        transport = mock.Mock(spec=[u"request"])
+        transport = mock.Mock(spec=["request"])
         transport.request.return_value = _make_response()
         assert not upload.finished
         ret_val = upload.transmit(transport, data, content_type)
@@ -71,7 +71,7 @@ class TestMultipartUpload(object):
         content_type = BASIC_CONTENT
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
 
-        transport = mock.Mock(spec=[u"request"])
+        transport = mock.Mock(spec=["request"])
         transport.request.return_value = _make_response()
         assert not upload.finished
         ret_val = upload.transmit(transport, data, metadata, content_type)
@@ -108,7 +108,7 @@ class TestResumableUpload(object):
         stream = io.BytesIO(data)
         metadata = {u"name": u"got-jokes.txt"}
 
-        transport = mock.Mock(spec=[u"request"])
+        transport = mock.Mock(spec=["request"])
         location = (u"http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
         response_headers = {u"location": location}
         post_response = _make_response(headers=response_headers)
@@ -155,7 +155,7 @@ class TestResumableUpload(object):
 
     @staticmethod
     def _chunk_mock(status_code, response_headers):
-        transport = mock.Mock(spec=[u"request"])
+        transport = mock.Mock(spec=["request"])
         put_response = _make_response(status_code=status_code, headers=response_headers)
         transport.request.return_value = put_response
 
@@ -199,7 +199,7 @@ class TestResumableUpload(object):
     def test_recover(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         upload._invalid = True  # Make sure invalid.
-        upload._stream = mock.Mock(spec=[u"seek"])
+        upload._stream = mock.Mock(spec=["seek"])
         upload._resumable_url = u"http://test.invalid?upload_id=big-deal"
 
         end = 55555
@@ -225,5 +225,5 @@ class TestResumableUpload(object):
 def _make_response(status_code=http_client.OK, headers=None):
     headers = headers or {}
     return mock.Mock(
-        headers=headers, status_code=status_code, spec=[u"headers", u"status_code"]
+        headers=headers, status_code=status_code, spec=["headers", "status_code"]
     )

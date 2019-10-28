@@ -577,7 +577,7 @@ class TestResumableUpload(object):
         response = mock.Mock(
             content=response_body,
             status_code=http_client.OK,
-            spec=[u"content", u"status_code"],
+            spec=["content", "status_code"],
         )
         ret_val = upload._process_response(response, bytes_sent)
         assert ret_val is None
@@ -703,7 +703,7 @@ class TestResumableUpload(object):
         _fix_up_virtual(upload)
 
         upload._invalid = True
-        upload._stream = mock.Mock(spec=[u"seek"])
+        upload._stream = mock.Mock(spec=["seek"])
         upload._bytes_uploaded = mock.sentinel.not_zero
         assert upload.bytes_uploaded != 0
 
@@ -720,7 +720,7 @@ class TestResumableUpload(object):
         _fix_up_virtual(upload)
 
         upload._invalid = True
-        upload._stream = mock.Mock(spec=[u"seek"])
+        upload._stream = mock.Mock(spec=["seek"])
         upload._bytes_uploaded = mock.sentinel.not_zero
 
         headers = {u"range": u"bites=9-11"}
@@ -744,7 +744,7 @@ class TestResumableUpload(object):
         _fix_up_virtual(upload)
 
         upload._invalid = True
-        upload._stream = mock.Mock(spec=[u"seek"])
+        upload._stream = mock.Mock(spec=["seek"])
         upload._bytes_uploaded = mock.sentinel.not_zero
         assert upload.bytes_uploaded != 0
 
@@ -925,7 +925,7 @@ class Test_get_content_range(object):
 def _make_response(status_code=http_client.OK, headers=None):
     headers = headers or {}
     return mock.Mock(
-        headers=headers, status_code=status_code, spec=[u"headers", u"status_code"]
+        headers=headers, status_code=status_code, spec=["headers", "status_code"]
     )
 
 

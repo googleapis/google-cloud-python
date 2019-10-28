@@ -78,12 +78,12 @@ access to the resource:
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.OK)
    fake_response.headers[u'Content-Length'] = u'1364156'
-   fake_content = mock.MagicMock(spec=[u'__len__'])
+   fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = 1364156
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=get_method, spec=[u'request'])
+   transport = mock.Mock(request=get_method, spec=['request'])
 
 .. doctest:: basic-download
 
@@ -127,12 +127,12 @@ specify ``start`` and ``end`` byte positions (both optional):
    fake_response.headers[u'Content-Length'] = u'{:d}'.format(slice_size)
    content_range = u'bytes {:d}-{:d}/1364156'.format(start, end)
    fake_response.headers[u'Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=[u'__len__'])
+   fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=get_method, spec=[u'request'])
+   transport = mock.Mock(request=get_method, spec=['request'])
 
 .. doctest:: basic-download-with-slice
 
@@ -188,7 +188,7 @@ having to fit in memory all at once.
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=get_method, spec=[u'request'])
+   transport = mock.Mock(request=get_method, spec=['request'])
 
 .. doctest:: chunked-download
 
@@ -240,7 +240,7 @@ not be the same size as the other chunks:
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
-   stream = mock.Mock(spec=[u'write'])
+   stream = mock.Mock(spec=['write'])
    download = ChunkedDownload(media_url, fifty_mb, stream)
    download._bytes_downloaded = 20 * fifty_mb
    download._total_bytes = one_gb
@@ -252,12 +252,12 @@ not be the same size as the other chunks:
    content_range = u'bytes {:d}-{:d}/{:d}'.format(
        20 * fifty_mb, one_gb - 1, one_gb)
    fake_response.headers[u'Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=[u'__len__'])
+   fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=get_method, spec=[u'request'])
+   transport = mock.Mock(request=get_method, spec=['request'])
 
 .. doctest:: chunked-download-end
 
@@ -318,7 +318,7 @@ associated with the resource.
    fake_response._content = json.dumps(payload).encode(u'utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=post_method, spec=[u'request'])
+   transport = mock.Mock(request=post_method, spec=['request'])
 
 .. doctest:: simple-upload
    :options: +NORMALIZE_WHITESPACE
@@ -375,7 +375,7 @@ will be raised:
    fake_response.status_code = int(http_client.SERVICE_UNAVAILABLE)
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=post_method, spec=[u'request'])
+   transport = mock.Mock(request=post_method, spec=['request'])
 
    time_sleep = time.sleep
    def dont_sleep(seconds):
@@ -453,7 +453,7 @@ accepts an extra required argument: ``metadata``.
    fake_response._content = json.dumps(payload).encode(u'utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=post_method, spec=[u'request'])
+   transport = mock.Mock(request=post_method, spec=['request'])
 
 .. doctest:: multipart-upload
 
@@ -542,7 +542,7 @@ object or any other stream implementing the same interface.
    fake_response.headers[u'x-guploader-uploadid'] = upload_id
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(request=post_method, spec=[u'request'])
+   transport = mock.Mock(request=post_method, spec=['request'])
 
 .. doctest:: resumable-initiate
 
@@ -625,7 +625,7 @@ transmitted in chunks until completion:
    # Use the fake responses to mock a transport.
    responses = [fake_response0, fake_response1, fake_response2]
    put_method = mock.Mock(side_effect=responses, spec=[])
-   transport = mock.Mock(request=put_method, spec=[u'request'])
+   transport = mock.Mock(request=put_method, spec=['request'])
 
 .. doctest:: resumable-transmit
 
@@ -661,6 +661,8 @@ transmitted in chunks until completion:
 from google.resumable_media.requests.download import ChunkedDownload
 from google.resumable_media.requests.download import Download
 from google.resumable_media.requests.upload import MultipartUpload
+from google.resumable_media.requests.download import RawChunkedDownload
+from google.resumable_media.requests.download import RawDownload
 from google.resumable_media.requests.upload import ResumableUpload
 from google.resumable_media.requests.upload import SimpleUpload
 
@@ -669,6 +671,8 @@ __all__ = [
     u"ChunkedDownload",
     u"Download",
     u"MultipartUpload",
+    u"RawChunkedDownload",
+    u"RawDownload",
     u"ResumableUpload",
     u"SimpleUpload",
 ]

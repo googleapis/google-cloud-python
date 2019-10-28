@@ -354,24 +354,36 @@ class ChunkedDownload(DownloadBase):
             self._get_status_code,
             callback=self._make_invalid,
         )
-        content_length = _helpers.header_required(
-            response, u"content-length", self._get_headers, callback=self._make_invalid
-        )
-        num_bytes = int(content_length)
-        _, end_byte, total_bytes = get_range_info(
+        headers = self._get_headers(response)
+        response_body = self._get_body(response)
+
+        start_byte, end_byte, total_bytes = get_range_info(
             response, self._get_headers, callback=self._make_invalid
         )
-        response_body = self._get_body(response)
-        if len(response_body) != num_bytes:
-            self._make_invalid()
-            raise common.InvalidResponse(
+
+        transfer_encoding = headers.get(u"transfer-encoding")
+
+        if transfer_encoding is None:
+            content_length = _helpers.header_required(
                 response,
-                u"Response is different size than content-length",
-                u"Expected",
-                num_bytes,
-                u"Received",
-                len(response_body),
+                u"content-length",
+                self._get_headers,
+                callback=self._make_invalid,
             )
+            num_bytes = int(content_length)
+            if len(response_body) != num_bytes:
+                self._make_invalid()
+                raise common.InvalidResponse(
+                    response,
+                    u"Response is different size than content-length",
+                    u"Expected",
+                    num_bytes,
+                    u"Received",
+                    len(response_body),
+                )
+        else:
+            # 'content-length' header not allowed with chunked encoding.
+            num_bytes = end_byte - start_byte + 1
 
         # First update ``bytes_downloaded``.
         self._bytes_downloaded += num_bytes

@@ -28,13 +28,30 @@ class TestRequestsMixin(object):
 
     def test__get_headers(self):
         headers = {u"fruit": u"apple"}
-        response = mock.Mock(headers=headers, spec=[u"headers"])
+        response = mock.Mock(headers=headers, spec=["headers"])
         assert headers == _helpers.RequestsMixin._get_headers(response)
 
     def test__get_body(self):
         body = b"This is the payload."
-        response = mock.Mock(content=body, spec=[u"content"])
+        response = mock.Mock(content=body, spec=["content"])
         assert body == _helpers.RequestsMixin._get_body(response)
+
+
+class TestRawRequestsMixin(object):
+    def test__get_body_wo_content_consumed(self):
+        body = b"This is the payload."
+        raw = mock.Mock(spec=["stream"])
+        raw.stream.return_value = iter([body])
+        response = mock.Mock(raw=raw, _content=False, spec=["raw", "_content"])
+        assert body == _helpers.RawRequestsMixin._get_body(response)
+        raw.stream.assert_called_once_with(
+            _helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False
+        )
+
+    def test__get_body_w_content_consumed(self):
+        body = b"This is the payload."
+        response = mock.Mock(_content=body, spec=["_content"])
+        assert body == _helpers.RawRequestsMixin._get_body(response)
 
 
 def test_http_request():
@@ -80,11 +97,11 @@ def test_http_request_defaults():
 
 
 def _make_response(status_code):
-    return mock.Mock(status_code=status_code, spec=[u"status_code"])
+    return mock.Mock(status_code=status_code, spec=["status_code"])
 
 
 def _make_transport(*status_codes):
-    transport = mock.Mock(spec=[u"request"])
+    transport = mock.Mock(spec=["request"])
     responses = [_make_response(status_code) for status_code in status_codes]
     transport.request.side_effect = responses
     return transport, responses

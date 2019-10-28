@@ -30,7 +30,7 @@ class Test_header_required(object):
         name = u"some-header"
         value = u"The Right Hand Side"
         headers = {name: value, u"other-name": u"other-value"}
-        response = mock.Mock(headers=headers, spec=[u"headers"])
+        response = mock.Mock(headers=headers, spec=["headers"])
         result = _helpers.header_required(response, name, _get_headers, **kwargs)
         assert result == value
 
@@ -43,7 +43,7 @@ class Test_header_required(object):
         callback.assert_not_called()
 
     def _failure_helper(self, **kwargs):
-        response = mock.Mock(headers={}, spec=[u"headers"])
+        response = mock.Mock(headers={}, spec=["headers"])
         name = u"any-name"
         with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.header_required(response, name, _get_headers, **kwargs)
@@ -232,7 +232,7 @@ class Test_wait_and_retry(object):
 
 
 def _make_response(status_code):
-    return mock.Mock(status_code=status_code, spec=[u"status_code"])
+    return mock.Mock(status_code=status_code, spec=["status_code"])
 
 
 def _get_status_code(response):
