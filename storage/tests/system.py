@@ -173,6 +173,8 @@ class TestStorageBuckets(unittest.TestCase):
         self.assertEqual(created.name, new_bucket_name)
 
     def test_lifecycle_rules(self):
+        from google.cloud.storage import constants
+
         new_bucket_name = "w-lifcycle-rules" + unique_resource_id("-")
         self.assertRaises(
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
@@ -180,13 +182,17 @@ class TestStorageBuckets(unittest.TestCase):
         bucket = Config.CLIENT.bucket(new_bucket_name)
         bucket.add_lifecycle_delete_rule(age=42)
         bucket.add_lifecycle_set_storage_class_rule(
-            "COLDLINE", is_live=False, matches_storage_class=["NEARLINE"]
+            constants.COLDLINE_STORAGE_CLASS,
+            is_live=False,
+            matches_storage_class=[constants.NEARLINE_STORAGE_CLASS],
         )
 
         expected_rules = [
             LifecycleRuleDelete(age=42),
             LifecycleRuleSetStorageClass(
-                "COLDLINE", is_live=False, matches_storage_class=["NEARLINE"]
+                constants.COLDLINE_STORAGE_CLASS,
+                is_live=False,
+                matches_storage_class=[constants.NEARLINE_STORAGE_CLASS],
             ),
         ]
 
@@ -1216,34 +1222,38 @@ class TestStorageRewrite(TestStorageFiles):
 
 class TestStorageUpdateStorageClass(TestStorageFiles):
     def test_update_storage_class_small_file(self):
+        from google.cloud.storage import constants
+
         blob = self.bucket.blob("SmallFile")
 
         file_data = self.FILES["simple"]
         blob.upload_from_filename(file_data["path"])
         self.case_blobs_to_delete.append(blob)
 
-        blob.update_storage_class("NEARLINE")
+        blob.update_storage_class(constants.NEARLINE_STORAGE_CLASS)
         blob.reload()
-        self.assertEqual(blob.storage_class, "NEARLINE")
+        self.assertEqual(blob.storage_class, constants.NEARLINE_STORAGE_CLASS)
 
-        blob.update_storage_class("COLDLINE")
+        blob.update_storage_class(constants.COLDLINE_STORAGE_CLASS)
         blob.reload()
-        self.assertEqual(blob.storage_class, "COLDLINE")
+        self.assertEqual(blob.storage_class, constants.COLDLINE_STORAGE_CLASS)
 
     def test_update_storage_class_large_file(self):
+        from google.cloud.storage import constants
+
         blob = self.bucket.blob("BigFile")
 
         file_data = self.FILES["big"]
         blob.upload_from_filename(file_data["path"])
         self.case_blobs_to_delete.append(blob)
 
-        blob.update_storage_class("NEARLINE")
+        blob.update_storage_class(constants.NEARLINE_STORAGE_CLASS)
         blob.reload()
-        self.assertEqual(blob.storage_class, "NEARLINE")
+        self.assertEqual(blob.storage_class, constants.NEARLINE_STORAGE_CLASS)
 
-        blob.update_storage_class("COLDLINE")
+        blob.update_storage_class(constants.COLDLINE_STORAGE_CLASS)
         blob.reload()
-        self.assertEqual(blob.storage_class, "COLDLINE")
+        self.assertEqual(blob.storage_class, constants.COLDLINE_STORAGE_CLASS)
 
 
 class TestStorageNotificationCRUD(unittest.TestCase):
