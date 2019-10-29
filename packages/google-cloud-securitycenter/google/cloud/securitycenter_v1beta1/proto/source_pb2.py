@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         "\n6google/cloud/securitycenter_v1beta1/proto/source.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"A\n\x06Source\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\tB~\n'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3"
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
 )
 
 
