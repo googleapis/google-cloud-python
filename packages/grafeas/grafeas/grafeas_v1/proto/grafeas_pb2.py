@@ -344,7 +344,7 @@ _OCCURRENCE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=474,
     serialized_end=1079,
@@ -661,7 +661,7 @@ _NOTE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1082,
     serialized_end=1753,
@@ -692,7 +692,7 @@ _GETOCCURRENCEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -881,7 +881,7 @@ _DELETEOCCURRENCEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1052,7 +1052,7 @@ _GETNOTEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1091,7 +1091,7 @@ _GETOCCURRENCENOTEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1280,7 +1280,7 @@ _DELETENOTEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1696,7 +1696,7 @@ _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_BATCHCREATENOTESREQUEST_NOTESENTRY],
+    nested_types=[_BATCHCREATENOTESREQUEST_NOTESENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -1732,7 +1732,7 @@ _BATCHCREATENOTESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1828,7 +1828,7 @@ _BATCHCREATEOCCURRENCESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
