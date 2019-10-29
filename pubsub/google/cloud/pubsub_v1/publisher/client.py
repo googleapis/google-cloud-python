@@ -134,7 +134,7 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
-        self._stoping_lock = threading.Lock()
+        self._stopping_lock = threading.Lock()
         self._batches = {}
         self._is_stopped = False
 
@@ -251,7 +251,7 @@ class Client(object):
                 If called after publisher has been stopped
                 by a `stop()` method call.
         """
-        with self._stoping_lock:
+        with self._stopping_lock:
             if self._is_stopped:
                 raise ValueError("Cannot publish on a stopped publisher.")
         # Sanity check: Is the data being sent as a bytestring?
@@ -300,7 +300,7 @@ class Client(object):
             returned by `publish()` to make sure all publish
             requests completed, either in success or error.
         """
-        with self._stoping_lock:
+        with self._stopping_lock:
             if self._is_stopped:
                 raise ValueError("Cannot stop a publisher already stopped.")
 
