@@ -317,7 +317,7 @@ class IAMConfiguration(dict):
 
     :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
     :params uniform_bucket_level_locked_time:
-        (optional) When the bucket's IAM-only policy was ehabled.
+        (optional) When the bucket's IAM-only policy was enabled.
         This value should normally only be set by the back-end API.
 
     :type bucket_policy_only_enabled: bool
