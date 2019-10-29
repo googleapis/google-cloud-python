@@ -619,7 +619,7 @@ def test_list_columns_and_indexes_without_named_index(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_list_columns_and_indexes_with_named_index_same_as_column_name(
-    module_under_test
+    module_under_test,
 ):
     df_data = collections.OrderedDict(
         [

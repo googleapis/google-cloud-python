@@ -843,7 +843,7 @@ class Test_AsyncJob(unittest.TestCase):
 
         set_exception.assert_called_once()
         args, kw = set_exception.call_args
-        exception, = args
+        (exception,) = args
         self.assertIsInstance(exception, NotFound)
         self.assertEqual(exception.message, "testing")
         self.assertEqual(kw, {})
