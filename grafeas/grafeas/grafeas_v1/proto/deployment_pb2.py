@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         '\n!grafeas_v1/proto/deployment.proto\x12\ngrafeas.v1\x1a\x1fgoogle/protobuf/timestamp.proto"&\n\x0e\x44\x65ploymentNote\x12\x14\n\x0cresource_uri\x18\x01 \x03(\t"\xc7\x02\n\x14\x44\x65ploymentOccurrence\x12\x12\n\nuser_email\x18\x01 \x01(\t\x12/\n\x0b\x64\x65ploy_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rundeploy_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06\x63onfig\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x14\n\x0cresource_uri\x18\x06 \x03(\t\x12;\n\x08platform\x18\x07 \x01(\x0e\x32).grafeas.v1.DeploymentOccurrence.Platform"C\n\x08Platform\x12\x18\n\x14PLATFORM_UNSPECIFIED\x10\x00\x12\x07\n\x03GKE\x10\x01\x12\x08\n\x04\x46LEX\x10\x02\x12\n\n\x06\x43USTOM\x10\x03\x42Q\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
+    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,],
 )
 
 
@@ -87,7 +87,7 @@ _DEPLOYMENTNOTE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -238,7 +238,7 @@ _DEPLOYMENTOCCURRENCE = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_DEPLOYMENTOCCURRENCE_PLATFORM],
+    enum_types=[_DEPLOYMENTOCCURRENCE_PLATFORM,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",

@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         '\n"grafeas_v1/proto/attestation.proto\x12\ngrafeas.v1\x1a\x1dgrafeas_v1/proto/common.proto"f\n\x0f\x41ttestationNote\x12.\n\x04hint\x18\x01 \x01(\x0b\x32 .grafeas.v1.AttestationNote.Hint\x1a#\n\x04Hint\x12\x1b\n\x13human_readable_name\x18\x01 \x01(\t"^\n\x15\x41ttestationOccurrence\x12\x1a\n\x12serialized_payload\x18\x01 \x01(\x0c\x12)\n\nsignatures\x18\x02 \x03(\x0b\x32\x15.grafeas.v1.SignatureBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
-    dependencies=[grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR],
+    dependencies=[grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR,],
 )
 
 
@@ -56,7 +56,7 @@ _ATTESTATIONNOTE_HINT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -94,10 +94,10 @@ _ATTESTATIONNOTE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
-    nested_types=[_ATTESTATIONNOTE_HINT],
+    nested_types=[_ATTESTATIONNOTE_HINT,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
