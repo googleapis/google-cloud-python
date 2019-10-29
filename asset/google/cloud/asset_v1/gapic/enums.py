@@ -27,11 +27,15 @@ class ContentType(enum.IntEnum):
       CONTENT_TYPE_UNSPECIFIED (int): Unspecified content type.
       RESOURCE (int): Resource metadata.
       IAM_POLICY (int): The actual IAM policy set on a resource.
+      ORG_POLICY (int): The Cloud Organization Policy set on an asset.
+      ACCESS_POLICY (int): The Cloud Access context mananger Policy set on an asset.
     """
 
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
+    ORG_POLICY = 4
+    ACCESS_POLICY = 5
 
 
 class NullValue(enum.IntEnum):
