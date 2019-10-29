@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         '\nEgoogle/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto"\xa8\x03\n\x14OrganizationSettings\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x16\x65nable_asset_discovery\x18\x02 \x01(\x08\x12n\n\x16\x61sset_discovery_config\x18\x03 \x01(\x0b\x32N.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig\x1a\xf1\x01\n\x14\x41ssetDiscoveryConfig\x12\x13\n\x0bproject_ids\x18\x01 \x03(\t\x12t\n\x0einclusion_mode\x18\x02 \x01(\x0e\x32\\.google.cloud.securitycenter.v1beta1.OrganizationSettings.AssetDiscoveryConfig.InclusionMode"N\n\rInclusionMode\x12\x1e\n\x1aINCLUSION_MODE_UNSPECIFIED\x10\x00\x12\x10\n\x0cINCLUDE_ONLY\x10\x01\x12\x0b\n\x07\x45XCLUDE\x10\x02\x42~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
 )
 
 
@@ -106,7 +106,7 @@ _ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG_INCLUSIONMODE],
+    enum_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG_INCLUSIONMODE,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -179,7 +179,7 @@ _ORGANIZATIONSETTINGS = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG],
+    nested_types=[_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
