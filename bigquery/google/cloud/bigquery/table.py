@@ -396,10 +396,9 @@ class Table(object):
     def schema(self, value):
         if value is None:
             self._properties["schema"] = None
-            return
-
-        value = _to_schema_fields(value)
-        self._properties["schema"] = {"fields": _build_schema_resource(value)}
+        else:
+            value = _to_schema_fields(value)
+            self._properties["schema"] = {"fields": _build_schema_resource(value)}
 
     @property
     def labels(self):
