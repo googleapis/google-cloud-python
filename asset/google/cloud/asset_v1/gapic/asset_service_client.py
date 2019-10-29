@@ -254,7 +254,7 @@ class AssetServiceClient(object):
             asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:
                 "compute.googleapis.com/Disk". If specified, only matching assets will
                 be returned. See `Introduction to Cloud Asset
-                Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
+                Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
                 for all supported asset types.
             content_type (~google.cloud.asset_v1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
                 returned.
@@ -357,7 +357,7 @@ class AssetServiceClient(object):
             parent (str): Required. The relative name of the root asset. It can only be an
                 organization number (such as "organizations/123"), a project ID (such as
                 "projects/my-project-id")", or a project number (such as "projects/12345").
-            content_type (~google.cloud.asset_v1.types.ContentType): Required. The content type.
+            content_type (~google.cloud.asset_v1.types.ContentType): Optional. The content type.
             read_time_window (Union[dict, ~google.cloud.asset_v1.types.TimeWindow]): Optional. The time window for the asset history. Both start\_time and
                 end\_time are optional and if set, it must be after 2018-10-02 UTC. If
                 end\_time is not set, it is default to current timestamp. If start\_time
@@ -372,7 +372,7 @@ class AssetServiceClient(object):
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
                 and `Resource Name
-                Format <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/resource-name-format>`__
+                Format <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
                 for more info.
 
                 The request becomes a no-op if the asset name list is empty, and the max
