@@ -9,7 +9,7 @@
 10-29-2019 14:26 PDT
 
 ### New Features
-- feat(asset): add `bigquery_destination` to `OutputConfig`; make `content_type` optional argument to `BatchGetAssetsHistoryRequest`; add `uri_prefix` to `GcsDestination`; add `ORG_POLICY` and `ACCESS_POLICY` content type enums ([#9555](https://github.com/googleapis/google-cloud-python/pull/9555))
+- Add `bigquery_destination` to `OutputConfig`; make `content_type` optional argument to `BatchGetAssetsHistoryRequest`; add `uri_prefix` to `GcsDestination`; add `ORG_POLICY` and `ACCESS_POLICY` content type enums ([#9555](https://github.com/googleapis/google-cloud-python/pull/9555))
 
 ### Documentation
 - Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
