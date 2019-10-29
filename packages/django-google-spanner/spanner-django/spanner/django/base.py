@@ -13,11 +13,14 @@
 # limitations under the License.
 
 from django.db.backends.base.base import BaseDatabaseWrapper
+from django.utils.functional import cached_property
+from django.utils.asyncio import async_unsafe
 
 from .parse_utils import (
-        resolve_project_id,
-        parse_spanner_url
+        extract_connection_params
 )
+
+from google.cloud import spanner_v1 as spanner
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -95,29 +98,53 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             'iendswith': 'ENDS_WITH(%s, %s)',
     }
 
-    def get_connection_params(self):
-        # We'll expect settings in the form of either:
-        # {
-        #   "NAME":         "spanner",
-        #   "INSTANCE":     "instance",
-        #   "AUTOCOMMIT":   True or False,
-        #   "READ_ONLY":    True or False,
-        #   "PROJECT_ID":   "<project_id>",
-        # }
-        #
-        # OR
-        # {
-        #   "SPANNER_URL":  "cloudspanner:[//host[:port]]/project/<project_id>/instances/<instance-id>/databases/<database-name>?property-name=property-value
-        # }
-        settings_dict = self.settings_dict
 
-        if settings_dict['SPANNER_URL']:
-            return parse_spanner_url(settings_dict['SPANNER_URL'])
+    def get_connection_params(self):
+        return extract_connection_params(self.settings_dict)
+
+
+    @async_unsafe
+    def get_new_connection(self, conn_params):
+        kwargs = dict(
+            project=conn_params.get('project_id'),
+            user_agent='spanner-django/v1',
+        )
+
+        credentials_uri = conn_params.get('credentials_uri')
+        client = None
+
+        if credentials_uri:
+            client = spanner.Client.from_service_account_json(credentials_uri, **kwargs)
         else:
-            return dict(
-                auto_commit=settings_dict['AUTO_COMMIT'],
-                database=settings_dict['NAME'] or 'spanner',
-                instance=settings_dict['INSTANCE'],
-                project_id=resolve_project_id(settings_dict['PROJECT_ID']),
-                read_only=settings_dict['READ_ONLY'],
-            )
+            client = spanner.Client(**kwargs)
+
+        return client
+
+
+    @async_unsafe
+    def create_cursor(self, name=None):
+        raise Exception('unimplemented')
+
+
+    def disable_constraint_checking(self):
+        raise Exception('unimplemented')
+
+
+    def enable_constraint_checking(self):
+        raise Exception('unimplemented')
+
+
+    def check_constraints(self, table_names=None):
+        raise Exception('unimplemented')
+
+
+    def is_usable(self):
+        raise Exception('unimplemented')
+
+    @cached_property
+    def display_name(self):
+        return 'Spanner'
+
+    @cached_property
+    def data_type_check_constraints(self):
+        raise Exception('unimplemented')
