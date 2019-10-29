@@ -27,9 +27,16 @@ from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
 
-_shared_modules = [any_pb2, wrappers_pb2, status_pb2]
+_shared_modules = [
+    any_pb2,
+    wrappers_pb2,
+    status_pb2,
+]
 
-_local_modules = [bigtable_pb2, data_pb2]
+_local_modules = [
+    bigtable_pb2,
+    data_pb2,
+]
 
 names = []
 
