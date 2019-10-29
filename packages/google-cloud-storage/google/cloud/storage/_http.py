@@ -36,6 +36,11 @@ class Connection(_http.JSONConnection):
         self.API_BASE_URL = api_endpoint
         self._client_info.client_library_version = __version__
 
+        # TODO: When metrics all use gccl, this should be removed #9552
+        if self._client_info.user_agent is None:  # pragma: no branch
+            self._client_info.user_agent = ""
+        self._client_info.user_agent += " gcloud-python/{} ".format(__version__)
+
     API_VERSION = "v1"
     """The version of the API, used in building the API call's URL."""
 
