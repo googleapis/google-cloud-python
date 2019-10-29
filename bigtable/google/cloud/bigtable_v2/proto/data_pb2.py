@@ -754,7 +754,7 @@ _ROWFILTER_CHAIN = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -792,7 +792,7 @@ _ROWFILTER_INTERLEAVE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1231,7 +1231,7 @@ _ROWFILTER = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_ROWFILTER_CHAIN, _ROWFILTER_INTERLEAVE, _ROWFILTER_CONDITION],
+    nested_types=[_ROWFILTER_CHAIN, _ROWFILTER_INTERLEAVE, _ROWFILTER_CONDITION,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -1244,7 +1244,7 @@ _ROWFILTER = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=991,
     serialized_end=2110,
@@ -1441,7 +1441,7 @@ _MUTATION_DELETEFROMFAMILY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1573,7 +1573,7 @@ _MUTATION = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=2113,
     serialized_end=2698,
@@ -1674,7 +1674,7 @@ _READMODIFYWRITERULE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=2701,
     serialized_end=2829,

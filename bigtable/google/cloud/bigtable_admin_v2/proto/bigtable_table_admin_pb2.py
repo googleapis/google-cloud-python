@@ -76,7 +76,7 @@ _CREATETABLEREQUEST_SPLIT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -171,7 +171,7 @@ _CREATETABLEREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_CREATETABLEREQUEST_SPLIT],
+    nested_types=[_CREATETABLEREQUEST_SPLIT,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -334,7 +334,7 @@ _DROPROWRANGEREQUEST = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=660,
     serialized_end=769,
@@ -572,7 +572,7 @@ _DELETETABLEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -681,7 +681,7 @@ _MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1254,
     serialized_end=1419,
@@ -732,7 +732,7 @@ _MODIFYCOLUMNFAMILIESREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION],
+    nested_types=[_MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -768,7 +768,7 @@ _GENERATECONSISTENCYTOKENREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -807,7 +807,7 @@ _GENERATECONSISTENCYTOKENRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -903,7 +903,7 @@ _CHECKCONSISTENCYRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1053,7 +1053,7 @@ _GETSNAPSHOTREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1224,7 +1224,7 @@ _DELETESNAPSHOTREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
