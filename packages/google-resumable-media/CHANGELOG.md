@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## 0.5.0
+
+10-28-2019 09:16 PDT
+
+
+### New Features
+- Add raw download classes. ([#109](https://github.com/googleapis/google-resumable-media-python/pull/109))
+
+### Documentation
+- Update Sphinx inventory URL for requests library. ([#108](https://github.com/googleapis/google-resumable-media-python/pull/108))
+
+### Internal / Testing Changes
+- Initial synth. ([#105](https://github.com/googleapis/google-resumable-media-python/pull/105))
+- Remove CircleCI. ([#102](https://github.com/googleapis/google-resumable-media-python/pull/102))
+
 ## 0.4.1
 
 09-16-2019 17:59 PDT
