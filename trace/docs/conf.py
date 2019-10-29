@@ -264,7 +264,7 @@ latex_documents = [
         u"google-cloud-trace Documentation",
         author,
         "manual",
-    )
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -314,7 +314,7 @@ texinfo_documents = [
         "google-cloud-trace",
         "GAPIC library for the {metadata.shortName} v2 service",
         "APIs",
-    )
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.
