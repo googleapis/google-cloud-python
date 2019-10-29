@@ -62,7 +62,7 @@ _ENCRYPTIONCONFIGURATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
