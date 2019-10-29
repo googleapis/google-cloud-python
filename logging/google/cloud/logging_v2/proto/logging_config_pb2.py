@@ -280,7 +280,7 @@ _LOGSINK = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_LOGSINK_VERSIONFORMAT],
+    enum_types=[_LOGSINK_VERSIONFORMAT,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -292,7 +292,7 @@ _LOGSINK = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=257,
     serialized_end=785,
@@ -323,7 +323,7 @@ _BIGQUERYOPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -494,7 +494,7 @@ _GETSINKREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -701,7 +701,7 @@ _DELETESINKREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1001,7 +1001,7 @@ _GETEXCLUSIONREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1172,7 +1172,7 @@ _DELETEEXCLUSIONREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],

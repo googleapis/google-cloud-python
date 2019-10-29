@@ -425,7 +425,7 @@ _LOGENTRY = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_LOGENTRY_LABELSENTRY],
+    nested_types=[_LOGENTRY_LABELSENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -438,7 +438,7 @@ _LOGENTRY = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=331,
     serialized_end=1113,

@@ -676,7 +676,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(mocked.mock_calls), 1)
         _, args, kwargs = mocked.mock_calls[0]
 
-        handler, = args
+        (handler,) = args
         self.assertIsInstance(handler, CloudLoggingHandler)
 
         handler.transport.worker.stop()
@@ -710,7 +710,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(mocked.mock_calls), 1)
         _, args, kwargs = mocked.mock_calls[0]
 
-        handler, = args
+        (handler,) = args
         self.assertIsInstance(handler, CloudLoggingHandler)
         self.assertEqual(handler.name, name)
         self.assertEqual(handler.resource, resource)
