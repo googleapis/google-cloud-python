@@ -59,7 +59,7 @@ class MetricsServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -80,7 +80,7 @@ class MetricsServiceV2GrpcTransport(object):
         self._stubs = {
             "metrics_service_v2_stub": logging_metrics_pb2_grpc.MetricsServiceV2Stub(
                 channel
-            )
+            ),
         }
 
     @classmethod
