@@ -226,7 +226,7 @@ def _row_tuple_from_json(row, schema):
         row (Dict): A JSON response row to be converted.
         schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):  Specification of the field types in ``row``.
 
     Returns:
@@ -249,7 +249,7 @@ def _rows_from_json(values, schema):
         values (Sequence[Dict]): The list of responses (JSON rows) to convert.
         schema (Union[ \
                 Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-                Sequence[Mapping[str, str]] \
+                Sequence[Mapping[str, Any]] \
         ]):
             The table's schema. If given as a sequence of dicts, their content
             must be compatible with

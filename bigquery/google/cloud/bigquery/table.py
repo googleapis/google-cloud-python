@@ -307,7 +307,7 @@ class Table(object):
             by ``.``.
         schema (Optional[Union[ \
                 Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-                Sequence[Mapping[str, str]] \
+                Sequence[Mapping[str, Any]] \
         ]]):
             The table's schema. If given as a sequence of dicts, their content
             must be compatible with
@@ -376,7 +376,7 @@ class Table(object):
     def schema(self):
         """Union[ \
                Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-               Sequence[Mapping[str, str]] \
+               Sequence[Mapping[str, Any]] \
         ]: Table's schema.
 
         Raises:
@@ -1294,7 +1294,7 @@ class RowIterator(HTTPIterator):
         path (str): The method path to query for the list of items.
         schema (Union[ \
                 Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-                Sequence[Mapping[str, str]] \
+                Sequence[Mapping[str, Any]] \
         ]):
             The table's schema. If given as a sequence of dicts, their content
             must be compatible with

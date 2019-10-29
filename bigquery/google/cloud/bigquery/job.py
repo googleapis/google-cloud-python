@@ -1228,7 +1228,7 @@ class LoadJobConfig(_JobConfig):
     def schema(self):
         """Union[ \
                Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-               Sequence[Mapping[str, str]] \
+               Sequence[Mapping[str, Any]] \
         ]: Schema of the destination table.
 
         See

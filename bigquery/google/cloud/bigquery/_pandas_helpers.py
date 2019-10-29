@@ -241,7 +241,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             DataFrame for which the client determines the BigQuery schema.
         bq_schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):
             A BigQuery schema. Use this argument to override the autodetected
             type for some or all of the DataFrame columns.
@@ -303,7 +303,7 @@ def dataframe_to_arrow(dataframe, bq_schema):
             DataFrame to convert to Arrow table.
         bq_schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -365,7 +365,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
             DataFrame to convert to Parquet file.
         bq_schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -409,7 +409,7 @@ def download_arrow_tabledata_list(pages, bq_schema):
             An iterator over the result pages.
         bq_schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):
             A decription of the fields in result pages.
     Yields:
@@ -447,7 +447,7 @@ def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
             An iterator over the result pages.
         bq_schema (Sequence[Union[ \
             Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, str]] \
+            Sequence[Mapping[str, Any]] \
         ]]):
             A decription of the fields in result pages.
         dtypes(Mapping[str, numpy.dtype]):
