@@ -161,7 +161,7 @@ _STANDARDSQLDATATYPE = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_STANDARDSQLDATATYPE_TYPEKIND],
+    enum_types=[_STANDARDSQLDATATYPE_TYPEKIND,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -173,7 +173,7 @@ _STANDARDSQLDATATYPE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=143,
     serialized_end=602,
@@ -261,7 +261,7 @@ _STANDARDSQLSTRUCTTYPE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
