@@ -1775,25 +1775,25 @@ class TestIAMConfiguration(unittest.TestCase):
         payload = b"DEADBEEF"
         blob.upload_from_string(payload)
 
-        # Preserve ACLs before setting BPO
+        # Preserve ACLs before setting UBLA
         bucket_acl_before = list(bucket.acl)
         blob_acl_before = list(bucket.acl)
 
-        # Set BPO
+        # Set UBLA
         bucket.iam_configuration.uniform_bucket_level_access_enabled = True
         bucket.patch()
 
         self.assertTrue(bucket.iam_configuration.uniform_bucket_level_access_enabled)
 
-        # While BPO is set, cannot get / set ACLs
+        # While UBLA is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):
             bucket.acl.reload()
 
-        # Clear BPO
+        # Clear UBLA
         bucket.iam_configuration.uniform_bucket_level_access_enabled = False
         bucket.patch()
 
-        # Query ACLs after clearing BPO
+        # Query ACLs after clearing UBLA
         bucket.acl.reload()
         bucket_acl_after = list(bucket.acl)
         blob.acl.reload()
