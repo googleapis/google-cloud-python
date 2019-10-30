@@ -946,7 +946,7 @@ class Test_Blob(unittest.TestCase):
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, media_link, headers, None, None
+            client._http, file_obj, media_link, headers, None, None, False
         )
 
     def test_download_to_file_wo_media_link(self):
@@ -968,10 +968,10 @@ class Test_Blob(unittest.TestCase):
         )
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, expected_url, headers, None, None
+            client._http, file_obj, expected_url, headers, None, None, False
         )
 
-    def _download_to_file_helper(self, use_chunks=False):
+    def _download_to_file_helper(self, use_chunks, raw_download):
         blob_name = "blob-name"
         client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
@@ -984,20 +984,29 @@ class Test_Blob(unittest.TestCase):
         blob._do_download = mock.Mock()
 
         file_obj = io.BytesIO()
-        blob.download_to_file(file_obj)
+        if raw_download:
+            blob.download_to_file(file_obj, raw_download=True)
+        else:
+            blob.download_to_file(file_obj)
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, media_link, headers, None, None
+            client._http, file_obj, media_link, headers, None, None, raw_download
         )
 
-    def test_download_to_file_wo_chunks(self):
-        self._download_to_file_helper()
+    def test_download_to_file_wo_chunks_wo_raw(self):
+        self._download_to_file_helper(use_chunks=False, raw_download=False)
 
-    def test_download_to_file_w_chunks(self):
-        self._download_to_file_helper(use_chunks=True)
+    def test_download_to_file_w_chunks_wo_raw(self):
+        self._download_to_file_helper(use_chunks=True, raw_download=False)
 
-    def _download_to_filename_helper(self, updated=None):
+    def test_download_to_file_wo_chunks_w_raw(self):
+        self._download_to_file_helper(use_chunks=False, raw_download=True)
+
+    def test_download_to_file_w_chunks_w_raw(self):
+        self._download_to_file_helper(use_chunks=True, raw_download=True)
+
+    def _download_to_filename_helper(self, updated, raw_download):
         import os
         import time
         from google.cloud._testing import _NamedTemporaryFile
@@ -1014,7 +1023,7 @@ class Test_Blob(unittest.TestCase):
         blob._do_download = mock.Mock()
 
         with _NamedTemporaryFile() as temp:
-            blob.download_to_filename(temp.name)
+            blob.download_to_filename(temp.name, raw_download=raw_download)
             if updated is None:
                 self.assertIsNone(blob.updated)
             else:
@@ -1024,17 +1033,24 @@ class Test_Blob(unittest.TestCase):
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None
+            client._http, mock.ANY, media_link, headers, None, None, raw_download
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, temp.name)
 
-    def test_download_to_filename_w_updated(self):
+    def test_download_to_filename_w_updated_wo_raw(self):
         updated = "2014-12-06T13:13:50.690Z"
-        self._download_to_filename_helper(updated=updated)
+        self._download_to_filename_helper(updated=updated, raw_download=False)
 
-    def test_download_to_filename_wo_updated(self):
-        self._download_to_filename_helper()
+    def test_download_to_filename_wo_updated_wo_raw(self):
+        self._download_to_filename_helper(updated=None, raw_download=False)
+
+    def test_download_to_filename_w_updated_w_raw(self):
+        updated = "2014-12-06T13:13:50.690Z"
+        self._download_to_filename_helper(updated=updated, raw_download=True)
+
+    def test_download_to_filename_wo_updated_w_raw(self):
+        self._download_to_filename_helper(updated=None, raw_download=True)
 
     def test_download_to_filename_corrupted(self):
         from google.resumable_media import DataCorruption
@@ -1064,7 +1080,7 @@ class Test_Blob(unittest.TestCase):
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None
+            client._http, mock.ANY, media_link, headers, None, None, False
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, filename)
@@ -1091,12 +1107,12 @@ class Test_Blob(unittest.TestCase):
         headers = {"accept-encoding": "gzip"}
         headers.update(_get_encryption_headers(key))
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None
+            client._http, mock.ANY, media_link, headers, None, None, False
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, temp.name)
 
-    def test_download_as_string(self):
+    def _download_as_string_helper(self, raw_download):
         blob_name = "blob-name"
         client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
@@ -1105,15 +1121,21 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         blob._do_download = mock.Mock()
 
-        fetched = blob.download_as_string()
+        fetched = blob.download_as_string(raw_download=raw_download)
         self.assertEqual(fetched, b"")
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None
+            client._http, mock.ANY, media_link, headers, None, None, raw_download
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertIsInstance(stream, io.BytesIO)
+
+    def test_download_as_string_wo_raw(self):
+        self._download_as_string_helper(raw_download=False)
+
+    def test_download_as_string_w_raw(self):
+        self._download_as_string_helper(raw_download=True)
 
     def test__get_content_type_explicit(self):
         blob = self._make_one(u"blob-name", bucket=None)
