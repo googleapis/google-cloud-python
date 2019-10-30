@@ -36,12 +36,6 @@ from google.protobuf import descriptor_pb2
 #   defined with an _implicit_ $resp variable.
 
 
-# TODO: read in copyright and license from files.
-FILE_HEADER: Dict[str, str] = {
-    "copyright": "TODO: add a copyright",
-    "license": "TODO: add a license",
-}
-
 RESERVED_WORDS = frozenset(
     itertools.chain(
         keyword.kwlist,
@@ -864,7 +858,6 @@ def generate_sample(
     v.validate_response(sample["response"])
 
     return sample_template.render(
-        file_header=FILE_HEADER,
         sample=sample,
         imports=[
             "from google import auth",

@@ -13,15 +13,13 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
 #}
+{% extends "_base.py.j2" %}
+
+{% block content %}
 {# Input parameters: sample #}
-{#                   fileHeader#}
-{#                   imports #}
 {#                   callingForm #}
-{#                   callingFormEnum #}
-{# Note: this sample template is WILDLY INACCURATE AND INCOMPLETE #}
-{# It does not correctly enums, unions, top level attributes, or various other things #}
 {% import "examples/feature_fragments.j2" as frags %}
-{{ frags.sample_header(file_header, sample, calling_form) }}
+{{ frags.sample_header(sample, calling_form) }}
 
 # [START {{ sample.id }}]
 {# python code is responsible for all transformations: all we do here is render #}
@@ -47,3 +45,4 @@ def sample_{{ frags.render_method_name(sample.rpc)|trim -}}({{ frags.print_input
 # [END {{ sample.id }}]
 
 {{ frags.render_main_block(sample.rpc, sample.request) }}
+{%- endblock %}

@@ -25,14 +25,8 @@ There is a little, but not enough for it to be important because
 
 {# response handling macros #}
 
-{% macro sample_header(file_header, sample, calling_form) %}
-{% for line in file_header["copyright"].split("\n") %}
-# {{ line }}
-{% endfor %}
-{% for line in file_header["license"].split("\n") %}
-# {{ line }}
-{% endfor %}
-#
+{% macro sample_header(sample, calling_form) %}
+
 # DO NOT EDIT! This is a generated sample ("{{ calling_form }}",  "{{ sample.id }}")
 #
 # To install the latest published package dependency, execute the following:
