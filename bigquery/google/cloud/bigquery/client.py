@@ -353,6 +353,19 @@ class Client(ClientWithProject):
 
         return DatasetReference(project, dataset_id)
 
+    def _create_bqstorage_client(self):
+        """Create a BigQuery Storage API client using this client's credentials.
+
+        Returns:
+            google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient:
+                A BigQuery Storage API client.
+        """
+        from google.cloud import bigquery_storage_v1beta1
+
+        return bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=self._credentials
+        )
+
     def create_dataset(self, dataset, exists_ok=False, retry=DEFAULT_RETRY):
         """API call: create the dataset via a POST request.
 

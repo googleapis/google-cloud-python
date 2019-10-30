@@ -1456,7 +1456,12 @@ class RowIterator(HTTPIterator):
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()
-    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
+    def to_arrow(
+        self,
+        progress_bar_type=None,
+        bqstorage_client=None,
+        create_bqstorage_client=False,
+    ):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -1489,6 +1494,16 @@ class RowIterator(HTTPIterator):
 
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.22.0
 
         Returns:
             pyarrow.Table
@@ -1503,6 +1518,9 @@ class RowIterator(HTTPIterator):
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
+
+        if not bqstorage_client and create_bqstorage_client:
+            bqstorage_client = self.client._create_bqstorage_client()
 
         progress_bar = self._get_progress_bar(progress_bar_type)
 
@@ -1558,14 +1576,20 @@ class RowIterator(HTTPIterator):
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_dataframe()
-    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
+    def to_dataframe(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        progress_bar_type=None,
+        create_bqstorage_client=False,
+    ):
         """Create a pandas DataFrame by loading all pages of a query.
 
         Args:
             bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery. This API is a billable API.
+                from BigQuery.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1602,6 +1626,16 @@ class RowIterator(HTTPIterator):
                   progress bar as a graphical dialog box.
 
                 ..versionadded:: 1.11.0
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.22.0
 
         Returns:
             pandas.DataFrame:
@@ -1620,6 +1654,9 @@ class RowIterator(HTTPIterator):
             raise ValueError(_NO_PANDAS_ERROR)
         if dtypes is None:
             dtypes = {}
+
+        if not bqstorage_client and create_bqstorage_client:
+            bqstorage_client = self.client._create_bqstorage_client()
 
         if bqstorage_client and self.max_results is not None:
             warnings.warn(
@@ -1667,11 +1704,18 @@ class _EmptyRowIterator(object):
     pages = ()
     total_rows = 0
 
-    def to_arrow(self, progress_bar_type=None):
+    def to_arrow(
+        self,
+        progress_bar_type=None,
+        bqstorage_client=None,
+        create_bqstorage_client=False,
+    ):
         """[Beta] Create an empty class:`pyarrow.Table`.
 
         Args:
             progress_bar_type (Optional[str]): Ignored. Added for compatibility with RowIterator.
+            bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
+            create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pyarrow.Table: An empty :class:`pyarrow.Table`.
@@ -1680,13 +1724,20 @@ class _EmptyRowIterator(object):
             raise ValueError(_NO_PYARROW_ERROR)
         return pyarrow.Table.from_arrays(())
 
-    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
+    def to_dataframe(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        progress_bar_type=None,
+        create_bqstorage_client=False,
+    ):
         """Create an empty dataframe.
 
         Args:
             bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
             dtypes (Any): Ignored. Added for compatibility with RowIterator.
             progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
+            create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
