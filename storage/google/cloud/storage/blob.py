@@ -43,6 +43,8 @@ from six.moves.urllib.parse import urlunsplit
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
+from google.resumable_media.requests import RawDownload
+from google.resumable_media.requests import RawChunkedDownload
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
@@ -591,7 +593,14 @@ class Blob(_PropertyMixin):
         return _add_query_parameters(base_url, name_value_pairs)
 
     def _do_download(
-        self, transport, file_obj, download_url, headers, start=None, end=None
+        self,
+        transport,
+        file_obj,
+        download_url,
+        headers,
+        start=None,
+        end=None,
+        raw_download=False,
     ):
         """Perform a download without any error handling.
 
@@ -617,14 +626,30 @@ class Blob(_PropertyMixin):
 
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
+
+        :type raw_download: bool
+        :param raw_download:
+            Optional, If true, download the object without any expansion.
         """
         if self.chunk_size is None:
-            download = Download(
+            if raw_download:
+                klass = RawDownload
+            else:
+                klass = Download
+
+            download = klass(
                 download_url, stream=file_obj, headers=headers, start=start, end=end
             )
             download.consume(transport)
+
         else:
-            download = ChunkedDownload(
+
+            if raw_download:
+                klass = RawChunkedDownload
+            else:
+                klass = ChunkedDownload
+
+            download = klass(
                 download_url,
                 self.chunk_size,
                 file_obj,

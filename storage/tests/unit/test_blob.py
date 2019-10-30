@@ -791,7 +791,7 @@ class Test_Blob(unittest.TestCase):
         response.request = requests.Request("POST", "http://example.com").prepare()
         return response
 
-    def _do_download_helper_wo_chunks(self, w_range):
+    def _do_download_helper_wo_chunks(self, w_range, raw_download):
         blob_name = "blob-name"
         client = mock.Mock()
         bucket = _Bucket(client)
@@ -803,13 +803,30 @@ class Test_Blob(unittest.TestCase):
         download_url = "http://test.invalid"
         headers = {}
 
-        with mock.patch("google.cloud.storage.blob.Download") as patched:
+        if raw_download:
+            patch = mock.patch("google.cloud.storage.blob.RawDownload")
+        else:
+            patch = mock.patch("google.cloud.storage.blob.Download")
+
+        with patch as patched:
             if w_range:
                 blob._do_download(
-                    transport, file_obj, download_url, headers, start=1, end=3
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    start=1,
+                    end=3,
+                    raw_download=raw_download,
                 )
             else:
-                blob._do_download(transport, file_obj, download_url, headers)
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    raw_download=raw_download,
+                )
 
         if w_range:
             patched.assert_called_once_with(
@@ -821,13 +838,19 @@ class Test_Blob(unittest.TestCase):
             )
         patched.return_value.consume.assert_called_once_with(transport)
 
-    def test__do_download_wo_chunks_wo_range(self):
-        self._do_download_helper_wo_chunks(w_range=False)
+    def test__do_download_wo_chunks_wo_range_wo_raw(self):
+        self._do_download_helper_wo_chunks(w_range=False, raw_download=False)
 
-    def test__do_download_wo_chunks_w_range(self):
-        self._do_download_helper_wo_chunks(w_range=True)
+    def test__do_download_wo_chunks_w_range_wo_raw(self):
+        self._do_download_helper_wo_chunks(w_range=True, raw_download=False)
 
-    def _do_download_helper_w_chunks(self, w_range):
+    def test__do_download_wo_chunks_wo_range_w_raw(self):
+        self._do_download_helper_wo_chunks(w_range=False, raw_download=True)
+
+    def test__do_download_wo_chunks_w_range_w_raw(self):
+        self._do_download_helper_wo_chunks(w_range=True, raw_download=True)
+
+    def _do_download_helper_w_chunks(self, w_range, raw_download):
         blob_name = "blob-name"
         client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
         bucket = _Bucket(client)
@@ -847,14 +870,31 @@ class Test_Blob(unittest.TestCase):
 
         download.consume_next_chunk.side_effect = side_effect
 
-        with mock.patch("google.cloud.storage.blob.ChunkedDownload") as patched:
+        if raw_download:
+            patch = mock.patch("google.cloud.storage.blob.RawChunkedDownload")
+        else:
+            patch = mock.patch("google.cloud.storage.blob.ChunkedDownload")
+
+        with patch as patched:
             patched.return_value = download
             if w_range:
                 blob._do_download(
-                    transport, file_obj, download_url, headers, start=1, end=3
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    start=1,
+                    end=3,
+                    raw_download=raw_download,
                 )
             else:
-                blob._do_download(transport, file_obj, download_url, headers)
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    raw_download=raw_download,
+                )
 
         if w_range:
             patched.assert_called_once_with(
@@ -866,11 +906,17 @@ class Test_Blob(unittest.TestCase):
             )
         download.consume_next_chunk.assert_called_once_with(transport)
 
-    def test__do_download_w_chunks_wo_range(self):
-        self._do_download_helper_w_chunks(w_range=False)
+    def test__do_download_w_chunks_wo_range_wo_raw(self):
+        self._do_download_helper_w_chunks(w_range=False, raw_download=False)
 
-    def test__do_download_w_chunks_w_range(self):
-        self._do_download_helper_w_chunks(w_range=True)
+    def test__do_download_w_chunks_w_range_wo_raw(self):
+        self._do_download_helper_w_chunks(w_range=True, raw_download=False)
+
+    def test__do_download_w_chunks_wo_range_w_raw(self):
+        self._do_download_helper_w_chunks(w_range=False, raw_download=True)
+
+    def test__do_download_w_chunks_w_range_w_raw(self):
+        self._do_download_helper_w_chunks(w_range=True, raw_download=True)
 
     def test_download_to_file_with_failure(self):
         import requests
