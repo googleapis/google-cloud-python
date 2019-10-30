@@ -893,21 +893,21 @@ class Test_Blob(unittest.TestCase):
         download.consume_next_chunk.assert_called_once_with(transport)
 
     def test_download_to_file_with_failure(self):
+        import requests
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        raw_response = self._mock_requests_response(
-            http_client.NOT_FOUND, {}, content=b"Not Found"
-        )
+        raw_response = requests.Response()
+        raw_response.status_code = http_client.NOT_FOUND
+        raw_request = requests.Request("GET", "http://example.com")
+        raw_response.request = raw_request.prepare()
         grmp_response = InvalidResponse(raw_response)
 
         blob_name = "blob-name"
         media_link = "http://test.invalid"
-        # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-        # Set the media link on the blob
         blob._properties["mediaLink"] = media_link
         blob._do_download = mock.Mock()
         blob._do_download.side_effect = grmp_response
