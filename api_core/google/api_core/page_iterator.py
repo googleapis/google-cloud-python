@@ -100,7 +100,7 @@ class Page(object):
             The raw page response.
     """
 
-    def __init__(self, parent, items, item_to_value, raw_page):
+    def __init__(self, parent, items, item_to_value, raw_page=None):
         self._parent = parent
         self._num_items = len(items)
         self._remaining = self._num_items
@@ -368,7 +368,7 @@ class HTTPIterator(Iterator):
         if self._has_next_page():
             response = self._get_next_page_response()
             items = response.get(self._items_key, ())
-            page = Page(self, items, self.item_to_value, response)
+            page = Page(self, items, self.item_to_value, raw_page=response)
             self._page_start(self, page, response)
             self.next_page_token = response.get(self._next_token)
             return page
@@ -462,7 +462,7 @@ class _GAXIterator(Iterator):
         """
         try:
             items = six.next(self._gax_page_iter)
-            page = Page(self, items, self.item_to_value, None)
+            page = Page(self, items, self.item_to_value)
             self.next_page_token = self._gax_page_iter.page_token or None
             return page
         except StopIteration:
@@ -535,7 +535,7 @@ class GRPCIterator(Iterator):
 
         self.next_page_token = getattr(response, self._response_token_field)
         items = getattr(response, self._items_field)
-        page = Page(self, items, self.item_to_value, response)
+        page = Page(self, items, self.item_to_value, raw_page=response)
 
         return page
 
