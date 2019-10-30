@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.5.0
+
+10-29-2019 14:26 PDT
+
+### New Features
+- Add `bigquery_destination` to `OutputConfig`; make `content_type` optional argument to `BatchGetAssetsHistoryRequest`; add `uri_prefix` to `GcsDestination`; add `ORG_POLICY` and `ACCESS_POLICY` content type enums ([#9555](https://github.com/googleapis/google-cloud-python/pull/9555))
+
+### Documentation
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages; use googleapis.dev for api_core refs ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
 ## 0.4.1
 
 08-12-2019 13:44 PDT
