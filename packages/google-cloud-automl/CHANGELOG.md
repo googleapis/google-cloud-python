@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.7.1
+
+10-29-2019 13:45 PDT
+
+
+### Implementation Changes
+- Pass credentials to underlying clients in TableClient ([#9491](https://github.com/googleapis/google-cloud-python/pull/9491))
+
 ## 0.7.0
 
 10-04-2019 15:37 PDT
