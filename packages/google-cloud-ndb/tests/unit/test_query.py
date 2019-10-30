@@ -1185,7 +1185,7 @@ class TestQuery:
     @pytest.mark.usefixtures("in_context")
     @unittest.mock.patch("google.cloud.ndb.query._datastore_query")
     def test_constructor_with_class_attribute_projection_and_distinct(
-        _datastore_query
+        _datastore_query,
     ):
         class Foo(model.Model):
             string_attr = model.StringProperty()

@@ -254,6 +254,8 @@ import pickle
 import six
 import zlib
 
+import pytz
+
 from google.cloud.datastore import entity as ds_entity_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import entity_pb2
@@ -3467,9 +3469,12 @@ class BlobKeyProperty(Property):
 class DateTimeProperty(Property):
     """A property that contains :class:`~datetime.datetime` values.
 
-    This property expects "naive" datetime stamps, i.e. no timezone can
-    be set. Furthermore, the assumption is that naive datetime stamps
-    represent UTC.
+    If ``tzinfo`` is not set, this property expects "naive" datetime stamps,
+    i.e. no timezone can be set. Furthermore, the assumption is that naive
+    datetime stamps represent UTC.
+
+    If ``tzinfo`` is set, timestamps will be stored as UTC and converted back
+    to the timezone set by ``tzinfo`` when reading values back out.
 
     .. note::
 
@@ -3493,6 +3498,9 @@ class DateTimeProperty(Property):
             updated.
         auto_now_add (bool): Indicates that the property should be set to the
             current datetime when an entity is created.
+        tzinfo (Optional[datetime.tzinfo]): If set, values read from Datastore
+            will be converted to this timezone. Otherwise, values will be
+            returned as naive datetime objects with an implied UTC timezone.
         indexed (bool): Indicates if the value should be indexed.
         repeated (bool): Indicates if this property is repeated, i.e. contains
             multiple values.
@@ -3514,6 +3522,7 @@ class DateTimeProperty(Property):
 
     _auto_now = False
     _auto_now_add = False
+    _tzinfo = None
 
     def __init__(
         self,
@@ -3521,6 +3530,7 @@ class DateTimeProperty(Property):
         *,
         auto_now=None,
         auto_now_add=None,
+        tzinfo=None,
         indexed=None,
         repeated=None,
         required=None,
@@ -3556,6 +3566,8 @@ class DateTimeProperty(Property):
             self._auto_now = auto_now
         if auto_now_add is not None:
             self._auto_now_add = auto_now_add
+        if tzinfo is not None:
+            self._tzinfo = tzinfo
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -3571,10 +3583,10 @@ class DateTimeProperty(Property):
                 "Expected datetime, got {!r}".format(value)
             )
 
-        if value.tzinfo is not None:
+        if self._tzinfo is None and value.tzinfo is not None:
             raise exceptions.BadValueError(
-                "DatetimeProperty {} can only support naive datetimes "
-                "(presumed UTC). Please derive a new Property to support "
+                "DatetimeProperty without tzinfo {} can only support naive "
+                "datetimes (presumed UTC). Please set tzinfo to support "
                 "alternate timezones.".format(self._name)
             )
 
@@ -3613,11 +3625,31 @@ class DateTimeProperty(Property):
             value (datetime.datetime): The value to be converted.
 
         Returns:
-            Optional[datetime.datetime]: The value without ``tzinfo`` or
-                ``None`` if value did not have ``tzinfo`` set.
+            Optional[datetime.datetime]: If ``tzinfo`` is set on this property,
+                the value converted to the timezone in ``tzinfo``. Otherwise
+                returns the value without ``tzinfo`` or ``None`` if value did
+                not have ``tzinfo`` set.
         """
-        if value.tzinfo is not None:
+        if self._tzinfo is not None:
+            return value.astimezone(self._tzinfo)
+
+        elif value.tzinfo is not None:
             return value.replace(tzinfo=None)
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (datetime.datetime): The value to be converted.
+
+        Returns:
+            google.cloud.datastore.Key: The converted value.
+
+        Raises:
+            TypeError: If ``value`` is not a :class:`~key.Key`.
+        """
+        if self._tzinfo is not None and value.tzinfo is not None:
+            return value.astimezone(pytz.utc)
 
 
 class DateProperty(DateTimeProperty):
