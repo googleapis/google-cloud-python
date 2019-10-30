@@ -791,9 +791,9 @@ class Test_Blob(unittest.TestCase):
         response.request = requests.Request("POST", "http://example.com").prepare()
         return response
 
-    def test__do_download_wo_chunks_wo_range(self):
+    def _do_download_helper_wo_chunks(self, w_range):
         blob_name = "blob-name"
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
+        client = mock.Mock()
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertIsNone(blob.chunk_size)
@@ -804,36 +804,30 @@ class Test_Blob(unittest.TestCase):
         headers = {}
 
         with mock.patch("google.cloud.storage.blob.Download") as patched:
-            blob._do_download(transport, file_obj, download_url, headers)
+            if w_range:
+                blob._do_download(
+                    transport, file_obj, download_url, headers, start=1, end=3
+                )
+            else:
+                blob._do_download(transport, file_obj, download_url, headers)
 
-        patched.assert_called_once_with(
-            download_url, stream=file_obj, headers=headers, start=None, end=None
-        )
+        if w_range:
+            patched.assert_called_once_with(
+                download_url, stream=file_obj, headers=headers, start=1, end=3
+            )
+        else:
+            patched.assert_called_once_with(
+                download_url, stream=file_obj, headers=headers, start=None, end=None
+            )
         patched.return_value.consume.assert_called_once_with(transport)
+
+    def test__do_download_wo_chunks_wo_range(self):
+        self._do_download_helper_wo_chunks(w_range=False)
 
     def test__do_download_wo_chunks_w_range(self):
-        blob_name = "blob-name"
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
-        bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
-        self.assertIsNone(blob.chunk_size)
+        self._do_download_helper_wo_chunks(w_range=True)
 
-        transport = object()
-        file_obj = io.BytesIO()
-        download_url = "http://test.invalid"
-        headers = {}
-
-        with mock.patch("google.cloud.storage.blob.Download") as patched:
-            blob._do_download(
-                transport, file_obj, download_url, headers, start=1, end=3
-            )
-
-        patched.assert_called_once_with(
-            download_url, stream=file_obj, headers=headers, start=1, end=3
-        )
-        patched.return_value.consume.assert_called_once_with(transport)
-
-    def test__do_download_w_chunks_wo_range(self):
+    def _do_download_helper_w_chunks(self, w_range):
         blob_name = "blob-name"
         client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
         bucket = _Bucket(client)
@@ -855,42 +849,28 @@ class Test_Blob(unittest.TestCase):
 
         with mock.patch("google.cloud.storage.blob.ChunkedDownload") as patched:
             patched.return_value = download
-            blob._do_download(transport, file_obj, download_url, headers)
+            if w_range:
+                blob._do_download(
+                    transport, file_obj, download_url, headers, start=1, end=3
+                )
+            else:
+                blob._do_download(transport, file_obj, download_url, headers)
 
-        patched.assert_called_once_with(
-            download_url, chunk_size, file_obj, headers=headers, start=0, end=None
-        )
+        if w_range:
+            patched.assert_called_once_with(
+                download_url, chunk_size, file_obj, headers=headers, start=1, end=3
+            )
+        else:
+            patched.assert_called_once_with(
+                download_url, chunk_size, file_obj, headers=headers, start=0, end=None
+            )
         download.consume_next_chunk.assert_called_once_with(transport)
+
+    def test__do_download_w_chunks_wo_range(self):
+        self._do_download_helper_w_chunks(w_range=False)
 
     def test__do_download_w_chunks_w_range(self):
-        blob_name = "blob-name"
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
-        bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        chunk_size = blob.chunk_size = 2
-
-        transport = object()
-        file_obj = io.BytesIO()
-        download_url = "http://test.invalid"
-        headers = {}
-
-        download = mock.Mock(finished=False, spec=["finished", "consume_next_chunk"])
-
-        def side_effect(_):
-            download.finished = True
-
-        download.consume_next_chunk.side_effect = side_effect
-
-        with mock.patch("google.cloud.storage.blob.ChunkedDownload") as patched:
-            patched.return_value = download
-            blob._do_download(
-                transport, file_obj, download_url, headers, start=1, end=4
-            )
-        patched.assert_called_once_with(
-            download_url, chunk_size, file_obj, headers=headers, start=1, end=4
-        )
-        download.consume_next_chunk.assert_called_once_with(transport)
+        self._do_download_helper_w_chunks(w_range=True)
 
     def test_download_to_file_with_failure(self):
         import requests
