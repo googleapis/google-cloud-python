@@ -1090,7 +1090,7 @@ class Bucket(_PropertyMixin):
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
                              Default: None. Deprecated: this argument is no longer
                              affecting anything and will be removed in a future release.
-                             Please update the bucket's ACL manually.
+                             Please update the blob's ACL manually.
 
         :type source_generation: long
         :param source_generation: Optional. The generation of the blob to be
