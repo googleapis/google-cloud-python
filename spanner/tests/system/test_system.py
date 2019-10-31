@@ -790,8 +790,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # [END spanner_test_dml_with_mutation]
 
     @staticmethod
-    def _check_batch_status(status_code):
-        if status_code != code_pb2.OK:
+    def _check_batch_status(status_code, expected=code_pb2.OK):
+        if status_code != expected:
             grpc_status_code = _STATUS_CODE_TO_GRPC_STATUS_CODE[status_code]
             call = FauxCall(status_code)
             raise exceptions.from_grpc_status(
@@ -915,7 +915,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             status, row_counts = transaction.batch_update(
                 [insert_statement, update_statement, delete_statement]
             )
-            self.assertEqual(status.code, code_pb2.INVALID_ARGUMENT)
+            self._check_batch_status(status.code, code_pb2.INVALID_ARGUMENT)
             self.assertEqual(len(row_counts), 1)
             self.assertEqual(row_counts[0], 1)
 
