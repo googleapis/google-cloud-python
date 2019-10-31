@@ -31,7 +31,7 @@ class TestVPCServiceControl(object):
         except exceptions.PermissionDenied as e:
             return e.message == "Request is prohibited by organization's policy"
         except:
-            pass # XXX raise?
+            pass  # XXX raise?
         return False
 
     def _do_test(self, delayed_inside, delayed_outside):
