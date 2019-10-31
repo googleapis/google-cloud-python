@@ -23,7 +23,7 @@ import uuid
 import redis as redis_module
 
 
-class GlobalCache(abc.ABC):
+class GlobalCache(object):
     """Abstract base class for a global entity cache.
 
     A global entity cache is shared across contexts, sessions, and possibly
@@ -41,6 +41,8 @@ class GlobalCache(abc.ABC):
     services, it's not recommended that casual users write asynchronous
     implementations, as some specialized knowledge is required.
     """
+
+    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def get(self, keys):

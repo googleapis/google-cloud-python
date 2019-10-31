@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest.mock
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
+
 import pytest
 
 from google.cloud import datastore
@@ -44,7 +48,7 @@ class Test_ClassKeyProperty:
         prop = polymodel._ClassKeyProperty()
         value = ["test"]
         values = {prop._name: value}
-        entity = unittest.mock.Mock(
+        entity = mock.Mock(
             _projection=(prop._name,),
             _values=values,
             spec=("_projection", "_values"),
@@ -56,7 +60,7 @@ class Test_ClassKeyProperty:
         prop = polymodel._ClassKeyProperty()
         value = ["test"]
         values = {prop._name: value}
-        entity = unittest.mock.Mock(
+        entity = mock.Mock(
             _projection=(prop._name,),
             _values=values,
             spec=("_projection", "_values"),

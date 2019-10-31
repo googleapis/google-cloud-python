@@ -18,7 +18,7 @@
 __all__ = ["NdbDjangoMiddleware"]
 
 
-class NdbDjangoMiddleware:
+class NdbDjangoMiddleware(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):

@@ -29,7 +29,7 @@ _MAX_STRING_LENGTH = 1500
 
 
 @functools.total_ordering
-class BlobKey:
+class BlobKey(object):
     """Key used to identify a blob in the blobstore.
 
     .. note::
@@ -78,11 +78,14 @@ class BlobKey:
 
     def __lt__(self, other):
         if isinstance(other, BlobKey):
+            # Python 2.7 does not raise an error when other is None.
+            if other._blob_key is None:
+                raise TypeError
             return self._blob_key < other._blob_key
         elif isinstance(other, bytes):
             return self._blob_key < other
         else:
-            return NotImplemented
+            raise TypeError
 
     def __hash__(self):
         return hash(self._blob_key)

@@ -14,7 +14,10 @@
 
 import itertools
 
-from unittest import mock
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 import grpc
 import pytest

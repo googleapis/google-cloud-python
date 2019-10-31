@@ -20,8 +20,6 @@ modules.
 
 import os
 
-from unittest import mock
-
 from google.cloud import environment_vars
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
@@ -29,6 +27,12 @@ from google.cloud.ndb import global_cache as global_cache_module
 from google.cloud.ndb import model
 
 import pytest
+
+# In Python 2.7, mock is not part of unittest
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 
 class TestingEventLoop(_eventloop.EventLoop):

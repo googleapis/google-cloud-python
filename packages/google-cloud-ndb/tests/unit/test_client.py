@@ -15,7 +15,10 @@
 import contextlib
 import pytest
 
-from unittest import mock
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 from google.auth import credentials
 from google.cloud import environment_vars

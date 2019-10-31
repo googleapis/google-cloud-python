@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +19,8 @@ import collections
 import contextlib
 import threading
 
-from google.cloud.ndb import _cache
-from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import model
 from google.cloud.ndb import tasklets
 
 
@@ -84,6 +82,8 @@ def _default_policy(attr_name, value_type):
         Callable[[key], value_type]: A policy function suitable for use as a
             default policy.
     """
+    # avoid circular imports on Python 2.7
+    from google.cloud.ndb import model
 
     def policy(key):
         value = None
@@ -191,6 +191,10 @@ class _Context(_ContextTuple):
         on_commit_callbacks=None,
         legacy_data=True,
     ):
+        # Prevent circular import in Python 2.7
+        from google.cloud.ndb import _cache
+        from google.cloud.ndb import _datastore_api
+
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
 
@@ -266,9 +270,12 @@ class _Context(_ContextTuple):
         cache. In this way, only keys that were touched in the current context
         are affected.
         """
+        # Prevent circular import in Python 2.7
+        from google.cloud.ndb import _cache
+
         keys = [
             _cache.global_cache_key(key._key)
-            for key in self.cache
+            for key in self.cache.keys()
             if self._use_global_cache(key)
         ]
         if keys:
@@ -537,21 +544,21 @@ class Context(_Context):
         raise exceptions.NoLongerImplementedError()
 
 
-class ContextOptions:
+class ContextOptions(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
-class TransactionOptions:
+class TransactionOptions(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
-class AutoBatcher:
+class AutoBatcher(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):

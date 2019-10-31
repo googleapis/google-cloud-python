@@ -14,7 +14,10 @@
 
 import itertools
 
-from unittest import mock
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 import pytest
 
@@ -74,7 +77,7 @@ class Test_transaction:
 class Test_transaction_async:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_success(_datastore_api):
         on_commit_callback = mock.Mock()
 
@@ -103,7 +106,7 @@ class Test_transaction_async:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_success_no_retries(_datastore_api):
         def callback():
             return "I tried, momma."
@@ -128,7 +131,7 @@ class Test_transaction_async:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_success_callback_is_tasklet(_datastore_api):
         tasklet = tasklets.Future("tasklet")
 
@@ -157,7 +160,7 @@ class Test_transaction_async:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_error(_datastore_api):
         error = Exception("Spurious error.")
 
@@ -186,7 +189,7 @@ class Test_transaction_async:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.tasklets.sleep")
     @mock.patch("google.cloud.ndb._retry.core_retry")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_transient_error(_datastore_api, core_retry, sleep):
         core_retry.exponential_sleep_generator.return_value = itertools.count()
         core_retry.if_transient_error.return_value = True
@@ -221,7 +224,7 @@ class Test_transaction_async:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.tasklets.sleep")
     @mock.patch("google.cloud.ndb._retry.core_retry")
-    @mock.patch("google.cloud.ndb._transaction._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_too_many_transient_errors(_datastore_api, core_retry, sleep):
         core_retry.exponential_sleep_generator.return_value = itertools.count()
         core_retry.if_transient_error.return_value = True
@@ -260,7 +263,7 @@ class Test_transaction_async:
 
 
 @pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._transaction._datastore_api")
+@mock.patch("google.cloud.ndb._datastore_api")
 def test_transactional(_datastore_api):
     @_transaction.transactional()
     def simple_function(a, b):
@@ -280,7 +283,7 @@ def test_transactional(_datastore_api):
 
 
 @pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._transaction._datastore_api")
+@mock.patch("google.cloud.ndb._datastore_api")
 def test_transactional_async(_datastore_api):
     @_transaction.transactional_async()
     def simple_function(a, b):
@@ -300,7 +303,7 @@ def test_transactional_async(_datastore_api):
 
 
 @pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._transaction._datastore_api")
+@mock.patch("google.cloud.ndb._datastore_api")
 def test_transactional_tasklet(_datastore_api):
     @_transaction.transactional_tasklet()
     def generator_function(dependency):

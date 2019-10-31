@@ -14,7 +14,11 @@
 
 import base64
 import pickle
-import unittest.mock
+
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 from google.cloud.datastore import _app_engine_key_pb2
 import google.cloud.datastore
@@ -223,7 +227,7 @@ class TestKey:
 
     @pytest.mark.usefixtures("in_context")
     def test_constructor_with_parent_bad_type(self):
-        parent = unittest.mock.sentinel.parent
+        parent = mock.sentinel.parent
         with pytest.raises(exceptions.BadValueError):
             key_module.Key("Zip", 10, parent=parent)
 
@@ -257,7 +261,7 @@ class TestKey:
             key_module.Key(urlsafe=urlsafe, serialized=serialized)
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key.Key.__init__")
+    @mock.patch("google.cloud.ndb.key.Key.__init__")
     def test__from_ds_key(key_init):
         ds_key = google.cloud.datastore.Key("a", "b", project="c")
         key = key_module.Key._from_ds_key(ds_key)
@@ -300,7 +304,7 @@ class TestKey:
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="bar", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="m")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert key1 == key1
         assert not key1 == key2
         assert not key1 == key3
@@ -313,7 +317,7 @@ class TestKey:
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="bar", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="m")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert not key1 != key1
         assert key1 != key2
         assert key1 != key3
@@ -326,7 +330,7 @@ class TestKey:
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="goo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="o")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert not key1 < key1
         assert key1 < key2
         assert key1 < key3
@@ -340,7 +344,7 @@ class TestKey:
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="goo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="o")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert key1 <= key1
         assert key1 <= key2
         assert key1 <= key3
@@ -354,7 +358,7 @@ class TestKey:
         key2 = key_module.Key("M", 10, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="boo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="a")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert not key1 > key1
         assert key1 > key2
         assert key1 > key3
@@ -368,7 +372,7 @@ class TestKey:
         key2 = key_module.Key("M", 10, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="boo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="a")
-        key5 = unittest.mock.sentinel.key
+        key5 = mock.sentinel.key
         assert key1 >= key1
         assert key1 >= key2
         assert key1 >= key3
@@ -506,8 +510,8 @@ class TestKey:
     @pytest.mark.usefixtures("in_context")
     def test_reference_cached():
         key = key_module.Key("This", "key")
-        key._reference = unittest.mock.sentinel.reference
-        assert key.reference() is unittest.mock.sentinel.reference
+        key._reference = mock.sentinel.reference
+        assert key.reference() is mock.sentinel.reference
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -549,8 +553,8 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
-    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_with_cache_miss(_entity_from_protobuf, _datastore_api):
         class Simple(model.Model):
             pass
@@ -569,8 +573,8 @@ class TestKey:
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
-    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_with_cache_hit(
         _entity_from_protobuf, _datastore_api, in_context
     ):
@@ -583,7 +587,7 @@ class TestKey:
         _entity_from_protobuf.return_value = "the entity"
 
         key = key_module.Key("Simple", "b", app="c")
-        mock_cached_entity = unittest.mock.Mock(_key=key)
+        mock_cached_entity = mock.Mock(_key=key)
         in_context.cache[key] = mock_cached_entity
         assert key.get(use_cache=True) == mock_cached_entity
 
@@ -591,8 +595,8 @@ class TestKey:
         _entity_from_protobuf.assert_not_called()
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
-    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_no_cache(_entity_from_protobuf, _datastore_api, in_context):
         class Simple(model.Model):
             pass
@@ -603,7 +607,7 @@ class TestKey:
         _entity_from_protobuf.return_value = "the entity"
 
         key = key_module.Key("Simple", "b", app="c")
-        mock_cached_entity = unittest.mock.Mock(_key=key)
+        mock_cached_entity = mock.Mock(_key=key)
         in_context.cache[key] = mock_cached_entity
         assert key.get(use_cache=False) == "the entity"
 
@@ -614,8 +618,8 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
-    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_w_hooks(_entity_from_protobuf, _datastore_api):
         class Simple(model.Model):
             pre_get_calls = []
@@ -648,8 +652,8 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
-    @unittest.mock.patch("google.cloud.ndb.model._entity_from_protobuf")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_async(_entity_from_protobuf, _datastore_api):
         ds_future = tasklets.Future()
         _datastore_api.lookup.return_value = ds_future
@@ -667,7 +671,7 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_get_async_not_found(_datastore_api):
         ds_future = tasklets.Future()
         _datastore_api.lookup.return_value = ds_future
@@ -679,7 +683,7 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete(_datastore_api):
         class Simple(model.Model):
             pass
@@ -695,7 +699,7 @@ class TestKey:
         )
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete_with_cache(_datastore_api, in_context):
         class Simple(model.Model):
             pass
@@ -705,7 +709,7 @@ class TestKey:
         future.set_result("result")
 
         key = key_module.Key("Simple", "b", app="c")
-        mock_cached_entity = unittest.mock.Mock(_key=key)
+        mock_cached_entity = mock.Mock(_key=key)
         in_context.cache[key] = mock_cached_entity
 
         assert key.delete(use_cache=True) == "result"
@@ -715,7 +719,7 @@ class TestKey:
         )
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete_no_cache(_datastore_api, in_context):
         class Simple(model.Model):
             pass
@@ -725,7 +729,7 @@ class TestKey:
         future.set_result("result")
 
         key = key_module.Key("Simple", "b", app="c")
-        mock_cached_entity = unittest.mock.Mock(_key=key)
+        mock_cached_entity = mock.Mock(_key=key)
         in_context.cache[key] = mock_cached_entity
 
         assert key.delete(use_cache=False) == "result"
@@ -736,7 +740,7 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete_w_hooks(_datastore_api):
         class Simple(model.Model):
             pre_delete_calls = []
@@ -765,7 +769,7 @@ class TestKey:
         assert Simple.post_delete_calls == [((key,), {})]
 
     @staticmethod
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete_in_transaction(_datastore_api, in_context):
         future = tasklets.Future()
         _datastore_api.delete.return_value = future
@@ -779,7 +783,7 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @unittest.mock.patch("google.cloud.ndb.key._datastore_api")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_delete_async(_datastore_api):
         key = key_module.Key("a", "b", app="c")
 

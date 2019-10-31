@@ -249,7 +249,7 @@ class Property(_BaseMetadata):
             return key.id()
 
 
-class EntityGroup:
+class EntityGroup(object):
     """Model for __entity_group__ metadata. No longer supported by datastore.
     """
 

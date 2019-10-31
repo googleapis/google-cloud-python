@@ -72,12 +72,12 @@ UPLOAD_INFO_CREATION_HEADER = "X-AppEngine-Upload-Creation"
 BlobKeyProperty = model.BlobKeyProperty
 
 
-class BlobFetchSizeTooLargeError:
+class BlobFetchSizeTooLargeError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
-class BlobInfo:
+class BlobInfo(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
@@ -100,17 +100,17 @@ class BlobInfo:
         raise exceptions.NoLongerImplementedError()
 
 
-class BlobInfoParseError:
+class BlobInfoParseError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
-class BlobNotFoundError:
+class BlobNotFoundError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
-class BlobReader:
+class BlobReader(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
@@ -125,7 +125,7 @@ def create_upload_url_async(*args, **kwargs):
     raise exceptions.NoLongerImplementedError()
 
 
-class DataIndexOutOfRangeError:
+class DataIndexOutOfRangeError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
@@ -146,7 +146,7 @@ def delete_multi_async(*args, **kwargs):
     raise exceptions.NoLongerImplementedError()
 
 
-class Error:
+class Error(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
@@ -165,7 +165,7 @@ get_multi = BlobInfo.get_multi
 get_multi_async = BlobInfo.get_multi_async
 
 
-class InternalError:
+class InternalError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
@@ -174,6 +174,6 @@ def parse_blob_info(*args, **kwargs):
     raise exceptions.NoLongerImplementedError()
 
 
-class PermissionDeniedError:
+class PermissionDeniedError(object):
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()

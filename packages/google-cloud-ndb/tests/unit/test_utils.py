@@ -63,8 +63,37 @@ def test_logging_debug():
 
 
 def test_positional():
-    with pytest.raises(NotImplementedError):
-        utils.positional()
+    @utils.positional(2)
+    def test_func(a=1, b=2, **kwargs):
+        return a, b
+
+    @utils.positional(1)
+    def test_func2(a=3, **kwargs):
+        return a
+
+    with pytest.raises(TypeError):
+        test_func(1, 2, 3)
+
+    with pytest.raises(TypeError):
+        test_func2(1, 2)
+
+    assert test_func(4, 5, x=0) == (4, 5)
+    assert test_func(6) == (6, 2)
+
+    assert test_func2(6) == 6
+
+
+def test_keyword_only():
+    @utils.keyword_only(foo=1, bar=2, baz=3)
+    def test_kwonly(**kwargs):
+        return kwargs["foo"], kwargs["bar"], kwargs["baz"]
+
+    with pytest.raises(TypeError):
+        test_kwonly(faz=4)
+
+    assert test_kwonly() == (1, 2, 3)
+    assert test_kwonly(foo=3, bar=5, baz=7) == (3, 5, 7)
+    assert test_kwonly(baz=7) == (1, 2, 7)
 
 
 def test_threading_local():

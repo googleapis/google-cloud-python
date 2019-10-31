@@ -56,7 +56,6 @@ Calling a tasklet automatically schedules it with the event loop::
 import functools
 import types
 
-from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _remote
@@ -80,7 +79,7 @@ __all__ = [
 ]
 
 
-class Future:
+class Future(object):
     """Represents a task to be completed at an unspecified time in the future.
 
     This is the abstract base class from which all NDB ``Future`` classes are
@@ -218,7 +217,14 @@ class Future:
             Union[types.TracebackType, None]: The traceback, or None.
         """
         if self._exception:
-            return self._exception.__traceback__
+            try:
+                traceback = self._exception.__traceback__
+            except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
+                # Python 2 does not have the helpful traceback attribute, and
+                # since the exception is not being handled, it appears that
+                # sys.exec_info can't give us the traceback either.
+                traceback = None
+            return traceback
 
     def add_done_callback(self, callback):
         """Add a callback function to be run upon task completion. Will run
@@ -289,13 +295,18 @@ class _TaskletFuture(Future):
 
     def _advance_tasklet(self, send_value=None, error=None):
         """Advance a tasklet one step by sending in a value or error."""
+        # Avoid Python 2.7 import error
+        from google.cloud.ndb import context as context_module
+
         try:
             with self.context.use():
                 # Send the next value or exception into the generator
                 if error:
-                    self.generator.throw(
-                        type(error), error, error.__traceback__
-                    )
+                    try:
+                        traceback = error.__traceback__
+                    except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH  # noqa: E501
+                        traceback = None
+                    self.generator.throw(type(error), error, traceback)
 
                 # send_value will be None if this is the first time
                 yielded = self.generator.send(send_value)
@@ -443,6 +454,9 @@ def tasklet(wrapped):
 
     @functools.wraps(wrapped)
     def tasklet_wrapper(*args, **kwargs):
+        # Avoid Python 2.7 circular import
+        from google.cloud.ndb import context as context_module
+
         # The normal case is that the wrapped function is a generator function
         # that returns a generator when called. We also support the case that
         # the user has wrapped a regular function with the tasklet decorator.
@@ -564,21 +578,21 @@ def make_default_context(*args, **kwargs):
     raise NotImplementedError
 
 
-class QueueFuture:
+class QueueFuture(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
-class ReducingFuture:
+class ReducingFuture(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
-class SerialQueueFuture:
+class SerialQueueFuture(object):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
@@ -618,6 +632,9 @@ def toplevel(wrapped):
     Args:
         wrapped (Callable): The wrapped function."
     """
+    # Avoid Python 2.7 circular import
+    from google.cloud.ndb import context as context_module
+
     synctasklet_wrapped = synctasklet(wrapped)
 
     @functools.wraps(wrapped)

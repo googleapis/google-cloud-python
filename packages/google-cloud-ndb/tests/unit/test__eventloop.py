@@ -13,7 +13,11 @@
 # limitations under the License.
 
 import collections
-import unittest.mock
+
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 import grpc
 import pytest
@@ -128,7 +132,7 @@ class TestEventLoop:
         assert list(loop.current) == [("foo", ("bar",), {"baz": "qux"})]
         assert not loop.queue
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_queue_call_delay(self, time):
         loop = self._make_one()
         time.time.return_value = 5
@@ -136,7 +140,7 @@ class TestEventLoop:
         assert not loop.current
         assert loop.queue == [_Event(10, "foo", ("bar",), {"baz": "qux"})]
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_queue_call_absolute(self, time):
         loop = self._make_one()
         time.time.return_value = 5
@@ -146,8 +150,8 @@ class TestEventLoop:
 
     def test_queue_rpc(self):
         loop = self._make_one()
-        callback = unittest.mock.Mock(spec=())
-        rpc = unittest.mock.Mock(spec=grpc.Future)
+        callback = mock.Mock(spec=())
+        rpc = mock.Mock(spec=grpc.Future)
         loop.queue_rpc(rpc, callback)
         assert list(loop.rpcs.values()) == [callback]
 
@@ -173,7 +177,7 @@ class TestEventLoop:
         assert loop.run_idle() is False
 
     def test_run_idle_remove_callback(self):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         callback.return_value = None
         loop = self._make_one()
         loop.add_idle(callback, "foo", bar="baz")
@@ -184,7 +188,7 @@ class TestEventLoop:
         assert loop.inactive == 0
 
     def test_run_idle_did_work(self):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         callback.return_value = True
         loop = self._make_one()
         loop.add_idle(callback, "foo", bar="baz")
@@ -196,7 +200,7 @@ class TestEventLoop:
         assert loop.inactive == 0
 
     def test_run_idle_did_no_work(self):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         callback.return_value = False
         loop = self._make_one()
         loop.add_idle(callback, "foo", bar="baz")
@@ -212,7 +216,7 @@ class TestEventLoop:
         assert loop.run0() is None
 
     def test_run0_current(self):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.call_soon(callback, "foo", bar="baz")
         loop.inactive = 88
@@ -222,16 +226,16 @@ class TestEventLoop:
         assert loop.inactive == 0
 
     def test_run0_idler(self):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.add_idle(callback, "foo", bar="baz")
         assert loop.run0() == 0
         callback.assert_called_once_with("foo", bar="baz")
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_run0_next_later(self, time):
         time.time.return_value = 0
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.queue_call(5, callback, "foo", bar="baz")
         loop.inactive = 88
@@ -240,10 +244,10 @@ class TestEventLoop:
         assert len(loop.queue) == 1
         assert loop.inactive == 88
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_run0_next_now(self, time):
         time.time.return_value = 0
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.queue_call(6, "foo")
         loop.queue_call(5, callback, "foo", bar="baz")
@@ -255,8 +259,8 @@ class TestEventLoop:
         assert loop.inactive == 0
 
     def test_run0_rpc(self):
-        rpc = unittest.mock.Mock(spec=grpc.Future)
-        callback = unittest.mock.Mock(spec=())
+        rpc = mock.Mock(spec=grpc.Future)
+        callback = mock.Mock(spec=())
 
         loop = self._make_one()
         loop.rpcs["foo"] = callback
@@ -271,26 +275,26 @@ class TestEventLoop:
         loop = self._make_one()
         assert loop.run1() is False
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_run1_has_work_now(self, time):
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.call_soon(callback)
         assert loop.run1() is True
         time.sleep.assert_not_called()
         callback.assert_called_once_with()
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_run1_has_work_later(self, time):
         time.time.return_value = 0
-        callback = unittest.mock.Mock(__name__="callback")
+        callback = mock.Mock(__name__="callback")
         loop = self._make_one()
         loop.queue_call(5, callback)
         assert loop.run1() is True
         time.sleep.assert_called_once_with(5)
         callback.assert_not_called()
 
-    @unittest.mock.patch("google.cloud.ndb._eventloop.time")
+    @mock.patch("google.cloud.ndb._eventloop.time")
     def test_run(self, time):
         time.time.return_value = 0
 
@@ -298,10 +302,10 @@ class TestEventLoop:
             time.time.return_value += seconds
 
         time.sleep = mock_sleep
-        idler = unittest.mock.Mock(__name__="idler")
+        idler = mock.Mock(__name__="idler")
         idler.return_value = None
-        runnow = unittest.mock.Mock(__name__="runnow")
-        runlater = unittest.mock.Mock(__name__="runlater")
+        runnow = mock.Mock(__name__="runnow")
+        runlater = mock.Mock(__name__="runlater")
         loop = self._make_one()
         loop.add_idle(idler)
         loop.call_soon(runnow)
@@ -322,49 +326,49 @@ def test_get_event_loop(context):
 
 
 def test_add_idle(context):
-    loop = unittest.mock.Mock(spec=("run", "add_idle"))
+    loop = mock.Mock(spec=("run", "add_idle"))
     with context.new(eventloop=loop).use():
         _eventloop.add_idle("foo", "bar", baz="qux")
         loop.add_idle.assert_called_once_with("foo", "bar", baz="qux")
 
 
 def test_call_soon(context):
-    loop = unittest.mock.Mock(spec=("run", "call_soon"))
+    loop = mock.Mock(spec=("run", "call_soon"))
     with context.new(eventloop=loop).use():
         _eventloop.call_soon("foo", "bar", baz="qux")
         loop.call_soon.assert_called_once_with("foo", "bar", baz="qux")
 
 
 def test_queue_call(context):
-    loop = unittest.mock.Mock(spec=("run", "queue_call"))
+    loop = mock.Mock(spec=("run", "queue_call"))
     with context.new(eventloop=loop).use():
         _eventloop.queue_call(42, "foo", "bar", baz="qux")
         loop.queue_call.assert_called_once_with(42, "foo", "bar", baz="qux")
 
 
 def test_queue_rpc(context):
-    loop = unittest.mock.Mock(spec=("run", "queue_rpc"))
+    loop = mock.Mock(spec=("run", "queue_rpc"))
     with context.new(eventloop=loop).use():
         _eventloop.queue_rpc("foo", "bar")
         loop.queue_rpc.assert_called_once_with("foo", "bar")
 
 
 def test_run(context):
-    loop = unittest.mock.Mock(spec=("run",))
+    loop = mock.Mock(spec=("run",))
     with context.new(eventloop=loop).use():
         _eventloop.run()
         loop.run.assert_called_once_with()
 
 
 def test_run0(context):
-    loop = unittest.mock.Mock(spec=("run", "run0"))
+    loop = mock.Mock(spec=("run", "run0"))
     with context.new(eventloop=loop).use():
         _eventloop.run0()
         loop.run0.assert_called_once_with()
 
 
 def test_run1(context):
-    loop = unittest.mock.Mock(spec=("run", "run1"))
+    loop = mock.Mock(spec=("run", "run1"))
     with context.new(eventloop=loop).use():
         _eventloop.run1()
         loop.run1.assert_called_once_with()

@@ -16,6 +16,7 @@ import pytest
 
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import _options
+from google.cloud.ndb import utils
 
 
 class MyOptions(_options.Options):
@@ -146,7 +147,8 @@ class TestOptions:
     @staticmethod
     def test_options():
         @MyOptions.options
-        def hi(mom, foo=None, retries=None, *, timeout=None, _options=None):
+        @utils.positional(4)
+        def hi(mom, foo=None, retries=None, timeout=None, _options=None):
             return mom, _options
 
         assert hi("mom", "bar", 23, timeout=42) == (
@@ -156,6 +158,7 @@ class TestOptions:
 
     @staticmethod
     def test_options_bad_signature():
+        @utils.positional(2)
         def hi(foo, mom):
             pass
 
@@ -167,7 +170,8 @@ class TestOptions:
     @staticmethod
     def test_options_delegated():
         @MyOptions.options
-        def hi(mom, foo=None, retries=None, *, timeout=None, _options=None):
+        @utils.positional(4)
+        def hi(mom, foo=None, retries=None, timeout=None, _options=None):
             return mom, _options
 
         options = MyOptions(foo="bar", retries=23, timeout=42)

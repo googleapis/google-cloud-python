@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest.mock
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 import pytest
 
@@ -50,7 +53,7 @@ class TestBlobKey:
         blob_key2 = _datastore_types.BlobKey(b"def")
         blob_key3 = _datastore_types.BlobKey(None)
         blob_key4 = b"ghi"
-        blob_key5 = unittest.mock.sentinel.blob_key
+        blob_key5 = mock.sentinel.blob_key
         assert blob_key1 == blob_key1
         assert not blob_key1 == blob_key2
         assert not blob_key1 == blob_key3
@@ -63,7 +66,7 @@ class TestBlobKey:
         blob_key2 = _datastore_types.BlobKey(b"def")
         blob_key3 = _datastore_types.BlobKey(None)
         blob_key4 = b"ghi"
-        blob_key5 = unittest.mock.sentinel.blob_key
+        blob_key5 = mock.sentinel.blob_key
         assert not blob_key1 < blob_key1
         assert blob_key1 < blob_key2
         with pytest.raises(TypeError):

@@ -28,6 +28,15 @@ _DEFAULT_DELAY_MULTIPLIER = 2.0
 _DEFAULT_RETRIES = 3
 
 
+def wraps_safely(obj, attr_names=functools.WRAPPER_ASSIGNMENTS):
+    """Python 2.7 functools.wraps has a bug where attributes like ``module``
+    are not copied to the wrappers and thus cause attribute errors. This
+    wrapper prevents that problem."""
+    return functools.wraps(
+        obj, assigned=(name for name in attr_names if hasattr(obj, name))
+    )
+
+
 def retry_async(callback, retries=_DEFAULT_RETRIES):
     """Decorator for retrying functions or tasklets asynchronously.
 
@@ -49,7 +58,7 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
     """
 
     @tasklets.tasklet
-    @functools.wraps(callback)
+    @wraps_safely(callback)
     def retry_wrapper(*args, **kwargs):
         sleep_generator = core_retry.exponential_sleep_generator(
             _DEFAULT_INITIAL_DELAY,
@@ -66,7 +75,7 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
                 # `e` is removed from locals at end of block
                 error = e  # See: https://goo.gl/5J8BMK
                 if not is_transient_error(error):
-                    raise
+                    raise error
             else:
                 raise tasklets.Return(result)
 

@@ -22,7 +22,10 @@ import os
 import threading
 import zlib
 
-from unittest import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 import pytest
 

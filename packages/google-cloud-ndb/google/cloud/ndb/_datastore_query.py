@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,7 +130,7 @@ def iterate(query, raw=False):
     return _QueryIteratorImpl(query, raw=raw)
 
 
-class QueryIterator:
+class QueryIterator(object):
     """An iterator for query results.
 
     Executes the given query and provides an interface for iterating over
@@ -502,7 +503,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
             query.copy(filters=node, offset=None, limit=None)
             for node in query.filters._nodes
         ]
-        self._result_sets = [iterate(query, raw=True) for query in queries]
+        self._result_sets = [iterate(_query, raw=True) for _query in queries]
         self._sortable = bool(query.order_by)
         self._seen_keys = set()
         self._next_result = None
@@ -616,7 +617,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
 
 
 @functools.total_ordering
-class _Result:
+class _Result(object):
     """A single, sortable query result.
 
     Args:
@@ -644,6 +645,10 @@ class _Result:
             return True
 
         return self._compare(other) == 0
+
+    def __ne__(self, other):
+        """For total ordering. Python 2.7 only."""
+        return self._compare(other) != 0
 
     def _compare(self, other):
         """Compare this result to another result for sorting.
@@ -847,7 +852,7 @@ def _datastore_run_query(query):
     raise tasklets.Return(response)
 
 
-class Cursor:
+class Cursor(object):
     """Cursor.
 
     A pointer to a place in a sequence of query results. Cursor itself is just

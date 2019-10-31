@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import six
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
@@ -291,7 +292,7 @@ class TestGQL:
             prop4 = model.IntegerProperty()
 
         rep = (
-            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', 'xxx'"
+            "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
             "'prop4', reverse=False), PropertyOrder(name='prop1', "
             "reverse=True)], projection=['prop1', 'prop2'], "
@@ -299,7 +300,10 @@ class TestGQL:
         )
         gql = gql_module.GQL(GQL_QUERY)
         query = gql.get_query()
-        assert repr(query) == rep
+        compat_rep = "'xxx'"
+        if six.PY2:  # pragma: NO PY3 COVER  # pragma: NO BRANCH
+            compat_rep = "u'xxx'"
+        assert repr(query) == rep.format(compat_rep)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -14,7 +14,6 @@
 
 """Support for batching operations."""
 
-from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 
 
@@ -35,6 +34,9 @@ def get_batch(batch_cls, options=None):
     Returns:
         batch_cls: An instance of the batch class.
     """
+    # prevent circular import in Python 2.7
+    from google.cloud.ndb import context as context_module
+
     context = context_module.get_context()
     batches = context.batches.get(batch_cls)
     if batches is None:

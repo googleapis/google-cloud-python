@@ -23,7 +23,7 @@ def eventually(f, predicate, timeout=60, interval=2):
     """Runs `f` in a loop, hoping for eventual success.
 
     Some things we're trying to test in Datastore are eventually
-    consistent—we'll write something to the Datastore and can read back out
+    consistent-we'll write something to the Datastore and can read back out
     data, eventually. This is particularly true for metadata, where we can
     write an entity to Datastore and it takes some amount of time for metadata
     about the entity's "kind" to update to match the new data just written,

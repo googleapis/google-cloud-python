@@ -15,7 +15,6 @@
 """Support for options."""
 
 import functools
-import inspect
 import itertools
 import logging
 
@@ -24,7 +23,7 @@ from google.cloud.ndb import exceptions
 log = logging.getLogger(__name__)
 
 
-class Options:
+class Options(object):
     __slots__ = (
         # Supported
         "retries",
@@ -37,19 +36,19 @@ class Options:
         "force_writes",
         "max_memcache_items",
         "propagation",
+        "deadline",
+        "use_memcache",
+        "memcache_timeout",
     )
 
     @classmethod
     def options(cls, wrapped):
-        # If there are any positional arguments, get their names
         slots = set(cls.slots())
-        signature = inspect.signature(wrapped)
-        positional = [
-            name
-            for name, parameter in signature.parameters.items()
-            if parameter.kind
-            in (parameter.POSITIONAL_ONLY, parameter.POSITIONAL_OR_KEYWORD)
-        ]
+        # If there are any positional arguments, get their names.
+        # inspect.signature is not available in Python 2.7, so we use the
+        # arguments obtained with inspect.getargspec, which come from the
+        # positional decorator used with all query_options decorated methods.
+        positional = getattr(wrapped, "_positional_names", [])
 
         # We need for any non-option arguments to come before any option
         # arguments
@@ -84,11 +83,10 @@ class Options:
 
             # If another function that uses options is delegating to this one,
             # we'll already have options.
-            _options = kwargs.pop("_options", None)
-            if not _options:
-                _options = cls(**kw_options)
+            if "_options" not in kwargs:
+                kwargs["_options"] = cls(**kw_options)
 
-            return wrapped(*pass_args, _options=_options, **kwargs)
+            return wrapped(*pass_args, **kwargs)
 
         return wrapper
 
@@ -97,7 +95,7 @@ class Options:
         return itertools.chain(
             *(
                 ancestor.__slots__
-                for ancestor in cls.mro()
+                for ancestor in cls.__mro__
                 if hasattr(ancestor, "__slots__")
             )
         )
@@ -172,6 +170,13 @@ class Options:
 
         return True
 
+    def __ne__(self, other):
+        # required for Python 2.7 compatibility
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            result = False
+        return not result
+
     def __repr__(self):
         options = ", ".join(
             [
@@ -191,7 +196,7 @@ class Options:
 
 
 class ReadOptions(Options):
-    __slots__ = ("read_consistency", "transaction")
+    __slots__ = ("read_consistency", "read_policy", "transaction")
 
     def __init__(self, config=None, **kwargs):
         read_policy = kwargs.pop("read_policy", None)

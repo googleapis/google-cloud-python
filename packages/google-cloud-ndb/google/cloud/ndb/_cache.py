@@ -12,19 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import itertools
 
 from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import tasklets
 
+# For Python 2.7 Compatibility
+try:
+    from collections import UserDict
+except ImportError:  # pragma: NO PY3 COVER
+    from UserDict import UserDict
+
+
 _LOCKED = b"0"
 _LOCK_TIME = 32
 _PREFIX = b"NDB30"
 
 
-class ContextCache(collections.UserDict):
+class ContextCache(UserDict):
     """A per-context in-memory entity cache.
 
     This cache verifies the fetched entity has the correct key before
@@ -55,7 +61,7 @@ def _future_result(result):
     return future
 
 
-class _GlobalCacheBatch:
+class _GlobalCacheBatch(object):
     """Abstract base for classes used to batch operations for the global cache.
     """
 

@@ -179,7 +179,7 @@ def lookup(key, options):
     raise tasklets.Return(entity_pb)
 
 
-class _LookupBatch:
+class _LookupBatch(object):
     """Batch for Lookup requests.
 
     Attributes:
@@ -456,7 +456,7 @@ def delete(key, options):
         yield _cache.global_delete(cache_key)
 
 
-class _NonTransactionalCommitBatch:
+class _NonTransactionalCommitBatch(object):
     """Batch for tracking a set of mutations for a non-transactional commit.
 
     Attributes:
@@ -858,7 +858,7 @@ def allocate(keys, options):
     return batch.add(keys)
 
 
-class _AllocateIdsBatch:
+class _AllocateIdsBatch(object):
     """Batch for AllocateIds requests.
 
     Not related to batch used by transactions to allocate ids for upserts
