@@ -623,7 +623,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(file_contents, stored_contents)
 
     def test_upload_gzip_encoded_download_raw(self):
-        payload = b'DEADBEEF' * 1000
+        payload = b"DEADBEEF" * 1000
         raw_stream = io.BytesIO()
         with gzip.GzipFile(fileobj=raw_stream, mode="wb") as gzip_stream:
             gzip_stream.write(payload)
