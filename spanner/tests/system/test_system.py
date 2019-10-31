@@ -794,8 +794,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         if status_code != code_pb2.OK:
             grpc_status_code = _STATUS_CODE_TO_GRPC_STATUS_CODE[status_code]
             call = FauxCall(status_code)
-            exc  = exceptions.from_grpc_status(
-                grpc_status_code, "batch_update failed", errors=[call])
+            exc = exceptions.from_grpc_status(
+                grpc_status_code, "batch_update failed", errors=[call]
+            )
 
     def test_transaction_batch_update_success(self):
         # [START spanner_test_dml_with_mutation]
@@ -2201,7 +2202,6 @@ class _ReadAbortTrigger(object):
 
 
 class FauxCall(object):
-
     def __init__(self, code, details="FauxCall"):
         self._code = code
         self._details = details
