@@ -794,7 +794,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         if status_code != code_pb2.OK:
             grpc_status_code = _STATUS_CODE_TO_GRPC_STATUS_CODE[status_code]
             call = FauxCall(status_code)
-            exc = exceptions.from_grpc_status(
+            raise exceptions.from_grpc_status(
                 grpc_status_code, "batch_update failed", errors=[call]
             )
 
