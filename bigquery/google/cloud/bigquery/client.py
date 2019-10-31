@@ -2264,29 +2264,32 @@ class Client(ClientWithProject):
             table (Union[ \
                 google.cloud.bigquery.table.Table \
                 google.cloud.bigquery.table.TableReference, \
-                str, \
+                str \
             ]):
                 The destination table for the row data, or a reference to it.
             json_rows (Sequence[Dict]):
                 Row data to be inserted. Keys must match the table schema fields
                 and values must be JSON-compatible representations.
-            row_ids (Sequence[str]):
-                (Optional) Unique ids, one per row being inserted. If omitted,
-                unique IDs are created.
-            skip_invalid_rows (bool):
-                (Optional) Insert all valid rows of a request, even if invalid
-                rows exist. The default value is False, which causes the entire
-                request to fail if any invalid rows exist.
-            ignore_unknown_values (bool):
-                (Optional) Accept rows that contain values that do not match the
-                schema. The unknown values are ignored. Default is False, which
+            row_ids (Optional[Sequence[Optional[str]]]):
+                Unique IDs, one per row being inserted. An ID can also be
+                ``None``, indicating that an explicit insert ID should **not**
+                be used for that row. If the argument is omitted altogether,
+                unique IDs are created automatically.
+            skip_invalid_rows (Optional[bool]):
+                Insert all valid rows of a request, even if invalid rows exist.
+                The default value is ``False``, which causes the entire request
+                to fail if any invalid rows exist.
+            ignore_unknown_values (Optional[bool]):
+                Accept rows that contain values that do not match the schema.
+                The unknown values are ignored. Default is ``False``, which
                 treats unknown values as errors.
-            template_suffix (str):
-                (Optional) treat ``name`` as a template table and provide a suffix.
-                BigQuery will create the table ``<name> + <template_suffix>`` based
-                on the schema of the template table. See
+            template_suffix (Optional[str]):
+                Treat ``name`` as a template table and provide a suffix.
+                BigQuery will create the table ``<name> + <template_suffix>``
+                based on the schema of the template table. See
                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
-            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
 
         Returns:
             Sequence[Mappings]:
