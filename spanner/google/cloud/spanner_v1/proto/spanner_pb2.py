@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -42,13 +45,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.spanner.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
+        "\n\025com.google.spanner.v1B\014SpannerProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1\352A_\n\037spanner.googleapis.com/Database\022<projects/{project}/instances/{instance}/databases/{database}"
     ),
     serialized_pb=_b(
-        '\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto"U\n\x14\x43reateSessionRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session"{\n\x1a\x42\x61tchCreateSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x34\n\x10session_template\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session\x12\x15\n\rsession_count\x18\x03 \x01(\x05"J\n\x1b\x42\x61tchCreateSessionsResponse\x12+\n\x07session\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session"\xee\x01\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"!\n\x11GetSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"^\n\x13ListSessionsRequest\x12\x10\n\x08\x64\x61tabase\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteSessionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xe0\x03\n\x11\x45xecuteSqlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02"\xa8\x03\n\x16\x45xecuteBatchDmlRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12G\n\nstatements\x18\x03 \x03(\x0b\x32\x33.google.spanner.v1.ExecuteBatchDmlRequest.Statement\x12\r\n\x05seqno\x18\x04 \x01(\x03\x1a\xe7\x01\n\tStatement\x12\x0b\n\x03sql\x18\x01 \x01(\t\x12\'\n\x06params\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12X\n\x0bparam_types\x18\x03 \x03(\x0b\x32\x43.google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"p\n\x17\x45xecuteBatchDmlResponse\x12\x31\n\x0bresult_sets\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.ResultSet\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03"\xf6\x02\n\x15PartitionQueryRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x0b\n\x03sql\x18\x03 \x01(\t\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"\xff\x01\n\x14PartitionReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xf4\x01\n\x0bReadRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\r\n\x05table\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12*\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySet\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c"b\n\x17\x42\x65ginTransactionRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x36\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptions"\xc2\x01\n\rCommitRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp":\n\x0fRollbackRequest\x12\x0f\n\x07session\x18\x01 \x01(\t\x12\x16\n\x0etransaction_id\x18\x02 \x01(\x0c\x32\x90\x14\n\x07Spanner\x12\x9b\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session"E\x82\xd3\xe4\x93\x02?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\x12\xc7\x01\n\x13\x42\x61tchCreateSessions\x12-.google.spanner.v1.BatchCreateSessionsRequest\x1a..google.spanner.v1.BatchCreateSessionsResponse"Q\x82\xd3\xe4\x93\x02K"F/v1/{database=projects/*/instances/*/databases/*}/sessions:batchCreate:\x01*\x12\x90\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session"@\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse"B\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\x12\x92\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet"Q\x82\xd3\xe4\x93\x02K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet"Z\x82\xd3\xe4\x93\x02T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\xc0\x01\n\x0f\x45xecuteBatchDml\x12).google.spanner.v1.ExecuteBatchDmlRequest\x1a*.google.spanner.v1.ExecuteBatchDmlResponse"V\x82\xd3\xe4\x93\x02P"K/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeBatchDml:\x01*\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet"K\x82\xd3\xe4\x93\x02\x45"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xb7\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction"W\x82\xd3\xe4\x93\x02Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\x12\x9c\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse"M\x82\xd3\xe4\x93\x02G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\x12\x97\x01\n\x08Rollback\x12".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse"U\x82\xd3\xe4\x93\x02O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*B\x95\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
+        '\n+google/cloud/spanner_v1/proto/spanner.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a,google/cloud/spanner_v1/proto/mutation.proto\x1a.google/cloud/spanner_v1/proto/result_set.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto"~\n\x14\x43reateSessionRequest\x12\x39\n\x08\x64\x61tabase\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Database\x12+\n\x07session\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session"\xa9\x01\n\x1a\x42\x61tchCreateSessionsRequest\x12\x39\n\x08\x64\x61tabase\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Database\x12\x34\n\x10session_template\x18\x02 \x01(\x0b\x32\x1a.google.spanner.v1.Session\x12\x1a\n\rsession_count\x18\x03 \x01(\x05\x42\x03\xe0\x41\x02"J\n\x1b\x42\x61tchCreateSessionsResponse\x12+\n\x07session\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session"\xe4\x02\n\x07Session\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x06labels\x18\x02 \x03(\x0b\x32&.google.spanner.v1.Session.LabelsEntry\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12=\n\x19\x61pproximate_last_use_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01:t\xea\x41q\n\x1espanner.googleapis.com/Session\x12Oprojects/{project}/instances/{instance}/databases/{database}/sessions/{session}"I\n\x11GetSessionRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session"\x87\x01\n\x13ListSessionsRequest\x12\x39\n\x08\x64\x61tabase\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Database\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t"]\n\x14ListSessionsResponse\x12,\n\x08sessions\x18\x01 \x03(\x0b\x32\x1a.google.spanner.v1.Session\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"L\n\x14\x44\x65leteSessionRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session"\x8d\x04\n\x11\x45xecuteSqlRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x10\n\x03sql\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x34.google.spanner.v1.ExecuteSqlRequest.ParamTypesEntry\x12\x14\n\x0cresume_token\x18\x06 \x01(\x0c\x12\x42\n\nquery_mode\x18\x07 \x01(\x0e\x32..google.spanner.v1.ExecuteSqlRequest.QueryMode\x12\x17\n\x0fpartition_token\x18\x08 \x01(\x0c\x12\r\n\x05seqno\x18\t \x01(\x03\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01".\n\tQueryMode\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04PLAN\x10\x01\x12\x0b\n\x07PROFILE\x10\x02"\xdf\x03\n\x16\x45xecuteBatchDmlRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12@\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelectorB\x03\xe0\x41\x02\x12L\n\nstatements\x18\x03 \x03(\x0b\x32\x33.google.spanner.v1.ExecuteBatchDmlRequest.StatementB\x03\xe0\x41\x02\x12\x12\n\x05seqno\x18\x04 \x01(\x03\x42\x03\xe0\x41\x02\x1a\xe7\x01\n\tStatement\x12\x0b\n\x03sql\x18\x01 \x01(\t\x12\'\n\x06params\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12X\n\x0bparam_types\x18\x03 \x03(\x0b\x32\x43.google.spanner.v1.ExecuteBatchDmlRequest.Statement.ParamTypesEntry\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"p\n\x17\x45xecuteBatchDmlResponse\x12\x31\n\x0bresult_sets\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.ResultSet\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"H\n\x10PartitionOptions\x12\x1c\n\x14partition_size_bytes\x18\x01 \x01(\x03\x12\x16\n\x0emax_partitions\x18\x02 \x01(\x03"\xa3\x03\n\x15PartitionQueryRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x10\n\x03sql\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\'\n\x06params\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12M\n\x0bparam_types\x18\x05 \x03(\x0b\x32\x38.google.spanner.v1.PartitionQueryRequest.ParamTypesEntry\x12>\n\x11partition_options\x18\x06 \x01(\x0b\x32#.google.spanner.v1.PartitionOptions\x1aJ\n\x0fParamTypesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type:\x02\x38\x01"\xb1\x02\n\x14PartitionReadRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x12\n\x05table\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\r\n\x05index\x18\x04 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x05 \x03(\t\x12/\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySetB\x03\xe0\x41\x02\x12>\n\x11partition_options\x18\t \x01(\x0b\x32#.google.spanner.v1.PartitionOptions"$\n\tPartition\x12\x17\n\x0fpartition_token\x18\x01 \x01(\x0c"z\n\x11PartitionResponse\x12\x30\n\npartitions\x18\x01 \x03(\x0b\x32\x1c.google.spanner.v1.Partition\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xab\x02\n\x0bReadRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12;\n\x0btransaction\x18\x02 \x01(\x0b\x32&.google.spanner.v1.TransactionSelector\x12\x12\n\x05table\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\r\n\x05index\x18\x04 \x01(\t\x12\x14\n\x07\x63olumns\x18\x05 \x03(\tB\x03\xe0\x41\x02\x12/\n\x07key_set\x18\x06 \x01(\x0b\x32\x19.google.spanner.v1.KeySetB\x03\xe0\x41\x02\x12\r\n\x05limit\x18\x08 \x01(\x03\x12\x14\n\x0cresume_token\x18\t \x01(\x0c\x12\x17\n\x0fpartition_token\x18\n \x01(\x0c"\x8f\x01\n\x17\x42\x65ginTransactionRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12;\n\x07options\x18\x02 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsB\x03\xe0\x41\x02"\xea\x01\n\rCommitRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12\x18\n\x0etransaction_id\x18\x02 \x01(\x0cH\x00\x12G\n\x16single_use_transaction\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12.\n\tmutations\x18\x04 \x03(\x0b\x32\x1b.google.spanner.v1.MutationB\r\n\x0btransaction"F\n\x0e\x43ommitResponse\x12\x34\n\x10\x63ommit_timestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"g\n\x0fRollbackRequest\x12\x37\n\x07session\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1espanner.googleapis.com/Session\x12\x1b\n\x0etransaction_id\x18\x02 \x01(\x0c\x42\x03\xe0\x41\x02\x32\xc0\x16\n\x07Spanner\x12\xa6\x01\n\rCreateSession\x12\'.google.spanner.v1.CreateSessionRequest\x1a\x1a.google.spanner.v1.Session"P\x82\xd3\xe4\x93\x02?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\x01*\xda\x41\x08\x64\x61tabase\x12\xe0\x01\n\x13\x42\x61tchCreateSessions\x12-.google.spanner.v1.BatchCreateSessionsRequest\x1a..google.spanner.v1.BatchCreateSessionsResponse"j\x82\xd3\xe4\x93\x02K"F/v1/{database=projects/*/instances/*/databases/*}/sessions:batchCreate:\x01*\xda\x41\x16\x64\x61tabase,session_count\x12\x97\x01\n\nGetSession\x12$.google.spanner.v1.GetSessionRequest\x1a\x1a.google.spanner.v1.Session"G\x82\xd3\xe4\x93\x02:\x12\x38/v1/{name=projects/*/instances/*/databases/*/sessions/*}\xda\x41\x04name\x12\xae\x01\n\x0cListSessions\x12&.google.spanner.v1.ListSessionsRequest\x1a\'.google.spanner.v1.ListSessionsResponse"M\x82\xd3\xe4\x93\x02<\x12:/v1/{database=projects/*/instances/*/databases/*}/sessions\xda\x41\x08\x64\x61tabase\x12\x99\x01\n\rDeleteSession\x12\'.google.spanner.v1.DeleteSessionRequest\x1a\x16.google.protobuf.Empty"G\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\xda\x41\x04name\x12\xa3\x01\n\nExecuteSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a\x1c.google.spanner.v1.ResultSet"Q\x82\xd3\xe4\x93\x02K"F/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeSql:\x01*\x12\xbe\x01\n\x13\x45xecuteStreamingSql\x12$.google.spanner.v1.ExecuteSqlRequest\x1a#.google.spanner.v1.PartialResultSet"Z\x82\xd3\xe4\x93\x02T"O/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeStreamingSql:\x01*0\x01\x12\xc0\x01\n\x0f\x45xecuteBatchDml\x12).google.spanner.v1.ExecuteBatchDmlRequest\x1a*.google.spanner.v1.ExecuteBatchDmlResponse"V\x82\xd3\xe4\x93\x02P"K/v1/{session=projects/*/instances/*/databases/*/sessions/*}:executeBatchDml:\x01*\x12\x91\x01\n\x04Read\x12\x1e.google.spanner.v1.ReadRequest\x1a\x1c.google.spanner.v1.ResultSet"K\x82\xd3\xe4\x93\x02\x45"@/v1/{session=projects/*/instances/*/databases/*/sessions/*}:read:\x01*\x12\xac\x01\n\rStreamingRead\x12\x1e.google.spanner.v1.ReadRequest\x1a#.google.spanner.v1.PartialResultSet"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:streamingRead:\x01*0\x01\x12\xc9\x01\n\x10\x42\x65ginTransaction\x12*.google.spanner.v1.BeginTransactionRequest\x1a\x1e.google.spanner.v1.Transaction"i\x82\xd3\xe4\x93\x02Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\x01*\xda\x41\x0fsession,options\x12\xeb\x01\n\x06\x43ommit\x12 .google.spanner.v1.CommitRequest\x1a!.google.spanner.v1.CommitResponse"\x9b\x01\x82\xd3\xe4\x93\x02G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\x01*\xda\x41 session,transaction_id,mutations\xda\x41(session,single_use_transaction,mutations\x12\xb0\x01\n\x08Rollback\x12".google.spanner.v1.RollbackRequest\x1a\x16.google.protobuf.Empty"h\x82\xd3\xe4\x93\x02I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\x01*\xda\x41\x16session,transaction_id\x12\xb7\x01\n\x0ePartitionQuery\x12(.google.spanner.v1.PartitionQueryRequest\x1a$.google.spanner.v1.PartitionResponse"U\x82\xd3\xe4\x93\x02O"J/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionQuery:\x01*\x12\xb4\x01\n\rPartitionRead\x12\'.google.spanner.v1.PartitionReadRequest\x1a$.google.spanner.v1.PartitionResponse"T\x82\xd3\xe4\x93\x02N"I/v1/{session=projects/*/instances/*/databases/*/sessions/*}:partitionRead:\x01*\x1aw\xca\x41\x16spanner.googleapis.com\xd2\x41[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.dataB\xf7\x01\n\x15\x63om.google.spanner.v1B\x0cSpannerProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1\xea\x41_\n\x1fspanner.googleapis.com/Database\x12<projects/{project}/instances/{instance}/databases/{database}b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -80,8 +86,8 @@ _EXECUTESQLREQUEST_QUERYMODE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1668,
-    serialized_end=1714,
+    serialized_start=2126,
+    serialized_end=2172,
 )
 _sym_db.RegisterEnumDescriptor(_EXECUTESQLREQUEST_QUERYMODE)
 
@@ -108,7 +114,9 @@ _CREATESESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037spanner.googleapis.com/Database"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -138,8 +146,8 @@ _CREATESESSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=440,
-    serialized_end=525,
+    serialized_start=525,
+    serialized_end=651,
 )
 
 
@@ -165,7 +173,9 @@ _BATCHCREATESESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037spanner.googleapis.com/Database"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -201,7 +211,7 @@ _BATCHCREATESESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -213,8 +223,8 @@ _BATCHCREATESESSIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=527,
-    serialized_end=650,
+    serialized_start=654,
+    serialized_end=823,
 )
 
 
@@ -252,8 +262,8 @@ _BATCHCREATESESSIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=652,
-    serialized_end=726,
+    serialized_start=825,
+    serialized_end=899,
 )
 
 
@@ -309,8 +319,8 @@ _SESSION_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=922,
-    serialized_end=967,
+    serialized_start=1095,
+    serialized_end=1140,
 )
 
 _SESSION = _descriptor.Descriptor(
@@ -396,13 +406,15 @@ _SESSION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_SESSION_LABELSENTRY],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Aq\n\036spanner.googleapis.com/Session\022Oprojects/{project}/instances/{instance}/databases/{database}/sessions/{session}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=729,
-    serialized_end=967,
+    serialized_start=902,
+    serialized_end=1258,
 )
 
 
@@ -428,7 +440,9 @@ _GETSESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -440,8 +454,8 @@ _GETSESSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=969,
-    serialized_end=1002,
+    serialized_start=1260,
+    serialized_end=1333,
 )
 
 
@@ -467,7 +481,9 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037spanner.googleapis.com/Database"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -533,8 +549,8 @@ _LISTSESSIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1004,
-    serialized_end=1098,
+    serialized_start=1336,
+    serialized_end=1471,
 )
 
 
@@ -590,8 +606,8 @@ _LISTSESSIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1100,
-    serialized_end=1193,
+    serialized_start=1473,
+    serialized_end=1566,
 )
 
 
@@ -617,7 +633,9 @@ _DELETESESSIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -629,8 +647,8 @@ _DELETESESSIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1195,
-    serialized_end=1231,
+    serialized_start=1568,
+    serialized_end=1644,
 )
 
 
@@ -686,8 +704,8 @@ _EXECUTESQLREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1592,
-    serialized_end=1666,
+    serialized_start=2050,
+    serialized_end=2124,
 )
 
 _EXECUTESQLREQUEST = _descriptor.Descriptor(
@@ -712,7 +730,9 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -748,7 +768,7 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -868,8 +888,8 @@ _EXECUTESQLREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1234,
-    serialized_end=1714,
+    serialized_start=1647,
+    serialized_end=2172,
 )
 
 
@@ -925,8 +945,8 @@ _EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1592,
-    serialized_end=1666,
+    serialized_start=2050,
+    serialized_end=2124,
 )
 
 _EXECUTEBATCHDMLREQUEST_STATEMENT = _descriptor.Descriptor(
@@ -999,8 +1019,8 @@ _EXECUTEBATCHDMLREQUEST_STATEMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1910,
-    serialized_end=2141,
+    serialized_start=2423,
+    serialized_end=2654,
 )
 
 _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
@@ -1025,7 +1045,9 @@ _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1043,7 +1065,7 @@ _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1061,7 +1083,7 @@ _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1079,7 +1101,7 @@ _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1091,8 +1113,8 @@ _EXECUTEBATCHDMLREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1717,
-    serialized_end=2141,
+    serialized_start=2175,
+    serialized_end=2654,
 )
 
 
@@ -1148,8 +1170,8 @@ _EXECUTEBATCHDMLRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2143,
-    serialized_end=2255,
+    serialized_start=2656,
+    serialized_end=2768,
 )
 
 
@@ -1205,8 +1227,8 @@ _PARTITIONOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2257,
-    serialized_end=2329,
+    serialized_start=2770,
+    serialized_end=2842,
 )
 
 
@@ -1262,8 +1284,8 @@ _PARTITIONQUERYREQUEST_PARAMTYPESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1592,
-    serialized_end=1666,
+    serialized_start=2050,
+    serialized_end=2124,
 )
 
 _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
@@ -1288,7 +1310,9 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1324,7 +1348,7 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1390,8 +1414,8 @@ _PARTITIONQUERYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2332,
-    serialized_end=2706,
+    serialized_start=2845,
+    serialized_end=3264,
 )
 
 
@@ -1417,7 +1441,9 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1453,7 +1479,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1507,7 +1533,7 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1537,8 +1563,8 @@ _PARTITIONREADREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2709,
-    serialized_end=2964,
+    serialized_start=3267,
+    serialized_end=3572,
 )
 
 
@@ -1576,8 +1602,8 @@ _PARTITION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2966,
-    serialized_end=3002,
+    serialized_start=3574,
+    serialized_end=3610,
 )
 
 
@@ -1633,8 +1659,8 @@ _PARTITIONRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3004,
-    serialized_end=3126,
+    serialized_start=3612,
+    serialized_end=3734,
 )
 
 
@@ -1660,7 +1686,9 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1696,7 +1724,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1732,7 +1760,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1750,7 +1778,7 @@ _READREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1816,8 +1844,8 @@ _READREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3129,
-    serialized_end=3373,
+    serialized_start=3737,
+    serialized_end=4036,
 )
 
 
@@ -1843,7 +1871,9 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1861,7 +1891,7 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1873,8 +1903,8 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3375,
-    serialized_end=3473,
+    serialized_start=4039,
+    serialized_end=4182,
 )
 
 
@@ -1900,7 +1930,9 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1974,8 +2006,8 @@ _COMMITREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3476,
-    serialized_end=3670,
+    serialized_start=4185,
+    serialized_end=4419,
 )
 
 
@@ -2013,8 +2045,8 @@ _COMMITRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3672,
-    serialized_end=3742,
+    serialized_start=4421,
+    serialized_end=4491,
 )
 
 
@@ -2040,7 +2072,9 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036spanner.googleapis.com/Session"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2058,7 +2092,7 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2070,8 +2104,8 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3744,
-    serialized_end=3802,
+    serialized_start=4493,
+    serialized_end=4596,
 )
 
 _CREATESESSIONREQUEST.fields_by_name["session"].message_type = _SESSION
@@ -2462,25 +2496,24 @@ ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType(
       transaction:
           The transaction to use.  For queries, if none is provided, the
           default is a temporary read-only transaction with strong
-          concurrency.  Standard DML statements require a ReadWrite
-          transaction. Single-use transactions are not supported (to
-          avoid replay). The caller must either supply an existing
-          transaction ID or begin a new transaction.  Partitioned DML
-          requires an existing PartitionedDml transaction ID.
+          concurrency.  Standard DML statements require a read-write
+          transaction. To protect against replays, single-use
+          transactions are not supported. The caller must either supply
+          an existing transaction ID or begin a new transaction.
+          Partitioned DML requires an existing Partitioned DML
+          transaction ID.
       sql:
           Required. The SQL string.
       params:
-          The SQL string can contain parameter placeholders. A parameter
-          placeholder consists of ``'@'`` followed by the parameter
-          name. Parameter names consist of any combination of letters,
-          numbers, and underscores.  Parameters can appear anywhere that
-          a literal value is expected. The same parameter name can be
-          used more than once, for example: ``"WHERE id > @msg_id AND id
-          < @msg_id + 100"``  It is an error to execute an SQL statement
-          with unbound parameters.  Parameter values are specified using
-          ``params``, which is a JSON object whose keys are parameter
-          names, and whose values are the corresponding parameter
-          values.
+          Parameter names and values that bind to placeholders in the
+          SQL string.  A parameter placeholder consists of the ``@``
+          character followed by the parameter name (for example,
+          ``@firstName``). Parameter names can contain letters, numbers,
+          and underscores.  Parameters can appear anywhere that a
+          literal value is expected. The same parameter name can be used
+          more than once, for example:  ``"WHERE id > @msg_id AND id <
+          @msg_id + 100"``  It is an error to execute a SQL statement
+          with unbound parameters.
       param_types:
           It is not always possible for Cloud Spanner to infer the right
           SQL type from a JSON value. For example, values of type
@@ -2516,13 +2549,13 @@ ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType(
           this partition\_token.
       seqno:
           A per-transaction sequence number used to identify this
-          request. This makes each request idempotent such that if the
-          request is received multiple times, at most one will succeed.
-          The sequence number must be monotonically increasing within
-          the transaction. If a request arrives for the first time with
-          an out-of-order sequence number, the transaction may be
-          aborted. Replays of previously handled requests will yield the
-          same response as the first execution.  Required for DML
+          request. This field makes each request idempotent such that if
+          the request is received multiple times, at most one will
+          succeed.  The sequence number must be monotonically increasing
+          within the transaction. If a request arrives for the first
+          time with an out-of-order sequence number, the transaction may
+          be aborted. Replays of previously handled requests will yield
+          the same response as the first execution.  Required for DML
           statements. Ignored for queries.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteSqlRequest)
@@ -2557,17 +2590,15 @@ ExecuteBatchDmlRequest = _reflection.GeneratedProtocolMessageType(
         sql:
             Required. The DML string.
         params:
-            The DML string can contain parameter placeholders. A parameter
-            placeholder consists of ``'@'`` followed by the parameter
-            name. Parameter names consist of any combination of letters,
-            numbers, and underscores.  Parameters can appear anywhere that
-            a literal value is expected. The same parameter name can be
-            used more than once, for example: ``"WHERE id > @msg_id AND id
-            < @msg_id + 100"``  It is an error to execute an SQL statement
-            with unbound parameters.  Parameter values are specified using
-            ``params``, which is a JSON object whose keys are parameter
-            names, and whose values are the corresponding parameter
-            values.
+            Parameter names and values that bind to placeholders in the
+            DML string.  A parameter placeholder consists of the ``@``
+            character followed by the parameter name (for example,
+            ``@firstName``). Parameter names can contain letters, numbers,
+            and underscores.  Parameters can appear anywhere that a
+            literal value is expected. The same parameter name can be used
+            more than once, for example:  ``"WHERE id > @msg_id AND id <
+            @msg_id + 100"``  It is an error to execute a SQL statement
+            with unbound parameters.
         param_types:
             It is not always possible for Cloud Spanner to infer the right
             SQL type from a JSON value. For example, values of type
@@ -2585,7 +2616,7 @@ ExecuteBatchDmlRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_EXECUTEBATCHDMLREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
         __doc__="""The request for
-  [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]
+  [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].
   
   
   Attributes:
@@ -2593,22 +2624,26 @@ ExecuteBatchDmlRequest = _reflection.GeneratedProtocolMessageType(
           Required. The session in which the DML statements should be
           performed.
       transaction:
-          The transaction to use. A ReadWrite transaction is required.
-          Single-use transactions are not supported (to avoid replay).
-          The caller must either supply an existing transaction ID or
-          begin a new transaction.
+          Required. The transaction to use. Must be a read-write
+          transaction.  To protect against replays, single-use
+          transactions are not supported. The caller must either supply
+          an existing transaction ID or begin a new transaction.
       statements:
-          The list of statements to execute in this batch. Statements
-          are executed serially, such that the effects of statement i
-          are visible to statement i+1. Each statement must be a DML
-          statement. Execution will stop at the first failed statement;
-          the remaining statements will not run.  REQUIRES:
-          statements\_size() > 0.
+          Required. The list of statements to execute in this batch.
+          Statements are executed serially, such that the effects of
+          statement ``i`` are visible to statement ``i+1``. Each
+          statement must be a DML statement. Execution stops at the
+          first failed statement; the remaining statements are not
+          executed.  Callers must provide at least one statement.
       seqno:
-          A per-transaction sequence number used to identify this
-          request. This is used in the same space as the seqno in
-          [ExecuteSqlRequest][Spanner.ExecuteSqlRequest]. See more
-          details in [ExecuteSqlRequest][Spanner.ExecuteSqlRequest].
+          Required. A per-transaction sequence number used to identify
+          this request. This field makes each request idempotent such
+          that if the request is received multiple times, at most one
+          will succeed.  The sequence number must be monotonically
+          increasing within the transaction. If a request arrives for
+          the first time with an out-of-order sequence number, the
+          transaction may be aborted. Replays of previously handled
+          requests will yield the same response as the first execution.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlRequest)
     ),
@@ -2625,41 +2660,52 @@ ExecuteBatchDmlResponse = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
         __doc__="""The response for
   [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a
-  list of [ResultSet][google.spanner.v1.ResultSet], one for each DML
-  statement that has successfully executed. If a statement fails, the
-  error is returned as part of the response payload. Clients can determine
-  whether all DML statements have run successfully, or if a statement
-  failed, using one of the following approaches:
+  list of [ResultSet][google.spanner.v1.ResultSet] messages, one for each
+  DML statement that has successfully executed, in the same order as the
+  statements in the request. If a statement fails, the status in the
+  response body identifies the cause of the failure.
   
-  1. Check if 'status' field is OkStatus.
-  2. Check if result\_sets\_size() equals the number of statements in
-     [ExecuteBatchDmlRequest][Spanner.ExecuteBatchDmlRequest].
+  To check for DML statements that failed, use the following approach:
   
-  Example 1: A request with 5 DML statements, all executed successfully.
-  Result: A response with 5 ResultSets, one for each statement in the same
-  order, and an OK status.
+  1. Check the status in the response message. The
+     [google.rpc.Code][google.rpc.Code] enum value ``OK`` indicates that
+     all statements were executed successfully.
+  2. If the status was not ``OK``, check the number of result sets in the
+     response. If the response contains ``N``
+     [ResultSet][google.spanner.v1.ResultSet] messages, then statement
+     ``N+1`` in the request failed.
   
-  Example 2: A request with 5 DML statements. The 3rd statement has a
-  syntax error. Result: A response with 2 ResultSets, for the first 2
-  statements that run successfully, and a syntax error (INVALID\_ARGUMENT)
-  status. From result\_set\_size() client can determine that the 3rd
-  statement has failed.
+  Example 1:
+  
+  -  Request: 5 DML statements, all executed successfully.
+  -  Response: 5 [ResultSet][google.spanner.v1.ResultSet] messages, with
+     the status ``OK``.
+  
+  Example 2:
+  
+  -  Request: 5 DML statements. The third statement has a syntax error.
+  -  Response: 2 [ResultSet][google.spanner.v1.ResultSet] messages, and a
+     syntax error (``INVALID_ARGUMENT``) status. The number of
+     [ResultSet][google.spanner.v1.ResultSet] messages indicates that the
+     third statement failed, and the fourth and fifth statements were not
+     executed.
   
   
   Attributes:
       result_sets:
-          ResultSets, one for each statement in the request that ran
-          successfully, in the same order as the statements in the
-          request. Each [ResultSet][google.spanner.v1.ResultSet] will
-          not contain any rows. The
-          [ResultSetStats][google.spanner.v1.ResultSetStats] in each
-          [ResultSet][google.spanner.v1.ResultSet] will contain the
+          One [ResultSet][google.spanner.v1.ResultSet] for each
+          statement in the request that ran successfully, in the same
+          order as the statements in the request. Each
+          [ResultSet][google.spanner.v1.ResultSet] does not contain any
+          rows. The [ResultSetStats][google.spanner.v1.ResultSetStats]
+          in each [ResultSet][google.spanner.v1.ResultSet] contain the
           number of rows modified by the statement.  Only the first
-          ResultSet in the response contains a valid
+          [ResultSet][google.spanner.v1.ResultSet] in the response
+          contains valid
           [ResultSetMetadata][google.spanner.v1.ResultSetMetadata].
       status:
-          If all DML statements are executed successfully, status will
-          be OK. Otherwise, the error status of the first failed
+          If all DML statements are executed successfully, the status is
+          ``OK``. Otherwise, the error status of the first failed
           statement.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.v1.ExecuteBatchDmlResponse)
@@ -2723,28 +2769,27 @@ PartitionQueryRequest = _reflection.GeneratedProtocolMessageType(
           Read only snapshot transactions are supported, read/write and
           single use transactions are not.
       sql:
-          The query request to generate partitions for. The request will
-          fail if the query is not root partitionable. The query plan of
-          a root partitionable query has a single distributed union
-          operator. A distributed union operator conceptually divides
-          one or more tables into multiple splits, remotely evaluates a
-          subquery independently on each split, and then unions all
-          results.  This must not contain DML commands, such as INSERT,
-          UPDATE, or DELETE. Use [ExecuteStreamingSql][google.spanner.v1
-          .Spanner.ExecuteStreamingSql] with a PartitionedDml
-          transaction for large, partition-friendly DML operations.
+          Required. The query request to generate partitions for. The
+          request will fail if the query is not root partitionable. The
+          query plan of a root partitionable query has a single
+          distributed union operator. A distributed union operator
+          conceptually divides one or more tables into multiple splits,
+          remotely evaluates a subquery independently on each split, and
+          then unions all results.  This must not contain DML commands,
+          such as INSERT, UPDATE, or DELETE. Use [ExecuteStreamingSql][g
+          oogle.spanner.v1.Spanner.ExecuteStreamingSql] with a
+          PartitionedDml transaction for large, partition-friendly DML
+          operations.
       params:
-          The SQL query string can contain parameter placeholders. A
-          parameter placeholder consists of ``'@'`` followed by the
-          parameter name. Parameter names consist of any combination of
-          letters, numbers, and underscores.  Parameters can appear
-          anywhere that a literal value is expected. The same parameter
-          name can be used more than once, for example: ``"WHERE id >
-          @msg_id AND id < @msg_id + 100"``  It is an error to execute
-          an SQL query with unbound parameters.  Parameter values are
-          specified using ``params``, which is a JSON object whose keys
-          are parameter names, and whose values are the corresponding
-          parameter values.
+          Parameter names and values that bind to placeholders in the
+          SQL string.  A parameter placeholder consists of the ``@``
+          character followed by the parameter name (for example,
+          ``@firstName``). Parameter names can contain letters, numbers,
+          and underscores.  Parameters can appear anywhere that a
+          literal value is expected. The same parameter name can be used
+          more than once, for example:  ``"WHERE id > @msg_id AND id <
+          @msg_id + 100"``  It is an error to execute a SQL statement
+          with unbound parameters.
       param_types:
           It is not always possible for Cloud Spanner to infer the right
           SQL type from a JSON value. For example, values of type
@@ -2888,8 +2933,9 @@ ReadRequest = _reflection.GeneratedProtocolMessageType(
           [key\_set][google.spanner.v1.ReadRequest.key\_set] for further
           information.
       columns:
-          The columns of [table][google.spanner.v1.ReadRequest.table] to
-          be returned for each row matching this request.
+          Required. The columns of
+          [table][google.spanner.v1.ReadRequest.table] to be returned
+          for each row matching this request.
       key_set:
           Required. ``key_set`` identifies the rows to be yielded.
           ``key_set`` names the primary keys of the rows in
@@ -3034,19 +3080,48 @@ _sym_db.RegisterMessage(RollbackRequest)
 
 
 DESCRIPTOR._options = None
+_CREATESESSIONREQUEST.fields_by_name["database"]._options = None
+_BATCHCREATESESSIONSREQUEST.fields_by_name["database"]._options = None
+_BATCHCREATESESSIONSREQUEST.fields_by_name["session_count"]._options = None
 _SESSION_LABELSENTRY._options = None
+_SESSION._options = None
+_GETSESSIONREQUEST.fields_by_name["name"]._options = None
+_LISTSESSIONSREQUEST.fields_by_name["database"]._options = None
+_DELETESESSIONREQUEST.fields_by_name["name"]._options = None
 _EXECUTESQLREQUEST_PARAMTYPESENTRY._options = None
+_EXECUTESQLREQUEST.fields_by_name["session"]._options = None
+_EXECUTESQLREQUEST.fields_by_name["sql"]._options = None
 _EXECUTEBATCHDMLREQUEST_STATEMENT_PARAMTYPESENTRY._options = None
+_EXECUTEBATCHDMLREQUEST.fields_by_name["session"]._options = None
+_EXECUTEBATCHDMLREQUEST.fields_by_name["transaction"]._options = None
+_EXECUTEBATCHDMLREQUEST.fields_by_name["statements"]._options = None
+_EXECUTEBATCHDMLREQUEST.fields_by_name["seqno"]._options = None
 _PARTITIONQUERYREQUEST_PARAMTYPESENTRY._options = None
+_PARTITIONQUERYREQUEST.fields_by_name["session"]._options = None
+_PARTITIONQUERYREQUEST.fields_by_name["sql"]._options = None
+_PARTITIONREADREQUEST.fields_by_name["session"]._options = None
+_PARTITIONREADREQUEST.fields_by_name["table"]._options = None
+_PARTITIONREADREQUEST.fields_by_name["key_set"]._options = None
+_READREQUEST.fields_by_name["session"]._options = None
+_READREQUEST.fields_by_name["table"]._options = None
+_READREQUEST.fields_by_name["columns"]._options = None
+_READREQUEST.fields_by_name["key_set"]._options = None
+_BEGINTRANSACTIONREQUEST.fields_by_name["session"]._options = None
+_BEGINTRANSACTIONREQUEST.fields_by_name["options"]._options = None
+_COMMITREQUEST.fields_by_name["session"]._options = None
+_ROLLBACKREQUEST.fields_by_name["session"]._options = None
+_ROLLBACKREQUEST.fields_by_name["transaction_id"]._options = None
 
 _SPANNER = _descriptor.ServiceDescriptor(
     name="Spanner",
     full_name="google.spanner.v1.Spanner",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=3805,
-    serialized_end=6381,
+    serialized_options=_b(
+        "\312A\026spanner.googleapis.com\322A[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.data"
+    ),
+    serialized_start=4599,
+    serialized_end=7479,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateSession",
@@ -3056,7 +3131,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_CREATESESSIONREQUEST,
             output_type=_SESSION,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*'
+                '\202\323\344\223\002?":/v1/{database=projects/*/instances/*/databases/*}/sessions:\001*\332A\010database'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3067,7 +3142,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_BATCHCREATESESSIONSREQUEST,
             output_type=_BATCHCREATESESSIONSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002K"F/v1/{database=projects/*/instances/*/databases/*}/sessions:batchCreate:\001*'
+                '\202\323\344\223\002K"F/v1/{database=projects/*/instances/*/databases/*}/sessions:batchCreate:\001*\332A\026database,session_count'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3078,7 +3153,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_GETSESSIONREQUEST,
             output_type=_SESSION,
             serialized_options=_b(
-                "\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+                "\202\323\344\223\002:\0228/v1/{name=projects/*/instances/*/databases/*/sessions/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3089,7 +3164,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_LISTSESSIONSREQUEST,
             output_type=_LISTSESSIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions"
+                "\202\323\344\223\002<\022:/v1/{database=projects/*/instances/*/databases/*}/sessions\332A\010database"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3100,7 +3175,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_DELETESESSIONREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}"
+                "\202\323\344\223\002:*8/v1/{name=projects/*/instances/*/databases/*/sessions/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3166,7 +3241,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_BEGINTRANSACTIONREQUEST,
             output_type=google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2._TRANSACTION,
             serialized_options=_b(
-                '\202\323\344\223\002Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*'
+                '\202\323\344\223\002Q"L/v1/{session=projects/*/instances/*/databases/*/sessions/*}:beginTransaction:\001*\332A\017session,options'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3177,7 +3252,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_COMMITREQUEST,
             output_type=_COMMITRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*'
+                '\202\323\344\223\002G"B/v1/{session=projects/*/instances/*/databases/*/sessions/*}:commit:\001*\332A session,transaction_id,mutations\332A(session,single_use_transaction,mutations'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -3188,7 +3263,7 @@ _SPANNER = _descriptor.ServiceDescriptor(
             input_type=_ROLLBACKREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\002I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*'
+                '\202\323\344\223\002I"D/v1/{session=projects/*/instances/*/databases/*/sessions/*}:rollback:\001*\332A\026session,transaction_id'
             ),
         ),
         _descriptor.MethodDescriptor(
