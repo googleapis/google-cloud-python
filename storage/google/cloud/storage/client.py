@@ -331,6 +331,7 @@ class Client(ClientWithProject):
         bucket_or_name,
         requester_pays=None,
         project=None,
+        user_project=None,
         location=None,
         predefined_acl=None,
         predefined_default_object_acl=None,
@@ -352,6 +353,9 @@ class Client(ClientWithProject):
             project (str):
                 Optional. the project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
+            user_project (str):
+                (Optional) the project ID to be billed for API
+                requests made via new bucket.
             location (str):
                 Optional. The location of the bucket. If not passed,
                 the default location, US, will be used. See
@@ -392,6 +396,9 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
+        if user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         if project is None:

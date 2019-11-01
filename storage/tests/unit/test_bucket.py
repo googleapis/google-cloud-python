@@ -543,11 +543,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
     def test_create_w_user_project(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         USER_PROJECT = "user-project-123"
-        connection = _Connection()
-        client = _Client(connection, project=PROJECT)
+
+        client = Client(project=PROJECT)
+        client._base_connection = _Connection()
+
         bucket = self._make_one(client, BUCKET_NAME, user_project=USER_PROJECT)
 
         with self.assertRaises(ValueError):

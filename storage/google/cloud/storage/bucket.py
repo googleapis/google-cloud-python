@@ -640,9 +640,6 @@ class Bucket(_PropertyMixin):
             Optional. Name of predefined ACL to apply to bucket's objects. See:
             https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
         """
-        if self.user_project is not None:
-            raise ValueError("Cannot create bucket with 'user_project' set.")
-
         client = self._require_client(client)
         client.create_bucket(
             self,
@@ -650,6 +647,7 @@ class Bucket(_PropertyMixin):
             location=location,
             predefined_acl=predefined_acl,
             predefined_default_object_acl=predefined_default_object_acl,
+            user_project=self.user_project,
         )
 
     def patch(self, client=None):
