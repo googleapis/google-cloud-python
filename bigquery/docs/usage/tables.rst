@@ -122,6 +122,20 @@ Insert rows into a table's data with the
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
+Insert rows into a table's data with the
+:func:`~google.cloud.bigquery.client.Client.insert_rows` method, achieving
+higher write limit:
+
+.. literalinclude:: ../samples/table_insert_rows_explicit_none_insert_ids.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_table_insert_rows_explicit_none_insert_ids]
+   :end-before: [END bigquery_table_insert_rows_explicit_none_insert_ids]
+
+Mind that inserting data with ``None`` row insert IDs can come at the expense of
+more duplicate inserts. See also:
+`Streaming inserts <https://cloud.google.com/bigquery/quotas#streaming_inserts>`_.
+
 Add an empty column to the existing table with the
 :func:`~google.cloud.bigquery.update_table` method:
 
