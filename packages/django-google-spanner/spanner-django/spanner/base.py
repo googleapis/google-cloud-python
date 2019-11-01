@@ -14,7 +14,6 @@
 
 from django.db.backends.base.base import BaseDatabaseWrapper
 from django.utils.functional import cached_property
-from django.utils.asyncio import async_unsafe
 
 from .parse_utils import (
         extract_connection_params
@@ -24,8 +23,8 @@ from google.cloud import spanner_v1 as spanner
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
-    vendor = 'spanner'
-    display_name = 'Spanner'
+    vendor = 'google'
+    display_name = 'Cloud Spanner'
 
     # Mapping of Field objects to their column types.
     data_types = dict(
@@ -35,13 +34,14 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
             BinaryField='BYTES',
             BooleanField='BOOL',
-            CharField='STRING',
+            CharField='STRING(%(max_length)s)',
 
             DateField='DATE',        # Date with a zone is supported.
                                      # https://cloud.google.com/spanner/docs/data-types#date-type
             DateTimeField='STRING',  # DateTimeField produces a timestamp with a timezone
                                      # but Spanneronly supports timestamps without a timezone, see
                                      #    https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
+            DecimalField='FLOAT64',
             DurationField='STRING',  # Django extracts this field with parse_duration by invoking
                                      #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
                                      # starting from
@@ -75,11 +75,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             TextField='STRING',
             TimeField='STRING',  # With or without the time zone, Spanner
                                  # expects the time field as a string.
-            UUIDField='STRING',
+            UUIDField='STRING(36)',  # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
     )
 
     # TODO: (@odeke-em) examine Spanner's data type constraints.
-    data_types_check_constraints = {}
+    data_types_check_constraints = {
+    }
 
     operators = { 
             'exact': '= %s',
@@ -103,7 +104,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return extract_connection_params(self.settings_dict)
 
 
-    @async_unsafe
     def get_new_connection(self, conn_params):
         kwargs = dict(
             project=conn_params.get('project_id'),
@@ -121,7 +121,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return client
 
 
-    @async_unsafe
     def create_cursor(self, name=None):
         raise Exception('unimplemented')
 

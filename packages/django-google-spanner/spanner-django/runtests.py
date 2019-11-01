@@ -31,7 +31,7 @@ def run_django_tests():
 
 
 def main():
-    run_unittests('tests.spanner.django')
+    run_unittests('tests.spanner')
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ from unittest import TestCase
 
 from django.core.exceptions import ImproperlyConfigured
 
-from spanner.django.parse_utils import parse_spanner_url
+from spanner.parse_utils import parse_spanner_url
 
 
 class ParseUtilsTests(TestCase):
