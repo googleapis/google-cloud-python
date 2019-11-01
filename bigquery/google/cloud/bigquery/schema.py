@@ -264,23 +264,21 @@ def _to_schema_fields(schema):
     """Coerce `schema` to a list of schema field instances.
 
     Args:
-        schema(Union[ \
-               Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-               Sequence[Mapping[str, Any]] \
-        ]):
-            Table schema to convert. If given as a sequence of
-            mappings, their content must be compatible with
+        schema(Sequence[Union[ \
+               :class:`~google.cloud.bigquery.schema.SchemaField`, \
+               Mapping[str, Any] \
+        ]]):
+            Table schema to convert. If some items are passed as mappings,
+            their content must be compatible with
             :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
 
     Returns:
         Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]
 
     Raises:
-        TypeError: If `schema` is not a sequence.
-        ValueError:
-            If any item in the sequence is not a
-            :class:`~google.cloud.bigquery.schema.SchemaField` or a
-            compatible mapping representation of the field.
+        Exception: If ``schema`` is not a sequence, or if any item in the
+        sequence is not a :class:`~google.cloud.bigquery.schema.SchemaField`
+        instance or a compatible mapping representation of the field.
     """
     for field in schema:
         if not isinstance(field, (SchemaField, collections.Mapping)):
@@ -289,10 +287,7 @@ def _to_schema_fields(schema):
                 "mapping representations."
             )
 
-    if schema and not isinstance(schema[0], SchemaField):
-        try:
-            schema = [SchemaField.from_api_repr(field) for field in schema]
-        except Exception as exc:
-            raise ValueError("Invalid field representation: {!r}".format(exc))
-
-    return schema
+    return [
+        field if isinstance(field, SchemaField) else SchemaField.from_api_repr(field)
+        for field in schema
+    ]

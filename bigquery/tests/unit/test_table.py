@@ -590,7 +590,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
         full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
         invalid_field = {"name": "full_name", "typeooo": "STRING", "mode": "REQUIRED"}
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             table.schema = [full_name, invalid_field]
 
     def test_schema_setter_valid_mapping_representation(self):

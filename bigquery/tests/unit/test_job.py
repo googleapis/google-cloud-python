@@ -1588,7 +1588,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             {"name": "age", "typeoo": "INTEGER", "mode": "REQUIRED"},
         ]
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             config.schema = schema
 
     def test_schema_setter_unsetting_schema(self):

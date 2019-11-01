@@ -600,7 +600,7 @@ class Test_to_schema_fields(unittest.TestCase):
             {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
             {"name": "address", "typeooo": "STRING", "mode": "REQUIRED"},
         ]
-        with self.assertRaises(ValueError):
+        with self.assertRaises(Exception):
             self._call_fut(schema)
 
     def test_valid_mapping_representation(self):
