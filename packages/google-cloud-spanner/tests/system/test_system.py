@@ -24,6 +24,7 @@ import unittest
 import uuid
 
 import pytest
+import grpc
 from google.rpc import code_pb2
 
 from google.api_core import exceptions
@@ -65,6 +66,10 @@ else:
 EXISTING_INSTANCES = []
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
+
+_STATUS_CODE_TO_GRPC_STATUS_CODE = {
+    member.value[0]: member for member in grpc.StatusCode
+}
 
 
 class Config(object):
@@ -785,9 +790,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # [END spanner_test_dml_with_mutation]
 
     @staticmethod
-    def _check_batch_status(status_code):
-        if status_code != code_pb2.OK:
-            raise exceptions.from_grpc_status(status_code, "batch_update failed")
+    def _check_batch_status(status_code, expected=code_pb2.OK):
+        if status_code != expected:
+            grpc_status_code = _STATUS_CODE_TO_GRPC_STATUS_CODE[status_code]
+            call = FauxCall(status_code)
+            raise exceptions.from_grpc_status(
+                grpc_status_code, "batch_update failed", errors=[call]
+            )
 
     def test_transaction_batch_update_success(self):
         # [START spanner_test_dml_with_mutation]
@@ -906,7 +915,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             status, row_counts = transaction.batch_update(
                 [insert_statement, update_statement, delete_statement]
             )
-            self.assertEqual(status.code, code_pb2.INVALID_ARGUMENT)
+            self._check_batch_status(status.code, code_pb2.INVALID_ARGUMENT)
             self.assertEqual(len(row_counts), 1)
             self.assertEqual(row_counts[0], 1)
 
@@ -2190,3 +2199,21 @@ class _ReadAbortTrigger(object):
     def handle_abort(self, database):
         database.run_in_transaction(self._handle_abort_unit_of_work)
         self.handler_done.set()
+
+
+class FauxCall(object):
+    def __init__(self, code, details="FauxCall"):
+        self._code = code
+        self._details = details
+
+    def initial_metadata(self):
+        return {}
+
+    def trailing_metadata(self):
+        return {}
+
+    def code(self):
+        return self._code
+
+    def details(self):
+        return self._details
