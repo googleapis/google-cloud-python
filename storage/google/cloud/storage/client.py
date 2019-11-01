@@ -351,11 +351,11 @@ class Client(ClientWithProject):
                 Optional. Whether requester pays for API requests for this
                 bucket and its blobs.
             project (str):
-                Optional. the project under which the bucket is to be created.
+                Optional. The project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
             user_project (str):
-                (Optional) the project ID to be billed for API
-                requests made via new bucket.
+                Optional. The project ID to be billed for API requests
+                made via created bucket.
             location (str):
                 Optional. The location of the bucket. If not passed,
                 the default location, US, will be used. See
