@@ -36,9 +36,10 @@ class TestPage(object):
         assert page.remaining == 3
         assert page._parent is parent
         assert page._item_to_value is item_to_value
+        assert page.raw_page is None
 
     def test___iter__(self):
-        page = page_iterator.Page(None, (), None)
+        page = page_iterator.Page(None, (), None, None)
         assert iter(page) is page
 
     def test_iterator_calls_parent_item_to_value(self):
@@ -68,6 +69,18 @@ class TestPage(object):
         assert item_to_value.call_count == 3
         item_to_value.assert_called_with(parent, 12)
         assert page.remaining == 97
+
+    def test_raw_page(self):
+        parent = mock.sentinel.parent
+        item_to_value = mock.sentinel.item_to_value
+
+        raw_page = mock.sentinel.raw_page
+
+        page = page_iterator.Page(parent, (1, 2, 3), item_to_value, raw_page=raw_page)
+        assert page.raw_page is raw_page
+
+        with pytest.raises(AttributeError):
+            page.raw_page = None
 
 
 class PageIteratorImpl(page_iterator.Iterator):
@@ -116,8 +129,7 @@ class TestIterator(object):
     def test__page_iter_increment(self):
         iterator = PageIteratorImpl(None, None)
         page = page_iterator.Page(
-            iterator, ("item",), page_iterator._item_to_value_identity
-        )
+            iterator, ("item",), page_iterator._item_to_value_identity)
         iterator._next_page = mock.Mock(side_effect=[page, None])
 
         assert iterator.num_results == 0
@@ -147,11 +159,9 @@ class TestIterator(object):
         # Make pages from mock responses
         parent = mock.sentinel.parent
         page1 = page_iterator.Page(
-            parent, (item1, item2), page_iterator._item_to_value_identity
-        )
+            parent, (item1, item2), page_iterator._item_to_value_identity)
         page2 = page_iterator.Page(
-            parent, (item3,), page_iterator._item_to_value_identity
-        )
+            parent, (item3,), page_iterator._item_to_value_identity)
 
         iterator = PageIteratorImpl(None, None)
         iterator._next_page = mock.Mock(side_effect=[page1, page2, None])

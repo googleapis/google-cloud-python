@@ -96,14 +96,22 @@ class Page(object):
             Callable to convert an item from the type in the raw API response
             into the native object. Will be called with the iterator and a
             single item.
+        raw_page Optional[google.protobuf.message.Message]:
+            The raw page response.
     """
 
-    def __init__(self, parent, items, item_to_value):
+    def __init__(self, parent, items, item_to_value, raw_page=None):
         self._parent = parent
         self._num_items = len(items)
         self._remaining = self._num_items
         self._item_iter = iter(items)
         self._item_to_value = item_to_value
+        self._raw_page = raw_page
+
+    @property
+    def raw_page(self):
+        """google.protobuf.message.Message"""
+        return self._raw_page
 
     @property
     def num_items(self):
@@ -360,7 +368,7 @@ class HTTPIterator(Iterator):
         if self._has_next_page():
             response = self._get_next_page_response()
             items = response.get(self._items_key, ())
-            page = Page(self, items, self.item_to_value)
+            page = Page(self, items, self.item_to_value, raw_page=response)
             self._page_start(self, page, response)
             self.next_page_token = response.get(self._next_token)
             return page
@@ -527,7 +535,7 @@ class GRPCIterator(Iterator):
 
         self.next_page_token = getattr(response, self._response_token_field)
         items = getattr(response, self._items_field)
-        page = Page(self, items, self.item_to_value)
+        page = Page(self, items, self.item_to_value, raw_page=response)
 
         return page
 
