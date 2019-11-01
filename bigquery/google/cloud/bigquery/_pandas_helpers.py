@@ -240,8 +240,8 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         dataframe (pandas.DataFrame):
             DataFrame for which the client determines the BigQuery schema.
         bq_schema (Sequence[Union[ \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, Any]] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
             A BigQuery schema. Use this argument to override the autodetected
             type for some or all of the DataFrame columns.
@@ -302,11 +302,11 @@ def dataframe_to_arrow(dataframe, bq_schema):
         dataframe (pandas.DataFrame):
             DataFrame to convert to Arrow table.
         bq_schema (Sequence[Union[ \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, Any]] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
-            Desired BigQuery schema. Number of columns must match number of
-            columns in the DataFrame.
+            Desired BigQuery schema. The number of columns must match the
+            number of columns in the DataFrame.
 
     Returns:
         pyarrow.Table:
@@ -364,8 +364,8 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
         dataframe (pandas.DataFrame):
             DataFrame to convert to Parquet file.
         bq_schema (Sequence[Union[ \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, Any]] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
@@ -408,8 +408,8 @@ def download_arrow_tabledata_list(pages, bq_schema):
         pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
             An iterator over the result pages.
         bq_schema (Sequence[Union[ \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, Any]] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
             A decription of the fields in result pages.
     Yields:
@@ -446,8 +446,8 @@ def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
         pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
             An iterator over the result pages.
         bq_schema (Sequence[Union[ \
-            Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-            Sequence[Mapping[str, Any]] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
             A decription of the fields in result pages.
         dtypes(Mapping[str, numpy.dtype]):

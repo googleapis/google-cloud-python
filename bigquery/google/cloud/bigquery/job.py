@@ -1226,10 +1226,10 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def schema(self):
-        """Union[ \
-               Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`], \
-               Sequence[Mapping[str, Any]] \
-        ]: Schema of the destination table.
+        """Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]: Schema of the destination table.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.schema

@@ -265,8 +265,8 @@ def _to_schema_fields(schema):
 
     Args:
         schema(Sequence[Union[ \
-               :class:`~google.cloud.bigquery.schema.SchemaField`, \
-               Mapping[str, Any] \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
         ]]):
             Table schema to convert. If some items are passed as mappings,
             their content must be compatible with
