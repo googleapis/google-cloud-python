@@ -79,7 +79,7 @@ class TestPage(object):
         page = page_iterator.Page(parent, (1, 2, 3), item_to_value, raw_page=raw_page)
         assert page.raw_page is raw_page
 
-        with self.assertRaises(AttributeError):
+        with pytest.raises(AttributeError):
             page.raw_page = None
 
 
