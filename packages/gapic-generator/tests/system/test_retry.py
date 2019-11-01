@@ -12,51 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-from unittest import mock
-
 import pytest
 
-from google import showcase_v1beta1
 from google.api_core import exceptions
 from google.rpc import code_pb2
-
-
-def test_retry_nonidempotent(echo):
-    # Define our error and OK responses.
-    err = exceptions.ServiceUnavailable(message='whups')
-    ok = showcase_v1beta1.EchoResponse(content='foo')
-    server = mock.Mock(side_effect=(err, err, ok))
-
-    # Mock the transport to send back the error responses followed by a
-    # success response.
-    transport = type(echo).get_transport_class()
-    with mock.patch.object(transport, 'echo',
-            new_callable=mock.PropertyMock(return_value=server)):
-        with mock.patch.object(time, 'sleep'):
-            response = echo.echo({'content': 'bar'})
-        assert response.content == 'foo'
-        assert server.call_count == 3
-
-
-def test_retry_idempotent(identity):
-    # Define our error and OK responses.
-    err409 = exceptions.Aborted(message='derp de derp')
-    err503 = exceptions.ServiceUnavailable(message='whups')
-    errwtf = exceptions.Unknown(message='huh?')
-    ok = showcase_v1beta1.User(name='users/0', display_name='Guido')
-    server = mock.Mock(side_effect=(err409, err503, errwtf, ok))
-
-    # Mock the transport to send back the error responses followed by a
-    # success response.
-    transport = type(identity).get_transport_class()
-    with mock.patch.object(transport, 'get_user',
-            new_callable=mock.PropertyMock(return_value=server)):
-        with mock.patch.object(time, 'sleep'):
-            response = identity.get_user({'name': 'users/0'})
-        assert response.name == 'users/0'
-        assert response.display_name == 'Guido'
-        assert server.call_count == 4
 
 
 def test_retry_bubble(echo):

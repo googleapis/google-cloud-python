@@ -16,12 +16,12 @@ import jinja2
 import yaml
 import re
 import os
-from typing import (Any, DefaultDict, Dict, Mapping, List)
+from typing import (Any, DefaultDict, Dict, Mapping)
 from hashlib import sha256
 from collections import (OrderedDict, defaultdict)
 from gapic.samplegen_utils.utils import (
     coerce_response_name, is_valid_sample_cfg)
-from gapic.samplegen_utils.types import (InvalidConfig, DuplicateSample)
+from gapic.samplegen_utils.types import DuplicateSample
 from gapic.samplegen import (manifest, samplegen)
 from gapic.generator import options
 from gapic.generator import formatter

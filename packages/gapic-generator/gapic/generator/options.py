@@ -13,13 +13,14 @@
 # limitations under the License.
 
 from collections import defaultdict
-from typing import DefaultDict, List, Tuple
+from typing import Any, DefaultDict, Dict, List, Optional, Tuple
 
 import dataclasses
+import json
 import os
 import warnings
 
-from gapic.samplegen_utils import (types, utils as samplegen_utils)
+from gapic.samplegen_utils import utils as samplegen_utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -30,14 +31,16 @@ class Options:
     on unrecognized arguments (essentially, we throw them away, but we do
     warn if it looks like it was meant for us).
     """
-    templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
-    namespace: Tuple[str, ...] = dataclasses.field(default=())
-    sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     name: str = ''
+    namespace: Tuple[str, ...] = dataclasses.field(default=())
+    retry: Optional[Dict[str, Any]] = None
+    sample_configs: Tuple[str, ...] = dataclasses.field(default=())
+    templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
 
     # Class constants
-    SAMPLES_OPT: str = 'samples'
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
+    RETRY_OPT: str = 'retry-config'
+    SAMPLES_OPT: str = 'samples'
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -55,8 +58,8 @@ class Options:
 
         Raises:
             gapic.samplegen_utils.types.InvalidConfig:
-                        If paths to files or directories that should contain sample
-                        configs are passed and no valid sample config is found.
+                If paths to files or directories that should contain sample
+                configs are passed and no valid sample config is found.
         """
         # Parse out every option beginning with `python-gapic`
         opts: DefaultDict[str, List[str]] = defaultdict(list)
@@ -66,8 +69,9 @@ class Options:
             if '=' in opt:
                 opt, value = opt.split('=')
 
-            if opt == cls.SAMPLES_OPT:
-                opts[cls.SAMPLES_OPT].append(value)
+            # Save known, expected keys.
+            if opt in (cls.RETRY_OPT, cls.SAMPLES_OPT):
+                opts[opt].append(value)
 
             # Throw away other options not meant for us.
             if not opt.startswith(cls.PYTHON_GAPIC_PREFIX):
@@ -93,16 +97,17 @@ class Options:
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
-            templates=tuple(os.path.expanduser(i) for i in templates),
+            retry=json.loads(str(opts.pop(cls.RETRY_OPT, 'null'))),
             sample_configs=tuple(
                 cfg_path
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
+            templates=tuple(os.path.expanduser(i) for i in templates),
         )
 
-        # Note: if we ever need to recursively check directories for sample configs,
-        # check that at least _one_ config is read in.
+        # Note: if we ever need to recursively check directories for sample
+        # configs, check that at least _one_ config is read in.
 
         # If there are any options remaining, then we failed to recognize
         # them -- complain.

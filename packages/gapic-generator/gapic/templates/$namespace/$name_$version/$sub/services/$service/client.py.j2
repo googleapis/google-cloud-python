@@ -143,16 +143,21 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(
             self._transport.{{ method.name|snake_case }},
-            default_retry=retries.Retry(predicate=retries.if_exception_type(
-                {%- if method.idempotent %}
-                exceptions.Aborted,
-                {%- endif %}
-                exceptions.ServiceUnavailable,
-                {%- if method.idempotent %}
-                exceptions.Unknown,
-                {%- endif %}
-            )),
-            default_timeout=None,
+            {%- if method.retry %}
+            default_retry=retries.Retry(
+                {%- if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
+                {%- if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
+                {%- if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
+                predicate=retries.if_exception_type(
+                    {%- filter sort_lines %}
+                    {%- for ex in method.retry.retryable_exceptions %}
+                    exceptions.{{ ex.__name__ }},
+                    {%- endfor %}
+                    {%- endfilter %}
+                ),
+            ),
+            {%- endif %}
+            default_timeout={{ method.timeout }},
             client_info=_client_info,
         )
         {%- if method.field_headers %}
