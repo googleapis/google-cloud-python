@@ -4572,7 +4572,7 @@ class TestClient(unittest.TestCase):
             method="POST", path="/%s" % PATH, data=SENT
         )
 
-    def test_insert_rows_wo_explicit_insert_ids(self):
+    def test_insert_rows_w_explicit_none_insert_ids(self):
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -4800,7 +4800,7 @@ class TestClient(unittest.TestCase):
         assert actual_calls[0] == expected_call
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_insert_rows_from_dataframe_wo_explicit_insert_ids(self):
+    def test_insert_rows_from_dataframe_w_explicit_none_insert_ids(self):
         from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -4916,7 +4916,7 @@ class TestClient(unittest.TestCase):
             data=expected,
         )
 
-    def test_insert_rows_json_wo_explicit_insert_ids(self):
+    def test_insert_rows_json_w_explicit_none_insert_ids(self):
         rows = [{"col1": "val1"}, {"col2": "val2"}]
         creds = _make_credentials()
         http = object()

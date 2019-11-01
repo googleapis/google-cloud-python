@@ -13,9 +13,9 @@
 # limitations under the License.
 
 
-def table_insert_rows_no_explicit_row_ids(client, table_id):
+def table_insert_rows_explicit_none_insert_ids(client, table_id):
 
-    # [START bigquery_table_insert_rows_no_explicit_row_ids]
+    # [START bigquery_table_insert_rows_explicit_none_insert_ids]
     # TODO(developer): Import the client library.
     # from google.cloud import bigquery
 
@@ -33,4 +33,4 @@ def table_insert_rows_no_explicit_row_ids(client, table_id):
     )  # Make an API request.
     if errors == []:
         print("New rows have been added.")
-    # [END bigquery_table_insert_rows_no_explicit_row_ids]
+    # [END bigquery_table_insert_rows_explicit_none_insert_ids]
