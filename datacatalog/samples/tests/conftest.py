@@ -22,14 +22,24 @@ import google.auth
 from google.cloud import datacatalog_v1beta1
 
 
-@pytest.fixture(scope="module")
-def client():
-    return datacatalog_v1beta1.DataCatalogClient()
+@pytest.fixture(scope="session")
+def client(credentials):
+    return datacatalog_v1beta1.DataCatalogClient(credentials=credentials)
 
 
-@pytest.fixture(scope="module")
-def project_id():
-    return google.auth.default()[1]
+@pytest.fixture(scope="session")
+def default_credentials():
+    return google.auth.default()
+
+
+@pytest.fixture(scope="session")
+def credentials(default_credentials):
+    return default_credentials[0]
+
+
+@pytest.fixture(scope="session")
+def project_id(default_credentials):
+    return default_credentials[1]
 
 
 @pytest.fixture
