@@ -11,5 +11,3 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
-    # Ignore assert False, meant to prevent false positive tests
-    assert False
