@@ -12,27 +12,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-import unittest
-
-
-def run_unittests(module):
-    test_suite = unittest.TestLoader().discover(module)
-    result = unittest.TextTestRunner(verbosity=1).run(test_suite)
-    sys.exit(any(result.failures or result.errors))
-
-
-def run_parse_util_tests():
+class Warning(Exception):
     pass
 
 
-def run_django_tests():
-    raise Exception('Unimplemented')
+class Error(Exception):
+    pass
 
 
-def main():
-    run_unittests('tests.spanner')
+class InterfaceError(Error):
+    pass
 
 
-if __name__ == '__main__':
-    main()
+class DatabaseError(Error):
+    pass
+
+
+class DataError(DatabaseError):
+    pass
+
+
+class OperationalError(DatabaseError):
+    pass
+
+
+class IntegrityError(DatabaseError):
+    pass
+
+
+class InternalError(DatabaseError):
+    pass
+
+
+class ProgrammingError(DatabaseError):
+    pass
+
+
+class NotSupportedError(DatabaseError):
+    pass

@@ -14,9 +14,8 @@
 
 from unittest import TestCase
 
-from django.core.exceptions import ImproperlyConfigured
-
-from spanner.parse_utils import parse_spanner_url
+from spanner.dbapi.parse_utils import parse_spanner_url
+from spanner.dbapi.exceptions import Error
 
 
 class ParseUtilsTests(TestCase):
@@ -26,7 +25,7 @@ class ParseUtilsTests(TestCase):
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
             
-        self.assertTrue(isinstance(exc.exception, ImproperlyConfigured))
+        self.assertTrue(isinstance(exc.exception, Error))
         self.assertEqual(*exc.exception.args, 'expecting a non-blank spanner_url')
 
 
@@ -37,7 +36,7 @@ class ParseUtilsTests(TestCase):
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
             
-        self.assertTrue(isinstance(exc.exception, ImproperlyConfigured))
+        self.assertTrue(isinstance(exc.exception, Error))
         self.assertEqual(*exc.exception.args, 'expecting cloudspanner as the scheme')
 
     def test_invalid_scheme(self):
@@ -47,7 +46,7 @@ class ParseUtilsTests(TestCase):
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
             
-        self.assertTrue(isinstance(exc.exception, ImproperlyConfigured))
+        self.assertTrue(isinstance(exc.exception, Error))
         self.assertEqual(*exc.exception.args, 'invalid scheme foo, expected cloudspanner')
         
 

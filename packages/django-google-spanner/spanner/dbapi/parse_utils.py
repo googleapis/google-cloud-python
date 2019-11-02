@@ -15,12 +15,12 @@
 import re
 from urllib.parse import urlparse
 
-from django.core.exceptions import ImproperlyConfigured
+from .exceptions import Error
 
 def resolve_project_id(project_id):
     if project_id == 'DEFAULT_PROJECT_ID' or not project_id:
         # Resolve it from the environment.
-        raise ImproperlyConfigured(
+        raise Error(
                 'Cannot yet resolve the project_id from the environment')
     else:
         return project_id
@@ -32,14 +32,14 @@ def parse_spanner_url(spanner_url):
     # Examples:
     # cloudspanner://spanner.googleapis.com/projects/test-project-012345/instances/test-instance/databases/dev-db
     if not spanner_url:
-        raise ImproperlyConfigured('expecting a non-blank spanner_url')
+        raise Error('expecting a non-blank spanner_url')
 
     o = urlparse(spanner_url or '')
     if o.scheme == '':
-        raise ImproperlyConfigured('expecting cloudspanner as the scheme')
+        raise Error('expecting cloudspanner as the scheme')
 
     if o.scheme != 'cloudspanner':
-        raise ImproperlyConfigured('invalid scheme {got}, expected {want}'.format(
+        raise Error('invalid scheme {got}, expected {want}'.format(
                                     got=o.scheme, want='cloudspanner'))
 
     properties = parse_properties(o.query)
@@ -84,13 +84,13 @@ rePROJECTID_INSTANCE_DBNAME = re.compile(
 def parse_projectid_instance_dbname(url_path):
     matches = rePROJECTID_INSTANCE_DBNAME.findall(url_path)
     if len(matches) != 1:
-        raise ImproperlyConfigured('%s does not match pattern %s' % (
+        raise Error('%s does not match pattern %s' % (
                         url_path, rePROJECTID_INSTANCE_DBNAME.pattern))
 
     head = matches[0]
     g, w = len(head), rePROJECTID_INSTANCE_DBNAME.groups
     if g != w:
-        raise ImproperlyConfigured('unmatched groups, got %d want %d' % (g, w))
+        raise Error('unmatched groups, got %d want %d' % (g, w))
 
     project_id, instance, database = head
     return dict(
@@ -125,3 +125,26 @@ def extract_connection_params(settings_dict):
                 project_id=resolve_project_id(settings_dict['PROJECT_ID']),
                 read_only=settings_dict['READ_ONLY'],
             )
+
+
+reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$', re.UNICODE)
+
+def validate_instance_config(instance_config):
+    """
+    Validates that instance_config matches the pattern
+        ^projects/([^/]+)/instanceConfigs/([^/]+)$
+    and for an example, looks like:
+        projects/odeke-sandbox/instanceConfigs/regional-us-west2
+
+    Args:
+        instance_config: a non-empty string
+
+    Returns:
+        A non-empty string on validation failure or None if properly validated.
+    """
+    matches = reINSTANCE_CONFIG.findall(instance_config or '')
+    if len(matches) != reINSTANCE_CONFIG.groups:
+        return '%s does not match pattern %s' % (
+                        instance_config, reINSTANCE_CONFIG.pattern)
+
+    return None
