@@ -14,7 +14,7 @@
 
 from google.cloud import spanner_v1 as spanner
 
-from .connect import Connection
+from .connection import Connection
 from .exceptions import Error
 from .parse_utils import parse_spanner_url
 
