@@ -1532,7 +1532,7 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(all_props, SchemaField.from_api_repr(all_props_repr))
         self.assertEqual(minimal, SchemaField.from_api_repr(minimal_repr))
 
-    def test_schema_setter(self):
+    def test_schema_setter_fields(self):
         from google.cloud.bigquery.schema import SchemaField
 
         config = self._get_target_class()()
@@ -1554,6 +1554,42 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         self.assertEqual(
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )
+
+    def test_schema_setter_valid_mappings_list(self):
+        config = self._get_target_class()()
+
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+        ]
+        config.schema = schema
+
+        full_name_repr = {
+            "name": "full_name",
+            "type": "STRING",
+            "mode": "REQUIRED",
+            "description": None,
+        }
+        age_repr = {
+            "name": "age",
+            "type": "INTEGER",
+            "mode": "REQUIRED",
+            "description": None,
+        }
+        self.assertEqual(
+            config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
+        )
+
+    def test_schema_setter_invalid_mappings_list(self):
+        config = self._get_target_class()()
+
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {"name": "age", "typeoo": "INTEGER", "mode": "REQUIRED"},
+        ]
+
+        with self.assertRaises(Exception):
+            config.schema = schema
 
     def test_schema_setter_unsetting_schema(self):
         from google.cloud.bigquery.schema import SchemaField
