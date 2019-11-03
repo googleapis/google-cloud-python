@@ -239,7 +239,10 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
     Args:
         dataframe (pandas.DataFrame):
             DataFrame for which the client determines the BigQuery schema.
-        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
             A BigQuery schema. Use this argument to override the autodetected
             type for some or all of the DataFrame columns.
 
@@ -249,6 +252,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             any column cannot be determined.
     """
     if bq_schema:
+        bq_schema = schema._to_schema_fields(bq_schema)
         for field in bq_schema:
             if field.field_type in schema._STRUCT_TYPES:
                 raise ValueError(
@@ -297,9 +301,12 @@ def dataframe_to_arrow(dataframe, bq_schema):
     Args:
         dataframe (pandas.DataFrame):
             DataFrame to convert to Arrow table.
-        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
-            Desired BigQuery schema. Number of columns must match number of
-            columns in the DataFrame.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            Desired BigQuery schema. The number of columns must match the
+            number of columns in the DataFrame.
 
     Returns:
         pyarrow.Table:
@@ -310,6 +317,8 @@ def dataframe_to_arrow(dataframe, bq_schema):
     column_and_index_names = set(
         name for name, _ in list_columns_and_indexes(dataframe)
     )
+
+    bq_schema = schema._to_schema_fields(bq_schema)
     bq_field_names = set(field.name for field in bq_schema)
 
     extra_fields = bq_field_names - column_and_index_names
@@ -354,7 +363,10 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
     Args:
         dataframe (pandas.DataFrame):
             DataFrame to convert to Parquet file.
-        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
         filepath (str):
@@ -368,6 +380,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
+    bq_schema = schema._to_schema_fields(bq_schema)
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
     pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
@@ -388,20 +401,24 @@ def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
     return pyarrow.RecordBatch.from_arrays(arrays, names=column_names)
 
 
-def download_arrow_tabledata_list(pages, schema):
+def download_arrow_tabledata_list(pages, bq_schema):
     """Use tabledata.list to construct an iterable of RecordBatches.
 
     Args:
         pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
             An iterator over the result pages.
-        schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
             A decription of the fields in result pages.
     Yields:
         :class:`pyarrow.RecordBatch`
         The next page of records as a ``pyarrow`` record batch.
     """
-    column_names = bq_to_arrow_schema(schema) or [field.name for field in schema]
-    arrow_types = [bq_to_arrow_data_type(field) for field in schema]
+    bq_schema = schema._to_schema_fields(bq_schema)
+    column_names = bq_to_arrow_schema(bq_schema) or [field.name for field in bq_schema]
+    arrow_types = [bq_to_arrow_data_type(field) for field in bq_schema]
 
     for page in pages:
         yield _tabledata_list_page_to_arrow(page, column_names, arrow_types)
@@ -422,9 +439,26 @@ def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
     return pandas.DataFrame(columns, columns=column_names)
 
 
-def download_dataframe_tabledata_list(pages, schema, dtypes):
-    """Use (slower, but free) tabledata.list to construct a DataFrame."""
-    column_names = [field.name for field in schema]
+def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
+    """Use (slower, but free) tabledata.list to construct a DataFrame.
+
+    Args:
+        pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
+            An iterator over the result pages.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            A decription of the fields in result pages.
+        dtypes(Mapping[str, numpy.dtype]):
+            The types of columns in result data to hint construction of the
+            resulting DataFrame. Not all column types have to be specified.
+    Yields:
+        :class:`pandas.DataFrame`
+        The next page of records as a ``pandas.DataFrame`` record batch.
+    """
+    bq_schema = schema._to_schema_fields(bq_schema)
+    column_names = [field.name for field in bq_schema]
     for page in pages:
         yield _tabledata_list_page_to_dataframe(page, column_names, dtypes)
 

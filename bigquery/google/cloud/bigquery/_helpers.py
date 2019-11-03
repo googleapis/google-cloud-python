@@ -224,11 +224,18 @@ def _row_tuple_from_json(row, schema):
 
     Args:
         row (Dict): A JSON response row to be converted.
-        schema (Tuple): A tuple of :class:`~google.cloud.bigquery.schema.SchemaField`.
+        schema (Sequence[Union[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                Mapping[str, Any] \
+        ]]):  Specification of the field types in ``row``.
 
     Returns:
         Tuple: A tuple of data converted to native types.
     """
+    from google.cloud.bigquery.schema import _to_schema_fields
+
+    schema = _to_schema_fields(schema)
+
     row_data = []
     for field, cell in zip(schema, row["f"]):
         row_data.append(_field_from_json(cell["v"], field))
@@ -236,9 +243,25 @@ def _row_tuple_from_json(row, schema):
 
 
 def _rows_from_json(values, schema):
-    """Convert JSON row data to rows with appropriate types."""
-    from google.cloud.bigquery import Row
+    """Convert JSON row data to rows with appropriate types.
 
+    Args:
+        values (Sequence[Dict]): The list of responses (JSON rows) to convert.
+        schema (Sequence[Union[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                Mapping[str, Any] \
+        ]]):
+            The table's schema. If any item is a mapping, its content must be
+            compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
+
+    Returns:
+        List[:class:`~google.cloud.bigquery.Row`]
+    """
+    from google.cloud.bigquery import Row
+    from google.cloud.bigquery.schema import _to_schema_fields
+
+    schema = _to_schema_fields(schema)
     field_to_index = _field_to_index_mapping(schema)
     return [Row(_row_tuple_from_json(r, schema), field_to_index) for r in values]
 
