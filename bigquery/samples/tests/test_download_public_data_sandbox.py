@@ -12,13 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+
 from .. import download_public_data_sandbox
 
 
-def test_download_public_data_sandbox(capsys, client):
+def test_download_public_data_sandbox(caplog, capsys, client):
+    # Enable debug-level logging to verify the BigQuery Storage API is used.
+    caplog.set_level(logging.DEBUG)
 
     download_public_data_sandbox.download_public_data_sandbox(client)
-    out, _ = capsys.readouterr()
+    out, err = capsys.readouterr()
     assert "year" in out
     assert "gender" in out
     assert "name" in out
+
+    assert any(
+        # An anonymous table is used because this sample reads from query results.
+        ("Started reading table" in message and "BQ Storage API session" in message)
+        for message in caplog.messages
+    )
