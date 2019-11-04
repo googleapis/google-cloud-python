@@ -30,18 +30,21 @@ from google.cloud.bigquery.dbapi import exceptions
 def scalar_to_query_parameter(value, name=None):
     """Convert a scalar value into a query parameter.
 
-    :type value: any
-    :param value: A scalar value to convert into a query parameter.
+    Args:
+        value (Any):
+            A scalar value to convert into a query parameter.
 
-    :type name: str
-    :param name: (Optional) Name of the query parameter.
+        name (str):
+            (Optional) Name of the query parameter.
 
-    :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
-    :returns:
-        A query parameter corresponding with the type and value of the plain
-        Python object.
-    :raises: :class:`~google.cloud.bigquery.dbapi.exceptions.ProgrammingError`
-        if the type cannot be determined.
+    Returns:
+        google.cloud.bigquery.ScalarQueryParameter:
+            A query parameter corresponding with the type and value of the plain
+            Python object.
+
+    Raises:
+        google.cloud.bigquery.dbapi.exceptions.ProgrammingError:
+            if the type cannot be determined.
     """
     parameter_type = bigquery_scalar_type(value)
 
@@ -67,8 +70,8 @@ def array_to_query_parameter(value, name=None):
         Python object.
 
     Raises:
-        :class:`~google.cloud.bigquery.dbapi.exceptions.ProgrammingError`
-        if the type of array elements cannot be determined.
+        google.cloud.bigquery.dbapi.exceptions.ProgrammingError:
+            if the type of array elements cannot be determined.
     """
     if not array_like(value):
         raise exceptions.ProgrammingError(
@@ -97,11 +100,12 @@ def array_to_query_parameter(value, name=None):
 def to_query_parameters_list(parameters):
     """Converts a sequence of parameter values into query parameters.
 
-    :type parameters: Sequence[Any]
-    :param parameters: Sequence of query parameter values.
+    Args:
+        parameters (Sequence[Any]): Sequence of query parameter values.
 
-    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
-    :returns: A list of query parameters.
+    Returns:
+        List[google.cloud.bigquery.query._AbstractQueryParameter]:
+            A list of query parameters.
     """
     result = []
 
@@ -120,11 +124,12 @@ def to_query_parameters_list(parameters):
 def to_query_parameters_dict(parameters):
     """Converts a dictionary of parameter values into query parameters.
 
-    :type parameters: Mapping[str, Any]
-    :param parameters: Dictionary of query parameter values.
+    Args:
+        parameters (Mapping[str, Any]): Dictionary of query parameter values.
 
-    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
-    :returns: A list of named query parameters.
+    Returns:
+        List[google.cloud.bigquery.query._AbstractQueryParameter]:
+            A list of named query parameters.
     """
     result = []
 
@@ -146,11 +151,13 @@ def to_query_parameters_dict(parameters):
 def to_query_parameters(parameters):
     """Converts DB-API parameter values into query parameters.
 
-    :type parameters: Mapping[str, Any] or Sequence[Any]
-    :param parameters: A dictionary or sequence of query parameter values.
+    Args:
+        parameters (Union[Mapping[str, Any], Sequence[Any]]):
+            A dictionary or sequence of query parameter values.
 
-    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
-    :returns: A list of query parameters.
+    Returns:
+        List[google.cloud.bigquery.query._AbstractQueryParameter]:
+            A list of query parameters.
     """
     if parameters is None:
         return []

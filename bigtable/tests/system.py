@@ -1076,8 +1076,8 @@ class TestDataAPI(unittest.TestCase):
         # Make sure COLUMN_FAMILY_ID1 was the only key.
         self.assertEqual(len(cells_returned), 0)
 
-        cell1_new, = col_fam1.pop(COL_NAME1)
-        cell3_new, = col_fam1.pop(COL_NAME2)
+        (cell1_new,) = col_fam1.pop(COL_NAME1)
+        (cell3_new,) = col_fam1.pop(COL_NAME2)
         # Make sure COL_NAME1 and COL_NAME2 were the only keys.
         self.assertEqual(len(col_fam1), 0)
 

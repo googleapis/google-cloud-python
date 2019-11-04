@@ -56,7 +56,7 @@ from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-securitycenter"
+    "google-cloud-securitycenter",
 ).version
 
 
@@ -132,7 +132,7 @@ class SecurityCenterClient(object):
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization
+            "organizations/{organization}", organization=organization,
         )
 
     @classmethod
@@ -147,7 +147,7 @@ class SecurityCenterClient(object):
     def organization_sources_path(cls, organization):
         """Return a fully-qualified organization_sources string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/-", organization=organization
+            "organizations/{organization}/sources/-", organization=organization,
         )
 
     @classmethod
@@ -246,12 +246,12 @@ class SecurityCenterClient(object):
                 self.transport = transport
         else:
             self.transport = security_center_grpc_transport.SecurityCenterGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -262,7 +262,7 @@ class SecurityCenterClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -334,7 +334,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.CreateSourceRequest(
-            parent=parent, source=source
+            parent=parent, source=source,
         )
         if metadata is None:
             metadata = []
@@ -423,7 +423,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.CreateFindingRequest(
-            parent=parent, finding_id=finding_id, finding=finding
+            parent=parent, finding_id=finding_id, finding=finding,
         )
         if metadata is None:
             metadata = []
@@ -501,7 +501,7 @@ class SecurityCenterClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_
+            resource=resource, options=options_,
         )
         if metadata is None:
             metadata = []
@@ -572,7 +572,7 @@ class SecurityCenterClient(object):
                 client_info=self._client_info,
             )
 
-        request = securitycenter_service_pb2.GetOrganizationSettingsRequest(name=name)
+        request = securitycenter_service_pb2.GetOrganizationSettingsRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -642,7 +642,7 @@ class SecurityCenterClient(object):
                 client_info=self._client_info,
             )
 
-        request = securitycenter_service_pb2.GetSourceRequest(name=name)
+        request = securitycenter_service_pb2.GetSourceRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1592,7 +1592,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.ListSourcesRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1688,7 +1688,7 @@ class SecurityCenterClient(object):
                 client_info=self._client_info,
             )
 
-        request = securitycenter_service_pb2.RunAssetDiscoveryRequest(parent=parent)
+        request = securitycenter_service_pb2.RunAssetDiscoveryRequest(parent=parent,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1780,7 +1780,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.SetFindingStateRequest(
-            name=name, state=state, start_time=start_time
+            name=name, state=state, start_time=start_time,
         )
         if metadata is None:
             metadata = []
@@ -1862,7 +1862,7 @@ class SecurityCenterClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1941,7 +1941,7 @@ class SecurityCenterClient(object):
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
+            resource=resource, permissions=permissions,
         )
         if metadata is None:
             metadata = []
@@ -2033,7 +2033,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.UpdateFindingRequest(
-            finding=finding, update_mask=update_mask
+            finding=finding, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -2117,7 +2117,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.UpdateOrganizationSettingsRequest(
-            organization_settings=organization_settings, update_mask=update_mask
+            organization_settings=organization_settings, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -2201,7 +2201,7 @@ class SecurityCenterClient(object):
             )
 
         request = securitycenter_service_pb2.UpdateSourceRequest(
-            source=source, update_mask=update_mask
+            source=source, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []

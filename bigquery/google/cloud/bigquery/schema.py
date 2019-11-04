@@ -14,6 +14,8 @@
 
 """Schemas for BigQuery tables / queries."""
 
+import collections
+
 from google.cloud.bigquery_v2 import types
 
 
@@ -256,3 +258,36 @@ def _build_schema_resource(fields):
         Sequence[Dict]: Mappings describing the schema of the supplied fields.
     """
     return [field.to_api_repr() for field in fields]
+
+
+def _to_schema_fields(schema):
+    """Coerce `schema` to a list of schema field instances.
+
+    Args:
+        schema(Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            Table schema to convert. If some items are passed as mappings,
+            their content must be compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
+
+    Returns:
+        Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]
+
+    Raises:
+        Exception: If ``schema`` is not a sequence, or if any item in the
+        sequence is not a :class:`~google.cloud.bigquery.schema.SchemaField`
+        instance or a compatible mapping representation of the field.
+    """
+    for field in schema:
+        if not isinstance(field, (SchemaField, collections.Mapping)):
+            raise ValueError(
+                "Schema items must either be fields or compatible "
+                "mapping representations."
+            )
+
+    return [
+        field if isinstance(field, SchemaField) else SchemaField.from_api_repr(field)
+        for field in schema
+    ]

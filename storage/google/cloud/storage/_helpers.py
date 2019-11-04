@@ -24,7 +24,7 @@ import os
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 """Environment variable defining host for Storage emulator."""
 
-_DEFAULT_STORAGE_HOST = u"https://www.googleapis.com"
+_DEFAULT_STORAGE_HOST = u"https://storage.googleapis.com"
 
 
 def _get_storage_host():

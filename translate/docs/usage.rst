@@ -1,12 +1,12 @@
-Using the Translate Client
+Translation v2 Usage Guide
 --------------------------
 
 To create a client:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
 
 By default, the client targets English when doing detections
 and translations, but a non-default value can be used as
@@ -14,21 +14,21 @@ well:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client(target_language='es')
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client(target_language='es')
 
-The Google Cloud Translation API has three supported methods, and they
+The Google Cloud Translation v2 API has three supported methods, and they
 map to three methods on a client:
-:meth:`~google.cloud.translate.client.Client.get_languages`,
-:meth:`~google.cloud.translate.client.Client.detect_language` and
-:meth:`~google.cloud.translate.client.Client.translate`.
+:meth:`~google.cloud.translate_v2.client.Client.get_languages`,
+:meth:`~google.cloud.translate_v2.client.Client.detect_language` and
+:meth:`~google.cloud.translate_v2.client.Client.translate`.
 
 To get a list of languages supported by the Google Cloud Translation API
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
    >>> client.get_languages()
    [
        {
@@ -42,8 +42,8 @@ To detect the language that some given text is written in:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
    >>> client.detect_language(['Me llamo', 'I am'])
    [
        {
@@ -68,8 +68,8 @@ the source language:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
    >>> client.translate('koszula')
    {
        'translatedText': 'shirt',
@@ -81,8 +81,8 @@ If the source language is known:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
    >>> client.translate('camisa', source_language='es')
    {
        'translatedText': 'shirt',
@@ -93,8 +93,8 @@ or to use a non-default target language:
 
 .. doctest::
 
-   >>> from google.cloud import translate
-   >>> client = translate.Client()
+   >>> from google.cloud import translate_v2
+   >>> client = translate_v2.Client()
    >>> client.translate(['Me llamo Jeff', 'My name is Jeff'],
    ...                  target_language='de')
    [

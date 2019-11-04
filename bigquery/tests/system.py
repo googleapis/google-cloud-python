@@ -431,37 +431,6 @@ class TestBigQuery(unittest.TestCase):
         )
         self.assertGreater(len(list(iterator)), 0)
 
-    def test_listing_scripting_jobs(self):
-        # Run a SQL script.
-        sql_script = """
-            -- Declare a variable to hold names as an array.
-            DECLARE top_names ARRAY<STRING>;
-
-            -- Build an array of the top 100 names from the year 2017.
-            SET top_names = (
-            SELECT ARRAY_AGG(name ORDER BY number DESC LIMIT 100)
-            FROM `bigquery-public-data.usa_names.usa_1910_current`
-            WHERE year = 2017
-            );
-
-            -- Which names appear as words in Shakespeare's plays?
-            SELECT
-            name AS shakespeare_name
-            FROM UNNEST(top_names) AS name
-            WHERE name IN (
-            SELECT word
-            FROM `bigquery-public-data.samples.shakespeare`
-            );
-        """
-        parent_job = Config.CLIENT.query(sql_script, project=Config.CLIENT.project)
-        parent_job.result()
-
-        # Fetch jobs created by the SQL script.
-        child_jobs = list(Config.CLIENT.list_jobs(parent_job=parent_job))
-
-        assert parent_job.num_child_jobs > 0
-        assert len(child_jobs) == parent_job.num_child_jobs
-
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id("update_table"))
 

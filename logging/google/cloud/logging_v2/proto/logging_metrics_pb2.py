@@ -312,8 +312,8 @@ _LOGMETRIC = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY],
-    enum_types=[_LOGMETRIC_APIVERSION],
+    nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY,],
+    enum_types=[_LOGMETRIC_APIVERSION,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -480,7 +480,7 @@ _GETLOGMETRICREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -633,7 +633,7 @@ _DELETELOGMETRICREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],

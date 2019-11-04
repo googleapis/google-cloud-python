@@ -1379,3 +1379,25 @@ class TestTablesClient(object):
             )
         client.auto_ml_client.list_models.assert_not_called()
         client.prediction_client.batch_predict.assert_not_called()
+
+    def test_auto_ml_client_credentials(self):
+        credentials_mock = mock.Mock()
+        patch_auto_ml_client = mock.patch(
+            "google.cloud.automl_v1beta1.gapic.auto_ml_client.AutoMlClient"
+        )
+        with patch_auto_ml_client as MockAutoMlClient:
+            client = automl_v1beta1.TablesClient(credentials=credentials_mock)
+        _, auto_ml_client_kwargs = MockAutoMlClient.call_args
+        assert "credentials" in auto_ml_client_kwargs
+        assert auto_ml_client_kwargs["credentials"] == credentials_mock
+
+    def test_prediction_client_credentials(self):
+        credentials_mock = mock.Mock()
+        patch_prediction_client = mock.patch(
+            "google.cloud.automl_v1beta1.gapic.prediction_service_client.PredictionServiceClient"
+        )
+        with patch_prediction_client as MockPredictionClient:
+            client = automl_v1beta1.TablesClient(credentials=credentials_mock)
+        _, prediction_client_kwargs = MockPredictionClient.call_args
+        assert "credentials" in prediction_client_kwargs
+        assert prediction_client_kwargs["credentials"] == credentials_mock

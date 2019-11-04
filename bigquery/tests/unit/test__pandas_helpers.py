@@ -620,7 +620,7 @@ def test_list_columns_and_indexes_without_named_index(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_list_columns_and_indexes_with_named_index_same_as_column_name(
-    module_under_test
+    module_under_test,
 ):
     df_data = collections.OrderedDict(
         [
@@ -700,6 +700,32 @@ def test_list_columns_and_indexes_with_multiindex(module_under_test):
         ("c_series", pandas.api.types.pandas_dtype("object")),
     ]
     assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_dict_sequence(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("str_column", [u"hello", u"world"]),
+            ("int_column", [42, 8]),
+            ("bool_column", [True, False]),
+        ]
+    )
+    dataframe = pandas.DataFrame(df_data)
+
+    dict_schema = [
+        {"name": "str_column", "type": "STRING", "mode": "NULLABLE"},
+        {"name": "bool_column", "type": "BOOL", "mode": "REQUIRED"},
+    ]
+
+    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, dict_schema)
+
+    expected_schema = (
+        schema.SchemaField("str_column", "STRING", "NULLABLE"),
+        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("bool_column", "BOOL", "REQUIRED"),
+    )
+    assert returned_schema == expected_schema
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -855,6 +881,28 @@ def test_dataframe_to_arrow_with_unknown_type(module_under_test):
     assert arrow_schema[1].name == "field01"
     assert arrow_schema[2].name == "field02"
     assert arrow_schema[3].name == "field03"
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
+    dict_schema = [
+        {"name": "field01", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field02", "type": "BOOL", "mode": "NULLABLE"},
+    ]
+
+    dataframe = pandas.DataFrame(
+        {"field01": [u"hello", u"world"], "field02": [True, False]}
+    )
+
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, dict_schema)
+    arrow_schema = arrow_table.schema
+
+    expected_fields = [
+        pyarrow.field("field01", "string", nullable=False),
+        pyarrow.field("field02", "bool", nullable=True),
+    ]
+    assert list(arrow_schema) == expected_fields
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1090,6 +1138,35 @@ def test_augment_schema_type_detection_fails(module_under_test):
 
 
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
+    dict_schema = [
+        {"name": "field01", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field02", "type": "BOOL", "mode": "NULLABLE"},
+    ]
+
+    dataframe = pandas.DataFrame(
+        {"field01": [u"hello", u"world"], "field02": [True, False]}
+    )
+
+    write_table_patch = mock.patch.object(
+        module_under_test.pyarrow.parquet, "write_table", autospec=True
+    )
+    to_arrow_patch = mock.patch.object(
+        module_under_test, "dataframe_to_arrow", autospec=True
+    )
+
+    with write_table_patch, to_arrow_patch as fake_to_arrow:
+        module_under_test.dataframe_to_parquet(dataframe, dict_schema, None)
+
+    expected_schema_arg = [
+        schema.SchemaField("field01", "STRING", mode="REQUIRED"),
+        schema.SchemaField("field02", "BOOL", mode="NULLABLE"),
+    ]
+    schema_arg = fake_to_arrow.call_args.args[1]
+    assert schema_arg == expected_schema_arg
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
@@ -1158,3 +1235,62 @@ def test_download_arrow_tabledata_list_known_field_type(module_under_test):
     col = result.columns[1]
     assert type(col) is pyarrow.lib.StringArray
     assert list(col) == ["2.2", "22.22", "222.222"]
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    dict_schema = [
+        {"name": "population_size", "type": "INTEGER", "mode": "NULLABLE"},
+        {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, dict_schema)
+    result = next(results_gen)
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.StringArray
+    assert list(col) == ["2.2", "22.22", "222.222"]
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    dict_schema = [
+        {"name": "population_size", "type": "INTEGER", "mode": "NULLABLE"},
+        {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
+    ]
+
+    results_gen = module_under_test.download_dataframe_tabledata_list(
+        pages, dict_schema, dtypes={}
+    )
+    result = next(results_gen)
+
+    expected_result = pandas.DataFrame(
+        collections.OrderedDict(
+            [
+                ("population_size", [1, 10, 100]),
+                ("non_alien_field", ["2.2", "22.22", "222.222"]),
+            ]
+        )
+    )
+    assert result.equals(expected_result)

@@ -38,7 +38,13 @@ from grafeas.grafeas_v1.proto import provenance_pb2
 from grafeas.grafeas_v1.proto import vulnerability_pb2
 
 
-_shared_modules = [any_pb2, empty_pb2, field_mask_pb2, timestamp_pb2, status_pb2]
+_shared_modules = [
+    any_pb2,
+    empty_pb2,
+    field_mask_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
 
 _local_modules = [
     attestation_pb2,

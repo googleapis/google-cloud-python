@@ -198,10 +198,12 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = self._make_one(bucket)
 
         self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.uniform_bucket_level_access_enabled)
+        self.assertIsNone(config.uniform_bucket_level_access_locked_time)
         self.assertFalse(config.bucket_policy_only_enabled)
         self.assertIsNone(config.bucket_policy_only_locked_time)
 
-    def test_ctor_explicit(self):
+    def test_ctor_explicit_ubla(self):
         import datetime
         import pytz
 
@@ -209,12 +211,61 @@ class Test_IAMConfiguration(unittest.TestCase):
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
 
         config = self._make_one(
-            bucket, bucket_policy_only_enabled=True, bucket_policy_only_locked_time=now
+            bucket,
+            uniform_bucket_level_access_enabled=True,
+            uniform_bucket_level_access_locked_time=now,
         )
 
         self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
         self.assertTrue(config.bucket_policy_only_enabled)
         self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_ctor_explicit_bpo(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        config = pytest.deprecated_call(
+            self._make_one,
+            bucket,
+            bucket_policy_only_enabled=True,
+            bucket_policy_only_locked_time=now,
+        )
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_ctor_ubla_and_bpo_enabled(self):
+        bucket = self._make_bucket()
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                bucket,
+                uniform_bucket_level_access_enabled=True,
+                bucket_policy_only_enabled=True,
+            )
+
+    def test_ctor_ubla_and_bpo_time(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                bucket,
+                uniform_bucket_level_access_enabled=True,
+                uniform_bucket_level_access_locked_time=now,
+                bucket_policy_only_locked_time=now,
+            )
 
     def test_from_api_repr_w_empty_resource(self):
         klass = self._get_target_class()
@@ -230,7 +281,7 @@ class Test_IAMConfiguration(unittest.TestCase):
     def test_from_api_repr_w_empty_bpo(self):
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        resource = {"bucketPolicyOnly": {}}
+        resource = {"uniformBucketLevelAccess": {}}
 
         config = klass.from_api_repr(resource, bucket)
 
@@ -241,7 +292,7 @@ class Test_IAMConfiguration(unittest.TestCase):
     def test_from_api_repr_w_disabled(self):
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        resource = {"bucketPolicyOnly": {"enabled": False}}
+        resource = {"uniformBucketLevelAccess": {"enabled": False}}
 
         config = klass.from_api_repr(resource, bucket)
 
@@ -258,7 +309,7 @@ class Test_IAMConfiguration(unittest.TestCase):
         bucket = self._make_bucket()
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         resource = {
-            "bucketPolicyOnly": {
+            "uniformBucketLevelAccess": {
                 "enabled": True,
                 "lockedTime": _datetime_to_rfc3339(now),
             }
@@ -267,16 +318,30 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
         self.assertTrue(config.bucket_policy_only_enabled)
         self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_uniform_bucket_level_access_enabled_setter(self):
+        bucket = self._make_bucket()
+        config = self._make_one(bucket)
+
+        config.uniform_bucket_level_access_enabled = True
+        self.assertTrue(config.bucket_policy_only_enabled)
+
+        self.assertTrue(config["uniformBucketLevelAccess"]["enabled"])
+        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
 
     def test_bucket_policy_only_enabled_setter(self):
         bucket = self._make_bucket()
         config = self._make_one(bucket)
 
-        config.bucket_policy_only_enabled = True
+        with pytest.deprecated_call():
+            config.bucket_policy_only_enabled = True
 
-        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertTrue(config["uniformBucketLevelAccess"]["enabled"])
         bucket._patch_property.assert_called_once_with("iamConfiguration", config)
 
 
@@ -1317,7 +1382,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         properties = {
             "iamConfiguration": {
-                "bucketPolicyOnly": {
+                "uniformBucketLevelAccess": {
                     "enabled": True,
                     "lockedTime": _datetime_to_rfc3339(now),
                 }
@@ -1329,8 +1394,8 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertIsInstance(config, IAMConfiguration)
         self.assertIs(config.bucket, bucket)
-        self.assertTrue(config.bucket_policy_only_enabled)
-        self.assertEqual(config.bucket_policy_only_locked_time, now)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
 
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"
