@@ -23,14 +23,21 @@ def connect(spanner_url, credentials_uri=None):
     """Connects to Cloud Spanner.
 
     Args:
-        conn_params: A dictionary specifying how to connect to Cloud Spanner.
-                     Its keys include:
-                        database        (mandatory)  -- the name of the database to be connected to or created.
-                        instance        (mandatory)  -- the name of the instance to be connected to or created.
-                        project_id      (optional)   -- the project_id of the Cloud Spanner instance.
-                        instance_config (optional) -- the zone that'll be used to create any non-existent instances.
-                                        Should be of the form:
-                                                    projects/project-id/instanceConfigs/region
+        spanner_url: A string specifying how to connect to Cloud Spanner.
+                     It will be of the format:
+                        cloudspanner:[//host[:port]]/projects/<project-id>/instances/<instance-id>/databases/<database-name>[?property-name=property-value[;]]*
+
+                     For example:
+                        * cloudspanner:/projects/foo/instances/bar/databases/db
+                        * cloudspanner://spanner.googleapis.com/projects/foo/instances/bar/databases/db
+                        * cloudspanner://spanner.googleapis.com:443/projects/foo/instances/bar/databases/db
+
+                    If an instance doesn't yet exist, the property
+                            "instance_config"
+                    must be set and match the format.
+                                ^projects/project-id/instanceConfigs/region$
+                    for example:
+                                projects/odeke-sandbox/instanceConfigs/regional-us-west2
 
         credentials_uri: An optional string specifying where to retrieve the service
                          account JSON for the credentials to connect to Cloud Spanner.
