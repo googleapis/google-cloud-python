@@ -4805,7 +4805,7 @@ class TestClient(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe_w_explicit_none_insert_ids(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
         API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
