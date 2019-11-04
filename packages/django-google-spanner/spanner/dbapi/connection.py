@@ -57,3 +57,18 @@ class Connection(object):
             session.create()
 
         return Cursor(session)
+
+
+    def update_ddl(self, ddl_statements):
+        """
+        Runs the list of Data Definition Language (DDL) statements on the specified
+        database. Note that each DDL statement MUST NOT contain a semicolon.
+
+        Args:
+            ddl_statements: a list of DDL statements, each without a semicolon.
+
+        Returns:
+            google.api_core.operation.Operation
+        """
+
+        return self.__dbhandle.update_ddl(ddl_statements)
