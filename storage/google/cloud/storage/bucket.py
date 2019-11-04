@@ -1822,7 +1822,7 @@ class Bucket(_PropertyMixin):
             query_params["userProject"] = self.user_project
 
         if requested_version is not None:
-            query_params["requestedPolicyVersion"] = self.request_version
+            query_params["optionsRequestedPolicyVersion"] = self.request_version
 
         info = client._connection.api_request(
             method="GET",
