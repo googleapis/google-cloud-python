@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import os
 import pkg_resources
-import threading
 
 import grpc
 import six
@@ -134,7 +133,6 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
-        self._stopping_lock = threading.Lock()
         self._batches = {}
         self._is_stopped = False
 
@@ -190,20 +188,19 @@ class Client(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        with self._batch_lock:
-            if not create:
-                batch = self._batches.get(topic)
-                if batch is None:
-                    create = True
+        if not create:
+            batch = self._batches.get(topic)
+            if batch is None:
+                create = True
 
-            if create:
-                batch = self._batch_class(
-                    autocommit=autocommit,
-                    client=self,
-                    settings=self.batch_settings,
-                    topic=topic,
-                )
-                self._batches[topic] = batch
+        if create:
+            batch = self._batch_class(
+                autocommit=autocommit,
+                client=self,
+                settings=self.batch_settings,
+                topic=topic,
+            )
+            self._batches[topic] = batch
 
         return batch
 
@@ -251,9 +248,6 @@ class Client(object):
                 If called after publisher has been stopped
                 by a `stop()` method call.
         """
-        with self._stopping_lock:
-            if self._is_stopped:
-                raise ValueError("Cannot publish on a stopped publisher.")
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
@@ -277,12 +271,16 @@ class Client(object):
         message = types.PubsubMessage(data=data, attributes=attrs)
 
         # Delegate the publishing to the batch.
-        batch = self._batch(topic)
-        future = None
-        while future is None:
-            future = batch.publish(message)
-            if future is None:
-                batch = self._batch(topic, create=True)
+        with self._batch_lock:
+            if self._is_stopped:
+                raise ValueError("Cannot publish on a stopped publisher.")
+
+            batch = self._batch(topic)
+            future = None
+            while future is None:
+                future = batch.publish(message)
+                if future is None:
+                    batch = self._batch(topic, create=True)
 
         return future
 
@@ -300,7 +298,7 @@ class Client(object):
             returned by `publish()` to make sure all publish
             requests completed, either in success or error.
         """
-        with self._stopping_lock:
+        with self._batch_lock:
             if self._is_stopped:
                 raise ValueError("Cannot stop a publisher already stopped.")
 
