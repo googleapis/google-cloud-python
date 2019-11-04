@@ -521,6 +521,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.exceptions import Conflict
 
         project = "PROJECT"
+        user_project = "USER_PROJECT"
         other_project = "OTHER_PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
@@ -531,7 +532,7 @@ class TestClient(unittest.TestCase):
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b?project=%s" % (other_project,),
+                "b?project=%s&userProject=%s" % (other_project, user_project),
             ]
         )
         data = {"error": {"message": "Conflict"}}
@@ -542,7 +543,7 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         with self.assertRaises(Conflict):
-            client.create_bucket(bucket_name, project=other_project)
+            client.create_bucket(bucket_name, project=other_project, user_project=user_project)
 
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
