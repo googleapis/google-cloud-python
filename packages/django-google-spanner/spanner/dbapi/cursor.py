@@ -79,7 +79,7 @@ class Cursor(object):
 
 
     def __enter__(self):
-        pass
+        return self
 
 
     def __exit__(self, etype, value, traceback):
@@ -123,8 +123,7 @@ class Cursor(object):
 
 
     def close(self):
-        self.__session.close()
-        raise ProgrammingError('Unimplemented')
+        self.__session.delete()
 
 
 class Column:
