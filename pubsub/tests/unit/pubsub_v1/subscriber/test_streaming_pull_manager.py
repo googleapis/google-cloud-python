@@ -660,9 +660,9 @@ def test__on_response_with_leaser_overload():
         ]
     )
 
-    # Adjust message bookkeeping in leaser. Pick 99 messages, which is just below
+    # Adjust message bookkeeping in leaser. Pick 999 messages, which is just below
     # the default FlowControl.max_messages limit.
-    fake_leaser_add(leaser, init_msg_count=99, init_bytes=990)
+    fake_leaser_add(leaser, init_msg_count=999, init_bytes=990)
 
     # Actually run the method and prove that modack and schedule
     # are called in the expected way.
