@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .version import USER_AGENT
 from .cursor import Cursor
 from .exceptions import Error
 
 class Connection(object):
     def __init__(self, db_handle):
         self.__dbhandle = db_handle
-        self.__closed = false
+        self.__closed = False
 
 
-    def __raise_if_already_closed():
+    def __raise_if_already_closed(self):
         """
         Raises an exception if attempting to use an already closed connection.
         """
@@ -32,9 +31,16 @@ class Connection(object):
 
     def close(self):
         self.__raise_if_already_closed()
-        self.__dbhandle.session().delete()
         self.__dbhandle = None
         self.__closed = True
+
+
+    def __enter__(self):
+        pass
+
+
+    def __exit__(self, etype, value, traceback):
+        pass
 
 
     def commit(self):

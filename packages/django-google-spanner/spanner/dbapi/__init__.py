@@ -17,8 +17,9 @@ from google.cloud import spanner_v1 as spanner
 from .connection import Connection
 from .exceptions import Error
 from .parse_utils import parse_spanner_url
+from .version import USER_AGENT
 
-def connect(conn_params, credentials_uri=None):
+def connect(spanner_url, credentials_uri=None):
     """Connects to Cloud Spanner.
 
     Args:
@@ -40,6 +41,9 @@ def connect(conn_params, credentials_uri=None):
     Raises:
         Error if it encounters any unexpected inputs.
     """
+
+    conn_params = parse_spanner_url(spanner_url)
+
     kwargs = dict(
         project=conn_params.get('project_id'),
         user_agent=USER_AGENT,
