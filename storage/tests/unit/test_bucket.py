@@ -608,11 +608,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
     def test_create_w_user_project(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         USER_PROJECT = "user-project-123"
-        connection = _Connection()
-        client = _Client(connection, project=PROJECT)
+
+        client = Client(project=PROJECT)
+        client._base_connection = _Connection()
+
         bucket = self._make_one(client, BUCKET_NAME, user_project=USER_PROJECT)
 
         with self.assertRaises(ValueError):
@@ -749,22 +753,28 @@ class Test_Bucket(unittest.TestCase):
         )
 
     def test_create_w_predefined_acl_invalid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
 
         with self.assertRaises(ValueError):
             bucket.create(predefined_acl="bogus")
 
     def test_create_w_predefined_acl_valid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create(predefined_acl="publicRead")
 
@@ -776,22 +786,28 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["data"], DATA)
 
     def test_create_w_predefined_default_object_acl_invalid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
 
         with self.assertRaises(ValueError):
             bucket.create(predefined_default_object_acl="bogus")
 
     def test_create_w_predefined_default_object_acl_valid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create(predefined_default_object_acl="publicRead")
 

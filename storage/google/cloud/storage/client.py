@@ -28,6 +28,8 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.hmac_key import HMACKeyMetadata
+from google.cloud.storage.acl import BucketACL
+from google.cloud.storage.acl import DefaultObjectACL
 
 
 _marker = object()
@@ -325,7 +327,14 @@ class Client(ClientWithProject):
             return None
 
     def create_bucket(
-        self, bucket_or_name, requester_pays=None, project=None, location=None
+        self,
+        bucket_or_name,
+        requester_pays=None,
+        project=None,
+        user_project=None,
+        location=None,
+        predefined_acl=None,
+        predefined_default_object_acl=None,
     ):
         """API call: create a new bucket via a POST request.
 
@@ -342,12 +351,21 @@ class Client(ClientWithProject):
                 Optional. Whether requester pays for API requests for this
                 bucket and its blobs.
             project (str):
-                Optional. the project under which the bucket is to be created.
+                Optional. The project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
+            user_project (str):
+                Optional. The project ID to be billed for API requests
+                made via created bucket.
             location (str):
                 Optional. The location of the bucket. If not passed,
                 the default location, US, will be used. See
                 https://cloud.google.com/storage/docs/bucket-locations
+            predefined_acl (str):
+                Optional. Name of predefined ACL to apply to bucket. See:
+                https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
+            predefined_default_object_acl (str):
+                Optional. Name of predefined ACL to apply to bucket's objects. See:
+                https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -378,6 +396,9 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
+        if user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         if project is None:
@@ -390,6 +411,17 @@ class Client(ClientWithProject):
             bucket.requester_pays = requester_pays
 
         query_params = {"project": project}
+
+        if predefined_acl is not None:
+            predefined_acl = BucketACL.validate_predefined(predefined_acl)
+            query_params["predefinedAcl"] = predefined_acl
+
+        if predefined_default_object_acl is not None:
+            predefined_default_object_acl = DefaultObjectACL.validate_predefined(
+                predefined_default_object_acl
+            )
+            query_params["predefinedDefaultObjectAcl"] = predefined_default_object_acl
+
         properties = {key: bucket._properties[key] for key in bucket._changes}
         properties["name"] = bucket.name
 
