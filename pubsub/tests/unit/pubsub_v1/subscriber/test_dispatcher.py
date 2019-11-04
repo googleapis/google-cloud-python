@@ -102,9 +102,9 @@ def test_ack_splitting_large_payload():
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     items = [
-        # use realistic lengths for ACK IDs (max 164 bytes)
-        requests.AckRequest(ack_id=str(i).zfill(164), byte_size=0, time_to_ack=20)
-        for i in range(6001)
+        # use realistic lengths for ACK IDs (max 176 bytes)
+        requests.AckRequest(ack_id=str(i).zfill(176), byte_size=0, time_to_ack=20)
+        for i in range(5001)
     ]
     dispatcher_.ack(items)
 
@@ -187,9 +187,9 @@ def test_modify_ack_deadline_splitting_large_payload():
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     items = [
-        # use realistic lengths for ACK IDs (max 164 bytes)
-        requests.ModAckRequest(ack_id=str(i).zfill(164), seconds=60)
-        for i in range(6001)
+        # use realistic lengths for ACK IDs (max 176 bytes)
+        requests.ModAckRequest(ack_id=str(i).zfill(176), seconds=60)
+        for i in range(5001)
     ]
     dispatcher_.modify_ack_deadline(items)
 

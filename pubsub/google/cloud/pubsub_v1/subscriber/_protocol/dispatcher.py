@@ -37,15 +37,15 @@ _MAX_BATCH_LATENCY = 0.01
 """The maximum amount of time in seconds to wait for additional request items
 before processing the next batch of requests."""
 
-_ACK_IDS_BATCH_SIZE = 3000
+_ACK_IDS_BATCH_SIZE = 2500
 """The maximum number of ACK IDs to send in a single StreamingPullRequest.
 
 The backend imposes a maximum request size limit of 524288 bytes (512 KiB) per
 acknowledge / modifyAckDeadline request. ACK IDs have a maximum size of 164
-bytes, thus we cannot send more than o 524288/164 ~= 3197 ACK IDs in a single
+bytes, thus we cannot send more than o 524288/176 ~= 2979 ACK IDs in a single
 StreamingPullRequest message.
 
-Accounting for some overhead, we should thus only send a maximum of 3000 ACK
+Accounting for some overhead, we should thus only send a maximum of 2500 ACK
 IDs at a time.
 """
 
