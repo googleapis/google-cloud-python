@@ -16,6 +16,7 @@ import collections
 import datetime
 import decimal
 import functools
+import operator
 import warnings
 
 import mock
@@ -957,6 +958,185 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_fallback_needed_wo_pyarrow(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": u"FOO", "execution_date": datetime.date(2019, 5, 10)},
+            {"id": 20, "status": u"BAR", "created_at": datetime.date(2018, 9, 12)},
+        ]
+    )
+
+    no_pyarrow_patch = mock.patch(module_under_test.__name__ + ".pyarrow", None)
+
+    with no_pyarrow_patch, warnings.catch_warnings(record=True) as warned:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    assert detected_schema is None
+
+    # a warning should also be issued
+    expected_warnings = [
+        warning for warning in warned if "could not determine" in str(warning).lower()
+    ]
+    assert len(expected_warnings) == 1
+    msg = str(expected_warnings[0])
+    assert "execution_date" in msg and "created_at" in msg
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_bq_schema_fallback_needed_w_pyarrow(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"id": 10, "status": u"FOO", "created_at": datetime.date(2019, 5, 10)},
+            {"id": 20, "status": u"BAR", "created_at": datetime.date(2018, 9, 12)},
+        ]
+    )
+
+    with warnings.catch_warnings(record=True) as warned:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    expected_schema = (
+        schema.SchemaField("id", "INTEGER", mode="NULLABLE"),
+        schema.SchemaField("status", "STRING", mode="NULLABLE"),
+        schema.SchemaField("created_at", "DATE", mode="NULLABLE"),
+    )
+    by_name = operator.attrgetter("name")
+    assert sorted(detected_schema, key=by_name) == sorted(expected_schema, key=by_name)
+
+    # there should be no relevant warnings
+    unwanted_warnings = [
+        warning for warning in warned if "could not determine" in str(warning).lower()
+    ]
+    assert not unwanted_warnings
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_bq_schema_pyarrow_fallback_fails(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {"struct_field": {"one": 2}, "status": u"FOO"},
+            {"struct_field": {"two": u"222"}, "status": u"BAR"},
+        ]
+    )
+
+    with warnings.catch_warnings(record=True) as warned:
+        detected_schema = module_under_test.dataframe_to_bq_schema(
+            dataframe, bq_schema=[]
+        )
+
+    assert detected_schema is None
+
+    # a warning should also be issued
+    expected_warnings = [
+        warning for warning in warned if "could not determine" in str(warning).lower()
+    ]
+    assert len(expected_warnings) == 1
+    assert "struct_field" in str(expected_warnings[0])
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_augment_schema_type_detection_succeeds(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {
+                "bool_field": False,
+                "int_field": 123,
+                "float_field": 3.141592,
+                "time_field": datetime.time(17, 59, 47),
+                "timestamp_field": datetime.datetime(2005, 5, 31, 14, 25, 55),
+                "date_field": datetime.date(2005, 5, 31),
+                "bytes_field": b"some bytes",
+                "string_field": u"some characters",
+                "numeric_field": decimal.Decimal("123.456"),
+            }
+        ]
+    )
+
+    # NOTE: In Pandas dataframe, the dtype of Python's datetime instances is
+    # set to "datetime64[ns]", and pyarrow converts that to pyarrow.TimestampArray.
+    # We thus cannot expect to get a DATETIME date when converting back to the
+    # BigQuery type.
+
+    current_schema = (
+        schema.SchemaField("bool_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("int_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("float_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("time_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("timestamp_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("date_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("bytes_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("string_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("numeric_field", field_type=None, mode="NULLABLE"),
+    )
+
+    with warnings.catch_warnings(record=True) as warned:
+        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
+
+    # there should be no relevant warnings
+    unwanted_warnings = [
+        warning for warning in warned if "Pyarrow could not" in str(warning)
+    ]
+    assert not unwanted_warnings
+
+    # the augmented schema must match the expected
+    expected_schema = (
+        schema.SchemaField("bool_field", field_type="BOOL", mode="NULLABLE"),
+        schema.SchemaField("int_field", field_type="INT64", mode="NULLABLE"),
+        schema.SchemaField("float_field", field_type="FLOAT64", mode="NULLABLE"),
+        schema.SchemaField("time_field", field_type="TIME", mode="NULLABLE"),
+        schema.SchemaField("timestamp_field", field_type="TIMESTAMP", mode="NULLABLE"),
+        schema.SchemaField("date_field", field_type="DATE", mode="NULLABLE"),
+        schema.SchemaField("bytes_field", field_type="BYTES", mode="NULLABLE"),
+        schema.SchemaField("string_field", field_type="STRING", mode="NULLABLE"),
+        schema.SchemaField("numeric_field", field_type="NUMERIC", mode="NULLABLE"),
+    )
+    by_name = operator.attrgetter("name")
+    assert sorted(augmented_schema, key=by_name) == sorted(expected_schema, key=by_name)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_augment_schema_type_detection_fails(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[
+            {
+                "status": u"FOO",
+                "struct_field": {"one": 1},
+                "struct_field_2": {"foo": u"123"},
+            },
+            {
+                "status": u"BAR",
+                "struct_field": {"two": u"111"},
+                "struct_field_2": {"bar": 27},
+            },
+        ]
+    )
+    current_schema = [
+        schema.SchemaField("status", field_type="STRING", mode="NULLABLE"),
+        schema.SchemaField("struct_field", field_type=None, mode="NULLABLE"),
+        schema.SchemaField("struct_field_2", field_type=None, mode="NULLABLE"),
+    ]
+
+    with warnings.catch_warnings(record=True) as warned:
+        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
+
+    assert augmented_schema is None
+
+    expected_warnings = [
+        warning for warning in warned if "could not determine" in str(warning)
+    ]
+    assert len(expected_warnings) == 1
+    warning_msg = str(expected_warnings[0])
+    assert "pyarrow" in warning_msg.lower()
+    assert "struct_field" in warning_msg and "struct_field_2" in warning_msg
+
+
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
     dict_schema = [
