@@ -452,7 +452,8 @@ Queue = _reflection.GeneratedProtocolMessageType(
           asks.v2.AppEngineHttpRequest.app\_engine\_routing]. These
           settings apply only to [App Engine
           tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in this
-          queue.  If set, ``app_engine_routing_override`` is used for
+          queue. [Http tasks][google.cloud.tasks.v2.HttpRequest] are not
+          affected.  If set, ``app_engine_routing_override`` is used for
           all [App Engine
           tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in the
           queue, no matter what the setting is for the [task-level app\_
