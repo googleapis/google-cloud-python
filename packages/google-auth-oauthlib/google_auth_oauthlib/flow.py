@@ -55,6 +55,7 @@ from base64 import urlsafe_b64encode
 import hashlib
 import json
 import logging
+
 try:
     from secrets import SystemRandom
 except ImportError:  # pragma: NO COVER
@@ -94,9 +95,14 @@ class Flow(object):
     """
 
     def __init__(
-            self, oauth2session, client_type, client_config,
-            redirect_uri=None, code_verifier=None,
-            autogenerate_code_verifier=False):
+        self,
+        oauth2session,
+        client_type,
+        client_config,
+        redirect_uri=None,
+        code_verifier=None,
+        autogenerate_code_verifier=False,
+    ):
         """
         Args:
             oauth2session (requests_oauthlib.OAuth2Session):
@@ -150,24 +156,22 @@ class Flow(object):
             https://developers.google.com/api-client-library/python/guide
             /aaa_client_secrets
         """
-        if 'web' in client_config:
-            client_type = 'web'
-        elif 'installed' in client_config:
-            client_type = 'installed'
+        if "web" in client_config:
+            client_type = "web"
+        elif "installed" in client_config:
+            client_type = "installed"
         else:
-            raise ValueError(
-                'Client secrets must be for a web or installed app.')
+            raise ValueError("Client secrets must be for a web or installed app.")
 
         # these args cannot be passed to requests_oauthlib.OAuth2Session
-        code_verifier = kwargs.pop('code_verifier', None)
-        autogenerate_code_verifier = kwargs.pop(
-            'autogenerate_code_verifier', None)
+        code_verifier = kwargs.pop("code_verifier", None)
+        autogenerate_code_verifier = kwargs.pop("autogenerate_code_verifier", None)
 
-        session, client_config = (
-            google_auth_oauthlib.helpers.session_from_client_config(
-                client_config, scopes, **kwargs))
+        session, client_config = google_auth_oauthlib.helpers.session_from_client_config(
+            client_config, scopes, **kwargs
+        )
 
-        redirect_uri = kwargs.get('redirect_uri', None)
+        redirect_uri = kwargs.get("redirect_uri", None)
 
         return cls(
             session,
@@ -175,7 +179,7 @@ class Flow(object):
             client_config,
             redirect_uri,
             code_verifier,
-            autogenerate_code_verifier
+            autogenerate_code_verifier,
         )
 
     @classmethod
@@ -193,7 +197,7 @@ class Flow(object):
         Returns:
             Flow: The constructed Flow instance.
         """
-        with open(client_secrets_file, 'r') as json_file:
+        with open(client_secrets_file, "r") as json_file:
             client_config = json.load(json_file)
 
         return cls.from_client_config(client_config, scopes=scopes, **kwargs)
@@ -232,23 +236,24 @@ class Flow(object):
                 :class:`Flow` instance to obtain the token, you will need to
                 specify the ``state`` when constructing the :class:`Flow`.
         """
-        kwargs.setdefault('access_type', 'offline')
+        kwargs.setdefault("access_type", "offline")
         if self.autogenerate_code_verifier:
-            chars = ascii_letters+digits+'-._~'
+            chars = ascii_letters + digits + "-._~"
             rnd = SystemRandom()
             random_verifier = [rnd.choice(chars) for _ in range(0, 128)]
-            self.code_verifier = ''.join(random_verifier)
+            self.code_verifier = "".join(random_verifier)
 
         if self.code_verifier:
             code_hash = hashlib.sha256()
             code_hash.update(str.encode(self.code_verifier))
             unencoded_challenge = code_hash.digest()
             b64_challenge = urlsafe_b64encode(unencoded_challenge)
-            code_challenge = b64_challenge.decode().split('=')[0]
-            kwargs.setdefault('code_challenge', code_challenge)
-            kwargs.setdefault('code_challenge_method', 'S256')
+            code_challenge = b64_challenge.decode().split("=")[0]
+            kwargs.setdefault("code_challenge", code_challenge)
+            kwargs.setdefault("code_challenge_method", "S256")
         url, state = self.oauth2session.authorization_url(
-            self.client_config['auth_uri'], **kwargs)
+            self.client_config["auth_uri"], **kwargs
+        )
 
         return url, state
 
@@ -275,10 +280,9 @@ class Flow(object):
                 :meth:`credentials` to obtain a
                 :class:`~google.auth.credentials.Credentials` instance.
         """
-        kwargs.setdefault('client_secret', self.client_config['client_secret'])
-        kwargs.setdefault('code_verifier', self.code_verifier)
-        return self.oauth2session.fetch_token(
-            self.client_config['token_uri'], **kwargs)
+        kwargs.setdefault("client_secret", self.client_config["client_secret"])
+        kwargs.setdefault("code_verifier", self.code_verifier)
+        return self.oauth2session.fetch_token(self.client_config["token_uri"], **kwargs)
 
     @property
     def credentials(self):
@@ -295,7 +299,8 @@ class Flow(object):
             ValueError: If there is no access token in the session.
         """
         return google_auth_oauthlib.helpers.credentials_from_session(
-            self.oauth2session, self.client_config)
+            self.oauth2session, self.client_config
+        )
 
     def authorized_session(self):
         """Returns a :class:`requests.Session` authorized with credentials.
@@ -308,8 +313,7 @@ class Flow(object):
             google.auth.transport.requests.AuthorizedSession: The constructed
                 session.
         """
-        return google.auth.transport.requests.AuthorizedSession(
-            self.credentials)
+        return google.auth.transport.requests.AuthorizedSession(self.credentials)
 
 
 class InstalledAppFlow(Flow):
@@ -353,25 +357,28 @@ class InstalledAppFlow(Flow):
         https://developers.google.com/api-client-library/python/auth
         /installed-app
     """
-    _OOB_REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+
+    _OOB_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
 
     _DEFAULT_AUTH_PROMPT_MESSAGE = (
-        'Please visit this URL to authorize this application: {url}')
+        "Please visit this URL to authorize this application: {url}"
+    )
     """str: The message to display when prompting the user for
     authorization."""
-    _DEFAULT_AUTH_CODE_MESSAGE = (
-        'Enter the authorization code: ')
+    _DEFAULT_AUTH_CODE_MESSAGE = "Enter the authorization code: "
     """str: The message to display when prompting the user for the
     authorization code. Used only by the console strategy."""
 
     _DEFAULT_WEB_SUCCESS_MESSAGE = (
-        'The authentication flow has completed. You may close this window.')
+        "The authentication flow has completed. You may close this window."
+    )
 
     def run_console(
-            self,
-            authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
-            authorization_code_message=_DEFAULT_AUTH_CODE_MESSAGE,
-            **kwargs):
+        self,
+        authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
+        authorization_code_message=_DEFAULT_AUTH_CODE_MESSAGE,
+        **kwargs
+    ):
         """Run the flow using the console strategy.
 
         The console strategy instructs the user to open the authorization URL
@@ -391,7 +398,7 @@ class InstalledAppFlow(Flow):
             google.oauth2.credentials.Credentials: The OAuth 2.0 credentials
                 for the user.
         """
-        kwargs.setdefault('prompt', 'consent')
+        kwargs.setdefault("prompt", "consent")
 
         self.redirect_uri = self._OOB_REDIRECT_URI
 
@@ -406,11 +413,14 @@ class InstalledAppFlow(Flow):
         return self.credentials
 
     def run_local_server(
-            self, host='localhost', port=8080,
-            authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
-            success_message=_DEFAULT_WEB_SUCCESS_MESSAGE,
-            open_browser=True,
-            **kwargs):
+        self,
+        host="localhost",
+        port=8080,
+        authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
+        success_message=_DEFAULT_WEB_SUCCESS_MESSAGE,
+        open_browser=True,
+        **kwargs
+    ):
         """Run the flow using the server strategy.
 
         The server strategy instructs the user to open the authorization URL in
@@ -440,10 +450,10 @@ class InstalledAppFlow(Flow):
         """
         wsgi_app = _RedirectWSGIApp(success_message)
         local_server = wsgiref.simple_server.make_server(
-            host, port, wsgi_app, handler_class=_WSGIRequestHandler)
+            host, port, wsgi_app, handler_class=_WSGIRequestHandler
+        )
 
-        self.redirect_uri = 'http://{}:{}/'.format(
-            host, local_server.server_port)
+        self.redirect_uri = "http://{}:{}/".format(host, local_server.server_port)
         auth_url, _ = self.authorization_url(**kwargs)
 
         if open_browser:
@@ -455,8 +465,7 @@ class InstalledAppFlow(Flow):
 
         # Note: using https here because oauthlib is very picky that
         # OAuth 2.0 should only occur over https.
-        authorization_response = wsgi_app.last_request_uri.replace(
-            'http', 'https')
+        authorization_response = wsgi_app.last_request_uri.replace("http", "https")
         self.fetch_token(authorization_response=authorization_response)
 
         return self.credentials
@@ -467,6 +476,7 @@ class _WSGIRequestHandler(wsgiref.simple_server.WSGIRequestHandler):
 
     Uses a named logger instead of printing to stderr.
     """
+
     def log_message(self, format, *args):
         # pylint: disable=redefined-builtin
         # (format is the argument name defined in the superclass.)
@@ -499,6 +509,6 @@ class _RedirectWSGIApp(object):
         Returns:
             Iterable[bytes]: The response body.
         """
-        start_response('200 OK', [('Content-type', 'text/plain')])
+        start_response("200 OK", [("Content-type", "text/plain")])
         self.last_request_uri = wsgiref.util.request_uri(environ)
-        return [self._success_message.encode('utf-8')]
+        return [self._success_message.encode("utf-8")]

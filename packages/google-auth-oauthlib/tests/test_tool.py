@@ -25,8 +25,8 @@ import pytest
 import google_auth_oauthlib.flow
 import google_auth_oauthlib.tool.__main__ as cli
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, 'client_secrets.json')
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, "client_secrets.json")
 
 
 class TestMain(object):
@@ -37,20 +37,21 @@ class TestMain(object):
     @pytest.fixture
     def dummy_credentials(self):
         return google.oauth2.credentials.Credentials(
-            token='dummy_access_token',
-            refresh_token='dummy_refresh_token',
-            token_uri='dummy_token_uri',
-            client_id='dummy_client_id',
-            client_secret='dummy_client_secret',
-            scopes=['dummy_scope1', 'dummy_scope2']
+            token="dummy_access_token",
+            refresh_token="dummy_refresh_token",
+            token_uri="dummy_token_uri",
+            client_id="dummy_client_id",
+            client_secret="dummy_client_secret",
+            scopes=["dummy_scope1", "dummy_scope2"],
         )
 
     @pytest.fixture
     def local_server_mock(self, dummy_credentials):
         run_local_server_patch = mock.patch.object(
             google_auth_oauthlib.flow.InstalledAppFlow,
-            'run_local_server',
-            autospec=True)
+            "run_local_server",
+            autospec=True,
+        )
 
         with run_local_server_patch as flow:
             flow.return_value = dummy_credentials
@@ -59,27 +60,25 @@ class TestMain(object):
     @pytest.fixture
     def console_mock(self, dummy_credentials):
         run_console_patch = mock.patch.object(
-            google_auth_oauthlib.flow.InstalledAppFlow,
-            'run_console',
-            autospec=True)
+            google_auth_oauthlib.flow.InstalledAppFlow, "run_console", autospec=True
+        )
 
         with run_console_patch as flow:
             flow.return_value = dummy_credentials
             yield flow
 
     def test_help(self, runner):
-        result = runner.invoke(cli.main, ['--help'])
+        result = runner.invoke(cli.main, ["--help"])
         assert not result.exception
-        assert 'RFC6749' in result.output
-        assert 'OAuth 2.0 authorization flow' in result.output
-        assert 'not intended for production use' in result.output
+        assert "RFC6749" in result.output
+        assert "OAuth 2.0 authorization flow" in result.output
+        assert "not intended for production use" in result.output
         assert result.exit_code == 0
 
     def test_defaults(self, runner, dummy_credentials, local_server_mock):
-        result = runner.invoke(cli.main, [
-            '--client-secrets', CLIENT_SECRETS_FILE,
-            '--scope', 'somescope',
-        ])
+        result = runner.invoke(
+            cli.main, ["--client-secrets", CLIENT_SECRETS_FILE, "--scope", "somescope"]
+        )
         local_server_mock.assert_called_with(mock.ANY)
         assert not result.exception
         assert result.exit_code == 0
@@ -93,11 +92,16 @@ class TestMain(object):
         assert creds.scopes == dummy_credentials.scopes
 
     def test_headless(self, runner, dummy_credentials, console_mock):
-        result = runner.invoke(cli.main, [
-            '--client-secrets', CLIENT_SECRETS_FILE,
-            '--scope', 'somescope',
-            '--headless'
-        ])
+        result = runner.invoke(
+            cli.main,
+            [
+                "--client-secrets",
+                CLIENT_SECRETS_FILE,
+                "--scope",
+                "somescope",
+                "--headless",
+            ],
+        )
         console_mock.assert_called_with(mock.ANY)
         assert not result.exception
         assert dummy_credentials.refresh_token in result.output
@@ -106,26 +110,29 @@ class TestMain(object):
     def test_save_new_dir(self, runner, dummy_credentials, local_server_mock):
         credentials_tmpdir = tempfile.mkdtemp()
         credentials_path = os.path.join(
-            credentials_tmpdir,
-            'new-directory',
-            'credentials.json'
+            credentials_tmpdir, "new-directory", "credentials.json"
         )
-        result = runner.invoke(cli.main, [
-            '--client-secrets', CLIENT_SECRETS_FILE,
-            '--scope', 'somescope',
-            '--credentials', credentials_path,
-            '--save'
-        ])
+        result = runner.invoke(
+            cli.main,
+            [
+                "--client-secrets",
+                CLIENT_SECRETS_FILE,
+                "--scope",
+                "somescope",
+                "--credentials",
+                credentials_path,
+                "--save",
+            ],
+        )
         local_server_mock.assert_called_with(mock.ANY)
         assert not result.exception
-        assert 'saved' in result.output
+        assert "saved" in result.output
         assert result.exit_code == 0
         with io.open(credentials_path) as f:  # pylint: disable=invalid-name
             creds_data = json.load(f)
-            assert 'access_token' not in creds_data
+            assert "access_token" not in creds_data
 
-            creds = google.oauth2.credentials.Credentials(
-                token=None, **creds_data)
+            creds = google.oauth2.credentials.Credentials(token=None, **creds_data)
             assert creds.token is None
             assert creds.refresh_token == dummy_credentials.refresh_token
             assert creds.token_uri == dummy_credentials.token_uri
@@ -134,16 +141,19 @@ class TestMain(object):
 
     def test_save_existing_dir(self, runner, local_server_mock):
         credentials_tmpdir = tempfile.mkdtemp()
-        result = runner.invoke(cli.main, [
-            '--client-secrets', CLIENT_SECRETS_FILE,
-            '--scope', 'somescope',
-            '--credentials', os.path.join(
-                credentials_tmpdir,
-                'credentials.json'
-            ),
-            '--save'
-        ])
+        result = runner.invoke(
+            cli.main,
+            [
+                "--client-secrets",
+                CLIENT_SECRETS_FILE,
+                "--scope",
+                "somescope",
+                "--credentials",
+                os.path.join(credentials_tmpdir, "credentials.json"),
+                "--save",
+            ],
+        )
         local_server_mock.assert_called_with(mock.ANY)
         assert not result.exception
-        assert 'saved' in result.output
+        assert "saved" in result.output
         assert result.exit_code == 0

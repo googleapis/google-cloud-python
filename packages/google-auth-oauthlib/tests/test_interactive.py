@@ -19,25 +19,17 @@ def test_get_user_credentials():
     from google_auth_oauthlib import flow
     from google_auth_oauthlib import interactive as module_under_test
 
-    mock_flow_instance = mock.create_autospec(
-        flow.InstalledAppFlow,
-        instance=True
-    )
+    mock_flow_instance = mock.create_autospec(flow.InstalledAppFlow, instance=True)
 
     with mock.patch(
-            "google_auth_oauthlib.flow.InstalledAppFlow", autospec=True
+        "google_auth_oauthlib.flow.InstalledAppFlow", autospec=True
     ) as mock_flow:
         mock_flow.from_client_config.return_value = mock_flow_instance
         module_under_test.get_user_credentials(
-            ["scopes"],
-            "some-client-id",
-            "shh-secret",
+            ["scopes"], "some-client-id", "shh-secret"
         )
 
-    mock_flow.from_client_config.assert_called_once_with(
-        mock.ANY,
-        scopes=["scopes"],
-    )
+    mock_flow.from_client_config.assert_called_once_with(mock.ANY, scopes=["scopes"])
     actual_client_config = mock_flow.from_client_config.call_args[0][0]
     assert actual_client_config["installed"]["client_id"] == "some-client-id"
     assert actual_client_config["installed"]["client_secret"] == "shh-secret"

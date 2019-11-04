@@ -39,44 +39,47 @@ import click
 import google_auth_oauthlib.flow
 
 
-APP_NAME = 'google-oauthlib-tool'
-DEFAULT_CREDENTIALS_FILENAME = 'credentials.json'
+APP_NAME = "google-oauthlib-tool"
+DEFAULT_CREDENTIALS_FILENAME = "credentials.json"
 
 
 @click.command()
 @click.option(
-    '--client-secrets',
-    metavar='<client_secret_json_file>',
+    "--client-secrets",
+    metavar="<client_secret_json_file>",
     required=True,
-    help='Path to OAuth2 client secret JSON file.')
+    help="Path to OAuth2 client secret JSON file.",
+)
 @click.option(
-    '--scope',
+    "--scope",
     multiple=True,
-    metavar='<oauth2 scope>',
+    metavar="<oauth2 scope>",
     required=True,
-    help='API scopes to authorize access for.')
+    help="API scopes to authorize access for.",
+)
 @click.option(
-    '--save',
+    "--save",
     is_flag=True,
-    metavar='<save_mode>',
+    metavar="<save_mode>",
     show_default=True,
     default=False,
-    help='Save the credentials to file.')
+    help="Save the credentials to file.",
+)
 @click.option(
-    '--credentials',
-    metavar='<oauth2_credentials>',
+    "--credentials",
+    metavar="<oauth2_credentials>",
     show_default=True,
-    default=os.path.join(
-        click.get_app_dir(APP_NAME),
-        DEFAULT_CREDENTIALS_FILENAME
-    ),
-    help='Path to store OAuth2 credentials.')
+    default=os.path.join(click.get_app_dir(APP_NAME), DEFAULT_CREDENTIALS_FILENAME),
+    help="Path to store OAuth2 credentials.",
+)
 @click.option(
-    '--headless',
+    "--headless",
     is_flag=True,
-    metavar='<headless_mode>',
-    show_default=True, default=False,
-    help='Run a console based flow.')
+    metavar="<headless_mode>",
+    show_default=True,
+    default=False,
+    help="Run a console based flow.",
+)
 def main(client_secrets, scope, save, credentials, headless):
     """Command-line tool for obtaining authorization and credentials from a user.
 
@@ -96,8 +99,7 @@ def main(client_secrets, scope, save, credentials, headless):
     """
 
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        client_secrets,
-        scopes=scope
+        client_secrets, scopes=scope
     )
 
     if not headless:
@@ -106,30 +108,30 @@ def main(client_secrets, scope, save, credentials, headless):
         creds = flow.run_console()
 
     creds_data = {
-        'token': creds.token,
-        'refresh_token': creds.refresh_token,
-        'token_uri': creds.token_uri,
-        'client_id': creds.client_id,
-        'client_secret': creds.client_secret,
-        'scopes': creds.scopes
+        "token": creds.token,
+        "refresh_token": creds.refresh_token,
+        "token_uri": creds.token_uri,
+        "client_id": creds.client_id,
+        "client_secret": creds.client_secret,
+        "scopes": creds.scopes,
     }
 
     if save:
-        del creds_data['token']
+        del creds_data["token"]
 
         config_path = os.path.dirname(credentials)
         if config_path and not os.path.isdir(config_path):
             os.makedirs(config_path)
 
-        with open(credentials, 'w') as outfile:
+        with open(credentials, "w") as outfile:
             json.dump(creds_data, outfile)
 
-        click.echo('credentials saved: %s' % credentials)
+        click.echo("credentials saved: %s" % credentials)
 
     else:
         click.echo(json.dumps(creds_data))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # pylint doesn't realize that click has changed the function signature.
     main()  # pylint: disable=no-value-for-parameter

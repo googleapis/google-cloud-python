@@ -18,55 +18,47 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-TOOL_DEPENDENCIES = (
-    'click'
-)
+TOOL_DEPENDENCIES = "click"
 
-DEPENDENCIES = (
-    'google-auth',
-    'requests-oauthlib>=0.7.0',
-)
+DEPENDENCIES = ("google-auth", "requests-oauthlib>=0.7.0")
 
 
-with io.open('README.rst', 'r') as fh:
+with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
 
 setup(
-    name='google-auth-oauthlib',
-    version = '0.4.1',
-    author='Google Cloud Platform',
-    author_email='jonwayne+google-auth@google.com',
-    description='Google Authentication Library',
+    name="google-auth-oauthlib",
+    version="0.4.1",
+    author="Google Cloud Platform",
+    author_email="jonwayne+google-auth@google.com",
+    description="Google Authentication Library",
     long_description=long_description,
-    url='https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib',
-    packages=find_packages(exclude=('tests*',)),
+    url="https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib",
+    packages=find_packages(exclude=("tests*",)),
     install_requires=DEPENDENCIES,
-    extras_require={
-        'tool': TOOL_DEPENDENCIES,
-    },
+    extras_require={"tool": TOOL_DEPENDENCIES},
     entry_points={
-        'console_scripts': [
-            'google-oauthlib-tool'
-            '=google_auth_oauthlib.tool.__main__:main [tool]',
-        ],
+        "console_scripts": [
+            "google-oauthlib-tool" "=google_auth_oauthlib.tool.__main__:main [tool]"
+        ]
     },
-    license='Apache 2.0',
-    keywords='google auth oauth client oauthlib',
+    license="Apache 2.0",
+    keywords="google auth oauth client oauthlib",
     classifiers=(
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: OS Independent',
-        'Topic :: Internet :: WWW/HTTP',
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: OS Independent",
+        "Topic :: Internet :: WWW/HTTP",
     ),
 )
