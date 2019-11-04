@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 1.1.0
+
+10-15-2019 06:40 PDT
+
+
+### New Features
+- Add IAM Policy methods to table admin client (via synth). ([#9172](https://github.com/googleapis/google-cloud-python/pull/9172))
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix misspelling in docs. ([#9184](https://github.com/googleapis/google-cloud-python/pull/9184))
+
+## 1.0.0
+
+08-28-2019 12:49 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8979](https://github.com/googleapis/google-cloud-python/pull/8979))
+
+### Documentation
+- Avoid creating table in 'list_tables' snippet; harden 'delete_instance' snippet. ([#8879](https://github.com/googleapis/google-cloud-python/pull/8879))
+- Add retry for DeadlineExceeded to 'test_bigtable_create_table' snippet. ([#8889](https://github.com/googleapis/google-cloud-python/pull/8889))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Docs: Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
 ## 0.34.0
 
 07-30-2019 10:05 PDT

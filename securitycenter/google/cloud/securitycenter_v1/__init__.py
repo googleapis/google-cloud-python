@@ -27,4 +27,8 @@ class SecurityCenterClient(security_center_client.SecurityCenterClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "SecurityCenterClient")
+__all__ = (
+    "enums",
+    "types",
+    "SecurityCenterClient",
+)

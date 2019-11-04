@@ -37,7 +37,6 @@ from google.cloud.talent_v4beta1.gapic.transports import tenant_service_grpc_tra
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import batch_pb2
 from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
@@ -250,8 +249,7 @@ class TenantServiceClient(object):
             parent (str): Required. Resource name of the project under which the tenant is
                 created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}", for example, "projects/foo".
             tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required. The tenant to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -327,7 +325,7 @@ class TenantServiceClient(object):
             name (str): Required. The resource name of the tenant to be retrieved.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenants/foo".
+                example, "projects/foo/tenants/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -403,7 +401,7 @@ class TenantServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Tenant`
-            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Optional but strongly recommended for the best service experience.
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): Strongly recommended for the best service experience.
 
                 If ``update_mask`` is provided, only the specified fields in ``tenant``
                 are updated. Otherwise all the fields are updated.
@@ -486,7 +484,7 @@ class TenantServiceClient(object):
             name (str): Required. The resource name of the tenant to be deleted.
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/api-test-project/tenants/foo".
+                example, "projects/foo/tenants/bar".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -568,8 +566,7 @@ class TenantServiceClient(object):
             parent (str): Required. Resource name of the project under which the tenant is
                 created.
 
-                The format is "projects/{project\_id}", for example,
-                "projects/api-test-project".
+                The format is "projects/{project\_id}", for example, "projects/foo".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

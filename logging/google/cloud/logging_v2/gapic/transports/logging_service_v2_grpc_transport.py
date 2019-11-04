@@ -59,7 +59,7 @@ class LoggingServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -78,7 +78,7 @@ class LoggingServiceV2GrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "logging_service_v2_stub": logging_pb2_grpc.LoggingServiceV2Stub(channel)
+            "logging_service_v2_stub": logging_pb2_grpc.LoggingServiceV2Stub(channel),
         }
 
     @classmethod
@@ -152,8 +152,9 @@ class LoggingServiceV2GrpcTransport(object):
     def list_log_entries(self):
         """Return the gRPC stub for :meth:`LoggingServiceV2Client.list_log_entries`.
 
-        Lists log entries. Use this method to retrieve log entries from Logging.
-        For ways to export log entries, see `Exporting
+        Lists log entries. Use this method to retrieve log entries that
+        originated from a project/folder/organization/billing account. For ways
+        to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
         Returns:

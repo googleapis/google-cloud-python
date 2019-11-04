@@ -231,10 +231,17 @@ class AutoscalingPolicyServiceClient(object):
             >>> response = client.create_autoscaling_policy(parent, policy)
 
         Args:
-            parent (str): Required. The "resource name" of the region, as described in
-                https://cloud.google.com/apis/design/resource\_names of the form
-                ``projects/{project_id}/regions/{region}``.
-            policy (Union[dict, ~google.cloud.dataproc_v1beta2.types.AutoscalingPolicy]): The autoscaling policy to create.
+            parent (str): Required. The "resource name" of the region or location, as described in
+                https://cloud.google.com/apis/design/resource\_names.
+
+                -  For ``projects.regions.autoscalingPolicies.create``, the resource
+                   name has the following format:
+                   ``projects/{project_id}/regions/{region}``
+
+                -  For ``projects.locations.autoscalingPolicies.create``, the resource
+                   name has the following format:
+                   ``projects/{project_id}/locations/{location}``
+            policy (Union[dict, ~google.cloud.dataproc_v1beta2.types.AutoscalingPolicy]): Required. The autoscaling policy to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.AutoscalingPolicy`
@@ -385,8 +392,15 @@ class AutoscalingPolicyServiceClient(object):
 
         Args:
             name (str): Required. The "resource name" of the autoscaling policy, as described in
-                https://cloud.google.com/apis/design/resource\_names of the form
-                ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``.
+                https://cloud.google.com/apis/design/resource\_names.
+
+                -  For ``projects.regions.autoscalingPolicies.get``, the resource name
+                   of the policy has the following format:
+                   ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+
+                -  For ``projects.locations.autoscalingPolicies.get``, the resource name
+                   of the policy has the following format:
+                   ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -468,9 +482,16 @@ class AutoscalingPolicyServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The "resource name" of the region, as described in
-                https://cloud.google.com/apis/design/resource\_names of the form
-                ``projects/{project_id}/regions/{region}``
+            parent (str): Required. The "resource name" of the region or location, as described in
+                https://cloud.google.com/apis/design/resource\_names.
+
+                -  For ``projects.regions.autoscalingPolicies.list``, the resource name
+                   of the region has the following format:
+                   ``projects/{project_id}/regions/{region}``
+
+                -  For ``projects.locations.autoscalingPolicies.list``, the resource
+                   name of the location has the following format:
+                   ``projects/{project_id}/locations/{location}``
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -562,8 +583,15 @@ class AutoscalingPolicyServiceClient(object):
 
         Args:
             name (str): Required. The "resource name" of the autoscaling policy, as described in
-                https://cloud.google.com/apis/design/resource\_names of the form
-                ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``.
+                https://cloud.google.com/apis/design/resource\_names.
+
+                -  For ``projects.regions.autoscalingPolicies.delete``, the resource
+                   name of the policy has the following format:
+                   ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+
+                -  For ``projects.locations.autoscalingPolicies.delete``, the resource
+                   name of the policy has the following format:
+                   ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

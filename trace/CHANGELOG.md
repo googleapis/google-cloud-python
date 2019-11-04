@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## 0.23.0
+
+10-15-2019 06:59 PDT
+
+
+### Dependencies
+- Pin 'google-cloud-core >= 1.0.3, < 2.0.0dev'. ([#9445](https://github.com/googleapis/google-cloud-python/pull/9445))
+
+### Documentation
+- Change requests intersphinx url (via synth). ([#9410](https://github.com/googleapis/google-cloud-python/pull/9410))
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+## 0.22.1
+
+08-12-2019 13:51 PDT
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8973](https://github.com/googleapis/google-cloud-python/pull/8973))
+
+### Documentation
+- Fix links to googleapis.dev ([#8998](https://github.com/googleapis/google-cloud-python/pull/8998))
+- Fix pip / usage examples in README.rst. ([#8833](https://github.com/googleapis/google-cloud-python/pull/8833))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.22.0
 
 07-24-2019 17:50 PDT

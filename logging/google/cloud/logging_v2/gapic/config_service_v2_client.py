@@ -31,27 +31,20 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.api import monitored_resource_pb2
 from google.cloud.logging_v2.gapic import config_service_v2_client_config
 from google.cloud.logging_v2.gapic import enums
 from google.cloud.logging_v2.gapic.transports import config_service_v2_grpc_transport
-from google.cloud.logging_v2.proto import log_entry_pb2
 from google.cloud.logging_v2.proto import logging_config_pb2
 from google.cloud.logging_v2.proto import logging_config_pb2_grpc
-from google.cloud.logging_v2.proto import logging_pb2
-from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging",).version
 
 
 class ConfigServiceV2Client(object):
-    """
-    Service for configuring sinks used to export log entries out of
-    Logging.
-    """
+    """Service for configuring sinks used to route log entries."""
 
     SERVICE_ADDRESS = "logging.googleapis.com:443"
     """The default address of the service."""
@@ -84,7 +77,7 @@ class ConfigServiceV2Client(object):
     def billing_path(cls, billing_account):
         """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
-            "billingAccounts/{billing_account}", billing_account=billing_account
+            "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
@@ -117,7 +110,7 @@ class ConfigServiceV2Client(object):
     @classmethod
     def folder_path(cls, folder):
         """Return a fully-qualified folder string."""
-        return google.api_core.path_template.expand("folders/{folder}", folder=folder)
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_exclusion_path(cls, folder, exclusion):
@@ -132,14 +125,14 @@ class ConfigServiceV2Client(object):
     def folder_sink_path(cls, folder, sink):
         """Return a fully-qualified folder_sink string."""
         return google.api_core.path_template.expand(
-            "folders/{folder}/sinks/{sink}", folder=folder, sink=sink
+            "folders/{folder}/sinks/{sink}", folder=folder, sink=sink,
         )
 
     @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization
+            "organizations/{organization}", organization=organization,
         )
 
     @classmethod
@@ -164,14 +157,14 @@ class ConfigServiceV2Client(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
     def sink_path(cls, project, sink):
         """Return a fully-qualified sink string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/sinks/{sink}", project=project, sink=sink
+            "projects/{project}/sinks/{sink}", project=project, sink=sink,
         )
 
     def __init__(
@@ -261,12 +254,12 @@ class ConfigServiceV2Client(object):
                 self.transport = transport
         else:
             self.transport = config_service_v2_grpc_transport.ConfigServiceV2GrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -277,7 +270,7 @@ class ConfigServiceV2Client(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -367,7 +360,7 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.ListSinksRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -457,7 +450,7 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.GetSinkRequest(sink_name=sink_name)
+        request = logging_config_pb2.GetSinkRequest(sink_name=sink_name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -561,7 +554,7 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.CreateSinkRequest(
-            parent=parent, sink=sink, unique_writer_identity=unique_writer_identity
+            parent=parent, sink=sink, unique_writer_identity=unique_writer_identity,
         )
         if metadata is None:
             metadata = []
@@ -593,8 +586,10 @@ class ConfigServiceV2Client(object):
         """
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
-        ``filter``. The updated sink might also have a new ``writer_identity``;
-        see the ``unique_writer_identity`` field.
+        ``filter``.
+
+        The updated sink might also have a new ``writer_identity``; see the
+        ``unique_writer_identity`` field.
 
         Example:
             >>> from google.cloud import logging_v2
@@ -625,11 +620,10 @@ class ConfigServiceV2Client(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogSink`
-            unique_writer_identity (bool): Optional. See
-                `sinks.create <https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create>`__
-                for a description of this field. When updating a sink, the effect of
-                this field on the value of ``writer_identity`` in the updated sink
-                depends on both the old and new values of this field:
+            unique_writer_identity (bool): Optional. See ``sinks.create`` for a description of this field. When
+                updating a sink, the effect of this field on the value of
+                ``writer_identity`` in the updated sink depends on both the old and new
+                values of this field:
 
                 -  If the old and new values of this field are both false or both true,
                    then there is no change to the sink's ``writer_identity``.
@@ -765,7 +759,7 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.DeleteSinkRequest(sink_name=sink_name)
+        request = logging_config_pb2.DeleteSinkRequest(sink_name=sink_name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -863,7 +857,7 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.ListExclusionsRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -953,7 +947,7 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.GetExclusionRequest(name=name)
+        request = logging_config_pb2.GetExclusionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1044,7 +1038,7 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.CreateExclusionRequest(
-            parent=parent, exclusion=exclusion
+            parent=parent, exclusion=exclusion,
         )
         if metadata is None:
             metadata = []
@@ -1106,10 +1100,11 @@ class ConfigServiceV2Client(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogExclusion`
-            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Required. A nonempty list of fields to change in the existing exclusion.
-                New values for the fields are taken from the corresponding fields in the
-                ``LogExclusion`` included in this request. Fields not mentioned in
-                ``update_mask`` are not changed and are ignored in the request.
+            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Required. A non-empty list of fields to change in the existing
+                exclusion. New values for the fields are taken from the corresponding
+                fields in the ``LogExclusion`` included in this request. Fields not
+                mentioned in ``update_mask`` are not changed and are ignored in the
+                request.
 
                 For example, to change the filter and description of an exclusion,
                 specify an ``update_mask`` of ``"filter,description"``.
@@ -1147,7 +1142,7 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.UpdateExclusionRequest(
-            name=name, exclusion=exclusion, update_mask=update_mask
+            name=name, exclusion=exclusion, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -1223,7 +1218,7 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.DeleteExclusionRequest(name=name)
+        request = logging_config_pb2.DeleteExclusionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

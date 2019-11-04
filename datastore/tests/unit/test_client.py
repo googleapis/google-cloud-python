@@ -128,6 +128,7 @@ class TestClient(unittest.TestCase):
         namespace=None,
         credentials=None,
         client_info=None,
+        client_options=None,
         _http=None,
         _use_grpc=None,
     ):
@@ -136,6 +137,7 @@ class TestClient(unittest.TestCase):
             namespace=namespace,
             credentials=credentials,
             client_info=client_info,
+            client_options=client_options,
             _http=_http,
             _use_grpc=_use_grpc,
         )
@@ -172,6 +174,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._credentials, creds)
         self.assertIs(client._client_info, _CLIENT_INFO)
         self.assertIsNone(client._http_internal)
+        self.assertIsNone(client._client_options)
         self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
 
         self.assertIsNone(client.current_batch)
@@ -181,18 +184,20 @@ class TestClient(unittest.TestCase):
         _determine_default_project.assert_called_once_with(None)
 
     def test_constructor_w_explicit_inputs(self):
-        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+        from google.api_core.client_options import ClientOptions
 
         other = "other"
         namespace = "namespace"
         creds = _make_credentials()
         client_info = mock.Mock()
+        client_options = ClientOptions("endpoint")
         http = object()
         client = self._make_one(
             project=other,
             namespace=namespace,
             credentials=creds,
             client_info=client_info,
+            client_options=client_options,
             _http=http,
         )
         self.assertEqual(client.project, other)
@@ -201,8 +206,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._client_info, client_info)
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
+        self.assertIs(client._base_url, "endpoint")
         self.assertEqual(list(client._batch_stack), [])
-        self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
 
     def test_constructor_use_grpc_default(self):
         import google.cloud.datastore.client as MUT
@@ -243,12 +248,39 @@ class TestClient(unittest.TestCase):
             self.assertEqual(client.base_url, "http://" + host)
 
     def test_base_url_property(self):
+        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+        from google.api_core.client_options import ClientOptions
+
         alternate_url = "https://alias.example.com/"
         project = "PROJECT"
         creds = _make_credentials()
         http = object()
+        client_options = ClientOptions()
 
-        client = self._make_one(project=project, credentials=creds, _http=http)
+        client = self._make_one(
+            project=project,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
+        self.assertEqual(client.base_url, _DATASTORE_BASE_URL)
+        client.base_url = alternate_url
+        self.assertEqual(client.base_url, alternate_url)
+
+    def test_base_url_property_w_client_options(self):
+        alternate_url = "https://alias.example.com/"
+        project = "PROJECT"
+        creds = _make_credentials()
+        http = object()
+        client_options = {"api_endpoint": "endpoint"}
+
+        client = self._make_one(
+            project=project,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
+        self.assertEqual(client.base_url, "endpoint")
         client.base_url = alternate_url
         self.assertEqual(client.base_url, alternate_url)
 

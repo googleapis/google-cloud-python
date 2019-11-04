@@ -17,7 +17,8 @@ def list_models(client, dataset_id):
     """Sample ID: go/samples-tracker/1512"""
 
     # [START bigquery_list_models]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -26,7 +27,7 @@ def list_models(client, dataset_id):
     #                  the models you are listing.
     # dataset_id = 'your-project.your_dataset'
 
-    models = client.list_models(dataset_id)
+    models = client.list_models(dataset_id)  # Make an API request.
 
     print("Models contained in '{}':".format(dataset_id))
     for model in models:

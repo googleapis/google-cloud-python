@@ -264,7 +264,7 @@ latex_documents = [
         u"google-cloud-webrisk Documentation",
         author,
         "manual",
-    )
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -320,7 +320,7 @@ texinfo_documents = [
         "google-cloud-webrisk",
         "GAPIC library for the {metadata.shortName} v1beta1 service",
         "APIs",
-    )
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -342,12 +342,9 @@ intersphinx_mapping = {
     "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": (
-        "https://googleapis.github.io/google-cloud-python/latest",
-        None,
-    ),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://2.python-requests.org/en/master/", None),
+    "requests": ("https://requests.kennethreitz.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }

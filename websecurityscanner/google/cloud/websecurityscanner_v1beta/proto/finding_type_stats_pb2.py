@@ -15,9 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto",
     package="google.cloud.websecurityscanner.v1beta",
@@ -26,9 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n*com.google.cloud.websecurityscanner.v1betaB\025FindingTypeStatsProtoP\001ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\312\002&Google\\Cloud\\WebSecurityScanner\\V1beta"
     ),
     serialized_pb=_b(
-        '\nEgoogle/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x12&google.cloud.websecurityscanner.v1beta\x1a\x1cgoogle/api/annotations.proto"?\n\x10\x46indingTypeStats\x12\x14\n\x0c\x66inding_type\x18\x01 \x01(\t\x12\x15\n\rfinding_count\x18\x02 \x01(\x05\x42\xc8\x01\n*com.google.cloud.websecurityscanner.v1betaB\x15\x46indingTypeStatsProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
+        '\nEgoogle/cloud/websecurityscanner_v1beta/proto/finding_type_stats.proto\x12&google.cloud.websecurityscanner.v1beta"?\n\x10\x46indingTypeStats\x12\x14\n\x0c\x66inding_type\x18\x01 \x01(\t\x12\x15\n\rfinding_count\x18\x02 \x01(\x05\x42\xc8\x01\n*com.google.cloud.websecurityscanner.v1betaB\x15\x46indingTypeStatsProtoP\x01ZXgoogle.golang.org/genproto/googleapis/cloud/websecurityscanner/v1beta;websecurityscanner\xca\x02&Google\\Cloud\\WebSecurityScanner\\V1betab\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
 
 
@@ -84,8 +80,8 @@ _FINDINGTYPESTATS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=143,
-    serialized_end=206,
+    serialized_start=113,
+    serialized_end=176,
 )
 
 DESCRIPTOR.message_types_by_name["FindingTypeStats"] = _FINDINGTYPESTATS
@@ -103,10 +99,9 @@ FindingTypeStats = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       finding_type:
-          Output only. The finding type associated with the stats.
+          The finding type associated with the stats.
       finding_count:
-          Output only. The count of findings belonging to this finding
-          type.
+          The count of findings belonging to this finding type.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.websecurityscanner.v1beta.FindingTypeStats)
     ),

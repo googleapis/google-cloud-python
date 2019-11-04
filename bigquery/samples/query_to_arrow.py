@@ -13,7 +13,8 @@
 # limitations under the License.
 
 
-def main(client):
+def query_to_arrow(client):
+
     # [START bigquery_query_to_arrow]
     # TODO(developer): Import the client library.
     # from google.cloud import bigquery
@@ -40,7 +41,7 @@ def main(client):
     CROSS JOIN UNNEST(r.participants) as participant;
     """
     query_job = client.query(sql)
-    arrow_table = query_job.to_arrow()
+    arrow_table = query_job.to_arrow()  # Make an API request.
 
     print(
         "Downloaded {} rows, {} columns.".format(
@@ -50,9 +51,3 @@ def main(client):
     print("\nSchema:\n{}".format(repr(arrow_table.schema)))
     # [END bigquery_query_to_arrow]
     return arrow_table
-
-
-if __name__ == "__main__":
-    from google.cloud import bigquery
-
-    main(bigquery.Client())

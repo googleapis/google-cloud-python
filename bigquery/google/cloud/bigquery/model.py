@@ -25,6 +25,7 @@ import google.cloud._helpers
 from google.api_core import datetime_helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery_v2 import types
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 class Model(object):
@@ -34,10 +35,7 @@ class Model(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/models
 
     Args:
-        model_ref (Union[ \
-            :class:`~google.cloud.bigquery.model.ModelReference`, \
-            str, \
-        ]):
+        model_ref (Union[google.cloud.bigquery.model.ModelReference, str]):
             A pointer to a model. If ``model_ref`` is a string, it must
             included a project ID, dataset ID, and model ID, each separated
             by ``.``.
@@ -51,6 +49,7 @@ class Model(object):
         # have an exhaustive list of all mutable properties.
         "labels": "labels",
         "description": "description",
+        "encryption_configuration": "encryptionConfiguration",
     }
 
     def __init__(self, model_ref):
@@ -256,6 +255,30 @@ class Model(object):
             value = {}
         self._properties["labels"] = value
 
+    @property
+    def encryption_configuration(self):
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
+        encryption configuration for the model.
+
+        Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
+        if using default encryption.
+
+        See `protecting data with Cloud KMS keys
+        <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
+        in the BigQuery documentation.
+        """
+        prop = self._properties.get("encryptionConfiguration")
+        if prop:
+            prop = EncryptionConfiguration.from_api_repr(prop)
+        return prop
+
+    @encryption_configuration.setter
+    def encryption_configuration(self, value):
+        api_repr = value
+        if value:
+            api_repr = value.to_api_repr()
+        self._properties["encryptionConfiguration"] = api_repr
+
     @classmethod
     def from_api_repr(cls, resource):
         """Factory: construct a model resource given its API representation
@@ -299,7 +322,7 @@ class ModelReference(object):
     """ModelReferences are pointers to models.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/models
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/models#modelreference
     """
 
     def __init__(self):

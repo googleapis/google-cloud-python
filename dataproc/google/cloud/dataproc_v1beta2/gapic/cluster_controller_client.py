@@ -207,7 +207,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Creates a cluster in a project.
+        Creates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -310,7 +312,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Updates a cluster in a project.
+        Updates a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -505,7 +509,9 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Deletes a cluster in a project.
+        Deletes a cluster in a project. The returned ``Operation.metadata`` will
+        be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -795,8 +801,11 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Gets cluster diagnostic information. After the operation completes, the
-        Operation.response field contains ``DiagnoseClusterOutputLocation``.
+        Gets cluster diagnostic information. The returned ``Operation.metadata``
+        will be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
+        After the operation completes, ``Operation.response`` contains
+        `Empty <google.protobuf.Empty>`__.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2

@@ -71,25 +71,26 @@ class TestSchemaField(unittest.TestCase):
         )
 
     def test_to_api_repr_with_subfield(self):
-        subfield = self._make_one("bar", "INTEGER", "NULLABLE")
-        field = self._make_one("foo", "RECORD", "REQUIRED", fields=(subfield,))
-        self.assertEqual(
-            field.to_api_repr(),
-            {
-                "fields": [
-                    {
-                        "mode": "NULLABLE",
-                        "name": "bar",
-                        "type": "INTEGER",
-                        "description": None,
-                    }
-                ],
-                "mode": "REQUIRED",
-                "name": "foo",
-                "type": "RECORD",
-                "description": None,
-            },
-        )
+        for record_type in ("RECORD", "STRUCT"):
+            subfield = self._make_one("bar", "INTEGER", "NULLABLE")
+            field = self._make_one("foo", record_type, "REQUIRED", fields=(subfield,))
+            self.assertEqual(
+                field.to_api_repr(),
+                {
+                    "fields": [
+                        {
+                            "mode": "NULLABLE",
+                            "name": "bar",
+                            "type": "INTEGER",
+                            "description": None,
+                        }
+                    ],
+                    "mode": "REQUIRED",
+                    "name": "foo",
+                    "type": record_type,
+                    "description": None,
+                },
+            )
 
     def test_from_api_repr(self):
         field = self._get_target_class().from_api_repr(
@@ -567,3 +568,69 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                 ],
             },
         )
+
+
+class Test_to_schema_fields(unittest.TestCase):
+    @staticmethod
+    def _call_fut(schema):
+        from google.cloud.bigquery.schema import _to_schema_fields
+
+        return _to_schema_fields(schema)
+
+    def test_invalid_type(self):
+        schema = [
+            ("full_name", "STRING", "REQUIRED"),
+            ("address", "STRING", "REQUIRED"),
+        ]
+        with self.assertRaises(ValueError):
+            self._call_fut(schema)
+
+    def test_schema_fields_sequence(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INT64", mode="NULLABLE"),
+        ]
+        result = self._call_fut(schema)
+        self.assertEqual(result, schema)
+
+    def test_invalid_mapping_representation(self):
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {"name": "address", "typeooo": "STRING", "mode": "REQUIRED"},
+        ]
+        with self.assertRaises(Exception):
+            self._call_fut(schema)
+
+    def test_valid_mapping_representation(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {
+                "name": "residence",
+                "type": "STRUCT",
+                "mode": "NULLABLE",
+                "fields": [
+                    {"name": "foo", "type": "DATE", "mode": "NULLABLE"},
+                    {"name": "bar", "type": "BYTES", "mode": "REQUIRED"},
+                ],
+            },
+        ]
+
+        expected_schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField(
+                "residence",
+                "STRUCT",
+                mode="NULLABLE",
+                fields=[
+                    SchemaField("foo", "DATE", mode="NULLABLE"),
+                    SchemaField("bar", "BYTES", mode="REQUIRED"),
+                ],
+            ),
+        ]
+
+        result = self._call_fut(schema)
+        self.assertEqual(result, expected_schema)

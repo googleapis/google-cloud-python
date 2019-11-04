@@ -59,7 +59,7 @@ class ConfigServiceV2GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -80,7 +80,7 @@ class ConfigServiceV2GrpcTransport(object):
         self._stubs = {
             "config_service_v2_stub": logging_config_pb2_grpc.ConfigServiceV2Stub(
                 channel
-            )
+            ),
         }
 
     @classmethod
@@ -163,8 +163,10 @@ class ConfigServiceV2GrpcTransport(object):
 
         Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``, and
-        ``filter``. The updated sink might also have a new ``writer_identity``;
-        see the ``unique_writer_identity`` field.
+        ``filter``.
+
+        The updated sink might also have a new ``writer_identity``; see the
+        ``unique_writer_identity`` field.
 
         Returns:
             Callable: A callable which accepts the appropriate

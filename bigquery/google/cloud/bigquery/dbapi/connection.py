@@ -21,8 +21,8 @@ from google.cloud.bigquery.dbapi import cursor
 class Connection(object):
     """DB-API Connection to Google BigQuery.
 
-    :type client: :class:`~google.cloud.bigquery.Client`
-    :param client: A client used to connect to BigQuery.
+    Args:
+        client (google.cloud.bigquery.Client): A client used to connect to BigQuery.
     """
 
     def __init__(self, client):
@@ -37,8 +37,8 @@ class Connection(object):
     def cursor(self):
         """Return a new cursor object.
 
-        :rtype: :class:`~google.cloud.bigquery.dbapi.Cursor`
-        :returns: A DB-API cursor that uses this connection.
+        Returns:
+            google.cloud.bigquery.dbapi.Cursor: A DB-API cursor that uses this connection.
         """
         return cursor.Cursor(self)
 
@@ -46,13 +46,13 @@ class Connection(object):
 def connect(client=None):
     """Construct a DB-API connection to Google BigQuery.
 
-    :type client: :class:`~google.cloud.bigquery.Client`
-    :param client:
-        (Optional) A client used to connect to BigQuery. If not passed, a
-        client is created using default options inferred from the environment.
+    Args:
+        client (google.cloud.bigquery.Client):
+            (Optional) A client used to connect to BigQuery. If not passed, a
+            client is created using default options inferred from the environment.
 
-    :rtype: :class:`~google.cloud.bigquery.dbapi.Connection`
-    :returns: A new DB-API connection to BigQuery.
+    Returns:
+        google.cloud.bigquery.dbapi.Connection: A new DB-API connection to BigQuery.
     """
     if client is None:
         client = bigquery.Client()

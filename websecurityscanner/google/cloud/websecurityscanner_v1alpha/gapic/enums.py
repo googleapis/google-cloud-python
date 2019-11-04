@@ -54,6 +54,13 @@ class Finding(object):
           https://www.google.com/about/appsecurity/learning/xss/.
           CLEAR_TEXT_PASSWORD (int): An application appears to be transmitting a password field in clear text.
           An attacker can eavesdrop network traffic and sniff the password field.
+          INVALID_CONTENT_TYPE (int): An application returns sensitive content with an invalid content type,
+          or without an 'X-Content-Type-Options: nosniff' header.
+          XSS_ANGULAR_CALLBACK (int): A cross-site scripting (XSS) vulnerability in AngularJS module that
+          occurs when a user-provided string is interpolated by Angular.
+          INVALID_HEADER (int): A malformed or invalid valued header.
+          MISSPELLED_SECURITY_HEADER_NAME (int): Misspelled security header name.
+          MISMATCHING_SECURITY_HEADER_VALUES (int): Mismatching values in a duplicate security header.
         """
 
         FINDING_TYPE_UNSPECIFIED = 0
@@ -63,6 +70,11 @@ class Finding(object):
         XSS_CALLBACK = 3
         XSS_ERROR = 4
         CLEAR_TEXT_PASSWORD = 6
+        INVALID_CONTENT_TYPE = 7
+        XSS_ANGULAR_CALLBACK = 8
+        INVALID_HEADER = 9
+        MISSPELLED_SECURITY_HEADER_NAME = 10
+        MISMATCHING_SECURITY_HEADER_VALUES = 11
 
 
 class ScanConfig(object):

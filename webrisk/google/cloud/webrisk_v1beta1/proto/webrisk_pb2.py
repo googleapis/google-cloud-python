@@ -17,6 +17,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -28,10 +30,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\032com.google.webrisk.v1beta1B\014WebRiskProtoP\001ZCgoogle.golang.org/genproto/googleapis/cloud/webrisk/v1beta1;webrisk\242\002\004GCWR\252\002\034Google.Cloud.WebRisk.V1Beta1\312\002\034Google\\Cloud\\WebRisk\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n0google/cloud/webrisk_v1beta1/proto/webrisk.proto\x12\x1cgoogle.cloud.webrisk.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe8\x02\n\x1c\x43omputeThreatListDiffRequest\x12=\n\x0bthreat_type\x18\x01 \x01(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType\x12\x15\n\rversion_token\x18\x02 \x01(\x0c\x12[\n\x0b\x63onstraints\x18\x03 \x01(\x0b\x32\x46.google.cloud.webrisk.v1beta1.ComputeThreatListDiffRequest.Constraints\x1a\x94\x01\n\x0b\x43onstraints\x12\x18\n\x10max_diff_entries\x18\x01 \x01(\x05\x12\x1c\n\x14max_database_entries\x18\x02 \x01(\x05\x12M\n\x16supported_compressions\x18\x03 \x03(\x0e\x32-.google.cloud.webrisk.v1beta1.CompressionType"\x9a\x04\n\x1d\x43omputeThreatListDiffResponse\x12_\n\rresponse_type\x18\x04 \x01(\x0e\x32H.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse.ResponseType\x12\x45\n\tadditions\x18\x05 \x01(\x0b\x32\x32.google.cloud.webrisk.v1beta1.ThreatEntryAdditions\x12\x43\n\x08removals\x18\x06 \x01(\x0b\x32\x31.google.cloud.webrisk.v1beta1.ThreatEntryRemovals\x12\x19\n\x11new_version_token\x18\x07 \x01(\x0c\x12V\n\x08\x63hecksum\x18\x08 \x01(\x0b\x32\x44.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse.Checksum\x12\x39\n\x15recommended_next_diff\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1a\n\x08\x43hecksum\x12\x0e\n\x06sha256\x18\x01 \x01(\x0c"B\n\x0cResponseType\x12\x1d\n\x19RESPONSE_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x44IFF\x10\x01\x12\t\n\x05RESET\x10\x02"`\n\x11SearchUrisRequest\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12>\n\x0cthreat_types\x18\x02 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType"\xde\x01\n\x12SearchUrisResponse\x12J\n\x06threat\x18\x01 \x01(\x0b\x32:.google.cloud.webrisk.v1beta1.SearchUrisResponse.ThreatUri\x1a|\n\tThreatUri\x12>\n\x0cthreat_types\x18\x01 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"j\n\x13SearchHashesRequest\x12\x13\n\x0bhash_prefix\x18\x01 \x01(\x0c\x12>\n\x0cthreat_types\x18\x02 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType"\xae\x02\n\x14SearchHashesResponse\x12N\n\x07threats\x18\x01 \x03(\x0b\x32=.google.cloud.webrisk.v1beta1.SearchHashesResponse.ThreatHash\x12\x38\n\x14negative_expire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x8b\x01\n\nThreatHash\x12>\n\x0cthreat_types\x18\x01 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType\x12\x0c\n\x04hash\x18\x02 \x01(\x0c\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x99\x01\n\x14ThreatEntryAdditions\x12;\n\nraw_hashes\x18\x01 \x03(\x0b\x32\'.google.cloud.webrisk.v1beta1.RawHashes\x12\x44\n\x0brice_hashes\x18\x02 \x01(\x0b\x32/.google.cloud.webrisk.v1beta1.RiceDeltaEncoding"\x9b\x01\n\x13ThreatEntryRemovals\x12=\n\x0braw_indices\x18\x01 \x01(\x0b\x32(.google.cloud.webrisk.v1beta1.RawIndices\x12\x45\n\x0crice_indices\x18\x02 \x01(\x0b\x32/.google.cloud.webrisk.v1beta1.RiceDeltaEncoding"\x1d\n\nRawIndices\x12\x0f\n\x07indices\x18\x01 \x03(\x05"4\n\tRawHashes\x12\x13\n\x0bprefix_size\x18\x01 \x01(\x05\x12\x12\n\nraw_hashes\x18\x02 \x01(\x0c"k\n\x11RiceDeltaEncoding\x12\x13\n\x0b\x66irst_value\x18\x01 \x01(\x03\x12\x16\n\x0erice_parameter\x18\x02 \x01(\x05\x12\x13\n\x0b\x65ntry_count\x18\x03 \x01(\x05\x12\x14\n\x0c\x65ncoded_data\x18\x04 \x01(\x0c*e\n\nThreatType\x12\x1b\n\x17THREAT_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07MALWARE\x10\x01\x12\x16\n\x12SOCIAL_ENGINEERING\x10\x02\x12\x15\n\x11UNWANTED_SOFTWARE\x10\x03*F\n\x0f\x43ompressionType\x12 \n\x1c\x43OMPRESSION_TYPE_UNSPECIFIED\x10\x00\x12\x07\n\x03RAW\x10\x01\x12\x08\n\x04RICE\x10\x02\x32\xfc\x03\n\x15WebRiskServiceV1Beta1\x12\xba\x01\n\x15\x43omputeThreatListDiff\x12:.google.cloud.webrisk.v1beta1.ComputeThreatListDiffRequest\x1a;.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse"(\x82\xd3\xe4\x93\x02"\x12 /v1beta1/threatLists:computeDiff\x12\x8d\x01\n\nSearchUris\x12/.google.cloud.webrisk.v1beta1.SearchUrisRequest\x1a\x30.google.cloud.webrisk.v1beta1.SearchUrisResponse"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1beta1/uris:search\x12\x95\x01\n\x0cSearchHashes\x12\x31.google.cloud.webrisk.v1beta1.SearchHashesRequest\x1a\x32.google.cloud.webrisk.v1beta1.SearchHashesResponse"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1beta1/hashes:searchB\xb6\x01\n\x1a\x63om.google.webrisk.v1beta1B\x0cWebRiskProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/webrisk/v1beta1;webrisk\xa2\x02\x04GCWR\xaa\x02\x1cGoogle.Cloud.WebRisk.V1Beta1\xca\x02\x1cGoogle\\Cloud\\WebRisk\\V1beta1b\x06proto3'
+        '\n0google/cloud/webrisk_v1beta1/proto/webrisk.proto\x12\x1cgoogle.cloud.webrisk.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf2\x02\n\x1c\x43omputeThreatListDiffRequest\x12\x42\n\x0bthreat_type\x18\x01 \x01(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatTypeB\x03\xe0\x41\x02\x12\x15\n\rversion_token\x18\x02 \x01(\x0c\x12`\n\x0b\x63onstraints\x18\x03 \x01(\x0b\x32\x46.google.cloud.webrisk.v1beta1.ComputeThreatListDiffRequest.ConstraintsB\x03\xe0\x41\x02\x1a\x94\x01\n\x0b\x43onstraints\x12\x18\n\x10max_diff_entries\x18\x01 \x01(\x05\x12\x1c\n\x14max_database_entries\x18\x02 \x01(\x05\x12M\n\x16supported_compressions\x18\x03 \x03(\x0e\x32-.google.cloud.webrisk.v1beta1.CompressionType"\x9a\x04\n\x1d\x43omputeThreatListDiffResponse\x12_\n\rresponse_type\x18\x04 \x01(\x0e\x32H.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse.ResponseType\x12\x45\n\tadditions\x18\x05 \x01(\x0b\x32\x32.google.cloud.webrisk.v1beta1.ThreatEntryAdditions\x12\x43\n\x08removals\x18\x06 \x01(\x0b\x32\x31.google.cloud.webrisk.v1beta1.ThreatEntryRemovals\x12\x19\n\x11new_version_token\x18\x07 \x01(\x0c\x12V\n\x08\x63hecksum\x18\x08 \x01(\x0b\x32\x44.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse.Checksum\x12\x39\n\x15recommended_next_diff\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1a\n\x08\x43hecksum\x12\x0e\n\x06sha256\x18\x01 \x01(\x0c"B\n\x0cResponseType\x12\x1d\n\x19RESPONSE_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x44IFF\x10\x01\x12\t\n\x05RESET\x10\x02"j\n\x11SearchUrisRequest\x12\x10\n\x03uri\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x43\n\x0cthreat_types\x18\x02 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatTypeB\x03\xe0\x41\x02"\xde\x01\n\x12SearchUrisResponse\x12J\n\x06threat\x18\x01 \x01(\x0b\x32:.google.cloud.webrisk.v1beta1.SearchUrisResponse.ThreatUri\x1a|\n\tThreatUri\x12>\n\x0cthreat_types\x18\x01 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"o\n\x13SearchHashesRequest\x12\x13\n\x0bhash_prefix\x18\x01 \x01(\x0c\x12\x43\n\x0cthreat_types\x18\x02 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatTypeB\x03\xe0\x41\x02"\xae\x02\n\x14SearchHashesResponse\x12N\n\x07threats\x18\x01 \x03(\x0b\x32=.google.cloud.webrisk.v1beta1.SearchHashesResponse.ThreatHash\x12\x38\n\x14negative_expire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x8b\x01\n\nThreatHash\x12>\n\x0cthreat_types\x18\x01 \x03(\x0e\x32(.google.cloud.webrisk.v1beta1.ThreatType\x12\x0c\n\x04hash\x18\x02 \x01(\x0c\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x99\x01\n\x14ThreatEntryAdditions\x12;\n\nraw_hashes\x18\x01 \x03(\x0b\x32\'.google.cloud.webrisk.v1beta1.RawHashes\x12\x44\n\x0brice_hashes\x18\x02 \x01(\x0b\x32/.google.cloud.webrisk.v1beta1.RiceDeltaEncoding"\x9b\x01\n\x13ThreatEntryRemovals\x12=\n\x0braw_indices\x18\x01 \x01(\x0b\x32(.google.cloud.webrisk.v1beta1.RawIndices\x12\x45\n\x0crice_indices\x18\x02 \x01(\x0b\x32/.google.cloud.webrisk.v1beta1.RiceDeltaEncoding"\x1d\n\nRawIndices\x12\x0f\n\x07indices\x18\x01 \x03(\x05"4\n\tRawHashes\x12\x13\n\x0bprefix_size\x18\x01 \x01(\x05\x12\x12\n\nraw_hashes\x18\x02 \x01(\x0c"k\n\x11RiceDeltaEncoding\x12\x13\n\x0b\x66irst_value\x18\x01 \x01(\x03\x12\x16\n\x0erice_parameter\x18\x02 \x01(\x05\x12\x13\n\x0b\x65ntry_count\x18\x03 \x01(\x05\x12\x14\n\x0c\x65ncoded_data\x18\x04 \x01(\x0c*e\n\nThreatType\x12\x1b\n\x17THREAT_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07MALWARE\x10\x01\x12\x16\n\x12SOCIAL_ENGINEERING\x10\x02\x12\x15\n\x11UNWANTED_SOFTWARE\x10\x03*F\n\x0f\x43ompressionType\x12 \n\x1c\x43OMPRESSION_TYPE_UNSPECIFIED\x10\x00\x12\x07\n\x03RAW\x10\x01\x12\x08\n\x04RICE\x10\x02\x32\x9e\x05\n\x15WebRiskServiceV1Beta1\x12\xe2\x01\n\x15\x43omputeThreatListDiff\x12:.google.cloud.webrisk.v1beta1.ComputeThreatListDiffRequest\x1a;.google.cloud.webrisk.v1beta1.ComputeThreatListDiffResponse"P\x82\xd3\xe4\x93\x02"\x12 /v1beta1/threatLists:computeDiff\xda\x41%threat_type,version_token,constraints\x12\xa0\x01\n\nSearchUris\x12/.google.cloud.webrisk.v1beta1.SearchUrisRequest\x1a\x30.google.cloud.webrisk.v1beta1.SearchUrisResponse"/\x82\xd3\xe4\x93\x02\x16\x12\x14/v1beta1/uris:search\xda\x41\x10uri,threat_types\x12\xb0\x01\n\x0cSearchHashes\x12\x31.google.cloud.webrisk.v1beta1.SearchHashesRequest\x1a\x32.google.cloud.webrisk.v1beta1.SearchHashesResponse"9\x82\xd3\xe4\x93\x02\x18\x12\x16/v1beta1/hashes:search\xda\x41\x18hash_prefix,threat_types\x1aJ\xca\x41\x16webrisk.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb6\x01\n\x1a\x63om.google.webrisk.v1beta1B\x0cWebRiskProtoP\x01ZCgoogle.golang.org/genproto/googleapis/cloud/webrisk/v1beta1;webrisk\xa2\x02\x04GCWR\xaa\x02\x1cGoogle.Cloud.WebRisk.V1Beta1\xca\x02\x1cGoogle\\Cloud\\WebRisk\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -69,8 +73,8 @@ _THREATTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2293,
-    serialized_end=2394,
+    serialized_start=2376,
+    serialized_end=2477,
 )
 _sym_db.RegisterEnumDescriptor(_THREATTYPE)
 
@@ -97,8 +101,8 @@ _COMPRESSIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2396,
-    serialized_end=2466,
+    serialized_start=2479,
+    serialized_end=2549,
 )
 _sym_db.RegisterEnumDescriptor(_COMPRESSIONTYPE)
 
@@ -134,8 +138,8 @@ _COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=981,
-    serialized_end=1047,
+    serialized_start=1049,
+    serialized_end=1115,
 )
 _sym_db.RegisterEnumDescriptor(_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE)
 
@@ -210,8 +214,8 @@ _COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=358,
-    serialized_end=506,
+    serialized_start=426,
+    serialized_end=574,
 )
 
 _COMPUTETHREATLISTDIFFREQUEST = _descriptor.Descriptor(
@@ -236,7 +240,7 @@ _COMPUTETHREATLISTDIFFREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -272,20 +276,20 @@ _COMPUTETHREATLISTDIFFREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS],
+    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=146,
-    serialized_end=506,
+    serialized_start=204,
+    serialized_end=574,
 )
 
 
@@ -313,7 +317,7 @@ _COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -323,8 +327,8 @@ _COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=953,
-    serialized_end=979,
+    serialized_start=1021,
+    serialized_end=1047,
 )
 
 _COMPUTETHREATLISTDIFFRESPONSE = _descriptor.Descriptor(
@@ -444,15 +448,15 @@ _COMPUTETHREATLISTDIFFRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM],
-    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE],
+    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM,],
+    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=509,
-    serialized_end=1047,
+    serialized_start=577,
+    serialized_end=1115,
 )
 
 
@@ -478,7 +482,7 @@ _SEARCHURISREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -496,7 +500,7 @@ _SEARCHURISREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -508,8 +512,8 @@ _SEARCHURISREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1049,
-    serialized_end=1145,
+    serialized_start=1117,
+    serialized_end=1223,
 )
 
 
@@ -565,8 +569,8 @@ _SEARCHURISRESPONSE_THREATURI = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1246,
-    serialized_end=1370,
+    serialized_start=1324,
+    serialized_end=1448,
 )
 
 _SEARCHURISRESPONSE = _descriptor.Descriptor(
@@ -593,18 +597,18 @@ _SEARCHURISRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
-    nested_types=[_SEARCHURISRESPONSE_THREATURI],
+    nested_types=[_SEARCHURISRESPONSE_THREATURI,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1148,
-    serialized_end=1370,
+    serialized_start=1226,
+    serialized_end=1448,
 )
 
 
@@ -648,7 +652,7 @@ _SEARCHHASHESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -660,8 +664,8 @@ _SEARCHHASHESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1372,
-    serialized_end=1478,
+    serialized_start=1450,
+    serialized_end=1561,
 )
 
 
@@ -735,8 +739,8 @@ _SEARCHHASHESRESPONSE_THREATHASH = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1644,
-    serialized_end=1783,
+    serialized_start=1727,
+    serialized_end=1866,
 )
 
 _SEARCHHASHESRESPONSE = _descriptor.Descriptor(
@@ -784,15 +788,15 @@ _SEARCHHASHESRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH],
+    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1481,
-    serialized_end=1783,
+    serialized_start=1564,
+    serialized_end=1866,
 )
 
 
@@ -848,8 +852,8 @@ _THREATENTRYADDITIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1786,
-    serialized_end=1939,
+    serialized_start=1869,
+    serialized_end=2022,
 )
 
 
@@ -905,8 +909,8 @@ _THREATENTRYREMOVALS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1942,
-    serialized_end=2097,
+    serialized_start=2025,
+    serialized_end=2180,
 )
 
 
@@ -934,7 +938,7 @@ _RAWINDICES = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -944,8 +948,8 @@ _RAWINDICES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2099,
-    serialized_end=2128,
+    serialized_start=2182,
+    serialized_end=2211,
 )
 
 
@@ -1001,8 +1005,8 @@ _RAWHASHES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2130,
-    serialized_end=2182,
+    serialized_start=2213,
+    serialized_end=2265,
 )
 
 
@@ -1094,8 +1098,8 @@ _RICEDELTAENCODING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2184,
-    serialized_end=2291,
+    serialized_start=2267,
+    serialized_end=2374,
 )
 
 _COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS.fields_by_name[
@@ -1208,13 +1212,13 @@ ComputeThreatListDiffRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       threat_type:
-          Required. The ThreatList to update.
+          The ThreatList to update.
       version_token:
           The current version token of the client for the requested list
           (the client version that was received from the last successful
           diff).
       constraints:
-          The constraints associated with this request.
+          Required. The constraints associated with this request.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.webrisk.v1beta1.ComputeThreatListDiffRequest)
     ),
@@ -1248,8 +1252,8 @@ ComputeThreatListDiffResponse = _reflection.GeneratedProtocolMessageType(
         __doc__="""
     Attributes:
       response_type:
-          The type of response. This may indicate that an action is
-          required by the client when the response is received.
+          The type of response. This may indicate that an action must be
+          taken by the client when the response is received.
       additions:
           A set of entries to add to a local threat type's list.
       removals:
@@ -1287,7 +1291,7 @@ SearchUrisRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       uri:
-          The URI to be checked for matches.
+          Required. The URI to be checked for matches.
       threat_types:
           Required. The ThreatLists to search in.
   """,
@@ -1533,15 +1537,22 @@ _sym_db.RegisterMessage(RiceDeltaEncoding)
 
 
 DESCRIPTOR._options = None
+_COMPUTETHREATLISTDIFFREQUEST.fields_by_name["threat_type"]._options = None
+_COMPUTETHREATLISTDIFFREQUEST.fields_by_name["constraints"]._options = None
+_SEARCHURISREQUEST.fields_by_name["uri"]._options = None
+_SEARCHURISREQUEST.fields_by_name["threat_types"]._options = None
+_SEARCHHASHESREQUEST.fields_by_name["threat_types"]._options = None
 
 _WEBRISKSERVICEV1BETA1 = _descriptor.ServiceDescriptor(
     name="WebRiskServiceV1Beta1",
     full_name="google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2469,
-    serialized_end=2977,
+    serialized_options=_b(
+        "\312A\026webrisk.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=2552,
+    serialized_end=3222,
     methods=[
         _descriptor.MethodDescriptor(
             name="ComputeThreatListDiff",
@@ -1551,7 +1562,7 @@ _WEBRISKSERVICEV1BETA1 = _descriptor.ServiceDescriptor(
             input_type=_COMPUTETHREATLISTDIFFREQUEST,
             output_type=_COMPUTETHREATLISTDIFFRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002"\022 /v1beta1/threatLists:computeDiff'
+                '\202\323\344\223\002"\022 /v1beta1/threatLists:computeDiff\332A%threat_type,version_token,constraints'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1562,7 +1573,7 @@ _WEBRISKSERVICEV1BETA1 = _descriptor.ServiceDescriptor(
             input_type=_SEARCHURISREQUEST,
             output_type=_SEARCHURISRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\026\022\024/v1beta1/uris:search"
+                "\202\323\344\223\002\026\022\024/v1beta1/uris:search\332A\020uri,threat_types"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1573,7 +1584,7 @@ _WEBRISKSERVICEV1BETA1 = _descriptor.ServiceDescriptor(
             input_type=_SEARCHHASHESREQUEST,
             output_type=_SEARCHHASHESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\030\022\026/v1beta1/hashes:search"
+                "\202\323\344\223\002\030\022\026/v1beta1/hashes:search\332A\030hash_prefix,threat_types"
             ),
         ),
     ],

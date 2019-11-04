@@ -8,8 +8,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ConfigServiceV2Stub(object):
-    """Service for configuring sinks used to export log entries out of
-  Logging.
+    """Service for configuring sinks used to route log entries.
   """
 
     def __init__(self, channel):
@@ -71,8 +70,7 @@ class ConfigServiceV2Stub(object):
 
 
 class ConfigServiceV2Servicer(object):
-    """Service for configuring sinks used to export log entries out of
-  Logging.
+    """Service for configuring sinks used to route log entries.
   """
 
     def ListSinks(self, request, context):
@@ -90,9 +88,9 @@ class ConfigServiceV2Servicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def CreateSink(self, request, context):
-        """Creates a sink that exports specified log entries to a destination.  The
+        """Creates a sink that exports specified log entries to a destination. The
     export of newly-ingested log entries begins immediately, unless the sink's
-    `writer_identity` is not permitted to write to the destination.  A sink can
+    `writer_identity` is not permitted to write to the destination. A sink can
     export log entries only from the resource owning the sink.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -100,8 +98,9 @@ class ConfigServiceV2Servicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def UpdateSink(self, request, context):
-        """Updates a sink.  This method replaces the following fields in the existing
+        """Updates a sink. This method replaces the following fields in the existing
     sink with values from the new sink: `destination`, and `filter`.
+
     The updated sink might also have a new `writer_identity`; see the
     `unique_writer_identity` field.
     """

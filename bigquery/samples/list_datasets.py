@@ -16,17 +16,18 @@
 def list_datasets(client):
 
     # [START bigquery_list_datasets]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    datasets = list(client.list_datasets())
+    datasets = list(client.list_datasets())  # Make an API request.
     project = client.project
 
     if datasets:
         print("Datasets in project {}:".format(project))
-        for dataset in datasets:  # API request(s)
+        for dataset in datasets:
             print("\t{}".format(dataset.dataset_id))
     else:
         print("{} project does not contain any datasets.".format(project))

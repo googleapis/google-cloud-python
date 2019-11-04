@@ -21,6 +21,7 @@ import json
 import warnings
 
 import six
+from six.moves.urllib.parse import urlsplit
 
 from google.api_core import page_iterator
 from google.api_core import datetime_helpers
@@ -38,10 +39,37 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
+from google.cloud.storage.constants import DUAL_REGION_LOCATION_TYPE
+from google.cloud.storage.constants import (
+    DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,
+)
+from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+from google.cloud.storage.constants import MULTI_REGION_LOCATION_TYPE
+from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
+from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
+from google.cloud.storage.constants import REGION_LOCATION_TYPE
+from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
+_UBLA_BPO_ENABLED_MESSAGE = (
+    "Pass only one of 'uniform_bucket_level_access_enabled' / "
+    "'bucket_policy_only_enabled' to 'IAMConfiguration'."
+)
+_BPO_ENABLED_MESSAGE = (
+    "'IAMConfiguration.bucket_policy_only_enabled' is deprecated.  "
+    "Instead, use 'IAMConfiguration.uniform_bucket_level_access_enabled'."
+)
+_UBLA_BPO_LOCK_TIME_MESSAGE = (
+    "Pass only one of 'uniform_bucket_level_access_lock_time' / "
+    "'bucket_policy_only_lock_time' to 'IAMConfiguration'."
+)
+_BPO_LOCK_TIME_MESSAGE = (
+    "'IAMConfiguration.bucket_policy_only_lock_time' is deprecated.  "
+    "Instead, use 'IAMConfiguration.uniform_bucket_level_access_lock_time'."
+)
 _LOCATION_SETTER_MESSAGE = (
     "Assignment to 'Bucket.location' is deprecated, as it is only "
     "valid before the bucket is created. Instead, pass the location "
@@ -129,7 +157,7 @@ class LifecycleRuleConditions(dict):
                     version.
 
     :type matches_storage_class: list(str), one or more of
-                                 :attr:`Bucket._STORAGE_CLASSES`.
+                                 :attr:`Bucket.STORAGE_CLASSES`.
     :param matches_storage_class: (optional) apply rule action to items which
                                   whose storage class matches this value.
 
@@ -243,7 +271,7 @@ class LifecycleRuleDelete(dict):
 class LifecycleRuleSetStorageClass(dict):
     """Map a lifecycle rule upating storage class of matching items.
 
-    :type storage_class: str, one of :attr:`Bucket._STORAGE_CLASSES`.
+    :type storage_class: str, one of :attr:`Bucket.STORAGE_CLASSES`.
     :param storage_class: new storage class to assign to matching items.
 
     :type kw: dict
@@ -274,29 +302,66 @@ class LifecycleRuleSetStorageClass(dict):
         return instance
 
 
+_default = object()
+
+
 class IAMConfiguration(dict):
     """Map a bucket's IAM configuration.
 
     :type bucket: :class:`Bucket`
     :params bucket: Bucket for which this instance is the policy.
 
+    :type uniform_bucket_level_access_enabled: bool
+    :params bucket_policy_only_enabled:
+        (optional) whether the IAM-only policy is enabled for the bucket.
+
+    :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
+    :params uniform_bucket_level_locked_time:
+        (optional) When the bucket's IAM-only policy was enabled.
+        This value should normally only be set by the back-end API.
+
     :type bucket_policy_only_enabled: bool
-    :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.
+    :params bucket_policy_only_enabled:
+        Deprecated alias for :data:`uniform_bucket_level_access_enabled`.
 
     :type bucket_policy_only_locked_time: :class:`datetime.datetime`
-    :params bucket_policy_only_locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
+    :params bucket_policy_only_locked_time:
+        Deprecated alias for :data:`uniform_bucket_level_access_locked_time`.
     """
 
     def __init__(
         self,
         bucket,
-        bucket_policy_only_enabled=False,
-        bucket_policy_only_locked_time=None,
+        uniform_bucket_level_access_enabled=_default,
+        uniform_bucket_level_access_locked_time=_default,
+        bucket_policy_only_enabled=_default,
+        bucket_policy_only_locked_time=_default,
     ):
-        data = {"bucketPolicyOnly": {"enabled": bucket_policy_only_enabled}}
-        if bucket_policy_only_locked_time is not None:
-            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
-                bucket_policy_only_locked_time
+        if bucket_policy_only_enabled is not _default:
+
+            if uniform_bucket_level_access_enabled is not _default:
+                raise ValueError(_UBLA_BPO_ENABLED_MESSAGE)
+
+            warnings.warn(_BPO_ENABLED_MESSAGE, DeprecationWarning, stacklevel=2)
+            uniform_bucket_level_access_enabled = bucket_policy_only_enabled
+
+        if bucket_policy_only_locked_time is not _default:
+
+            if uniform_bucket_level_access_locked_time is not _default:
+                raise ValueError(_UBLA_BPO_LOCK_TIME_MESSAGE)
+
+            warnings.warn(_BPO_LOCK_TIME_MESSAGE, DeprecationWarning, stacklevel=2)
+            uniform_bucket_level_access_locked_time = bucket_policy_only_locked_time
+
+        if uniform_bucket_level_access_enabled is _default:
+            uniform_bucket_level_access_enabled = False
+
+        data = {
+            "uniformBucketLevelAccess": {"enabled": uniform_bucket_level_access_enabled}
+        }
+        if uniform_bucket_level_access_locked_time is not _default:
+            data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
+                uniform_bucket_level_access_locked_time
             )
         super(IAMConfiguration, self).__init__(data)
         self._bucket = bucket
@@ -328,40 +393,65 @@ class IAMConfiguration(dict):
         return self._bucket
 
     @property
-    def bucket_policy_only_enabled(self):
+    def uniform_bucket_level_access_enabled(self):
         """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
         :returns: whether the bucket is configured to allow only IAM.
         """
-        bpo = self.get("bucketPolicyOnly", {})
-        return bpo.get("enabled", False)
+        ubla = self.get("uniformBucketLevelAccess", {})
+        return ubla.get("enabled", False)
 
-    @bucket_policy_only_enabled.setter
-    def bucket_policy_only_enabled(self, value):
-        bpo = self.setdefault("bucketPolicyOnly", {})
-        bpo["enabled"] = bool(value)
+    @uniform_bucket_level_access_enabled.setter
+    def uniform_bucket_level_access_enabled(self, value):
+        ubla = self.setdefault("uniformBucketLevelAccess", {})
+        ubla["enabled"] = bool(value)
         self.bucket._patch_property("iamConfiguration", self)
 
     @property
-    def bucket_policy_only_locked_time(self):
-        """Deadline for changing :attr:`bucket_policy_only_enabled` from true to false.
+    def uniform_bucket_level_access_locked_time(self):
+        """Deadline for changing :attr:`uniform_bucket_level_access_enabled` from true to false.
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is true, this property
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is true, this property
         is time time after which that setting becomes immutable.
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is false, this property
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is false, this property
         is ``None``.
 
         :rtype: Union[:class:`datetime.datetime`, None]
-        :returns:  (readonly) Time after which :attr:`bucket_policy_only_enabled` will
+        :returns:  (readonly) Time after which :attr:`uniform_bucket_level_access_enabled` will
                    be frozen as true.
         """
-        bpo = self.get("bucketPolicyOnly", {})
-        stamp = bpo.get("lockedTime")
+        ubla = self.get("uniformBucketLevelAccess", {})
+        stamp = ubla.get("lockedTime")
         if stamp is not None:
             stamp = _rfc3339_to_datetime(stamp)
         return stamp
+
+    @property
+    def bucket_policy_only_enabled(self):
+        """Deprecated alias for :attr:`uniform_bucket_level_access_enabled`.
+
+        :rtype: bool
+        :returns: whether the bucket is configured to allow only IAM.
+        """
+        return self.uniform_bucket_level_access_enabled
+
+    @bucket_policy_only_enabled.setter
+    def bucket_policy_only_enabled(self, value):
+        warnings.warn(_BPO_ENABLED_MESSAGE, DeprecationWarning, stacklevel=2)
+        self.uniform_bucket_level_access_enabled = value
+
+    @property
+    def bucket_policy_only_locked_time(self):
+        """Deprecated alias for :attr:`uniform_bucket_level_access_locked_time`.
+
+        :rtype: Union[:class:`datetime.datetime`, None]
+        :returns:
+            (readonly) Time after which :attr:`bucket_policy_only_enabled` will
+            be frozen as true.
+        """
+        return self.uniform_bucket_level_access_locked_time
 
 
 class Bucket(_PropertyMixin):
@@ -386,38 +476,7 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
-    STANDARD_STORAGE_CLASS = "STANDARD"
-    """Storage class for objects accessed more than once per month."""
-
-    NEARLINE_STORAGE_CLASS = "NEARLINE"
-    """Storage class for objects accessed at most once per month."""
-
-    COLDLINE_STORAGE_CLASS = "COLDLINE"
-    """Storage class for objects accessed at most once per year."""
-
-    MULTI_REGIONAL_LEGACY_STORAGE_CLASS = "MULTI_REGIONAL"
-    """Legacy storage class.
-
-    Alias for :attr:`STANDARD_STORAGE_CLASS`.
-
-    Implies :attr:`MULTI_REGION_LOCATION_TYPE` for :attr:`location_type`.
-    """
-
-    REGIONAL_LEGACY_STORAGE_CLASS = "REGIONAL"
-    """Legacy storage class.
-
-    Alias for :attr:`STANDARD_STORAGE_CLASS`.
-
-    Implies :attr:`REGION_LOCATION_TYPE` for :attr:`location_type`.
-    """
-
-    DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS = "DURABLE_REDUCED_AVAILABILITY"
-    """Legacy storage class.
-
-    Similar to :attr:`NEARLINE_STORAGE_CLASS`.
-    """
-
-    _STORAGE_CLASSES = (
+    STORAGE_CLASSES = (
         STANDARD_STORAGE_CLASS,
         NEARLINE_STORAGE_CLASS,
         COLDLINE_STORAGE_CLASS,
@@ -432,24 +491,6 @@ class Bucket(_PropertyMixin):
     See
     https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass
     https://cloud.google.com/storage/docs/storage-classes
-    """
-
-    MULTI_REGION_LOCATION_TYPE = "multi-region"
-    """Location type: data will be replicated across regions in a multi-region.
-
-    Provides highest availability across largest area.
-    """
-
-    REGION_LOCATION_TYPE = "region"
-    """Location type: data will be stored within a single region.
-
-    Provides lowest latency within a single region.
-    """
-
-    DUAL_REGION_LOCATION_TYPE = "dual-region"
-    """Location type: data will be stored within two primary regions.
-
-    Provides high availability and low latency across two regions.
     """
 
     _LOCATION_TYPES = (
@@ -494,6 +535,35 @@ class Bucket(_PropertyMixin):
         :rtype: str
         """
         return self._user_project
+
+    @classmethod
+    def from_string(cls, uri, client=None):
+        """Get a constructor for bucket object by URI.
+
+        :type uri: str
+        :param uri: The bucket uri pass to get bucket object.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.
+
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
+        :returns: The bucket object created.
+
+        Example:
+            Get a constructor for bucket object by URI..
+
+            >>> from google.cloud import storage
+            >>> from google.cloud.storage.bucket import Bucket
+            >>> client = storage.Client()
+            >>> bucket = Bucket.from_string("gs://bucket",client)
+        """
+        scheme, netloc, path, query, frag = urlsplit(uri)
+
+        if scheme != "gs":
+            raise ValueError("URI scheme must be gs")
+
+        return cls(client, name=netloc)
 
     def blob(
         self,
@@ -603,7 +673,14 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None, project=None, location=None):
+    def create(
+        self,
+        client=None,
+        project=None,
+        location=None,
+        predefined_acl=None,
+        predefined_default_object_acl=None,
+    ):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -630,12 +707,54 @@ class Bucket(_PropertyMixin):
         :param location: Optional. The location of the bucket. If not passed,
                          the default location, US, will be used. See
                          https://cloud.google.com/storage/docs/bucket-locations
+
+        :type predefined_acl: str
+        :param predefined_acl:
+            Optional. Name of predefined ACL to apply to bucket. See:
+            https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
+
+        :type predefined_default_object_acl: str
+        :param predefined_default_object_acl:
+            Optional. Name of predefined ACL to apply to bucket's objects. See:
+            https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
         """
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
 
         client = self._require_client(client)
-        client.create_bucket(self, project=project, location=location)
+
+        if project is None:
+            project = client.project
+
+        if project is None:
+            raise ValueError("Client project not set:  pass an explicit project.")
+
+        query_params = {"project": project}
+
+        if predefined_acl is not None:
+            predefined_acl = BucketACL.validate_predefined(predefined_acl)
+            query_params["predefinedAcl"] = predefined_acl
+
+        if predefined_default_object_acl is not None:
+            predefined_default_object_acl = DefaultObjectACL.validate_predefined(
+                predefined_default_object_acl
+            )
+            query_params["predefinedDefaultObjectAcl"] = predefined_default_object_acl
+
+        properties = {key: self._properties[key] for key in self._changes}
+        properties["name"] = self.name
+
+        if location is not None:
+            properties["location"] = location
+
+        api_response = client._connection.api_request(
+            method="POST",
+            path="/b",
+            query_params=query_params,
+            data=properties,
+            _target_object=self,
+        )
+        self._set_properties(api_response)
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.
@@ -1371,7 +1490,7 @@ class Bucket(_PropertyMixin):
           :start-after: [START add_lifecycle_set_storage_class_rule]
           :end-before: [END add_lifecycle_set_storage_class_rule]
 
-        :type storage_class: str, one of :attr:`_STORAGE_CLASSES`.
+        :type storage_class: str, one of :attr:`STORAGE_CLASSES`.
         :param storage_class: new storage class to assign to matching items.
 
         :type kw: dict
@@ -1425,8 +1544,10 @@ class Bucket(_PropertyMixin):
 
         :rtype: str or ``NoneType``
         :returns:
-            If set, one of :attr:`MULTI_REGION_LOCATION_TYPE`,
-            :attr:`REGION_LOCATION_TYPE`, or :attr:`DUAL_REGION_LOCATION_TYPE`,
+            If set, one of
+            :attr:`~google.cloud.storage.constants.MULTI_REGION_LOCATION_TYPE`,
+            :attr:`~google.cloud.storage.constants.REGION_LOCATION_TYPE`, or
+            :attr:`~google.cloud.storage.constants.DUAL_REGION_LOCATION_TYPE`,
             else ``None``.
         """
         return self._properties.get("locationType")
@@ -1588,12 +1709,14 @@ class Bucket(_PropertyMixin):
 
         :rtype: str or ``NoneType``
         :returns:
-            If set, one of :attr:`NEARLINE_STORAGE_CLASS`,
-            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,
-            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
-            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,
+            If set, one of
+            :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
             or
-            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
             else ``None``.
         """
         return self._properties.get("storageClass")
@@ -1606,14 +1729,16 @@ class Bucket(_PropertyMixin):
 
         :type value: str
         :param value:
-            One of :attr:`NEARLINE_STORAGE_CLASS`,
-            :attr:`COLDLINE_STORAGE_CLASS`, :attr:`STANDARD_STORAGE_CLASS`,
-            :attr:`MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
-            :attr:`REGIONAL_LEGACY_STORAGE_CLASS`,
+            One of
+            :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
             or
-            :attr:`DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
         """
-        if value not in self._STORAGE_CLASSES:
+        if value not in self.STORAGE_CLASSES:
             raise ValueError("Invalid storage class: %s" % (value,))
         self._patch_property("storageClass", value)
 
@@ -2102,11 +2227,12 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
 
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+        :type credentials: :class:`google.auth.credentials.Credentials` or
                            :class:`NoneType`
-        :param credentials: (Optional) The OAuth2 credentials to use to sign
-                            the URL. Defaults to the credentials stored on the
-                            client used.
+        :param credentials: The authorization credentials to attach to requests.
+                            These credentials identify this application to the service.
+                            If none are specified, the client will attempt to ascertain
+                            the credentials from the environment.
 
         :type version: str
         :param version: (Optional) The version of signed credential to create.

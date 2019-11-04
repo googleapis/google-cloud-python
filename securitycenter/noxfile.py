@@ -149,7 +149,10 @@ def snippets(session):
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         session.skip('Credentials must be set via environment variable.')
     if not os.environ.get('GCLOUD_ORGANIZATION', ''):
-        session.skip('Credentials must be set via environment variable.')
+        if 'KOKORO_GFILE_DIR' in os.environ:
+            session.env['GCLOUD_ORGANIZATION'] = '1081635000895'
+        else:
+            session.skip('Credentials must be set via environment variable.')
 
 
     # Install all test dependencies, then install local packages in place.
@@ -160,6 +163,12 @@ def snippets(session):
         'py.test',
         '--quiet',
         os.path.join('docs', 'snippets_list_assets.py'),
+        os.path.join('docs', 'snippets_security_marks.py'),
+        os.path.join('docs', 'snippets_orgs.py'),
+        os.path.join('docs', 'snippets_findings.py'),
+        os.path.join('docs', 'snippets_security_marks.py'),
+
+
         *session.posargs
     )
 

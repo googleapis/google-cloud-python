@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import datetime
 import decimal
 import functools
@@ -21,6 +22,8 @@ import mock
 
 try:
     import pandas
+    import pandas.api.types
+    import pandas.testing
 except ImportError:  # pragma: NO COVER
     pandas = None
 try:
@@ -31,6 +34,7 @@ except ImportError:  # pragma: NO COVER
 import pytest
 import pytz
 
+from google import api_core
 from google.cloud.bigquery import schema
 
 
@@ -512,8 +516,287 @@ def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_not_found(module_under_test):
+    dataframe = pandas.DataFrame({"not_the_column_youre_looking_for": [1, 2, 3]})
+    with pytest.raises(ValueError, match="col_is_missing"):
+        module_under_test.get_column_or_index(dataframe, "col_is_missing")
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_multiindex_not_found(module_under_test):
+    dataframe = pandas.DataFrame(
+        {"column_name": [1, 2, 3, 4, 5, 6]},
+        index=pandas.MultiIndex.from_tuples(
+            [("a", 0), ("a", 1), ("b", 0), ("b", 1), ("c", 0), ("c", 1)]
+        ),
+    )
+    with pytest.raises(ValueError, match="not_in_df"):
+        module_under_test.get_column_or_index(dataframe, "not_in_df")
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_both_prefers_column(module_under_test):
+    dataframe = pandas.DataFrame(
+        {"some_name": [1, 2, 3]}, index=pandas.Index([0, 1, 2], name="some_name")
+    )
+    series = module_under_test.get_column_or_index(dataframe, "some_name")
+    expected = pandas.Series([1, 2, 3], name="some_name")
+    pandas.testing.assert_series_equal(series, expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_column(module_under_test):
+    dataframe = pandas.DataFrame({"column_name": [1, 2, 3], "other_column": [4, 5, 6]})
+    series = module_under_test.get_column_or_index(dataframe, "column_name")
+    expected = pandas.Series([1, 2, 3], name="column_name")
+    pandas.testing.assert_series_equal(series, expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_named_index(module_under_test):
+    dataframe = pandas.DataFrame(
+        {"column_name": [1, 2, 3]}, index=pandas.Index([4, 5, 6], name="index_name")
+    )
+    series = module_under_test.get_column_or_index(dataframe, "index_name")
+    expected = pandas.Series([4, 5, 6], name="index_name")
+    pandas.testing.assert_series_equal(series, expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_datetimeindex(module_under_test):
+    datetimes = [
+        datetime.datetime(2000, 1, 2, 3, 4, 5, 101),
+        datetime.datetime(2006, 7, 8, 9, 10, 11, 202),
+        datetime.datetime(2012, 1, 14, 15, 16, 17, 303),
+    ]
+    dataframe = pandas.DataFrame(
+        {"column_name": [1, 2, 3]},
+        index=pandas.DatetimeIndex(datetimes, name="index_name"),
+    )
+    series = module_under_test.get_column_or_index(dataframe, "index_name")
+    expected = pandas.Series(datetimes, name="index_name")
+    pandas.testing.assert_series_equal(series, expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_get_column_or_index_with_multiindex(module_under_test):
+    dataframe = pandas.DataFrame(
+        {"column_name": [1, 2, 3, 4, 5, 6]},
+        index=pandas.MultiIndex.from_tuples(
+            [("a", 0), ("a", 1), ("b", 0), ("b", 1), ("c", 0), ("c", 1)],
+            names=["letters", "numbers"],
+        ),
+    )
+
+    series = module_under_test.get_column_or_index(dataframe, "letters")
+    expected = pandas.Series(["a", "a", "b", "b", "c", "c"], name="letters")
+    pandas.testing.assert_series_equal(series, expected)
+
+    series = module_under_test.get_column_or_index(dataframe, "numbers")
+    expected = pandas.Series([0, 1, 0, 1, 0, 1], name="numbers")
+    pandas.testing.assert_series_equal(series, expected)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_list_columns_and_indexes_without_named_index(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("a_series", [1, 2, 3, 4]),
+            ("b_series", [0.1, 0.2, 0.3, 0.4]),
+            ("c_series", ["a", "b", "c", "d"]),
+        ]
+    )
+    dataframe = pandas.DataFrame(df_data)
+
+    columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
+    expected = [
+        ("a_series", pandas.api.types.pandas_dtype("int64")),
+        ("b_series", pandas.api.types.pandas_dtype("float64")),
+        ("c_series", pandas.api.types.pandas_dtype("object")),
+    ]
+    assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_list_columns_and_indexes_with_named_index_same_as_column_name(
+    module_under_test,
+):
+    df_data = collections.OrderedDict(
+        [
+            ("a_series", [1, 2, 3, 4]),
+            ("b_series", [0.1, 0.2, 0.3, 0.4]),
+            ("c_series", ["a", "b", "c", "d"]),
+        ]
+    )
+    dataframe = pandas.DataFrame(
+        df_data,
+        # Use same name as an integer column but a different datatype so that
+        # we can verify that the column is listed but the index isn't.
+        index=pandas.Index([0.1, 0.2, 0.3, 0.4], name="a_series"),
+    )
+
+    columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
+    expected = [
+        ("a_series", pandas.api.types.pandas_dtype("int64")),
+        ("b_series", pandas.api.types.pandas_dtype("float64")),
+        ("c_series", pandas.api.types.pandas_dtype("object")),
+    ]
+    assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_list_columns_and_indexes_with_named_index(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("a_series", [1, 2, 3, 4]),
+            ("b_series", [0.1, 0.2, 0.3, 0.4]),
+            ("c_series", ["a", "b", "c", "d"]),
+        ]
+    )
+    dataframe = pandas.DataFrame(
+        df_data, index=pandas.Index([4, 5, 6, 7], name="a_index")
+    )
+
+    columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
+    expected = [
+        ("a_index", pandas.api.types.pandas_dtype("int64")),
+        ("a_series", pandas.api.types.pandas_dtype("int64")),
+        ("b_series", pandas.api.types.pandas_dtype("float64")),
+        ("c_series", pandas.api.types.pandas_dtype("object")),
+    ]
+    assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_list_columns_and_indexes_with_multiindex(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("a_series", [1, 2, 3, 4]),
+            ("b_series", [0.1, 0.2, 0.3, 0.4]),
+            ("c_series", ["a", "b", "c", "d"]),
+        ]
+    )
+    dataframe = pandas.DataFrame(
+        df_data,
+        index=pandas.MultiIndex.from_tuples(
+            [(0, 0, 41), (0, 0, 42), (1, 0, 41), (1, 1, 41)],
+            names=[
+                "a_index",
+                # Use same name as column, but different dtype so we can verify
+                # the column type is included.
+                "b_series",
+                "c_index",
+            ],
+        ),
+    )
+
+    columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
+    expected = [
+        ("a_index", pandas.api.types.pandas_dtype("int64")),
+        ("c_index", pandas.api.types.pandas_dtype("int64")),
+        ("a_series", pandas.api.types.pandas_dtype("int64")),
+        ("b_series", pandas.api.types.pandas_dtype("float64")),
+        ("c_series", pandas.api.types.pandas_dtype("object")),
+    ]
+    assert columns_and_indexes == expected
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_dict_sequence(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("str_column", [u"hello", u"world"]),
+            ("int_column", [42, 8]),
+            ("bool_column", [True, False]),
+        ]
+    )
+    dataframe = pandas.DataFrame(df_data)
+
+    dict_schema = [
+        {"name": "str_column", "type": "STRING", "mode": "NULLABLE"},
+        {"name": "bool_column", "type": "BOOL", "mode": "REQUIRED"},
+    ]
+
+    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, dict_schema)
+
+    expected_schema = (
+        schema.SchemaField("str_column", "STRING", "NULLABLE"),
+        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("bool_column", "BOOL", "REQUIRED"),
+    )
+    assert returned_schema == expected_schema
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_dataframe_to_arrow_w_required_fields(module_under_test):
+def test_dataframe_to_arrow_with_multiindex(module_under_test):
+    bq_schema = (
+        schema.SchemaField("str_index", "STRING"),
+        # int_index is intentionally omitted, to verify that it's okay to be
+        # missing indexes from the schema.
+        schema.SchemaField("dt_index", "DATETIME"),
+        schema.SchemaField("int_col", "INTEGER"),
+        schema.SchemaField("nullable_int_col", "INTEGER"),
+        schema.SchemaField("str_col", "STRING"),
+    )
+    df_data = collections.OrderedDict(
+        [
+            ("int_col", [1, 2, 3, 4, 5, 6]),
+            ("nullable_int_col", [6.0, float("nan"), 7.0, float("nan"), 8.0, 9.0]),
+            ("str_col", ["apple", "banana", "cherry", "durian", "etrog", "fig"]),
+        ]
+    )
+    df_index = pandas.MultiIndex.from_tuples(
+        [
+            ("a", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("a", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+            ("a", 1, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("b", 1, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+            ("b", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("b", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+        ],
+        names=["str_index", "int_index", "dt_index"],
+    )
+    dataframe = pandas.DataFrame(df_data, index=df_index)
+
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, bq_schema)
+
+    assert arrow_table.schema.names == [
+        "str_index",
+        "dt_index",
+        "int_col",
+        "nullable_int_col",
+        "str_col",
+    ]
+    arrow_data = arrow_table.to_pydict()
+    assert arrow_data["str_index"] == ["a", "a", "a", "b", "b", "b"]
+    expected_dt_index = [
+        pandas.Timestamp(dt)
+        for dt in (
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+            datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+            datetime.datetime(2000, 1, 1, 0, 0, 0),
+        )
+    ]
+    assert arrow_data["dt_index"] == expected_dt_index
+    assert arrow_data["int_col"] == [1, 2, 3, 4, 5, 6]
+    assert arrow_data["nullable_int_col"] == [6, None, 7, None, 8, 9]
+    assert arrow_data["str_col"] == [
+        "apple",
+        "banana",
+        "cherry",
+        "durian",
+        "etrog",
+        "fig",
+    ]
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_arrow_with_required_fields(module_under_test):
     bq_schema = (
         schema.SchemaField("field01", "STRING", mode="REQUIRED"),
         schema.SchemaField("field02", "BYTES", mode="REQUIRED"),
@@ -568,7 +851,7 @@ def test_dataframe_to_arrow_w_required_fields(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_dataframe_to_arrow_w_unknown_type(module_under_test):
+def test_dataframe_to_arrow_with_unknown_type(module_under_test):
     bq_schema = (
         schema.SchemaField("field00", "UNKNOWN_TYPE"),
         schema.SchemaField("field01", "STRING"),
@@ -600,6 +883,28 @@ def test_dataframe_to_arrow_w_unknown_type(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
+    dict_schema = [
+        {"name": "field01", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field02", "type": "BOOL", "mode": "NULLABLE"},
+    ]
+
+    dataframe = pandas.DataFrame(
+        {"field01": [u"hello", u"world"], "field02": [True, False]}
+    )
+
+    arrow_table = module_under_test.dataframe_to_arrow(dataframe, dict_schema)
+    arrow_schema = arrow_table.schema
+
+    expected_fields = [
+        pyarrow.field("field01", "string", nullable=False),
+        pyarrow.field("field02", "bool", nullable=True),
+    ]
+    assert list(arrow_schema) == expected_fields
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
     monkeypatch.setattr(module_under_test, "pyarrow", None)
     with pytest.raises(ValueError) as exc_context:
@@ -609,12 +914,26 @@ def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-def test_dataframe_to_parquet_w_missing_columns(module_under_test, monkeypatch):
+def test_dataframe_to_parquet_w_extra_fields(module_under_test, monkeypatch):
     with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
-            pandas.DataFrame(), (schema.SchemaField("not_found", "STRING"),), None
+            pandas.DataFrame(), (schema.SchemaField("not_in_df", "STRING"),), None
         )
-    assert "columns in schema must match" in str(exc_context.value)
+    message = str(exc_context.value)
+    assert "bq_schema contains fields not present in dataframe" in message
+    assert "not_in_df" in message
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_w_missing_fields(module_under_test, monkeypatch):
+    with pytest.raises(ValueError) as exc_context:
+        module_under_test.dataframe_to_parquet(
+            pandas.DataFrame({"not_in_bq": [1, 2, 3]}), (), None
+        )
+    message = str(exc_context.value)
+    assert "bq_schema is missing fields from dataframe" in message
+    assert "not_in_bq" in message
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -635,3 +954,163 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
     call_args = fake_write_table.call_args
     assert call_args is not None
     assert call_args.kwargs.get("compression") == "ZSTD"
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
+    dict_schema = [
+        {"name": "field01", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field02", "type": "BOOL", "mode": "NULLABLE"},
+    ]
+
+    dataframe = pandas.DataFrame(
+        {"field01": [u"hello", u"world"], "field02": [True, False]}
+    )
+
+    write_table_patch = mock.patch.object(
+        module_under_test.pyarrow.parquet, "write_table", autospec=True
+    )
+    to_arrow_patch = mock.patch.object(
+        module_under_test, "dataframe_to_arrow", autospec=True
+    )
+
+    with write_table_patch, to_arrow_patch as fake_to_arrow:
+        module_under_test.dataframe_to_parquet(dataframe, dict_schema, None)
+
+    expected_schema_arg = [
+        schema.SchemaField("field01", "STRING", mode="REQUIRED"),
+        schema.SchemaField("field02", "BOOL", mode="NULLABLE"),
+    ]
+    schema_arg = fake_to_arrow.call_args.args[1]
+    assert schema_arg == expected_schema_arg
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], [2.2, 22.22, 222.222]]
+    pages = [fake_page]
+
+    bq_schema = [
+        schema.SchemaField("population_size", "INTEGER"),
+        schema.SchemaField("alien_field", "ALIEN_FLOAT_TYPE"),
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+
+    with warnings.catch_warnings(record=True) as warned:
+        result = next(results_gen)
+
+    unwanted_warnings = [
+        warning
+        for warning in warned
+        if "please pass schema= explicitly" in str(warning).lower()
+    ]
+    assert not unwanted_warnings
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.DoubleArray
+    assert list(col) == [2.2, 22.22, 222.222]
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_known_field_type(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    bq_schema = [
+        schema.SchemaField("population_size", "INTEGER"),
+        schema.SchemaField("non_alien_field", "STRING"),
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+    with warnings.catch_warnings(record=True) as warned:
+        result = next(results_gen)
+
+    unwanted_warnings = [
+        warning
+        for warning in warned
+        if "please pass schema= explicitly" in str(warning).lower()
+    ]
+    assert not unwanted_warnings
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.StringArray
+    assert list(col) == ["2.2", "22.22", "222.222"]
+
+
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    dict_schema = [
+        {"name": "population_size", "type": "INTEGER", "mode": "NULLABLE"},
+        {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
+    ]
+
+    results_gen = module_under_test.download_arrow_tabledata_list(pages, dict_schema)
+    result = next(results_gen)
+
+    assert len(result.columns) == 2
+    col = result.columns[0]
+    assert type(col) is pyarrow.lib.Int64Array
+    assert list(col) == [1, 10, 100]
+    col = result.columns[1]
+    assert type(col) is pyarrow.lib.StringArray
+    assert list(col) == ["2.2", "22.22", "222.222"]
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
+def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_test):
+    fake_page = api_core.page_iterator.Page(
+        parent=mock.Mock(),
+        items=[{"page_data": "foo"}],
+        item_to_value=api_core.page_iterator._item_to_value_identity,
+    )
+    fake_page._columns = [[1, 10, 100], ["2.2", "22.22", "222.222"]]
+    pages = [fake_page]
+
+    dict_schema = [
+        {"name": "population_size", "type": "INTEGER", "mode": "NULLABLE"},
+        {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
+    ]
+
+    results_gen = module_under_test.download_dataframe_tabledata_list(
+        pages, dict_schema, dtypes={}
+    )
+    result = next(results_gen)
+
+    expected_result = pandas.DataFrame(
+        collections.OrderedDict(
+            [
+                ("population_size", [1, 10, 100]),
+                ("non_alien_field", ["2.2", "22.22", "222.222"]),
+            ]
+        )
+    )
+    assert result.equals(expected_result)

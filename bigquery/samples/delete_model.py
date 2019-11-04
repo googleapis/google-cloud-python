@@ -17,7 +17,8 @@ def delete_model(client, model_id):
     """Sample ID: go/samples-tracker/1534"""
 
     # [START bigquery_delete_model]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -25,6 +26,7 @@ def delete_model(client, model_id):
     # TODO(developer): Set model_id to the ID of the model to fetch.
     # model_id = 'your-project.your_dataset.your_model'
 
-    client.delete_model(model_id)
+    client.delete_model(model_id)  # Make an API request.
+
     print("Deleted model '{}'.".format(model_id))
     # [END bigquery_delete_model]

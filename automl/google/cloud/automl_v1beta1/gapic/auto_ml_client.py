@@ -391,11 +391,7 @@ class AutoMlClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.Dataset`
-            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource. For the ``FieldMask``
-                definition, see
-
-                https: //developers.google.com/protocol-buffers //
-                /docs/reference/google.protobuf#fieldmask
+            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.FieldMask`
@@ -1279,6 +1275,7 @@ class AutoMlClient(object):
         self,
         name,
         image_object_detection_model_deployment_metadata=None,
+        image_classification_model_deployment_metadata=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1320,6 +1317,10 @@ class AutoMlClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.ImageObjectDetectionModelDeploymentMetadata`
+            image_classification_model_deployment_metadata (Union[dict, ~google.cloud.automl_v1beta1.types.ImageClassificationModelDeploymentMetadata]): Model deployment metadata specific to Image Classification.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.automl_v1beta1.types.ImageClassificationModelDeploymentMetadata`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1353,12 +1354,14 @@ class AutoMlClient(object):
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
-            image_object_detection_model_deployment_metadata=image_object_detection_model_deployment_metadata
+            image_object_detection_model_deployment_metadata=image_object_detection_model_deployment_metadata,
+            image_classification_model_deployment_metadata=image_classification_model_deployment_metadata,
         )
 
         request = service_pb2.DeployModelRequest(
             name=name,
             image_object_detection_model_deployment_metadata=image_object_detection_model_deployment_metadata,
+            image_classification_model_deployment_metadata=image_classification_model_deployment_metadata,
         )
         if metadata is None:
             metadata = []
@@ -2142,11 +2145,7 @@ class AutoMlClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.TableSpec`
-            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource. For the ``FieldMask``
-                definition, see
-
-                https: //developers.google.com/protocol-buffers //
-                /docs/reference/google.protobuf#fieldmask
+            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.FieldMask`
@@ -2410,11 +2409,7 @@ class AutoMlClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.ColumnSpec`
-            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource. For the ``FieldMask``
-                definition, see
-
-                https: //developers.google.com/protocol-buffers //
-                /docs/reference/google.protobuf#fieldmask
+            update_mask (Union[dict, ~google.cloud.automl_v1beta1.types.FieldMask]): The update mask applies to the resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1beta1.types.FieldMask`

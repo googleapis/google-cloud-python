@@ -15,13 +15,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.tasks_v2beta3.proto import (
     target_pb2 as google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_target__pb2,
 )
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -32,14 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.tasks.v2beta3B\nQueueProtoP\001Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasks"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/tasks_v2beta3/proto/queue.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/tasks_v2beta3/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf9\x03\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12O\n\x15\x61pp_engine_http_queue\x18\x03 \x01(\x0b\x32..google.cloud.tasks.v2beta3.AppEngineHttpQueueH\x00\x12;\n\x0brate_limits\x18\x04 \x01(\x0b\x32&.google.cloud.tasks.v2beta3.RateLimits\x12=\n\x0cretry_config\x18\x05 \x01(\x0b\x32\'.google.cloud.tasks.v2beta3.RetryConfig\x12\x36\n\x05state\x18\x06 \x01(\x0e\x32\'.google.cloud.tasks.v2beta3.Queue.State\x12.\n\npurge_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12X\n\x1astackdriver_logging_config\x18\n \x01(\x0b\x32\x34.google.cloud.tasks.v2beta3.StackdriverLoggingConfig"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03\x42\x0c\n\nqueue_type"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05"2\n\x18StackdriverLoggingConfig\x12\x16\n\x0esampling_ratio\x18\x01 \x01(\x01\x42o\n\x1e\x63om.google.cloud.tasks.v2beta3B\nQueueProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
+        '\n,google/cloud/tasks_v2beta3/proto/queue.proto\x12\x1agoogle.cloud.tasks.v2beta3\x1a\x19google/api/resource.proto\x1a-google/cloud/tasks_v2beta3/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xd7\x04\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12O\n\x15\x61pp_engine_http_queue\x18\x03 \x01(\x0b\x32..google.cloud.tasks.v2beta3.AppEngineHttpQueueH\x00\x12;\n\x0brate_limits\x18\x04 \x01(\x0b\x32&.google.cloud.tasks.v2beta3.RateLimits\x12=\n\x0cretry_config\x18\x05 \x01(\x0b\x32\'.google.cloud.tasks.v2beta3.RetryConfig\x12\x36\n\x05state\x18\x06 \x01(\x0e\x32\'.google.cloud.tasks.v2beta3.Queue.State\x12.\n\npurge_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12X\n\x1astackdriver_logging_config\x18\n \x01(\x0b\x32\x34.google.cloud.tasks.v2beta3.StackdriverLoggingConfig"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03:\\\xea\x41Y\n\x1f\x63loudtasks.googleapis.com/Queue\x12\x36projects/{project}/locations/{location}/queues/{queue}B\x0c\n\nqueue_type"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05"2\n\x18StackdriverLoggingConfig\x12\x16\n\x0esampling_ratio\x18\x01 \x01(\x01\x42o\n\x1e\x63om.google.cloud.tasks.v2beta3B\nQueueProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/tasks/v2beta3;tasksb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_tasks__v2beta3_dot_proto_dot_target__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -212,7 +212,9 @@ _QUEUE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_QUEUE_STATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AY\n\037cloudtasks.googleapis.com/Queue\0226projects/{project}/locations/{location}/queues/{queue}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -226,7 +228,7 @@ _QUEUE = _descriptor.Descriptor(
         )
     ],
     serialized_start=246,
-    serialized_end=751,
+    serialized_end=845,
 )
 
 
@@ -300,8 +302,8 @@ _RATELIMITS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=753,
-    serialized_end=859,
+    serialized_start=847,
+    serialized_end=953,
 )
 
 
@@ -411,8 +413,8 @@ _RETRYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=862,
-    serialized_end=1071,
+    serialized_start=956,
+    serialized_end=1165,
 )
 
 
@@ -450,8 +452,8 @@ _STACKDRIVERLOGGINGCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1073,
-    serialized_end=1123,
+    serialized_start=1167,
+    serialized_end=1217,
 )
 
 _QUEUE.fields_by_name[
@@ -779,4 +781,5 @@ _sym_db.RegisterMessage(StackdriverLoggingConfig)
 
 
 DESCRIPTOR._options = None
+_QUEUE._options = None
 # @@protoc_insertion_point(module_scope)

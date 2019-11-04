@@ -395,7 +395,7 @@ class TestCloudRedisClient(object):
             client = redis_v1beta1.CloudRedisClient()
 
         # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        name = "name3373707"
         input_config = {}
 
         response = client.import_instance(name, input_config)
@@ -425,7 +425,7 @@ class TestCloudRedisClient(object):
             client = redis_v1beta1.CloudRedisClient()
 
         # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        name = "name3373707"
         input_config = {}
 
         response = client.import_instance(name, input_config)
@@ -476,7 +476,7 @@ class TestCloudRedisClient(object):
             client = redis_v1beta1.CloudRedisClient()
 
         # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        name = "name3373707"
         output_config = {}
 
         response = client.export_instance(name, output_config)
@@ -506,7 +506,7 @@ class TestCloudRedisClient(object):
             client = redis_v1beta1.CloudRedisClient()
 
         # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+        name = "name3373707"
         output_config = {}
 
         response = client.export_instance(name, output_config)
@@ -558,18 +558,13 @@ class TestCloudRedisClient(object):
 
         # Setup Request
         name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-        data_protection_mode = (
-            enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
-        )
 
-        response = client.failover_instance(name, data_protection_mode)
+        response = client.failover_instance(name)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = cloud_redis_pb2.FailoverInstanceRequest(
-            name=name, data_protection_mode=data_protection_mode
-        )
+        expected_request = cloud_redis_pb2.FailoverInstanceRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -590,11 +585,8 @@ class TestCloudRedisClient(object):
 
         # Setup Request
         name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-        data_protection_mode = (
-            enums.FailoverInstanceRequest.DataProtectionMode.DATA_PROTECTION_MODE_UNSPECIFIED
-        )
 
-        response = client.failover_instance(name, data_protection_mode)
+        response = client.failover_instance(name)
         exception = response.exception()
         assert exception.errors[0] == error
 

@@ -36,6 +36,7 @@ from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import StandardSqlDataTypes
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
@@ -72,12 +73,14 @@ from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineArgument
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfiguration
+from google.cloud.bigquery.table import PartitionRange
+from google.cloud.bigquery.table import RangePartitioning
+from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import TimePartitioningType
 from google.cloud.bigquery.table import TimePartitioning
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 __all__ = [
     "__version__",
@@ -93,10 +96,14 @@ __all__ = [
     "DatasetReference",
     "AccessEntry",
     # Tables
-    "EncryptionConfiguration",
     "Table",
     "TableReference",
+    "PartitionRange",
+    "RangePartitioning",
     "Row",
+    "TimePartitioning",
+    "TimePartitioningType",
+    # Jobs
     "CopyJob",
     "CopyJobConfig",
     "ExtractJob",
@@ -104,8 +111,6 @@ __all__ = [
     "LoadJob",
     "LoadJobConfig",
     "UnknownJob",
-    "TimePartitioningType",
-    "TimePartitioning",
     # Models
     "Model",
     "ModelReference",
@@ -124,6 +129,7 @@ __all__ = [
     "GoogleSheetsOptions",
     "DEFAULT_RETRY",
     # Enum Constants
+    "enums",
     "Compression",
     "CreateDisposition",
     "DestinationFormat",
@@ -134,6 +140,8 @@ __all__ = [
     "StandardSqlDataTypes",
     "SourceFormat",
     "WriteDisposition",
+    # EncryptionConfiguration
+    "EncryptionConfiguration",
 ]
 
 

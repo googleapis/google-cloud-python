@@ -15,7 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.tasks_v2.proto import (
     target_pb2 as google_dot_cloud_dot_tasks__v2_dot_proto_dot_target__pb2,
@@ -23,6 +22,7 @@ from google.cloud.tasks_v2.proto import (
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -33,15 +33,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\031com.google.cloud.tasks.v2B\tTaskProtoP\001Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasks"
     ),
     serialized_pb=_b(
-        '\n&google/cloud/tasks_v2/proto/task.proto\x12\x15google.cloud.tasks.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\x8e\x04\n\x04Task\x12\x0c\n\x04name\x18\x01 \x01(\t\x12N\n\x17\x61pp_engine_http_request\x18\x02 \x01(\x0b\x32+.google.cloud.tasks.v2.AppEngineHttpRequestH\x00\x12\x31\n\rschedule_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x11\x64ispatch_deadline\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x16\n\x0e\x64ispatch_count\x18\x07 \x01(\x05\x12\x16\n\x0eresponse_count\x18\x08 \x01(\x05\x12\x35\n\rfirst_attempt\x18\t \x01(\x0b\x32\x1e.google.cloud.tasks.v2.Attempt\x12\x34\n\x0clast_attempt\x18\n \x01(\x0b\x32\x1e.google.cloud.tasks.v2.Attempt\x12.\n\x04view\x18\x0b \x01(\x0e\x32 .google.cloud.tasks.v2.Task.View"1\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x08\n\x04\x46ULL\x10\x02\x42\x0e\n\x0cmessage_type"\xcf\x01\n\x07\x41ttempt\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rdispatch_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rresponse_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x0fresponse_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusBd\n\x19\x63om.google.cloud.tasks.v2B\tTaskProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
+        '\n&google/cloud/tasks_v2/proto/task.proto\x12\x15google.cloud.tasks.v2\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto\x1a\x1cgoogle/api/annotations.proto"\xf8\x04\n\x04Task\x12\x0c\n\x04name\x18\x01 \x01(\t\x12N\n\x17\x61pp_engine_http_request\x18\x02 \x01(\x0b\x32+.google.cloud.tasks.v2.AppEngineHttpRequestH\x00\x12\x31\n\rschedule_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x11\x64ispatch_deadline\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x16\n\x0e\x64ispatch_count\x18\x07 \x01(\x05\x12\x16\n\x0eresponse_count\x18\x08 \x01(\x05\x12\x35\n\rfirst_attempt\x18\t \x01(\x0b\x32\x1e.google.cloud.tasks.v2.Attempt\x12\x34\n\x0clast_attempt\x18\n \x01(\x0b\x32\x1e.google.cloud.tasks.v2.Attempt\x12.\n\x04view\x18\x0b \x01(\x0e\x32 .google.cloud.tasks.v2.Task.View"1\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\t\n\x05\x42\x41SIC\x10\x01\x12\x08\n\x04\x46ULL\x10\x02:h\xea\x41\x65\n\x1e\x63loudtasks.googleapis.com/Task\x12\x43projects/{project}/locations/{location}/queues/{queue}/tasks/{task}B\x0e\n\x0cmessage_type"\xcf\x01\n\x07\x41ttempt\x12\x31\n\rschedule_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rdispatch_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rresponse_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x0fresponse_status\x18\x04 \x01(\x0b\x32\x12.google.rpc.StatusBd\n\x19\x63om.google.cloud.tasks.v2B\tTaskProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_tasks__v2_dot_proto_dot_target__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -265,7 +265,9 @@ _TASK = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_TASK_VIEW],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ae\n\036cloudtasks.googleapis.com/Task\022Cprojects/{project}/locations/{location}/queues/{queue}/tasks/{task}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -279,7 +281,7 @@ _TASK = _descriptor.Descriptor(
         )
     ],
     serialized_start=255,
-    serialized_end=781,
+    serialized_end=887,
 )
 
 
@@ -371,8 +373,8 @@ _ATTEMPT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=784,
-    serialized_end=991,
+    serialized_start=890,
+    serialized_end=1097,
 )
 
 _TASK.fields_by_name[
@@ -452,8 +454,7 @@ Task = _reflection.GeneratedProtocolMessageType(
           App Engine task is a task that has [AppEngineHttpRequest][goog
           le.cloud.tasks.v2.AppEngineHttpRequest] set.
       schedule_time:
-          The time when the task is scheduled to be attempted.  For App
-          Engine queues, this is when the task will be attempted or
+          The time when the task is scheduled to be attempted or
           retried.  ``schedule_time`` will be truncated to the nearest
           microsecond.
       create_time:
@@ -547,4 +548,5 @@ _sym_db.RegisterMessage(Attempt)
 
 
 DESCRIPTOR._options = None
+_TASK._options = None
 # @@protoc_insertion_point(module_scope)

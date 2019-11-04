@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.33.0
+
+08-12-2019 13:54 PDT
+
+### New Features
+- Add notification channel verification; remove send/recv msg size limit (via synth). ([#8980](https://github.com/googleapis/google-cloud-python/pull/8980))
+
+### Documentation
+- Normalize docs. ([#8994](https://github.com/googleapis/google-cloud-python/pull/8994))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.32.0
 
 07-24-2019 16:52 PDT

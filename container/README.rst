@@ -1,7 +1,7 @@
 Python Client for Google Kubernetes Engine API
 ==============================================
 
-|alpha| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|alpha| |pypi| |versions| 
 
 `Google Kubernetes Engine API`_: The Google Kubernetes Engine API is used for
 building and managing container based applications, powered by the open source
@@ -16,10 +16,6 @@ Kubernetes technology.
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-container
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-container
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcontainer
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dcontainer
 .. _Google Kubernetes Engine API: https://cloud.google.com/kubernetes-engine
 .. _Client Library Documentation: https://googleapis.dev/python/container/latest
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine

@@ -111,7 +111,7 @@ class TextToSpeechGrpcTransport(object):
     def list_voices(self):
         """Return the gRPC stub for :meth:`TextToSpeechClient.list_voices`.
 
-        Returns a list of ``Voice`` supported for synthesis.
+        Returns a list of Voice supported for synthesis.
 
         Returns:
             Callable: A callable which accepts the appropriate

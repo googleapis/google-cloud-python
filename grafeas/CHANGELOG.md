@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## 0.3.0
+
+10-10-2019 11:28 PDT
+
+
+### Implementation Changes
+- Remove send / receive message size limit (via synth). ([#8981](https://github.com/googleapis/google-cloud-python/pull/8981))
+
+### Dependencies
+- Bump minimum version for google-api-core to 1.14.0. ([#8709](https://github.com/googleapis/google-cloud-python/pull/8709))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Link to googleapis.dev documentation in READMEs. ([#8705](https://github.com/googleapis/google-cloud-python/pull/8705))
+
 ## 0.2.0
 
 07-12-2019 17:04 PDT

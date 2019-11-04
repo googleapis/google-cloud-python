@@ -36,12 +36,15 @@ from google.cloud.logging_v2.gapic import enums
 from google.cloud.logging_v2.gapic import logging_service_v2_client_config
 from google.cloud.logging_v2.gapic.transports import logging_service_v2_grpc_transport
 from google.cloud.logging_v2.proto import log_entry_pb2
+from google.cloud.logging_v2.proto import logging_config_pb2
+from google.cloud.logging_v2.proto import logging_config_pb2_grpc
 from google.cloud.logging_v2.proto import logging_pb2
 from google.cloud.logging_v2.proto import logging_pb2_grpc
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging",).version
 
 
 class LoggingServiceV2Client(object):
@@ -78,7 +81,7 @@ class LoggingServiceV2Client(object):
     def billing_path(cls, billing_account):
         """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
-            "billingAccounts/{billing_account}", billing_account=billing_account
+            "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
@@ -93,27 +96,27 @@ class LoggingServiceV2Client(object):
     @classmethod
     def folder_path(cls, folder):
         """Return a fully-qualified folder string."""
-        return google.api_core.path_template.expand("folders/{folder}", folder=folder)
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_log_path(cls, folder, log):
         """Return a fully-qualified folder_log string."""
         return google.api_core.path_template.expand(
-            "folders/{folder}/logs/{log}", folder=folder, log=log
+            "folders/{folder}/logs/{log}", folder=folder, log=log,
         )
 
     @classmethod
     def log_path(cls, project, log):
         """Return a fully-qualified log string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/logs/{log}", project=project, log=log
+            "projects/{project}/logs/{log}", project=project, log=log,
         )
 
     @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization
+            "organizations/{organization}", organization=organization,
         )
 
     @classmethod
@@ -129,7 +132,7 @@ class LoggingServiceV2Client(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -219,12 +222,12 @@ class LoggingServiceV2Client(object):
                 self.transport = transport
         else:
             self.transport = logging_service_v2_grpc_transport.LoggingServiceV2GrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -235,7 +238,7 @@ class LoggingServiceV2Client(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -308,7 +311,7 @@ class LoggingServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_pb2.DeleteLogRequest(log_name=log_name)
+        request = logging_pb2.DeleteLogRequest(log_name=log_name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -374,8 +377,8 @@ class LoggingServiceV2Client(object):
                 Log entries with timestamps that are more than the `logs retention
                 period <https://cloud.google.com/logging/quota-policy>`__ in the past or
                 more than 24 hours in the future will not be available when calling
-                ``entries.list``. However, those log entries can still be exported with
-                `LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
+                ``entries.list``. However, those log entries can still be `exported with
+                LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
 
                 To improve throughput and to avoid exceeding the `quota
                 limit <https://cloud.google.com/logging/quota-policy>`__ for calls to
@@ -486,8 +489,9 @@ class LoggingServiceV2Client(object):
         metadata=None,
     ):
         """
-        Lists log entries. Use this method to retrieve log entries from Logging.
-        For ways to export log entries, see `Exporting
+        Lists log entries. Use this method to retrieve log entries that
+        originated from a project/folder/organization/billing account. For ways
+        to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
         Example:
@@ -526,9 +530,7 @@ class LoggingServiceV2Client(object):
                 Projects listed in the ``project_ids`` field are added to this list.
             project_ids (list[str]): Deprecated. Use ``resource_names`` instead. One or more project
                 identifiers or project numbers from which to retrieve log entries.
-                Example: ``"my-project-1A"``. If present, these project identifiers are
-                converted to resource name format and added to the list of resources in
-                ``resource_names``.
+                Example: ``"my-project-1A"``.
             filter_ (str): Optional. A filter that chooses which log entries to return. See
                 `Advanced Logs
                 Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`__.
@@ -677,7 +679,7 @@ class LoggingServiceV2Client(object):
             )
 
         request = logging_pb2.ListMonitoredResourceDescriptorsRequest(
-            page_size=page_size
+            page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -774,7 +776,7 @@ class LoggingServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_pb2.ListLogsRequest(parent=parent, page_size=page_size)
+        request = logging_pb2.ListLogsRequest(parent=parent, page_size=page_size,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

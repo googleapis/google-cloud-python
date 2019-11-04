@@ -9,7 +9,7 @@ and retrieval of critical metadata about all of your software artifacts.
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Container Analysis API: https://cloud.google.com/container-registry/docs/container-analysis
-.. _Client Library Documentation: https://googleapis.dev/python/containeranalysis/latest/index.html
+.. _Client Library Documentation: https://googleapis.dev/python/containeranalysis/latest
 .. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
 
 Quick Start

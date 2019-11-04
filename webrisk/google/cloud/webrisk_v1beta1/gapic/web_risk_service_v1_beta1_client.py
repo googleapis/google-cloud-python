@@ -36,7 +36,7 @@ from google.cloud.webrisk_v1beta1.proto import webrisk_pb2
 from google.cloud.webrisk_v1beta1.proto import webrisk_pb2_grpc
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk",).version
 
 
 class WebRiskServiceV1Beta1Client(object):
@@ -159,12 +159,12 @@ class WebRiskServiceV1Beta1Client(object):
                 self.transport = transport
         else:
             self.transport = web_risk_service_v1_beta1_grpc_transport.WebRiskServiceV1Beta1GrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -175,7 +175,7 @@ class WebRiskServiceV1Beta1Client(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -212,8 +212,8 @@ class WebRiskServiceV1Beta1Client(object):
             >>> response = client.compute_threat_list_diff(threat_type, constraints)
 
         Args:
-            threat_type (~google.cloud.webrisk_v1beta1.types.ThreatType): Required. The ThreatList to update.
-            constraints (Union[dict, ~google.cloud.webrisk_v1beta1.types.Constraints]): The constraints associated with this request.
+            threat_type (~google.cloud.webrisk_v1beta1.types.ThreatType): The ThreatList to update.
+            constraints (Union[dict, ~google.cloud.webrisk_v1beta1.types.Constraints]): Required. The constraints associated with this request.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.webrisk_v1beta1.types.Constraints`
@@ -284,7 +284,7 @@ class WebRiskServiceV1Beta1Client(object):
             >>> response = client.search_uris(uri, threat_types)
 
         Args:
-            uri (str): The URI to be checked for matches.
+            uri (str): Required. The URI to be checked for matches.
             threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -316,15 +316,15 @@ class WebRiskServiceV1Beta1Client(object):
                 client_info=self._client_info,
             )
 
-        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types)
+        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types,)
         return self._inner_api_calls["search_uris"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
     def search_hashes(
         self,
+        threat_types,
         hash_prefix=None,
-        threat_types=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -338,15 +338,19 @@ class WebRiskServiceV1Beta1Client(object):
 
         Example:
             >>> from google.cloud import webrisk_v1beta1
+            >>> from google.cloud.webrisk_v1beta1 import enums
             >>>
             >>> client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
             >>>
-            >>> response = client.search_hashes()
+            >>> # TODO: Initialize `threat_types`:
+            >>> threat_types = []
+            >>>
+            >>> response = client.search_hashes(threat_types)
 
         Args:
+            threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             hash_prefix (bytes): A hash prefix, consisting of the most significant 4-32 bytes of a SHA256
                 hash. For JSON requests, this field is base64-encoded.
-            threat_types (list[~google.cloud.webrisk_v1beta1.types.ThreatType]): Required. The ThreatLists to search in.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -378,7 +382,7 @@ class WebRiskServiceV1Beta1Client(object):
             )
 
         request = webrisk_pb2.SearchHashesRequest(
-            hash_prefix=hash_prefix, threat_types=threat_types
+            threat_types=threat_types, hash_prefix=hash_prefix,
         )
         return self._inner_api_calls["search_hashes"](
             request, retry=retry, timeout=timeout, metadata=metadata

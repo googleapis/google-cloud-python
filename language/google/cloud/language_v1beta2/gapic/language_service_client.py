@@ -207,7 +207,7 @@ class LanguageServiceClient(object):
             >>> response = client.analyze_sentiment(document)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
@@ -274,7 +274,7 @@ class LanguageServiceClient(object):
             >>> response = client.analyze_entities(document)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
@@ -339,7 +339,7 @@ class LanguageServiceClient(object):
             >>> response = client.analyze_entity_sentiment(document)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
@@ -405,7 +405,7 @@ class LanguageServiceClient(object):
             >>> response = client.analyze_syntax(document)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
@@ -468,7 +468,7 @@ class LanguageServiceClient(object):
             >>> response = client.classify_text(document)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
@@ -534,11 +534,11 @@ class LanguageServiceClient(object):
             >>> response = client.annotate_text(document, features)
 
         Args:
-            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Input document.
+            document (Union[dict, ~google.cloud.language_v1beta2.types.Document]): Required. Input document.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Document`
-            features (Union[dict, ~google.cloud.language_v1beta2.types.Features]): The enabled features.
+            features (Union[dict, ~google.cloud.language_v1beta2.types.Features]): Required. The enabled features.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.language_v1beta2.types.Features`

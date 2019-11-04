@@ -15,6 +15,9 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+
+
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/datacatalog_v1beta1/proto/schema.proto",
     package="google.cloud.datacatalog.v1beta1",
@@ -23,8 +26,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\034com.google.cloud.datacatalogP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/datacatalog_v1beta1/proto/schema.proto\x12 google.cloud.datacatalog.v1beta1"I\n\x06Schema\x12?\n\x07\x63olumns\x18\x02 \x03(\x0b\x32..google.cloud.datacatalog.v1beta1.ColumnSchema"\x93\x01\n\x0c\x43olumnSchema\x12\x0e\n\x06\x63olumn\x18\x06 \x01(\t\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0c\n\x04mode\x18\x03 \x01(\t\x12\x42\n\nsubcolumns\x18\x07 \x03(\x0b\x32..google.cloud.datacatalog.v1beta1.ColumnSchemaBp\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n3google/cloud/datacatalog_v1beta1/proto/schema.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto"N\n\x06Schema\x12\x44\n\x07\x63olumns\x18\x02 \x03(\x0b\x32..google.cloud.datacatalog.v1beta1.ColumnSchemaB\x03\xe0\x41\x02"\xac\x01\n\x0c\x43olumnSchema\x12\x13\n\x06\x63olumn\x18\x06 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04type\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x11\n\x04mode\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12G\n\nsubcolumns\x18\x07 \x03(\x0b\x32..google.cloud.datacatalog.v1beta1.ColumnSchemaB\x03\xe0\x41\x01\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
+    dependencies=[google_dot_api_dot_field__behavior__pb2.DESCRIPTOR],
 )
 
 
@@ -50,7 +54,7 @@ _SCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -62,8 +66,8 @@ _SCHEMA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=89,
-    serialized_end=162,
+    serialized_start=122,
+    serialized_end=200,
 )
 
 
@@ -89,7 +93,7 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -107,7 +111,7 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -125,7 +129,7 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -143,7 +147,7 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -161,7 +165,7 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -173,8 +177,8 @@ _COLUMNSCHEMA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=165,
-    serialized_end=312,
+    serialized_start=203,
+    serialized_end=375,
 )
 
 _SCHEMA.fields_by_name["columns"].message_type = _COLUMNSCHEMA
@@ -222,9 +226,9 @@ ColumnSchema = _reflection.GeneratedProtocolMessageType(
           string.
       mode:
           Optional. A column's mode indicates whether the values in this
-          column are required, nullable, etc. Only 'NULLABLE',
-          'REQUIRED' and 'REPEATED' are supported. Default mode is
-          'NULLABLE'.
+          column are required, nullable, etc. Only ``NULLABLE``,
+          ``REQUIRED`` and ``REPEATED`` are supported. Default mode is
+          ``NULLABLE``.
       subcolumns:
           Optional. Schema of sub-columns. A column can have zero or
           more sub-columns.
@@ -236,4 +240,10 @@ _sym_db.RegisterMessage(ColumnSchema)
 
 
 DESCRIPTOR._options = None
+_SCHEMA.fields_by_name["columns"]._options = None
+_COLUMNSCHEMA.fields_by_name["column"]._options = None
+_COLUMNSCHEMA.fields_by_name["type"]._options = None
+_COLUMNSCHEMA.fields_by_name["description"]._options = None
+_COLUMNSCHEMA.fields_by_name["mode"]._options = None
+_COLUMNSCHEMA.fields_by_name["subcolumns"]._options = None
 # @@protoc_insertion_point(module_scope)

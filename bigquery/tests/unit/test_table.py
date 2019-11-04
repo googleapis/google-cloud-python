@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import itertools
-import json
 import logging
 import time
 import unittest
@@ -72,7 +71,7 @@ class _SchemaBase(object):
 
 
 class TestEncryptionConfiguration(unittest.TestCase):
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -90,78 +89,6 @@ class TestEncryptionConfiguration(unittest.TestCase):
     def test_ctor_with_key(self):
         encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_kms_key_name_setter(self):
-        encryption_config = self._make_one()
-        self.assertIsNone(encryption_config.kms_key_name)
-        encryption_config.kms_key_name = self.KMS_KEY_NAME
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-        encryption_config.kms_key_name = None
-        self.assertIsNone(encryption_config.kms_key_name)
-
-    def test_from_api_repr(self):
-        RESOURCE = {"kmsKeyName": self.KMS_KEY_NAME}
-        klass = self._get_target_class()
-        encryption_config = klass.from_api_repr(RESOURCE)
-        self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
-
-    def test_to_api_repr(self):
-        encryption_config = self._make_one(kms_key_name=self.KMS_KEY_NAME)
-        resource = encryption_config.to_api_repr()
-        self.assertEqual(resource, {"kmsKeyName": self.KMS_KEY_NAME})
-
-    def test___eq___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___eq___kms_key_name_mismatch(self):
-        encryption_config = self._make_one()
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config, other)
-
-    def test___eq___hit(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        other = self._make_one(self.KMS_KEY_NAME)
-        self.assertEqual(encryption_config, other)
-
-    def test___ne___wrong_type(self):
-        encryption_config = self._make_one()
-        other = object()
-        self.assertNotEqual(encryption_config, other)
-        self.assertEqual(encryption_config, mock.ANY)
-
-    def test___ne___same_value(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        # unittest ``assertEqual`` uses ``==`` not ``!=``.
-        comparison_val = encryption_config1 != encryption_config2
-        self.assertFalse(comparison_val)
-
-    def test___ne___different_values(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        self.assertNotEqual(encryption_config1, encryption_config2)
-
-    def test___hash__set_equality(self):
-        encryption_config1 = self._make_one(self.KMS_KEY_NAME)
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1, encryption_config2}
-        set_two = {encryption_config1, encryption_config2}
-        self.assertEqual(set_one, set_two)
-
-    def test___hash__not_equals(self):
-        encryption_config1 = self._make_one()
-        encryption_config2 = self._make_one(self.KMS_KEY_NAME)
-        set_one = {encryption_config1}
-        set_two = {encryption_config2}
-        self.assertNotEqual(set_one, set_two)
-
-    def test___repr__(self):
-        encryption_config = self._make_one(self.KMS_KEY_NAME)
-        expected = "EncryptionConfiguration({})".format(self.KMS_KEY_NAME)
-        self.assertEqual(repr(encryption_config), expected)
 
 
 class TestTableReference(unittest.TestCase):
@@ -216,10 +143,22 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(got.dataset_id, "string_dataset")
         self.assertEqual(got.table_id, "string_table")
 
+    def test_from_string_w_prefix(self):
+        cls = self._get_target_class()
+        got = cls.from_string("google.com:string-project.string_dataset.string_table")
+        self.assertEqual(got.project, "google.com:string-project")
+        self.assertEqual(got.dataset_id, "string_dataset")
+        self.assertEqual(got.table_id, "string_table")
+
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()
         with self.assertRaises(ValueError):
             cls.from_string("string-project:string_dataset.string_table")
+
+    def test_from_string_w_incorrect_prefix(self):
+        cls = self._get_target_class()
+        with self.assertRaises(ValueError):
+            cls.from_string("google.com.string-project.string_dataset.string_table")
 
     def test_from_string_not_fully_qualified(self):
         cls = self._get_target_class()
@@ -328,7 +267,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
-    KMS_KEY_NAME = "projects/1/locations/global/keyRings/1/cryptoKeys/1"
+    KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
     @staticmethod
     def _get_target_class():
@@ -511,7 +450,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.clustering_fields)
 
     def test_ctor_w_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -617,7 +556,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             getattr(table, "num_rows")
 
-    def test_schema_setter_non_list(self):
+    def test_schema_setter_non_sequence(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
@@ -625,7 +564,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.schema = object()
 
     def test_schema_setter_invalid_field(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -634,8 +573,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.schema = [full_name, object()]
 
-    def test_schema_setter(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test_schema_setter_valid_fields(self):
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -644,6 +583,48 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField("age", "INTEGER", mode="REQUIRED")
         table.schema = [full_name, age]
         self.assertEqual(table.schema, [full_name, age])
+
+    def test_schema_setter_invalid_mapping_representation(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
+        invalid_field = {"name": "full_name", "typeooo": "STRING", "mode": "REQUIRED"}
+        with self.assertRaises(Exception):
+            table.schema = [full_name, invalid_field]
+
+    def test_schema_setter_valid_mapping_representation(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
+        job_status = {
+            "name": "is_employed",
+            "type": "STRUCT",
+            "mode": "NULLABLE",
+            "fields": [
+                {"name": "foo", "type": "DATE", "mode": "NULLABLE"},
+                {"name": "bar", "type": "BYTES", "mode": "REQUIRED"},
+            ],
+        }
+
+        table.schema = [full_name, job_status]
+
+        expected_schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField(
+                "is_employed",
+                "STRUCT",
+                mode="NULLABLE",
+                fields=[
+                    SchemaField("foo", "DATE", mode="NULLABLE"),
+                    SchemaField("bar", "BYTES", mode="REQUIRED"),
+                ],
+            ),
+        ]
+        self.assertEqual(table.schema, expected_schema)
 
     def test_props_set_by_server(self):
         import datetime
@@ -917,6 +898,40 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table._build_resource(["bad"])
 
+    def test_range_partitioning(self):
+        from google.cloud.bigquery.table import RangePartitioning
+        from google.cloud.bigquery.table import PartitionRange
+
+        table = self._make_one("proj.dset.tbl")
+        assert table.range_partitioning is None
+
+        table.range_partitioning = RangePartitioning(
+            field="col1", range_=PartitionRange(start=-512, end=1024, interval=128)
+        )
+        assert table.range_partitioning.field == "col1"
+        assert table.range_partitioning.range_.start == -512
+        assert table.range_partitioning.range_.end == 1024
+        assert table.range_partitioning.range_.interval == 128
+
+        table.range_partitioning = None
+        assert table.range_partitioning is None
+
+    def test_range_partitioning_w_wrong_type(self):
+        object_under_test = self._make_one("proj.dset.tbl")
+        with pytest.raises(ValueError, match="RangePartitioning"):
+            object_under_test.range_partitioning = object()
+
+    def test_require_partitioning_filter(self):
+        table = self._make_one("proj.dset.tbl")
+        assert table.require_partition_filter is None
+        table.require_partition_filter = True
+        assert table.require_partition_filter
+        table.require_partition_filter = False
+        assert table.require_partition_filter is not None
+        assert not table.require_partition_filter
+        table.require_partition_filter = None
+        assert table.require_partition_filter is None
+
     def test_time_partitioning_getter(self):
         from google.cloud.bigquery.table import TimePartitioning
         from google.cloud.bigquery.table import TimePartitioningType
@@ -935,7 +950,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(table.time_partitioning.field, "col1")
         self.assertEqual(table.time_partitioning.expiration_ms, 123456)
-        self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertFalse(table.time_partitioning.require_partition_filter)
+
+        assert len(warned) == 1
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_time_partitioning_getter_w_none(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -963,7 +983,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.time_partitioning.type_)
         self.assertIsNone(table.time_partitioning.field)
         self.assertIsNone(table.time_partitioning.expiration_ms)
-        self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertIsNone(table.time_partitioning.require_partition_filter)
+
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -1107,6 +1132,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse("clustering" in table._properties)
 
     def test_encryption_configuration_setter(self):
+        # Previously, the EncryptionConfiguration class was in the table module, not the
+        # encryption_configuration module. It was moved to support models encryption.
+        # This test import from the table module to ensure that the previous location
+        # continues to function as an alias.
         from google.cloud.bigquery.table import EncryptionConfiguration
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1158,7 +1187,8 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
     def test__row_from_mapping_w_invalid_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         MAPPING = {
             "full_name": "Phred Phlyntstone",
@@ -1180,7 +1210,8 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertIn("Unknown field mode: BOGUS", str(exc.exception))
 
     def test__row_from_mapping_w_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         MAPPING = {
             "full_name": "Phred Phlyntstone",
@@ -1510,8 +1541,24 @@ class TestRowIterator(unittest.TestCase):
         self.assertIs(iterator._table, table)
         self.assertEqual(iterator.total_rows, 100)
 
+    def test_constructor_with_dict_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {"name": "age", "type": "INT64", "mode": "NULLABLE"},
+        ]
+
+        iterator = self._make_one(schema=schema)
+
+        expected_schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INT64", mode="NULLABLE"),
+        ]
+        self.assertEqual(iterator.schema, expected_schema)
+
     def test_iterate(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1542,7 +1589,7 @@ class TestRowIterator(unittest.TestCase):
         api_request.assert_called_once_with(method="GET", path=path, query_params={})
 
     def test_page_size(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1568,7 +1615,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1650,7 +1697,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_nulls(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")]
         rows = [
@@ -1683,7 +1730,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_unknown_type(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1721,7 +1768,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_empty_table(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1883,7 +1930,7 @@ class TestRowIterator(unittest.TestCase):
     @mock.patch("tqdm.tqdm_notebook")
     @mock.patch("tqdm.tqdm")
     def test_to_arrow_progress_bar(self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1926,7 +1973,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1958,7 +2005,7 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_progress_bar(
         self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
     ):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1991,7 +2038,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm_no_progress_bar(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2016,7 +2063,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2049,7 +2096,7 @@ class TestRowIterator(unittest.TestCase):
     @mock.patch("tqdm.tqdm_notebook", new=None)  # will raise TypeError on call
     @mock.patch("tqdm.tqdm", new=None)  # will raise TypeError on call
     def test_to_dataframe_tqdm_error(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2079,7 +2126,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2114,7 +2161,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
         import datetime
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("start_timestamp", "TIMESTAMP"),
@@ -2154,7 +2201,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_column_dtypes(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("start_timestamp", "TIMESTAMP"),
@@ -2192,7 +2239,7 @@ class TestRowIterator(unittest.TestCase):
 
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2208,6 +2255,42 @@ class TestRowIterator(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_max_results_w_bqstorage_warning(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        bqstorage_client = mock.Mock()
+
+        row_iterator = self._make_one(
+            client=_mock_client(),
+            api_request=api_request,
+            path=path,
+            schema=schema,
+            max_results=42,
+        )
+
+        with warnings.catch_warnings(record=True) as warned:
+            row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category is UserWarning
+            and "cannot use bqstorage_client" in str(warning).lower()
+            and "tabledata.list" in str(warning)
+        ]
+        self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
@@ -2271,26 +2354,26 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_empty_streams(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
+
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
         session = bigquery_storage_v1beta1.types.ReadSession(
-            streams=[{"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"}]
-        )
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
+            streams=[{"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"}],
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 
@@ -2327,10 +2410,19 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_nonempty(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
+
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2340,16 +2432,9 @@ class TestRowIterator(unittest.TestCase):
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps(
-            {
-                "fields": [
-                    {"name": "colA"},
-                    # Not alphabetical to test column order.
-                    {"name": "colC"},
-                    {"name": "colB"},
-                ]
-            }
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 
@@ -2400,17 +2485,23 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
         from google.cloud.bigquery_storage_v1beta1 import reader
 
+        arrow_fields = [pyarrow.field("colA", pyarrow.int64())]
+        arrow_schema = pyarrow.schema(arrow_fields)
+
         streams = [
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps({"fields": [{"name": "colA"}]})
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+        )
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2448,6 +2539,7 @@ class TestRowIterator(unittest.TestCase):
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @mock.patch("tqdm.tqdm")
     def test_to_dataframe_w_bqstorage_updates_progress_bar(self, tqdm_mock):
         from google.cloud.bigquery import schema
@@ -2456,6 +2548,9 @@ class TestRowIterator(unittest.TestCase):
 
         # Speed up testing.
         mut._PROGRESS_INTERVAL = 0.01
+
+        arrow_fields = [pyarrow.field("testcol", pyarrow.int64())]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2466,8 +2561,10 @@ class TestRowIterator(unittest.TestCase):
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
         ]
-        session = bigquery_storage_v1beta1.types.ReadSession(streams=streams)
-        session.avro_schema.schema = json.dumps({"fields": [{"name": "testcol"}]})
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+        )
         bqstorage_client.create_read_session.return_value = session
 
         mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
@@ -2521,6 +2618,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_exits_on_keyboardinterrupt(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2528,6 +2626,14 @@ class TestRowIterator(unittest.TestCase):
 
         # Speed up testing.
         mut._PROGRESS_INTERVAL = 0.01
+
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
 
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
@@ -2539,10 +2645,8 @@ class TestRowIterator(unittest.TestCase):
                 # ends early.
                 {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
                 {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
-            ]
-        )
-        session.avro_schema.schema = json.dumps(
-            {"fields": [{"name": "colA"}, {"name": "colB"}, {"name": "colC"}]}
+            ],
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
         )
         bqstorage_client.create_read_session.return_value = session
 
@@ -2756,6 +2860,96 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe(bqstorage_client)
 
 
+class TestPartitionRange(unittest.TestCase):
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        return PartitionRange
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        object_under_test = self._make_one()
+        assert object_under_test.start is None
+        assert object_under_test.end is None
+        assert object_under_test.interval is None
+
+    def test_constructor_w_properties(self):
+        object_under_test = self._make_one(start=1, end=10, interval=2)
+        assert object_under_test.start == 1
+        assert object_under_test.end == 10
+        assert object_under_test.interval == 2
+
+    def test_constructor_w_resource(self):
+        object_under_test = self._make_one(
+            _properties={"start": -1234567890, "end": 1234567890, "interval": 1000000}
+        )
+        assert object_under_test.start == -1234567890
+        assert object_under_test.end == 1234567890
+        assert object_under_test.interval == 1000000
+
+    def test_repr(self):
+        object_under_test = self._make_one(start=1, end=10, interval=2)
+        assert repr(object_under_test) == "PartitionRange(end=10, interval=2, start=1)"
+
+
+class TestRangePartitioning(unittest.TestCase):
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import RangePartitioning
+
+        return RangePartitioning
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        object_under_test = self._make_one()
+        assert object_under_test.field is None
+        assert object_under_test.range_.start is None
+        assert object_under_test.range_.end is None
+        assert object_under_test.range_.interval is None
+
+    def test_constructor_w_properties(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        object_under_test = self._make_one(
+            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+        )
+        assert object_under_test.field == "integer_col"
+        assert object_under_test.range_.start == 1
+        assert object_under_test.range_.end == 10
+        assert object_under_test.range_.interval == 2
+
+    def test_constructor_w_resource(self):
+        object_under_test = self._make_one(
+            _properties={
+                "field": "some_column",
+                "range": {"start": -1234567890, "end": 1234567890, "interval": 1000000},
+            }
+        )
+        assert object_under_test.field == "some_column"
+        assert object_under_test.range_.start == -1234567890
+        assert object_under_test.range_.end == 1234567890
+        assert object_under_test.range_.interval == 1000000
+
+    def test_range_w_wrong_type(self):
+        object_under_test = self._make_one()
+        with pytest.raises(ValueError, match="PartitionRange"):
+            object_under_test.range_ = object()
+
+    def test_repr(self):
+        from google.cloud.bigquery.table import PartitionRange
+
+        object_under_test = self._make_one(
+            range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
+        )
+        assert (
+            repr(object_under_test)
+            == "RangePartitioning(field='integer_col', range_=PartitionRange(end=10, interval=2, start=1))"
+        )
+
+
 class TestTimePartitioning(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -2767,26 +2961,32 @@ class TestTimePartitioning(unittest.TestCase):
 
     def test_constructor_defaults(self):
         time_partitioning = self._make_one()
-
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_constructor_explicit(self):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
 
         self.assertEqual(time_partitioning.type_, "DAY")
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+    def test_require_partition_filter_warns_deprecation(self):
+        object_under_test = self._make_one()
+
+        with warnings.catch_warnings(record=True) as warned:
+            assert object_under_test.require_partition_filter is None
+            object_under_test.require_partition_filter = True
+            assert object_under_test.require_partition_filter
+
+        assert len(warned) == 3
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
 
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
@@ -2800,7 +3000,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertIsNone(time_partitioning.type_)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_minimal(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -2812,7 +3011,6 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertIsNone(time_partitioning.field)
         self.assertIsNone(time_partitioning.expiration_ms)
-        self.assertIsNone(time_partitioning.require_partition_filter)
 
     def test_from_api_repr_doesnt_override_type(self):
         klass = self._get_target_class()
@@ -2835,7 +3033,11 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(time_partitioning.field, "name")
         self.assertEqual(time_partitioning.expiration_ms, 10000)
-        self.assertTrue(time_partitioning.require_partition_filter)
+
+        with warnings.catch_warnings(record=True) as warned:
+            self.assertTrue(time_partitioning.require_partition_filter)
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
     def test_to_api_repr_defaults(self):
         time_partitioning = self._make_one()
@@ -2846,11 +3048,13 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
+
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+
+        self.assertIs(warned[0].category, PendingDeprecationWarning)
 
         expected = {
             "type": "DAY",
@@ -2882,21 +3086,21 @@ class TestTimePartitioning(unittest.TestCase):
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___require_partition_filter_mismatch(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=False
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning.require_partition_filter = True
+            other.require_partition_filter = False
+
+        assert len(warned) == 2
+        for warning in warned:
+            self.assertIs(warning.category, PendingDeprecationWarning)
+
         self.assertNotEqual(time_partitioning, other)
 
     def test___eq___hit(self):
-        time_partitioning = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
-        other = self._make_one(
-            field="foo", expiration_ms=100000, require_partition_filter=True
-        )
+        time_partitioning = self._make_one(field="foo", expiration_ms=100000)
+        other = self._make_one(field="foo", expiration_ms=100000)
         self.assertEqual(time_partitioning, other)
 
     def test___ne___wrong_type(self):
@@ -2940,18 +3144,9 @@ class TestTimePartitioning(unittest.TestCase):
         from google.cloud.bigquery.table import TimePartitioningType
 
         time_partitioning = self._make_one(
-            type_=TimePartitioningType.DAY,
-            field="name",
-            expiration_ms=10000,
-            require_partition_filter=True,
+            type_=TimePartitioningType.DAY, field="name", expiration_ms=10000
         )
-        expected = (
-            "TimePartitioning("
-            "expirationMs=10000,"
-            "field=name,"
-            "requirePartitionFilter=True,"
-            "type=DAY)"
-        )
+        expected = "TimePartitioning(" "expirationMs=10000," "field=name," "type=DAY)"
         self.assertEqual(repr(time_partitioning), expected)
 
     def test_set_expiration_w_none(self):

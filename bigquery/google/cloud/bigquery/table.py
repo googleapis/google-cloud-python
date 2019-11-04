@@ -51,10 +51,11 @@ from google.api_core.page_iterator import HTTPIterator
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
+from google.cloud.bigquery.schema import _to_schema_fields
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -113,78 +114,11 @@ def _view_use_legacy_sql_getter(table):
         return True
 
 
-class EncryptionConfiguration(object):
-    """Custom encryption configuration (e.g., Cloud KMS keys).
-
-    Args:
-        kms_key_name (str): resource ID of Cloud KMS key used for encryption
-    """
-
-    def __init__(self, kms_key_name=None):
-        self._properties = {}
-        if kms_key_name is not None:
-            self._properties["kmsKeyName"] = kms_key_name
-
-    @property
-    def kms_key_name(self):
-        """str: Resource ID of Cloud KMS key
-
-        Resource ID of Cloud KMS key or :data:`None` if using default
-        encryption.
-        """
-        return self._properties.get("kmsKeyName")
-
-    @kms_key_name.setter
-    def kms_key_name(self, value):
-        self._properties["kmsKeyName"] = value
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Construct an encryption configuration from its API representation
-
-        Args:
-            resource (Dict[str, object]):
-                An encryption configuration representation as returned from
-                the API.
-
-        Returns:
-            google.cloud.bigquery.table.EncryptionConfiguration:
-                An encryption configuration parsed from ``resource``.
-        """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
-
-    def to_api_repr(self):
-        """Construct the API resource representation of this encryption
-        configuration.
-
-        Returns:
-            Dict[str, object]:
-                Encryption configuration as represented as an API resource
-        """
-        return copy.deepcopy(self._properties)
-
-    def __eq__(self, other):
-        if not isinstance(other, EncryptionConfiguration):
-            return NotImplemented
-        return self.kms_key_name == other.kms_key_name
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __hash__(self):
-        return hash(self.kms_key_name)
-
-    def __repr__(self):
-        return "EncryptionConfiguration({})".format(self.kms_key_name)
-
-
 class TableReference(object):
     """TableReferences are pointers to tables.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablereference
 
     Args:
         dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
@@ -364,18 +298,20 @@ class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
     See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#resource-table
 
     Args:
-        table_ref (Union[ \
-            :class:`~google.cloud.bigquery.table.TableReference`, \
-            str, \
-        ]):
+        table_ref (Union[google.cloud.bigquery.table.TableReference, str]):
             A pointer to a table. If ``table_ref`` is a string, it must
             included a project ID, dataset ID, and table ID, each separated
             by ``.``.
-        schema (List[google.cloud.bigquery.schema.SchemaField]):
-            The table's schema
+        schema (Optional[Sequence[Union[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                Mapping[str, Any] \
+        ]]]):
+            The table's schema. If any item is a mapping, its content must be
+            compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
     """
 
     _PROPERTY_TO_API_FIELD = {
@@ -388,6 +324,7 @@ class Table(object):
         "view_query": "view",
         "external_data_configuration": "externalDataConfiguration",
         "encryption_configuration": "encryptionConfiguration",
+        "require_partition_filter": "requirePartitionFilter",
     }
 
     def __init__(self, table_ref, schema=None):
@@ -424,14 +361,30 @@ class Table(object):
         )
 
     @property
+    def require_partition_filter(self):
+        """bool: If set to true, queries over the partitioned table require a
+        partition filter that can be used for partition elimination to be
+        specified.
+        """
+        return self._properties.get("requirePartitionFilter")
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties["requirePartitionFilter"] = value
+
+    @property
     def schema(self):
-        """List[google.cloud.bigquery.schema.SchemaField]: Table's schema.
+        """Sequence[Union[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                Mapping[str, Any] \
+        ]]:
+            Table's schema.
 
         Raises:
-            TypeError: If 'value' is not a sequence
-            ValueError:
-                If any item in the sequence is not a
-                :class:`~google.cloud.bigquery.schema.SchemaField`
+            Exception:
+                If ``schema`` is not a sequence, or if any item in the sequence
+                is not a :class:`~google.cloud.bigquery.schema.SchemaField`
+                instance or a compatible mapping representation of the field.
         """
         prop = self._properties.get("schema")
         if not prop:
@@ -443,9 +396,8 @@ class Table(object):
     def schema(self, value):
         if value is None:
             self._properties["schema"] = None
-        elif not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError("Schema items must be fields")
         else:
+            value = _to_schema_fields(value)
             self._properties["schema"] = {"fields": _build_schema_resource(value)}
 
     @property
@@ -469,7 +421,7 @@ class Table(object):
 
     @property
     def encryption_configuration(self):
-        """google.cloud.bigquery.table.EncryptionConfiguration: Custom
+        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
         encryption configuration for the table.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -562,13 +514,53 @@ class Table(object):
         return self._properties.get("type")
 
     @property
-    def time_partitioning(self):
-        """google.cloud.bigquery.table.TimePartitioning: Configures time-based
-        partitioning for a table.
+    def range_partitioning(self):
+        """Optional[google.cloud.bigquery.table.RangePartitioning]:
+        Configures range-based partitioning for a table.
+
+        .. note::
+            **Beta**. The integer range partitioning feature is in a
+            pre-release state and might change or have limited support.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.table.Table.time_partitioning` or
+        :attr:`~google.cloud.bigquery.table.Table.range_partitioning`.
 
         Raises:
             ValueError:
-                If the value is not :class:`TimePartitioning` or :data:`None`.
+                If the value is not
+                :class:`~google.cloud.bigquery.table.RangePartitioning` or
+                :data:`None`.
+        """
+        resource = self._properties.get("rangePartitioning")
+        if resource is not None:
+            return RangePartitioning(_properties=resource)
+
+    @range_partitioning.setter
+    def range_partitioning(self, value):
+        resource = value
+        if isinstance(value, RangePartitioning):
+            resource = value._properties
+        elif value is not None:
+            raise ValueError(
+                "Expected value to be RangePartitioning or None, got {}.".format(value)
+            )
+        self._properties["rangePartitioning"] = resource
+
+    @property
+    def time_partitioning(self):
+        """Optional[google.cloud.bigquery.table.TimePartitioning]: Configures time-based
+        partitioning for a table.
+
+        Only specify at most one of
+        :attr:`~google.cloud.bigquery.table.Table.time_partitioning` or
+        :attr:`~google.cloud.bigquery.table.Table.range_partitioning`.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.table.TimePartitioning` or
+                :data:`None`.
         """
         prop = self._properties.get("timePartitioning")
         if prop is not None:
@@ -1300,6 +1292,13 @@ class RowIterator(HTTPIterator):
         api_request (Callable[google.cloud._http.JSONConnection.api_request]):
             The function to use to make API requests.
         path (str): The method path to query for the list of items.
+        schema (Sequence[Union[ \
+                :class:`~google.cloud.bigquery.schema.SchemaField`, \
+                Mapping[str, Any] \
+        ]]):
+            The table's schema. If any item is a mapping, its content must be
+            compatible with
+            :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
         max_results (int, optional): The maximum number of results to fetch.
@@ -1309,14 +1308,12 @@ class RowIterator(HTTPIterator):
         extra_params (Dict[str, object]):
             Extra query string parameters for the API call.
         table (Union[ \
-            :class:`~google.cloud.bigquery.table.Table`, \
-            :class:`~google.cloud.bigquery.table.TableReference`, \
+            google.cloud.bigquery.table.Table, \
+            google.cloud.bigquery.table.TableReference, \
         ]):
             Optional. The table which these rows belong to, or a reference to
             it. Used to call the BigQuery Storage API to fetch rows.
-        selected_fields (Sequence[ \
-            google.cloud.bigquery.schema.SchemaField, \
-        ]):
+        selected_fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
             Optional. A subset of columns to select from this table.
 
     """
@@ -1346,6 +1343,7 @@ class RowIterator(HTTPIterator):
             page_start=_rows_page_start,
             next_token="pageToken",
         )
+        schema = _to_schema_fields(schema)
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._page_size = page_size
         self._preserve_order = False
@@ -1481,9 +1479,7 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
@@ -1501,8 +1497,7 @@ class RowIterator(HTTPIterator):
                 from the destination table's schema.
 
         Raises:
-            ValueError:
-                If the :mod:`pyarrow` library cannot be imported.
+            ValueError: If the :mod:`pyarrow` library cannot be imported.
 
         ..versionadded:: 1.17.0
         """
@@ -1567,9 +1562,7 @@ class RowIterator(HTTPIterator):
         """Create a pandas DataFrame by loading all pages of a query.
 
         Args:
-            bqstorage_client ( \
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
-            ):
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
                 **Beta Feature** Optional. A BigQuery Storage API client. If
                 supplied, use the faster BigQuery Storage API to fetch rows
                 from BigQuery. This API is a billable API.
@@ -1584,9 +1577,7 @@ class RowIterator(HTTPIterator):
                 query result tables with the BQ Storage API. When a problem
                 is encountered reading a table, the tabledata.list method
                 from the BigQuery API is used, instead.
-            dtypes ( \
-                Map[str, Union[str, pandas.Series.dtype]] \
-            ):
+            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for
                 the column specified. Otherwise, the default pandas behavior
@@ -1630,6 +1621,14 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
+        if bqstorage_client and self.max_results is not None:
+            warnings.warn(
+                "Cannot use bqstorage_client if max_results is set, "
+                "reverting to fetching data with the tabledata.list endpoint.",
+                stacklevel=2,
+            )
+            bqstorage_client = None
+
         progress_bar = self._get_progress_bar(progress_bar_type)
 
         frames = []
@@ -1672,12 +1671,10 @@ class _EmptyRowIterator(object):
         """[Beta] Create an empty class:`pyarrow.Table`.
 
         Args:
-            progress_bar_type (Optional[str]):
-                Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (Optional[str]): Ignored. Added for compatibility with RowIterator.
 
         Returns:
-            pyarrow.Table:
-                An empty :class:`pyarrow.Table`.
+            pyarrow.Table: An empty :class:`pyarrow.Table`.
         """
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
@@ -1687,16 +1684,12 @@ class _EmptyRowIterator(object):
         """Create an empty dataframe.
 
         Args:
-            bqstorage_client (Any):
-                Ignored. Added for compatibility with RowIterator.
-            dtypes (Any):
-                Ignored. Added for compatibility with RowIterator.
-            progress_bar_type (Any):
-                Ignored. Added for compatibility with RowIterator.
+            bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
+            dtypes (Any): Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
 
         Returns:
-            pandas.DataFrame:
-                An empty :class:`~pandas.DataFrame`.
+            pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
         """
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
@@ -1704,6 +1697,147 @@ class _EmptyRowIterator(object):
 
     def __iter__(self):
         return iter(())
+
+
+class PartitionRange(object):
+    """Definition of the ranges for range partitioning.
+
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
+
+    Args:
+        start (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.start`
+            property.
+        end (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.end`
+            property.
+        interval (Optional[int]):
+            Sets the
+            :attr:`~google.cloud.bigquery.table.PartitionRange.interval`
+            property.
+        _properties (Optional[dict]):
+            Private. Used to construct object from API resource.
+    """
+
+    def __init__(self, start=None, end=None, interval=None, _properties=None):
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if start is not None:
+            self.start = start
+        if end is not None:
+            self.end = end
+        if interval is not None:
+            self.interval = interval
+
+    @property
+    def start(self):
+        """int: The start of range partitioning, inclusive."""
+        return _helpers._int_or_none(self._properties.get("start"))
+
+    @start.setter
+    def start(self, value):
+        self._properties["start"] = _helpers._str_or_none(value)
+
+    @property
+    def end(self):
+        """int: The end of range partitioning, exclusive."""
+        return _helpers._int_or_none(self._properties.get("end"))
+
+    @end.setter
+    def end(self, value):
+        self._properties["end"] = _helpers._str_or_none(value)
+
+    @property
+    def interval(self):
+        """int: The width of each interval."""
+        return _helpers._int_or_none(self._properties.get("interval"))
+
+    @interval.setter
+    def interval(self, value):
+        self._properties["interval"] = _helpers._str_or_none(value)
+
+    def _key(self):
+        return tuple(sorted(self._properties.items()))
+
+    def __repr__(self):
+        key_vals = ["{}={}".format(key, val) for key, val in self._key()]
+        return "PartitionRange({})".format(", ".join(key_vals))
+
+
+class RangePartitioning(object):
+    """Range-based partitioning configuration for a table.
+
+    .. note::
+        **Beta**. The integer range partitioning feature is in a pre-release
+        state and might change or have limited support.
+
+    Args:
+        range_ (Optional[google.cloud.bigquery.table.PartitionRange]):
+            Sets the
+            :attr:`google.cloud.bigquery.table.RangePartitioning.range_`
+            property.
+        field (Optional[str]):
+            Sets the
+            :attr:`google.cloud.bigquery.table.RangePartitioning.field`
+            property.
+        _properties (Optional[dict]):
+            Private. Used to construct object from API resource.
+    """
+
+    def __init__(self, range_=None, field=None, _properties=None):
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if range_ is not None:
+            self.range_ = range_
+        if field is not None:
+            self.field = field
+
+    # Trailing underscore to prevent conflict with built-in range() function.
+    @property
+    def range_(self):
+        """google.cloud.bigquery.table.PartitionRange: Defines the
+        ranges for range partitioning.
+
+        Raises:
+            ValueError:
+                If the value is not a :class:`PartitionRange`.
+        """
+        range_properties = self._properties.setdefault("range", {})
+        return PartitionRange(_properties=range_properties)
+
+    @range_.setter
+    def range_(self, value):
+        if not isinstance(value, PartitionRange):
+            raise ValueError("Expected a PartitionRange, but got {}.".format(value))
+        self._properties["range"] = value._properties
+
+    @property
+    def field(self):
+        """str: The table is partitioned by this field.
+
+        The field must be a top-level ``NULLABLE`` / ``REQUIRED`` field. The
+        only supported type is ``INTEGER`` / ``INT64``.
+        """
+        return self._properties.get("field")
+
+    @field.setter
+    def field(self, value):
+        self._properties["field"] = value
+
+    def _key(self):
+        return (("field", self.field), ("range_", self.range_))
+
+    def __repr__(self):
+        key_vals = ["{}={}".format(key, repr(val)) for key, val in self._key()]
+        return "RangePartitioning({})".format(", ".join(key_vals))
 
 
 class TimePartitioningType(object):
@@ -1730,9 +1864,9 @@ class TimePartitioning(object):
             Number of milliseconds for which to keep the storage for a
             partition.
         require_partition_filter (bool, optional):
-            If set to true, queries over the partitioned table require a
-            partition filter that can be used for partition elimination to be
-            specified.
+            DEPRECATED: Use
+            :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
+            instead.
     """
 
     def __init__(
@@ -1785,11 +1919,33 @@ class TimePartitioning(object):
     @property
     def require_partition_filter(self):
         """bool: Specifies whether partition filters are required for queries
+
+        DEPRECATED: Use
+        :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
+        instead.
         """
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return self._properties.get("requirePartitionFilter")
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
+        warnings.warn(
+            (
+                "TimePartitioning.require_partition_filter will be removed in "
+                "future versions. Please use Table.require_partition_filter "
+                "instead."
+            ),
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         self._properties["requirePartitionFilter"] = value
 
     @classmethod
@@ -1864,14 +2020,12 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
+        resource (Dict): An item to be converted to a row.
 
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Row`
-    :returns: The next row in the page.
+    Returns:
+        google.cloud.bigquery.table.Row: The next row in the page.
     """
     return Row(
         _helpers._row_tuple_from_json(resource, iterator.schema),
@@ -1902,14 +2056,10 @@ def _tabledata_list_page_columns(schema, response):
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.api_core.page_iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
+    Args:
+        iterator (google.api_core.page_iterator.Iterator): The iterator that is currently in use.
+        page (google.api_core.page_iterator.Page): The page that was just created.
+        response (Dict): The JSON API response for a page of rows in a table.
     """
     # Make a (lazy) copy of the page in column-oriented format for use in data
     # science packages.

@@ -100,13 +100,6 @@ class CloudSchedulerClient(object):
             location=location,
         )
 
-    @classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
     def __init__(
         self,
         transport=None,
@@ -253,9 +246,7 @@ class CloudSchedulerClient(object):
             ...         pass
 
         Args:
-            parent (str): Required.
-
-                The location name. For example:
+            parent (str): Required. The location name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -344,9 +335,7 @@ class CloudSchedulerClient(object):
             >>> response = client.get_job(name)
 
         Args:
-            name (str): Required.
-
-                The job name. For example:
+            name (str): Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -420,16 +409,12 @@ class CloudSchedulerClient(object):
             >>> response = client.create_job(parent, job)
 
         Args:
-            parent (str): Required.
-
-                The location name. For example:
+            parent (str): Required. The location name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID``.
-            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required.
-
-                The job to add. The user can optionally specify a name for the job in
-                ``name``. ``name`` cannot be the same as an existing job. If a name is
-                not specified then the system will generate a random unique name that
-                will be returned (``name``) in the response.
+            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required. The job to add. The user can optionally specify a name for the
+                job in ``name``. ``name`` cannot be the same as an existing job. If a
+                name is not specified then the system will generate a random unique name
+                that will be returned (``name``) in the response.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.scheduler_v1beta1.types.Job`
@@ -511,9 +496,7 @@ class CloudSchedulerClient(object):
             >>> response = client.update_job(job)
 
         Args:
-            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required.
-
-                The new job properties. ``name`` must be specified.
+            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required. The new job properties. ``name`` must be specified.
 
                 Output only fields cannot be modified using UpdateJob. Any value
                 specified for an output only field will be ignored.
@@ -592,9 +575,7 @@ class CloudSchedulerClient(object):
             >>> client.delete_job(name)
 
         Args:
-            name (str): Required.
-
-                The job name. For example:
+            name (str): Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -666,9 +647,7 @@ class CloudSchedulerClient(object):
             >>> response = client.pause_job(name)
 
         Args:
-            name (str): Required.
-
-                The job name. For example:
+            name (str): Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -743,9 +722,7 @@ class CloudSchedulerClient(object):
             >>> response = client.resume_job(name)
 
         Args:
-            name (str): Required.
-
-                The job name. For example:
+            name (str): Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -818,9 +795,7 @@ class CloudSchedulerClient(object):
             >>> response = client.run_job(name)
 
         Args:
-            name (str): Required.
-
-                The job name. For example:
+            name (str): Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

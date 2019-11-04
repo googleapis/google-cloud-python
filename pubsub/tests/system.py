@@ -17,6 +17,7 @@ from __future__ import absolute_import
 import datetime
 import itertools
 import operator as op
+import os
 import threading
 import time
 
@@ -381,6 +382,59 @@ class TestStreamingPull(object):
         with pytest.raises(CallbackError):
             future.result(timeout=30)
 
+    @pytest.mark.xfail(
+        reason="The default stream ACK deadline is static and received messages "
+        "exceeding FlowControl.max_messages are currently not lease managed."
+    )
+    def test_streaming_pull_ack_deadline(
+        self, publisher, subscriber, project, topic_path, subscription_path, cleanup
+    ):
+        # Make sure the topic and subscription get deleted.
+        cleanup.append((publisher.delete_topic, topic_path))
+        cleanup.append((subscriber.delete_subscription, subscription_path))
+
+        # Create a topic and a subscription, then subscribe to the topic. This
+        # must happen before the messages are published.
+        publisher.create_topic(topic_path)
+
+        # Subscribe to the topic. This must happen before the messages
+        # are published.
+        subscriber.create_subscription(
+            subscription_path, topic_path, ack_deadline_seconds=240
+        )
+
+        # publish some messages and wait for completion
+        self._publish_messages(publisher, topic_path, batch_sizes=[2])
+
+        # subscribe to the topic
+        callback = StreamingPullCallback(
+            processing_time=70,  # more than the default stream ACK deadline (60s)
+            resolve_at_msg_count=3,  # one more than the published messages count
+        )
+        flow_control = types.FlowControl(max_messages=1)
+        subscription_future = subscriber.subscribe(
+            subscription_path, callback, flow_control=flow_control
+        )
+
+        # We expect to process the first two messages in 2 * 70 seconds, and
+        # any duplicate message that is re-sent by the backend in additional
+        # 70 seconds, totalling 210 seconds (+ overhead) --> if there have been
+        # no duplicates in 240 seconds, we can reasonably assume that there
+        # won't be any.
+        try:
+            callback.done_future.result(timeout=240)
+        except exceptions.TimeoutError:
+            # future timed out, because we received no excessive messages
+            assert sorted(callback.seen_message_ids) == [1, 2]
+        else:
+            pytest.fail(
+                "Expected to receive 2 messages, but got at least {}.".format(
+                    len(callback.seen_message_ids)
+                )
+            )
+        finally:
+            subscription_future.cancel()
+
     def test_streaming_pull_max_messages(
         self, publisher, topic_path, subscriber, subscription_path, cleanup
     ):
@@ -434,6 +488,45 @@ class TestStreamingPull(object):
             assert callback.max_pending_ack <= flow_control.max_messages
         finally:
             subscription_future.cancel()  # trigger clean shutdown
+
+    @pytest.mark.skipif(
+        "KOKORO_GFILE_DIR" not in os.environ,
+        reason="Requires Kokoro environment with a limited subscriber service account.",
+    )
+    def test_streaming_pull_subscriber_permissions_sufficient(
+        self, publisher, topic_path, subscriber, subscription_path, cleanup
+    ):
+
+        # Make sure the topic and subscription get deleted.
+        cleanup.append((publisher.delete_topic, topic_path))
+        cleanup.append((subscriber.delete_subscription, subscription_path))
+
+        # create a topic and subscribe to it
+        publisher.create_topic(topic_path)
+        subscriber.create_subscription(subscription_path, topic_path)
+
+        # A service account granting only the pubsub.subscriber role must be used.
+        filename = os.path.join(
+            os.environ["KOKORO_GFILE_DIR"], "pubsub-subscriber-service-account.json"
+        )
+        streaming_pull_subscriber = type(subscriber).from_service_account_file(filename)
+
+        # Subscribe to the topic, publish a message, and verify that subscriber
+        # successfully pulls and processes it.
+        callback = StreamingPullCallback(processing_time=0.01, resolve_at_msg_count=1)
+        future = streaming_pull_subscriber.subscribe(subscription_path, callback)
+        self._publish_messages(publisher, topic_path, batch_sizes=[1])
+
+        try:
+            callback.done_future.result(timeout=10)
+        except exceptions.TimeoutError:
+            pytest.fail(
+                "Timeout: receiving/processing streamed messages took too long."
+            )
+        else:
+            assert 1 in callback.seen_message_ids
+        finally:
+            future.cancel()
 
     def _publish_messages(self, publisher, topic_path, batch_sizes):
         """Publish ``count`` messages in batches and wait until completion."""

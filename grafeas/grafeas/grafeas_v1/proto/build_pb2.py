@@ -30,7 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         '\n\x1cgrafeas_v1/proto/build.proto\x12\ngrafeas.v1\x1a!grafeas_v1/proto/provenance.proto"$\n\tBuildNote\x12\x17\n\x0f\x62uilder_version\x18\x01 \x01(\t"\\\n\x0f\x42uildOccurrence\x12/\n\nprovenance\x18\x01 \x01(\x0b\x32\x1b.grafeas.v1.BuildProvenance\x12\x18\n\x10provenance_bytes\x18\x02 \x01(\tBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
-    dependencies=[grafeas__v1_dot_proto_dot_provenance__pb2.DESCRIPTOR],
+    dependencies=[grafeas__v1_dot_proto_dot_provenance__pb2.DESCRIPTOR,],
 )
 
 
@@ -58,7 +58,7 @@ _BUILDNOTE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],

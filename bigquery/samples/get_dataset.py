@@ -16,7 +16,8 @@
 def get_dataset(client, dataset_id):
 
     # [START bigquery_get_dataset]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -24,7 +25,7 @@ def get_dataset(client, dataset_id):
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.
     # dataset_id = 'your-project.your_dataset'
 
-    dataset = client.get_dataset(dataset_id)
+    dataset = client.get_dataset(dataset_id)  # Make an API request.
 
     full_dataset_id = "{}.{}".format(dataset.project, dataset.dataset_id)
     friendly_name = dataset.friendly_name
@@ -34,7 +35,7 @@ def get_dataset(client, dataset_id):
         )
     )
 
-    # View dataset properties
+    # View dataset properties.
     print("Description: {}".format(dataset.description))
     print("Labels:")
     labels = dataset.labels
@@ -44,13 +45,12 @@ def get_dataset(client, dataset_id):
     else:
         print("\tDataset has no labels defined.")
 
-    # View tables in dataset
+    # View tables in dataset.
     print("Tables:")
-    tables = list(client.list_tables(dataset))  # API request(s)
+    tables = list(client.list_tables(dataset))  # Make an API request(s).
     if tables:
         for table in tables:
             print("\t{}".format(table.table_id))
     else:
         print("\tThis dataset does not contain any tables.")
-
     # [END bigquery_get_dataset]

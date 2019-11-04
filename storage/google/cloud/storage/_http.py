@@ -29,14 +29,17 @@ class Connection(_http.JSONConnection):
     :param client_info: (Optional) instance used to generate user agent.
     """
 
-    def __init__(self, client, client_info=None):
-        super(Connection, self).__init__(client, client_info)
+    DEFAULT_API_ENDPOINT = "https://storage.googleapis.com"
 
-        self._client_info.gapic_version = __version__
+    def __init__(self, client, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):
+        super(Connection, self).__init__(client, client_info)
+        self.API_BASE_URL = api_endpoint
         self._client_info.client_library_version = __version__
 
-    API_BASE_URL = _http.API_BASE_URL
-    """The base of the API call URL."""
+        # TODO: When metrics all use gccl, this should be removed #9552
+        if self._client_info.user_agent is None:  # pragma: no branch
+            self._client_info.user_agent = ""
+        self._client_info.user_agent += " gcloud-python/{} ".format(__version__)
 
     API_VERSION = "v1"
     """The version of the API, used in building the API call's URL."""

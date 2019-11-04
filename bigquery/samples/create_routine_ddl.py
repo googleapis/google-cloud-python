@@ -13,7 +13,8 @@
 # limitations under the License.
 
 
-def main(client, routine_id):
+def create_routine_ddl(client, routine_id):
+
     # [START bigquery_create_routine_ddl]
     # TODO(developer): Import the client library.
     # from google.cloud import bigquery
@@ -33,12 +34,8 @@ def main(client, routine_id):
     """.format(
         routine_id
     )
-
-    # Initiate the query to create the routine.
-    query_job = client.query(sql)
-
-    # Wait for the query to complete.
-    query_job.result()
+    query_job = client.query(sql)  # Make an API request.
+    query_job.result()  # Wait for the job to complete.
 
     print("Created routine {}".format(query_job.ddl_target_routine))
     # [END bigquery_create_routine_ddl]

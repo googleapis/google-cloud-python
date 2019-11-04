@@ -1,7 +1,7 @@
 Python Client for Google Cloud Bigtable
 =======================================
 
-|beta| |pypi| |versions| |compat_check_pypi| |compat_check_github|
+|GA| |pypi| |versions| 
 
 `Google Cloud Bigtable`_ is Google's NoSQL Big Data database service. It's the
 same database that powers many core Google services, including Search,
@@ -10,16 +10,12 @@ Analytics, Maps, and Gmail.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-silver.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigtable.svg
    :target: https://pypi.org/project/google-cloud-bigtable/
-.. |compat_check_pypi| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=google-cloud-bigtable
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=google-cloud-bigtable
-.. |compat_check_github| image:: https://python-compatibility-tools.appspot.com/one_badge_image?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigtable
-   :target: https://python-compatibility-tools.appspot.com/one_badge_target?package=git%2Bgit%3A//github.com/googleapis/google-cloud-python.git%23subdirectory%3Dbigtable
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable
 .. _Client Library Documentation: https://googleapis.dev/python/bigtable/latest
 .. _Product Documentation:  https://cloud.google.com/bigtable/docs

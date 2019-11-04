@@ -43,7 +43,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         transport, worker = self._make_one(client, name)
 
-        logger, = worker.call_args[0]  # call_args[0] is *args.
+        (logger,) = worker.call_args[0]  # call_args[0] is *args.
         self.assertEqual(logger.name, name)
 
     def test_send(self):

@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.11.0
+
+08-12-2019 14:00 PDT
+
+### New Features
+- Add segment / shot presence label annotations fields (via synth). ([#8987](https://github.com/googleapis/google-cloud-python/pull/8987))
+- Add V1 video segment / feature fields; remove send/recv msg size limit (via synth). ([#8975](https://github.com/googleapis/google-cloud-python/pull/8975))
+
+### Documentation
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.10.0
 
 07-24-2019 17:52 PDT

@@ -16,7 +16,8 @@
 def update_dataset_description(client, dataset_id):
 
     # [START bigquery_update_dataset_description]
-    from google.cloud import bigquery
+    # TODO(developer): Import the client library.
+    # from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
@@ -24,9 +25,9 @@ def update_dataset_description(client, dataset_id):
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.
     # dataset_id = 'your-project.your_dataset'
 
-    dataset = client.get_dataset(dataset_id)
+    dataset = client.get_dataset(dataset_id)  # Make an API request.
     dataset.description = "Updated description."
-    dataset = client.update_dataset(dataset, ["description"])
+    dataset = client.update_dataset(dataset, ["description"])  # Make an API request.
 
     full_dataset_id = "{}.{}".format(dataset.project, dataset.dataset_id)
     print(

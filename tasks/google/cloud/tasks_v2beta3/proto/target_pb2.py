@@ -750,9 +750,10 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
   queue. If any other HTTP response code is returned or no response is
   received, the task will be retried according to the following:
   
-  -  User-specified throttling: [retry configuration][Queue.RetryConfig],
-     [rate limits][Queue.RateLimits], and the [queue's
-     state][google.cloud.tasks.v2beta3.Queue.state].
+  -  User-specified throttling: [retry
+     configuration][google.cloud.tasks.v2beta3.Queue.retry\_config], [rate
+     limits][google.cloud.tasks.v2beta3.Queue.rate\_limits], and the
+     [queue's state][google.cloud.tasks.v2beta3.Queue.state].
   
   -  System throttling: To prevent the worker from overloading, Cloud
      Tasks may temporarily reduce the queue's effective rate.
@@ -760,12 +761,12 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
   
   System throttling happens because:
   
-  -  Cloud Tasks backoffs on all errors. Normally the backoff specified in
-     [rate limits][Queue.RateLimits] will be used. But if the worker
-     returns ``429`` (Too Many Requests), ``503`` (Service Unavailable),
-     or the rate of errors is high, Cloud Tasks will use a higher backoff
-     rate. The retry specified in the ``Retry-After`` HTTP response header
-     is considered.
+  -  Cloud Tasks backs off on all errors. Normally the backoff specified
+     in [rate limits][google.cloud.tasks.v2beta3.Queue.rate\_limits] will
+     be used. But if the worker returns ``429`` (Too Many Requests),
+     ``503`` (Service Unavailable), or the rate of errors is high, Cloud
+     Tasks will use a higher backoff rate. The retry specified in the
+     ``Retry-After`` HTTP response header is considered.
   
   -  To prevent traffic spikes and to smooth sudden large traffic spikes,
      dispatches ramp up slowly when the queue is newly created or idle and
@@ -817,8 +818,9 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
           [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
       authorization_header:
           The mode for generating an ``Authorization`` header for HTTP
-          requests.  If specified, all ``Authorization`` headers in the
-          [HttpTarget.headers][] field will be overridden.
+          requests.  If specified, all ``Authorization`` headers in the 
+          [HttpRequest.headers][google.cloud.tasks.v2beta3.HttpRequest.h
+          eaders] field will be overridden.
       oauth_token:
           If specified, an `OAuth token
           <https://developers.google.com/identity/protocols/OAuth2>`_
@@ -948,12 +950,13 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
   Tasks does not receive response before the
   [deadline][google.cloud.tasks.v2beta3.Task.dispatch\_deadline]. Failed
   tasks will be retried according to the [retry
-  configuration][Queue.RetryConfig]. ``503`` (Service Unavailable) is
-  considered an App Engine system error instead of an application error
-  and will cause Cloud Tasks' traffic congestion control to temporarily
-  throttle the queue's dispatches. Unlike other types of task targets, a
-  ``429`` (Too Many Requests) response from an app handler does not cause
-  traffic congestion control to throttle the queue.
+  configuration][google.cloud.tasks.v2beta3.Queue.retry\_config]. ``503``
+  (Service Unavailable) is considered an App Engine system error instead
+  of an application error and will cause Cloud Tasks' traffic congestion
+  control to temporarily throttle the queue's dispatches. Unlike other
+  types of task targets, a ``429`` (Too Many Requests) response from an
+  app handler does not cause traffic congestion control to throttle the
+  queue.
   
   
   Attributes:

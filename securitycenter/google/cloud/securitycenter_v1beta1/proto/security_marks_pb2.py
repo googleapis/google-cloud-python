@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         "\n>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\"\x99\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x05marks\x18\x02 \x03(\x0b\x32=.google.cloud.securitycenter.v1beta1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42~\n'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3"
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
 )
 
 
@@ -133,7 +133,7 @@ _SECURITYMARKS = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_SECURITYMARKS_MARKSENTRY],
+    nested_types=[_SECURITYMARKS_MARKSENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

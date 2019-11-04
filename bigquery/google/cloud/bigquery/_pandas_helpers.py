@@ -47,8 +47,22 @@ _NO_BQSTORAGE_ERROR = (
     "please install google-cloud-bigquery-storage to use bqstorage features."
 )
 
-STRUCT_TYPES = ("RECORD", "STRUCT")
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
+
+_PANDAS_DTYPE_TO_BQ = {
+    "bool": "BOOLEAN",
+    "datetime64[ns, UTC]": "TIMESTAMP",
+    "datetime64[ns]": "DATETIME",
+    "float32": "FLOAT",
+    "float64": "FLOAT",
+    "int8": "INTEGER",
+    "int16": "INTEGER",
+    "int32": "INTEGER",
+    "int64": "INTEGER",
+    "uint8": "INTEGER",
+    "uint16": "INTEGER",
+    "uint32": "INTEGER",
+}
 
 
 class _DownloadState(object):
@@ -116,7 +130,8 @@ def bq_to_arrow_struct_data_type(field):
 def bq_to_arrow_data_type(field):
     """Return the Arrow data type, corresponding to a given BigQuery column.
 
-    Returns None if default Arrow type inspection should be used.
+    Returns:
+        None: if default Arrow type inspection should be used.
     """
     if field.mode is not None and field.mode.upper() == "REPEATED":
         inner_type = bq_to_arrow_data_type(
@@ -126,7 +141,7 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in STRUCT_TYPES:
+    if field.field_type.upper() in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
     data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
@@ -138,7 +153,8 @@ def bq_to_arrow_data_type(field):
 def bq_to_arrow_field(bq_field):
     """Return the Arrow field, corresponding to a given BigQuery column.
 
-    Returns None if the Arrow type cannot be determined.
+    Returns:
+        None: if the Arrow type cannot be determined.
     """
     arrow_type = bq_to_arrow_data_type(bq_field)
     if arrow_type:
@@ -152,7 +168,8 @@ def bq_to_arrow_field(bq_field):
 def bq_to_arrow_schema(bq_schema):
     """Return the Arrow schema, corresponding to a given BigQuery schema.
 
-    Returns None if any Arrow type cannot be determined.
+    Returns:
+        None: if any Arrow type cannot be determined.
     """
     arrow_fields = []
     for bq_field in bq_schema:
@@ -168,9 +185,114 @@ def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in STRUCT_TYPES:
+    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
+
+
+def get_column_or_index(dataframe, name):
+    """Return a column or index as a pandas series."""
+    if name in dataframe.columns:
+        return dataframe[name].reset_index(drop=True)
+
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        if name in dataframe.index.names:
+            return (
+                dataframe.index.get_level_values(name)
+                .to_series()
+                .reset_index(drop=True)
+            )
+    else:
+        if name == dataframe.index.name:
+            return dataframe.index.to_series().reset_index(drop=True)
+
+    raise ValueError("column or index '{}' not found.".format(name))
+
+
+def list_columns_and_indexes(dataframe):
+    """Return all index and column names with dtypes.
+
+    Returns:
+        Sequence[Tuple[str, dtype]]:
+            Returns a sorted list of indexes and column names with
+            corresponding dtypes. If an index is missing a name or has the
+            same name as a column, the index is omitted.
+    """
+    column_names = frozenset(dataframe.columns)
+    columns_and_indexes = []
+    if isinstance(dataframe.index, pandas.MultiIndex):
+        for name in dataframe.index.names:
+            if name and name not in column_names:
+                values = dataframe.index.get_level_values(name)
+                columns_and_indexes.append((name, values.dtype))
+    else:
+        if dataframe.index.name and dataframe.index.name not in column_names:
+            columns_and_indexes.append((dataframe.index.name, dataframe.index.dtype))
+
+    columns_and_indexes += zip(dataframe.columns, dataframe.dtypes)
+    return columns_and_indexes
+
+
+def dataframe_to_bq_schema(dataframe, bq_schema):
+    """Convert a pandas DataFrame schema to a BigQuery schema.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame for which the client determines the BigQuery schema.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            A BigQuery schema. Use this argument to override the autodetected
+            type for some or all of the DataFrame columns.
+
+    Returns:
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]:
+            The automatically determined schema. Returns None if the type of
+            any column cannot be determined.
+    """
+    if bq_schema:
+        bq_schema = schema._to_schema_fields(bq_schema)
+        for field in bq_schema:
+            if field.field_type in schema._STRUCT_TYPES:
+                raise ValueError(
+                    "Uploading dataframes with struct (record) column types "
+                    "is not supported. See: "
+                    "https://github.com/googleapis/google-cloud-python/issues/8191"
+                )
+        bq_schema_index = {field.name: field for field in bq_schema}
+        bq_schema_unused = set(bq_schema_index.keys())
+    else:
+        bq_schema_index = {}
+        bq_schema_unused = set()
+
+    bq_schema_out = []
+    for column, dtype in list_columns_and_indexes(dataframe):
+        # Use provided type from schema, if present.
+        bq_field = bq_schema_index.get(column)
+        if bq_field:
+            bq_schema_out.append(bq_field)
+            bq_schema_unused.discard(bq_field.name)
+            continue
+
+        # Otherwise, try to automatically determine the type based on the
+        # pandas dtype.
+        bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
+        if not bq_type:
+            warnings.warn(u"Unable to determine type of column '{}'.".format(column))
+            return None
+        bq_field = schema.SchemaField(column, bq_type)
+        bq_schema_out.append(bq_field)
+
+    # Catch any schema mismatch. The developer explicitly asked to serialize a
+    # column, but it was not found.
+    if bq_schema_unused:
+        raise ValueError(
+            u"bq_schema contains fields not present in dataframe: {}".format(
+                bq_schema_unused
+            )
+        )
+    return tuple(bq_schema_out)
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
@@ -178,19 +300,41 @@ def dataframe_to_arrow(dataframe, bq_schema):
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
-        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
-            Desired BigQuery schema. Number of columns must match number of
-            columns in the DataFrame.
+            DataFrame to convert to Arrow table.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            Desired BigQuery schema. The number of columns must match the
+            number of columns in the DataFrame.
 
     Returns:
         pyarrow.Table:
             Table containing dataframe data, with schema derived from
             BigQuery schema.
     """
-    if len(bq_schema) != len(dataframe.columns):
+    column_names = set(dataframe.columns)
+    column_and_index_names = set(
+        name for name, _ in list_columns_and_indexes(dataframe)
+    )
+
+    bq_schema = schema._to_schema_fields(bq_schema)
+    bq_field_names = set(field.name for field in bq_schema)
+
+    extra_fields = bq_field_names - column_and_index_names
+    if extra_fields:
         raise ValueError(
-            "Number of columns in schema must match number of columns in dataframe."
+            u"bq_schema contains fields not present in dataframe: {}".format(
+                extra_fields
+            )
+        )
+
+    # It's okay for indexes to be missing from bq_schema, but it's not okay to
+    # be missing columns.
+    missing_fields = column_names - bq_field_names
+    if missing_fields:
+        raise ValueError(
+            u"bq_schema is missing fields from dataframe: {}".format(missing_fields)
         )
 
     arrow_arrays = []
@@ -199,7 +343,9 @@ def dataframe_to_arrow(dataframe, bq_schema):
     for bq_field in bq_schema:
         arrow_fields.append(bq_to_arrow_field(bq_field))
         arrow_names.append(bq_field.name)
-        arrow_arrays.append(bq_to_arrow_array(dataframe[bq_field.name], bq_field))
+        arrow_arrays.append(
+            bq_to_arrow_array(get_column_or_index(dataframe, bq_field.name), bq_field)
+        )
 
     if all((field is not None for field in arrow_fields)):
         return pyarrow.Table.from_arrays(
@@ -216,8 +362,11 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
 
     Args:
         dataframe (pandas.DataFrame):
-            DataFrame to convert to convert to Parquet file.
-        bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            DataFrame to convert to Parquet file.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
             Desired BigQuery schema. Number of columns must match number of
             columns in the DataFrame.
         filepath (str):
@@ -231,6 +380,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
     if pyarrow is None:
         raise ValueError("pyarrow is required for BigQuery schema conversion.")
 
+    bq_schema = schema._to_schema_fields(bq_schema)
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
     pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
@@ -246,13 +396,29 @@ def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
     for column_index, arrow_type in enumerate(arrow_types):
         arrays.append(pyarrow.array(page._columns[column_index], type=arrow_type))
 
-    return pyarrow.RecordBatch.from_arrays(arrays, column_names)
+    if isinstance(column_names, pyarrow.Schema):
+        return pyarrow.RecordBatch.from_arrays(arrays, schema=column_names)
+    return pyarrow.RecordBatch.from_arrays(arrays, names=column_names)
 
 
-def download_arrow_tabledata_list(pages, schema):
-    """Use tabledata.list to construct an iterable of RecordBatches."""
-    column_names = bq_to_arrow_schema(schema) or [field.name for field in schema]
-    arrow_types = [bq_to_arrow_data_type(field) for field in schema]
+def download_arrow_tabledata_list(pages, bq_schema):
+    """Use tabledata.list to construct an iterable of RecordBatches.
+
+    Args:
+        pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
+            An iterator over the result pages.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            A decription of the fields in result pages.
+    Yields:
+        :class:`pyarrow.RecordBatch`
+        The next page of records as a ``pyarrow`` record batch.
+    """
+    bq_schema = schema._to_schema_fields(bq_schema)
+    column_names = bq_to_arrow_schema(bq_schema) or [field.name for field in bq_schema]
+    arrow_types = [bq_to_arrow_data_type(field) for field in bq_schema]
 
     for page in pages:
         yield _tabledata_list_page_to_arrow(page, column_names, arrow_types)
@@ -273,9 +439,26 @@ def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
     return pandas.DataFrame(columns, columns=column_names)
 
 
-def download_dataframe_tabledata_list(pages, schema, dtypes):
-    """Use (slower, but free) tabledata.list to construct a DataFrame."""
-    column_names = [field.name for field in schema]
+def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
+    """Use (slower, but free) tabledata.list to construct a DataFrame.
+
+    Args:
+        pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
+            An iterator over the result pages.
+        bq_schema (Sequence[Union[ \
+            :class:`~google.cloud.bigquery.schema.SchemaField`, \
+            Mapping[str, Any] \
+        ]]):
+            A decription of the fields in result pages.
+        dtypes(Mapping[str, numpy.dtype]):
+            The types of columns in result data to hint construction of the
+            resulting DataFrame. Not all column types have to be specified.
+    Yields:
+        :class:`pandas.DataFrame`
+        The next page of records as a ``pandas.DataFrame`` record batch.
+    """
+    bq_schema = schema._to_schema_fields(bq_schema)
+    column_names = [field.name for field in bq_schema]
     for page in pages:
         yield _tabledata_list_page_to_dataframe(page, column_names, dtypes)
 
