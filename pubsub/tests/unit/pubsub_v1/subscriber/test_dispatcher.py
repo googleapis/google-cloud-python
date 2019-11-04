@@ -95,6 +95,33 @@ def test_ack_no_time():
     manager.ack_histogram.add.assert_not_called()
 
 
+def test_ack_splitting_large_payload():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [
+        # use realistic lengths for ACK IDs (max 164 bytes)
+        requests.AckRequest(ack_id=str(i).zfill(164), byte_size=0, time_to_ack=20)
+        for i in range(6001)
+    ]
+    dispatcher_.ack(items)
+
+    calls = manager.send.call_args_list
+    assert len(calls) == 3
+
+    all_ack_ids = {item.ack_id for item in items}
+    sent_ack_ids = set()
+
+    for call in calls:
+        message = call.args[0]
+        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        sent_ack_ids.update(message.ack_ids)
+
+    assert sent_ack_ids == all_ack_ids  # all messages should have been ACK-ed
+
+
 def test_lease():
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -151,6 +178,33 @@ def test_modify_ack_deadline():
             modify_deadline_ack_ids=["ack_id_string"], modify_deadline_seconds=[60]
         )
     )
+
+
+def test_modify_ack_deadline_splitting_large_payload():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [
+        # use realistic lengths for ACK IDs (max 164 bytes)
+        requests.ModAckRequest(ack_id=str(i).zfill(164), seconds=60)
+        for i in range(6001)
+    ]
+    dispatcher_.modify_ack_deadline(items)
+
+    calls = manager.send.call_args_list
+    assert len(calls) == 3
+
+    all_ack_ids = {item.ack_id for item in items}
+    sent_ack_ids = set()
+
+    for call in calls:
+        message = call.args[0]
+        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        sent_ack_ids.update(message.modify_deadline_ack_ids)
+
+    assert sent_ack_ids == all_ack_ids  # all messages should have been ACK-ed
 
 
 @mock.patch("threading.Thread", autospec=True)
