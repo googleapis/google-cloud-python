@@ -396,9 +396,6 @@ class Client(ClientWithProject):
             >>> bucket = client.create_bucket(bucket)  # API request.
 
         """
-        if user_project is not None:
-            raise ValueError("Cannot create bucket with 'user_project' set.")
-
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
         if project is None:
@@ -421,6 +418,9 @@ class Client(ClientWithProject):
                 predefined_default_object_acl
             )
             query_params["predefinedDefaultObjectAcl"] = predefined_default_object_acl
+
+        if user_project is not None:
+            query_params["userProject"] = user_project
 
         properties = {key: bucket._properties[key] for key in bucket._changes}
         properties["name"] = bucket.name
