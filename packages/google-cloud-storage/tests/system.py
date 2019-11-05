@@ -14,7 +14,9 @@
 
 import base64
 import datetime
+import gzip
 import hashlib
+import io
 import os
 import re
 import tempfile
@@ -619,6 +621,23 @@ class TestStorageWriteFiles(TestStorageFiles):
             stored_contents = file_obj.read()
 
         self.assertEqual(file_contents, stored_contents)
+
+    def test_upload_gzip_encoded_download_raw(self):
+        payload = b"DEADBEEF" * 1000
+        raw_stream = io.BytesIO()
+        with gzip.GzipFile(fileobj=raw_stream, mode="wb") as gzip_stream:
+            gzip_stream.write(payload)
+        zipped = raw_stream.getvalue()
+
+        blob = self.bucket.blob("test_gzipped.gz")
+        blob.content_encoding = "gzip"
+        blob.upload_from_file(raw_stream, rewind=True)
+
+        expanded = blob.download_as_string()
+        self.assertEqual(expanded, payload)
+
+        raw = blob.download_as_string(raw_download=True)
+        self.assertEqual(raw, zipped)
 
 
 class TestUnicode(unittest.TestCase):
