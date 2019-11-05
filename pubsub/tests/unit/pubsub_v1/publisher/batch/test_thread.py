@@ -25,6 +25,7 @@ from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
+from google.cloud.pubsub_v1.publisher._batch.base import BatchCancellationReason
 from google.cloud.pubsub_v1.publisher._batch import thread
 from google.cloud.pubsub_v1.publisher._batch.thread import Batch
 
@@ -34,46 +35,34 @@ def create_client():
     return publisher.Client(credentials=creds)
 
 
-def create_batch(autocommit=False, topic="topic_name", **batch_settings):
+def create_batch(
+    topic="topic_name",
+    batch_done_callback=None,
+    commit_when_full=True,
+    **batch_settings
+):
     """Return a batch object suitable for testing.
 
     Args:
-        autocommit (bool): Whether the batch should commit after
-            ``max_latency`` seconds. By default, this is ``False``
-            for unit testing.
-        topic (str): The name of the topic the batch should publish
-            the messages to.
+        topic (str): Topic name.
         batch_settings (dict): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
+        commit_when_full (bool): Whether to commit the batch when the batch
+            has reached byte-size or number-of-messages limits.
+        batch_settings (Mapping[str, str]): Batching-related settings.
 
     Returns:
         ~.pubsub_v1.publisher.batch.thread.Batch: A batch object.
     """
     client = create_client()
     settings = types.BatchSettings(**batch_settings)
-    return Batch(client, topic, settings, autocommit=autocommit)
-
-
-def test_init():
-    """Establish that a monitor thread is usually created on init."""
-    client = create_client()
-
-    # Do not actually create a thread, but do verify that one was created;
-    # it should be running the batch's "monitor" method (which commits the
-    # batch once time elapses).
-    with mock.patch.object(threading, "Thread", autospec=True) as Thread:
-        batch = Batch(client, "topic_name", types.BatchSettings())
-        Thread.assert_called_once_with(
-            name="Thread-MonitorBatchPublisher", target=batch.monitor
-        )
-
-    # New batches start able to accept messages by default.
-    assert batch.status == BatchStatus.ACCEPTING_MESSAGES
-
-
-def test_init_infinite_latency():
-    batch = create_batch(max_latency=float("inf"))
-    assert batch._thread is None
+    return Batch(
+        client,
+        topic,
+        settings,
+        batch_done_callback=batch_done_callback,
+        commit_when_full=commit_when_full,
+    )
 
 
 @mock.patch.object(threading, "Lock")
@@ -86,7 +75,7 @@ def test_make_lock(Lock):
 def test_client():
     client = create_client()
     settings = types.BatchSettings()
-    batch = Batch(client, "topic_name", settings, autocommit=False)
+    batch = Batch(client, "topic_name", settings)
     assert batch.client is client
 
 
@@ -202,7 +191,7 @@ def test_blocking__commit_already_started(_LOGGER):
     assert batch._status == BatchStatus.IN_PROGRESS
 
     _LOGGER.debug.assert_called_once_with(
-        "Batch is already in progress, exiting commit"
+        "Batch is already in progress or has been cancelled, exiting commit"
     )
 
 
@@ -271,34 +260,6 @@ def test_block__commmit_retry_error():
     for future in futures:
         assert future.done()
         assert future.exception() == error
-
-
-def test_monitor():
-    batch = create_batch(max_latency=5.0)
-    with mock.patch.object(time, "sleep") as sleep:
-        with mock.patch.object(type(batch), "_commit") as _commit:
-            batch.monitor()
-
-    # The monitor should have waited the given latency.
-    sleep.assert_called_once_with(5.0)
-
-    # Since `monitor` runs in its own thread, it should call
-    # the blocking commit implementation.
-    _commit.assert_called_once_with()
-
-
-def test_monitor_already_committed():
-    batch = create_batch(max_latency=5.0)
-    status = "something else"
-    batch._status = status
-    with mock.patch.object(time, "sleep") as sleep:
-        batch.monitor()
-
-    # The monitor should have waited the given latency.
-    sleep.assert_called_once_with(5.0)
-
-    # The status should not have changed.
-    assert batch._status == status
 
 
 def test_publish_updating_batch_size():
@@ -419,3 +380,116 @@ def test_publish_dict():
     )
     assert batch.messages == [expected_message]
     assert batch._futures == [future]
+
+
+def test_cancel():
+    batch = create_batch()
+    futures = (
+        batch.publish({"data": b"This is my message."}),
+        batch.publish({"data": b"This is another message."}),
+    )
+
+    batch.cancel(BatchCancellationReason.PRIOR_ORDERED_MESSAGE_FAILED)
+
+    # Assert all futures are cancelled with an error.
+    for future in futures:
+        exc = future.exception()
+        assert type(exc) is RuntimeError
+        assert exc.args[0] == BatchCancellationReason.PRIOR_ORDERED_MESSAGE_FAILED.value
+
+
+def test_do_not_commit_when_full_when_flag_is_off():
+    max_messages = 4
+    # Set commit_when_full flag to False
+    batch = create_batch(max_messages=max_messages, commit_when_full=False)
+    messages = (
+        types.PubsubMessage(data=b"foobarbaz"),
+        types.PubsubMessage(data=b"spameggs"),
+        types.PubsubMessage(data=b"1335020400"),
+    )
+
+    with mock.patch.object(batch, "commit") as commit:
+        # Publish 3 messages.
+        futures = [batch.publish(message) for message in messages]
+        assert len(futures) == 3
+
+        # When a fourth message is published, commit should not be called.
+        future = batch.publish(types.PubsubMessage(data=b"last one"))
+        assert commit.call_count == 0
+        assert future is None
+
+
+class BatchDoneCallbackTracker(object):
+    def __init__(self):
+        self.called = False
+        self.success = None
+
+    def __call__(self, success):
+        self.called = True
+        self.success = success
+
+
+def test_batch_done_callback_called_on_success():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # One response for one published message.
+    publish_response = types.PublishResponse(message_ids=["a"])
+
+    with mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert batch_done_callback_tracker.success
+
+
+def test_batch_done_callback_called_on_publish_failure():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # One response for one published message.
+    publish_response = types.PublishResponse(message_ids=["a"])
+
+    # Induce publish error.
+    error = google.api_core.exceptions.InternalServerError("uh oh")
+
+    with mock.patch.object(
+        type(batch.client.api),
+        "publish",
+        return_value=publish_response,
+        side_effect=error,
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert not batch_done_callback_tracker.success
+
+
+def test_batch_done_callback_called_on_publish_response_invalid():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # No message ids returned in successful publish response -> invalid.
+    publish_response = types.PublishResponse(message_ids=[])
+
+    with mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert not batch_done_callback_tracker.success

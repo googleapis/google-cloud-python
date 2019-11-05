@@ -26,4 +26,21 @@ class MessageTooLargeError(ValueError):
     """Attempt to publish a message that would exceed the server max size limit."""
 
 
-__all__ = ("MessageTooLargeError", "PublishError", "TimeoutError")
+class PublishToPausedOrderingKeyException(Exception):
+    """ Publish attempted to paused ordering key. To resume publishing, call
+        the resumePublish method on the publisher Client object with this
+        ordering key. Ordering keys are paused if an unrecoverable error
+        occurred during publish of a batch for that key.
+    """
+
+    def __init__(self, ordering_key):
+        self.ordering_key = ordering_key
+        super(PublishToPausedOrderingKeyException, self).__init__()
+
+
+__all__ = (
+    "MessageTooLargeError",
+    "PublishError",
+    "TimeoutError",
+    "PublishToPausedOrderingKeyException",
+)

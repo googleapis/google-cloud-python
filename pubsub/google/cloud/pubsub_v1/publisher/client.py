@@ -15,8 +15,11 @@
 from __future__ import absolute_import
 
 import copy
+import logging
 import os
 import pkg_resources
+import threading
+import time
 
 import grpc
 import six
@@ -29,15 +32,26 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 from google.cloud.pubsub_v1.publisher._batch import thread
-
+from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
+from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
 
 __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
+
+_LOGGER = logging.getLogger(__name__)
 
 _BLACKLISTED_METHODS = (
     "publish",
     "from_service_account_file",
     "from_service_account_json",
 )
+
+
+def _set_nested_value(container, value, keys):
+    current = container
+    for key in keys[:-1]:
+        current = current.setdefault(key, {})
+    current[keys[-1]] = value
+    return container
 
 
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=_BLACKLISTED_METHODS)
@@ -49,6 +63,9 @@ class Client(object):
     get sensible defaults.
 
     Args:
+        publisher_options (~google.cloud.pubsub_v1.types.PublisherOptions): The
+            options for the publisher client. Note that enabling message ordering will
+            override the publish retry timeout to be infinite.
         batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
             settings for batch publishing.
         kwargs (dict): Any additional arguments provided are sent as keyword
@@ -68,6 +85,11 @@ class Client(object):
         from google.cloud import pubsub_v1
 
         publisher_client = pubsub_v1.PublisherClient(
+            # Optional
+            publisher_options = pubsub_v1.types.PublisherOptions(
+                enable_message_ordering=False
+            ),
+
             # Optional
             batch_settings = pubsub_v1.types.BatchSettings(
                 max_bytes=1024,  # One kilobyte
@@ -94,9 +116,7 @@ class Client(object):
         )
     """
 
-    _batch_class = thread.Batch
-
-    def __init__(self, batch_settings=(), **kwargs):
+    def __init__(self, publisher_options=(), batch_settings=(), **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -125,16 +145,40 @@ class Client(object):
             transport = publisher_grpc_transport.PublisherGrpcTransport(channel=channel)
             kwargs["transport"] = transport
 
+        # For a transient failure, retry publishing the message infinitely.
+        self.publisher_options = types.PublisherOptions(*publisher_options)
+        self._enable_message_ordering = self.publisher_options[0]
+        if self._enable_message_ordering:
+            # Set retry timeout to "infinite" when message ordering is enabled.
+            # Note that this then also impacts messages added with an empty ordering
+            # key.
+            client_config = _set_nested_value(
+                kwargs.pop("client_config", {}),
+                2 ** 32,
+                [
+                    "interfaces",
+                    "google.pubsub.v1.Publisher",
+                    "retry_params",
+                    "messaging",
+                    "total_timeout_millis",
+                ],
+            )
+            kwargs["client_config"] = client_config
+
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         self.api = publisher_client.PublisherClient(**kwargs)
+        self._batch_class = thread.Batch
         self.batch_settings = types.BatchSettings(*batch_settings)
 
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
-        self._batches = {}
+        # (topic, ordering_key) => sequencers object
+        self._sequencers = {}
         self._is_stopped = False
+        # Thread created to commit all sequencers after a timeout.
+        self._commit_thread = None
 
     @classmethod
     def from_service_account_file(cls, filename, batch_settings=(), **kwargs):
@@ -167,44 +211,63 @@ class Client(object):
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
-    def _batch(self, topic, create=False, autocommit=True):
-        """Return the current batch for the provided topic.
+    def _delete_sequencer(self, topic, ordering_key):
+        """ Delete sequencer strate for (topic, ordering_key).
 
-        This will create a new batch if ``create=True`` or if no batch
-        currently exists.
+            Called when a sequencer is done publishing all messages.
+        """
+        with self._batch_lock:
+            sequencer_key = (topic, ordering_key)
+            del self._sequencers[sequencer_key]
+
+    def _get_or_create_sequencer(self, topic, ordering_key):
+        """ Get an existing sequencer or create a new one given the (topic,
+            ordering_key) pair.
+        """
+        sequencer_key = (topic, ordering_key)
+        sequencer = self._sequencers.get(sequencer_key)
+        if sequencer is None:
+            if ordering_key == "":
+                # TODO: Consider implementing _delete_sequencer for unordered
+                # sequencer.
+                sequencer = unordered_sequencer.UnorderedSequencer(self, topic)
+            else:
+                sequencer = ordered_sequencer.OrderedSequencer(
+                    self, topic, ordering_key, self._delete_sequencer
+                )
+            self._sequencers[sequencer_key] = sequencer
+
+        return sequencer
+
+    def resume_publish(self, topic, ordering_key):
+        """ Resume publish on an ordering key that has had unrecoverable errors.
 
         Args:
-            topic (str): A string representing the topic.
-            create (bool): Whether to create a new batch. Defaults to
-                :data:`False`. If :data:`True`, this will create a new batch
-                even if one already exists.
-            autocommit (bool): Whether to autocommit this batch. This is
-                primarily useful for debugging and testing, since it allows
-                the caller to avoid some side effects that batch creation
-                might have (e.g. spawning a worker to publish a batch).
+            topic (str): The topic to publish messages to.
+            ordering_key: A string that identifies related messages for which
+                publish order should be respected.
 
-        Returns:
-            ~.pubsub_v1._batch.Batch: The batch object.
+        Raises:
+            RuntimeError:
+                If called after publisher has been stopped by a `stop()` method
+                call.
+            ValueError:
+                If the topic/ordering key combination has not been seen before
+                by this client.
         """
-        # If there is no matching batch yet, then potentially create one
-        # and place it on the batches dictionary.
-        if not create:
-            batch = self._batches.get(topic)
-            if batch is None:
-                create = True
+        with self._batch_lock:
+            if self._is_stopped:
+                raise RuntimeError("Cannot resume publish on a stopped publisher.")
 
-        if create:
-            batch = self._batch_class(
-                autocommit=autocommit,
-                client=self,
-                settings=self.batch_settings,
-                topic=topic,
-            )
-            self._batches[topic] = batch
+            sequencer_key = (topic, ordering_key)
+            sequencer = self._sequencers.get(sequencer_key)
+            if sequencer is None:
+                raise ValueError(
+                    "The topic/ordering key combination has not been seen before."
+                )
+            sequencer.unpause()
 
-        return batch
-
-    def publish(self, topic, data, **attrs):
+    def publish(self, topic, data, ordering_key="", **attrs):
         """Publish a single message.
 
         .. note::
@@ -234,6 +297,11 @@ class Client(object):
             topic (str): The topic to publish messages to.
             data (bytes): A bytestring representing the message body. This
                 must be a bytestring.
+            ordering_key: A string that identifies related messages for which
+                publish order should be respected. Message ordering must be
+                enabled for this client to use this feature.
+                EXPERIMENTAL: This feature is currently available in a closed
+                alpha. Please contact the Cloud Pub/Sub team to use it.
             attrs (Mapping[str, str]): A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
 
@@ -245,14 +313,23 @@ class Client(object):
 
         Raises:
             RuntimeError:
-                If called after publisher has been stopped
-                by a `stop()` method call.
+                If called after publisher has been stopped by a `stop()` method
+                call.
+
+            pubsub_v1.publisher.exceptions.MessageTooLargeError: If publishing
+                the ``message`` would exceed the max size limit on the backend.
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
             raise TypeError(
                 "Data being published to Pub/Sub must be sent as a bytestring."
+            )
+
+        if not self._enable_message_ordering and ordering_key != "":
+            raise ValueError(
+                "Cannot publish a message with an ordering key when message "
+                "ordering is not enabled."
             )
 
         # Coerce all attributes to text strings.
@@ -268,21 +345,62 @@ class Client(object):
             )
 
         # Create the Pub/Sub message object.
-        message = types.PubsubMessage(data=data, attributes=attrs)
+        message = types.PubsubMessage(
+            data=data, ordering_key=ordering_key, attributes=attrs
+        )
 
-        # Delegate the publishing to the batch.
         with self._batch_lock:
             if self._is_stopped:
                 raise RuntimeError("Cannot publish on a stopped publisher.")
 
-            batch = self._batch(topic)
-            future = None
-            while future is None:
-                future = batch.publish(message)
-                if future is None:
-                    batch = self._batch(topic, create=True)
+            sequencer = self._get_or_create_sequencer(topic, ordering_key)
 
-        return future
+            # Delegate the publishing to the sequencer.
+            future = sequencer.publish(message)
+
+            # Create a timer thread if necessary to enforce the batching
+            # timeout.
+            self._ensure_commit_timer_runs_no_lock()
+
+            return future
+
+    def ensure_commit_timer_runs(self):
+        """ Ensure a commit timer thread is running.
+
+            If a commit timer thread is already running, this does nothing.
+        """
+        with self._batch_lock:
+            self._ensure_commit_timer_runs_no_lock()
+
+    def _ensure_commit_timer_runs_no_lock(self):
+        """ Ensure a commit timer thread is running, without taking
+            _batch_lock.
+
+            _batch_lock must be held before calling this method.
+        """
+        if not self._commit_thread and self.batch_settings.max_latency < float("inf"):
+            self._commit_thread = threading.Thread(
+                name="Thread-PubSubBatchCommitter",
+                target=self._wait_and_commit_sequencers,
+            )
+            self._commit_thread.start()
+
+    def _wait_and_commit_sequencers(self):
+        """ Wait up to the batching timeout, and commit all sequencers.
+        """
+        # Sleep for however long we should be waiting.
+        time.sleep(self.batch_settings.max_latency)
+        _LOGGER.debug("Commit thread is waking up")
+
+        with self._batch_lock:
+            if self._is_stopped:
+                return
+            self._commit_sequencers()
+            self._commit_thread = None
+
+    def _commit_sequencers(self):
+        for sequencer in self._sequencers.values():
+            sequencer.commit()
 
     def stop(self):
         """Immediately publish all outstanding messages.
@@ -297,6 +415,11 @@ class Client(object):
             This method is non-blocking. Use `Future()` objects
             returned by `publish()` to make sure all publish
             requests completed, either in success or error.
+
+        Raises:
+            RuntimeError:
+                If called after publisher has been stopped by a `stop()` method
+                call.
         """
         with self._batch_lock:
             if self._is_stopped:
@@ -304,5 +427,19 @@ class Client(object):
 
             self._is_stopped = True
 
-            for batch in self._batches.values():
-                batch.commit()
+            for sequencer in self._sequencers.values():
+                sequencer.stop()
+
+    # Used only for testing.
+    def _set_batch(self, topic, batch, ordering_key=""):
+        sequencer = self._get_or_create_sequencer(topic, ordering_key)
+        sequencer._set_batch(batch)
+
+    # Used only for testing.
+    def _set_batch_class(self, batch_class):
+        self._batch_class = batch_class
+
+    # Used only for testing.
+    def _set_sequencer(self, topic, sequencer, ordering_key=""):
+        sequencer_key = (topic, ordering_key)
+        self._sequencers[sequencer_key] = sequencer
