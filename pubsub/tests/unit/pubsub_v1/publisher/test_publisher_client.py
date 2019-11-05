@@ -225,7 +225,7 @@ def test_stop():
 
     # check that closed publisher doesn't accept new messages
     with pytest.raises(ValueError):
-        client.publish("topic1", pubsub_msg)
+        client.publish("topic1", b"msg2")
 
     with pytest.raises(ValueError):
         client.stop()

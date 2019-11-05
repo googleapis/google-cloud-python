@@ -252,7 +252,7 @@ class Client(object):
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
             raise TypeError(
-                "Data being published to Pub/Sub must be sent " "as a bytestring."
+                "Data being published to Pub/Sub must be sent as a bytestring."
             )
 
         # Coerce all attributes to text strings.
