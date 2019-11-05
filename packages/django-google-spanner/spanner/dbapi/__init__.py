@@ -19,6 +19,15 @@ from .exceptions import Error
 from .parse_utils import parse_spanner_url
 from .version import USER_AGENT
 
+### Globals that MUST be defined ###
+apilevel = "2.0"  # Implements the Python Database API specification 2.0 version.
+paramstyle = 'at-named'  # '@' is used by Cloud Spanner as the param style but
+                         # unfortunately that style isn't listed in any of the options 
+                         # https://www.python.org/dev/peps/pep-0249/#paramstyle
+                         # so we are going with a custom named paramstyle.
+threadsafety = 2  # Threads may share the module and connections but not cursors.
+
+
 def connect(spanner_url, credentials_uri=None):
     """Connects to Cloud Spanner.
 
