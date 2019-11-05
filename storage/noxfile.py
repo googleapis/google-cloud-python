@@ -40,7 +40,7 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def blacken(session):
     """Run black.
 
@@ -97,31 +97,31 @@ def unit(session):
     default(session)
 
 
-# @nox.session(python=["2.7", "3.6"])
-# def system(session):
-#     """Run the system test suite."""
+@nox.session(python=["2.7", "3.6"])
+def system(session):
+    """Run the system test suite."""
 
-#     # Sanity check: Only run system tests if the environment variable is set.
-#     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-#         session.skip("Credentials must be set via environment variable.")
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable.")
 
-#     # Use pre-release gRPC for system tests.
-#     session.install("--pre", "grpcio")
+    # Use pre-release gRPC for system tests.
+    session.install("--pre", "grpcio")
 
-#     # Install all test dependencies, then install local packages in-place.
-#     session.install("mock", "pytest")
-#     for local_dep in LOCAL_DEPS:
-#         session.install("-e", local_dep)
-#     systest_deps = ["../test_utils/", "../pubsub", "../kms"]
-#     for systest_dep in systest_deps:
-#         session.install("-e", systest_dep)
-#     session.install("-e", ".")
+    # Install all test dependencies, then install local packages in-place.
+    session.install("mock", "pytest")
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
+    systest_deps = ["../test_utils/", "../pubsub", "../kms"]
+    for systest_dep in systest_deps:
+        session.install("-e", systest_dep)
+    session.install("-e", ".")
 
-#     # Run py.test against the system tests.
-#     session.run("py.test", "--quiet", "tests/system.py", *session.posargs)
+    # Run py.test against the system tests.
+    session.run("py.test", "--quiet", "tests/system.py", *session.posargs)
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def cover(session):
     """Run the final coverage report.
 
