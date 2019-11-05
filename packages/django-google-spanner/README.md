@@ -1,6 +1,8 @@
 # spanner-orm
 Spanner Object Relation Mappers
 
+![](./assets/spanner-django.png)
+
 ## Installing it
 ```shell
 pip install .
