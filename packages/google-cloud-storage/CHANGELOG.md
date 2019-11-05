@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.22.0
+
+11-05-2019 10:22 PST
+
+
+### New Features
+- Add UBLA attrs to IAMConfiguration. ([#9475](https://github.com/googleapis/google-cloud-python/pull/9475))
+
 ## 1.21.0
 
 10-28-2019 21:52 PDT
