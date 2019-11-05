@@ -35,7 +35,7 @@ def create_batch(status=None, settings=types.BatchSettings()):
     """
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
-    batch = Batch(client, "topic_name", settings, autocommit=False)
+    batch = Batch(client, "topic_name", settings)
     if status:
         batch._status = status
     return batch

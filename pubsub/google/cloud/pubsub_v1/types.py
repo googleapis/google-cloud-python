@@ -30,6 +30,25 @@ from google.api_core.protobuf_helpers import get_messages
 from google.cloud.pubsub_v1.proto import pubsub_pb2
 
 
+# Define the default publisher options.
+#
+# This class is used when creating a publisher client to pass in options
+# to enable/disable features.
+PublisherOptions = collections.namedtuple(
+    "PublisherConfig", ["enable_message_ordering"]
+)
+PublisherOptions.__new__.__defaults__ = (False,)  # enable_message_ordering: False
+
+if sys.version_info >= (3, 5):
+    PublisherOptions.__doc__ = "The options for the publisher client."
+    PublisherOptions.enable_message_ordering.__doc__ = (
+        "Whether to order messages in a batch by a supplied ordering key."
+        "EXPERIMENTAL: Message ordering is an alpha feature that requires "
+        "special permissions to use. Please contact the Cloud Pub/Sub team for "
+        "more information."
+    )
+
+
 # Define the default values for batching.
 #
 # This class is used when creating a publisher or subscriber client, and

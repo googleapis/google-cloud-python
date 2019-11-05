@@ -62,15 +62,23 @@ class Batch(base.Batch):
         settings (~.pubsub_v1.types.BatchSettings): The settings for batch
             publishing. These should be considered immutable once the batch
             has been opened.
-        autocommit (bool): Whether to autocommit the batch when the time
-            has elapsed. Defaults to True unless ``settings.max_latency`` is
-            inf.
+        batch_done_callback (function): Callback called when the response
+            for a batch publish has been received. Called with one boolean 
+            argument: successfully published or a permanent error occurred.
+            Temporary errors are not surfaced because they are retried at a
+            lower level.
+        commit_when_full (bool): Whether to commit the batch when the batch
+            is full.
     """
 
-    def __init__(self, client, topic, settings, autocommit=True):
+    def __init__(
+        self, client, topic, settings, batch_done_callback=None, commit_when_full=True
+    ):
         self._client = client
         self._topic = topic
         self._settings = settings
+        self._batch_done_callback = batch_done_callback
+        self._commit_when_full = commit_when_full
 
         self._state_lock = threading.Lock()
         # These members are all communicated between threads; ensure that
@@ -86,15 +94,6 @@ class Batch(base.Batch):
         # of the PublishRequest message itself.
         self._base_request_size = types.PublishRequest(topic=topic).ByteSize()
         self._size = self._base_request_size
-
-        # If max latency is specified, start a thread to monitor the batch and
-        # commit when the max latency is reached.
-        self._thread = None
-        if autocommit and self.settings.max_latency < float("inf"):
-            self._thread = threading.Thread(
-                name="Thread-MonitorBatchPublisher", target=self.monitor
-            )
-            self._thread.start()
 
     @staticmethod
     def make_lock():
@@ -148,6 +147,20 @@ class Batch(base.Batch):
         """
         return self._status
 
+    def cancel(self):
+        """Completes pending futures with an exception. This method must be
+           called before publishing starts (ie: while the batch is still
+           accepting messages.)
+        """
+
+        # Cancel should not be called after sending has started.
+        assert self._status == base.BatchStatus.ACCEPTING_MESSAGES
+        with self._state_lock:
+            exc = RuntimeError("Message publish cancelled.")
+            for future in self._futures:
+                future.set_exception(exc)
+            self._status = base.BatchStatus.ERROR
+
     def commit(self):
         """Actually publish all of the messages on the active batch.
 
@@ -162,6 +175,7 @@ class Batch(base.Batch):
         If the current batch is **not** accepting messages, this method
         does nothing.
         """
+
         # Set the status to "starting" synchronously, to ensure that
         # this batch will necessarily not accept new messages.
         with self._state_lock:
@@ -195,7 +209,10 @@ class Batch(base.Batch):
                 # If, in the intervening period between when this method was
                 # called and now, the batch started to be committed, or
                 # completed a commit, then no-op at this point.
-                _LOGGER.debug("Batch is already in progress, exiting commit")
+                _LOGGER.debug(
+                    "Batch is already in progress or has been cancelled, "
+                    "exiting commit"
+                )
                 return
 
         # Once in the IN_PROGRESS state, no other thread can publish additional
@@ -215,12 +232,16 @@ class Batch(base.Batch):
         # Log how long the underlying request takes.
         start = time.time()
 
+        batch_transport_succeeded = True
         try:
+            # Performs retries for errors defined in retry_codes.publish in the
+            # publisher_client_config.py file.
             response = self._client.api.publish(self._topic, self._messages)
         except google.api_core.exceptions.GoogleAPIError as exc:
-            # We failed to publish, set the exception on all futures and
-            # exit.
+            # We failed to publish, even after retries, so set the exception on
+            # all futures and exit.
             self._status = base.BatchStatus.ERROR
+            batch_transport_succeeded = False
 
             for future in self._futures:
                 future.set_exception(exc)
@@ -256,20 +277,8 @@ class Batch(base.Batch):
                 len(self._futures),
             )
 
-    def monitor(self):
-        """Commit this batch after sufficient time has elapsed.
-
-        This simply sleeps for ``self.settings.max_latency`` seconds,
-        and then calls commit unless the batch has already been committed.
-        """
-        # NOTE: This blocks; it is up to the calling code to call it
-        #       in a separate thread.
-
-        # Sleep for however long we should be waiting.
-        time.sleep(self.settings.max_latency)
-
-        _LOGGER.debug("Monitor is waking up")
-        return self._commit()
+        if self._batch_done_callback is not None:
+            self._batch_done_callback(batch_transport_succeeded)
 
     def publish(self, message):
         """Publish a single message.
@@ -294,6 +303,9 @@ class Batch(base.Batch):
             pubsub_v1.publisher.exceptions.MessageTooLargeError: If publishing
                 the ``message`` would exceed the max size limit on the backend.
         """
+
+        assert self._status != base.BatchStatus.ERROR
+
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
@@ -333,7 +345,7 @@ class Batch(base.Batch):
 
         # Try to commit, but it must be **without** the lock held, since
         # ``commit()`` will try to obtain the lock.
-        if overflow:
+        if self._commit_when_full and overflow:
             self.commit()
 
         return future
