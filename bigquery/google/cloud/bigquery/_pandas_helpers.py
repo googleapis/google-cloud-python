@@ -110,8 +110,35 @@ if pyarrow:
         "TIME": pyarrow_time,
         "TIMESTAMP": pyarrow_timestamp,
     }
+    ARROW_SCALAR_IDS_TO_BQ = {
+        # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes
+        pyarrow.bool_().id: "BOOL",
+        pyarrow.int8().id: "INT64",
+        pyarrow.int16().id: "INT64",
+        pyarrow.int32().id: "INT64",
+        pyarrow.int64().id: "INT64",
+        pyarrow.uint8().id: "INT64",
+        pyarrow.uint16().id: "INT64",
+        pyarrow.uint32().id: "INT64",
+        pyarrow.uint64().id: "INT64",
+        pyarrow.float16().id: "FLOAT64",
+        pyarrow.float32().id: "FLOAT64",
+        pyarrow.float64().id: "FLOAT64",
+        pyarrow.time32("ms").id: "TIME",
+        pyarrow.time64("ns").id: "TIME",
+        pyarrow.timestamp("ns").id: "TIMESTAMP",
+        pyarrow.date32().id: "DATE",
+        pyarrow.date64().id: "DATETIME",  # because millisecond resolution
+        pyarrow.binary().id: "BYTES",
+        pyarrow.string().id: "STRING",  # also alias for pyarrow.utf8()
+        pyarrow.decimal128(38, scale=9).id: "NUMERIC",
+        # The exact decimal's scale and precision are not important, as only
+        # the type ID matters, and it's the same for all decimal128 instances.
+    }
+
 else:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
+    ARROW_SCALAR_IDS_TO_BQ = {}  # pragma: NO_COVER
 
 
 def bq_to_arrow_struct_data_type(field):
@@ -141,10 +168,11 @@ def bq_to_arrow_data_type(field):
             return pyarrow.list_(inner_type)
         return None
 
-    if field.field_type.upper() in schema._STRUCT_TYPES:
+    field_type_upper = field.field_type.upper() if field.field_type else ""
+    if field_type_upper in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
-    data_type_constructor = BQ_TO_ARROW_SCALARS.get(field.field_type.upper())
+    data_type_constructor = BQ_TO_ARROW_SCALARS.get(field_type_upper)
     if data_type_constructor is None:
         return None
     return data_type_constructor()
@@ -183,9 +211,12 @@ def bq_to_arrow_schema(bq_schema):
 
 def bq_to_arrow_array(series, bq_field):
     arrow_type = bq_to_arrow_data_type(bq_field)
+
+    field_type_upper = bq_field.field_type.upper() if bq_field.field_type else ""
+
     if bq_field.mode.upper() == "REPEATED":
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if bq_field.field_type.upper() in schema._STRUCT_TYPES:
+    if field_type_upper in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
     return pyarrow.array(series, type=arrow_type)
 
@@ -267,6 +298,8 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_schema_unused = set()
 
     bq_schema_out = []
+    unknown_type_fields = []
+
     for column, dtype in list_columns_and_indexes(dataframe):
         # Use provided type from schema, if present.
         bq_field = bq_schema_index.get(column)
@@ -278,11 +311,11 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         # Otherwise, try to automatically determine the type based on the
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
-        if not bq_type:
-            warnings.warn(u"Unable to determine type of column '{}'.".format(column))
-            return None
         bq_field = schema.SchemaField(column, bq_type)
         bq_schema_out.append(bq_field)
+
+        if bq_field.field_type is None:
+            unknown_type_fields.append(bq_field)
 
     # Catch any schema mismatch. The developer explicitly asked to serialize a
     # column, but it was not found.
@@ -292,7 +325,73 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
                 bq_schema_unused
             )
         )
-    return tuple(bq_schema_out)
+
+    # If schema detection was not successful for all columns, also try with
+    # pyarrow, if available.
+    if unknown_type_fields:
+        if not pyarrow:
+            msg = u"Could not determine the type of columns: {}".format(
+                ", ".join(field.name for field in unknown_type_fields)
+            )
+            warnings.warn(msg)
+            return None  # We cannot detect the schema in full.
+
+        # The augment_schema() helper itself will also issue unknown type
+        # warnings if detection still fails for any of the fields.
+        bq_schema_out = augment_schema(dataframe, bq_schema_out)
+
+    return tuple(bq_schema_out) if bq_schema_out else None
+
+
+def augment_schema(dataframe, current_bq_schema):
+    """Try to deduce the unknown field types and return an improved schema.
+
+    This function requires ``pyarrow`` to run. If all the missing types still
+    cannot be detected, ``None`` is returned. If all types are already known,
+    a shallow copy of the given schema is returned.
+
+    Args:
+        dataframe (pandas.DataFrame):
+            DataFrame for which some of the field types are still unknown.
+        current_bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+            A BigQuery schema for ``dataframe``. The types of some or all of
+            the fields may be ``None``.
+    Returns:
+        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]
+    """
+    augmented_schema = []
+    unknown_type_fields = []
+
+    for field in current_bq_schema:
+        if field.field_type is not None:
+            augmented_schema.append(field)
+            continue
+
+        arrow_table = pyarrow.array(dataframe[field.name])
+        detected_type = ARROW_SCALAR_IDS_TO_BQ.get(arrow_table.type.id)
+
+        if detected_type is None:
+            unknown_type_fields.append(field)
+            continue
+
+        new_field = schema.SchemaField(
+            name=field.name,
+            field_type=detected_type,
+            mode=field.mode,
+            description=field.description,
+            fields=field.fields,
+        )
+        augmented_schema.append(new_field)
+
+    if unknown_type_fields:
+        warnings.warn(
+            u"Pyarrow could not determine the type of columns: {}.".format(
+                ", ".join(field.name for field in unknown_type_fields)
+            )
+        )
+        return None
+
+    return augmented_schema
 
 
 def dataframe_to_arrow(dataframe, bq_schema):
