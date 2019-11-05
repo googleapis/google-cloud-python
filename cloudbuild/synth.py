@@ -40,6 +40,7 @@ s.move(
         'setup.py',
         'setup.cfg',
         '**/*.proto'
+        'google/cloud/devtools/__init__.py'  # declare this as a namespace package
     ],
 )
 
