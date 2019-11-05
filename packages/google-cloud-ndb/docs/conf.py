@@ -25,10 +25,6 @@ project = "ndb"
 copyright = "2018, Google"
 author = "Google APIs"
 
-# The full version, including alpha/beta/rc tags.
-release = google.cloud.ndb.__version__
-# The short X.Y version.
-version = ".".join(release.split(".")[:2])
 
 # -- General configuration ---------------------------------------------------
 
