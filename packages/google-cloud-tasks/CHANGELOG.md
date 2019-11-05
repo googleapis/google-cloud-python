@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## 1.3.0
+
+11-04-2019 10:06 PST
+
+### Implementation Changes
+- Add proto annotations (via synth) ([#9352](https://github.com/googleapis/google-cloud-python/pull/9352))
+
+### New Features
+- Add HTTP tasks, OAuth tokens, and OIDC tokens (via synth) ([#9588](https://github.com/googleapis/google-cloud-python/pull/9588))
+
+### Documentation
+- Tweak docstrings (via synth) ([#9433](https://github.com/googleapis/google-cloud-python/pull/9433))
+- Disambiguate client requests from cloud task requests ([#9398](https://github.com/googleapis/google-cloud-python/pull/9398))
+- Change requests intersphinx url (via synth) ([#9409](https://github.com/googleapis/google-cloud-python/pull/9409))
+- Update documentation (via synth) ([#9069](https://github.com/googleapis/google-cloud-python/pull/9069))
+- Remove compatibility badges from READMEs ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
 ## 1.2.1
 
 08-12-2019 13:50 PDT
