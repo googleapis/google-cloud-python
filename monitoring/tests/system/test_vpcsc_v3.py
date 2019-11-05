@@ -46,7 +46,7 @@ class TestVPCServiceControlV3(object):
             list(responses)
         except exceptions.PermissionDenied as e:
             logger.debug(e)
-            return e.message == "Request is prohibited by organization's policy"
+            return "Request is prohibited by organization's policy" in e.message
         except Exception as e:
             logger.debug(e)
             pass

@@ -53,7 +53,7 @@ class TestVPCServiceControl(object):
             print("responses: ", responses)
         except exceptions.PermissionDenied as e:
             print("PermissionDenied Exception: ", e)
-            return e.message == "Request is prohibited by organization's policy"
+            return "Request is prohibited by organization's policy" in e.message
         except Exception as e:
             print("Other Exception: ", e)
             pass

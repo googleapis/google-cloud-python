@@ -34,7 +34,7 @@ class TestVPCServiceControlV1(object):
         try:
             responses = call()
         except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
+            return "Request is prohibited by organization's policy" in e.message
         except:
             return False
         return False

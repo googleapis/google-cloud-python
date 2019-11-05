@@ -640,8 +640,8 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
                 break
         except google.api_core.exceptions.PermissionDenied as e:
             # Verify the PermissionDenied exception was due to VPC SC.
-            self.assertEqual(
-                e.message, "Request is prohibited by organization's policy"
+            self.assertIn(
+                "Request is prohibited by organization's policy", e.message
             )
             return
         except Exception as e:
