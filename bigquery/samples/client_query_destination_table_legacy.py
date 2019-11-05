@@ -24,15 +24,12 @@ def client_query_destination_table_legacy(client, table_id):
     # TODO(developer): Set table_id to the ID of the destination table.
     # table_id = "your-project.your_dataset.your_table_name"
 
-    job_config = bigquery.QueryJobConfig()
+    # Set the destination table and use_legacy_sql to True to use
+    # legacy SQL syntax.
+    job_config = bigquery.QueryJobConfig(
+        allow_large_results=True, destination=table_id, use_legacy_sql=True
+    )
 
-    # Set use_legacy_sql to True to use legacy SQL syntax.
-    job_config.use_legacy_sql = True
-
-    # Set the destination table.
-    table = client.get_table(table_id)  # Make an API request.
-    job_config.destination = table
-    job_config.allow_large_results = True
     sql = """
         SELECT corpus
         FROM [bigquery-public-data:samples.shakespeare]

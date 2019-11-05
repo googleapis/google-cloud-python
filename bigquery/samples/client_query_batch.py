@@ -21,10 +21,11 @@ def client_query_batch(client):
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    job_config = bigquery.QueryJobConfig()
+    job_config = bigquery.QueryJobConfig(
+        # Run at batch priority, which won't count toward concurrent rate limit.
+        priority=bigquery.QueryPriority.BATCH
+    )
 
-    # Run at batch priority, which won't count toward concurrent rate limit.
-    job_config.priority = bigquery.QueryPriority.BATCH
     sql = """
         SELECT corpus
         FROM `bigquery-public-data.samples.shakespeare`

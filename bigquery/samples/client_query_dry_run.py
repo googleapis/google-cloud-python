@@ -21,9 +21,7 @@ def client_query_dry_run(client):
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()
 
-    job_config = bigquery.QueryJobConfig()
-    job_config.dry_run = True
-    job_config.use_query_cache = False
+    job_config = bigquery.QueryJobConfig(dry_run=True, use_query_cache=False)
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(

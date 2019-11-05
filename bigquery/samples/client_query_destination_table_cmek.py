@@ -30,11 +30,12 @@ def client_query_destination_table_cmek(client, table_id, kms_key_name):
     #     your-project, location, your-ring, your-key
     # )
 
-    job_config = bigquery.QueryJobConfig()
-    job_config.destination = table_id
-
-    encryption_config = bigquery.EncryptionConfiguration(kms_key_name=kms_key_name)
-    job_config.destination_encryption_configuration = encryption_config
+    job_config = bigquery.QueryJobConfig(
+        destination=table_id,
+        destination_encryption_configuration=bigquery.EncryptionConfiguration(
+            kms_key_name=kms_key_name
+        ),
+    )
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(

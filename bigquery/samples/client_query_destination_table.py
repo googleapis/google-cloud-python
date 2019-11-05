@@ -24,10 +24,8 @@ def client_query_destination_table(client, table_id):
     # TODO(developer): Set table_id to the ID of the destination table.
     # table_id = "your-project.your_dataset.your_table_name"
 
-    job_config = bigquery.QueryJobConfig()
+    job_config = bigquery.QueryJobConfig(destination=table_id)
 
-    table = client.get_table(table_id)  # Make an API request.
-    job_config.destination = table
     sql = """
         SELECT corpus
         FROM `bigquery-public-data.samples.shakespeare`

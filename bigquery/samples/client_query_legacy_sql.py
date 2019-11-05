@@ -28,8 +28,7 @@ def client_query_legacy_sql(client):
     )
 
     # Set use_legacy_sql to True to use legacy SQL syntax.
-    job_config = bigquery.QueryJobConfig()
-    job_config.use_legacy_sql = True
+    job_config = bigquery.QueryJobConfig(use_legacy_sql=True)
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(query, job_config=job_config)  # Make an API request.
