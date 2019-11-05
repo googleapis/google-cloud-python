@@ -543,7 +543,9 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         with self.assertRaises(Conflict):
-            client.create_bucket(bucket_name, project=other_project, user_project=user_project)
+            client.create_bucket(
+                bucket_name, project=other_project, user_project=user_project
+            )
 
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
@@ -585,6 +587,102 @@ class TestClient(unittest.TestCase):
         json_expected = {"name": bucket_name}
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
+
+    def test_create_w_missing_client_project(self):
+        client = self._make_one(project=None)
+
+        with self.assertRaises(ValueError):
+            client.create_bucket("bucket")
+
+    def test_create_w_predefined_acl_invalid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.create_bucket(BUCKET_NAME, predefined_acl="bogus")
+
+    def test_create_w_predefined_acl_valid(self):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+
+        client = Client(project=PROJECT)
+        connection = _make_connection(DATA)
+        client._base_connection = connection
+        bucket = client.create_bucket(BUCKET_NAME, predefined_acl="publicRead")
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT, "predefinedAcl": "publicRead"},
+            data=DATA,
+            _target_object=bucket,
+        )
+
+    def test_create_w_predefined_default_object_acl_invalid(self):
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.create_bucket(BUCKET_NAME, predefined_default_object_acl="bogus")
+
+    def test_create_w_predefined_default_object_acl_valid(self):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+
+        client = Client(project=PROJECT)
+        connection = _make_connection(DATA)
+        client._base_connection = connection
+        bucket = client.create_bucket(
+            BUCKET_NAME, predefined_default_object_acl="publicRead"
+        )
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={
+                "project": PROJECT,
+                "predefinedDefaultObjectAcl": "publicRead",
+            },
+            data=DATA,
+            _target_object=bucket,
+        )
+
+    def test_create_w_explicit_location(self):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        LOCATION = "us-central1"
+        DATA = {"location": LOCATION, "name": BUCKET_NAME}
+
+        connection = _make_connection(
+            DATA, "{'location': 'us-central1', 'name': 'bucket-name'}"
+        )
+
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = client.create_bucket(BUCKET_NAME, location=LOCATION)
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            data=DATA,
+            _target_object=bucket,
+            query_params={"project": "PROJECT"},
+        )
+        self.assertEqual(bucket.location, LOCATION)
 
     def test_create_bucket_with_string_success(self):
         from google.cloud.storage.bucket import Bucket
