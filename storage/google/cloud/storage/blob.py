@@ -43,6 +43,8 @@ from six.moves.urllib.parse import urlunsplit
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
+from google.resumable_media.requests import RawDownload
+from google.resumable_media.requests import RawChunkedDownload
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
@@ -591,7 +593,14 @@ class Blob(_PropertyMixin):
         return _add_query_parameters(base_url, name_value_pairs)
 
     def _do_download(
-        self, transport, file_obj, download_url, headers, start=None, end=None
+        self,
+        transport,
+        file_obj,
+        download_url,
+        headers,
+        start=None,
+        end=None,
+        raw_download=False,
     ):
         """Perform a download without any error handling.
 
@@ -617,14 +626,30 @@ class Blob(_PropertyMixin):
 
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
+
+        :type raw_download: bool
+        :param raw_download:
+            Optional, If true, download the object without any expansion.
         """
         if self.chunk_size is None:
-            download = Download(
+            if raw_download:
+                klass = RawDownload
+            else:
+                klass = Download
+
+            download = klass(
                 download_url, stream=file_obj, headers=headers, start=start, end=end
             )
             download.consume(transport)
+
         else:
-            download = ChunkedDownload(
+
+            if raw_download:
+                klass = RawChunkedDownload
+            else:
+                klass = ChunkedDownload
+
+            download = klass(
                 download_url,
                 self.chunk_size,
                 file_obj,
@@ -636,7 +661,9 @@ class Blob(_PropertyMixin):
             while not download.finished:
                 download.consume_next_chunk(transport)
 
-    def download_to_file(self, file_obj, client=None, start=None, end=None):
+    def download_to_file(
+        self, file_obj, client=None, start=None, end=None, raw_download=False
+    ):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -676,6 +703,10 @@ class Blob(_PropertyMixin):
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
 
+        :type raw_download: bool
+        :param raw_download:
+            Optional, If true, download the object without any expansion.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         download_url = self._get_download_url()
@@ -684,11 +715,15 @@ class Blob(_PropertyMixin):
 
         transport = self._get_transport(client)
         try:
-            self._do_download(transport, file_obj, download_url, headers, start, end)
+            self._do_download(
+                transport, file_obj, download_url, headers, start, end, raw_download
+            )
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def download_to_filename(self, filename, client=None, start=None, end=None):
+    def download_to_filename(
+        self, filename, client=None, start=None, end=None, raw_download=False
+    ):
         """Download the contents of this blob into a named file.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -708,11 +743,21 @@ class Blob(_PropertyMixin):
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
 
+        :type raw_download: bool
+        :param raw_download:
+            Optional, If true, download the object without any expansion.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         try:
             with open(filename, "wb") as file_obj:
-                self.download_to_file(file_obj, client=client, start=start, end=end)
+                self.download_to_file(
+                    file_obj,
+                    client=client,
+                    start=start,
+                    end=end,
+                    raw_download=raw_download,
+                )
         except resumable_media.DataCorruption:
             # Delete the corrupt downloaded file.
             os.remove(filename)
@@ -723,7 +768,7 @@ class Blob(_PropertyMixin):
             mtime = time.mktime(updated.timetuple())
             os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, client=None, start=None, end=None):
+    def download_as_string(self, client=None, start=None, end=None, raw_download=False):
         """Download the contents of this blob as a bytes object.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -740,12 +785,22 @@ class Blob(_PropertyMixin):
         :type end: int
         :param end: Optional, The last byte in a range to be downloaded.
 
+        :type raw_download: bool
+        :param raw_download:
+            Optional, If true, download the object without any expansion.
+
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client, start=start, end=end)
+        self.download_to_file(
+            string_buffer,
+            client=client,
+            start=start,
+            end=end,
+            raw_download=raw_download,
+        )
         return string_buffer.getvalue()
 
     def _get_content_type(self, content_type, filename=None):
