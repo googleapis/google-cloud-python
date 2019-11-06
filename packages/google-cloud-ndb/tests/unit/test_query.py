@@ -1880,6 +1880,25 @@ class TestQuery:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query")
+    def test_map_empty_result_set(_datastore_query):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+        _datastore_query.iterate.return_value = DummyQueryIterator(())
+
+        def callback(result):  # pragma: NO COVER
+            raise Exception("Shouldn't get called.")
+
+        query = query_module.Query()
+        assert query.map(callback) == []
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query")
     def test_map_async(_datastore_query):
         class DummyQueryIterator:
             def __init__(self, items):

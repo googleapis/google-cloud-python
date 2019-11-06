@@ -1324,6 +1324,18 @@ def test_map(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_map_empty_result_set(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty()
+
+    def somefunc(x):
+        raise Exception("Shouldn't be called.")
+
+    query = SomeKind.query()
+    assert query.map(somefunc) == []
+
+
+@pytest.mark.usefixtures("client_context")
 def test_gql(ds_entity):
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()

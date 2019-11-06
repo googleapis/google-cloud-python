@@ -2031,7 +2031,11 @@ class Query(object):
                 mapped = future
             futures.append(mapped)
 
-        mapped_results = yield futures
+        if futures:
+            mapped_results = yield futures
+        else:
+            mapped_results = []
+
         raise tasklets.Return(mapped_results)
 
     @_query_options
