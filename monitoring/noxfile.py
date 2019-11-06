@@ -121,16 +121,6 @@ def system(session):
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
-    # Additional setup for VPCSC system tests
-    in_vpc = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false")
-    if in_vpc.lower() != "true":
-        # Unset PROJECT_ID, since VPCSC system tests expect this to be a project
-        # within the VPCSC perimeter.
-        env = {
-            "PROJECT_ID": "",
-            "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": os.environ.get("PROJECT_ID"),
-        }
-
     # Run py.test against the system tests.
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, env=env, *session.posargs)
