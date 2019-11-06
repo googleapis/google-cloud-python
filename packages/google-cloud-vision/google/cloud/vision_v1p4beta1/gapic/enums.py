@@ -26,11 +26,11 @@ class Likelihood(enum.IntEnum):
 
     Attributes:
       UNKNOWN (int): Unknown likelihood.
-      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
-      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
-      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
-      LIKELY (int): It is likely that the image belongs to the specified vertical.
-      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
+      VERY_UNLIKELY (int): It is very unlikely.
+      UNLIKELY (int): It is unlikely.
+      POSSIBLE (int): It is possible.
+      LIKELY (int): It is likely.
+      VERY_LIKELY (int): It is very likely.
     """
 
     UNKNOWN = 0

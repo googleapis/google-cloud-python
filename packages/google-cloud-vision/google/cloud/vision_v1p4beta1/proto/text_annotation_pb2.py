@@ -1058,7 +1058,7 @@ Paragraph = _reflection.GeneratedProtocolMessageType(
           corner it becomes: 2----3 \| \| 1----0 and the vertex order
           will still be (0, 1, 2, 3).
       words:
-          List of words in this paragraph.
+          List of all words in this paragraph.
       confidence:
           Confidence of the OCR results for the paragraph. Range [0, 1].
   """,
@@ -1120,7 +1120,7 @@ Symbol = _reflection.GeneratedProtocolMessageType(
           text is read in the 'natural' orientation. For example: \*
           when the text is horizontal it might look like: 0----1 \| \| 3
           ----2 \* when it's rotated 180 degrees around the top-left
-          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          corner it becomes: 2----3 \| \| 1----0 and the vertex order
           will still be (0, 1, 2, 3).
       text:
           The actual UTF-8 representation of the symbol.
