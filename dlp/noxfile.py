@@ -122,9 +122,7 @@ def system(session):
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
-        session.run(
-            "py.test", "--quiet", system_test_folder_path, *session.posargs
-        )
+        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
 @nox.session(python="3.7")
