@@ -655,7 +655,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         for session in SESSIONS:
             session.create.assert_not_called()
             txn = session._transaction
-            self.assertTrue(txn._begun)
+            txn.begin.assert_called_once_with()
 
         self.assertTrue(pool._pending_sessions.empty())
 
@@ -684,7 +684,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         for session in SESSIONS:
             session.create.assert_not_called()
             txn = session._transaction
-            self.assertTrue(txn._begun)
+            txn.begin.assert_called_once_with()
 
         self.assertTrue(pool._pending_sessions.empty())
 
@@ -717,7 +717,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertIs(queued, session)
 
         self.assertEqual(len(pending._items), 0)
-        self.assertFalse(txn._begun)
+        txn.begin.assert_not_called()
 
     def test_put_non_full_w_committed_txn(self):
         pool = self._make_one(size=1)
@@ -726,7 +726,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         database = _Database("name")
         session = _Session(database)
         committed = session.transaction()
-        committed._committed = True
+        committed.committed = True
 
         pool.put(session)
 
@@ -735,7 +735,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertEqual(len(pending._items), 1)
         self.assertIs(pending._items[0], session)
         self.assertIsNot(session._transaction, committed)
-        self.assertFalse(session._transaction._begun)
+        txn.begin.assert_not_called()
 
     def test_put_non_full(self):
         pool = self._make_one(size=1)
@@ -761,7 +761,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         pool._sessions = _Queue()
 
         database = _Database("name")
-        TRANSACTIONS = [_Transaction()]
+        TRANSACTIONS = [_make_transaction(object())]
         PENDING_SESSIONS = [_Session(database, transaction=txn) for txn in TRANSACTIONS]
 
         pending = pool._pending_sessions = _Queue(*PENDING_SESSIONS)
@@ -770,7 +770,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         pool.begin_pending_transactions()  # no raise
 
         for txn in TRANSACTIONS:
-            self.assertTrue(txn._begun)
+            txn.begin.assert_called_once_with()
 
         self.assertTrue(pending.empty())
 
@@ -831,18 +831,10 @@ class TestSessionCheckout(unittest.TestCase):
         self.assertEqual(pool._got, {"foo": "bar"})
 
 
-class _Transaction(object):
+def _make_transaction(*args, **kw):
+    from google.cloud.spanner_v1.transaction import Transaction
 
-    _begun = False
-    _committed = False
-    _rolled_back = False
-
-    def begin(self):
-        self._begun = True
-
-    @property
-    def committed(self):
-        return self._committed
+    return mock.create_autospec(Transaction)(*args, **kw)
 
 
 @total_ordering
@@ -873,7 +865,7 @@ class _Session(object):
             raise NotFound("unknown session")
 
     def transaction(self):
-        txn = self._transaction = _Transaction()
+        txn = self._transaction = _make_transaction(self)
         return txn
 
 
