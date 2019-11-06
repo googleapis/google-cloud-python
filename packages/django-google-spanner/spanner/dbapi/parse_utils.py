@@ -198,10 +198,14 @@ def validate_instance_config(instance_config):
     Returns:
         A non-empty string on validation failure or None if properly validated.
     """
-    matches = reINSTANCE_CONFIG.findall(instance_config or '')
+    match = reINSTANCE_CONFIG.match(instance_config or '')
+    if not match:
+        return "'%s' does not match pattern %s" % (instance_config, reINSTANCE_CONFIG.pattern)
+
+    matches = match.groups()
     if len(matches) != reINSTANCE_CONFIG.groups:
-        return '%s does not match pattern %s' % (
-                        instance_config, reINSTANCE_CONFIG.pattern)
+        return "'%s' does not match pattern %s\ngot %s:: %s" % (
+                        instance_config, reINSTANCE_CONFIG.pattern, matches, reINSTANCE_CONFIG.groups)
 
     return None
 

@@ -16,7 +16,8 @@ from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    extract_connection_params, parse_spanner_url,
+    extract_connection_params, parse_spanner_url, reINSTANCE_CONFIG,
+    validate_instance_config,
 )
 
 
@@ -134,3 +135,28 @@ class ParseUtilsTests(TestCase):
         got_by_dict = extract_connection_params(by_dict)
 
         self.assertEqual(got_by_spanner_url, got_by_dict, 'No parity between equivalent configs')
+
+    def test_validate_instance_config(self):
+        configs = [
+                'projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2',
+                'projects/odeke-sandbox/instanceConfigs/regional-us-west2',
+        ]
+
+        for config in configs:
+            got = validate_instance_config(config)
+            self.assertEqual(got, None, "expected '%s' to pass" % config)
+
+    def test_validate_instance_config_bad(self):
+        cases = [
+                ('', "'' does not match pattern " + reINSTANCE_CONFIG.pattern,),
+                (
+                    '    projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2',
+                    "'    projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2'"
+                    " does not match pattern " + reINSTANCE_CONFIG.pattern,),
+                ('projects/odeke-sandbox/instanceConfigs/regional-us-west2', None,),
+        ]
+
+        for tt in cases:
+            config, want_err = tt
+            got = validate_instance_config(config)
+            self.assertEqual(got, want_err, "expected '%s' to error" % config)
