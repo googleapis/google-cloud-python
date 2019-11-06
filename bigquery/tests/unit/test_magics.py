@@ -39,6 +39,7 @@ try:
     from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+from google.cloud import bigquery
 from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery import magics
@@ -334,6 +335,37 @@ def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
         magics._make_bqstorage_client(True, credentials_mock)
 
     assert "grpcio" in str(exc_context.value)
+
+
+def test__create_dataset_if_necessary_exists():
+    project = "project_id"
+    dataset_id = "dataset_id"
+    dataset_reference = bigquery.dataset.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_reference)
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+    with client_patch as client_mock:
+        client = client_mock()
+        client.project = project
+        client.get_dataset.result_value = dataset
+        magics._create_dataset_if_necessary(client, dataset_id)
+        client.create_dataset.assert_not_called()
+
+
+def test__create_dataset_if_necessary_not_exist():
+    project = "project_id"
+    dataset_id = "dataset_id"
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+    with client_patch as client_mock:
+        client = client_mock()
+        client.location = "us"
+        client.project = project
+        client.get_dataset.side_effect = exceptions.NotFound("dataset not found")
+        magics._create_dataset_if_necessary(client, dataset_id)
+        client.create_dataset.assert_called_once()
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -1199,3 +1231,62 @@ def test_bigquery_magic_omits_tracebacks_from_error_message():
     assert "400 Syntax error in SQL query" in output
     assert "Traceback (most recent call last)" not in output
     assert "Syntax error" not in captured_io.stdout
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_destination_table_invalid_format():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
+    client_patch = mock.patch(
+        "google.cloud.bigquery.magics.bigquery.Client", autospec=True
+    )
+
+    with client_patch, default_patch, pytest.raises(ValueError) as exc_context:
+        ip.run_cell_magic(
+            "bigquery", "--destination_table dataset", "SELECT foo FROM WHERE LIMIT bar"
+        )
+    error_msg = str(exc_context.value)
+    assert (
+        "--destination_table should be in a "
+        "<dataset_id>.<table_id> format." in error_msg
+    )
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_destination_table():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    create_dataset_if_necessary_patch = mock.patch(
+        "google.cloud.bigquery.magics._create_dataset_if_necessary", autospec=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics._run_query", autospec=True
+    )
+
+    with create_dataset_if_necessary_patch, run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery",
+            "--destination_table dataset_id.table_id",
+            "SELECT foo FROM WHERE LIMIT bar",
+        )
+
+        job_config_used = run_query_mock.call_args_list[0][1]["job_config"]
+        assert job_config_used.allow_large_results is True
+        assert job_config_used.create_disposition == "CREATE_IF_NEEDED"
+        assert job_config_used.write_disposition == "WRITE_TRUNCATE"
+        assert job_config_used.destination.dataset_id == "dataset_id"
+        assert job_config_used.destination.table_id == "table_id"
