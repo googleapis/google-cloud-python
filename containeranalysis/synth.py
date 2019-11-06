@@ -33,30 +33,42 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-excludes = ["nox.py", "setup.py", "google/cloud/containeranalysis_v1/proto", "README.rst", "docs/index.rst"]
+excludes = [
+    "nox.py",
+    "setup.py",
+    "google/cloud/containeranalysis_v1/proto",
+    "google/cloud/devtools/__init__.py",  # other packages also use this namespace
+    "README.rst",
+    "docs/index.rst",
+]
 
 s.move(library, excludes=excludes)
 # .proto files end up in the wrong place by default
-s.move(library / "google/cloud/containeranalysis_v1/proto", "google/cloud/devtools/containeranalysis_v1/proto")
-
+s.move(
+    library / "google/cloud/containeranalysis_v1/proto",
+    "google/cloud/devtools/containeranalysis_v1/proto",
+)
 
 # Insert helper method to get grafeas client
-s.replace("google/**/container_analysis_client.py", 
-r"""_GAPIC_LIBRARY_VERSION = pkg_resources\.get_distribution\(
+s.replace(
+    "google/**/container_analysis_client.py",
+    r"""_GAPIC_LIBRARY_VERSION = pkg_resources\.get_distribution\(
     'google-cloud-containeranalysis',
 \)\.version""",
-r"""from grafeas import grafeas_v1
+    r"""from grafeas import grafeas_v1
 from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     "google-cloud-containeranalysis"
 ).version
-""")
+""",
+)
 
-s.replace("google/**/container_analysis_client.py",
-r'''    \# Service calls
-    def set_iam_policy\(''',
-r'''    def get_grafeas_client(self):
+s.replace(
+    "google/**/container_analysis_client.py",
+    r"""    \# Service calls
+    def set_iam_policy\(""",
+    r'''    def get_grafeas_client(self):
         """Returns an equivalent grafeas client.
 
         Returns:
@@ -69,11 +81,12 @@ r'''    def get_grafeas_client(self):
         return grafeas_v1.GrafeasClient(grafeas_transport)
 
     # Service calls
-    def set_iam_policy(''')
+    def set_iam_policy(''',
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=51, cov_level=51)
+templated_files = common.py_library(unit_cov_level=45, cov_level=45)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
