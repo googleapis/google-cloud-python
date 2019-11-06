@@ -280,8 +280,8 @@ class ImageAnnotatorClient(object):
             >>> response = client.batch_annotate_files(requests)
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateFileRequest]]): The list of file annotation requests. Right now we support only one
-                AnnotateFileRequest in BatchAnnotateFilesRequest.
+            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateFileRequest]]): Required. The list of file annotation requests. Right now we support only
+                one AnnotateFileRequest in BatchAnnotateFilesRequest.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p4beta1.types.AnnotateFileRequest`
@@ -363,7 +363,7 @@ class ImageAnnotatorClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest]]): Required. Individual image annotation requests for this batch.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest`
@@ -451,7 +451,7 @@ class ImageAnnotatorClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AsyncAnnotateFileRequest]]): Individual async file annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AsyncAnnotateFileRequest]]): Required. Individual async file annotation requests for this batch.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p4beta1.types.AsyncAnnotateFileRequest`
