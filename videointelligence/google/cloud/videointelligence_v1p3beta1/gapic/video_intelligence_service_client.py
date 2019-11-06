@@ -243,19 +243,19 @@ class VideoIntelligenceServiceClient(object):
                 request as ``input_content``. If set, ``input_content`` should be unset.
             input_content (bytes): The video data bytes. If unset, the input video(s) should be specified
                 via ``input_uri``. If set, ``input_uri`` should be unset.
-            features (list[~google.cloud.videointelligence_v1p3beta1.types.Feature]): Requested video annotation features.
+            features (list[~google.cloud.videointelligence_v1p3beta1.types.Feature]): Required. Requested video annotation features.
             video_context (Union[dict, ~google.cloud.videointelligence_v1p3beta1.types.VideoContext]): Additional video context and/or feature-specific parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.videointelligence_v1p3beta1.types.VideoContext`
-            output_uri (str): Optional location where the output (in JSON format) should be stored.
+            output_uri (str): Optional. Location where the output (in JSON format) should be stored.
                 Currently, only `Google Cloud
                 Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
                 must be specified in the following format: ``gs://bucket-id/object-id``
                 (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For
                 more information, see `Request
                 URIs <https://cloud.google.com/storage/docs/reference-uris>`__.
-            location_id (str): Optional cloud region where annotation should take place. Supported
+            location_id (str): Optional. Cloud region where annotation should take place. Supported
                 cloud regions: ``us-east1``, ``us-west1``, ``europe-west1``,
                 ``asia-east1``. If no region is specified, a region will be determined
                 based on video file location.
