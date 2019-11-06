@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## 0.2.0
+
+11-06-2019 10:39 PST
+
+
+### Implementation Changes
+- `query.map()` and `query.map_async()` hanging with empty result set. ([#230](https://github.com/googleapis/python-ndb/pull/230))
+- remove dunder version ([#202](https://github.com/googleapis/python-ndb/pull/202))
+- Check context ([#211](https://github.com/googleapis/python-ndb/pull/211))
+- Fix `Model._gql`. ([#223](https://github.com/googleapis/python-ndb/pull/223))
+- Update intersphinx mapping ([#206](https://github.com/googleapis/python-ndb/pull/206))
+- do not set meanings for compressed property when it has no value ([#200](https://github.com/googleapis/python-ndb/pull/200))
+
+### New Features
+- Python 2.7 compatibility ([#203](https://github.com/googleapis/python-ndb/pull/203))
+- Add `tzinfo` to DateTimeProperty. ([#226](https://github.com/googleapis/python-ndb/pull/226))
+- Implement `_prepare_for_put` for `StructuredProperty` and `LocalStructuredProperty`. ([#221](https://github.com/googleapis/python-ndb/pull/221))
+- Implement ``Query.map`` and ``Query.map_async``. ([#218](https://github.com/googleapis/python-ndb/pull/218))
+- Allow class member values in projection and distinct queries  ([#214](https://github.com/googleapis/python-ndb/pull/214))
+- Implement ``Future.cancel()`` ([#204](https://github.com/googleapis/python-ndb/pull/204))
+
+### Documentation
+- Update README to include Python 2 support. ([#231](https://github.com/googleapis/python-ndb/pull/231))
+- Fix typo in MIGRATION_NOTES.md ([#208](https://github.com/googleapis/python-ndb/pull/208))
+- Spelling fixes. ([#209](https://github.com/googleapis/python-ndb/pull/209))
+- Add spell checking dependencies for documentation build. ([#196](https://github.com/googleapis/python-ndb/pull/196))
+
+### Internal / Testing Changes
+- Enable release-please ([#228](https://github.com/googleapis/python-ndb/pull/228))
+- Introduce local redis for tests ([#191](https://github.com/googleapis/python-ndb/pull/191))
+- Use .kokoro configs from templates. ([#194](https://github.com/googleapis/python-ndb/pull/194))
+
 ## 0.1.0
 
 09-10-2019 13:43 PDT

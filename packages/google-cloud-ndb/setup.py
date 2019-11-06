@@ -30,7 +30,7 @@ def main():
 
     setuptools.setup(
         name="google-cloud-ndb",
-        version = "0.1.0",
+        version = "0.2.0",
         description="NDB library for Google Cloud Datastore",
         long_description=readme,
         long_description_content_type="text/markdown",
@@ -50,6 +50,8 @@ def main():
             "Programming Language :: Python :: 3",
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 2",
+            "Programming Language :: Python :: 2.7",
             "Operating System :: OS Independent",
             "Topic :: Internet",
         ],
