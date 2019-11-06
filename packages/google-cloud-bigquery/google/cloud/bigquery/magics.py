@@ -31,6 +31,10 @@
         this parameter is used. If an error occurs during the query execution,
         the corresponding ``QueryJob`` instance (if available) is stored in
         the variable instead.
+    * ``--destination_table`` (optional, line argument):
+        A dataset and table to store the query results. If table does not exists,
+        it will be created. If table already exists, its data will be overwritten.
+        Variable should be in a format <dataset_id>.<table_id>.
     * ``--project <project>`` (optional, line argument):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
@@ -145,6 +149,7 @@ except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
 
 from google.api_core import client_info
+from google.api_core.exceptions import NotFound
 import google.auth
 from google.cloud import bigquery
 from google.cloud.bigquery.dbapi import _helpers
@@ -336,11 +341,43 @@ def _run_query(client, query, job_config=None):
     return query_job
 
 
+def _create_dataset_if_necessary(client, dataset_id):
+    """Create a dataset in the current project if it doesn't exist.
+
+    Args:
+        client (google.cloud.bigquery.client.Client):
+            Client to bundle configuration needed for API requests.
+        dataset_id (str):
+            Dataset id.
+    """
+    dataset_reference = bigquery.dataset.DatasetReference(client.project, dataset_id)
+    try:
+        dataset = client.get_dataset(dataset_reference)
+        return
+    except NotFound:
+        pass
+    dataset = bigquery.Dataset(dataset_reference)
+    dataset.location = client.location
+    print("Creating dataset: {}".format(dataset_id))
+    dataset = client.create_dataset(dataset)
+
+
 @magic_arguments.magic_arguments()
 @magic_arguments.argument(
     "destination_var",
     nargs="?",
     help=("If provided, save the output to this variable instead of displaying it."),
+)
+@magic_arguments.argument(
+    "--destination_table",
+    type=str,
+    default=None,
+    help=(
+        "If provided, save the output of the query to a new BigQuery table. "
+        "Variable should be in a format <dataset_id>.<table_id>. "
+        "If table does not exists, it will be created. "
+        "If table already exists, its data will be overwritten."
+    ),
 )
 @magic_arguments.argument(
     "--project",
@@ -484,6 +521,21 @@ def _cell_magic(line, query):
     job_config.query_parameters = params
     job_config.use_legacy_sql = args.use_legacy_sql
     job_config.dry_run = args.dry_run
+
+    if args.destination_table:
+        split = args.destination_table.split(".")
+        if len(split) != 2:
+            raise ValueError(
+                "--destination_table should be in a <dataset_id>.<table_id> format."
+            )
+        dataset_id, table_id = split
+        job_config.allow_large_results = True
+        dataset_ref = client.dataset(dataset_id)
+        destination_table_ref = dataset_ref.table(table_id)
+        job_config.destination = destination_table_ref
+        job_config.create_disposition = "CREATE_IF_NEEDED"
+        job_config.write_disposition = "WRITE_TRUNCATE"
+        _create_dataset_if_necessary(client, dataset_id)
 
     if args.maximum_bytes_billed == "None":
         job_config.maximum_bytes_billed = 0
