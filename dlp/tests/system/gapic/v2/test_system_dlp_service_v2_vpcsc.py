@@ -47,7 +47,6 @@ class TestSystemDlpService(object):
     @vpcsc_config.skip_unless_inside_vpcsc
     @vpcsc_config.skip_unless_outside_project
     def test_inspect_content(self):
-        import pdb; pdb.set_trace()
         client = dlp_v2.DlpServiceClient()
         name_inside = client.project_path(vpcsc_config.project_inside)
         delayed_inside = lambda: client.inspect_content(name_inside)
