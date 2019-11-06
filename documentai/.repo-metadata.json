@@ -1,0 +1,13 @@
+{
+  "name": "documentai",
+  "name_pretty": "Cloud Document Understanding API",
+  "product_documentation": "https://cloud.google.com/document-understanding/docs/",
+  "client_documentation": "https://googleapis.dev/python/documentai/latest",
+  "issue_tracker": "",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-documentai",
+  "api_id": "documentai.googleapis.com",
+  "requires_billing": true
+}
