@@ -564,6 +564,72 @@ class GoogleSheetsOptions(object):
 _OPTION_CLASSES = (BigtableOptions, CSVOptions, GoogleSheetsOptions)
 
 
+class HivePartitioningOptions(object):
+    """Options that configure hive partitioning.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions
+    """
+
+    def __init__(self):
+        self._properties = {}
+
+    @property
+    def mode(self):
+        """Optional[str]: When set, what mode of hive partitioning to use when reading data.
+
+        Two modes are supported: "AUTO" and "STRINGS".
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions.FIELDS.mode
+        """
+        return self._properties.get("mode")
+
+    @mode.setter
+    def mode(self, value):
+        self._properties["mode"] = value
+
+    @property
+    def source_uri_prefix(self):
+        """Optional[str]: When hive partition detection is requested, a common prefix for
+        all source URIs is required.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions.FIELDS.source_uri_prefix
+        """
+        return self._properties.get("sourceUriPrefix")
+
+    @source_uri_prefix.setter
+    def source_uri_prefix(self, value):
+        self._properties["sourceUriPrefix"] = value
+
+    def to_api_repr(self):
+        """Build an API representation of this object.
+
+        Returns:
+            Dict[str, Any]: A dictionary in the format used by the BigQuery API.
+        """
+        return copy.deepcopy(self._properties)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct a :class:`~.external_config.HivePartitioningOptions`
+        instance given its API representation.
+
+        Args:
+            resource (Dict[str, Any]):
+                Definition of a :class:`~.external_config.HivePartitioningOptions`
+                instance in the same representation as is returned from the
+                API.
+
+        Returns:
+            HivePartitioningOptions: Configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+
 class ExternalConfig(object):
     """Description of an external data source.
 
@@ -623,6 +689,24 @@ class ExternalConfig(object):
     @compression.setter
     def compression(self, value):
         self._properties["compression"] = value
+
+    @property
+    def hive_partitioning(self):
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: When set, \
+        it configures hive partitioning support.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.hive_partitioning_options
+        """
+        prop = self._properties.get("hivePartitioningOptions")
+        if prop is None:
+            return None
+        return HivePartitioningOptions.from_api_repr(prop)
+
+    @hive_partitioning.setter
+    def hive_partitioning(self, value):
+        prop = value.to_api_repr() if value is not None else None
+        self._properties["hivePartitioningOptions"] = prop
 
     @property
     def ignore_unknown_values(self):
