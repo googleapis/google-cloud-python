@@ -58,6 +58,15 @@ Create an empty table with the
    :start-after: [START bigquery_create_table]
    :end-before: [END bigquery_create_table]
 
+Create an integer range partitioned table with the
+:func:`~google.cloud.bigquery.client.Client.create_table` method:
+
+.. literalinclude:: ../samples/create_table_range_partitioned.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_create_table_range_partitioned]
+   :end-before: [END bigquery_create_table_range_partitioned]
+
 Load table data from a file with the
 :func:`~google.cloud.bigquery.client.Client.load_table_from_file` method:
 
