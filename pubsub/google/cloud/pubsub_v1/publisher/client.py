@@ -304,5 +304,5 @@ class Client(object):
 
             self._is_stopped = True
 
-        for topic in self._batches:
-            self._batches[topic].commit()
+            for topic in self._batches:
+                self._batches[topic].commit()
