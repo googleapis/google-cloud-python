@@ -66,8 +66,7 @@ class Cursor(object):
 
     def execute(self, sql, *args, **kwargs):
         """
-        Performs the Spanner.execute_sql call as per
-            https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
+        Abstracts and implements execute SQL statements on Cloud Spanner.
 
         Args:
             sql: A SQL statement
@@ -77,18 +76,20 @@ class Cursor(object):
         Returns:
             None
         """
-        # Reference
-        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
         if not self.__session:
             raise ProgrammingError('Cursor is not connected to the database')
 
         # Classify whether this is a read-only SQL statement.
         try:
             if classify_stmt(sql) == STMT_DDL:
-                # Special case: since Spanner won't execute DDL updates
+                # Special case: since Spanner.Session won't execute DDL updates
+                # by invoking `execute_sql` or `execute_update`, we must run
+                # DDL updates on the database handle itself.
                 self.__do_update_ddl(sql)
+
             elif classify_stmt(sql) == STMT_NON_UPDATING:
                 self.__do_execute_non_update(sql, *args, **kwargs)
+
             else:
                 self.__session.run_in_transaction(self.__do_execute_update, sql, *args, **kwargs)
 
@@ -115,6 +116,8 @@ class Cursor(object):
 
 
     def __do_execute_non_update(self, sql, *args, **kwargs):
+        # Reference
+        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
         res = self.__session.execute_sql(sql, *args, **kwargs)
         if type(res) == int:
             self.__row_count = res
@@ -193,7 +196,6 @@ class Cursor(object):
     def __do_update_ddl(self, *ddl_statements):
         if not self.__db_handle:
             raise ProgrammingError('Trying to run an DDL update but no database handle')
-
 
         return self.__db_handle.update_ddl(ddl_statements)
 
