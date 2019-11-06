@@ -56,7 +56,7 @@ class Connection(object):
         if not session.exists():
             session.create()
 
-        return Cursor(session)
+        return Cursor(session, self)
 
 
     def update_ddl(self, ddl_statements):

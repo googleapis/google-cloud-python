@@ -23,6 +23,7 @@ from .exceptions import (
 
 from .parse_utils import (
         classify_stmt,
+        STMT_DDL,
         STMT_NON_UPDATING
 )
 
@@ -30,11 +31,12 @@ from .parse_utils import (
 _UNSET_COUNT = -1
 
 class Cursor(object):
-    def __init__(self, session):
+    def __init__(self, session, db_handle=None):
         self.__session = session
         self.__itr = None
         self.__res = None
         self.__row_count = _UNSET_COUNT
+        self.__db_handle = db_handle
 
 
     @property
@@ -82,7 +84,10 @@ class Cursor(object):
 
         # Classify whether this is a read-only SQL statement.
         try:
-            if classify_stmt(sql) == STMT_NON_UPDATING:
+            if classify_stmt(sql) == STMT_DDL:
+                # Special case: since Spanner won't execute DDL updates
+                self.__do_update_ddl(sql)
+            elif classify_stmt(sql) == STMT_NON_UPDATING:
                 self.__do_execute_non_update(sql, *args, **kwargs)
             else:
                 self.__session.run_in_transaction(self.__do_execute_update, sql, *args, **kwargs)
@@ -183,6 +188,14 @@ class Cursor(object):
 
     def close(self):
         self.__session.delete()
+
+
+    def __do_update_ddl(self, *ddl_statements):
+        if not self.__db_handle:
+            raise ProgrammingError('Trying to run an DDL update but no database handle')
+
+
+        return self.__db_handle.update_ddl(ddl_statements)
 
 
 class Column:

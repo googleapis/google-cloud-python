@@ -150,14 +150,20 @@ def validate_instance_config(instance_config):
     return None
 
 
+STMT_DDL = 'DDL'
 STMT_NON_UPDATING = 'NON_UPDATING'
 STMT_UPDATING = 'UPDATING'
 
 # Heuristic for identifying statements that don't need to be run as updates.
 re_NON_UPDATE = re.compile('^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE|re.IGNORECASE)
 
-def classify_stmt(sql):
-    if re_NON_UPDATE.match(sql):
-        return STMT_NON_UPDATING
+# DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
+re_DDL = re.compile('^\s*(CREATE TABLE|CREATE DATABASE|ALTER TABLE|DROP TABLE|DROP INDEX)', re.UNICODE|re.IGNORECASE)
 
-    return STMT_UPDATING
+def classify_stmt(sql):
+    if re_DDL.match(sql):
+        return STMT_DDL
+    elif re_NON_UPDATE.match(sql):
+        return STMT_NON_UPDATING
+    else:
+        return STMT_UPDATING
