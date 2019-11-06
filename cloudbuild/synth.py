@@ -81,8 +81,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 # coverage level is low because of missing coverage for __init__.py files
-# 74 is the value 
-templated_files = common.py_library(unit_cov_level=74, cov_level=74)
+templated_files = common.py_library(unit_cov_level=65, cov_level=65)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
