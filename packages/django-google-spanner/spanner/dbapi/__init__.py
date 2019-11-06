@@ -1,5 +1,5 @@
 # Copyright 2019 Google LLC
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,15 +16,15 @@ from google.cloud import spanner_v1 as spanner
 
 from .connection import Connection
 from .exceptions import Error
-from .parse_utils import parse_spanner_url
+from .parse_utils import parse_spanner_url, validate_instance_config
 from .version import USER_AGENT
 
-### Globals that MUST be defined ###
+# Globals that MUST be defined ###
 apilevel = "2.0"  # Implements the Python Database API specification 2.0 version.
-paramstyle = 'at-named'  # '@' is used by Cloud Spanner as the param style but
-                         # unfortunately that style isn't listed in any of the options 
-                         # https://www.python.org/dev/peps/pep-0249/#paramstyle
-                         # so we are going with a custom named paramstyle.
+# '@' is used by Cloud Spanner as the param style but that style isn't listed
+# in any of the options  https://www.python.org/dev/peps/pep-0249/#paramstyle
+# so we are going with a custom named paramstyle.
+paramstyle = 'at-named'
 threadsafety = 2  # Threads may share the module and connections but not cursors.
 
 
@@ -92,7 +92,7 @@ def connect(spanner_url, credentials_uri=None):
         if err_msg:
             raise Error(err_msg)
 
-        instance.configuration_name =  instance_config
+        instance.configuration_name = instance_config
         lro = instance.create()
         # TODO: Report the long-running operation result.
         _ = lro

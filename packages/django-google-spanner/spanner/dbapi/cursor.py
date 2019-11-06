@@ -1,5 +1,5 @@
 # Copyright 2019 Google LLC
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,20 +15,12 @@
 import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import (
-        Error,
-        IntegrityError,
-        OperationalError,
-        ProgrammingError
+    Error, IntegrityError, OperationalError, ProgrammingError,
 )
-
-from .parse_utils import (
-        classify_stmt,
-        STMT_DDL,
-        STMT_NON_UPDATING
-)
-
+from .parse_utils import STMT_DDL, STMT_NON_UPDATING, classify_stmt
 
 _UNSET_COUNT = -1
+
 
 class Cursor(object):
     def __init__(self, session, db_handle=None):
@@ -37,7 +29,6 @@ class Cursor(object):
         self.__res = None
         self.__row_count = _UNSET_COUNT
         self.__db_handle = db_handle
-
 
     @property
     def description(self):
@@ -50,11 +41,9 @@ class Cursor(object):
             columns.append(Column(name=field.name, type_code=field.type.code))
         return tuple(columns)
 
-
     @property
     def rowcount(self):
         return self.__row_count
-
 
     def close(self):
         if not self.__session:
@@ -62,7 +51,6 @@ class Cursor(object):
 
         self.__session.delete()
         self.__session = None
-
 
     def execute(self, sql, *args, **kwargs):
         """
@@ -102,9 +90,8 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
-        except Exception as e: # Catch all other exceptions and re-raise them.
+        except Exception as e:  # Catch all other exceptions and re-raise them.
             raise Error(e.details if hasattr(e, 'details') else e)
-
 
     def __do_execute_update(self, transaction, sql, *args, **kwargs):
         res = transaction.execute_update(sql, *args, **kwargs)
@@ -113,7 +100,6 @@ class Cursor(object):
             self.__row_count = res
 
         return res
-
 
     def __do_execute_non_update(self, sql, *args, **kwargs):
         # Reference
@@ -138,14 +124,11 @@ class Cursor(object):
             # information about the number of rows available.
             self.__row_count = _UNSET_COUNT
 
-
     def __enter__(self):
         return self
 
-
     def __exit__(self, etype, value, traceback):
         self.close()
-
 
     def executemany(self, operation, seq_of_params):
         if not self.__session:
@@ -153,45 +136,31 @@ class Cursor(object):
 
         raise ProgrammingError('Unimplemented')
 
-
     def __next__(self):
-        if self.__itr == None:
+        if self.__itr is None:
             raise ProgrammingError('no results to return')
-
         return next(self.__itr)
 
-
     def __iter__(self):
-        if self.__itr == None:
+        if self.__itr is None:
             raise ProgrammingError('no results to return')
-
         return self.__itr
-
 
     def fetchone(self):
         return next(self)
 
-
     def fetchall(self):
         return list(self.__iter__())
-
 
     @property
     def arraysize(self):
         raise ProgrammingError('Unimplemented')
 
-
     def setinputsizes(sizes):
         raise ProgrammingError('Unimplemented')
 
-
     def setoutputsize(size, column=None):
         raise ProgrammingError('Unimplemented')
-
-
-    def close(self):
-        self.__session.delete()
-
 
     def __do_update_ddl(self, *ddl_statements):
         if not self.__db_handle:
@@ -201,7 +170,8 @@ class Cursor(object):
 
 
 class Column:
-    def __init__(self, name, type_code, display_size=None, internal_size=None, precision=None, scale=None, null_ok=False):
+    def __init__(self, name, type_code, display_size=None, internal_size=None,
+                 precision=None, scale=None, null_ok=False):
         self.name = name
         self.type_code = type_code
         self.display_size = display_size
@@ -210,20 +180,18 @@ class Column:
         self.scale = scale
         self.null_ok = null_ok
 
-
     def __repr__(self):
         return self.__str__()
 
-
     def __str__(self):
         rstr = ', '.join([field for field in [
-            "name='%s'" %(self.name),
-            "type_code=%d" %(self.type_code),
-            None if not self.display_size else "display_size='%s'"%(self.display_size),
-            None if not self.internal_size else "internal_size='%s'"%(self.internal_size),
-            None if not self.precision else "precision='%s'" % (self.precision),
-            None if not self.scale else "scale='%s'" % (self.scale),
-            None if not self.null_ok else "null_ok='%s'" % (self.null_ok),
+            "name='%s'" % self.name,
+            "type_code=%d" % self.type_code,
+            None if not self.display_size else "display_size='%s'" % self.display_size,
+            None if not self.internal_size else "internal_size='%s'" % self.internal_size,
+            None if not self.precision else "precision='%s'" % self.precision,
+            None if not self.scale else "scale='%s'" % self.scale,
+            None if not self.null_ok else "null_ok='%s'" % self.null_ok,
         ] if field])
 
         return 'Column(%s)' % rstr

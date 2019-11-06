@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 
 from .exceptions import Error
 
+
 def resolve_project_id(project_id):
     if project_id == 'DEFAULT_PROJECT_ID' or not project_id:
         # Resolve it from the environment.
@@ -101,33 +102,34 @@ def parse_projectid_instance_dbname(url_path):
 
 
 def extract_connection_params(settings_dict):
-        # We'll expect settings in the form of either:
-        # {
-        #   "NAME":         "spanner",
-        #   "INSTANCE":     "instance",
-        #   "AUTOCOMMIT":   True or False,
-        #   "READ_ONLY":    True or False,
-        #   "PROJECT_ID":   "<project_id>",
-        # }
-        #
-        # OR
-        # {
-        #   "SPANNER_URL":  "cloudspanner:[//host[:port]]/project/<project_id>/instances/<instance-id>/databases/<database-name>?property-name=property-value
-        # }
-
-        if settings_dict['SPANNER_URL']:
-            return parse_spanner_url(settings_dict['SPANNER_URL'])
-        else:
-            return dict(
-                auto_commit=settings_dict['AUTO_COMMIT'],
-                database=settings_dict['NAME'] or 'spanner',
-                instance=settings_dict['INSTANCE'],
-                project_id=resolve_project_id(settings_dict['PROJECT_ID']),
-                read_only=settings_dict['READ_ONLY'],
-            )
+    # We'll expect settings in the form of either:
+    # {
+    #   "NAME":         "spanner",
+    #   "INSTANCE":     "instance",
+    #   "AUTOCOMMIT":   True or False,
+    #   "READ_ONLY":    True or False,
+    #   "PROJECT_ID":   "<project_id>",
+    # }
+    #
+    # OR
+    # {
+    #   "SPANNER_URL":  "cloudspanner:[//host[:port]]/project/<project_id>/instances/
+    #       <instance-id>/databases/<database-name>?property-name=property-value
+    # }
+    if settings_dict['SPANNER_URL']:
+        return parse_spanner_url(settings_dict['SPANNER_URL'])
+    else:
+        return dict(
+            auto_commit=settings_dict['AUTO_COMMIT'],
+            database=settings_dict['NAME'] or 'spanner',
+            instance=settings_dict['INSTANCE'],
+            project_id=resolve_project_id(settings_dict['PROJECT_ID']),
+            read_only=settings_dict['READ_ONLY'],
+        )
 
 
 reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$', re.UNICODE)
+
 
 def validate_instance_config(instance_config):
     """
@@ -155,10 +157,14 @@ STMT_NON_UPDATING = 'NON_UPDATING'
 STMT_UPDATING = 'UPDATING'
 
 # Heuristic for identifying statements that don't need to be run as updates.
-re_NON_UPDATE = re.compile('^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE|re.IGNORECASE)
+re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE | re.IGNORECASE)
 
 # DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
-re_DDL = re.compile('^\s*(CREATE TABLE|CREATE DATABASE|ALTER TABLE|DROP TABLE|DROP INDEX)', re.UNICODE|re.IGNORECASE)
+re_DDL = re.compile(
+    r'^\s*(CREATE TABLE|CREATE DATABASE|ALTER TABLE|DROP TABLE|DROP INDEX)',
+    re.UNICODE | re.IGNORECASE
+)
+
 
 def classify_stmt(sql):
     if re_DDL.match(sql):

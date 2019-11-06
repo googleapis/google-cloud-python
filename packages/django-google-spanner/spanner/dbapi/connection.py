@@ -1,5 +1,5 @@
 # Copyright 2019 Google LLC
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,11 +15,11 @@
 from .cursor import Cursor
 from .exceptions import Error
 
+
 class Connection(object):
     def __init__(self, db_handle):
         self.__dbhandle = db_handle
         self.__closed = False
-
 
     def __raise_if_already_closed(self):
         """
@@ -28,36 +28,28 @@ class Connection(object):
         if self.__closed:
             raise Error('attempting to use an already closed connection')
 
-
     def close(self):
         self.__raise_if_already_closed()
         self.__dbhandle = None
         self.__closed = True
 
-
     def __enter__(self):
         return self
-
 
     def __exit__(self, etype, value, traceback):
         return self.close()
 
-
     def commit(self):
         raise Error('unimplemented')
 
-
     def rollback(self):
         raise Error('unimplemented')
-
 
     def cursor(self):
         session = self.__dbhandle.session()
         if not session.exists():
             session.create()
-
         return Cursor(session, self)
-
 
     def update_ddl(self, ddl_statements):
         """
@@ -70,5 +62,4 @@ class Connection(object):
         Returns:
             google.api_core.operation.Operation
         """
-
         return self.__dbhandle.update_ddl(ddl_statements)

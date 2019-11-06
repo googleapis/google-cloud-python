@@ -13,20 +13,19 @@
 # limitations under the License.
 
 import subprocess
+
 from django.db.backends.base.client import BaseDatabaseClient
 
-from .parse_utils import (
-        extract_connection_params
-)
+from .parse_utils import extract_connection_params
 
 
-def DatabaseClient(BaseDatabaseClient):
+class DatabaseClient(BaseDatabaseClient):
     executable_name = 'spanner'
 
     @classmethod
     def settings_to_cmd_args(cls, settings_dict):
         args = [cls.executable_name]
-        settings = extract_connection_params(self.settings_dict)
+        settings = extract_connection_params(cls.settings_dict)
         project_id = settings['project_id']
         if project_id:
             args += ['--project_id=%s' % project_id]
@@ -45,6 +44,6 @@ def DatabaseClient(BaseDatabaseClient):
 
         return args
 
-    def runshell(self);
+    def runshell(self):
         args = DatabaseClient.settings_to_cmd_args(self.connection.settings_dict)
         subprocess.run(args, check=True)

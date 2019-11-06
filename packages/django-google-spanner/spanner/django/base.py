@@ -14,12 +14,9 @@
 
 from django.db.backends.base.base import BaseDatabaseWrapper
 from django.utils.functional import cached_property
-
-from .parse_utils import (
-        extract_connection_params
-)
-
 from google.cloud import spanner_v1 as spanner
+
+from .parse_utils import extract_connection_params
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -31,11 +28,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             AutoField='',  # Spanner does not support Auto increment as per
                            # https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
             BigAutoField='',
-
             BinaryField='BYTES',
             BooleanField='BOOL',
             CharField='STRING(%(max_length)s)',
-
             DateField='DATE',        # Date with a zone is supported.
                                      # https://cloud.google.com/spanner/docs/data-types#date-type
             DateTimeField='STRING',  # DateTimeField produces a timestamp with a timezone
@@ -53,7 +48,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                                      #   "INT64" if storing the value in milliseconds
                                      #  OR
                                      #   "STRING" if storing the value in an application-defined interval format.
-
             EmailField='STRING',
             FileField='STRING',
             FilePathField='STRING',
@@ -82,7 +76,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     data_types_check_constraints = {
     }
 
-    operators = { 
+    operators = {
             'exact': '= %s',
             'iexact': '= %s',  # Spanner String comparison are case sensitive,
                                # but it doesn't have a case insensitive
@@ -99,43 +93,33 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             'iendswith': 'ENDS_WITH(%s, %s)',
     }
 
-
     def get_connection_params(self):
         return extract_connection_params(self.settings_dict)
-
 
     def get_new_connection(self, conn_params):
         kwargs = dict(
             project=conn_params.get('project_id'),
             user_agent='spanner-django/v1',
         )
-
         credentials_uri = conn_params.get('credentials_uri')
         client = None
-
         if credentials_uri:
             client = spanner.Client.from_service_account_json(credentials_uri, **kwargs)
         else:
             client = spanner.Client(**kwargs)
-
         return client
-
 
     def create_cursor(self, name=None):
         raise Exception('unimplemented')
 
-
     def disable_constraint_checking(self):
         raise Exception('unimplemented')
-
 
     def enable_constraint_checking(self):
         raise Exception('unimplemented')
 
-
     def check_constraints(self, table_names=None):
         raise Exception('unimplemented')
-
 
     def is_usable(self):
         raise Exception('unimplemented')
