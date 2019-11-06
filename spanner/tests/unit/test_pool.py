@@ -840,6 +840,7 @@ class _Transaction(object):
     def begin(self):
         self._begun = True
 
+    @property
     def committed(self):
         return self._committed
 
