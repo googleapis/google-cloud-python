@@ -127,6 +127,11 @@ class ProductSearchStub(object):
             request_serializer=google_dot_cloud_dot_vision__v1p4beta1_dot_proto_dot_product__search__service__pb2.ImportProductSetsRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.PurgeProducts = channel.unary_unary(
+            "/google.cloud.vision.v1p4beta1.ProductSearch/PurgeProducts",
+            request_serializer=google_dot_cloud_dot_vision__v1p4beta1_dot_proto_dot_product__search__service__pb2.PurgeProductsRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
 
 
 class ProductSearchServicer(object):
@@ -204,10 +209,6 @@ class ProductSearchServicer(object):
     ProductSet are not deleted.
 
     The actual image files are not deleted from Google Cloud Storage.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the ProductSet does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -276,10 +277,6 @@ class ProductSearchServicer(object):
     Metadata of the product and all its images will be deleted right away, but
     search queries against ProductSets containing the product may still work
     until all related caches are refreshed.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the product does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -318,10 +315,6 @@ class ProductSearchServicer(object):
     caches are refreshed.
 
     The actual image files are not deleted from Google Cloud Storage.
-
-    Possible errors:
-
-    * Returns NOT_FOUND if the reference image does not exist.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -367,10 +360,6 @@ class ProductSearchServicer(object):
 
     def RemoveProductFromProductSet(self, request, context):
         """Removes a Product from the specified ProductSet.
-
-    Possible errors:
-
-    * Returns NOT_FOUND If the Product is not found under the ProductSet.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -401,6 +390,36 @@ class ProductSearchServicer(object):
     The input source of this method is a csv file on Google Cloud Storage.
     For the format of the csv file please see
     [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri].
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def PurgeProducts(self, request, context):
+        """Asynchronous API to delete all Products in a ProductSet or all Products
+    that are in no ProductSet.
+
+    If a Product is a member of the specified ProductSet in addition to other
+    ProductSets, the Product will still be deleted.
+
+    It is recommended to not delete the specified ProductSet until after this
+    operation has completed. It is also recommended to not add any of the
+    Products involved in the batch delete to a new ProductSet while this
+    operation is running because those Products may still end up deleted.
+
+    It's not possible to undo the PurgeProducts operation. Therefore, it is
+    recommended to keep the csv files used in ImportProductSets (if that was
+    how you originally built the Product Set) before starting PurgeProducts, in
+    case you need to re-import the data after deletion.
+
+    If the plan is to purge all of the Products from a ProductSet and then
+    re-use the empty ProductSet to re-import new Products into the empty
+    ProductSet, you must wait until the PurgeProducts operation has finished
+    for that ProductSet.
+
+    The [google.longrunning.Operation][google.longrunning.Operation] API can be
+    used to keep track of the progress and results of the request.
+    `Operation.metadata` contains `BatchOperationMetadata`. (progress)
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -497,6 +516,11 @@ def add_ProductSearchServicer_to_server(servicer, server):
         "ImportProductSets": grpc.unary_unary_rpc_method_handler(
             servicer.ImportProductSets,
             request_deserializer=google_dot_cloud_dot_vision__v1p4beta1_dot_proto_dot_product__search__service__pb2.ImportProductSetsRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "PurgeProducts": grpc.unary_unary_rpc_method_handler(
+            servicer.PurgeProducts,
+            request_deserializer=google_dot_cloud_dot_vision__v1p4beta1_dot_proto_dot_product__search__service__pb2.PurgeProductsRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
     }

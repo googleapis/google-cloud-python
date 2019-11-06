@@ -20,6 +20,7 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.vision_v1p4beta1.proto import face_pb2
 from google.cloud.vision_v1p4beta1.proto import geometry_pb2
 from google.cloud.vision_v1p4beta1.proto import image_annotator_pb2
 from google.cloud.vision_v1p4beta1.proto import product_search_pb2
@@ -50,6 +51,7 @@ _shared_modules = [
 ]
 
 _local_modules = [
+    face_pb2,
     geometry_pb2,
     image_annotator_pb2,
     product_search_pb2,
