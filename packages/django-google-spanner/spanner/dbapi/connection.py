@@ -36,11 +36,11 @@ class Connection(object):
 
 
     def __enter__(self):
-        pass
+        return self
 
 
     def __exit__(self, etype, value, traceback):
-        pass
+        return self.close()
 
 
     def commit(self):

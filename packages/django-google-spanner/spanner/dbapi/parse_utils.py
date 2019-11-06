@@ -148,3 +148,16 @@ def validate_instance_config(instance_config):
                         instance_config, reINSTANCE_CONFIG.pattern)
 
     return None
+
+
+STMT_NON_UPDATING = 'NON_UPDATING'
+STMT_UPDATING = 'UPDATING'
+
+# Heuristic for identifying statements that don't need to be run as updates.
+re_NON_UPDATE = re.compile('^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE|re.IGNORECASE)
+
+def classify_stmt(sql):
+    if re_NON_UPDATE.match(sql):
+        return STMT_NON_UPDATING
+
+    return STMT_UPDATING

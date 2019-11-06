@@ -12,20 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.api_core.exceptions as grpc_exceptions
+
 from .exceptions import (
+        Error,
+        IntegrityError,
+        OperationalError,
         ProgrammingError
 )
+
+from .parse_utils import (
+        classify_stmt,
+        STMT_NON_UPDATING
+)
+
+
+_UNSET_COUNT = -1
 
 class Cursor(object):
     def __init__(self, session):
         self.__session = session
         self.__itr = None
         self.__res = None
+        self.__row_count = _UNSET_COUNT
 
 
     @property
     def description(self):
-        if not self.__res.metadata:
+        if not (self.__res and self.__res.metadata):
             return None
 
         row_type = self.__res.metadata.row_type
@@ -37,7 +51,7 @@ class Cursor(object):
 
     @property
     def rowcount(self):
-        raise ProgrammingError('Unimplemented')
+        return self.__row_count
 
 
     def close(self):
@@ -66,16 +80,55 @@ class Cursor(object):
         if not self.__session:
             raise ProgrammingError('Cursor is not connected to the database')
 
-        # Immediately using:
-        #   iter(response)
-        # here, because this Spanner API doesn't provide
-        # easy mechanisms to detect when only a single item
-        # is returned or many, yet mixing results that
-        # are for .fetchone() with those that would result in
-        # many items returns a RuntimeError if .fetchone() is
-        # invoked and vice versa.
-        self.__res = self.__session.execute_sql(sql, *args, **kwargs)
-        self.__itr = iter(self.__res)
+        # Classify whether this is a read-only SQL statement.
+        try:
+            if classify_stmt(sql) == STMT_NON_UPDATING:
+                self.__do_execute_non_update(sql, *args, **kwargs)
+            else:
+                self.__session.run_in_transaction(self.__do_execute_update, sql, *args, **kwargs)
+
+        except grpc_exceptions.AlreadyExists as e:
+            raise IntegrityError(e.details if hasattr(e, 'details') else e)
+
+        except grpc_exceptions.InvalidArgument as e:
+            raise ProgrammingError(e.details if hasattr(e, 'details') else e)
+
+        except grpc_exceptions.InternalServerError as e:
+            raise OperationalError(e.details if hasattr(e, 'details') else e)
+
+        except Exception as e: # Catch all other exceptions and re-raise them.
+            raise Error(e.details if hasattr(e, 'details') else e)
+
+
+    def __do_execute_update(self, transaction, sql, *args, **kwargs):
+        res = transaction.execute_update(sql, *args, **kwargs)
+        self.__itr = None
+        if type(res) == int:
+            self.__row_count = res
+
+        return res
+
+
+    def __do_execute_non_update(self, sql, *args, **kwargs):
+        res = self.__session.execute_sql(sql, *args, **kwargs)
+        if type(res) == int:
+            self.__row_count = res
+            self.__itr = None
+        else:
+            # Immediately using:
+            #   iter(response)
+            # here, because this Spanner API doesn't provide
+            # easy mechanisms to detect when only a single item
+            # is returned or many, yet mixing results that
+            # are for .fetchone() with those that would result in
+            # many items returns a RuntimeError if .fetchone() is
+            # invoked and vice versa.
+            self.__res = res
+            self.__itr = iter(self.__res)
+
+            # Unfortunately, Spanner doesn't seem to send back
+            # information about the number of rows available.
+            self.__row_count = _UNSET_COUNT
 
 
     def __enter__(self):
@@ -94,10 +147,16 @@ class Cursor(object):
 
 
     def __next__(self):
+        if self.__itr == None:
+            raise ProgrammingError('no results to return')
+
         return next(self.__itr)
 
 
     def __iter__(self):
+        if self.__itr == None:
+            raise ProgrammingError('no results to return')
+
         return self.__itr
 
 
@@ -106,7 +165,7 @@ class Cursor(object):
 
 
     def fetchall(self):
-        return list(self.__itr)
+        return list(self.__iter__())
 
 
     @property
