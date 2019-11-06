@@ -735,7 +735,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertEqual(len(pending._items), 1)
         self.assertIs(pending._items[0], session)
         self.assertIsNot(session._transaction, committed)
-        txn.begin.assert_not_called()
+        session._transaction.begin.assert_not_called()
 
     def test_put_non_full(self):
         pool = self._make_one(size=1)
