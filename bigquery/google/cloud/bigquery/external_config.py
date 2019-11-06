@@ -658,7 +658,7 @@ class ExternalConfig(object):
 
     @property
     def options(self):
-        """Dict[str, Any]: Source-specific options."""
+        """Optional[Dict[str, Any]]: Source-specific options."""
         return self._options
 
     @property
