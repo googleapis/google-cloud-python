@@ -57,7 +57,7 @@ def add_VideoIntelligenceServiceServicer_to_server(servicer, server):
 
 
 class StreamingVideoIntelligenceServiceStub(object):
-    """Service that implements Google Cloud Video Intelligence Streaming API.
+    """Service that implements streaming Google Cloud Video Intelligence API.
   """
 
     def __init__(self, channel):
@@ -74,7 +74,7 @@ class StreamingVideoIntelligenceServiceStub(object):
 
 
 class StreamingVideoIntelligenceServiceServicer(object):
-    """Service that implements Google Cloud Video Intelligence Streaming API.
+    """Service that implements streaming Google Cloud Video Intelligence API.
   """
 
     def StreamingAnnotateVideo(self, request_iterator, context):
