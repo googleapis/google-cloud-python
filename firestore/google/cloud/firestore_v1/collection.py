@@ -20,7 +20,6 @@ import six
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import query as query_mod
-from google.cloud.firestore_v1.proto import document_pb2
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
 
@@ -157,27 +156,11 @@ class CollectionReference(object):
                 and the document already exists.
         """
         if document_id is None:
-            parent_path, expected_prefix = self._parent_info()
+            document_id = _auto_id()
 
-            document_pb = document_pb2.Document()
-
-            created_document_pb = self._client._firestore_api.create_document(
-                parent_path,
-                collection_id=self.id,
-                document_id=None,
-                document=document_pb,
-                mask=None,
-                metadata=self._client._rpc_metadata,
-            )
-
-            new_document_id = _helpers.get_doc_id(created_document_pb, expected_prefix)
-            document_ref = self.document(new_document_id)
-            set_result = document_ref.set(document_data)
-            return set_result.update_time, document_ref
-        else:
-            document_ref = self.document(document_id)
-            write_result = document_ref.create(document_data)
-            return write_result.update_time, document_ref
+        document_ref = self.document(document_id)
+        write_result = document_ref.create(document_data)
+        return write_result.update_time, document_ref
 
     def list_documents(self, page_size=None):
         """List all subdocuments of the current collection.
