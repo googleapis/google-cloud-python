@@ -4,8 +4,10 @@
 
 11-07-2019 11:08 PST
 
+**NOTE**: Please upgrade to this version if you will also be using `google-cloud-build`. 
+
 ### Implementation Changes
-- fix(containeranalysis): make google.cloud.devtools a namespace ([#9606](https://github.com/googleapis/google-cloud-python/pull/9606))
+- Make google.cloud.devtools a namespace ([#9606](https://github.com/googleapis/google-cloud-python/pull/9606))
 
 ### Documentation
 - Change requests intersphinx ref (via synth)
