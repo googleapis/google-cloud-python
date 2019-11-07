@@ -244,7 +244,7 @@ class Client(object):
             instance of that class).
 
         Raises:
-            ValueError:
+            RuntimeError:
                 If called after publisher has been stopped
                 by a `stop()` method call.
         """
