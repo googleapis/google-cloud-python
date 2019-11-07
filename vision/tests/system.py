@@ -766,6 +766,8 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         with pytest.raises(exceptions.PermissionDenied) as exc:
             list(self.ps_client.list_reference_images(parent=self.product_path))
 
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
 
 @vpcsc_config.skip_unless_inside_vpcsc
 class TestVisionClientVpcsc(VisionSystemTestBase):
@@ -794,7 +796,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
                 parent=self.location_path, input_config=input_config
             )
 
-        assert self.gcs_read_error_message in e.value.message
+        assert self.gcs_read_error_message in exc.value.message
 
     def test_async_batch_annotate_files_read_blocked(self):
         # Make the request.
@@ -814,7 +816,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         with pytest.raises(exceptions.Forbidden) as exc:
             self.client.async_batch_annotate_files([request])
 
-        assert self.gcs_read_error_message in e.value.message
+        assert self.gcs_read_error_message in exc.value.message
 
     def test_async_batch_annotate_files_write_blocked(self):
         # Upload the image to Google Cloud Storage.
@@ -827,7 +829,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         method_name = "test_async_batch_annotate_files_write_blocked"
         # Write the result to a bucket outside of the secure perimeter.
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
-            bucket=vpc_sc_error_message.bucket_outside, method_name=method_name
+            bucket=vpcsc_config.bucket_outside, method_name=method_name
         )
         request = {
             "input_config": {
@@ -899,7 +901,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
 
         # Write the result to a bucket outside of the secure perimeter.
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
-            bucket=vpc_sc_error_message.bucket_outside, method_name=method_name
+            bucket=vpcsc_config.bucket_outside, method_name=method_name
         )
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
         response = self.client.async_batch_annotate_images([request], output_config)
