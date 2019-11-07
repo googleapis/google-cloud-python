@@ -36,10 +36,10 @@ import google.oauth2
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
+from test_utils.vpcsc_config import vpcsc_config
 
 
 USER_PROJECT = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
-RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower() == "true"
 
 
 def _bad_copy(bad_request):
@@ -641,7 +641,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
 
 class TestUnicode(unittest.TestCase):
-    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
+    @vpcsc_config.skip_if_inside_vpcsc
     def test_fetch_object_and_check_content(self):
         client = storage.Client()
         bucket = client.bucket("storage-library-test-bucket")
@@ -1380,7 +1380,7 @@ class TestAnonymousClient(unittest.TestCase):
 
     PUBLIC_BUCKET = "gcp-public-data-landsat"
 
-    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
+    @vpcsc_config.skip_if_inside_vpcsc
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
