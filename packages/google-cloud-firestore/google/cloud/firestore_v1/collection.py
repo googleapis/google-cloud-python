@@ -446,7 +446,7 @@ class CollectionReference(object):
             db = firestore_v1.Client()
             collection_ref = db.collection(u'users')
 
-            def on_snapshot(collection_snapshot):
+            def on_snapshot(collection_snapshot, changes, read_time):
                 for doc in collection_snapshot.documents:
                     print(u'{} => {}'.format(doc.id, doc.to_dict()))
 
