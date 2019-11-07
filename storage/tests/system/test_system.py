@@ -40,6 +40,8 @@ from test_utils.vpcsc_config import vpcsc_config
 
 
 USER_PROJECT = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
+DIRNAME = os.path.realpath(os.path.dirname(__file__))
+DATA_DIRNAME = os.path.abspath(os.path.join(DIRNAME, "..", "data"))
 
 
 def _bad_copy(bad_request):
@@ -381,11 +383,10 @@ class TestStorageBuckets(unittest.TestCase):
 
 class TestStorageFiles(unittest.TestCase):
 
-    DIRNAME = os.path.realpath(os.path.dirname(__file__))
     FILES = {
-        "logo": {"path": DIRNAME + "/data/CloudPlatform_128px_Retina.png"},
-        "big": {"path": DIRNAME + "/data/five-point-one-mb-file.zip"},
-        "simple": {"path": DIRNAME + "/data/simple.txt"},
+        "logo": {"path": DATA_DIRNAME + "/CloudPlatform_128px_Retina.png"},
+        "big": {"path": DATA_DIRNAME + "/five-point-one-mb-file.zip"},
+        "simple": {"path": DATA_DIRNAME + "/simple.txt"},
     }
 
     @classmethod
