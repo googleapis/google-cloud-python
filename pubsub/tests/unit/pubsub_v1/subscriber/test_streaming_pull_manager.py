@@ -117,20 +117,20 @@ def make_manager(**kwargs):
     )
 
 
-def fake_leaser_add(leaser, init_msg_count=0, init_bytes=0):
+def fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10):
     """Add a simplified fake add() method to a leaser instance.
 
     The fake add() method actually increases the leaser's internal message count
-    by one for each message, and the total bytes by 10 for each message (hardcoded,
-    regardless of the actual message size).
+    by one for each message, and the total bytes by ``assumed_msg_size`` for
+    each message (regardless of the actual message size).
     """
 
     def fake_add(self, items):
         self.message_count += len(items)
-        self.bytes += len(items) * 10
+        self.bytes += len(items) * assumed_msg_size
 
     leaser.message_count = init_msg_count
-    leaser.bytes = init_bytes
+    leaser.bytes = init_msg_count * assumed_msg_size
     leaser.add = stdlib_types.MethodType(fake_add, leaser)
 
 
@@ -256,7 +256,7 @@ def test__maybe_release_messages_below_overload():
 
     # init leaser message count to 8 to leave room for 2 more messages
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
-    fake_leaser_add(_leaser, init_msg_count=8, init_bytes=200)
+    fake_leaser_add(_leaser, init_msg_count=8, assumed_msg_size=25)
     _leaser.add = mock.Mock(wraps=_leaser.add)  # to spy on calls
 
     messages = [
@@ -621,7 +621,7 @@ def test__on_response_no_leaser_overload():
     )
 
     # adjust message bookkeeping in leaser
-    fake_leaser_add(leaser, init_msg_count=0, init_bytes=0)
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
 
     # Actually run the method and prove that modack and schedule
     # are called in the expected way.
@@ -662,7 +662,7 @@ def test__on_response_with_leaser_overload():
 
     # Adjust message bookkeeping in leaser. Pick 99 messages, which is just below
     # the default FlowControl.max_messages limit.
-    fake_leaser_add(leaser, init_msg_count=99, init_bytes=990)
+    fake_leaser_add(leaser, init_msg_count=99, assumed_msg_size=10)
 
     # Actually run the method and prove that modack and schedule
     # are called in the expected way.
