@@ -219,6 +219,7 @@ def test_insert_entity(dispose_of, ds_client):
 
     entity = SomeKind(foo=42, bar="none")
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == 42
@@ -227,8 +228,6 @@ def test_insert_entity(dispose_of, ds_client):
     # Make sure strings are stored as strings in datastore
     ds_entity = ds_client.get(key._key)
     assert ds_entity["bar"] == "none"
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -239,6 +238,7 @@ def test_insert_entity_with_stored_name_property(dispose_of, ds_client):
 
     entity = SomeKind(foo="something", bar="or other")
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == "something"
@@ -246,8 +246,6 @@ def test_insert_entity_with_stored_name_property(dispose_of, ds_client):
 
     ds_entity = ds_client.get(key._key)
     assert ds_entity["notbar"] == "or other"
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -257,11 +255,10 @@ def test_insert_roundtrip_naive_datetime(dispose_of, ds_client):
 
     entity = SomeKind(foo=datetime.datetime(2010, 5, 12, 2, 42))
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == datetime.datetime(2010, 5, 12, 2, 42)
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -287,12 +284,11 @@ def test_datetime_w_tzinfo(dispose_of, ds_client):
         bar=datetime.datetime(2010, 5, 12, 2, 42),
     )
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == datetime.datetime(2010, 5, 12, 3, 42, tzinfo=mytz)
     assert retrieved.bar == datetime.datetime(2010, 5, 11, 22, 42, tzinfo=mytz)
-
-    dispose_of(key._key)
 
 
 def test_parallel_threads(dispose_of, namespace):
@@ -307,12 +303,11 @@ def test_parallel_threads(dispose_of, namespace):
             entity = SomeKind(foo=foo, bar="none")
 
             key = entity.put()
+            dispose_of(key._key)
 
             retrieved = key.get()
             assert retrieved.foo == foo
             assert retrieved.bar == "none"
-
-            dispose_of(key._key)
 
     thread1 = threading.Thread(target=insert, args=[42], name="one")
     thread2 = threading.Thread(target=insert, args=[144], name="two")
@@ -332,11 +327,10 @@ def test_large_json_property(dispose_of, ds_client):
     foo = {str(i): i for i in range(500)}
     entity = SomeKind(foo=foo)
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == foo
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -347,11 +341,10 @@ def test_compressed_json_property(dispose_of, ds_client):
     foo = {str(i): i for i in range(500)}
     entity = SomeKind(foo=foo)
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == foo
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -362,11 +355,10 @@ def test_compressed_blob_property(dispose_of, ds_client):
     foo = b"abc" * 100
     entity = SomeKind(foo=foo)
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == foo
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -399,11 +391,10 @@ def test_large_pickle_property(dispose_of, ds_client):
     foo = {str(i): i for i in range(500)}
     entity = SomeKind(foo=foo)
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == foo
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -414,14 +405,13 @@ def test_key_property(dispose_of, ds_client):
     key_value = ndb.Key("Whatevs", 123)
     entity = SomeKind(foo=key_value)
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == key_value
 
-    dispose_of(key._key)
 
-
-def test_insert_entity_with_caching(dispose_of, client_context):
+def test_insert_entity_with_caching(client_context):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
@@ -454,6 +444,7 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
 
         entity = SomeKind(foo=42, bar="none")
         key = entity.put()
+        dispose_of(key._key)
         cache_key = _cache.global_cache_key(key._key)
         assert not cache_dict
 
@@ -470,8 +461,6 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         # entity on write rather than waiting for a subsequent lookup.
         assert cache_key not in cache_dict
 
-        dispose_of(key._key)
-
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
 def test_insert_entity_with_redis_cache(dispose_of, client_context):
@@ -485,6 +474,7 @@ def test_insert_entity_with_redis_cache(dispose_of, client_context):
 
         entity = SomeKind(foo=42, bar="none")
         key = entity.put()
+        dispose_of(key._key)
         cache_key = _cache.global_cache_key(key._key)
         assert global_cache.redis.get(cache_key) is None
 
@@ -500,8 +490,6 @@ def test_insert_entity_with_redis_cache(dispose_of, client_context):
         # This is py27 behavior. I can see a case being made for caching the
         # entity on write rather than waiting for a subsequent lookup.
         assert global_cache.redis.get(cache_key) is None
-
-        dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -760,9 +748,8 @@ def test_get_or_insert_insert(dispose_of):
     assert SomeKind.get_by_id(name) is None
 
     entity = SomeKind.get_or_insert(name, foo=21)
-    assert entity.foo == 21
-
     dispose_of(entity._key._key)
+    assert entity.foo == 21
 
 
 @pytest.mark.usefixtures("client_context")
@@ -793,6 +780,7 @@ def test_insert_entity_with_structured_property(dispose_of):
 
     entity = SomeKind(foo=42, bar=OtherKind(one="hi", two="mom"))
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == 42
@@ -800,8 +788,6 @@ def test_insert_entity_with_structured_property(dispose_of):
     assert retrieved.bar.two == "mom"
 
     assert isinstance(retrieved.bar, OtherKind)
-
-    dispose_of(key._key)
 
 
 def test_insert_entity_with_structured_property_legacy_data(
@@ -818,6 +804,7 @@ def test_insert_entity_with_structured_property_legacy_data(
     with client_context.new(legacy_data=True).use():
         entity = SomeKind(foo=42, bar=OtherKind(one="hi", two="mom"))
         key = entity.put()
+        dispose_of(key._key)
 
         retrieved = key.get()
         assert retrieved.foo == 42
@@ -830,8 +817,6 @@ def test_insert_entity_with_structured_property_legacy_data(
         assert ds_entity["foo"] == 42
         assert ds_entity["bar.one"] == "hi"
         assert ds_entity["bar.two"] == "mom"
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -895,12 +880,11 @@ def test_insert_expando(dispose_of):
     entity = SomeKind(foo=42)
     entity.expando_prop = "exp-value"
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
     assert retrieved.foo == 42
     assert retrieved.expando_prop == "exp-value"
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -916,6 +900,7 @@ def test_insert_polymodel(dispose_of):
 
     entity = Cat(one="hello", two="dad", three="i'm in jail")
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
 
@@ -924,8 +909,6 @@ def test_insert_polymodel(dispose_of):
     assert retrieved.one == "hello"
     assert retrieved.two == "dad"
     assert retrieved.three == "i'm in jail"
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -937,13 +920,12 @@ def test_insert_autonow_property(dispose_of):
 
     entity = SomeKind(foo="bar")
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
 
     assert isinstance(retrieved.created_at, datetime.datetime)
     assert isinstance(retrieved.updated_at, datetime.datetime)
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -957,13 +939,12 @@ def test_insert_nested_autonow_property(dispose_of):
 
     entity = SomeKind(other=OtherKind())
     key = entity.put()
+    dispose_of(key._key)
 
     retrieved = key.get()
 
     assert isinstance(retrieved.other.created_at, datetime.datetime)
     assert isinstance(retrieved.other.updated_at, datetime.datetime)
-
-    dispose_of(key._key)
 
 
 @pytest.mark.usefixtures("client_context")

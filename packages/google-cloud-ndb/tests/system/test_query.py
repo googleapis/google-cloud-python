@@ -637,9 +637,10 @@ def test_query_structured_property(dispose_of):
         raise ndb.Return(keys)
 
     keys = make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
+
+    eventually(SomeKind.query().fetch, _length_equals(3))
 
     query = (
         SomeKind.query()
@@ -685,10 +686,10 @@ def test_query_structured_property_legacy_data(client_context, dispose_of):
 
     with client_context.new(legacy_data=True).use():
         keys = make_entities()
-        eventually(SomeKind.query().fetch, _length_equals(3))
         for key in keys:
             dispose_of(key._key)
 
+        eventually(SomeKind.query().fetch, _length_equals(3))
         query = (
             SomeKind.query()
             .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -784,10 +785,10 @@ def test_query_structured_property_with_projection(dispose_of):
         raise ndb.Return(keys)
 
     keys = make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
 
+    eventually(SomeKind.query().fetch, _length_equals(3))
     query = (
         SomeKind.query(projection=("foo", "bar.one", "bar.two"))
         .filter(SomeKind.foo < 3)
@@ -853,10 +854,10 @@ def test_query_repeated_structured_property_with_properties(dispose_of):
         raise ndb.Return(keys)
 
     keys = make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
 
+    eventually(SomeKind.query().fetch, _length_equals(3))
     query = (
         SomeKind.query()
         .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -914,10 +915,10 @@ def test_query_repeated_structured_property_with_properties_legacy_data(
 
     with client_context.new(legacy_data=True).use():
         keys = make_entities()
-        eventually(SomeKind.query().fetch, _length_equals(3))
         for key in keys:
             dispose_of(key._key)
 
+        eventually(SomeKind.query().fetch, _length_equals(3))
         query = (
             SomeKind.query()
             .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -973,10 +974,10 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
         raise ndb.Return(keys)
 
     keys = make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
 
+    eventually(SomeKind.query().fetch, _length_equals(3))
     query = (
         SomeKind.query()
         .filter(
@@ -1036,10 +1037,10 @@ def test_query_repeated_structured_property_with_entity_twice_legacy_data(
 
     with client_context.new(legacy_data=True).use():
         keys = make_entities()
-        eventually(SomeKind.query().fetch, _length_equals(3))
         for key in keys:
             dispose_of(key._key)
 
+        eventually(SomeKind.query().fetch, _length_equals(3))
         query = (
             SomeKind.query()
             .filter(
@@ -1097,10 +1098,10 @@ def test_query_repeated_structured_property_with_projection(dispose_of):
         raise ndb.Return(keys)
 
     keys = make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
     for key in keys:
         dispose_of(key._key)
 
+    eventually(SomeKind.query().fetch, _length_equals(3))
     query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
         SomeKind.foo < 2
     )
@@ -1185,10 +1186,10 @@ def test_query_repeated_structured_property_with_projection_legacy_data(
 
     with client_context.new(legacy_data=True).use():
         keys = make_entities()
-        eventually(SomeKind.query().fetch, _length_equals(3))
         for key in keys:
             dispose_of(key._key)
 
+        eventually(SomeKind.query().fetch, _length_equals(3))
         query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
             SomeKind.foo < 2
         )
