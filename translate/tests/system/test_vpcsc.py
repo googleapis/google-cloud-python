@@ -15,7 +15,6 @@
 # limitations under the License.
 """Unit tests for VPC-SC."""
 
-import os
 import pytest
 
 from google.api_core import exceptions
@@ -165,3 +164,5 @@ def test_batch_translate_text_w_outside(client, parent_outside):
             input_configs,
             output_config,
         )
+
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
