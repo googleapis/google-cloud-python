@@ -10,7 +10,7 @@
 11-06-2019 13:49 PST
 
 ### New Features
-- Surface new 'IN' and 'ARRAY_CONTAINS_ANY' operators ([#9541](https://github.com/googleapis/google-cloud-python/pull/9541))
+- Surface new 'IN' and 'ARRAY_CONTAINS_ANY' query operators. ([#9541](https://github.com/googleapis/google-cloud-python/pull/9541))
 
 ## 1.5.0
 
