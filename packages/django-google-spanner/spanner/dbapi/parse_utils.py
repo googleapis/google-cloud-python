@@ -56,7 +56,7 @@ def parse_spanner_url(spanner_url):
         for k, v in amap.items():
             combined[k] = v
 
-    return combined
+    return filter_out_unset_keys(combined)
 
 
 def parse_properties(kv_pairs, sep=';'):
@@ -74,6 +74,22 @@ def parse_properties(kv_pairs, sep=';'):
             kvp[kvs[0]] = kvs[1]
         else:
             kvp[kvs[0]] = kvs[1:]
+
+    as_bools = ['autocommit', 'readonly']
+    for as_bool_key in as_bools:
+        value = kvp.get(as_bool_key, None)
+        if value is None:
+            continue
+
+        as_bool_value = True
+        if value == '1' or value == '0':
+            as_bool_value = value == '1'
+        elif value == 'True' or value == 'true':
+            as_bool_value = True
+        elif value == 'False' or value == 'False':
+            as_bool_value = False
+
+        kvp[as_bool_key] = as_bool_value
 
     return kvp
 
@@ -102,30 +118,68 @@ def parse_projectid_instance_dbname(url_path):
 
 
 def extract_connection_params(settings_dict):
-    # We'll expect settings in the form of either:
-    # {
-    #   "NAME":         "spanner",
-    #   "INSTANCE":     "instance",
-    #   "AUTOCOMMIT":   True or False,
-    #   "READ_ONLY":    True or False,
-    #   "PROJECT_ID":   "<project_id>",
-    # }
-    #
-    # OR
-    # {
-    #   "SPANNER_URL":  "cloudspanner:[//host[:port]]/project/<project_id>/instances/
-    #       <instance-id>/databases/<database-name>?property-name=property-value
-    # }
-    if settings_dict['SPANNER_URL']:
-        return parse_spanner_url(settings_dict['SPANNER_URL'])
+    """
+    Examines settings_dict and depending on the provided
+    keys will try to retrieve Cloud Spanner connection parameters.
+
+    Args:
+        settings_dict: a dict containing either:
+            a) 'SPANNER_URL' as the key and expecting a URL of the
+                form:
+                    "cloudspanner:[//host[:port]]/project/<project_id>/
+                    instances/<instance-id>/databases/<database-name>?
+                    property-name=property-value"
+                for example:
+                {
+                    "SPANNER_URL": "cloudspanner:/projects/appdev/instances/dev1/databases/db1?"
+                                   "instance_config=projects/appdev/instanceConfigs/regional-us-west2"
+                }
+
+            b) Otherwise expects parameters whose keys are capitalized and
+               are of the form:
+                {
+                    "NAME":             "<database_name>",
+                    "INSTANCE":         "<instance_name>",
+                    "AUTOCOMMIT":       True or False,
+                    "READONLY":         True or False,
+                    "PROJECT_ID":       "<project_id>",
+                    "INSTANCE_CONFIG":  "[instance configuration if using a brand new database]",
+                }
+
+    Returns:
+        A dict of the form:
+        {
+            "autocommit": <True otherwise omitted if zero-value>,
+            "database": <database name otherwise omitted if zero-value>,
+            "instance": <instance name otherwise omitted if zero-value>,
+            "instance_config": <instance configuration otherwise omitted if zero-value>,
+            "project_id": <project_id otherwise omitted if zero-value>,
+            "readonly": <True otherwise omitted if zero-value>
+        }
+    """
+
+    spanner_url = settings_dict.get('SPANNER_URL', None)
+    if spanner_url:
+        return parse_spanner_url(spanner_url)
     else:
-        return dict(
-            auto_commit=settings_dict['AUTO_COMMIT'],
-            database=settings_dict['NAME'] or 'spanner',
-            instance=settings_dict['INSTANCE'],
-            project_id=resolve_project_id(settings_dict['PROJECT_ID']),
-            read_only=settings_dict['READ_ONLY'],
+        all_unfiltered = dict(
+            autocommit=settings_dict.get('AUTOCOMMIT'),
+            database=settings_dict.get('NAME'),
+            instance=settings_dict.get('INSTANCE'),
+            instance_config=settings_dict.get('INSTANCE_CONFIG'),
+            project_id=resolve_project_id(settings_dict.get('PROJECT_ID')),
+            readonly=settings_dict.get('READONLY'),
         )
+
+        # Filter them to remove any unnecessary
+        # None's whose keys have no associated value.
+        return filter_out_unset_keys(all_unfiltered)
+
+
+def filter_out_unset_keys(unfiltered):
+    # Filter them to remove any unnecessary
+    # None's whose keys have no associated value.
+    return {key: value for key, value in unfiltered.items() if value}
 
 
 reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$', re.UNICODE)

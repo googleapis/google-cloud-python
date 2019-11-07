@@ -15,7 +15,9 @@
 from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
-from spanner.dbapi.parse_utils import parse_spanner_url
+from spanner.dbapi.parse_utils import (
+    extract_connection_params, parse_spanner_url,
+)
 
 
 class ParseUtilsTests(TestCase):
@@ -81,7 +83,54 @@ class ParseUtilsTests(TestCase):
             project_id='test-project-012345',
             instance='test-instance',
             database='dev-db',
-            autocommit='true',
-            readonly='true',
+            autocommit=True,
+            readonly=True,
         )
         self.assertEqual(got, want)
+
+    def test_extract_connection_params(self):
+        cases = [
+                (
+                    dict(
+                        INSTANCE='instance',
+                        INSTANCE_CONFIG='projects/proj/instanceConfigs/regional-us-west2',
+                        NAME='db',
+                        PROJECT_ID='project',
+                        AUTOCOMMIT=True,
+                        READONLY=True,
+                    ),
+                    dict(
+                        database='db',
+                        instance='instance',
+                        instance_config='projects/proj/instanceConfigs/regional-us-west2',
+                        project_id='project',
+                        autocommit=True,
+                        readonly=True,
+                    ),
+                ),
+        ]
+
+        for case in cases:
+            din, want = case
+            got = extract_connection_params(din)
+            self.assertEqual(got, want, 'unequal dicts')
+
+    def test_SPANNER_URL_vs_dictParity(self):
+        by_spanner_url = dict(
+                SPANNER_URL='cloudspanner:/projects/proj/instances/django-dev1/databases/db1?'
+                            'instance_config=projects/proj/instanceConfigs/regional-us-west2;'
+                            'autocommit=true;readonly=true'
+        )
+        by_dict = dict(
+                INSTANCE='django-dev1',
+                NAME='db1',
+                INSTANCE_CONFIG='projects/proj/instanceConfigs/regional-us-west2',
+                PROJECT_ID='proj',
+                AUTOCOMMIT=True,
+                READONLY=True,
+        )
+
+        got_by_spanner_url = extract_connection_params(by_spanner_url)
+        got_by_dict = extract_connection_params(by_dict)
+
+        self.assertEqual(got_by_spanner_url, got_by_dict, 'No parity between equivalent configs')
