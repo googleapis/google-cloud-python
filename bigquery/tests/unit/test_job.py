@@ -1448,6 +1448,46 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
         config.field_delimiter = field_delimiter
         self.assertEqual(config._properties["load"]["fieldDelimiter"], field_delimiter)
 
+    def test_hive_partitioning_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.hive_partitioning)
+
+    def test_hive_partitioning_hit(self):
+        from google.cloud.bigquery.external_config import HivePartitioningOptions
+
+        config = self._get_target_class()()
+        config._properties["load"]["hivePartitioningOptions"] = {
+            "sourceUriPrefix": "http://foo/bar",
+            "mode": "STRINGS",
+        }
+        result = config.hive_partitioning
+        self.assertIsInstance(result, HivePartitioningOptions)
+        self.assertEqual(result.source_uri_prefix, "http://foo/bar")
+        self.assertEqual(result.mode, "STRINGS")
+
+    def test_hive_partitioning_setter(self):
+        from google.cloud.bigquery.external_config import HivePartitioningOptions
+
+        hive_partitioning = HivePartitioningOptions()
+        hive_partitioning.source_uri_prefix = "http://foo/bar"
+        hive_partitioning.mode = "AUTO"
+
+        config = self._get_target_class()()
+        config.hive_partitioning = hive_partitioning
+        self.assertEqual(
+            config._properties["load"]["hivePartitioningOptions"],
+            {"sourceUriPrefix": "http://foo/bar", "mode": "AUTO"},
+        )
+
+        config.hive_partitioning = None
+        self.assertIsNone(config._properties["load"]["hivePartitioningOptions"])
+
+    def test_hive_partitioning_invalid_type(self):
+        config = self._get_target_class()()
+
+        with self.assertRaises(TypeError):
+            config.hive_partitioning = {"mode": "AUTO"}
+
     def test_ignore_unknown_values_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.ignore_unknown_values)
