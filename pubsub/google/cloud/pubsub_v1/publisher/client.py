@@ -273,7 +273,7 @@ class Client(object):
         # Delegate the publishing to the batch.
         with self._batch_lock:
             if self._is_stopped:
-                raise ValueError("Cannot publish on a stopped publisher.")
+                raise RuntimeError("Cannot publish on a stopped publisher.")
 
             batch = self._batch(topic)
             future = None
@@ -300,9 +300,9 @@ class Client(object):
         """
         with self._batch_lock:
             if self._is_stopped:
-                raise ValueError("Cannot stop a publisher already stopped.")
+                raise RuntimeError("Cannot stop a publisher already stopped.")
 
             self._is_stopped = True
 
-            for topic in self._batches:
-                self._batches[topic].commit()
+            for batch in self._batches.values():
+                batch.commit()

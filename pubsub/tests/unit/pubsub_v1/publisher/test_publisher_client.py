@@ -224,10 +224,10 @@ def test_stop():
         commit_mock2.assert_called()
 
     # check that closed publisher doesn't accept new messages
-    with pytest.raises(ValueError):
+    with pytest.raises(RuntimeError):
         client.publish("topic1", b"msg2")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(RuntimeError):
         client.stop()
 
 
