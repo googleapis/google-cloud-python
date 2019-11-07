@@ -9,5 +9,5 @@
 11-07-2019 10:48 PST
 
 ### New Features
-- Initial generation of Cloud Build v1 ([#9510](https://github.com/googleapis/google-cloud-python/pull/9510))
+- Initial generation of Cloud Build v1 ([#9510](https://github.com/googleapis/google-cloud-python/pull/9510)). **Note**: This version is incompatible with `google-cloud-containeranalysis<0.3.1`. Please upgrade to `google-cloud-containeranalysis>=0.3.1` to use this library.
 
