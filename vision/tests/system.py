@@ -718,7 +718,9 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
 
     def test_list_products_in_product_set_blocked(self):
         with pytest.raises(exceptions.PermissionDenied) as exc:
-            list(self.ps_client.list_products_in_product_set(name=self.product_set_path))
+            list(
+                self.ps_client.list_products_in_product_set(name=self.product_set_path)
+            )
 
         assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
@@ -780,7 +782,6 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         self.location_path = self.ps_client.location_path(
             project=vpcsc_config.project_inside, location=self.location
         )
-
 
     def test_import_product_sets_blocked(self):
         # The csv file is outside the secure perimeter.
