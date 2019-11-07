@@ -134,6 +134,7 @@ class Client(object):
         # messages. One batch exists for each topic.
         self._batch_lock = self._batch_class.make_lock()
         self._batches = {}
+        self._is_stopped = False
 
     @classmethod
     def from_service_account_file(cls, filename, batch_settings=(), **kwargs):
@@ -187,20 +188,19 @@ class Client(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        with self._batch_lock:
-            if not create:
-                batch = self._batches.get(topic)
-                if batch is None:
-                    create = True
+        if not create:
+            batch = self._batches.get(topic)
+            if batch is None:
+                create = True
 
-            if create:
-                batch = self._batch_class(
-                    autocommit=autocommit,
-                    client=self,
-                    settings=self.batch_settings,
-                    topic=topic,
-                )
-                self._batches[topic] = batch
+        if create:
+            batch = self._batch_class(
+                autocommit=autocommit,
+                client=self,
+                settings=self.batch_settings,
+                topic=topic,
+            )
+            self._batches[topic] = batch
 
         return batch
 
@@ -242,12 +242,17 @@ class Client(object):
             instance that conforms to Python Standard library's
             :class:`~concurrent.futures.Future` interface (but not an
             instance of that class).
+
+        Raises:
+            RuntimeError:
+                If called after publisher has been stopped
+                by a `stop()` method call.
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
         if not isinstance(data, six.binary_type):
             raise TypeError(
-                "Data being published to Pub/Sub must be sent " "as a bytestring."
+                "Data being published to Pub/Sub must be sent as a bytestring."
             )
 
         # Coerce all attributes to text strings.
@@ -266,11 +271,38 @@ class Client(object):
         message = types.PubsubMessage(data=data, attributes=attrs)
 
         # Delegate the publishing to the batch.
-        batch = self._batch(topic)
-        future = None
-        while future is None:
-            future = batch.publish(message)
-            if future is None:
-                batch = self._batch(topic, create=True)
+        with self._batch_lock:
+            if self._is_stopped:
+                raise RuntimeError("Cannot publish on a stopped publisher.")
+
+            batch = self._batch(topic)
+            future = None
+            while future is None:
+                future = batch.publish(message)
+                if future is None:
+                    batch = self._batch(topic, create=True)
 
         return future
+
+    def stop(self):
+        """Immediately publish all outstanding messages.
+
+        Asynchronously sends all outstanding messages and
+        prevents future calls to `publish()`. Method should
+        be invoked prior to deleting this `Client()` object
+        in order to ensure that no pending messages are lost.
+
+        .. note::
+
+            This method is non-blocking. Use `Future()` objects
+            returned by `publish()` to make sure all publish
+            requests completed, either in success or error.
+        """
+        with self._batch_lock:
+            if self._is_stopped:
+                raise RuntimeError("Cannot stop a publisher already stopped.")
+
+            self._is_stopped = True
+
+            for batch in self._batches.values():
+                batch.commit()
