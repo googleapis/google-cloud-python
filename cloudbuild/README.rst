@@ -8,7 +8,7 @@ Python Client for Cloud Build API (`Alpha`_)
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Cloud Build API: https://cloud.google.com/cloud-build
-.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/cloudbuild/usage.html
+.. _Client Library Documentation: https://googleapis.dev/python/cloudbuild/latest
 .. _Product Documentation:  https://cloud.google.com/cloud-build
 
 Quick Start

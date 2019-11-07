@@ -39,6 +39,7 @@ s.move(
         'nox*.py',
         'setup.py',
         'setup.cfg',
+        'README.rst'
         '**/*.proto'
         'google/cloud/devtools/__init__.py'  # declare this as a namespace package
     ],
@@ -57,23 +58,9 @@ s.replace(
 
 # Rename package to `google-cloud-build`
 s.replace(
-    ["**/*.rst", "**/*.py", "**/*.md"],
-    "google-cloud-build",
+    ["**/*.rst", "*/**/*.py", "**/*.md"],
+    "google-cloud-cloudbuild",
     "google-cloud-build"
-)
-
-# Fix reference to product documentation
-s.replace(
-    'README.rst',
-    'https://cloud\.google\.com/cloudbuild',
-    'https://cloud.google.com/cloud-build'
-)
-
-# Fix link to auth
-s.replace(
-    'README.rst',
-    'https://googleapis\.github\.io/google-cloud-python/latest/core/auth\.html',
-    'https://googleapis.dev/python/google-api-core/latest/auth.html'
 )
 
 # ----------------------------------------------------------------------------
