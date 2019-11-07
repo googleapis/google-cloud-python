@@ -15,7 +15,13 @@
 from google.cloud import spanner_v1 as spanner
 
 from .connection import Connection
-from .exceptions import Error
+
+# These need to be included in the top-level package for PEP-0249 DB API v2.
+from .exceptions import (  # noqa
+    Error, IntegrityError, OperationalError, ProgrammingError, Warning, InterfaceError,
+    DatabaseError, DataError, InternalError, NotSupportedError
+)
+
 from .parse_utils import parse_spanner_url, validate_instance_config
 from .version import USER_AGENT
 
