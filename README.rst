@@ -133,6 +133,7 @@ The following client libraries have **alpha** support:
 -  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Documentation`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
+-  `Google Cloud Build`_ (`Cloud Build README`_, `Cloud Build Documentation`_)
 -  `Google Cloud Container`_ (`Container README`_, `Container Documentation`_)
 -  `Google Cloud Container Analysis`_ (`Container Analysis README`_, `Container Analysis Documentation`_)
 -  `Google Cloud Dataproc`_ (`Dataproc README`_, `Dataproc Documentation`_)
@@ -165,6 +166,10 @@ The following client libraries have **alpha** support:
 .. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
 .. _HappyBase Documentation: https://google-cloud-python-happybase.readthedocs.io/en/latest/
+
+.. _Google Cloud Build: https://pypi.org/project/google-cloud-build/
+.. _Cloud Build README: https://github.com/googleapis/google-cloud-python/cloudbuild
+.. _Cloud Build Documentation: https://googleapis.dev/python/cloudbuild/latest
 
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
 .. _Container README: https://github.com/googleapis/google-cloud-python/tree/master/container
