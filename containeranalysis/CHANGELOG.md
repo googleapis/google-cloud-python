@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.1
+
+11-07-2019 11:08 PST
+
+### Implementation Changes
+- fix(containeranalysis): make google.cloud.devtools a namespace ([#9606](https://github.com/googleapis/google-cloud-python/pull/9606))
+
+### Documentation
+- Change requests intersphinx ref (via synth)
+- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+
 ## 0.3.0
 
 08-12-2019 13:53 PDT
