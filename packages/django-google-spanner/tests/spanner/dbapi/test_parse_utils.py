@@ -24,7 +24,7 @@ class ParseUtilsTests(TestCase):
             url = None
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
-        self.assertEqual(*exc.exception.args, 'expecting a non-blank spanner_url')
+        self.assertEqual(exc.exception.args, ('expecting a non-blank spanner_url',))
 
     def test_no_host(self):
         # No host present in the URL.
@@ -32,7 +32,7 @@ class ParseUtilsTests(TestCase):
             url = '://spanner.googleapis.com/projects/test-project-012345/instances/test-instance/databases/dev-db'
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
-        self.assertEqual(*exc.exception.args, 'expecting cloudspanner as the scheme')
+        self.assertEqual(exc.exception.args, ('expecting cloudspanner as the scheme',))
 
     def test_invalid_scheme(self):
         # Doesn't contain "cloudspanner" as the scheme.
@@ -40,7 +40,7 @@ class ParseUtilsTests(TestCase):
             url = 'foo://spanner.googleapis.com/projects/test-project-012345/instances/test-instance/databases/dev-db'
             got = parse_spanner_url(url)
             self.assertEqual(got, None)
-        self.assertEqual(*exc.exception.args, 'invalid scheme foo, expected cloudspanner')
+        self.assertEqual(exc.exception.args, ('invalid scheme foo, expected cloudspanner',))
 
     def test_with_host(self):
         url = (

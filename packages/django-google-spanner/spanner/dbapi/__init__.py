@@ -15,14 +15,19 @@
 from google.cloud import spanner_v1 as spanner
 
 from .connection import Connection
-
 # These need to be included in the top-level package for PEP-0249 DB API v2.
-from .exceptions import (  # noqa
-    Error, IntegrityError, OperationalError, ProgrammingError, Warning, InterfaceError,
-    DatabaseError, DataError, InternalError, NotSupportedError
+from .exceptions import (
+    DatabaseError, DataError, Error, IntegrityError, InterfaceError,
+    InternalError, NotSupportedError, OperationalError, ProgrammingError,
+    Warning,
 )
-
-from .parse_utils import parse_spanner_url, validate_instance_config
+from .parse_utils import (
+    extract_connection_params, parse_spanner_url, validate_instance_config,
+)
+from .types import (
+    BINARY, DATETIME, NUMBER, ROWID, STRING, Date, DateFromTicks, Time,
+    TimeFromTicks, Timestamp, TimestampFromTicks,
+)
 from .version import USER_AGENT
 
 # Globals that MUST be defined ###
@@ -110,3 +115,13 @@ def connect(spanner_url, credentials_uri=None):
         _ = lro
 
     return Connection(db)
+
+
+__all__ = [
+    'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
+    'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
+    'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
+    'extract_connection_params', 'parse_spanner_url',
+    'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp', 'TimestampFromTicks',
+    'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID',
+]
