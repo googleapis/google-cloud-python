@@ -201,6 +201,36 @@ def test_publish_attrs_type_error():
         client.publish(topic, b"foo", answer=42)
 
 
+def test_stop():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    batch = client._batch("topic1", autocommit=False)
+    batch2 = client._batch("topic2", autocommit=False)
+
+    pubsub_msg = types.PubsubMessage(data=b"msg")
+
+    patch = mock.patch.object(batch, "commit")
+    patch2 = mock.patch.object(batch2, "commit")
+
+    with patch as commit_mock, patch2 as commit_mock2:
+        batch.publish(pubsub_msg)
+        batch2.publish(pubsub_msg)
+
+        client.stop()
+
+        # check if commit() called
+        commit_mock.assert_called()
+        commit_mock2.assert_called()
+
+    # check that closed publisher doesn't accept new messages
+    with pytest.raises(RuntimeError):
+        client.publish("topic1", b"msg2")
+
+    with pytest.raises(RuntimeError):
+        client.stop()
+
+
 def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)

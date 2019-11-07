@@ -74,6 +74,9 @@ class Batch(base.Batch):
         self._state_lock = threading.Lock()
         # These members are all communicated between threads; ensure that
         # any writes to them use the "state lock" to remain atomic.
+        # _futures list should remain unchanged after batch
+        # status changed from ACCEPTING_MESSAGES to any other
+        # in order to avoid race conditions
         self._futures = []
         self._messages = []
         self._size = 0
