@@ -22,7 +22,7 @@ import pytest
 INSIDE_VPCSC_ENVVAR = "GOOGLE_CLOUD_TESTS_IN_VPCSC"
 PROJECT_INSIDE_ENVVAR = "PROJECT_ID"
 PROJECT_OUTSIDE_ENVVAR = "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT"
-BUCKET_OUTSIDE_ENVVVAR = "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET"
+BUCKET_OUTSIDE_ENVVAR = "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET"
 
 
 class VPCSCTestConfig(object):
@@ -73,7 +73,7 @@ class VPCSCTestConfig(object):
         """Test decorator: skip if running inside VPCSC."""
         reason = (
             "Running inside VPCSC.  "
-            "Set the {} environment variable to enable this test."
+            "Unset the {} environment variable to enable this test."
         ).format(INSIDE_VPCSC_ENVVAR)
         skip = pytest.mark.skipif(self.inside_vpcsc, reason=reason)
         return skip(testcase)
@@ -82,7 +82,7 @@ class VPCSCTestConfig(object):
         """Test decorator: skip if running outside VPCSC."""
         reason = (
             "Running outside VPCSC.  "
-            "Unset the {} environment variable to enable this test."
+            "Set the {} environment variable to enable this test."
         ).format(INSIDE_VPCSC_ENVVAR)
         skip = pytest.mark.skipif(not self.inside_vpcsc, reason=reason)
         return skip(testcase)
