@@ -126,7 +126,6 @@ def test_from_rfc3339_with_truncated_nanos(truncated, micros):
 
 def test_from_rfc3339_nanos_is_deprecated():
     from_rfc3339_patch = mock.patch("google.api_core.datetime_helpers.from_rfc3339")
-    warnings_patch = mock.patch("warnings.warn")
     value = "2009-12-17T12:44:32.123456Z"
 
     with from_rfc3339_patch as from_rfc3339, warnings_patch as warn:
