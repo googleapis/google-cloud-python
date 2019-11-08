@@ -641,7 +641,7 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         except google.api_core.exceptions.PermissionDenied as e:
             # Verify the PermissionDenied exception was due to VPC SC.
             self.assertEqual(
-                e.message, "Request is prohibited by organization's policy"
+                e.message, "Request is prohibited by organization's policy."
             )
             return
         except Exception as e:
@@ -821,7 +821,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         )
         self._verify_vpc_sc_blocks_gcs_bucket()
         self.gcs_read_error_message = "Error opening file: gs://"
-        self.gcs_write_error_message = "Error writing final output to: gs://"
+        self.gcs_write_error_message = "Error writing final output to"
 
     def _verify_vpc_sc_blocks_gcs_bucket(self):
         # Verifies that a VPC SC 403 error is raised when trying to access a bucket in gcs that is outside the perimeter.
