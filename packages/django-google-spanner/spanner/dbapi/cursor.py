@@ -152,6 +152,28 @@ class Cursor(object):
     def fetchall(self):
         return list(self.__iter__())
 
+    def fetchmany(self, size=50):
+        """
+        Fetch the next set of rows of a query result, returning a sequence of sequences.
+        An empty sequence is returned when no more rows are available.
+
+        Args:
+            size: optional integer to determine the maximum number of results to fetch.
+            
+
+        Raises:
+            Error if the previous call to .execute*() did not produce any result set
+            or if no call was issued yet.
+        """
+        items = []
+        for i in range(size):
+            try:
+                items.append(self.__next__())
+            except StopIteration:
+                break
+
+        return items
+
     @property
     def arraysize(self):
         raise ProgrammingError('Unimplemented')
