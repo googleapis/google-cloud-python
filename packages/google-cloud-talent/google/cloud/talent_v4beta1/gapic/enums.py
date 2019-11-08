@@ -40,7 +40,7 @@ class AvailabilitySignalType(enum.IntEnum):
       RESUME_UPDATE (int): Resume update signal.
 
       In the context of ``Profile.availability_signals``, this signal is
-      related to the candidate’s most recent update to their resume. For a
+      related to the candidate's most recent update to their resume. For a
       ``SummarizedProfile.summary``, ``last_update_time`` is calculated from
       max(\ ``Profile.resume_update_time``) from all
       ``SummarizedProfile.profiles``.
@@ -50,7 +50,7 @@ class AvailabilitySignalType(enum.IntEnum):
       CANDIDATE_UPDATE (int): Candidate update signal.
 
       In the context of ``Profile.availability_signals``, this signal is
-      related to the candidate’s most recent update to their profile. For a
+      related to the candidate's most recent update to their profile. For a
       ``SummarizedProfile.summary``, ``last_update_time`` is calculated from
       max(\ ``Profile.candidate_update_time``) from all
       ``SummarizedProfile.profiles``.
@@ -60,7 +60,7 @@ class AvailabilitySignalType(enum.IntEnum):
       CLIENT_SUBMISSION (int): Client submission signal.
 
       In the context of ``Profile.availability_signals``, this signal is
-      related to the candidate’s most recent submission. ``last_update_time``
+      related to the candidate's most recent submission. ``last_update_time``
       is calculated from max(\ ``Application.create_time``) from all
       ``Application`` records where ``Application.stage`` is any of the
       following: ``HIRING_MANAGER_REVIEW`` ``INTERVIEW`` ``OFFER_EXTENDED``
@@ -958,7 +958,7 @@ class Phone(object):
           associated with a particular person, and may be routed to either a
           MOBILE or LANDLINE number. The ``phone usage`` should be set to PERSONAL
           for these phone types. Some more information can be found here:
-          http://en.wikipedia.org/wiki/Personal\_Numbers
+          https://en.wikipedia.org/wiki/Personal\_Numbers
           VOIP (int): Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
           MOBILE_OR_LANDLINE (int): In some regions (e.g. the USA), it is impossible to distinguish between
           fixed-line and mobile numbers by looking at the phone number itself.
@@ -1015,7 +1015,7 @@ class Resume(object):
         Attributes:
           RESUME_TYPE_UNSPECIFIED (int): Default value.
           HRXML (int): The profile contents in HR-XML format.
-          See http://schemas.liquid-technologies.com/hr-xml/2007-04-15/ for more
+          See https://schemas.liquid-technologies.com/hr-xml/2007-04-15/ for more
           information about Human Resources XML.
           OTHER_RESUME_TYPE (int): Resume type not specified.
         """
