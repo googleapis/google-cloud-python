@@ -2996,6 +2996,7 @@ class TestExtractJobConfig(unittest.TestCase, _Base):
         config.field_delimiter = "ignored for avro"
         config.print_header = False
         config._properties["extract"]["someNewField"] = "some-value"
+        config.use_avro_logical_types = True
         resource = config.to_api_repr()
         self.assertEqual(
             resource,
@@ -3006,6 +3007,7 @@ class TestExtractJobConfig(unittest.TestCase, _Base):
                     "fieldDelimiter": "ignored for avro",
                     "printHeader": False,
                     "someNewField": "some-value",
+                    "useAvroLogicalTypes": True,
                 }
             },
         )
@@ -3020,6 +3022,7 @@ class TestExtractJobConfig(unittest.TestCase, _Base):
                     "fieldDelimiter": "\t",
                     "printHeader": True,
                     "someNewField": "some-value",
+                    "useAvroLogicalTypes": False,
                 }
             }
         )
@@ -3028,6 +3031,7 @@ class TestExtractJobConfig(unittest.TestCase, _Base):
         self.assertEqual(config.field_delimiter, "\t")
         self.assertEqual(config.print_header, True)
         self.assertEqual(config._properties["extract"]["someNewField"], "some-value")
+        self.assertEqual(config.use_avro_logical_types, False)
 
 
 class TestExtractJob(unittest.TestCase, _Base):
