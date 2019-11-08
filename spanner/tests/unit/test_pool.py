@@ -876,6 +876,9 @@ class _Database(object):
         self._sessions = []
 
     def session(self):
+        # always return first session in the list
+        # to avoid reversing the order of putting
+        # sessions into pool (important for order tests)
         return self._sessions.pop(0)
 
 
