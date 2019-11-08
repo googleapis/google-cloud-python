@@ -1640,7 +1640,7 @@ class JobServiceClient(object):
                 The format is "projects/{project\_id}/tenants/{tenant\_id}". For
                 example, "projects/foo/tenant/bar". If tenant id is unspecified, a
                 default tenant is created. For example, "projects/foo".
-            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): The jobs to be updated.
+            jobs (list[Union[dict, ~google.cloud.talent_v4beta1.types.Job]]): Required. The jobs to be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Job`
