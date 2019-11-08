@@ -835,9 +835,7 @@ def _make_transaction(*args, **kw):
     from google.cloud.spanner_v1.transaction import Transaction
 
     txn = mock.create_autospec(Transaction)(*args, **kw)
-    txn.committed = None
-    txn._rolled_back = False
-    return txn
+    txn.committed = 
 
 
 @total_ordering
