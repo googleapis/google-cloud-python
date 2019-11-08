@@ -116,8 +116,15 @@ def from_iso8601_time(value):
 
 
 def from_rfc3339(value):
+<<<<<<< HEAD
+    """Convert an RFC3339-format timestamp to a native datetime.
+
+    Supported formats include those without fractional seconds, or with
+    any fraction up to nanosecond precision.
+=======
     """Convert a nanosecond-precision or if nanoseconds are missing
     microsecond-precision timestamp to a native datetime.
+>>>>>>> 06bee67b097e485a58415d218f3ac421a04d3d6a
 
     .. note::
         Python datetimes do not support nanosecond precision; this function
@@ -173,6 +180,8 @@ def from_rfc3339_nanos(value):
         ValueError: If the timestamp does not match the RFC3339
             regular expression.
     """
+<<<<<<< HEAD
+=======
     # Raise deprecation warnings for things we want to go away.
     warnings.warn(
         "The `from_rfc3339_nanos` function is deprecated"
@@ -180,6 +189,7 @@ def from_rfc3339_nanos(value):
         DeprecationWarning,
         stacklevel=2,
     )
+>>>>>>> 06bee67b097e485a58415d218f3ac421a04d3d6a
     return from_rfc3339(value)
 
 
