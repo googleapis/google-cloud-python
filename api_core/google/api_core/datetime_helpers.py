@@ -17,7 +17,6 @@
 import calendar
 import datetime
 import re
-import warnings
 
 import pytz
 
