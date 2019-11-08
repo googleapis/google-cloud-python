@@ -237,7 +237,7 @@ class Retry(object):
         maximum=_DEFAULT_MAXIMUM_DELAY,
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
         deadline=_DEFAULT_DEADLINE,
-        on_error=None
+        on_error=None,
     ):
         self._predicate = predicate
         self._initial = initial

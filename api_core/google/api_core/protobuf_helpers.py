@@ -15,6 +15,7 @@
 """Helpers for :mod:`protobuf`."""
 
 import collections
+
 try:
     from collections import abc as collections_abc
 except ImportError:  # Python 2.7
