@@ -211,8 +211,53 @@ def test_{{ method.name|snake_case }}_pager():
         )]
         assert len(results) == 6
         assert all([isinstance(i, {{ method.paged_result_field.message.ident }})
-                   for i in results])
-{% endif %} {#- method.paged_response_field #}
+                    for i in results])
+
+def test_{{ method.name|snake_case }}_pages():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        for page, token in zip(pages, ['abc','def','ghi', '']):
+            assert page.raw_page.next_page_token == token
+{% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
+def test_{{ method.name|snake_case }}_raw_page_lro():
+    response = {{ method.lro.response_type.ident }}()
+    assert response.raw_page is response
+{% endif %} {#- method.paged_result_field #}
 
 {% endfor -%} {#- method in methods #}
 

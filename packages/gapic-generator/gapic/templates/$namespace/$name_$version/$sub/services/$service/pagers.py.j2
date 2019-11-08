@@ -56,19 +56,17 @@ class {{ method.name }}Pager:
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
 
-    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
-        while True:
-            # Iterate through the results on this response.
-            for result in self._response.{{ method.paged_result_field.name }}:
-                yield result
-
-            # Sanity check: Is this the last page? If so, we are done.
-            if not self._response.next_page_token:
-                break
-
-            # Get the next page.
+    @property
+    def pages(self) -> Iterable[{{ method.output.ident }}]:
+        yield self._response
+        while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
+        for page in self.pages:
+            yield from page.{{ method.paged_result_field.name }}
 
     def __repr__(self) -> str:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
