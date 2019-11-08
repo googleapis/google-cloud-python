@@ -41,7 +41,9 @@ from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-build").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-cloudbuild"
+).version
 
 
 class CloudBuildClient(object):

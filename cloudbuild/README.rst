@@ -48,7 +48,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-build
+    <your-env>/bin/pip install google-cloud-cloudbuild
 
 
 Windows
@@ -59,7 +59,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-build
+    <your-env>\Scripts\pip.exe install google-cloud-cloudbuild
 
 Next Steps
 ~~~~~~~~~~
