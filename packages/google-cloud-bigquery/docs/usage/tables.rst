@@ -186,3 +186,15 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_delete_table]
    :end-before: [END bigquery_delete_table]
+
+Restoring a Deleted Table
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Restore a deleted table from a snapshot by using the
+:func:`~google.cloud.bigquery.client.Client.copy_table` method:
+
+.. literalinclude:: ../samples/undelete_table.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_undelete_table]
+   :end-before: [END bigquery_undelete_table]
