@@ -1,7 +1,7 @@
 Google Auth Python Library
 ==========================
 
-|build| |docs| |pypi| |compat_check_pypi| |compat_check_github|
+|docs| |pypi|
 
 This library simplifies using Google's various server-to-server authentication
 mechanisms to access Google APIs.
