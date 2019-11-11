@@ -15,152 +15,154 @@
 # limitations under the License.
 """Unit tests for VPC-SC."""
 
-import os
 import pytest
 
 from google.api_core import exceptions
 from google.cloud import translate_v3beta1
+from test_utils.vpcsc_config import vpcsc_config
+
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 
 
-IS_INSIDE_VPCSC = "GOOGLE_CLOUD_TESTS_IN_VPCSC" in os.environ
-# If IS_INSIDE_VPCSC is set, these environment variables should also be set
-if IS_INSIDE_VPCSC:
-    PROJECT_INSIDE = os.environ["PROJECT_ID"]
-    PROJECT_OUTSIDE = os.environ["GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT"]
+@pytest.fixture(scope="module")
+def client():
+    return translate_v3beta1.TranslationServiceClient()
 
 
-class TestVPCServiceControl(object):
-    @classmethod
-    def setup(self):
-        self._client = translate_v3beta1.TranslationServiceClient()
-        self._parent_inside = self._client.location_path(PROJECT_INSIDE, "us-central1")
-        self._parent_outside = self._client.location_path(
-            PROJECT_OUTSIDE, "us-central1"
+@pytest.fixture(scope="module")
+def parent_inside(client):
+    return client.location_path(vpcsc_config.project_inside, "us-central1")
+
+
+@pytest.fixture(scope="module")
+def parent_outside(client):
+    return client.location_path(vpcsc_config.project_outside, "us-central1")
+
+
+@pytest.fixture(scope="module")
+def glossary_name_inside(client):
+    return client.glossary_path(
+        vpcsc_config.project_inside, "us-central1", "fake_glossary"
+    )
+
+
+@pytest.fixture(scope="module")
+def glossary_name_outside(client):
+    return client.glossary_path(
+        vpcsc_config.project_outside, "us-central1", "fake_glossary"
+    )
+
+
+def _make_glossary(name):
+    return {
+        "name": name,
+        "language_codes_set": {"language_codes": ["en", "ja"]},
+        "input_config": {
+            "gcs_source": {"input_uri": "gs://fake-bucket/fake_glossary.csv"}
+        },
+    }
+
+
+@pytest.fixture(scope="module")
+def glossary_inside(glossary_name_inside):
+    return _make_glossary(glossary_name_inside)
+
+
+@pytest.fixture(scope="module")
+def glossary_outside(glossary_name_outside):
+    return _make_glossary(glossary_name_outside)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_create_glossary_w_inside(client, parent_inside, glossary_inside):
+    client.create_glossary(parent_inside, glossary_inside)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_create_glossary_w_outside(client, parent_outside, glossary_outside):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.create_glossary(parent_outside, glossary_outside)
+
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_list_glossaries_w_inside(client, parent_inside):
+    list(client.list_glossaries(parent_inside))
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_list_glossaries_w_outside(client, parent_outside):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        list(client.list_glossaries(parent_outside))
+
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_get_glossary_w_inside(client, glossary_name_inside):
+    try:
+        client.get_glossary(glossary_name_inside)
+    except exceptions.NotFound:  # no perms issue
+        pass
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_get_glossary_w_outside(client, glossary_name_outside):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.get_glossary(glossary_name_outside)
+
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_delete_glossary_w_inside(client, glossary_name_inside):
+    try:
+        client.delete_glossary(glossary_name_inside)
+    except exceptions.NotFound:  # no perms issue
+        pass
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_delete_glossary_w_outside(client, glossary_name_outside):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.delete_glossary(glossary_name_outside)
+
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_translate_text_w_inside(client, parent_inside):
+    source_language_code = "en"
+    target_language_codes = ["es"]
+    input_configs = [{"gcs_source": {"input_uri": "gs://fake-bucket/*"}}]
+    output_config = {
+        "gcs_destination": {"output_uri_prefix": "gs://fake-bucket/output/"}
+    }
+    client.batch_translate_text(  # no perms issue
+        parent_inside,
+        source_language_code,
+        target_language_codes,
+        input_configs,
+        output_config,
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_translate_text_w_outside(client, parent_outside):
+    source_language_code = "en"
+    target_language_codes = ["es"]
+    input_configs = [{"gcs_source": {"input_uri": "gs://fake-bucket/*"}}]
+    output_config = {
+        "gcs_destination": {"output_uri_prefix": "gs://fake-bucket/output/"}
+    }
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.batch_translate_text(
+            parent_outside,
+            source_language_code,
+            target_language_codes,
+            input_configs,
+            output_config,
         )
 
-        def make_glossary_name(project_id):
-            return "projects/{0}/locations/us-central1/glossaries/fake_glossary".format(
-                project_id
-            )
-
-        self._glossary_name_inside = make_glossary_name(PROJECT_INSIDE)
-        self._glossary_name_outside = make_glossary_name(PROJECT_OUTSIDE)
-
-    @staticmethod
-    def _is_rejected(call):
-        try:
-            responses = call()
-            print("responses: ", responses)
-        except exceptions.PermissionDenied as e:
-            print("PermissionDenied Exception: ", e)
-            return e.message == "Request is prohibited by organization's policy"
-        except Exception as e:
-            print("Other Exception: ", e)
-            pass
-        return False
-
-    @staticmethod
-    def _do_test(delayed_inside, delayed_outside):
-        assert TestVPCServiceControl._is_rejected(delayed_outside)
-        assert not (TestVPCServiceControl._is_rejected(delayed_inside))
-
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
-    )
-    def test_create_glossary(self):
-        def make_glossary(project_id):
-            return {
-                "name": "projects/{0}/locations/us-central1/glossaries/fake_glossary".format(
-                    project_id
-                ),
-                "language_codes_set": {"language_codes": ["en", "ja"]},
-                "input_config": {
-                    "gcs_source": {"input_uri": "gs://fake-bucket/fake_glossary.csv"}
-                },
-            }
-
-        glossary_inside = make_glossary(PROJECT_INSIDE)
-
-        def delayed_inside():
-            return self._client.create_glossary(self._parent_inside, glossary_inside)
-
-        glossary_outside = make_glossary(PROJECT_OUTSIDE)
-
-        def delayed_outside():
-            return self._client.create_glossary(self._parent_outside, glossary_outside)
-
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
-
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
-    )
-    def test_list_glossaries(self):
-        # list_glossaries() returns an GRPCIterator instance, and we need to actually iterate through it
-        # by calling _next_page() to get real response.
-        def delayed_inside():
-            return self._client.list_glossaries(self._parent_inside)._next_page()
-
-        def delayed_outside():
-            return self._client.list_glossaries(self._parent_outside)._next_page()
-
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
-
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
-    )
-    def test_get_glossary(self):
-        def delayed_inside():
-            return self._client.get_glossary(self._glossary_name_inside)
-
-        def delayed_outside():
-            return self._client.get_glossary(self._glossary_name_outside)
-
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
-
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
-    )
-    def test_delete_glossary(self):
-        def delayed_inside():
-            return self._client.delete_glossary(self._glossary_name_inside)
-
-        def delayed_outside():
-            return self._client.delete_glossary(self._glossary_name_outside)
-
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
-
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test must be run in VPCSC. To enable this test, set the environment variable GOOGLE_CLOUD_TESTS_IN_VPCSC to True",
-    )
-    def test_batch_translate_text(self):
-        source_language_code = "en"
-        target_language_codes = ["es"]
-        input_configs = [{"gcs_source": {"input_uri": "gs://fake-bucket/*"}}]
-        output_config = {
-            "gcs_destination": {"output_uri_prefix": "gs://fake-bucket/output/"}
-        }
-
-        def delayed_inside():
-            return self._client.batch_translate_text(
-                self._parent_inside,
-                source_language_code,
-                target_language_codes,
-                input_configs,
-                output_config,
-            )
-
-        def delayed_outside():
-            return self._client.batch_translate_text(
-                self._parent_outside,
-                source_language_code,
-                target_language_codes,
-                input_configs,
-                output_config,
-            )
-
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
+    assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
