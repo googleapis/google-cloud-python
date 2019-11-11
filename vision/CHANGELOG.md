@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.40.0
+
+11-08-2019 09:30 PST
+
+
+### Implementation Changes
+- Add proto annotations (via synth). ([#9441](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9441))
+- Add RPC annotations, update docstrings (via synth). ([#9230](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9230))
+
+### New Features
+- Add celebrity recognition support to v1p4beta1 (via synth). ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add object annotation support to v1p4beta1 (via synth). ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add `purge_products` method to v1p4beta1 (via synth). ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add more product categories (via synth). ([#9224](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9224))
+
+### Documentation
+- Update docstring for `product_category`, change requests intersphinx url (via synth). ([#9413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9413))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9294))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9035))
+- Update docstring to say at most 5 frames can be batch annotated (via synth). ([#9041](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9041))
+
+### Internal / Testing Changes
+- Flatten case of logo text in systest. ([#9159](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9159))
+- Docs: Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9085))
+
 ## 0.39.0
 
 08-12-2019 13:57 PDT
