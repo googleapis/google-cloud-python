@@ -21,13 +21,15 @@ import os
 import time
 import unittest
 
-import google.api_core.exceptions
-from google.cloud import exceptions
+import pytest
+
+from google.api_core import exceptions
 from google.cloud import storage
 from google.cloud import vision
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
+from test_utils.vpcsc_config import vpcsc_config
 
 
 _SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
@@ -35,8 +37,7 @@ FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")
 LOGO_FILE = os.path.join(_SYS_TESTS_DIR, "data", "logo.png")
 PDF_FILE = os.path.join(_SYS_TESTS_DIR, "data", "pdf_test.pdf")
 PROJECT_ID = os.environ.get("PROJECT_ID")
-PROJECT_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT")
-BUCKET_OUTSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET")
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 
 
 class VisionSystemTestBase(unittest.TestCase):
@@ -617,263 +618,185 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             self.assertEqual(status.code, grpc.StatusCode.OK.value[0])
 
 
-@unittest.skipUnless(
-    PROJECT_OUTSIDE,
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT not set in environment.",
-)
+@vpcsc_config.skip_unless_outside_project
 class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
     # Tests to verify ProductSearch is blocked by VPC SC when trying to access a resource outside of a secure perimeter.
     def setUp(self):
-        VisionSystemTestBase.setUp(self)
+        super(TestVisionClientProductSearchVpcsc, self).setUp()
+        uniq = unique_resource_id()
         self.location = "us-west1"
         self.location_path = self.ps_client.location_path(
-            project=PROJECT_OUTSIDE, location=self.location
+            project=vpcsc_config.project_outside, location=self.location
         )
-
-    def _verify_vpc_sc_error(self, call):
-        # Verifies that a VPC SC 403 error is raised.
-        try:
-            # call() should raise a PermissionDenied exception.
-            results = call()
-            # Some of the tests get a GRPCIterator object, which won't raise an exception until iteration starts.
-            for result in results:
-                break
-        except google.api_core.exceptions.PermissionDenied as e:
-            # Verify the PermissionDenied exception was due to VPC SC.
-            self.assertEqual(
-                e.message, "Request is prohibited by organization's policy"
-            )
-            return
-        except Exception as e:
-            self.fail("Unexpected exception raised: {}".format(e))
-        self.fail("No exception raised.")
+        self.product_set_id = product_set_id = "set" + uniq
+        self.product_set_path = self.ps_client.product_set_path(
+            project=vpcsc_config.project_outside,
+            location=self.location,
+            product_set=product_set_id,
+        )
+        self.product_id = "product" + uniq
+        self.product_path = self.ps_client.product_path(
+            project=vpcsc_config.project_outside,
+            location=self.location,
+            product=self.product_id,
+        )
+        self.reference_image_id = "reference_image" + uniq
+        self.reference_image_path = self.ps_client.reference_image_path(
+            project=vpcsc_config.project_outside,
+            location=self.location,
+            product=self.product_id,
+            reference_image=self.reference_image_id,
+        )
 
     def test_create_product_set_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.create_product_set(
-                parent=self.location_path, product_set={}, product_set_id=product_set_id
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.create_product_set(
+                parent=self.location_path,
+                product_set={},
+                product_set_id=self.product_set_id,
             )
-        )
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_get_product_set_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.get_product_set(name=product_set_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.get_product_set(name=self.product_set_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_delete_product_set_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.delete_product_set(name=product_set_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.delete_product_set(name=self.product_set_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_list_product_sets_blocked(self):
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.list_product_sets(parent=self.location_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(self.ps_client.list_product_sets(parent=self.location_path))
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_update_product_set_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
-        )
-        product_set = vision.types.ProductSet(name=product_set_path)
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.update_product_set(product_set=product_set)
-        )
+        product_set = vision.types.ProductSet(name=self.product_set_path)
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.update_product_set(product_set=product_set)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_create_product_blocked(self):
-        product_id = "product" + unique_resource_id()
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.create_product(
-                parent=self.location_path, product={}, product_id=product_id
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.create_product(
+                parent=self.location_path, product={}, product_id=self.product_id
             )
-        )
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_get_product_blocked(self):
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        self._verify_vpc_sc_error(lambda: self.ps_client.get_product(name=product_path))
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.get_product(name=self.product_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_delete_product_blocked(self):
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.delete_product(name=product_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.delete_product(name=self.product_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_update_product_blocked(self):
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        product = vision.types.Product(name=product_path)
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.update_product(product=product)
-        )
+        product = vision.types.Product(name=self.product_path)
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.update_product(product=product)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_list_products_blocked(self):
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.list_products(parent=self.location_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(self.ps_client.list_products(parent=self.location_path))
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_list_products_in_product_set_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.list_products_in_product_set(name=product_set_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(
+                self.ps_client.list_products_in_product_set(name=self.product_set_path)
+            )
 
-    def test_add_remove_product_blocked(self):
-        product_set_id = "set" + unique_resource_id()
-        product_set_path = self.ps_client.product_set_path(
-            project=PROJECT_OUTSIDE, location=self.location, product_set=product_set_id
-        )
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.add_product_to_product_set(
-                name=product_set_path, product=product_path
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+    def test_add_product_to_product_set_blocked(self):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.add_product_to_product_set(
+                name=self.product_set_path, product=self.product_path
             )
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.remove_product_from_product_set(
-                name=product_set_path, product=product_path
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
+
+    def test_remove_product_from_product_set_blocked(self):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.remove_product_from_product_set(
+                name=self.product_set_path, product=self.product_path
             )
-        )
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_create_reference_image_blocked(self):
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        reference_image_id = "reference_image" + unique_resource_id()
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.create_reference_image(
-                parent=product_path,
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.create_reference_image(
+                parent=self.product_path,
                 reference_image={},
-                reference_image_id=reference_image_id,
+                reference_image_id=self.reference_image_id,
             )
-        )
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_get_reference_image_blocked(self):
-        product_id = "product" + unique_resource_id()
-        reference_image_id = "reference_image" + unique_resource_id()
-        reference_image_path = self.ps_client.reference_image_path(
-            project=PROJECT_OUTSIDE,
-            location=self.location,
-            product=product_id,
-            reference_image=reference_image_id,
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.get_reference_image(name=reference_image_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.get_reference_image(name=self.reference_image_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_delete_reference_image_blocked(self):
-        product_id = "product" + unique_resource_id()
-        reference_image_id = "reference_image" + unique_resource_id()
-        reference_image_path = self.ps_client.reference_image_path(
-            project=PROJECT_OUTSIDE,
-            location=self.location,
-            product=product_id,
-            reference_image=reference_image_id,
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.delete_reference_image(name=reference_image_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            self.ps_client.delete_reference_image(name=self.reference_image_path)
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_list_reference_images_blocked(self):
-        product_id = "product" + unique_resource_id()
-        product_path = self.ps_client.product_path(
-            project=PROJECT_OUTSIDE, location=self.location, product=product_id
-        )
-        self._verify_vpc_sc_error(
-            lambda: self.ps_client.list_reference_images(parent=product_path)
-        )
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(self.ps_client.list_reference_images(parent=self.product_path))
+
+        assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
 
-@unittest.skipUnless(
-    BUCKET_OUTSIDE,
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET not set in environment.",
-)
+@vpcsc_config.skip_unless_inside_vpcsc
 class TestVisionClientVpcsc(VisionSystemTestBase):
     # Tests to verify Vision API methods are blocked by VPC SC when trying to access a gcs resource outside of a secure perimeter.
     def setUp(self):
-        VisionSystemTestBase.setUp(self)
+        super(TestVisionClientVpcsc, self).setUp()
         self.blocked_file = "LC08/01_$folder$"
         self.gcs_uri_blocked_file = "gs://{bucket}/{file}".format(
-            bucket=BUCKET_OUTSIDE, file=self.blocked_file
+            bucket=vpcsc_config.bucket_outside, file=self.blocked_file
         )
-        self._verify_vpc_sc_blocks_gcs_bucket()
         self.gcs_read_error_message = "Error opening file: gs://"
-        self.gcs_write_error_message = "Error writing final output to: gs://"
-
-    def _verify_vpc_sc_blocks_gcs_bucket(self):
-        # Verifies that a VPC SC 403 error is raised when trying to access a bucket in gcs that is outside the perimeter.
-        try:
-            storage_client = storage.Client()
-            outside_bucket = storage_client.get_bucket(BUCKET_OUTSIDE)
-            blob = outside_bucket.blob(self.blocked_file)
-            blob.download_as_string()
-        except google.api_core.exceptions.Forbidden as e:
-            # Verify the Forbidden exception was due to VPC SC.
-            vpc_sc_error_message = "Request violates VPC Service Controls."
-            self.assertTrue(
-                vpc_sc_error_message in e.message,
-                "'{}' not in '{}'".format(vpc_sc_error_message, e.message),
-            )
-            return
-        except Exception as e:
-            self.fail(
-                "Unexpected exception raised while accessing gcs bucket: {}".format(e)
-            )
-        self.fail(
-            "No exception raised when accessing gcs bucket: {}".format(
-                self.gcs_uri_blocked_file
-            )
+        self.gcs_write_error_message = "Error writing final output to"
+        self.location = "us-west1"
+        self.location_path = self.ps_client.location_path(
+            project=vpcsc_config.project_inside, location=self.location
         )
 
-    @unittest.skipUnless(PROJECT_ID, "PROJECT_ID not set in environment.")
     def test_import_product_sets_blocked(self):
         # The csv file is outside the secure perimeter.
         gcs_source = vision.types.ImportProductSetsGcsSource(
             csv_file_uri=self.gcs_uri_blocked_file
         )
         input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
-        # Use a valid Project ID.
-        location_path = self.ps_client.location_path(
-            project=PROJECT_ID, location="us-west1"
-        )
-        try:
-            # A 403 exception should be raised because the csv file is not accessible due to VPC SC.
+        with pytest.raises(exceptions.Forbidden) as exc:
             self.ps_client.import_product_sets(
-                parent=location_path, input_config=input_config
+                parent=self.location_path, input_config=input_config
             )
-        except google.api_core.exceptions.Forbidden as e:
-            # Verify the 403 error was due to reading the file in gcs.
-            self.assertTrue(
-                self.gcs_read_error_message in e.message,
-                "'{}' not in '{}'".format(self.gcs_read_error_message, e.message),
-            )
-            return
-        except Exception as e:
-            self.fail("Unexpected exception raised: {}".format(e))
-        self.fail("No exception raised.")
+
+        assert self.gcs_read_error_message in exc.value.message
 
     def test_async_batch_annotate_files_read_blocked(self):
         # Make the request.
@@ -890,19 +813,10 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
-        try:
-            # A 403 exception should be raised.
+        with pytest.raises(exceptions.Forbidden) as exc:
             self.client.async_batch_annotate_files([request])
-        except google.api_core.exceptions.Forbidden as e:
-            # Verify the 403 error was due to reading the file in gcs.
-            self.assertTrue(
-                self.gcs_read_error_message in e.message,
-                "'{}' not in '{}'".format(self.gcs_read_error_message, e.message),
-            )
-            return
-        except Exception as e:
-            self.fail("Unexpected exception raised: {}".format(e))
-        self.fail("No exception raised.")
+
+        assert self.gcs_read_error_message in exc.value.message
 
     def test_async_batch_annotate_files_write_blocked(self):
         # Upload the image to Google Cloud Storage.
@@ -911,10 +825,11 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         self.to_delete_by_case.append(blob)
         with io.open(PDF_FILE, "rb") as image_file:
             blob.upload_from_file(image_file)
+
         method_name = "test_async_batch_annotate_files_write_blocked"
         # Write the result to a bucket outside of the secure perimeter.
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
-            bucket=BUCKET_OUTSIDE, method_name=method_name
+            bucket=vpcsc_config.bucket_outside, method_name=method_name
         )
         request = {
             "input_config": {
@@ -929,26 +844,20 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
         response = self.client.async_batch_annotate_files([request])
+
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
-        if not response.done():
-            self.fail(
-                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
-                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
-                )
-            )
+        assert response.done
+
         # Verify there was an error writing to the output bucket.
         error = response.operation.error
         assert error.code == 7
-        assert self.gcs_write_error_message in error.message, "'{}' not in '{}'".format(
-            self.gcs_write_error_message, error.message
-        )
+        assert self.gcs_write_error_message in error.message
 
     def test_async_batch_annotate_images_read_blocked(self):
-        # Make the request. The input file is in a gcs bucket that is outside of the secure perimeter.
         request = {
             "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
             "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
@@ -964,40 +873,35 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
-        if not response.done():
-            self.fail(
-                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
-                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
-                )
-            )
+        assert response.done()
+
         # Make sure getting the result is not an error.
         response.result()
-        # There should be exactly 1 output file in gcs at the prefix output_gcs_uri_prefix.
         blobs = list(self.test_bucket.list_blobs(prefix=method_name))
         assert len(blobs) == 1
         blob = blobs[0]
+
         # Download the output file.
         result_str = blob.download_as_string().decode("utf8")
         result = json.loads(result_str)
         responses = result["responses"]
         assert len(responses) == 1
+
         # Verify the read error.
         error = responses[0]["error"]
         assert error["code"] == 7
-        assert (
-            self.gcs_read_error_message in error["message"]
-        ), "'{}' not in '{}'".format(self.gcs_read_error_message, error["message"])
+        assert self.gcs_read_error_message in error["message"]
 
     def test_async_batch_annotate_images_write_blocked(self):
-        # Make the request.
         request = {
             "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
             "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_async_batch_annotate_images_write_blocked"
+
         # Write the result to a bucket outside of the secure perimeter.
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
-            bucket=BUCKET_OUTSIDE, method_name=method_name
+            bucket=vpcsc_config.bucket_outside, method_name=method_name
         )
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
         response = self.client.async_batch_annotate_images([request], output_config)
@@ -1006,18 +910,12 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         start_time = time.time()
         while not response.done() and (time.time() - start_time) < lro_waiting_seconds:
             time.sleep(1)
-        if not response.done():
-            self.fail(
-                "{method_name} timed out after {lro_waiting_seconds} seconds".format(
-                    method_name=method_name, lro_waiting_seconds=lro_waiting_seconds
-                )
-            )
+        assert response.done()
+
         # Verify there was an error writing to the output bucket.
         error = response.operation.error
         assert error.code == 7
-        assert self.gcs_write_error_message in error.message, "'{}' not in '{}'".format(
-            self.gcs_write_error_message, error.message
-        )
+        assert self.gcs_write_error_message in error.message
 
     def test_batch_annotate_images_read_blocked(self):
         response = self.client.logo_detection(
@@ -1025,6 +923,4 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         )
         error = response.error
         assert error.code == 7
-        assert self.gcs_read_error_message in error.message, "'{}' not in '{}'".format(
-            self.gcs_read_error_message, error.message
-        )
+        assert self.gcs_read_error_message in error.message
