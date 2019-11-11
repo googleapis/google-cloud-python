@@ -32,6 +32,7 @@ class Feature(enum.IntEnum):
       TEXT_DETECTION (int): OCR text detection and tracking.
       OBJECT_TRACKING (int): Object detection and tracking.
       LOGO_RECOGNITION (int): Logo detection, tracking, and recognition.
+      CELEBRITY_RECOGNITION (int): Celebrity recognition.
     """
 
     FEATURE_UNSPECIFIED = 0
@@ -42,6 +43,7 @@ class Feature(enum.IntEnum):
     TEXT_DETECTION = 7
     OBJECT_TRACKING = 9
     LOGO_RECOGNITION = 12
+    CELEBRITY_RECOGNITION = 13
 
 
 class LabelDetectionMode(enum.IntEnum):

@@ -54,6 +54,22 @@ from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
+_UBLA_BPO_ENABLED_MESSAGE = (
+    "Pass only one of 'uniform_bucket_level_access_enabled' / "
+    "'bucket_policy_only_enabled' to 'IAMConfiguration'."
+)
+_BPO_ENABLED_MESSAGE = (
+    "'IAMConfiguration.bucket_policy_only_enabled' is deprecated.  "
+    "Instead, use 'IAMConfiguration.uniform_bucket_level_access_enabled'."
+)
+_UBLA_BPO_LOCK_TIME_MESSAGE = (
+    "Pass only one of 'uniform_bucket_level_access_lock_time' / "
+    "'bucket_policy_only_lock_time' to 'IAMConfiguration'."
+)
+_BPO_LOCK_TIME_MESSAGE = (
+    "'IAMConfiguration.bucket_policy_only_lock_time' is deprecated.  "
+    "Instead, use 'IAMConfiguration.uniform_bucket_level_access_lock_time'."
+)
 _LOCATION_SETTER_MESSAGE = (
     "Assignment to 'Bucket.location' is deprecated, as it is only "
     "valid before the bucket is created. Instead, pass the location "
@@ -286,29 +302,66 @@ class LifecycleRuleSetStorageClass(dict):
         return instance
 
 
+_default = object()
+
+
 class IAMConfiguration(dict):
     """Map a bucket's IAM configuration.
 
     :type bucket: :class:`Bucket`
     :params bucket: Bucket for which this instance is the policy.
 
+    :type uniform_bucket_level_access_enabled: bool
+    :params bucket_policy_only_enabled:
+        (optional) whether the IAM-only policy is enabled for the bucket.
+
+    :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
+    :params uniform_bucket_level_locked_time:
+        (optional) When the bucket's IAM-only policy was enabled.
+        This value should normally only be set by the back-end API.
+
     :type bucket_policy_only_enabled: bool
-    :params bucket_policy_only_enabled: (optional) whether the IAM-only policy is enabled for the bucket.
+    :params bucket_policy_only_enabled:
+        Deprecated alias for :data:`uniform_bucket_level_access_enabled`.
 
     :type bucket_policy_only_locked_time: :class:`datetime.datetime`
-    :params bucket_policy_only_locked_time: (optional) When the bucket's IAM-only policy was ehabled.  This value should normally only be set by the back-end API.
+    :params bucket_policy_only_locked_time:
+        Deprecated alias for :data:`uniform_bucket_level_access_locked_time`.
     """
 
     def __init__(
         self,
         bucket,
-        bucket_policy_only_enabled=False,
-        bucket_policy_only_locked_time=None,
+        uniform_bucket_level_access_enabled=_default,
+        uniform_bucket_level_access_locked_time=_default,
+        bucket_policy_only_enabled=_default,
+        bucket_policy_only_locked_time=_default,
     ):
-        data = {"bucketPolicyOnly": {"enabled": bucket_policy_only_enabled}}
-        if bucket_policy_only_locked_time is not None:
-            data["bucketPolicyOnly"]["lockedTime"] = _datetime_to_rfc3339(
-                bucket_policy_only_locked_time
+        if bucket_policy_only_enabled is not _default:
+
+            if uniform_bucket_level_access_enabled is not _default:
+                raise ValueError(_UBLA_BPO_ENABLED_MESSAGE)
+
+            warnings.warn(_BPO_ENABLED_MESSAGE, DeprecationWarning, stacklevel=2)
+            uniform_bucket_level_access_enabled = bucket_policy_only_enabled
+
+        if bucket_policy_only_locked_time is not _default:
+
+            if uniform_bucket_level_access_locked_time is not _default:
+                raise ValueError(_UBLA_BPO_LOCK_TIME_MESSAGE)
+
+            warnings.warn(_BPO_LOCK_TIME_MESSAGE, DeprecationWarning, stacklevel=2)
+            uniform_bucket_level_access_locked_time = bucket_policy_only_locked_time
+
+        if uniform_bucket_level_access_enabled is _default:
+            uniform_bucket_level_access_enabled = False
+
+        data = {
+            "uniformBucketLevelAccess": {"enabled": uniform_bucket_level_access_enabled}
+        }
+        if uniform_bucket_level_access_locked_time is not _default:
+            data["uniformBucketLevelAccess"]["lockedTime"] = _datetime_to_rfc3339(
+                uniform_bucket_level_access_locked_time
             )
         super(IAMConfiguration, self).__init__(data)
         self._bucket = bucket
@@ -340,40 +393,65 @@ class IAMConfiguration(dict):
         return self._bucket
 
     @property
-    def bucket_policy_only_enabled(self):
+    def uniform_bucket_level_access_enabled(self):
         """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
         :returns: whether the bucket is configured to allow only IAM.
         """
-        bpo = self.get("bucketPolicyOnly", {})
-        return bpo.get("enabled", False)
+        ubla = self.get("uniformBucketLevelAccess", {})
+        return ubla.get("enabled", False)
 
-    @bucket_policy_only_enabled.setter
-    def bucket_policy_only_enabled(self, value):
-        bpo = self.setdefault("bucketPolicyOnly", {})
-        bpo["enabled"] = bool(value)
+    @uniform_bucket_level_access_enabled.setter
+    def uniform_bucket_level_access_enabled(self, value):
+        ubla = self.setdefault("uniformBucketLevelAccess", {})
+        ubla["enabled"] = bool(value)
         self.bucket._patch_property("iamConfiguration", self)
 
     @property
-    def bucket_policy_only_locked_time(self):
-        """Deadline for changing :attr:`bucket_policy_only_enabled` from true to false.
+    def uniform_bucket_level_access_locked_time(self):
+        """Deadline for changing :attr:`uniform_bucket_level_access_enabled` from true to false.
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is true, this property
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is true, this property
         is time time after which that setting becomes immutable.
 
-        If the bucket's :attr:`bucket_policy_only_enabled` is false, this property
+        If the bucket's :attr:`uniform_bucket_level_access_enabled` is false, this property
         is ``None``.
 
         :rtype: Union[:class:`datetime.datetime`, None]
-        :returns:  (readonly) Time after which :attr:`bucket_policy_only_enabled` will
+        :returns:  (readonly) Time after which :attr:`uniform_bucket_level_access_enabled` will
                    be frozen as true.
         """
-        bpo = self.get("bucketPolicyOnly", {})
-        stamp = bpo.get("lockedTime")
+        ubla = self.get("uniformBucketLevelAccess", {})
+        stamp = ubla.get("lockedTime")
         if stamp is not None:
             stamp = _rfc3339_to_datetime(stamp)
         return stamp
+
+    @property
+    def bucket_policy_only_enabled(self):
+        """Deprecated alias for :attr:`uniform_bucket_level_access_enabled`.
+
+        :rtype: bool
+        :returns: whether the bucket is configured to allow only IAM.
+        """
+        return self.uniform_bucket_level_access_enabled
+
+    @bucket_policy_only_enabled.setter
+    def bucket_policy_only_enabled(self, value):
+        warnings.warn(_BPO_ENABLED_MESSAGE, DeprecationWarning, stacklevel=2)
+        self.uniform_bucket_level_access_enabled = value
+
+    @property
+    def bucket_policy_only_locked_time(self):
+        """Deprecated alias for :attr:`uniform_bucket_level_access_locked_time`.
+
+        :rtype: Union[:class:`datetime.datetime`, None]
+        :returns:
+            (readonly) Time after which :attr:`bucket_policy_only_enabled` will
+            be frozen as true.
+        """
+        return self.uniform_bucket_level_access_locked_time
 
 
 class Bucket(_PropertyMixin):

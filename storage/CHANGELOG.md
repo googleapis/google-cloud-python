@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.22.0
+
+11-05-2019 10:22 PST
+
+
+### New Features
+- Add UBLA attrs to IAMConfiguration. ([#9475](https://github.com/googleapis/google-cloud-python/pull/9475))
+
+## 1.21.0
+
+10-28-2019 21:52 PDT
+
+### Implementation Changes
+- Add gcloud-python header to user agent ([#9551](https://github.com/googleapis/google-cloud-python/pull/9551))
+- Don't report a gapic version for storage ([#9549](https://github.com/googleapis/google-cloud-python/pull/9549))
+- Update storage endpoint from www.googleapis.com to storage.googleapis.com ([#9543](https://github.com/googleapis/google-cloud-python/pull/9543))
+- Call anonymous client method to remove dependency of google application credentials ([#9455](https://github.com/googleapis/google-cloud-python/pull/9455))
+- Enable CSEK w/ V4 signed URLs ([#9450](https://github.com/googleapis/google-cloud-python/pull/9450))
+
+### New Features
+- Support predefined ACLs in `Bucket.create` ([#9334](https://github.com/googleapis/google-cloud-python/pull/9334))
+
+### Documentation
+- Add `hmac_key` and notification documentation rst files ([#9529](https://github.com/googleapis/google-cloud-python/pull/9529))
+- Remove references to the old authentication credentials ([#9456](https://github.com/googleapis/google-cloud-python/pull/9456))
+- Clarify docstring for `Blob.download_as_string` ([#9332](https://github.com/googleapis/google-cloud-python/pull/9332))
+
 ## 1.20.0
 
 09-26-2019 06:45 PDT

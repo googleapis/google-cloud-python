@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-containeranalysis"
 description = "Container Analysis API API client library"
-version = "0.3.0"
+version = "0.3.1"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
@@ -45,7 +45,8 @@ packages = [
 namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
-
+if "google.cloud.devtools" in packages:
+    namespaces.append("google.cloud.devtools")
 
 setuptools.setup(
     name=name,

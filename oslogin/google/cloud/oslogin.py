@@ -1,4 +1,6 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 
 from google.cloud.oslogin_v1 import OsLoginServiceClient
+from google.cloud.oslogin_v1 import enums
 from google.cloud.oslogin_v1 import types
 
-__all__ = ("types", "OsLoginServiceClient")
+
+__all__ = ("enums", "types", "OsLoginServiceClient")

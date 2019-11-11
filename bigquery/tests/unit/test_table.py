@@ -450,7 +450,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.clustering_fields)
 
     def test_ctor_w_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -556,7 +556,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             getattr(table, "num_rows")
 
-    def test_schema_setter_non_list(self):
+    def test_schema_setter_non_sequence(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
@@ -564,7 +564,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.schema = object()
 
     def test_schema_setter_invalid_field(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -573,8 +573,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.schema = [full_name, object()]
 
-    def test_schema_setter(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test_schema_setter_valid_fields(self):
+        from google.cloud.bigquery.schema import SchemaField
 
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -583,6 +583,48 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField("age", "INTEGER", mode="REQUIRED")
         table.schema = [full_name, age]
         self.assertEqual(table.schema, [full_name, age])
+
+    def test_schema_setter_invalid_mapping_representation(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
+        invalid_field = {"name": "full_name", "typeooo": "STRING", "mode": "REQUIRED"}
+        with self.assertRaises(Exception):
+            table.schema = [full_name, invalid_field]
+
+    def test_schema_setter_valid_mapping_representation(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
+        job_status = {
+            "name": "is_employed",
+            "type": "STRUCT",
+            "mode": "NULLABLE",
+            "fields": [
+                {"name": "foo", "type": "DATE", "mode": "NULLABLE"},
+                {"name": "bar", "type": "BYTES", "mode": "REQUIRED"},
+            ],
+        }
+
+        table.schema = [full_name, job_status]
+
+        expected_schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField(
+                "is_employed",
+                "STRUCT",
+                mode="NULLABLE",
+                fields=[
+                    SchemaField("foo", "DATE", mode="NULLABLE"),
+                    SchemaField("bar", "BYTES", mode="REQUIRED"),
+                ],
+            ),
+        ]
+        self.assertEqual(table.schema, expected_schema)
 
     def test_props_set_by_server(self):
         import datetime
@@ -1145,7 +1187,8 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
     def test__row_from_mapping_w_invalid_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         MAPPING = {
             "full_name": "Phred Phlyntstone",
@@ -1167,7 +1210,8 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertIn("Unknown field mode: BOGUS", str(exc.exception))
 
     def test__row_from_mapping_w_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         MAPPING = {
             "full_name": "Phred Phlyntstone",
@@ -1497,8 +1541,24 @@ class TestRowIterator(unittest.TestCase):
         self.assertIs(iterator._table, table)
         self.assertEqual(iterator.total_rows, 100)
 
+    def test_constructor_with_dict_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            {"name": "age", "type": "INT64", "mode": "NULLABLE"},
+        ]
+
+        iterator = self._make_one(schema=schema)
+
+        expected_schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INT64", mode="NULLABLE"),
+        ]
+        self.assertEqual(iterator.schema, expected_schema)
+
     def test_iterate(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1529,7 +1589,7 @@ class TestRowIterator(unittest.TestCase):
         api_request.assert_called_once_with(method="GET", path=path, query_params={})
 
     def test_page_size(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1555,7 +1615,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1637,7 +1697,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_nulls(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")]
         rows = [
@@ -1670,7 +1730,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_unknown_type(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1708,7 +1768,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_empty_table(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1870,7 +1930,7 @@ class TestRowIterator(unittest.TestCase):
     @mock.patch("tqdm.tqdm_notebook")
     @mock.patch("tqdm.tqdm")
     def test_to_arrow_progress_bar(self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1913,7 +1973,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1945,7 +2005,7 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_progress_bar(
         self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
     ):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -1978,7 +2038,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm_no_progress_bar(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2003,7 +2063,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
     def test_to_dataframe_no_tqdm(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2036,7 +2096,7 @@ class TestRowIterator(unittest.TestCase):
     @mock.patch("tqdm.tqdm_notebook", new=None)  # will raise TypeError on call
     @mock.patch("tqdm.tqdm", new=None)  # will raise TypeError on call
     def test_to_dataframe_tqdm_error(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2066,7 +2126,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_empty_results(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2101,7 +2161,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
         import datetime
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("start_timestamp", "TIMESTAMP"),
@@ -2141,7 +2201,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_column_dtypes(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("start_timestamp", "TIMESTAMP"),
@@ -2179,7 +2239,7 @@ class TestRowIterator(unittest.TestCase):
 
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),
@@ -2198,7 +2258,7 @@ class TestRowIterator(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_max_results_w_bqstorage_warning(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         schema = [
             SchemaField("name", "STRING", mode="REQUIRED"),

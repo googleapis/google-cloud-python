@@ -19,6 +19,15 @@ import mock
 import pytest
 
 
+def _make_connection(*responses):
+    import google.cloud.storage._http
+
+    mock_connection = mock.create_autospec(google.cloud.storage._http.Connection)
+    mock_connection.user_agent = "testing 1.2.3"
+    mock_connection.api_request.side_effect = list(responses)
+    return mock_connection
+
+
 def _create_signing_credentials():
     import google.auth.credentials
 
@@ -198,10 +207,12 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = self._make_one(bucket)
 
         self.assertIs(config.bucket, bucket)
+        self.assertFalse(config.uniform_bucket_level_access_enabled)
+        self.assertIsNone(config.uniform_bucket_level_access_locked_time)
         self.assertFalse(config.bucket_policy_only_enabled)
         self.assertIsNone(config.bucket_policy_only_locked_time)
 
-    def test_ctor_explicit(self):
+    def test_ctor_explicit_ubla(self):
         import datetime
         import pytz
 
@@ -209,12 +220,61 @@ class Test_IAMConfiguration(unittest.TestCase):
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
 
         config = self._make_one(
-            bucket, bucket_policy_only_enabled=True, bucket_policy_only_locked_time=now
+            bucket,
+            uniform_bucket_level_access_enabled=True,
+            uniform_bucket_level_access_locked_time=now,
         )
 
         self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
         self.assertTrue(config.bucket_policy_only_enabled)
         self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_ctor_explicit_bpo(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        config = pytest.deprecated_call(
+            self._make_one,
+            bucket,
+            bucket_policy_only_enabled=True,
+            bucket_policy_only_locked_time=now,
+        )
+
+        self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
+        self.assertTrue(config.bucket_policy_only_enabled)
+        self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_ctor_ubla_and_bpo_enabled(self):
+        bucket = self._make_bucket()
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                bucket,
+                uniform_bucket_level_access_enabled=True,
+                bucket_policy_only_enabled=True,
+            )
+
+    def test_ctor_ubla_and_bpo_time(self):
+        import datetime
+        import pytz
+
+        bucket = self._make_bucket()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                bucket,
+                uniform_bucket_level_access_enabled=True,
+                uniform_bucket_level_access_locked_time=now,
+                bucket_policy_only_locked_time=now,
+            )
 
     def test_from_api_repr_w_empty_resource(self):
         klass = self._get_target_class()
@@ -230,7 +290,7 @@ class Test_IAMConfiguration(unittest.TestCase):
     def test_from_api_repr_w_empty_bpo(self):
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        resource = {"bucketPolicyOnly": {}}
+        resource = {"uniformBucketLevelAccess": {}}
 
         config = klass.from_api_repr(resource, bucket)
 
@@ -241,7 +301,7 @@ class Test_IAMConfiguration(unittest.TestCase):
     def test_from_api_repr_w_disabled(self):
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        resource = {"bucketPolicyOnly": {"enabled": False}}
+        resource = {"uniformBucketLevelAccess": {"enabled": False}}
 
         config = klass.from_api_repr(resource, bucket)
 
@@ -258,7 +318,7 @@ class Test_IAMConfiguration(unittest.TestCase):
         bucket = self._make_bucket()
         now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         resource = {
-            "bucketPolicyOnly": {
+            "uniformBucketLevelAccess": {
                 "enabled": True,
                 "lockedTime": _datetime_to_rfc3339(now),
             }
@@ -267,16 +327,30 @@ class Test_IAMConfiguration(unittest.TestCase):
         config = klass.from_api_repr(resource, bucket)
 
         self.assertIs(config.bucket, bucket)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
         self.assertTrue(config.bucket_policy_only_enabled)
         self.assertEqual(config.bucket_policy_only_locked_time, now)
+
+    def test_uniform_bucket_level_access_enabled_setter(self):
+        bucket = self._make_bucket()
+        config = self._make_one(bucket)
+
+        config.uniform_bucket_level_access_enabled = True
+        self.assertTrue(config.bucket_policy_only_enabled)
+
+        self.assertTrue(config["uniformBucketLevelAccess"]["enabled"])
+        bucket._patch_property.assert_called_once_with("iamConfiguration", config)
 
     def test_bucket_policy_only_enabled_setter(self):
         bucket = self._make_bucket()
         config = self._make_one(bucket)
 
-        config.bucket_policy_only_enabled = True
+        with pytest.deprecated_call():
+            config.bucket_policy_only_enabled = True
 
-        self.assertTrue(config["bucketPolicyOnly"]["enabled"])
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertTrue(config["uniformBucketLevelAccess"]["enabled"])
         bucket._patch_property.assert_called_once_with("iamConfiguration", config)
 
 
@@ -534,77 +608,104 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
     def test_create_w_user_project(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         USER_PROJECT = "user-project-123"
-        connection = _Connection()
-        client = _Client(connection, project=PROJECT)
+
+        client = Client(project=PROJECT)
+        client._base_connection = _Connection()
+
         bucket = self._make_one(client, BUCKET_NAME, user_project=USER_PROJECT)
 
         with self.assertRaises(ValueError):
             bucket.create()
 
     def test_create_w_missing_client_project(self):
+        from google.cloud.storage.client import Client
+
         BUCKET_NAME = "bucket-name"
-        connection = _Connection()
-        client = _Client(connection, project=None)
+
+        client = Client(project=None)
         bucket = self._make_one(client, BUCKET_NAME)
 
         with self.assertRaises(ValueError):
             bucket.create()
 
     def test_create_w_explicit_project(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         OTHER_PROJECT = "other-project-123"
         DATA = {"name": BUCKET_NAME}
-        connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        connection = _make_connection(DATA)
+
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
         bucket = self._make_one(client, BUCKET_NAME)
-
         bucket.create(project=OTHER_PROJECT)
-
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "POST")
-        self.assertEqual(kw["path"], "/b")
-        self.assertEqual(kw["query_params"], {"project": OTHER_PROJECT})
-        self.assertEqual(kw["data"], DATA)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": OTHER_PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_create_w_explicit_location(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         LOCATION = "us-central1"
         DATA = {"location": LOCATION, "name": BUCKET_NAME}
-        connection = _Connection(
+
+        connection = _make_connection(
             DATA, "{'location': 'us-central1', 'name': 'bucket-name'}"
         )
-        client = _Client(connection, project=PROJECT)
-        bucket = self._make_one(client, BUCKET_NAME)
 
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = self._make_one(client, BUCKET_NAME)
         bucket.create(location=LOCATION)
 
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "POST")
-        self.assertEqual(kw["path"], "/b")
-        self.assertEqual(kw["data"], DATA)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            data=DATA,
+            _target_object=bucket,
+            query_params={"project": "PROJECT"},
+        )
         self.assertEqual(bucket.location, LOCATION)
 
     def test_create_hit(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
-        connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        connection = _make_connection(DATA)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create()
 
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "POST")
-        self.assertEqual(kw["path"], "/b")
-        self.assertEqual(kw["query_params"], {"project": PROJECT})
-        self.assertEqual(kw["data"], DATA)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_create_w_extra_properties(self):
+        from google.cloud.storage.client import Client
+
         BUCKET_NAME = "bucket-name"
         PROJECT = "PROJECT"
         CORS = [
@@ -629,8 +730,11 @@ class Test_Bucket(unittest.TestCase):
             "billing": {"requesterPays": True},
             "labels": LABELS,
         }
-        connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+
+        connection = _make_connection(DATA)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.cors = CORS
         bucket.lifecycle_rules = LIFECYCLE_RULES
@@ -640,29 +744,37 @@ class Test_Bucket(unittest.TestCase):
         bucket.labels = LABELS
         bucket.create(location=LOCATION)
 
-        kw, = connection._requested
-        self.assertEqual(kw["method"], "POST")
-        self.assertEqual(kw["path"], "/b")
-        self.assertEqual(kw["query_params"], {"project": PROJECT})
-        self.assertEqual(kw["data"], DATA)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
 
     def test_create_w_predefined_acl_invalid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
 
         with self.assertRaises(ValueError):
             bucket.create(predefined_acl="bogus")
 
     def test_create_w_predefined_acl_valid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create(predefined_acl="publicRead")
 
@@ -674,22 +786,28 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["data"], DATA)
 
     def test_create_w_predefined_default_object_acl_invalid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
 
         with self.assertRaises(ValueError):
             bucket.create(predefined_default_object_acl="bogus")
 
     def test_create_w_predefined_default_object_acl_valid(self):
+        from google.cloud.storage.client import Client
+
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
         connection = _Connection(DATA)
-        client = _Client(connection, project=PROJECT)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create(predefined_default_object_acl="publicRead")
 
@@ -1317,7 +1435,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         properties = {
             "iamConfiguration": {
-                "bucketPolicyOnly": {
+                "uniformBucketLevelAccess": {
                     "enabled": True,
                     "lockedTime": _datetime_to_rfc3339(now),
                 }
@@ -1329,8 +1447,8 @@ class Test_Bucket(unittest.TestCase):
 
         self.assertIsInstance(config, IAMConfiguration)
         self.assertIs(config.bucket, bucket)
-        self.assertTrue(config.bucket_policy_only_enabled)
-        self.assertEqual(config.bucket_policy_only_locked_time, now)
+        self.assertTrue(config.uniform_bucket_level_access_enabled)
+        self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
 
     def test_lifecycle_rules_getter_unknown_action_type(self):
         NAME = "name"

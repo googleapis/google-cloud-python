@@ -48,3 +48,16 @@ See BigQuery documentation for more information on
    :dedent: 4
    :start-after: [START bigquery_query_params_named]
    :end-before: [END bigquery_query_params_named]
+
+Run a script
+^^^^^^^^^^^^
+
+See BigQuery documentation for more information on `scripting in BigQuery
+standard SQL
+<https://cloud.google.com/bigquery/docs/reference/standard-sql/scripting>`_.
+
+.. literalinclude:: ../samples/query_script.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_query_script]
+   :end-before: [END bigquery_query_script]

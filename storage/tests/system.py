@@ -14,7 +14,9 @@
 
 import base64
 import datetime
+import gzip
 import hashlib
+import io
 import os
 import re
 import tempfile
@@ -34,10 +36,10 @@ import google.oauth2
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
+from test_utils.vpcsc_config import vpcsc_config
 
 
 USER_PROJECT = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
-RUNNING_IN_VPCSC = os.getenv("GOOGLE_CLOUD_TESTS_IN_VPCSC", "").lower() == "true"
 
 
 def _bad_copy(bad_request):
@@ -620,9 +622,26 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         self.assertEqual(file_contents, stored_contents)
 
+    def test_upload_gzip_encoded_download_raw(self):
+        payload = b"DEADBEEF" * 1000
+        raw_stream = io.BytesIO()
+        with gzip.GzipFile(fileobj=raw_stream, mode="wb") as gzip_stream:
+            gzip_stream.write(payload)
+        zipped = raw_stream.getvalue()
+
+        blob = self.bucket.blob("test_gzipped.gz")
+        blob.content_encoding = "gzip"
+        blob.upload_from_file(raw_stream, rewind=True)
+
+        expanded = blob.download_as_string()
+        self.assertEqual(expanded, payload)
+
+        raw = blob.download_as_string(raw_download=True)
+        self.assertEqual(raw, zipped)
+
 
 class TestUnicode(unittest.TestCase):
-    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
+    @vpcsc_config.skip_if_inside_vpcsc
     def test_fetch_object_and_check_content(self):
         client = storage.Client()
         bucket = client.bucket("storage-library-test-bucket")
@@ -1361,7 +1380,7 @@ class TestAnonymousClient(unittest.TestCase):
 
     PUBLIC_BUCKET = "gcp-public-data-landsat"
 
-    @unittest.skipIf(RUNNING_IN_VPCSC, "Test is not VPCSC compatible.")
+    @vpcsc_config.skip_if_inside_vpcsc
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
@@ -1726,13 +1745,13 @@ class TestIAMConfiguration(unittest.TestCase):
             bucket = Config.CLIENT.bucket(bucket_name)
             retry_429_harder(bucket.delete)(force=True)
 
-    def test_new_bucket_w_bpo(self):
-        new_bucket_name = "new-w-bpo" + unique_resource_id("-")
+    def test_new_bucket_w_ubla(self):
+        new_bucket_name = "new-w-ubla" + unique_resource_id("-")
         self.assertRaises(
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
         )
         bucket = Config.CLIENT.bucket(new_bucket_name)
-        bucket.iam_configuration.bucket_policy_only_enabled = True
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = True
         retry_429_503(bucket.create)()
         self.case_buckets_to_delete.append(new_bucket_name)
 
@@ -1762,9 +1781,8 @@ class TestIAMConfiguration(unittest.TestCase):
         with self.assertRaises(exceptions.BadRequest):
             blob_acl.save()
 
-    @unittest.skipUnless(False, "Back-end fix for BPO/UBLA expected 2019-07-12")
-    def test_bpo_set_unset_preserves_acls(self):
-        new_bucket_name = "bpo-acls" + unique_resource_id("-")
+    def test_ubla_set_unset_preserves_acls(self):
+        new_bucket_name = "ubla-acls" + unique_resource_id("-")
         self.assertRaises(
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
         )
@@ -1776,25 +1794,25 @@ class TestIAMConfiguration(unittest.TestCase):
         payload = b"DEADBEEF"
         blob.upload_from_string(payload)
 
-        # Preserve ACLs before setting BPO
+        # Preserve ACLs before setting UBLA
         bucket_acl_before = list(bucket.acl)
         blob_acl_before = list(bucket.acl)
 
-        # Set BPO
-        bucket.iam_configuration.bucket_policy_only_enabled = True
+        # Set UBLA
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = True
         bucket.patch()
 
-        self.assertTrue(bucket.iam_configuration.bucket_policy_only_enabled)
+        self.assertTrue(bucket.iam_configuration.uniform_bucket_level_access_enabled)
 
-        # While BPO is set, cannot get / set ACLs
+        # While UBLA is set, cannot get / set ACLs
         with self.assertRaises(exceptions.BadRequest):
             bucket.acl.reload()
 
-        # Clear BPO
-        bucket.iam_configuration.bucket_policy_only_enabled = False
+        # Clear UBLA
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = False
         bucket.patch()
 
-        # Query ACLs after clearing BPO
+        # Query ACLs after clearing UBLA
         bucket.acl.reload()
         bucket_acl_after = list(bucket.acl)
         blob.acl.reload()

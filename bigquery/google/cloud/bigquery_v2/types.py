@@ -29,7 +29,11 @@ from google.protobuf import timestamp_pb2
 from google.protobuf import wrappers_pb2
 
 
-_shared_modules = [empty_pb2, timestamp_pb2, wrappers_pb2]
+_shared_modules = [
+    empty_pb2,
+    timestamp_pb2,
+    wrappers_pb2,
+]
 
 _local_modules = [
     encryption_config_pb2,

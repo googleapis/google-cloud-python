@@ -1464,18 +1464,47 @@ class Test__enum_from_op_string(unittest.TestCase):
 
         return _enum_from_op_string(op_string)
 
-    def test_success(self):
+    @staticmethod
+    def _get_op_class():
         from google.cloud.firestore_v1.gapic import enums
 
-        op_class = enums.StructuredQuery.FieldFilter.Operator
+        return enums.StructuredQuery.FieldFilter.Operator
+
+    def test_lt(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut("<"), op_class.LESS_THAN)
+
+    def test_le(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut("<="), op_class.LESS_THAN_OR_EQUAL)
+
+    def test_eq(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut("=="), op_class.EQUAL)
+
+    def test_ge(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut(">="), op_class.GREATER_THAN_OR_EQUAL)
+
+    def test_gt(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut(">"), op_class.GREATER_THAN)
+
+    def test_array_contains(self):
+        op_class = self._get_op_class()
         self.assertEqual(self._call_fut("array_contains"), op_class.ARRAY_CONTAINS)
 
-    def test_failure(self):
+    def test_in(self):
+        op_class = self._get_op_class()
+        self.assertEqual(self._call_fut("in"), op_class.IN)
+
+    def test_array_contains_any(self):
+        op_class = self._get_op_class()
+        self.assertEqual(
+            self._call_fut("array_contains_any"), op_class.ARRAY_CONTAINS_ANY
+        )
+
+    def test_invalid(self):
         with self.assertRaises(ValueError):
             self._call_fut("?")
 

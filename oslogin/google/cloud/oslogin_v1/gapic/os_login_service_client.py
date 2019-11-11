@@ -29,6 +29,7 @@ import google.api_core.grpc_helpers
 import google.api_core.path_template
 import grpc
 
+from google.cloud.oslogin_v1.gapic import enums
 from google.cloud.oslogin_v1.gapic import os_login_service_client_config
 from google.cloud.oslogin_v1.gapic.transports import os_login_service_grpc_transport
 from google.cloud.oslogin_v1.proto import common_pb2
@@ -77,19 +78,19 @@ class OsLoginServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def fingerprint_path(cls, user, fingerprint):
-        """Return a fully-qualified fingerprint string."""
+    def posix_account_path(cls, user, project):
+        """Return a fully-qualified posix_account string."""
+        return google.api_core.path_template.expand(
+            "users/{user}/projects/{project}", user=user, project=project
+        )
+
+    @classmethod
+    def ssh_public_key_path(cls, user, fingerprint):
+        """Return a fully-qualified ssh_public_key string."""
         return google.api_core.path_template.expand(
             "users/{user}/sshPublicKeys/{fingerprint}",
             user=user,
             fingerprint=fingerprint,
-        )
-
-    @classmethod
-    def project_path(cls, user, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "users/{user}/projects/{project}", user=user, project=project
         )
 
     @classmethod
@@ -225,12 +226,12 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.project_path('[USER]', '[PROJECT]')
+            >>> name = client.posix_account_path('[USER]', '[PROJECT]')
             >>>
             >>> client.delete_posix_account(name)
 
         Args:
-            name (str): A reference to the POSIX account to update. POSIX accounts are
+            name (str): Required. A reference to the POSIX account to update. POSIX accounts are
                 identified by the project ID they are associated with. A reference to
                 the POSIX account is in format ``users/{user}/projects/{project}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -293,14 +294,14 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> client.delete_ssh_public_key(name)
 
         Args:
-            name (str): The fingerprint of the public key to update. Public keys are identified
-                by their SHA-256 fingerprint. The fingerprint of the public key is in
-                format ``users/{user}/sshPublicKeys/{fingerprint}``.
+            name (str): Required. The fingerprint of the public key to update. Public keys are
+                identified by their SHA-256 fingerprint. The fingerprint of the public
+                key is in format ``users/{user}/sshPublicKeys/{fingerprint}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -349,6 +350,8 @@ class OsLoginServiceClient(object):
     def get_login_profile(
         self,
         name,
+        project_id=None,
+        system_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -367,7 +370,9 @@ class OsLoginServiceClient(object):
             >>> response = client.get_login_profile(name)
 
         Args:
-            name (str): The unique ID for the user in format ``users/{user}``.
+            name (str): Required. The unique ID for the user in format ``users/{user}``.
+            project_id (str): The project ID of the Google Cloud Platform project.
+            system_id (str): A system ID for filtering the results of the request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -398,7 +403,9 @@ class OsLoginServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = oslogin_pb2.GetLoginProfileRequest(name=name)
+        request = oslogin_pb2.GetLoginProfileRequest(
+            name=name, project_id=project_id, system_id=system_id
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -431,12 +438,12 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> response = client.get_ssh_public_key(name)
 
         Args:
-            name (str): The fingerprint of the public key to retrieve. Public keys are
+            name (str): Required. The fingerprint of the public key to retrieve. Public keys are
                 identified by their SHA-256 fingerprint. The fingerprint of the public
                 key is in format ``users/{user}/sshPublicKeys/{fingerprint}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -490,7 +497,7 @@ class OsLoginServiceClient(object):
     def import_ssh_public_key(
         self,
         parent,
-        ssh_public_key,
+        ssh_public_key=None,
         project_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -508,14 +515,11 @@ class OsLoginServiceClient(object):
             >>>
             >>> parent = client.user_path('[USER]')
             >>>
-            >>> # TODO: Initialize `ssh_public_key`:
-            >>> ssh_public_key = {}
-            >>>
-            >>> response = client.import_ssh_public_key(parent, ssh_public_key)
+            >>> response = client.import_ssh_public_key(parent)
 
         Args:
-            parent (str): The unique ID for the user in format ``users/{user}``.
-            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): The SSH public key and expiration time.
+            parent (str): Required. The unique ID for the user in format ``users/{user}``.
+            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): Optional. The SSH public key and expiration time.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.oslogin_v1.types.SshPublicKey`
@@ -588,7 +592,7 @@ class OsLoginServiceClient(object):
             >>>
             >>> client = oslogin_v1.OsLoginServiceClient()
             >>>
-            >>> name = client.fingerprint_path('[USER]', '[FINGERPRINT]')
+            >>> name = client.ssh_public_key_path('[USER]', '[FINGERPRINT]')
             >>>
             >>> # TODO: Initialize `ssh_public_key`:
             >>> ssh_public_key = {}
@@ -596,10 +600,10 @@ class OsLoginServiceClient(object):
             >>> response = client.update_ssh_public_key(name, ssh_public_key)
 
         Args:
-            name (str): The fingerprint of the public key to update. Public keys are identified
-                by their SHA-256 fingerprint. The fingerprint of the public key is in
-                format ``users/{user}/sshPublicKeys/{fingerprint}``.
-            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): The SSH public key and expiration time.
+            name (str): Required. The fingerprint of the public key to update. Public keys are
+                identified by their SHA-256 fingerprint. The fingerprint of the public
+                key is in format ``users/{user}/sshPublicKeys/{fingerprint}``.
+            ssh_public_key (Union[dict, ~google.cloud.oslogin_v1.types.SshPublicKey]): Required. The SSH public key and expiration time.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.oslogin_v1.types.SshPublicKey`

@@ -58,6 +58,15 @@ Create an empty table with the
    :start-after: [START bigquery_create_table]
    :end-before: [END bigquery_create_table]
 
+Create an integer range partitioned table with the
+:func:`~google.cloud.bigquery.client.Client.create_table` method:
+
+.. literalinclude:: ../samples/create_table_range_partitioned.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_create_table_range_partitioned]
+   :end-before: [END bigquery_create_table_range_partitioned]
+
 Load table data from a file with the
 :func:`~google.cloud.bigquery.client.Client.load_table_from_file` method:
 
@@ -122,6 +131,20 @@ Insert rows into a table's data with the
    :start-after: [START bigquery_table_insert_rows]
    :end-before: [END bigquery_table_insert_rows]
 
+Insert rows into a table's data with the
+:func:`~google.cloud.bigquery.client.Client.insert_rows` method, achieving
+higher write limit:
+
+.. literalinclude:: ../samples/table_insert_rows_explicit_none_insert_ids.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_table_insert_rows_explicit_none_insert_ids]
+   :end-before: [END bigquery_table_insert_rows_explicit_none_insert_ids]
+
+Mind that inserting data with ``None`` row insert IDs can come at the expense of
+more duplicate inserts. See also:
+`Streaming inserts <https://cloud.google.com/bigquery/quotas#streaming_inserts>`_.
+
 Add an empty column to the existing table with the
 :func:`~google.cloud.bigquery.update_table` method:
 
@@ -163,3 +186,15 @@ Delete a table with the
    :dedent: 4
    :start-after: [START bigquery_delete_table]
    :end-before: [END bigquery_delete_table]
+
+Restoring a Deleted Table
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Restore a deleted table from a snapshot by using the
+:func:`~google.cloud.bigquery.client.Client.copy_table` method:
+
+.. literalinclude:: ../samples/undelete_table.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_undelete_table]
+   :end-before: [END bigquery_undelete_table]

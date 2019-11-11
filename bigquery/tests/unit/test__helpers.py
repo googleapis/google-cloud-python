@@ -17,6 +17,8 @@ import datetime
 import decimal
 import unittest
 
+import mock
+
 
 class Test_not_null(unittest.TestCase):
     def _call_fut(self, value, field):
@@ -412,7 +414,8 @@ class Test_row_tuple_from_json(unittest.TestCase):
     def _call_fut(self, row, schema):
         from google.cloud.bigquery._helpers import _row_tuple_from_json
 
-        return _row_tuple_from_json(row, schema)
+        with _field_isinstance_patcher():
+            return _row_tuple_from_json(row, schema)
 
     def test_w_single_scalar_column(self):
         # SELECT 1 AS col
@@ -529,7 +532,8 @@ class Test_rows_from_json(unittest.TestCase):
     def _call_fut(self, rows, schema):
         from google.cloud.bigquery._helpers import _rows_from_json
 
-        return _rows_from_json(rows, schema)
+        with _field_isinstance_patcher():
+            return _rows_from_json(rows, schema)
 
     def test_w_record_subfield(self):
         from google.cloud.bigquery.table import Row
@@ -1023,3 +1027,23 @@ class _Field(object):
         self.name = name
         self.field_type = field_type
         self.fields = fields
+
+
+def _field_isinstance_patcher():
+    """A patcher thank makes _Field instances seem like SchemaField instances.
+    """
+    from google.cloud.bigquery.schema import SchemaField
+
+    def fake_isinstance(instance, target_class):
+        if instance.__class__.__name__ != "_Field":
+            return isinstance(instance, target_class)  # pragma: NO COVER
+
+        # pretend that _Field() instances are actually instances of SchemaField
+        return target_class is SchemaField or (
+            isinstance(target_class, tuple) and SchemaField in target_class
+        )
+
+    patcher = mock.patch(
+        "google.cloud.bigquery.schema.isinstance", side_effect=fake_isinstance
+    )
+    return patcher

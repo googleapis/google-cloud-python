@@ -40,7 +40,6 @@ try:
 except (ImportError, AttributeError):
     pyarrow = None
 
-from google.api_core import datetime_helpers
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
@@ -1328,67 +1327,33 @@ def test_extract_table_compressed(client, to_delete):
     to_delete.insert(0, blob)
 
 
-def test_undelete_table(client, to_delete):
-    dataset_id = "undelete_table_dataset_{}".format(_millis())
-    table_id = "undelete_table_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
-    dataset.location = "US"
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    client.create_table(table)
-
-    # [START bigquery_undelete_table]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # import time
+def test_client_query_legacy_sql(client):
+    """Run a query with Legacy SQL explicitly set"""
+    # [START bigquery_query_legacy]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_id = 'my_dataset'  # Replace with your dataset ID.
-    # table_id = 'my_table'      # Replace with your table ID.
 
-    table_ref = client.dataset(dataset_id).table(table_id)
-
-    # TODO(developer): Choose an appropriate snapshot point as epoch
-    # milliseconds. For this example, we choose the current time as we're about
-    # to delete the table immediately afterwards.
-    snapshot_epoch = int(time.time() * 1000)
-    # [END bigquery_undelete_table]
-
-    # Due to very short lifecycle of the table, ensure we're not picking a time
-    # prior to the table creation due to time drift between backend and client.
-    table = client.get_table(table_ref)
-    created_epoch = datetime_helpers.to_microseconds(table.created)
-    if created_epoch > snapshot_epoch:
-        snapshot_epoch = created_epoch
-
-    # [START bigquery_undelete_table]
-
-    # "Accidentally" delete the table.
-    client.delete_table(table_ref)  # API request
-
-    # Construct the restore-from table ID using a snapshot decorator.
-    snapshot_table_id = "{}@{}".format(table_id, snapshot_epoch)
-    source_table_ref = client.dataset(dataset_id).table(snapshot_table_id)
-
-    # Choose a new table ID for the recovered table data.
-    recovered_table_id = "{}_recovered".format(table_id)
-    dest_table_ref = client.dataset(dataset_id).table(recovered_table_id)
-
-    # Construct and run a copy job.
-    job = client.copy_table(
-        source_table_ref,
-        dest_table_ref,
-        # Location must match that of the source and destination tables.
-        location="US",
-    )  # API request
-
-    job.result()  # Waits for job to complete.
-
-    print(
-        "Copied data from deleted table {} to {}".format(table_id, recovered_table_id)
+    query = (
+        "SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] "
+        'WHERE state = "TX" '
+        "LIMIT 100"
     )
-    # [END bigquery_undelete_table]
+
+    # Set use_legacy_sql to True to use legacy SQL syntax.
+    job_config = bigquery.QueryJobConfig()
+    job_config.use_legacy_sql = True
+
+    query_job = client.query(
+        query,
+        # Location must match that of the dataset(s) referenced in the query.
+        location="US",
+        job_config=job_config,
+    )  # API request - starts the query
+
+    # Print the results.
+    for row in query_job:  # API request - fetches results
+        print(row)
+    # [END bigquery_query_legacy]
 
 
 def test_client_query_total_rows(client, capsys):

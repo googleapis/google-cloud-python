@@ -21,7 +21,6 @@ import os
 import tempfile
 import unittest
 
-import google.cloud.storage.blob
 import mock
 import pytest
 import six
@@ -725,7 +724,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "buhkit/o/bzzz-fly.txt?alt=media"
         )
         self.assertEqual(download_url, expected_url)
@@ -741,7 +740,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "fictional/o/pretend.txt?alt=media&generation=1493058489532987"
         )
         self.assertEqual(download_url, expected_url)
@@ -755,7 +754,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "fictional/o/pretend.txt?alt=media&userProject={}".format(user_project)
         )
         self.assertEqual(download_url, expected_url)
@@ -774,311 +773,246 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.media_link)
         download_url = blob._get_download_url()
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "buhkit/o/bzzz-fly.txt?alt=media"
         )
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
-    def _mock_requests_response(status_code, headers, content=b"", stream=False):
+    def _mock_requests_response(status_code, headers, content=b""):
         import requests
 
         response = requests.Response()
         response.status_code = status_code
         response.headers.update(headers)
-        if stream:
-            raw = io.BytesIO(content)
-            raw.headers = headers
-            response.raw = raw
-            response._content = False
-        else:
-            response.raw = None
-            response._content = content
+        response.raw = None
+        response._content = content
 
         response.request = requests.Request("POST", "http://example.com").prepare()
         return response
 
-    def _mock_download_transport(self):
-        fake_transport = mock.Mock(spec=["request"])
-        # Give the transport two fake responses.
-        chunk1_response = self._mock_requests_response(
-            http_client.PARTIAL_CONTENT,
-            {"content-length": "3", "content-range": "bytes 0-2/6"},
-            content=b"abc",
-        )
-        chunk2_response = self._mock_requests_response(
-            http_client.PARTIAL_CONTENT,
-            {"content-length": "3", "content-range": "bytes 3-5/6"},
-            content=b"def",
-        )
-        fake_transport.request.side_effect = [chunk1_response, chunk2_response]
-        return fake_transport
-
-    def _mock_download_transport_range(self):
-        fake_transport = mock.Mock(spec=["request"])
-        # Give the transport two fake responses.
-        chunk1_response = self._mock_requests_response(
-            http_client.PARTIAL_CONTENT,
-            {"content-length": "2", "content-range": "bytes 1-2/6"},
-            content=b"bc",
-        )
-        chunk2_response = self._mock_requests_response(
-            http_client.PARTIAL_CONTENT,
-            {"content-length": "2", "content-range": "bytes 3-4/6"},
-            content=b"de",
-        )
-        fake_transport.request.side_effect = [chunk1_response, chunk2_response]
-        return fake_transport
-
-    def _check_session_mocks(self, client, transport, expected_url, headers=None):
-        # Check that the transport was called exactly twice.
-        self.assertEqual(transport.request.call_count, 2)
-        if headers is None:
-            headers = {}
-        # NOTE: bytes=0-2 never shows up because the mock was called with
-        #       **MUTABLE** headers and it was mutated before the
-        #       second request.
-        headers["range"] = "bytes=3-5"
-        headers["accept-encoding"] = "gzip"
-        call = mock.call(
-            "GET", expected_url, data=None, headers=headers, timeout=mock.ANY
-        )
-        self.assertEqual(transport.request.mock_calls, [call, call])
-
-    def test__do_download_simple(self):
+    def _do_download_helper_wo_chunks(self, w_range, raw_download):
         blob_name = "blob-name"
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
+        client = mock.Mock()
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-
-        # Make sure this will not be chunked.
         self.assertIsNone(blob.chunk_size)
 
-        transport = mock.Mock(spec=["request"])
-        transport.request.return_value = self._mock_requests_response(
-            http_client.OK,
-            {"content-length": "6", "content-range": "bytes 0-5/6"},
-            content=b"abcdef",
-            stream=True,
-        )
+        transport = object()
         file_obj = io.BytesIO()
         download_url = "http://test.invalid"
         headers = {}
-        blob._do_download(transport, file_obj, download_url, headers)
-        # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b"abcdef")
 
-        transport.request.assert_called_once_with(
-            "GET",
-            download_url,
-            data=None,
-            headers=headers,
-            stream=True,
-            timeout=mock.ANY,
-        )
+        if raw_download:
+            patch = mock.patch("google.cloud.storage.blob.RawDownload")
+        else:
+            patch = mock.patch("google.cloud.storage.blob.Download")
 
-    def test__do_download_simple_with_range(self):
+        with patch as patched:
+            if w_range:
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    start=1,
+                    end=3,
+                    raw_download=raw_download,
+                )
+            else:
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    raw_download=raw_download,
+                )
+
+        if w_range:
+            patched.assert_called_once_with(
+                download_url, stream=file_obj, headers=headers, start=1, end=3
+            )
+        else:
+            patched.assert_called_once_with(
+                download_url, stream=file_obj, headers=headers, start=None, end=None
+            )
+        patched.return_value.consume.assert_called_once_with(transport)
+
+    def test__do_download_wo_chunks_wo_range_wo_raw(self):
+        self._do_download_helper_wo_chunks(w_range=False, raw_download=False)
+
+    def test__do_download_wo_chunks_w_range_wo_raw(self):
+        self._do_download_helper_wo_chunks(w_range=True, raw_download=False)
+
+    def test__do_download_wo_chunks_wo_range_w_raw(self):
+        self._do_download_helper_wo_chunks(w_range=False, raw_download=True)
+
+    def test__do_download_wo_chunks_w_range_w_raw(self):
+        self._do_download_helper_wo_chunks(w_range=True, raw_download=True)
+
+    def _do_download_helper_w_chunks(self, w_range, raw_download):
         blob_name = "blob-name"
-        # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-
-        # Make sure this will not be chunked.
-        self.assertIsNone(blob.chunk_size)
-
-        transport = mock.Mock(spec=["request"])
-        transport.request.return_value = self._mock_requests_response(
-            http_client.OK,
-            {"content-length": "3", "content-range": "bytes 1-3"},
-            content=b"bcd",
-            stream=True,
-        )
-        file_obj = io.BytesIO()
-        download_url = "http://test.invalid"
-        headers = {}
-        blob._do_download(transport, file_obj, download_url, headers, start=1, end=3)
-        # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b"bcd")
-        self.assertEqual(headers["range"], "bytes=1-3")
-
-        transport.request.assert_called_once_with(
-            "GET",
-            download_url,
-            data=None,
-            headers=headers,
-            stream=True,
-            timeout=mock.ANY,
-        )
-
-    def test__do_download_chunked(self):
-        blob_name = "blob-name"
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
-        bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
-
-        # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
+        chunk_size = blob.chunk_size = 3
 
-        transport = self._mock_download_transport()
+        transport = object()
         file_obj = io.BytesIO()
         download_url = "http://test.invalid"
         headers = {}
-        blob._do_download(transport, file_obj, download_url, headers)
-        # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b"abcdef")
 
-        # Check that the transport was called exactly twice.
-        self.assertEqual(transport.request.call_count, 2)
-        # ``headers`` was modified (in place) once for each API call.
-        self.assertEqual(headers, {"range": "bytes=3-5"})
-        call = mock.call(
-            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
-        )
-        self.assertEqual(transport.request.mock_calls, [call, call])
+        download = mock.Mock(finished=False, spec=["finished", "consume_next_chunk"])
 
-    def test__do_download_chunked_with_range(self):
-        blob_name = "blob-name"
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
-        bucket = _Bucket(client)
-        blob = self._make_one(blob_name, bucket=bucket)
+        def side_effect(_):
+            download.finished = True
 
-        # Modify the blob so there there will be 2 chunks of size 2.
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 2
+        download.consume_next_chunk.side_effect = side_effect
 
-        transport = self._mock_download_transport_range()
-        file_obj = io.BytesIO()
-        download_url = "http://test.invalid"
-        headers = {}
-        blob._do_download(transport, file_obj, download_url, headers, start=1, end=4)
-        # Make sure the download was as expected.
-        self.assertEqual(file_obj.getvalue(), b"bcde")
+        if raw_download:
+            patch = mock.patch("google.cloud.storage.blob.RawChunkedDownload")
+        else:
+            patch = mock.patch("google.cloud.storage.blob.ChunkedDownload")
 
-        # Check that the transport was called exactly twice.
-        self.assertEqual(transport.request.call_count, 2)
-        # ``headers`` was modified (in place) once for each API call.
-        self.assertEqual(headers, {"range": "bytes=3-4"})
-        call = mock.call(
-            "GET", download_url, data=None, headers=headers, timeout=mock.ANY
-        )
-        self.assertEqual(transport.request.mock_calls, [call, call])
+        with patch as patched:
+            patched.return_value = download
+            if w_range:
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    start=1,
+                    end=3,
+                    raw_download=raw_download,
+                )
+            else:
+                blob._do_download(
+                    transport,
+                    file_obj,
+                    download_url,
+                    headers,
+                    raw_download=raw_download,
+                )
+
+        if w_range:
+            patched.assert_called_once_with(
+                download_url, chunk_size, file_obj, headers=headers, start=1, end=3
+            )
+        else:
+            patched.assert_called_once_with(
+                download_url, chunk_size, file_obj, headers=headers, start=0, end=None
+            )
+        download.consume_next_chunk.assert_called_once_with(transport)
+
+    def test__do_download_w_chunks_wo_range_wo_raw(self):
+        self._do_download_helper_w_chunks(w_range=False, raw_download=False)
+
+    def test__do_download_w_chunks_w_range_wo_raw(self):
+        self._do_download_helper_w_chunks(w_range=True, raw_download=False)
+
+    def test__do_download_w_chunks_wo_range_w_raw(self):
+        self._do_download_helper_w_chunks(w_range=False, raw_download=True)
+
+    def test__do_download_w_chunks_w_range_w_raw(self):
+        self._do_download_helper_w_chunks(w_range=True, raw_download=True)
 
     def test_download_to_file_with_failure(self):
+        import requests
+        from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
+        raw_response = requests.Response()
+        raw_response.status_code = http_client.NOT_FOUND
+        raw_request = requests.Request("GET", "http://example.com")
+        raw_response.request = raw_request.prepare()
+        grmp_response = InvalidResponse(raw_response)
+
         blob_name = "blob-name"
-        transport = mock.Mock(spec=["request"])
-        bad_response_headers = {
-            "Content-Length": "9",
-            "Content-Type": "text/html; charset=UTF-8",
-        }
-        transport.request.return_value = self._mock_requests_response(
-            http_client.NOT_FOUND, bad_response_headers, content=b"Not found"
-        )
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=[u"_http"])
+        media_link = "http://test.invalid"
+        client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-        # Set the media link on the blob
-        blob._properties["mediaLink"] = "http://test.invalid"
+        blob._properties["mediaLink"] = media_link
+        blob._do_download = mock.Mock()
+        blob._do_download.side_effect = grmp_response
 
         file_obj = io.BytesIO()
         with self.assertRaises(exceptions.NotFound):
             blob.download_to_file(file_obj)
 
         self.assertEqual(file_obj.tell(), 0)
-        # Check that the transport was called once.
-        transport.request.assert_called_once_with(
-            "GET",
-            blob.media_link,
-            data=None,
-            headers={"accept-encoding": "gzip"},
-            stream=True,
-            timeout=mock.ANY,
+
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, file_obj, media_link, headers, None, None, False
         )
 
     def test_download_to_file_wo_media_link(self):
         blob_name = "blob-name"
-        transport = self._mock_download_transport()
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=[u"_http"])
+        client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
-        # Modify the blob so there there will be 2 chunks of size 3.
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
-
+        blob._do_download = mock.Mock()
         file_obj = io.BytesIO()
+
         blob.download_to_file(file_obj)
-        self.assertEqual(file_obj.getvalue(), b"abcdef")
+
         # Make sure the media link is still unknown.
         self.assertIsNone(blob.media_link)
 
         expected_url = (
-            "https://www.googleapis.com/download/storage/v1/b/"
+            "https://storage.googleapis.com/download/storage/v1/b/"
             "name/o/blob-name?alt=media"
         )
-        self._check_session_mocks(client, transport, expected_url)
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, file_obj, expected_url, headers, None, None, False
+        )
 
-    def _download_to_file_helper(self, use_chunks=False):
+    def _download_to_file_helper(self, use_chunks, raw_download):
         blob_name = "blob-name"
-        transport = self._mock_download_transport()
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=[u"_http"])
+        client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         if use_chunks:
-            # Modify the blob so there there will be 2 chunks of size 3.
             blob._CHUNK_SIZE_MULTIPLE = 1
             blob.chunk_size = 3
-        else:
-            # Modify the response.
-            single_chunk_response = self._mock_requests_response(
-                http_client.OK,
-                {"content-length": "6", "content-range": "bytes 0-5/6"},
-                content=b"abcdef",
-                stream=True,
-            )
-            transport.request.side_effect = [single_chunk_response]
+        blob._do_download = mock.Mock()
 
         file_obj = io.BytesIO()
-        blob.download_to_file(file_obj)
-        self.assertEqual(file_obj.getvalue(), b"abcdef")
-
-        if use_chunks:
-            self._check_session_mocks(client, transport, media_link)
+        if raw_download:
+            blob.download_to_file(file_obj, raw_download=True)
         else:
-            transport.request.assert_called_once_with(
-                "GET",
-                media_link,
-                data=None,
-                headers={"accept-encoding": "gzip"},
-                stream=True,
-                timeout=mock.ANY,
-            )
+            blob.download_to_file(file_obj)
 
-    def test_download_to_file_default(self):
-        self._download_to_file_helper()
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, file_obj, media_link, headers, None, None, raw_download
+        )
 
-    def test_download_to_file_with_chunk_size(self):
-        self._download_to_file_helper(use_chunks=True)
+    def test_download_to_file_wo_chunks_wo_raw(self):
+        self._download_to_file_helper(use_chunks=False, raw_download=False)
 
-    def _download_to_filename_helper(self, updated=None):
+    def test_download_to_file_w_chunks_wo_raw(self):
+        self._download_to_file_helper(use_chunks=True, raw_download=False)
+
+    def test_download_to_file_wo_chunks_w_raw(self):
+        self._download_to_file_helper(use_chunks=False, raw_download=True)
+
+    def test_download_to_file_w_chunks_w_raw(self):
+        self._download_to_file_helper(use_chunks=True, raw_download=True)
+
+    def _download_to_filename_helper(self, updated, raw_download):
         import os
         import time
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = "blob-name"
-        transport = self._mock_download_transport()
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=["_http"])
+        client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
@@ -1086,162 +1020,122 @@ class Test_Blob(unittest.TestCase):
             properties["updated"] = updated
 
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
-        # Modify the blob so there there will be 2 chunks of size 3.
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
+        blob._do_download = mock.Mock()
 
         with _NamedTemporaryFile() as temp:
-            blob.download_to_filename(temp.name)
-            with open(temp.name, "rb") as file_obj:
-                wrote = file_obj.read()
-                if updated is None:
-                    self.assertIsNone(blob.updated)
-                else:
-                    mtime = os.path.getmtime(temp.name)
-                    updated_time = time.mktime(blob.updated.timetuple())
-                    self.assertEqual(mtime, updated_time)
+            blob.download_to_filename(temp.name, raw_download=raw_download)
+            if updated is None:
+                self.assertIsNone(blob.updated)
+            else:
+                mtime = os.path.getmtime(temp.name)
+                updated_time = time.mktime(blob.updated.timetuple())
+                self.assertEqual(mtime, updated_time)
 
-        self.assertEqual(wrote, b"abcdef")
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, mock.ANY, media_link, headers, None, None, raw_download
+        )
+        stream = blob._do_download.mock_calls[0].args[1]
+        self.assertEqual(stream.name, temp.name)
 
-        self._check_session_mocks(client, transport, media_link)
-
-    def test_download_to_filename(self):
+    def test_download_to_filename_w_updated_wo_raw(self):
         updated = "2014-12-06T13:13:50.690Z"
-        self._download_to_filename_helper(updated=updated)
+        self._download_to_filename_helper(updated=updated, raw_download=False)
 
-    def test_download_to_filename_wo_updated(self):
-        self._download_to_filename_helper()
+    def test_download_to_filename_wo_updated_wo_raw(self):
+        self._download_to_filename_helper(updated=None, raw_download=False)
+
+    def test_download_to_filename_w_updated_w_raw(self):
+        updated = "2014-12-06T13:13:50.690Z"
+        self._download_to_filename_helper(updated=updated, raw_download=True)
+
+    def test_download_to_filename_wo_updated_w_raw(self):
+        self._download_to_filename_helper(updated=None, raw_download=True)
 
     def test_download_to_filename_corrupted(self):
         from google.resumable_media import DataCorruption
-        from google.resumable_media.requests.download import _CHECKSUM_MISMATCH
 
         blob_name = "blob-name"
-        transport = mock.Mock(spec=["request"])
-        empty_hash = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
-        headers = {"x-goog-hash": "md5=" + empty_hash}
-        mock_raw = mock.Mock(headers=headers, spec=["headers"])
-        response = mock.MagicMock(
-            headers=headers,
-            status_code=http_client.OK,
-            raw=mock_raw,
-            spec=[
-                "__enter__",
-                "__exit__",
-                "headers",
-                "iter_content",
-                "status_code",
-                "raw",
-            ],
-        )
-        # i.e. context manager returns ``self``.
-        response.__enter__.return_value = response
-        response.__exit__.return_value = None
-        chunks = (b"noms1", b"coooookies2")
-        response.iter_content.return_value = iter(chunks)
-
-        transport.request.return_value = response
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=["_http"])
-        bucket = mock.Mock(
-            client=client, user_project=None, spec=["client", "user_project"]
-        )
+        client = mock.Mock(spec=["_http"])
+        bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
-        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
-        # Make sure the download is **not** chunked.
-        self.assertIsNone(blob.chunk_size)
 
-        # Make sure the hash will be wrong.
-        content = b"".join(chunks)
-        expected_hash = base64.b64encode(hashlib.md5(content).digest()).decode(u"utf-8")
-        self.assertNotEqual(empty_hash, expected_hash)
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        blob._do_download = mock.Mock()
+        blob._do_download.side_effect = DataCorruption("testing")
 
         # Try to download into a temporary file (don't use
         # `_NamedTemporaryFile` it will try to remove after the file is
         # already removed)
         filehandle, filename = tempfile.mkstemp()
         os.close(filehandle)
-        with self.assertRaises(DataCorruption) as exc_info:
+        self.assertTrue(os.path.exists(filename))
+
+        with self.assertRaises(DataCorruption):
             blob.download_to_filename(filename)
 
-        msg = _CHECKSUM_MISMATCH.format(media_link, empty_hash, expected_hash)
-        self.assertEqual(exc_info.exception.args, (msg,))
         # Make sure the file was cleaned up.
         self.assertFalse(os.path.exists(filename))
 
-        # Check the mocks.
-        response.__enter__.assert_called_once_with()
-        response.__exit__.assert_called_once_with(None, None, None)
-        response.iter_content.assert_called_once_with(
-            chunk_size=8192, decode_unicode=False
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, mock.ANY, media_link, headers, None, None, False
         )
-        transport.request.assert_called_once_with(
-            "GET",
-            media_link,
-            data=None,
-            headers={"accept-encoding": "gzip"},
-            stream=True,
-            timeout=mock.ANY,
-        )
+        stream = blob._do_download.mock_calls[0].args[1]
+        self.assertEqual(stream.name, filename)
 
     def test_download_to_filename_w_key(self):
-        import os
-        import time
         from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.storage.blob import _get_encryption_headers
 
         blob_name = "blob-name"
-        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=["_http"])
+        client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
-        properties = {"mediaLink": media_link, "updated": "2014-12-06T13:13:50.690Z"}
+        properties = {"mediaLink": media_link}
         key = b"aa426195405adee2c8081bb9e7e74b19"
         blob = self._make_one(
             blob_name, bucket=bucket, properties=properties, encryption_key=key
         )
-        # Modify the blob so there there will be 2 chunks of size 3.
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
+        blob._do_download = mock.Mock()
 
         with _NamedTemporaryFile() as temp:
             blob.download_to_filename(temp.name)
-            with open(temp.name, "rb") as file_obj:
-                wrote = file_obj.read()
-                mtime = os.path.getmtime(temp.name)
-                updated_time = time.mktime(blob.updated.timetuple())
 
-        self.assertEqual(wrote, b"abcdef")
-        self.assertEqual(mtime, updated_time)
+        headers = {"accept-encoding": "gzip"}
+        headers.update(_get_encryption_headers(key))
+        blob._do_download.assert_called_once_with(
+            client._http, mock.ANY, media_link, headers, None, None, False
+        )
+        stream = blob._do_download.mock_calls[0].args[1]
+        self.assertEqual(stream.name, temp.name)
 
-        header_key_value = "YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk="
-        header_key_hash_value = "V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0="
-        key_headers = {
-            "X-Goog-Encryption-Key-Sha256": header_key_hash_value,
-            "X-Goog-Encryption-Algorithm": "AES256",
-            "X-Goog-Encryption-Key": header_key_value,
-            "accept-encoding": "gzip",
-        }
-        self._check_session_mocks(client, transport, media_link, headers=key_headers)
-
-    def test_download_as_string(self):
+    def _download_as_string_helper(self, raw_download):
         blob_name = "blob-name"
-        transport = self._mock_download_transport()
-        # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(_http=transport, spec=["_http"])
+        client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
-        # Modify the blob so there there will be 2 chunks of size 3.
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 3
+        blob._do_download = mock.Mock()
 
-        fetched = blob.download_as_string()
-        self.assertEqual(fetched, b"abcdef")
+        fetched = blob.download_as_string(raw_download=raw_download)
+        self.assertEqual(fetched, b"")
 
-        self._check_session_mocks(client, transport, media_link)
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http, mock.ANY, media_link, headers, None, None, raw_download
+        )
+        stream = blob._do_download.mock_calls[0].args[1]
+        self.assertIsInstance(stream, io.BytesIO)
+
+    def test_download_as_string_wo_raw(self):
+        self._download_as_string_helper(raw_download=False)
+
+    def test_download_as_string_w_raw(self):
+        self._download_as_string_helper(raw_download=True)
 
     def test__get_content_type_explicit(self):
         blob = self._make_one(u"blob-name", bucket=None)
@@ -1375,7 +1269,9 @@ class Test_Blob(unittest.TestCase):
 
         mock_get_boundary.assert_called_once_with()
 
-        upload_url = "https://www.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        upload_url = (
+            "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        )
 
         qs_params = [("uploadType", "multipart")]
 
@@ -1459,6 +1355,7 @@ class Test_Blob(unittest.TestCase):
     ):
         from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
+        from google.cloud.storage.blob import _DEFAULT_CHUNKSIZE
 
         bucket = _Bucket(name="whammy", user_project=user_project)
         blob = self._make_one(u"blob-name", bucket=bucket, kms_key_name=kms_key_name)
@@ -1498,7 +1395,9 @@ class Test_Blob(unittest.TestCase):
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
 
-        upload_url = "https://www.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        upload_url = (
+            "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
+        )
         qs_params = [("uploadType", "resumable")]
 
         if user_project is not None:
@@ -1521,9 +1420,7 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(upload.finished)
         if chunk_size is None:
             if blob_chunk_size is None:
-                self.assertEqual(
-                    upload._chunk_size, google.cloud.storage.blob._DEFAULT_CHUNKSIZE
-                )
+                self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
             else:
                 self.assertEqual(upload._chunk_size, blob.chunk_size)
         else:
@@ -1621,7 +1518,7 @@ class Test_Blob(unittest.TestCase):
     def _do_resumable_upload_call0(blob, content_type, size=None, predefined_acl=None):
         # First mock transport.request() does initiates upload.
         upload_url = (
-            "https://www.googleapis.com/upload/storage/v1"
+            "https://storage.googleapis.com/upload/storage/v1"
             + blob.bucket.path
             + "/o?uploadType=resumable"
         )
@@ -1755,6 +1652,8 @@ class Test_Blob(unittest.TestCase):
     def _do_upload_helper(
         self, chunk_size=None, num_retries=None, predefined_acl=None, size=None
     ):
+        from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
+
         blob = self._make_one(u"blob-name", bucket=None)
 
         # Create a fake response.
@@ -1781,7 +1680,7 @@ class Test_Blob(unittest.TestCase):
         )
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
-        if size is not None and size <= google.cloud.storage.blob._MAX_MULTIPART_SIZE:
+        if size is not None and size <= _MAX_MULTIPART_SIZE:
             blob._do_multipart_upload.assert_called_once_with(
                 client, stream, content_type, size, num_retries, predefined_acl
             )
@@ -1793,13 +1692,15 @@ class Test_Blob(unittest.TestCase):
             )
 
     def test__do_upload_uses_multipart(self):
-        self._do_upload_helper(size=google.cloud.storage.blob._MAX_MULTIPART_SIZE)
+        from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
+
+        self._do_upload_helper(size=_MAX_MULTIPART_SIZE)
 
     def test__do_upload_uses_resumable(self):
-        self._do_upload_helper(
-            chunk_size=256 * 1024,  # 256KB
-            size=google.cloud.storage.blob._MAX_MULTIPART_SIZE + 1,
-        )
+        from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
+
+        chunk_size = 256 * 1024  # 256KB
+        self._do_upload_helper(chunk_size=chunk_size, size=_MAX_MULTIPART_SIZE + 1)
 
     def test__do_upload_with_retry(self):
         self._do_upload_helper(num_retries=20)
@@ -1980,7 +1881,7 @@ class Test_Blob(unittest.TestCase):
 
         # Check the mocks.
         upload_url = (
-            "https://www.googleapis.com/upload/storage/v1"
+            "https://storage.googleapis.com/upload/storage/v1"
             + bucket.path
             + "/o?uploadType=resumable"
         )
@@ -2523,9 +2424,6 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn("X-Goog-Encryption-Key-Sha256", headers)
 
     def test_rewrite_same_name_no_old_key_new_key_done_w_user_project(self):
-        import base64
-        import hashlib
-
         KEY = b"01234567890123456789012345678901"  # 32 bytes
         KEY_B64 = base64.b64encode(KEY).rstrip().decode("ascii")
         KEY_HASH = hashlib.sha256(KEY).digest()
@@ -2569,9 +2467,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(headers["X-Goog-Encryption-Key-Sha256"], KEY_HASH_B64)
 
     def test_rewrite_same_name_no_key_new_key_w_token(self):
-        import base64
-        import hashlib
-
         SOURCE_KEY = b"01234567890123456789012345678901"  # 32 bytes
         SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode("ascii")
         SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
@@ -2621,9 +2516,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(headers["X-Goog-Encryption-Key-Sha256"], DEST_KEY_HASH_B64)
 
     def test_rewrite_same_name_w_old_key_new_kms_key(self):
-        import base64
-        import hashlib
-
         SOURCE_KEY = b"01234567890123456789012345678901"  # 32 bytes
         SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode("ascii")
         SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
@@ -2745,9 +2637,6 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn("X-Goog-Encryption-Key-Sha256", headers)
 
     def test_update_storage_class_w_encryption_key_w_user_project(self):
-        import base64
-        import hashlib
-
         BLOB_NAME = "blob-name"
         BLOB_KEY = b"01234567890123456789012345678901"  # 32 bytes
         BLOB_KEY_B64 = base64.b64encode(BLOB_KEY).rstrip().decode("ascii")

@@ -1138,7 +1138,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_schema_and_query(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         query = "SELECT * from %s:%s" % (self.DS_ID, self.TABLE_ID)
@@ -1753,7 +1754,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]["headers"]["If-Match"], "im-an-etag")
 
     def test_update_table(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         path = "projects/%s/datasets/%s/tables/%s" % (
             self.PROJECT,
@@ -1896,7 +1898,8 @@ class TestClient(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         path = "projects/%s/datasets/%s/tables/%s" % (
             self.PROJECT,
@@ -4173,7 +4176,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(tzinfo=UTC)
@@ -4229,7 +4232,8 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(tzinfo=UTC)
@@ -4290,8 +4294,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_w_list_of_Rows(self):
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Row
 
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
@@ -4335,7 +4339,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_w_skip_invalid_and_ignore_unknown(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
@@ -4411,7 +4416,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_w_repeated_fields(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
@@ -4504,7 +4510,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_w_record_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
@@ -4572,6 +4578,40 @@ class TestClient(unittest.TestCase):
             method="POST", path="/%s" % PATH, data=SENT
         )
 
+    def test_insert_rows_w_explicit_none_insert_ids(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        PATH = "projects/{}/datasets/{}/tables/{}/insertAll".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID,
+        )
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({})
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+        ROWS = [
+            {"full_name": "Phred Phlyntstone", "age": 32},
+            {"full_name": "Bharney Rhubble", "age": 33},
+        ]
+
+        def _row_data(row):
+            row["age"] = str(row["age"])
+            return row
+
+        SENT = {"rows": [{"json": _row_data(row), "insertId": None} for row in ROWS]}
+
+        errors = client.insert_rows(table, ROWS, row_ids=[None] * len(ROWS))
+
+        self.assertEqual(len(errors), 0)
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/{}".format(PATH), data=SENT
+        )
+
     def test_insert_rows_errors(self):
         from google.cloud.bigquery.table import Table
 
@@ -4599,6 +4639,7 @@ class TestClient(unittest.TestCase):
 
     def test_insert_rows_w_numeric(self):
         from google.cloud.bigquery import table
+        from google.cloud.bigquery.schema import SchemaField
 
         project = "PROJECT"
         ds_id = "DS_ID"
@@ -4608,10 +4649,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=creds, _http=http)
         conn = client._connection = make_connection({})
         table_ref = DatasetReference(project, ds_id).table(table_id)
-        schema = [
-            table.SchemaField("account", "STRING"),
-            table.SchemaField("balance", "NUMERIC"),
-        ]
+        schema = [SchemaField("account", "STRING"), SchemaField("balance", "NUMERIC")]
         insert_table = table.Table(table_ref, schema=schema)
         rows = [
             ("Savings", decimal.Decimal("23.47")),
@@ -4643,7 +4681,7 @@ class TestClient(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
         API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
@@ -4719,7 +4757,7 @@ class TestClient(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe_many_columns(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
         API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
@@ -4765,9 +4803,59 @@ class TestClient(unittest.TestCase):
         assert len(actual_calls) == 1
         assert actual_calls[0] == expected_call
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_insert_rows_from_dataframe_w_explicit_none_insert_ids(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
+            self.PROJECT, self.DS_ID, self.TABLE_REF.table_id
+        )
+
+        dataframe = pandas.DataFrame(
+            [
+                {"name": u"Little One", "adult": False},
+                {"name": u"Young Gun", "adult": True},
+            ]
+        )
+
+        # create client
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({}, {})
+
+        # create table
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("adult", "BOOLEAN", mode="REQUIRED"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        error_info = client.insert_rows_from_dataframe(
+            table, dataframe, row_ids=[None] * len(dataframe)
+        )
+
+        self.assertEqual(len(error_info), 1)
+        assert error_info[0] == []  # no chunk errors
+
+        EXPECTED_SENT_DATA = {
+            "rows": [
+                {"insertId": None, "json": {"name": "Little One", "adult": "false"}},
+                {"insertId": None, "json": {"name": "Young Gun", "adult": "true"}},
+            ]
+        }
+
+        actual_calls = conn.api_request.call_args_list
+        assert len(actual_calls) == 1
+        assert actual_calls[0] == mock.call(
+            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA
+        )
+
     def test_insert_rows_json(self):
-        from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         PROJECT = "PROJECT"
         DS_ID = "DS_ID"
@@ -4833,6 +4921,27 @@ class TestClient(unittest.TestCase):
             data=expected,
         )
 
+    def test_insert_rows_json_w_explicit_none_insert_ids(self):
+        rows = [{"col1": "val1"}, {"col2": "val2"}]
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project="default-project", credentials=creds, _http=http
+        )
+        conn = client._connection = make_connection({})
+
+        errors = client.insert_rows_json(
+            "proj.dset.tbl", rows, row_ids=[None] * len(rows),
+        )
+
+        self.assertEqual(len(errors), 0)
+        expected = {"rows": [{"json": row, "insertId": None} for row in rows]}
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/proj/datasets/dset/tables/tbl/insertAll",
+            data=expected,
+        )
+
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
 
@@ -4878,8 +4987,8 @@ class TestClient(unittest.TestCase):
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.table import Row
 
         PATH = "projects/%s/datasets/%s/tables/%s/data" % (
@@ -4979,7 +5088,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(rows.total_rows, 0)
 
     def test_list_rows_query_params(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         creds = _make_credentials()
         http = object()
@@ -5001,7 +5111,7 @@ class TestClient(unittest.TestCase):
             self.assertEqual(req[1]["query_params"], test[1], "for kwargs %s" % test[0])
 
     def test_list_rows_repeated_fields(self):
-        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
 
         PATH = "projects/%s/datasets/%s/tables/%s/data" % (
             self.PROJECT,
@@ -5061,7 +5171,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_rows_w_record_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/data" % (
             self.PROJECT,
@@ -5885,8 +5996,7 @@ class TestClientUpload(object):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_no_schema_warning(self):
+    def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
         client = self._make_client()
 
         # Pick at least one column type that translates to Pandas dtype
@@ -5903,9 +6013,12 @@ class TestClientUpload(object):
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
         pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        pyarrow_patch_helpers = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.pyarrow", None
+        )
         catch_warnings = warnings.catch_warnings(record=True)
 
-        with get_table_patch, load_patch, pyarrow_patch, catch_warnings as warned:
+        with get_table_patch, load_patch, pyarrow_patch, pyarrow_patch_helpers, catch_warnings as warned:
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, location=self.LOCATION
             )
@@ -6073,7 +6186,6 @@ class TestClientUpload(object):
         assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -6090,10 +6202,13 @@ class TestClientUpload(object):
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
+        pyarrow_patch = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.pyarrow", None
+        )
 
         schema = (SchemaField("string_col", "STRING"),)
         job_config = job.LoadJobConfig(schema=schema)
-        with load_patch as load_table_from_file, warnings.catch_warnings(
+        with pyarrow_patch, load_patch as load_table_from_file, warnings.catch_warnings(
             record=True
         ) as warned:
             client.load_table_from_dataframe(

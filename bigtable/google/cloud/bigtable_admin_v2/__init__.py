@@ -35,4 +35,9 @@ class BigtableTableAdminClient(bigtable_table_admin_client.BigtableTableAdminCli
     enums = enums
 
 
-__all__ = ("enums", "types", "BigtableInstanceAdminClient", "BigtableTableAdminClient")
+__all__ = (
+    "enums",
+    "types",
+    "BigtableInstanceAdminClient",
+    "BigtableTableAdminClient",
+)
