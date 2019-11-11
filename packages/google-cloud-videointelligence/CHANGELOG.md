@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.12.0
+
+11-08-2019 09:32 PST
+
+
+### Implementation Changes
+- Make `features` a positional parameter in `annotate_video`, update retry config, make AnnotateVideo nonidempotent (via synth). ([#9440](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9440))
+
+### New Features
+- Add celebrity recognition support (via synth). ([#9612](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9612))
+- Drop support for `v1beta1` version of the API. ([#9426](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9426))
+
+### Documentation
+- Tweak docstrings, client configuration (via synth). ([#9434](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9434))
+- Change requests intersphinx url (via synth). ([#9412](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9412))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9085))
+- Remove compatibility badges from READMEs. ([#9035](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Enrich VPCSC tests. ([#9193](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9193))
+
 ## 1.11.0
 
 08-12-2019 14:00 PDT
