@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## 0.6.0
+
+11-07-2019 16:34 PST
+
+
+### Implementation Changes
+- Tweak proto annotations (via synth). ([#9466](https://github.com/googleapis/google-cloud-python/pull/9466))
+- Remove send/recv msg size limit (via synth). ([#8951](https://github.com/googleapis/google-cloud-python/pull/8951))
+
+### New Features
+- Add V1 autoscaling policy support; annotate protos (via synth). ([#9402](https://github.com/googleapis/google-cloud-python/pull/9402))
+
+### Documentation
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatibility badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 0.5.0
 
 07-24-2019 16:02 PDT
