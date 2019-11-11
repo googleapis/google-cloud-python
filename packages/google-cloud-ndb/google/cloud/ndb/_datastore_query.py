@@ -311,8 +311,11 @@ class _QueryIteratorImpl(QueryIterator):
 
         if more_results:
             # Fix up query for next batch
+            limit = self._query.limit
+            if limit is not None:
+                limit -= len(self._batch)
             self._query = self._query.copy(
-                start_cursor=Cursor(batch.end_cursor)
+                start_cursor=Cursor(batch.end_cursor), offset=None, limit=limit
             )
 
     def next(self):

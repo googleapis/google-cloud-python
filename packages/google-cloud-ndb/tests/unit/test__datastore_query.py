@@ -357,6 +357,43 @@ class Test_QueryIteratorImpl:
         assert iterator._query.start_cursor.cursor == b"abc"
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test__next_batch_has_more_w_offset_and_limit(_datastore_run_query):
+        """Regression test for Issue #236
+
+        https://github.com/googleapis/python-ndb/issues/236
+        """
+        entity_results = [
+            mock.Mock(entity="entity1", cursor=b"a"),
+            mock.Mock(entity="entity2", cursor=b"b"),
+            mock.Mock(entity="entity3", cursor=b"c"),
+        ]
+        _datastore_run_query.return_value = utils.future_result(
+            mock.Mock(
+                batch=mock.Mock(
+                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_results=entity_results,
+                    end_cursor=b"abc",
+                    more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
+                )
+            )
+        )
+
+        query = query_module.QueryOptions(offset=5, limit=5)
+        iterator = _datastore_query._QueryIteratorImpl(query)
+        assert iterator._next_batch().result() is None
+        assert iterator._index == 0
+        assert len(iterator._batch) == 3
+        assert iterator._batch[0].result_pb.entity == "entity1"
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].order_by is None
+        assert iterator._has_next_batch
+        assert iterator._query.start_cursor.cursor == b"abc"
+        assert iterator._query.offset is None
+        assert iterator._query.limit == 2
+
+    @staticmethod
     def test_next_done():
         iterator = _datastore_query._QueryIteratorImpl("foo")
         iterator.has_next = mock.Mock(return_value=False)

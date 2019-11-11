@@ -97,6 +97,33 @@ def test_fetch_lots_of_a_kind(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_high_limit(dispose_of):
+    """Regression test for Issue #236
+
+    https://github.com/googleapis/python-ndb/issues/236
+    """
+    n_entities = 500
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    @ndb.toplevel
+    def make_entities():
+        entities = [SomeKind(foo=i) for i in range(n_entities)]
+        keys = yield [entity.put_async() for entity in entities]
+        raise ndb.Return(keys)
+
+    for key in make_entities():
+        dispose_of(key._key)
+
+    query = SomeKind.query()
+    eventually(query.fetch, _length_equals(n_entities))
+    results = query.fetch(limit=400)
+
+    assert len(results) == 400
+
+
+@pytest.mark.usefixtures("client_context")
 def test_fetch_and_immediately_cancel(dispose_of):
     # Make a lot of entities so the query call won't complete before we get to
     # call cancel.
