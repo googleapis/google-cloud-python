@@ -78,9 +78,9 @@ def test_batch_get_assets_history_outside(client, parent_outside):
     read_time_window = {}
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.batch_get_assets_history(
-        parent_outside,
-        content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
-        read_time_window={},
-    )
+            parent_outside,
+            content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
+            read_time_window={},
+        )
 
     assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
