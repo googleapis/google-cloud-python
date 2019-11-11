@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.6.0
+
+11-06-2019 13:49 PST
+
+### New Features
+- Surface new 'IN' and 'ARRAY_CONTAINS_ANY' query operators. ([#9541](https://github.com/googleapis/google-cloud-python/pull/9541))
+
 ## 1.5.0
 
 10-15-2019 06:45 PDT

@@ -74,9 +74,7 @@ class Future(google.api_core.future.Future):
             bool: ``True`` if this method has not yet completed, or
                 ``False`` if it has completed.
         """
-        if self.done():
-            return False
-        return True
+        return not self.done()
 
     def done(self):
         """Return True the future is done, False otherwise.
