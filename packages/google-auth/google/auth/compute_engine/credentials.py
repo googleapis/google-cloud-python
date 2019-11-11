@@ -105,7 +105,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
     def service_account_email(self):
         """The service account email.
 
-        .. note: This is not guaranteed to be set until :meth`refresh` has been
+        .. note:: This is not guaranteed to be set until :meth:`refresh` has been
             called.
         """
         return self._service_account_email
