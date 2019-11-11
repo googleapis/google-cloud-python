@@ -41,7 +41,7 @@ def test_list_traces_w_outside(client):
     with pytest.raises(exceptions.PermissionDenied) as exc:
         list(client.list_traces(vpcsc_config.project_outside))
 
-    assert exc.value.message == _VPCSC_PROHIBITED_MESSAGE
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
@@ -55,7 +55,7 @@ def test_get_trace_w_outside(client):
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.get_trace(vpcsc_config.project_outside, "")
 
-    assert exc.value.message == _VPCSC_PROHIBITED_MESSAGE
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
@@ -69,4 +69,4 @@ def test_patch_traces_w_ouside(client):
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.patch_traces(vpcsc_config.project_outside, {})
 
-    assert exc.value.message == _VPCSC_PROHIBITED_MESSAGE
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message

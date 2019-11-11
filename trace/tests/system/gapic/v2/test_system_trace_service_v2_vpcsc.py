@@ -44,4 +44,4 @@ def test_batch_write_spans_w_outside(client):
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.batch_write_spans(project_outside, [])
 
-    assert exc.value.message == _VPCSC_PROHIBITED_MESSAGE
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
