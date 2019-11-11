@@ -21,40 +21,27 @@ import pytest
 
 from google.api_core import exceptions
 from google.cloud import trace_v2
+from test_utils.vpcsc_config import vpcsc_config
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy."
 
 
-class TestVPCServiceControlV2(object):
-    @staticmethod
-    def _is_rejected(call):
-        try:
-            responses = call()
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        except:
-            pass
-        return False
+@pytest.fixture
+def client():
+    return trace_v2.TraceServiceClient()
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_batch_write_spans(self):
-        client = trace_v2.TraceServiceClient()
 
-        proejct_inside = client.project_path(PROJECT_INSIDE)
-        proejct_outside = client.project_path(PROJECT_OUTSIDE)
-        spans = []
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_write_spans_w_inside(client):
+    project_inside = client.project_path(vpcsc_config.project_inside)
+    client.batch_write_spans(project_inside, [])  # no raise
 
-        write_inside = lambda: client.batch_write_spans(proejct_inside, spans)
-        write_outside = lambda: client.batch_write_spans(proejct_outside, spans)
 
-        assert not TestVPCServiceControlV2._is_rejected(write_inside)
-        assert TestVPCServiceControlV2._is_rejected(write_outside)
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_write_spans_w_outside(client):
+    project_outside = client.project_path(vpcsc_config.project_outside)
+
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.batch_write_spans(project_outside, [])
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
