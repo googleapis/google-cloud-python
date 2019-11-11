@@ -532,33 +532,25 @@ class TestClient(unittest.TestCase):
         other_project = "OTHER_PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
+        connection = _make_connection()
+        client._base_connection = connection
+        connection.api_request.side_effect = Conflict("testing")
 
         bucket_name = "bucket-name"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b?project=%s&userProject=%s" % (other_project, user_project),
-            ]
-        )
-        data = {"error": {"message": "Conflict"}}
-        json_expected = {"name": bucket_name}
-        http = _make_requests_session(
-            [_make_json_response(data, status=http_client.CONFLICT)]
-        )
-        client._http_internal = http
+        data = {"name": bucket_name}
 
         with self.assertRaises(Conflict):
             client.create_bucket(
                 bucket_name, project=other_project, user_project=user_project
             )
 
-        http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": other_project, "userProject": user_project},
+            data=data,
+            _target_object=mock.ANY,
         )
-        json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_create_bucket_w_predefined_acl_invalid(self):
         project = "PROJECT"
