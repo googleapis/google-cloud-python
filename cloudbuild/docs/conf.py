@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-build documentation build configuration file
+# google-cloud-cloudbuild documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -65,7 +65,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-build"
+project = u"google-cloud-cloudbuild"
 copyright = u"2017, Google"
 author = u"Google APIs"
 
@@ -227,7 +227,7 @@ html_theme_options = {
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-build-doc"
+htmlhelp_basename = "google-cloud-cloudbuild-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -260,8 +260,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-build.tex",
-        u"google-cloud-build Documentation",
+        "google-cloud-cloudbuild.tex",
+        u"google-cloud-cloudbuild Documentation",
         author,
         "manual",
     )
@@ -293,7 +293,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "google-cloud-build", u"google-cloud-build Documentation", [author], 1)
+    (
+        master_doc,
+        "google-cloud-cloudbuild",
+        u"google-cloud-cloudbuild Documentation",
+        [author],
+        1,
+    )
 ]
 
 # If true, show URL addresses after external links.
@@ -308,10 +314,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-build",
-        u"google-cloud-build Documentation",
+        "google-cloud-cloudbuild",
+        u"google-cloud-cloudbuild Documentation",
         author,
-        "google-cloud-build",
+        "google-cloud-cloudbuild",
         "GAPIC library for the {metadata.shortName} v1 service",
         "APIs",
     )
