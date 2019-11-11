@@ -15,7 +15,6 @@
 import calendar
 import datetime
 
-import mock
 import pytest
 import pytz
 
