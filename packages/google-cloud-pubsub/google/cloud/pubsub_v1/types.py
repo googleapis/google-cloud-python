@@ -39,9 +39,9 @@ BatchSettings = collections.namedtuple(
     "BatchSettings", ["max_bytes", "max_latency", "max_messages"]
 )
 BatchSettings.__new__.__defaults__ = (
-    1000 * 1000 * 10,  # max_bytes: documented "10 MB", enforced 10000000
-    0.05,  # max_latency: 0.05 seconds
-    1000,  # max_messages: 1,000
+    1 * 1000 * 1000,  # max_bytes: 1 MB
+    0.01,  # max_latency: 10 ms
+    100,  # max_messages: 100
 )
 
 if sys.version_info >= (3, 5):
@@ -70,8 +70,8 @@ FlowControl = collections.namedtuple(
 )
 FlowControl.__new__.__defaults__ = (
     100 * 1024 * 1024,  # max_bytes: 100mb
-    100,  # max_messages: 100
-    2 * 60 * 60,  # max_lease_duration: 2 hours.
+    1000,  # max_messages: 1000
+    1 * 60 * 60,  # max_lease_duration: 1 hour.
 )
 
 if sys.version_info >= (3, 5):
