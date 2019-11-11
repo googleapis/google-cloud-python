@@ -124,6 +124,7 @@ class Generator:
         id_to_hash_to_spec: DefaultDict[str, Dict[str, Any]] = defaultdict(
             dict)
 
+        STANDALONE_TYPE = "standalone"
         for config_fpath in self._sample_configs:
             with open(config_fpath) as f:
                 configs = yaml.safe_load_all(f.read())
@@ -132,6 +133,10 @@ class Generator:
                 spec
                 for cfg in configs if is_valid_sample_cfg(cfg)
                 for spec in cfg.get("samples", [])
+                # If unspecified, assume a sample config describes a standalone.
+                # If sample_types are specified, standalone samples must be
+                # explicitly enabled.
+                if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE])
             )
 
             for spec in spec_generator:

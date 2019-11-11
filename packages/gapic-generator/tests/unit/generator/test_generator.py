@@ -499,6 +499,122 @@ def test_generator_duplicate_samples(fs):
         generator.get_response(api_schema=api_schema)
 
 
+@mock.patch(
+    'gapic.samplegen.samplegen.generate_sample',
+    return_value=''
+)
+@mock.patch(
+    'time.gmtime',
+)
+def test_dont_generate_in_code_samples(
+    mock_gmtime,
+    mock_generate_sample,
+    fs
+):
+    # These time values are nothing special,
+    # they just need to be deterministic.
+    returner = mock.MagicMock()
+    returner.tm_year = 2112
+    returner.tm_mon = 6
+    returner.tm_mday = 1
+    returner.tm_hour = 13
+    returner.tm_min = 13
+    returner.tm_sec = 13
+    mock_gmtime.return_value = returner
+
+    config_fpath = "samples.yaml"
+    fs.create_file(
+        config_fpath,
+        contents=dedent(
+            '''
+            type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
+            schema_version: 1.2.0
+            samples:
+            - id: squid_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - standalone
+              - incode/SQUID
+            - id: clam_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - incode/CLAM
+            - id: whelk_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+              sample_type:
+              - standalone
+            - id: octopus_sample
+              rpc: IdentifyMollusc
+              service: Mollusc.v1.Mollusc
+            '''
+        )
+    )
+
+    generator = make_generator(f'samples={config_fpath}')
+    generator._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
+    api_schema = make_api(
+        make_proto(
+            descriptor_pb2.FileDescriptorProto(
+                name='mollusc.proto',
+                package='Mollusc.v1',
+                service=[descriptor_pb2.ServiceDescriptorProto(
+                    name='Mollusc')],
+            ),
+        ),
+        naming=naming.Naming(name='Mollusc', version='v6'),
+    )
+
+    # Note that we do NOT expect a clam sample.
+    # There are four tests going on:
+    # 1) Just an explicit standalone sample type.
+    # 2) Multiple sample types, one of which is standalone.
+    # 3) Explicit sample types but NO standalone sample type.
+    # 4) Implicit standalone sample type.
+    expected = CodeGeneratorResponse(
+        file=[
+            CodeGeneratorResponse.File(
+                name="samples/squid_sample.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/whelk_sample.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/octopus_sample.py",
+                content="\n",
+            ),
+            CodeGeneratorResponse.File(
+                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
+                content=dedent("""                ---
+                type: manifest/samples
+                schema_version: 3
+                python: &python
+                  environment: python
+                  bin: python3
+                  base_path: samples
+                  invocation: \'{bin} {path} @args\'
+                samples:
+                - <<: *python
+                  sample: squid_sample
+                  path: \'{base_path}/squid_sample.py\'
+                - <<: *python
+                  sample: whelk_sample
+                  path: \'{base_path}/whelk_sample.py\'
+                - <<: *python
+                  sample: octopus_sample
+                  path: \'{base_path}/octopus_sample.py\'
+                """)
+            )
+        ]
+    )
+    actual = generator.get_response(api_schema=api_schema)
+    assert actual == expected
+
+
 def make_generator(opts_str: str = '') -> generator.Generator:
     return generator.Generator(options.Options.build(opts_str))
 
