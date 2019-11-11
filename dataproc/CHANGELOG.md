@@ -10,19 +10,19 @@
 
 
 ### Implementation Changes
-- Tweak proto annotations (via synth) ([#9466](https://github.com/googleapis/google-cloud-python/pull/9466))
-- Remove send/recv msg size limit (via synth) ([#8951](https://github.com/googleapis/google-cloud-python/pull/8951))
+- Tweak proto annotations (via synth). ([#9466](https://github.com/googleapis/google-cloud-python/pull/9466))
+- Remove send/recv msg size limit (via synth). ([#8951](https://github.com/googleapis/google-cloud-python/pull/8951))
 
 ### New Features
-- Add V1 autoscaling policy support; annotate protos (via synth) ([#9402](https://github.com/googleapis/google-cloud-python/pull/9402))
+- Add V1 autoscaling policy support; annotate protos (via synth). ([#9402](https://github.com/googleapis/google-cloud-python/pull/9402))
 
 ### Dependencies
 
 ### Documentation
-- Fix intersphinx reference to requests ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
-- Remove CI for gh-pages, use googleapis.dev for `api_core` refs ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
-- Remove compatibility badges from READMEs ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
-- Update intersphinx mapping for requests ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatibility badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
 
 ## 0.5.0
 
