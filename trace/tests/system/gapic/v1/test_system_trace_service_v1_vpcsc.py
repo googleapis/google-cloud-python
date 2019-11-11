@@ -21,68 +21,52 @@ import pytest
 
 from google.api_core import exceptions
 from google.cloud import trace_v1
+from test_utils.vpcsc_config import vpcsc_config
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy."
 
 
-class TestVPCServiceControlV1(object):
-    @staticmethod
-    def _is_rejected(call):
-        try:
-            responses = call()
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        except:
-            return False
-        return False
+@pytest.fixture
+def client():
+    return trace_v1.TraceServiceClient()
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_traces(self):
-        client = trace_v1.TraceServiceClient()
 
-        list_inside = lambda: list(client.list_traces(PROJECT_INSIDE))
-        list_outside = lambda: list(client.list_traces(PROJECT_OUTSIDE))
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_list_traces_w_inside(client):
+    list(client.list_traces(vpcsc_config.project_inside))  # no perms issue
 
-        assert not TestVPCServiceControlV1._is_rejected(list_inside)
-        assert TestVPCServiceControlV1._is_rejected(list_outside)
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_trace(self):
-        client = trace_v1.TraceServiceClient()
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_list_traces_w_outside(client):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        list(client.list_traces(vpcsc_config.project_outside))
 
-        get_inside = lambda: client.get_trace(PROJECT_INSIDE, "")
-        get_outside = lambda: client.get_trace(PROJECT_OUTSIDE, "")
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-        assert not TestVPCServiceControlV1._is_rejected(get_inside)
-        assert TestVPCServiceControlV1._is_rejected(get_outside)
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_patch_traces(self):
-        client = trace_v1.TraceServiceClient()
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_get_trace_w_inside(client):
+    with pytest.raises(exceptions.InvalidArgument):
+        client.get_trace(vpcsc_config.project_inside, "")  # no perms issue
 
-        patch_inside = lambda: client.patch_traces(PROJECT_INSIDE, {})
-        patch_outside = lambda: client.patch_traces(PROJECT_OUTSIDE, {})
 
-        assert not TestVPCServiceControlV1._is_rejected(patch_inside)
-        assert TestVPCServiceControlV1._is_rejected(patch_outside)
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_get_trace_w_outside(client):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.get_trace(vpcsc_config.project_outside, "")
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_patch_traces_w_inside(client):
+    with pytest.raises(exceptions.InvalidArgument):
+        client.patch_traces(vpcsc_config.project_inside, {})  # no perms issue
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_patch_traces_w_ouside(client):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.patch_traces(vpcsc_config.project_outside, {})
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
