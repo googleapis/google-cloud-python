@@ -52,7 +52,7 @@ class Cursor(object):
         self.__session.delete()
         self.__session = None
 
-    def execute(self, sql, *args, **kwargs):
+    def execute(self, sql, args=None):
         """
         Abstracts and implements execute SQL statements on Cloud Spanner.
 
@@ -76,10 +76,10 @@ class Cursor(object):
                 self.__do_update_ddl(sql)
 
             elif classify_stmt(sql) == STMT_NON_UPDATING:
-                self.__do_execute_non_update(sql, *args, **kwargs)
+                self.__do_execute_non_update(sql, args or None)
 
             else:
-                self.__session.run_in_transaction(self.__do_execute_update, sql, *args, **kwargs)
+                self.__session.run_in_transaction(self.__do_execute_update, sql, args or None)
 
         except grpc_exceptions.AlreadyExists as e:
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
