@@ -22,500 +22,478 @@ from google.cloud.dlp_v2 import enums
 from google.cloud.dlp_v2.proto import dlp_pb2
 from google.api_core import exceptions
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
-IS_INSIDE_VPCSC = (
-    os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "false").lower() == "true"
-)
+from test_utils.vpcsc_config import vpcsc_config
 
 
-class TestSystemDlpService(object):
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
+
+
+@pytest.fixture(scope="module")
+def client():
+    return dlp_v2.DlpServiceClient()
+
+
+@pytest.fixture(scope="module")
+def name_inside(client):
+    return client.project_path(vpcsc_config.project_inside)
+
+
+@pytest.fixture(scope="module")
+def name_outside(client):
+    return client.project_path(vpcsc_config.project_outside)
+
+
+@pytest.fixture(scope="module")
+def content_item():
+    return dlp_pb2.ContentItem(value="testing")
+
+
+@pytest.fixture(scope="module")
+def bytes_content_item():
+    return dlp_pb2.ByteContentItem(data=b"DEADBEEF")
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_inspect_content_inside(client, name_inside, content_item):
+    client.inspect_content(name_inside, item=content_item)  # no perms issue
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_inspect_content_outside(client, name_outside, content_item):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.inspect_content(name_outside, item=content_item)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_redact_image_inside(client, name_inside, bytes_content_item):
+    with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+        client.redact_image(name_inside, byte_item=bytes_content_item)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_redact_image_outside(client, name_outside, bytes_content_item):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.redact_image(name_outside, byte_item=bytes_content_item)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_deidentify_content_inside(client, name_inside, content_item):
+    with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+        client.deidentify_content(name_inside, item=content_item)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_deidentify_content_outside(client, name_outside, content_item):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.deidentify_content(name_outside, item=content_item)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_reidentify_content_inside(client, name_inside, content_item):
+    with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+        client.reidentify_content(name_inside, item=content_item)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_reidentify_content_outside(client, name_outside, content_item):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.reidentify_content(name_outside, item=content_item)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def inspect_template_path_inside(client):
+    inspect_template_id = 1234567
+    return client.project_inspect_template_path(
+        vpcsc_config.project_inside, inspect_template_id
+    )
+
+
+@pytest.fixture(scope="module")
+def inspect_template_path_outside(client):
+    inspect_template_id = 1234567
+    return client.project_inspect_template_path(
+        vpcsc_config.project_outside, inspect_template_id
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDInspectTemplate(object):
     @staticmethod
-    def _is_rejected(call):
-        try:
-            responses = call()
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        except:
-            pass
-        return False
+    def test_create_inspect_template_inside(client, name_inside):
+        client.create_inspect_template(name_inside)  # no perms issue
 
     @staticmethod
-    def _do_test(delayed_inside, delayed_outside):
-        if IS_INSIDE_VPCSC:
-            assert TestSystemDlpService._is_rejected(delayed_outside)
-            assert not (TestSystemDlpService._is_rejected(delayed_inside))
-        else:
-            assert not (TestSystemDlpService._is_rejected(delayed_outside))
-            assert TestSystemDlpService._is_rejected(delayed_inside)
+    def test_create_inspect_template_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.create_inspect_template(name_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_inspect_content(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.inspect_content(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.inspect_content(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_redact_image(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.redact_image(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.redact_image(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_inspect_templates_inside(client, name_inside):
+        list(client.list_inspect_templates(name_inside))
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_deidentify_content(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.deidentify_content(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.deidentify_content(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_inspect_templates_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(client.list_inspect_templates(name_outside))
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_reidentify_content(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.reidentify_content(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.reidentify_content(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_create_inspect_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.create_inspect_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.create_inspect_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_inspect_template_inside(client, inspect_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.update_inspect_template(inspect_template_path_inside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_update_inspect_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.update_inspect_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.update_inspect_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_inspect_template_outside(client, inspect_template_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.update_inspect_template(inspect_template_path_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_inspect_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.get_inspect_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.get_inspect_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_inspect_templates(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.list_inspect_templates(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.list_inspect_templates(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_inspect_template_inside(client, inspect_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.get_inspect_template(inspect_template_path_inside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_delete_inspect_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.delete_inspect_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.delete_inspect_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_inspect_template_outside(client, inspect_template_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.get_inspect_template(inspect_template_path_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_create_deidentify_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.create_deidentify_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.create_deidentify_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_update_deidentify_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.update_deidentify_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.update_deidentify_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_delete_inspect_template_inside(client, inspect_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.delete_inspect_template(inspect_template_path_inside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_deidentify_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.get_deidentify_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.get_deidentify_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_delete_inspect_template_outside(client, inspect_template_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.delete_inspect_template(inspect_template_path_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_deidentify_templates(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.list_deidentify_templates(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.list_deidentify_templates(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_delete_deidentify_template(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.delete_deidentify_template(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.delete_deidentify_template(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
+@pytest.fixture(scope="module")
+def deidentify_template_path_inside(client):
+    deidentify_template_id = 1234567
+    return client.project_deidentify_template_path(
+        vpcsc_config.project_inside, deidentify_template_id
     )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_create_dlp_job(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.create_dlp_job(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.create_dlp_job(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_dlp_jobs(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.list_dlp_jobs(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.list_dlp_jobs(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
+@pytest.fixture(scope="module")
+def deidentify_template_path_outside(client):
+    deidentify_template_id = 1234567
+    return client.project_deidentify_template_path(
+        vpcsc_config.project_outside, deidentify_template_id
     )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_dlp_job(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.get_dlp_job(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.get_dlp_job(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_delete_dlp_job(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.delete_dlp_job(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.delete_dlp_job(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_cancel_dlp_job(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.cancel_dlp_job(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.cancel_dlp_job(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDDeidentifyTemplate(object):
+    @staticmethod
+    def test_create_deidentify_template_inside(client, name_inside):
+        client.create_deidentify_template(name_inside)
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_job_triggers(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.list_job_triggers(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.list_job_triggers(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_create_deidentify_template_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.create_deidentify_template(name_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_job_trigger(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.get_job_trigger(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.get_job_trigger(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_delete_job_trigger(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.delete_job_trigger(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.delete_job_trigger(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_deidentify_templates_inside(client, name_inside):
+        list(client.list_deidentify_templates(name_inside))
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_update_job_trigger(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.update_job_trigger(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.update_job_trigger(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_deidentify_templates_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(client.list_deidentify_templates(name_outside))
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_create_job_trigger(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.create_job_trigger(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.create_job_trigger(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_create_stored_info_type(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.create_stored_info_type(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.create_stored_info_type(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_deidentify_template_inside(client, deidentify_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.update_deidentify_template(deidentify_template_path_inside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_update_stored_info_type(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.update_stored_info_type(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.update_stored_info_type(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_deidentify_template_outside(
+        client, deidentify_template_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.update_deidentify_template(deidentify_template_path_outside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_get_stored_info_type(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.get_stored_info_type(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.get_stored_info_type(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    @pytest.mark.skip(reason="List tests are currently not supported")
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_list_stored_info_types(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.list_stored_info_types(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.list_stored_info_types(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_deidentify_template_inside(client, deidentify_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.get_deidentify_template(deidentify_template_path_inside)
 
-    @pytest.mark.skipif(
-        not IS_INSIDE_VPCSC,
-        reason="This test requires a VPCSC and setting GOOGLE_CLOUD_TESTS_IN_VPCSC",
+    @staticmethod
+    def test_get_deidentify_template_outside(client, deidentify_template_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.get_deidentify_template(deidentify_template_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_deidentify_template_inside(client, deidentify_template_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.delete_deidentify_template(deidentify_template_path_inside)
+
+    @staticmethod
+    def test_delete_deidentify_template_outside(
+        client, deidentify_template_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.delete_deidentify_template(deidentify_template_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def job_path_inside(name_inside):
+    job_id = 1234567
+    return "{}/jobs/{}".format(name_inside, job_id)
+
+
+@pytest.fixture(scope="module")
+def job_path_outside(name_outside):
+    job_id = 1234567
+    return "{}/jobs/{}".format(name_outside, job_id)
+
+
+@pytest.fixture(scope="module")
+def inspect_job():
+    from google.cloud.dlp_v2.proto.dlp_pb2 import InspectJobConfig
+
+    return InspectJobConfig()
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDDlpJob(object):
+    @staticmethod
+    def test_create_dlp_job_inside(client, name_inside, inspect_job):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.create_dlp_job(name_inside, inspect_job=inspect_job)
+
+    @staticmethod
+    def test_create_dlp_job_outside(client, name_outside, inspect_job):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.create_dlp_job(name_outside, inspect_job=inspect_job)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_dlp_jobs_inside(client, name_inside):
+        list(client.list_dlp_jobs(name_inside))
+
+    @staticmethod
+    def test_list_dlp_jobs_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(client.list_dlp_jobs(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_dlp_job_inside(client, job_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.get_dlp_job(job_path_inside)
+
+    @staticmethod
+    def test_get_dlp_job_outside(client, job_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.get_dlp_job(job_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_dlp_job_inside(client, job_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.delete_dlp_job(job_path_inside)
+
+    @staticmethod
+    def test_delete_dlp_job_outside(client, job_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.delete_dlp_job(job_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_cancel_dlp_job_inside(client, job_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.cancel_dlp_job(job_path_inside)
+
+    @staticmethod
+    def test_cancel_dlp_job_outside(client, job_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.cancel_dlp_job(job_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def job_trigger_path_inside(client):
+    job_trigger_id = 1234567
+    return client.project_job_trigger_path(vpcsc_config.project_inside, job_trigger_id)
+
+
+@pytest.fixture(scope="module")
+def job_trigger_path_outside(client):
+    job_trigger_id = 1234567
+    return client.project_job_trigger_path(vpcsc_config.project_outside, job_trigger_id)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDJobTrigger(object):
+    @staticmethod
+    def test_create_job_trigger_inside(client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.create_job_trigger(name_inside)
+
+    @staticmethod
+    def test_create_job_trigger_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.create_job_trigger(name_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_job_triggers_inside(client, name_inside):
+        list(client.list_job_triggers(name_inside))
+
+    @staticmethod
+    def test_list_job_triggers_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(client.list_job_triggers(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_job_trigger_inside(client, job_trigger_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.get_job_trigger(job_trigger_path_inside)
+
+    @staticmethod
+    def test_get_job_trigger_outside(client, job_trigger_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.get_job_trigger(job_trigger_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_update_job_trigger_inside(client, job_trigger_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.update_job_trigger(job_trigger_path_inside)
+
+    @staticmethod
+    def test_update_job_trigger_outside(client, job_trigger_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.update_job_trigger(job_trigger_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_job_trigger_inside(client, job_trigger_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.delete_job_trigger(job_trigger_path_inside)
+
+    @staticmethod
+    def test_delete_job_trigger_outside(client, job_trigger_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.delete_job_trigger(job_trigger_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def stored_info_type_path_inside(client):
+    stored_info_type_id = 1234567
+    return client.project_stored_info_type_path(
+        vpcsc_config.project_inside, stored_info_type_id
     )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
+
+
+@pytest.fixture(scope="module")
+def stored_info_type_path_outside(client):
+    stored_info_type_id = 1234567
+    return client.project_stored_info_type_path(
+        vpcsc_config.project_outside, stored_info_type_id
     )
-    def test_delete_stored_info_type(self):
-        client = dlp_v2.DlpServiceClient()
-        name_inside = client.project_path(PROJECT_INSIDE)
-        delayed_inside = lambda: client.delete_stored_info_type(name_inside)
-        name_outside = client.project_path(PROJECT_OUTSIDE)
-        delayed_outside = lambda: client.delete_stored_info_type(name_outside)
-        TestSystemDlpService._do_test(delayed_inside, delayed_outside)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDStoredInfoType(object):
+    @staticmethod
+    def test_create_stored_info_type_inside(client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            client.create_stored_info_type(name_inside)
+
+    @staticmethod
+    def test_create_stored_info_type_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.create_stored_info_type(name_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_stored_info_types_inside(client, name_inside):
+        list(client.list_stored_info_types(name_inside))
+
+    @staticmethod
+    def test_list_stored_info_types_outside(client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(client.list_stored_info_types(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_stored_info_type_inside(client, stored_info_type_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.get_stored_info_type(stored_info_type_path_inside)
+
+    @staticmethod
+    def test_get_stored_info_type_outside(client, stored_info_type_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.get_stored_info_type(stored_info_type_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_update_stored_info_type_inside(client, stored_info_type_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.update_stored_info_type(stored_info_type_path_inside)
+
+    @staticmethod
+    def test_update_stored_info_type_outside(client, stored_info_type_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.update_stored_info_type(stored_info_type_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_stored_info_type_inside(client, stored_info_type_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            client.delete_stored_info_type(stored_info_type_path_inside)
+
+    @staticmethod
+    def test_delete_stored_info_type_outside(client, stored_info_type_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            client.delete_stored_info_type(stored_info_type_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
