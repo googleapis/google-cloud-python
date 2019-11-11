@@ -109,7 +109,7 @@ class TestProject(unittest.TestCase):
         self.assertIsNone(project.number)
         project.create()
         self.assertEqual(project.number, PROJECT_NUMBER)
-        request, = connection._requested
+        (request,) = connection._requested
 
         expected_request = {
             "method": "POST",
@@ -142,7 +142,7 @@ class TestProject(unittest.TestCase):
         self.assertEqual(project.labels, PROJECT_RESOURCE["labels"])
         self.assertEqual(project.status, PROJECT_RESOURCE["lifecycleState"])
 
-        request, = connection._requested
+        (request,) = connection._requested
         # NOTE: data is not in the request since a GET request.
         expected_request = {"method": "GET", "path": project.path}
         self.assertEqual(request, expected_request)
@@ -193,7 +193,7 @@ class TestProject(unittest.TestCase):
         project.labels = LABELS
         project.update()
 
-        request, = connection._requested
+        (request,) = connection._requested
         expected_request = {
             "method": "PUT",
             "data": {"name": PROJECT_NAME, "labels": LABELS, "parent": None},
@@ -217,7 +217,7 @@ class TestProject(unittest.TestCase):
         project = self._make_one(PROJECT_ID, client)
         project.delete(reload_data=False)
 
-        request, = connection._requested
+        (request,) = connection._requested
         # NOTE: data is not in the request since a DELETE request.
         expected_request = {"method": "DELETE", "path": project.path}
         self.assertEqual(request, expected_request)
@@ -267,7 +267,7 @@ class TestProject(unittest.TestCase):
         project = self._make_one(PROJECT_ID, client)
         project.undelete(reload_data=False)
 
-        request, = connection._requested
+        (request,) = connection._requested
         # NOTE: data is not in the request, undelete doesn't need it.
         expected_request = {"method": "POST", "path": project.path + ":undelete"}
         self.assertEqual(request, expected_request)
