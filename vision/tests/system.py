@@ -779,7 +779,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             bucket=vpcsc_config.bucket_outside, file=self.blocked_file
         )
         self.gcs_read_error_message = "Error opening file: gs://"
-        self.gcs_write_error_message = "Error writing final output to: gs://"
+        self.gcs_write_error_message = "Error writing final output to"
         self.location = "us-west1"
         self.location_path = self.ps_client.location_path(
             project=vpcsc_config.project_inside, location=self.location
