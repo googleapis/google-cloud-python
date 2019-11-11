@@ -37,8 +37,8 @@ s.move(
         "setup.py",
         "README.rst",
         "docs/index.rst",
-        "**/proto/oslogin/**",
-        "**/proto/oslogin_v1/**",
+        library / "google/cloud/oslogin_v1/proto/oslogin/**",
+        library / "google/cloud/oslogin_v1/proto/oslogin_v1/**",
     ],
 )
 s.move(library / "google/cloud/oslogin_v1/proto/**/*", "google/cloud/oslogin_v1/proto")
