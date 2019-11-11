@@ -553,41 +553,6 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_create_bucket_w_object_conflict(self):
-        from google.cloud.exceptions import Conflict
-        from google.cloud.storage.bucket import Bucket
-
-        project = "PROJECT"
-        other_project = "OTHER_PROJECT"
-        credentials = _make_credentials()
-        client = self._make_one(project=project, credentials=credentials)
-
-        bucket_name = "bucket-name"
-        bucket_obj = Bucket(client, bucket_name)
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b?project=%s" % (other_project,),
-            ]
-        )
-        data = {"error": {"message": "Conflict"}}
-        http = _make_requests_session(
-            [_make_json_response(data, status=http_client.CONFLICT)]
-        )
-        client._http_internal = http
-
-        with self.assertRaises(Conflict):
-            client.create_bucket(bucket_obj, project=other_project)
-
-        http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
-        )
-        json_expected = {"name": bucket_name}
-        json_sent = http.request.call_args_list[0][1]["data"]
-        self.assertEqual(json_expected, json.loads(json_sent))
-
     def test_create_bucket_w_missing_client_project(self):
         credentials = _make_credentials()
         client = self._make_one(project=None, credentials=credentials)
