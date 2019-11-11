@@ -503,7 +503,7 @@ class TransactionPingingPool(PingingPool):
             raise queue.Full
 
         txn = session._transaction
-        if txn is None or txn.committed() or txn._rolled_back:
+        if txn is None or txn.committed or txn._rolled_back:
             session.transaction()
             self._pending_sessions.put(session)
         else:
