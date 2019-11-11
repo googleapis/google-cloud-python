@@ -16,8 +16,6 @@
 ### New Features
 - Add V1 autoscaling policy support; annotate protos (via synth). ([#9402](https://github.com/googleapis/google-cloud-python/pull/9402))
 
-### Dependencies
-
 ### Documentation
 - Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
 - Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
