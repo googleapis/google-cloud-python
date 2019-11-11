@@ -33,8 +33,8 @@ def client():
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_batch_write_spans_w_inside(client):
-    proejct_inside = client.project_path(vpcsc_config.project_inside)
-    client.batch_write_spans(proejct_inside, [])  # no raise
+    project_inside = client.project_path(vpcsc_config.project_inside)
+    client.batch_write_spans(project_inside, [])  # no raise
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
