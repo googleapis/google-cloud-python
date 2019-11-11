@@ -10,15 +10,17 @@
 
 
 ### Implementation Changes
-- Add proto annotations (via synth) ([#9441](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9441))
+- Add proto annotations (via synth). ([#9441](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9441))
 - Add RPC annotations, update docstrings (via synth) ([#9230](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9230))
 
 ### New Features
-- Add celebrity recognition support; add object annotation support; add `purge_products` method (all v1p4beta1) (via synth)  ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add celebrity recognition support to v1p4beta1 (via synth).  ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add object annotation support to v1p4beta1 (via synth).  ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
+- Add `purge_products` method to v1p4beta1 (via synth).  ([#9613](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9613))
 - Add more product categories (via synth) ([#9224](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9224))
 
 ### Documentation
-- docs(vision): update docstring for `product_category`, change requests intersphinx url (via synth) ([#9413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9413))
+- Update docstring for `product_category`, change requests intersphinx url (via synth). ([#9413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9413))
 - Fix intersphinx reference to requests ([#9294](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9294))
 - Remove compatability badges from READMEs ([#9035](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9035))
 - Update docstring to say at most 5 frames can be batch annotated (via synth) ([#9041](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9041))
