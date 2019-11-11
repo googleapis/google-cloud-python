@@ -517,7 +517,7 @@ class TestClient(unittest.TestCase):
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
 
-    def test_create_bucket_with_string_conflict(self):
+    def test_create_bucket_w_string_conflict(self):
         from google.cloud.exceptions import Conflict
 
         project = "PROJECT"
@@ -553,7 +553,7 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_create_bucket_with_object_conflict(self):
+    def test_create_bucket_w_object_conflict(self):
         from google.cloud.exceptions import Conflict
         from google.cloud.storage.bucket import Bucket
 
@@ -588,13 +588,13 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_create_w_missing_client_project(self):
+    def test_create_bucket_w_missing_client_project(self):
         client = self._make_one(project=None)
 
         with self.assertRaises(ValueError):
             client.create_bucket("bucket")
 
-    def test_create_w_predefined_acl_invalid(self):
+    def test_create_bucket_w_predefined_acl_invalid(self):
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         credentials = _make_credentials()
@@ -603,7 +603,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.create_bucket(BUCKET_NAME, predefined_acl="bogus")
 
-    def test_create_w_predefined_acl_valid(self):
+    def test_create_bucket_w_predefined_acl_valid(self):
         from google.cloud.storage.client import Client
 
         PROJECT = "PROJECT"
@@ -623,7 +623,7 @@ class TestClient(unittest.TestCase):
             _target_object=bucket,
         )
 
-    def test_create_w_predefined_default_object_acl_invalid(self):
+    def test_create_bucket_w_predefined_default_object_acl_invalid(self):
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
 
@@ -633,7 +633,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.create_bucket(BUCKET_NAME, predefined_default_object_acl="bogus")
 
-    def test_create_w_predefined_default_object_acl_valid(self):
+    def test_create_bucket_w_predefined_default_object_acl_valid(self):
         from google.cloud.storage.client import Client
 
         PROJECT = "PROJECT"
@@ -658,7 +658,7 @@ class TestClient(unittest.TestCase):
             _target_object=bucket,
         )
 
-    def test_create_w_explicit_location(self):
+    def test_create_bucket_w_explicit_location(self):
         from google.cloud.storage.client import Client
 
         PROJECT = "PROJECT"
@@ -684,7 +684,7 @@ class TestClient(unittest.TestCase):
         )
         self.assertEqual(bucket.location, LOCATION)
 
-    def test_create_bucket_with_string_success(self):
+    def test_create_bucket_w_string_success(self):
         from google.cloud.storage.bucket import Bucket
 
         project = "PROJECT"
@@ -716,7 +716,7 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_create_bucket_with_object_success(self):
+    def test_create_bucket_w_object_success(self):
         from google.cloud.storage.bucket import Bucket
 
         project = "PROJECT"
