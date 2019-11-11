@@ -125,14 +125,12 @@ def test_from_rfc3339_with_truncated_nanos(truncated, micros):
 
 
 def test_from_rfc3339_nanos_is_deprecated():
-    from_rfc3339_patch = mock.patch("google.api_core.datetime_helpers.from_rfc3339")
     value = "2009-12-17T12:44:32.123456Z"
 
-    with from_rfc3339_patch as from_rfc3339:
-        result = datetime_helpers.from_rfc3339_nanos(value)
+    result = datetime_helpers.from_rfc3339(value)
+    result_nanos = datetime_helpers.from_rfc3339_nanos(value)
 
-    assert result is from_rfc3339.return_value
-    from_rfc3339.assert_called_once_with(value)
+    assert result == result_nanos
 
 
 @pytest.mark.parametrize(
