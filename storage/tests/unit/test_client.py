@@ -589,100 +589,98 @@ class TestClient(unittest.TestCase):
         self.assertEqual(json_expected, json.loads(json_sent))
 
     def test_create_bucket_w_missing_client_project(self):
-        client = self._make_one(project=None)
+        credentials = _make_credentials()
+        client = self._make_one(project=None, credentials=credentials)
 
         with self.assertRaises(ValueError):
             client.create_bucket("bucket")
 
     def test_create_bucket_w_predefined_acl_invalid(self):
-        PROJECT = "PROJECT"
-        BUCKET_NAME = "bucket-name"
+        project = "PROJECT"
+        bucket_name = "bucket-name"
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=project, credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.create_bucket(BUCKET_NAME, predefined_acl="bogus")
+            client.create_bucket(bucket_name, predefined_acl="bogus")
 
     def test_create_bucket_w_predefined_acl_valid(self):
-        from google.cloud.storage.client import Client
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        data = {"name": bucket_name}
 
-        PROJECT = "PROJECT"
-        BUCKET_NAME = "bucket-name"
-        DATA = {"name": BUCKET_NAME}
-
-        client = Client(project=PROJECT)
-        connection = _make_connection(DATA)
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        connection = _make_connection(data)
         client._base_connection = connection
-        bucket = client.create_bucket(BUCKET_NAME, predefined_acl="publicRead")
+        bucket = client.create_bucket(bucket_name, predefined_acl="publicRead")
 
         connection.api_request.assert_called_once_with(
             method="POST",
             path="/b",
-            query_params={"project": PROJECT, "predefinedAcl": "publicRead"},
-            data=DATA,
+            query_params={"project": project, "predefinedAcl": "publicRead"},
+            data=data,
             _target_object=bucket,
         )
 
     def test_create_bucket_w_predefined_default_object_acl_invalid(self):
-        PROJECT = "PROJECT"
-        BUCKET_NAME = "bucket-name"
+        project = "PROJECT"
+        bucket_name = "bucket-name"
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=project, credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.create_bucket(BUCKET_NAME, predefined_default_object_acl="bogus")
+            client.create_bucket(bucket_name, predefined_default_object_acl="bogus")
 
     def test_create_bucket_w_predefined_default_object_acl_valid(self):
-        from google.cloud.storage.client import Client
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        data = {"name": bucket_name}
 
-        PROJECT = "PROJECT"
-        BUCKET_NAME = "bucket-name"
-        DATA = {"name": BUCKET_NAME}
-
-        client = Client(project=PROJECT)
-        connection = _make_connection(DATA)
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        connection = _make_connection(data)
         client._base_connection = connection
         bucket = client.create_bucket(
-            BUCKET_NAME, predefined_default_object_acl="publicRead"
+            bucket_name, predefined_default_object_acl="publicRead"
         )
 
         connection.api_request.assert_called_once_with(
             method="POST",
             path="/b",
             query_params={
-                "project": PROJECT,
+                "project": project,
                 "predefinedDefaultObjectAcl": "publicRead",
             },
-            data=DATA,
+            data=data,
             _target_object=bucket,
         )
 
     def test_create_bucket_w_explicit_location(self):
-        from google.cloud.storage.client import Client
-
-        PROJECT = "PROJECT"
-        BUCKET_NAME = "bucket-name"
-        LOCATION = "us-central1"
-        DATA = {"location": LOCATION, "name": BUCKET_NAME}
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        location = "us-central1"
+        data = {"location": location, "name": bucket_name}
 
         connection = _make_connection(
-            DATA, "{'location': 'us-central1', 'name': 'bucket-name'}"
+            data, "{'location': 'us-central1', 'name': 'bucket-name'}"
         )
 
-        client = Client(project=PROJECT)
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
         client._base_connection = connection
 
-        bucket = client.create_bucket(BUCKET_NAME, location=LOCATION)
+        bucket = client.create_bucket(bucket_name, location=location)
 
         connection.api_request.assert_called_once_with(
             method="POST",
             path="/b",
-            data=DATA,
+            data=data,
             _target_object=bucket,
-            query_params={"project": "PROJECT"},
+            query_params={"project": project},
         )
-        self.assertEqual(bucket.location, LOCATION)
+        self.assertEqual(bucket.location, location)
 
     def test_create_bucket_w_string_success(self):
         from google.cloud.storage.bucket import Bucket
