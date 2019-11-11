@@ -172,7 +172,7 @@ class TestClient(unittest.TestCase):
 
         results = list(client.list_projects())
 
-        project, = results
+        (project,) = results
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project.number, PROJECT_NUMBER)
         self.assertEqual(project.status, STATUS)
@@ -260,14 +260,14 @@ class TestClient(unittest.TestCase):
         FILTER_PARAMS = {"id": "project-id"}
         results = list(client.list_projects(filter_params=FILTER_PARAMS))
 
-        project, = results
+        (project,) = results
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project.number, PROJECT_NUMBER)
         self.assertEqual(project.status, STATUS)
 
         # Check that the filter made it in the request.
         FLATTENED_FILTER_PARAMS = ["id:project-id"]
-        request, = client._connection._requested
+        (request,) = client._connection._requested
         self.assertEqual(
             request,
             {
