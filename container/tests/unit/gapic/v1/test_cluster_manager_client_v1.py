@@ -130,6 +130,8 @@ class TestClusterManagerClient(object):
         current_node_count = 178977560
         expire_time = "expireTime-96179731"
         location = "location1901043637"
+        enable_tpu = False
+        tpu_ipv4_cidr_block = "tpuIpv4CidrBlock1137906646"
         expected_response = {
             "name": name,
             "description": description,
@@ -154,6 +156,8 @@ class TestClusterManagerClient(object):
             "current_node_count": current_node_count,
             "expire_time": expire_time,
             "location": location,
+            "enable_tpu": enable_tpu,
+            "tpu_ipv4_cidr_block": tpu_ipv4_cidr_block,
         }
         expected_response = cluster_service_pb2.Cluster(**expected_response)
 
@@ -1182,12 +1186,14 @@ class TestClusterManagerClient(object):
         self_link = "selfLink-1691268851"
         version = "version351608024"
         status_message = "statusMessage-239442758"
+        pod_ipv4_cidr_size = 1098768716
         expected_response = {
             "name": name,
             "initial_node_count": initial_node_count,
             "self_link": self_link,
             "version": version,
             "status_message": status_message,
+            "pod_ipv4_cidr_size": pod_ipv4_cidr_size,
         }
         expected_response = cluster_service_pb2.NodePool(**expected_response)
 
@@ -1985,3 +1991,45 @@ class TestClusterManagerClient(object):
             client.set_maintenance_policy(
                 project_id, zone, cluster_id, maintenance_policy
             )
+
+    def test_list_usable_subnetworks(self):
+        # Setup Expected Response
+        next_page_token = ""
+        subnetworks_element = {}
+        subnetworks = [subnetworks_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "subnetworks": subnetworks,
+        }
+        expected_response = cluster_service_pb2.ListUsableSubnetworksResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        paged_list_response = client.list_usable_subnetworks()
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.subnetworks[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = cluster_service_pb2.ListUsableSubnetworksRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_usable_subnetworks_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        paged_list_response = client.list_usable_subnetworks()
+        with pytest.raises(CustomException):
+            list(paged_list_response)
