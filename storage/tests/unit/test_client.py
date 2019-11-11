@@ -517,7 +517,14 @@ class TestClient(unittest.TestCase):
             method="GET", url=URI, data=mock.ANY, headers=mock.ANY
         )
 
-    def test_create_bucket_w_string_conflict(self):
+    def test_create_bucket_w_missing_client_project(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=None, credentials=credentials)
+
+        with self.assertRaises(ValueError):
+            client.create_bucket("bucket")
+
+    def test_create_bucket_w_conflict(self):
         from google.cloud.exceptions import Conflict
 
         project = "PROJECT"
@@ -552,13 +559,6 @@ class TestClient(unittest.TestCase):
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
-
-    def test_create_bucket_w_missing_client_project(self):
-        credentials = _make_credentials()
-        client = self._make_one(project=None, credentials=credentials)
-
-        with self.assertRaises(ValueError):
-            client.create_bucket("bucket")
 
     def test_create_bucket_w_predefined_acl_invalid(self):
         project = "PROJECT"
