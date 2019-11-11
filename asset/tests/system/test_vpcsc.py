@@ -22,67 +22,65 @@ import pytest
 from google.api_core import exceptions
 from google.cloud import asset_v1
 from google.cloud.asset_v1 import enums
+from test_utils.vpcsc_config import vpcsc_config
 
-PROJECT_INSIDE = os.environ.get("PROJECT_ID", None)
-PROJECT_OUTSIDE = os.environ.get(
-    "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT", None
-)
-IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC", "true")
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 
 
-class TestVPCServiceControl(object):
-    @staticmethod
-    def _is_rejected(call):
-        try:
-            responses = call()
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        except:
-            pass
-        return False
+@pytest.fixture
+def client():
+    return asset_v1.AssetServiceClient()
 
-    @staticmethod
-    def _do_test(delayed_inside, delayed_outside):
-        if IS_INSIDE_VPCSC.lower() == "true":
-            assert TestVPCServiceControl._is_rejected(delayed_outside)
-            assert not (TestVPCServiceControl._is_rejected(delayed_inside))
-        else:
-            assert not (TestVPCServiceControl._is_rejected(delayed_outside))
-            assert TestVPCServiceControl._is_rejected(delayed_inside)
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
+@pytest.fixture
+def output_config():
+    bucket_uri = "gs:{}/g-c-p-export-test".format(vpcsc_config.bucket_outside)
+    output_config = {"gcsDestination": {"uri": bucket_uri}}
+
+
+@pytest.fixture
+def parent_inside():
+    return "projects/" + vpcsc_config.project_inside
+
+
+@pytest.fixture
+def parent_outside():
+    return "projects/" + vpcsc_config.project_outside
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_export_assets_inside(client, output_config, parent_inside):
+    with pytest.raises(exceptions.InvalidArgument):
+        client.export_assets(parent_inside, output_config)
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_export_assets_outside(client, output_config, parent_outside):
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.export_assets(parent_outside, output_config)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_get_assets_history_inside(client, parent_inside):
+    read_time_window = {}
+    client.batch_get_assets_history(
+        parent_inside,
+        content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
+        read_time_window={},
     )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_export_assets(self):
-        client = asset_v1.AssetServiceClient()
-        output_config = {}
-        parent_inside = "projects/" + PROJECT_INSIDE
-        delayed_inside = lambda: client.export_assets(parent_inside, output_config)
-        parent_outside = "projects/" + PROJECT_OUTSIDE
-        delayed_outside = lambda: client.export_assets(parent_outside, output_config)
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
 
-    @pytest.mark.skipif(
-        PROJECT_INSIDE is None, reason="Missing environment variable: PROJECT_ID"
-    )
-    @pytest.mark.skipif(
-        PROJECT_OUTSIDE is None,
-        reason="Missing environment variable: GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT",
-    )
-    def test_batch_get_assets_history(self):
-        client = asset_v1.AssetServiceClient()
-        content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-        read_time_window = {}
-        parent_inside = "projects/" + PROJECT_INSIDE
-        delayed_inside = lambda: client.batch_get_assets_history(
-            parent_inside, content_type, read_time_window
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_batch_get_assets_history_outside(client, parent_outside):
+    content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
+    read_time_window = {}
+    with pytest.raises(exceptions.PermissionDenied) as exc:
+        client.batch_get_assets_history(
+            parent_outside,
+            content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
+            read_time_window={},
         )
-        parent_outside = "projects/" + PROJECT_OUTSIDE
-        delayed_outside = lambda: client.batch_get_assets_history(
-            parent_outside, content_type, read_time_window
-        )
-        TestVPCServiceControl._do_test(delayed_inside, delayed_outside)
+
+    assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
