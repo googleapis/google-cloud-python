@@ -118,20 +118,11 @@ def system(session):
     session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
-    # Additional setup for VPCSC system tests
-    env = {
-        "PROJECT_ID": os.environ.get("PROJECT_ID"),
-        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_PROJECT": "secure-gcp-test-project-4",
-        "GOOGLE_CLOUD_TESTS_IN_VPCSC": "true",
-    }
-
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--quiet", system_test_path, env=env, *session.posargs)
+        session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
-        session.run(
-            "py.test", "--quiet", system_test_folder_path, env=env, *session.posargs
-        )
+        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
 @nox.session(python="3.7")
