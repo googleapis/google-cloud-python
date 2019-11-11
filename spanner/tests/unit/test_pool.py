@@ -164,15 +164,16 @@ class TestFixedSizePool(unittest.TestCase):
     def test_get_non_expired(self):
         pool = self._make_one(size=4)
         database = _Database("name")
-        SESSIONS = [_Session(database)] * 4
+        SESSIONS = sorted([_Session(database) for i in range(0, 4)])
         database._sessions.extend(SESSIONS)
         pool.bind(database)
 
-        session = pool.get()
-
-        self.assertIs(session, SESSIONS[0])
-        self.assertTrue(session._exists_checked)
-        self.assertFalse(pool._sessions.full())
+        # check if sessions returned in LIFO order
+        for i in (3, 2, 1, 0):
+            session = pool.get()
+            self.assertIs(session, SESSIONS[i])
+            self.assertTrue(session._exists_checked)
+            self.assertFalse(pool._sessions.full())
 
     def test_get_expired(self):
         pool = self._make_one(size=4)
@@ -898,7 +899,10 @@ class _Database(object):
         self.spanner_api.batch_create_sessions.side_effect = mock_batch_create_sessions
 
     def session(self):
-        return self._sessions.pop()
+        # always return first session in the list
+        # to avoid reversing the order of putting
+        # sessions into pool (important for order tests)
+        return self._sessions.pop(0)
 
 
 class _Queue(object):
