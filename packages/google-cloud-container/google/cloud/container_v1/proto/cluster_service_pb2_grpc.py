@@ -167,6 +167,11 @@ class ClusterManagerStub(object):
             request_serializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.SetMaintenancePolicyRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.Operation.FromString,
         )
+        self.ListUsableSubnetworks = channel.unary_unary(
+            "/google.container.v1.ClusterManager/ListUsableSubnetworks",
+            request_serializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.ListUsableSubnetworksRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.ListUsableSubnetworksResponse.FromString,
+        )
 
 
 class ClusterManagerServicer(object):
@@ -196,12 +201,12 @@ class ClusterManagerServicer(object):
     [default network](/compute/docs/networks-and-firewalls#networks).
 
     One firewall is added for the cluster. After cluster creation,
-    the cluster creates routes for each node to allow the containers
+    the Kubelet creates routes for each node to allow the containers
     on that node to communicate with all other instances in the
     cluster.
 
     Finally, an entry is added to the project's global metadata indicating
-    which CIDR range is being used by the cluster.
+    which CIDR range the cluster is using.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -215,14 +220,14 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def UpdateNodePool(self, request, context):
-        """Updates the version and/or image type for a specific node pool.
+        """Updates the version and/or image type for the specified node pool.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def SetNodePoolAutoscaling(self, request, context):
-        """Sets the autoscaling settings for a specific node pool.
+        """Sets the autoscaling settings for the specified node pool.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -264,9 +269,9 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetMasterAuth(self, request, context):
-        """Used to set master auth materials. Currently supports :-
-    Changing the admin password for a specific cluster.
-    This can be either via password generation or explicitly set the password.
+        """Sets master auth materials. Currently supports changing the admin password
+    or a specific cluster, either via password generation or explicitly setting
+    the password.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -279,9 +284,9 @@ class ClusterManagerServicer(object):
     Firewalls and routes that were configured during cluster creation
     are also deleted.
 
-    Other Google Compute Engine resources that might be in use by the cluster
-    (e.g. load balancer resources) will not be deleted if they weren't present
-    at the initial create time.
+    Other Google Compute Engine resources that might be in use by the cluster,
+    such as load balancer resources, are not deleted if they weren't present
+    when the cluster was initially created.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -309,7 +314,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetServerConfig(self, request, context):
-        """Returns configuration info about the Kubernetes Engine service.
+        """Returns configuration info about the Google Kubernetes Engine service.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -323,7 +328,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetNodePool(self, request, context):
-        """Retrieves the node pool requested.
+        """Retrieves the requested node pool.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -344,8 +349,8 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def RollbackNodePoolUpgrade(self, request, context):
-        """Roll back the previously Aborted or Failed NodePool upgrade.
-    This will be an no-op if the last upgrade successfully completed.
+        """Rolls back a previously Aborted or Failed NodePool upgrade.
+    This makes no changes if the last upgrade successfully completed.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -373,7 +378,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def StartIPRotation(self, request, context):
-        """Start master IP rotation.
+        """Starts master IP rotation.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -394,7 +399,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetNetworkPolicy(self, request, context):
-        """Enables/Disables Network Policy for a cluster.
+        """Enables or disables Network Policy for a cluster.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -402,6 +407,13 @@ class ClusterManagerServicer(object):
 
     def SetMaintenancePolicy(self, request, context):
         """Sets the maintenance policy for a cluster.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListUsableSubnetworks(self, request, context):
+        """Lists subnetworks that are usable for creating clusters in a project.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -559,6 +571,11 @@ def add_ClusterManagerServicer_to_server(servicer, server):
             servicer.SetMaintenancePolicy,
             request_deserializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.SetMaintenancePolicyRequest.FromString,
             response_serializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.Operation.SerializeToString,
+        ),
+        "ListUsableSubnetworks": grpc.unary_unary_rpc_method_handler(
+            servicer.ListUsableSubnetworks,
+            request_deserializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.ListUsableSubnetworksRequest.FromString,
+            response_serializer=google_dot_cloud_dot_container__v1_dot_proto_dot_cluster__service__pb2.ListUsableSubnetworksResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

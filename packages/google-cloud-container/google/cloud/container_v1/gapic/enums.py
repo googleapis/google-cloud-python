@@ -48,6 +48,23 @@ class Cluster(object):
         DEGRADED = 6
 
 
+class DatabaseEncryption(object):
+    class State(enum.IntEnum):
+        """
+        State of etcd encryption.
+
+        Attributes:
+          UNKNOWN (int): Should never be set
+          ENCRYPTED (int): Secrets in etcd are encrypted.
+          DECRYPTED (int): Secrets in etcd are stored in plain text (at etcd level) - this is
+          unrelated to GCE level full disk encryption.
+        """
+
+        UNKNOWN = 0
+        ENCRYPTED = 1
+        DECRYPTED = 2
+
+
 class NetworkPolicy(object):
     class Provider(enum.IntEnum):
         """
@@ -91,6 +108,24 @@ class NodePool(object):
         RECONCILING = 4
         STOPPING = 5
         ERROR = 6
+
+
+class NodeTaint(object):
+    class Effect(enum.IntEnum):
+        """
+        Possible values for Effect in taint.
+
+        Attributes:
+          EFFECT_UNSPECIFIED (int): Not set
+          NO_SCHEDULE (int): NoSchedule
+          PREFER_NO_SCHEDULE (int): PreferNoSchedule
+          NO_EXECUTE (int): NoExecute
+        """
+
+        EFFECT_UNSPECIFIED = 0
+        NO_SCHEDULE = 1
+        PREFER_NO_SCHEDULE = 2
+        NO_EXECUTE = 3
 
 
 class Operation(object):
@@ -174,3 +209,52 @@ class SetMasterAuthRequest(object):
         SET_PASSWORD = 1
         GENERATE_PASSWORD = 2
         SET_USERNAME = 3
+
+
+class StatusCondition(object):
+    class Code(enum.IntEnum):
+        """
+        Code for each condition
+
+        Attributes:
+          UNKNOWN (int): UNKNOWN indicates a generic condition.
+          GCE_STOCKOUT (int): GCE\_STOCKOUT indicates a Google Compute Engine stockout.
+          GKE_SERVICE_ACCOUNT_DELETED (int): GKE\_SERVICE\_ACCOUNT\_DELETED indicates that the user deleted their
+          robot service account.
+          GCE_QUOTA_EXCEEDED (int): Google Compute Engine quota was exceeded.
+          SET_BY_OPERATOR (int): Cluster state was manually changed by an SRE due to a system logic error.
+          CLOUD_KMS_KEY_ERROR (int): Unable to perform an encrypt operation against the CloudKMS key used for
+          etcd level encryption.
+          More codes TBA
+        """
+
+        UNKNOWN = 0
+        GCE_STOCKOUT = 1
+        GKE_SERVICE_ACCOUNT_DELETED = 2
+        GCE_QUOTA_EXCEEDED = 3
+        SET_BY_OPERATOR = 4
+        CLOUD_KMS_KEY_ERROR = 7
+
+
+class UsableSubnetworkSecondaryRange(object):
+    class Status(enum.IntEnum):
+        """
+        Status shows the current usage of a secondary IP range.
+
+        Attributes:
+          UNKNOWN (int): UNKNOWN is the zero value of the Status enum. It's not a valid status.
+          UNUSED (int): UNUSED denotes that this range is unclaimed by any cluster.
+          IN_USE_SERVICE (int): IN\_USE\_SERVICE denotes that this range is claimed by a cluster for
+          services. It cannot be used for other clusters.
+          IN_USE_SHAREABLE_POD (int): IN\_USE\_SHAREABLE\_POD denotes this range was created by the network
+          admin and is currently claimed by a cluster for pods. It can only be
+          used by other clusters as a pod range.
+          IN_USE_MANAGED_POD (int): IN\_USE\_MANAGED\_POD denotes this range was created by GKE and is
+          claimed for pods. It cannot be used for other clusters.
+        """
+
+        UNKNOWN = 0
+        UNUSED = 1
+        IN_USE_SERVICE = 2
+        IN_USE_SHAREABLE_POD = 3
+        IN_USE_MANAGED_POD = 4
