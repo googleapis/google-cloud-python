@@ -2106,9 +2106,10 @@ class TablesClient(object):
         optimization_objective=None,
         project=None,
         region=None,
-        model_metadata={},
+        model_metadata=None,
         include_column_spec_names=None,
         exclude_column_spec_names=None,
+        disable_early_stopping=False,
         **kwargs
     ):
         """Create a model. This will train your model on the given dataset.
@@ -2168,6 +2169,10 @@ class TablesClient(object):
             exclude_column_spec_names(Optional[str]):
                 The list of the names of the columns you want to exclude and
                 not train your model on.
+            disable_early_stopping(Optional[bool]):
+                True if disable early stopping. By default, the early stopping
+                feature is enabled, which means that AutoML Tables might stop
+                training before the entire training budget has been used.
         Returns:
             google.api_core.operation.Operation:
                 An operation future that can be used to check for
@@ -2180,6 +2185,9 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
+        if model_metadata is None:
+            model_metadata = {}
+
         if (
             train_budget_milli_node_hours is None
             or train_budget_milli_node_hours < 1000
@@ -2212,6 +2220,8 @@ class TablesClient(object):
         model_metadata["train_budget_milli_node_hours"] = train_budget_milli_node_hours
         if optimization_objective is not None:
             model_metadata["optimization_objective"] = optimization_objective
+        if disable_early_stopping:
+            model_metadata["disable_early_stopping"] = True
 
         dataset_id = dataset_name.rsplit("/", 1)[-1]
         columns = [
