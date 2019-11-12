@@ -980,7 +980,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1065,7 +1066,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1130,7 +1132,7 @@ class InstanceAdminClient(object):
     def test_iam_permissions(
         self,
         resource,
-        permissions,
+        permissions=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1149,12 +1151,10 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
-            >>> # TODO: Initialize `permissions`:
-            >>> permissions = []
-            >>>
-            >>> response = client.test_iam_permissions(resource, permissions)
+            >>> response = client.test_iam_permissions(resource)
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.

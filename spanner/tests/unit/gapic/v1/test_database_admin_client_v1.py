@@ -66,53 +66,6 @@ class CustomException(Exception):
 
 
 class TestDatabaseAdminClient(object):
-    def test_list_databases(self):
-        # Setup Expected Response
-        next_page_token = ""
-        databases_element = {}
-        databases = [databases_element]
-        expected_response = {"next_page_token": next_page_token, "databases": databases}
-        expected_response = spanner_database_admin_pb2.ListDatabasesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-
-        paged_list_response = client.list_databases(parent)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.databases[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_database_admin_pb2.ListDatabasesRequest(
-            parent=parent
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_list_databases_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-
-        paged_list_response = client.list_databases(parent)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
     def test_create_database(self):
         # Setup Expected Response
         name = "name3373707"
@@ -349,7 +302,7 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -371,7 +324,7 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -392,7 +345,7 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -411,7 +364,7 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -431,16 +384,13 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup Request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
-        permissions = []
+        resource = "resource-341064690"
 
-        response = client.test_iam_permissions(resource, permissions)
+        response = client.test_iam_permissions(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
-        )
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -453,8 +403,54 @@ class TestDatabaseAdminClient(object):
             client = spanner_admin_database_v1.DatabaseAdminClient()
 
         # Setup request
-        resource = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
-        permissions = []
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
-            client.test_iam_permissions(resource, permissions)
+            client.test_iam_permissions(resource)
+
+    def test_list_databases(self):
+        # Setup Expected Response
+        next_page_token = ""
+        databases_element = {}
+        databases = [databases_element]
+        expected_response = {"next_page_token": next_page_token, "databases": databases}
+        expected_response = spanner_database_admin_pb2.ListDatabasesResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+
+        paged_list_response = client.list_databases(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.databases[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.ListDatabasesRequest(
+            parent=parent
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_databases_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+
+        paged_list_response = client.list_databases(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)

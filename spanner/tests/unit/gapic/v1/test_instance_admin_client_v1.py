@@ -427,7 +427,7 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -449,7 +449,7 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -470,7 +470,7 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -489,7 +489,7 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -509,16 +509,13 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
-        permissions = []
+        resource = "resource-341064690"
 
-        response = client.test_iam_permissions(resource, permissions)
+        response = client.test_iam_permissions(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
-        )
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -531,8 +528,7 @@ class TestInstanceAdminClient(object):
             client = spanner_admin_instance_v1.InstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
-        permissions = []
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
-            client.test_iam_permissions(resource, permissions)
+            client.test_iam_permissions(resource)
