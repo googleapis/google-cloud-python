@@ -48,6 +48,9 @@ htmlcov
 # VS Code
 .vscode
 
+# emacs
+*~
+
 # Built documentation
 docs/_build
 */docs/_build
