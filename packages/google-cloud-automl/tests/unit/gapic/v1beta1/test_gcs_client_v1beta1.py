@@ -139,7 +139,7 @@ class TestGcsClient(object):
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with("my-file.csv")
-        mock_blob.upload_from_string.assert_called_with(",col1,col2\n0,1,3\n1,2,4\n")
+        mock_blob.upload_from_string.assert_called_with("col1,col2\n1,3\n2,4\n")
         assert gcs_uri == "gs://my-bucket/my-file.csv"
 
     def test_upload_pandas_dataframe_no_csv_name(self):
@@ -156,7 +156,7 @@ class TestGcsClient(object):
 
         gcs_client.client.get_bucket.assert_called_with("my-bucket")
         mock_bucket.blob.assert_called_with(generated_csv_name)
-        mock_blob.upload_from_string.assert_called_with(",col1,col2\n0,1,3\n1,2,4\n")
+        mock_blob.upload_from_string.assert_called_with("col1,col2\n1,3\n2,4\n")
         assert re.match("^gs://my-bucket/automl-tables-dataframe-[0-9]*.csv$", gcs_uri)
 
     def test_upload_pandas_dataframe_not_type_dataframe(self):

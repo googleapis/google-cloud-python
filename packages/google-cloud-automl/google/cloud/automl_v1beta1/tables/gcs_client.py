@@ -132,7 +132,12 @@ class GcsClient(object):
             uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(
                 int(time.time())
             )
-        csv_string = dataframe.to_csv()
+
+        # Setting index to False to ignore exporting the data index:
+        # 1. The resulting column name for the index column is empty, AutoML
+        # Tables does not allow empty column name
+        # 2. The index is not an useful training information
+        csv_string = dataframe.to_csv(index=False)
 
         bucket = self.client.get_bucket(self.bucket_name)
         blob = bucket.blob(uploaded_csv_name)
