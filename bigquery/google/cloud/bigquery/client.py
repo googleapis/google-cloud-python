@@ -187,7 +187,7 @@ class Client(ClientWithProject):
 
         self._connection = Connection(self, **kw_args)
         self._location = location
-        self._default_query_job_config = default_query_job_config
+        self._default_query_job_config = copy.deepcopy(default_query_job_config)
 
     @property
     def location(self):
@@ -1381,6 +1381,7 @@ class Client(ClientWithProject):
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
         if job_config:
+            job_config = copy.deepcopy(job_config)
             _verify_job_config_type(job_config, google.cloud.bigquery.job.LoadJobConfig)
 
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
@@ -1465,6 +1466,7 @@ class Client(ClientWithProject):
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
         job_ref = job._JobReference(job_id, project=project, location=location)
         if job_config:
+            job_config = copy.deepcopy(job_config)
             _verify_job_config_type(job_config, google.cloud.bigquery.job.LoadJobConfig)
         load_job = job.LoadJob(job_ref, None, destination, self, job_config)
         job_resource = load_job.to_api_repr()
@@ -1969,6 +1971,8 @@ class Client(ClientWithProject):
 
         if job_config:
             _verify_job_config_type(job_config, google.cloud.bigquery.job.CopyJobConfig)
+            job_config = copy.deepcopy(job_config)
+
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
         )
@@ -2049,6 +2053,8 @@ class Client(ClientWithProject):
             _verify_job_config_type(
                 job_config, google.cloud.bigquery.job.ExtractJobConfig
             )
+            job_config = copy.deepcopy(job_config)
+
         extract_job = job.ExtractJob(
             job_ref, source, destination_uris, client=self, job_config=job_config
         )
@@ -2112,6 +2118,8 @@ class Client(ClientWithProject):
         if location is None:
             location = self.location
 
+        job_config = copy.deepcopy(job_config)
+
         if self._default_query_job_config:
             if job_config:
                 _verify_job_config_type(
@@ -2129,7 +2137,7 @@ class Client(ClientWithProject):
                     self._default_query_job_config,
                     google.cloud.bigquery.job.QueryJobConfig,
                 )
-                job_config = self._default_query_job_config
+                job_config = copy.deepcopy(self._default_query_job_config)
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
