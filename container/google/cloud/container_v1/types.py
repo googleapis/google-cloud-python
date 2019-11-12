@@ -22,9 +22,10 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.container_v1.proto import cluster_service_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [empty_pb2]
+_shared_modules = [empty_pb2, timestamp_pb2]
 
 _local_modules = [cluster_service_pb2]
 
