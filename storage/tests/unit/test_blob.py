@@ -2913,6 +2913,16 @@ class Test_Blob(unittest.TestCase):
         blob.metadata = METADATA
         self.assertEqual(blob.metadata, METADATA)
 
+    def test_metadata_setter_w_nan(self):
+        BLOB_NAME = "blob-name"
+        METADATA = {"foo": float('nan')}
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.metadata)
+        blob.metadata = METADATA
+        value = blob.metadata['foo']
+        self.assertIsInstance(value, str)
+
     def test_metageneration(self):
         BUCKET = object()
         METAGENERATION = 42
