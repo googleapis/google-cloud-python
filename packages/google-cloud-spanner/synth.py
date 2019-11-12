@@ -126,6 +126,13 @@ s.replace(
     "from google.cloud.spanner_admin_database_v1.proto",
 )
 
+# Fix up proto docs that are missing summary line.
+s.replace(
+    "google/cloud/spanner_admin_instance_v1/proto/spanner_instance_admin_pb2.py",
+    '"""Attributes:',
+    '"""Protocol buffer.\n\n  Attributes:',
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

@@ -235,11 +235,11 @@ class SpannerClient(object):
         Note that standalone reads and queries use a transaction internally, and
         count toward the one transaction limit.
 
-        Cloud Spanner limits the number of sessions that can exist at any given
-        time; thus, it is a good idea to delete idle and/or unneeded sessions.
-        Aside from explicit deletes, Cloud Spanner can delete sessions for which
-        no operations are sent for more than an hour. If a session is deleted,
-        requests to it return ``NOT_FOUND``.
+        Active sessions use additional server resources, so it is a good idea to
+        delete idle and unneeded sessions. Aside from explicit deletes, Cloud
+        Spanner can delete sessions for which no operations are sent for more
+        than an hour. If a session is deleted, requests to it return
+        ``NOT_FOUND``.
 
         Idle sessions can be kept alive by sending a trivial SQL query
         periodically, e.g., ``"SELECT 1"``.
@@ -696,28 +696,26 @@ class SpannerClient(object):
                 For queries, if none is provided, the default is a temporary read-only
                 transaction with strong concurrency.
 
-                Standard DML statements require a ReadWrite transaction. Single-use
-                transactions are not supported (to avoid replay).  The caller must
-                either supply an existing transaction ID or begin a new transaction.
+                Standard DML statements require a read-write transaction. To protect
+                against replays, single-use transactions are not supported.  The caller
+                must either supply an existing transaction ID or begin a new transaction.
 
-                Partitioned DML requires an existing PartitionedDml transaction ID.
+                Partitioned DML requires an existing Partitioned DML transaction ID.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter name.
-                Parameter names consist of any combination of letters, numbers, and
-                underscores.
+            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): Parameter names and values that bind to placeholders in the SQL string.
+
+                A parameter placeholder consists of the ``@`` character followed by the
+                parameter name (for example, ``@firstName``). Parameter names can
+                contain letters, numbers, and underscores.
 
                 Parameters can appear anywhere that a literal value is expected. The
                 same parameter name can be used more than once, for example:
+
                 ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-                It is an error to execute an SQL statement with unbound parameters.
-
-                Parameter values are specified using ``params``, which is a JSON object
-                whose keys are parameter names, and whose values are the corresponding
-                parameter values.
+                It is an error to execute a SQL statement with unbound parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`
@@ -744,7 +742,7 @@ class SpannerClient(object):
                 previously created using PartitionQuery(). There must be an exact match
                 for the values of fields common to this message and the
                 PartitionQueryRequest message used to create this partition\_token.
-            seqno (long): A per-transaction sequence number used to identify this request. This
+            seqno (long): A per-transaction sequence number used to identify this request. This field
                 makes each request idempotent such that if the request is received multiple
                 times, at most one will succeed.
 
@@ -855,28 +853,26 @@ class SpannerClient(object):
                 For queries, if none is provided, the default is a temporary read-only
                 transaction with strong concurrency.
 
-                Standard DML statements require a ReadWrite transaction. Single-use
-                transactions are not supported (to avoid replay).  The caller must
-                either supply an existing transaction ID or begin a new transaction.
+                Standard DML statements require a read-write transaction. To protect
+                against replays, single-use transactions are not supported.  The caller
+                must either supply an existing transaction ID or begin a new transaction.
 
-                Partitioned DML requires an existing PartitionedDml transaction ID.
+                Partitioned DML requires an existing Partitioned DML transaction ID.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter name.
-                Parameter names consist of any combination of letters, numbers, and
-                underscores.
+            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): Parameter names and values that bind to placeholders in the SQL string.
+
+                A parameter placeholder consists of the ``@`` character followed by the
+                parameter name (for example, ``@firstName``). Parameter names can
+                contain letters, numbers, and underscores.
 
                 Parameters can appear anywhere that a literal value is expected. The
                 same parameter name can be used more than once, for example:
+
                 ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-                It is an error to execute an SQL statement with unbound parameters.
-
-                Parameter values are specified using ``params``, which is a JSON object
-                whose keys are parameter names, and whose values are the corresponding
-                parameter values.
+                It is an error to execute a SQL statement with unbound parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`
@@ -903,7 +899,7 @@ class SpannerClient(object):
                 previously created using PartitionQuery(). There must be an exact match
                 for the values of fields common to this message and the
                 PartitionQueryRequest message used to create this partition\_token.
-            seqno (long): A per-transaction sequence number used to identify this request. This
+            seqno (long): A per-transaction sequence number used to identify this request. This field
                 makes each request idempotent such that if the request is received multiple
                 times, at most one will succeed.
 
@@ -986,20 +982,13 @@ class SpannerClient(object):
         statements to be run with lower latency than submitting them
         sequentially with ``ExecuteSql``.
 
-        Statements are executed in order, sequentially.
-        ``ExecuteBatchDmlResponse`` will contain a ``ResultSet`` for each DML
-        statement that has successfully executed. If a statement fails, its
-        error status will be returned as part of the
-        ``ExecuteBatchDmlResponse``. Execution will stop at the first failed
-        statement; the remaining statements will not run.
+        Statements are executed in sequential order. A request can succeed even
+        if a statement fails. The ``ExecuteBatchDmlResponse.status`` field in
+        the response provides information about the statement that failed.
+        Clients must inspect this field to determine whether an error occurred.
 
-        ExecuteBatchDml is expected to return an OK status with a response even
-        if there was an error while processing one of the DML statements.
-        Clients must inspect response.status to determine if there were any
-        errors while processing the request.
-
-        See more details in ``ExecuteBatchDmlRequest`` and
-        ``ExecuteBatchDmlResponse``.
+        Execution stops after the first failed statement; the remaining
+        statements are not executed.
 
         Example:
             >>> from google.cloud import spanner_v1
@@ -1021,24 +1010,32 @@ class SpannerClient(object):
 
         Args:
             session (str): Required. The session in which the DML statements should be performed.
-            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): The transaction to use. A ReadWrite transaction is required. Single-use
-                transactions are not supported (to avoid replay).  The caller must either
-                supply an existing transaction ID or begin a new transaction.
+            transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionSelector]): Required. The transaction to use. Must be a read-write transaction.
+
+                To protect against replays, single-use transactions are not supported. The
+                caller must either supply an existing transaction ID or begin a new
+                transaction.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            statements (list[Union[dict, ~google.cloud.spanner_v1.types.Statement]]): The list of statements to execute in this batch. Statements are executed
-                serially, such that the effects of statement i are visible to statement
-                i+1. Each statement must be a DML statement. Execution will stop at the
-                first failed statement; the remaining statements will not run.
+            statements (list[Union[dict, ~google.cloud.spanner_v1.types.Statement]]): Required. The list of statements to execute in this batch. Statements
+                are executed serially, such that the effects of statement ``i`` are
+                visible to statement ``i+1``. Each statement must be a DML statement.
+                Execution stops at the first failed statement; the remaining statements
+                are not executed.
 
-                REQUIRES: statements\_size() > 0.
+                Callers must provide at least one statement.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Statement`
-            seqno (long): A per-transaction sequence number used to identify this request. This is
-                used in the same space as the seqno in ``ExecuteSqlRequest``. See more
-                details in ``ExecuteSqlRequest``.
+            seqno (long): Required. A per-transaction sequence number used to identify this request. This field
+                makes each request idempotent such that if the request is received multiple
+                times, at most one will succeed.
+
+                The sequence number must be monotonically increasing within the
+                transaction. If a request arrives for the first time with an out-of-order
+                sequence number, the transaction may be aborted. Replays of previously
+                handled requests will yield the same response as the first execution.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1138,8 +1135,8 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the read should be performed.
             table (str): Required. The name of the table in the database to be read.
-            columns (list[str]): The columns of ``table`` to be returned for each row matching this
-                request.
+            columns (list[str]): Required. The columns of ``table`` to be returned for each row matching
+                this request.
             key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set``
                 names the primary keys of the rows in ``table`` to be yielded, unless
                 ``index`` is present. If ``index`` is present, then ``key_set`` instead
@@ -1275,8 +1272,8 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the read should be performed.
             table (str): Required. The name of the table in the database to be read.
-            columns (list[str]): The columns of ``table`` to be returned for each row matching this
-                request.
+            columns (list[str]): Required. The columns of ``table`` to be returned for each row matching
+                this request.
             key_set (Union[dict, ~google.cloud.spanner_v1.types.KeySet]): Required. ``key_set`` identifies the rows to be yielded. ``key_set``
                 names the primary keys of the rows in ``table`` to be yielded, unless
                 ``index`` is present. If ``index`` is present, then ``key_set`` instead
@@ -1677,8 +1674,8 @@ class SpannerClient(object):
 
         Args:
             session (str): Required. The session used to create the partitions.
-            sql (str): The query request to generate partitions for. The request will fail if
-                the query is not root partitionable. The query plan of a root
+            sql (str): Required. The query request to generate partitions for. The request will
+                fail if the query is not root partitionable. The query plan of a root
                 partitionable query has a single distributed union operator. A
                 distributed union operator conceptually divides one or more tables into
                 multiple splits, remotely evaluates a subquery independently on each
@@ -1692,20 +1689,18 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionSelector`
-            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): The SQL query string can contain parameter placeholders. A parameter
-                placeholder consists of ``'@'`` followed by the parameter name.
-                Parameter names consist of any combination of letters, numbers, and
-                underscores.
+            params (Union[dict, ~google.cloud.spanner_v1.types.Struct]): Parameter names and values that bind to placeholders in the SQL string.
+
+                A parameter placeholder consists of the ``@`` character followed by the
+                parameter name (for example, ``@firstName``). Parameter names can
+                contain letters, numbers, and underscores.
 
                 Parameters can appear anywhere that a literal value is expected. The
                 same parameter name can be used more than once, for example:
+
                 ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-                It is an error to execute an SQL query with unbound parameters.
-
-                Parameter values are specified using ``params``, which is a JSON object
-                whose keys are parameter names, and whose values are the corresponding
-                parameter values.
+                It is an error to execute a SQL statement with unbound parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Struct`

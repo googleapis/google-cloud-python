@@ -15,11 +15,11 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.cloud.spanner_v1.proto import (
     keys_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2,
 )
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -30,12 +30,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\025com.google.spanner.v1B\rMutationProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/spanner_v1/proto/mutation.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a(google/cloud/spanner_v1/proto/keys.proto"\xc6\x03\n\x08Mutation\x12\x33\n\x06insert\x18\x01 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x33\n\x06update\x18\x02 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12=\n\x10insert_or_update\x18\x03 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x34\n\x07replace\x18\x04 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x34\n\x06\x64\x65lete\x18\x05 \x01(\x0b\x32".google.spanner.v1.Mutation.DeleteH\x00\x1aS\n\x05Write\x12\r\n\x05table\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x03(\t\x12*\n\x06values\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x1a\x43\n\x06\x44\x65lete\x12\r\n\x05table\x18\x01 \x01(\t\x12*\n\x07key_set\x18\x02 \x01(\x0b\x32\x19.google.spanner.v1.KeySetB\x0b\n\toperationB\x96\x01\n\x15\x63om.google.spanner.v1B\rMutationProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
+        '\n,google/cloud/spanner_v1/proto/mutation.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a(google/cloud/spanner_v1/proto/keys.proto\x1a\x1cgoogle/api/annotations.proto"\xc6\x03\n\x08Mutation\x12\x33\n\x06insert\x18\x01 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x33\n\x06update\x18\x02 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12=\n\x10insert_or_update\x18\x03 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x34\n\x07replace\x18\x04 \x01(\x0b\x32!.google.spanner.v1.Mutation.WriteH\x00\x12\x34\n\x06\x64\x65lete\x18\x05 \x01(\x0b\x32".google.spanner.v1.Mutation.DeleteH\x00\x1aS\n\x05Write\x12\r\n\x05table\x18\x01 \x01(\t\x12\x0f\n\x07\x63olumns\x18\x02 \x03(\t\x12*\n\x06values\x18\x03 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x1a\x43\n\x06\x44\x65lete\x12\r\n\x05table\x18\x01 \x01(\t\x12*\n\x07key_set\x18\x02 \x01(\x0b\x32\x19.google.spanner.v1.KeySetB\x0b\n\toperationB\x96\x01\n\x15\x63om.google.spanner.v1B\rMutationProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_cloud_dot_spanner__v1_dot_proto_dot_keys__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -414,7 +414,11 @@ Mutation = _reflection.GeneratedProtocolMessageType(
           if the row already exists, it is deleted, and the column
           values provided are inserted instead. Unlike [insert\_or\_upda
           te][google.spanner.v1.Mutation.insert\_or\_update], this means
-          any values not explicitly written become ``NULL``.
+          any values not explicitly written become ``NULL``.  In an
+          interleaved table, if you create the child table with the ``ON
+          DELETE CASCADE`` annotation, then replacing a parent row also
+          deletes the child rows. Otherwise, you must delete the child
+          rows before you replace the parent row.
       delete:
           Delete rows from a table. Succeeds whether or not the named
           rows were present.

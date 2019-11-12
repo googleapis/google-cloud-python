@@ -94,8 +94,8 @@ class DatabaseAdminServicer(object):
     have a name of the format `<database_name>/operations/<operation_id>` and
     can be used to track preparation of the database. The
     [metadata][google.longrunning.Operation.metadata] field type is
-    [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata].
-    The [response][google.longrunning.Operation.response] field type is
+    [CreateDatabaseMetadata][google.spanner.admin.database.v1.CreateDatabaseMetadata]. The
+    [response][google.longrunning.Operation.response] field type is
     [Database][google.spanner.admin.database.v1.Database], if successful.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -116,8 +116,7 @@ class DatabaseAdminServicer(object):
     the format `<database_name>/operations/<operation_id>` and can be used to
     track execution of the schema change(s). The
     [metadata][google.longrunning.Operation.metadata] field type is
-    [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].
-    The operation has no response.
+    [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -140,19 +139,20 @@ class DatabaseAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetIamPolicy(self, request, context):
-        """Sets the access control policy on a database resource. Replaces any
-    existing policy.
+        """Sets the access control policy on a database resource.
+    Replaces any existing policy.
 
-    Authorization requires `spanner.databases.setIamPolicy` permission on
-    [resource][google.iam.v1.SetIamPolicyRequest.resource].
+    Authorization requires `spanner.databases.setIamPolicy`
+    permission on [resource][google.iam.v1.SetIamPolicyRequest.resource].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetIamPolicy(self, request, context):
-        """Gets the access control policy for a database resource. Returns an empty
-    policy if a database exists but does not have a policy set.
+        """Gets the access control policy for a database resource.
+    Returns an empty policy if a database exists but does
+    not have a policy set.
 
     Authorization requires `spanner.databases.getIamPolicy` permission on
     [resource][google.iam.v1.GetIamPolicyRequest.resource].
@@ -164,10 +164,10 @@ class DatabaseAdminServicer(object):
     def TestIamPermissions(self, request, context):
         """Returns permissions that the caller has on the specified database resource.
 
-    Attempting this RPC on a non-existent Cloud Spanner database will result in
-    a NOT_FOUND error if the user has `spanner.databases.list` permission on
-    the containing Cloud Spanner instance. Otherwise returns an empty set of
-    permissions.
+    Attempting this RPC on a non-existent Cloud Spanner database will
+    result in a NOT_FOUND error if the user has
+    `spanner.databases.list` permission on the containing Cloud
+    Spanner instance. Otherwise returns an empty set of permissions.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

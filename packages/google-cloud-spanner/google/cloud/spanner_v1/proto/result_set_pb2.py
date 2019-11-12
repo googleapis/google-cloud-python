@@ -15,7 +15,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.cloud.spanner_v1.proto import (
     query_plan_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_query__plan__pb2,
@@ -26,6 +25,7 @@ from google.cloud.spanner_v1.proto import (
 from google.cloud.spanner_v1.proto import (
     type_pb2 as google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2,
 )
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -36,14 +36,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\025com.google.spanner.v1B\016ResultSetProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\370\001\001\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/spanner_v1/proto/result_set.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a.google/cloud/spanner_v1/proto/query_plan.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto"\x9f\x01\n\tResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12(\n\x04rows\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12\x30\n\x05stats\x18\x03 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats"\xd1\x01\n\x10PartialResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12&\n\x06values\x18\x02 \x03(\x0b\x32\x16.google.protobuf.Value\x12\x15\n\rchunked_value\x18\x03 \x01(\x08\x12\x14\n\x0cresume_token\x18\x04 \x01(\x0c\x12\x30\n\x05stats\x18\x05 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats"y\n\x11ResultSetMetadata\x12/\n\x08row_type\x18\x01 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xb9\x01\n\x0eResultSetStats\x12\x30\n\nquery_plan\x18\x01 \x01(\x0b\x32\x1c.google.spanner.v1.QueryPlan\x12,\n\x0bquery_stats\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x19\n\x0frow_count_exact\x18\x03 \x01(\x03H\x00\x12\x1f\n\x15row_count_lower_bound\x18\x04 \x01(\x03H\x00\x42\x0b\n\trow_countB\x9a\x01\n\x15\x63om.google.spanner.v1B\x0eResultSetProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xf8\x01\x01\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
+        '\n.google/cloud/spanner_v1/proto/result_set.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a.google/cloud/spanner_v1/proto/query_plan.proto\x1a/google/cloud/spanner_v1/proto/transaction.proto\x1a(google/cloud/spanner_v1/proto/type.proto\x1a\x1cgoogle/api/annotations.proto"\x9f\x01\n\tResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12(\n\x04rows\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12\x30\n\x05stats\x18\x03 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats"\xd1\x01\n\x10PartialResultSet\x12\x36\n\x08metadata\x18\x01 \x01(\x0b\x32$.google.spanner.v1.ResultSetMetadata\x12&\n\x06values\x18\x02 \x03(\x0b\x32\x16.google.protobuf.Value\x12\x15\n\rchunked_value\x18\x03 \x01(\x08\x12\x14\n\x0cresume_token\x18\x04 \x01(\x0c\x12\x30\n\x05stats\x18\x05 \x01(\x0b\x32!.google.spanner.v1.ResultSetStats"y\n\x11ResultSetMetadata\x12/\n\x08row_type\x18\x01 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\x12\x33\n\x0btransaction\x18\x02 \x01(\x0b\x32\x1e.google.spanner.v1.Transaction"\xb9\x01\n\x0eResultSetStats\x12\x30\n\nquery_plan\x18\x01 \x01(\x0b\x32\x1c.google.spanner.v1.QueryPlan\x12,\n\x0bquery_stats\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x19\n\x0frow_count_exact\x18\x03 \x01(\x03H\x00\x12\x1f\n\x15row_count_lower_bound\x18\x04 \x01(\x03H\x00\x42\x0b\n\trow_countB\x9a\x01\n\x15\x63om.google.spanner.v1B\x0eResultSetProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xf8\x01\x01\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_cloud_dot_spanner__v1_dot_proto_dot_query__plan__pb2.DESCRIPTOR,
         google_dot_cloud_dot_spanner__v1_dot_proto_dot_transaction__pb2.DESCRIPTOR,
         google_dot_cloud_dot_spanner__v1_dot_proto_dot_type__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 

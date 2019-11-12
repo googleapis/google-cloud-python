@@ -540,7 +540,7 @@ class DatabaseAdminClient(object):
 
         Args:
             database (str): Required. The database to update.
-            statements (list[str]): DDL statements to be applied to the database.
+            statements (list[str]): Required. DDL statements to be applied to the database.
             operation_id (str): If empty, the new update request is assigned an automatically-generated
                 operation ID. Otherwise, ``operation_id`` is used to construct the name
                 of the resulting ``Operation``.
