@@ -15,8 +15,7 @@
 import subprocess
 
 from django.db.backends.base.client import BaseDatabaseClient
-
-from .parse_utils import extract_connection_params
+from spanner.dbapi.parse_utils import extract_connection_params
 
 
 class DatabaseClient(BaseDatabaseClient):

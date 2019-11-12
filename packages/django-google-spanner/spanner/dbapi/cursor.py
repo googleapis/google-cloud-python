@@ -47,7 +47,7 @@ class Cursor(object):
 
     def close(self):
         if not self.__session:
-            raise ProgrammingError('Cursor is not connected to the database')
+            return
 
         self.__session.delete()
         self.__session = None
@@ -159,7 +159,7 @@ class Cursor(object):
 
         Args:
             size: optional integer to determine the maximum number of results to fetch.
-            
+
 
         Raises:
             Error if the previous call to .execute*() did not produce any result set

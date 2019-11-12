@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import spanner.dbapi as Database
 from django.db.backends.base.base import BaseDatabaseWrapper
-from django.utils.functional import cached_property
-from google.cloud import spanner_v1 as spanner
 
-from .parse_utils import extract_connection_params
+from .client import DatabaseClient
+from .creation import DatabaseCreation
+from .features import DatabaseFeatures
+from .introspection import DatabaseIntrospection
+from .operations import DatabaseOperations
+from .schema import DatabaseSchemaEditor
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -24,20 +28,20 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     display_name = 'Cloud Spanner'
 
     # Mapping of Field objects to their column types.
+    # TODO: audit max lengths of all STRING fields.
     data_types = dict(
-            AutoField='',  # Spanner does not support Auto increment as per
-                           # https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
-            BigAutoField='',
+            AutoField='STRING(64)',  # Possibly using a UUID in place of AutoField.
+            BigAutoField='UUID',
             BinaryField='BYTES',
             BooleanField='BOOL',
             CharField='STRING(%(max_length)s)',
             DateField='DATE',        # Date with a zone is supported.
                                      # https://cloud.google.com/spanner/docs/data-types#date-type
-            DateTimeField='STRING',  # DateTimeField produces a timestamp with a timezone
+            DateTimeField='STRING(50)',  # DateTimeField produces a timestamp with a timezone
                                      # but Spanneronly supports timestamps without a timezone, see
                                      #    https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
             DecimalField='FLOAT64',
-            DurationField='STRING',  # Django extracts this field with parse_duration by invoking
+            DurationField='STRING(50)',  # Django extracts this field with parse_duration by invoking
                                      #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
                                      # starting from
                                      #   https://docs.djangoproject.com/en/2.2/_modules/django/db/models/fields/#DurationField
@@ -48,26 +52,25 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                                      #   "INT64" if storing the value in milliseconds
                                      #  OR
                                      #   "STRING" if storing the value in an application-defined interval format.
-            EmailField='STRING',
-            FileField='STRING',
-            FilePathField='STRING',
+            EmailField='STRING(%(max_length)s)',
+            FileField='STRING(%(max_length)s)',
+            FilePathField='STRING(%(max_length)s)',
             FloatField='FLOAT64',
             IntegerField='INT64',
             BigIntegerField='INT64',
 
-            IPAddressField='STRING',  # IP addresses are directly translated to
-                                      # STRING, despite being say "inet" in Postgres.
-            GenericIPAddressField='STRING',
+            IPAddressField='STRING(40)',
+            GenericIPAddressField='STRING(80)',
 
             NullBooleanField='BOOL',
             OneToOneField='INT64',
             PositiveIntegerField='INT64',
             PositiveSmallIntegerField='INT64',
-            SlugField='STRING',
+            SlugField='STRING(%(max_length)s)',
             SmallAutoField='INT64',
             SmallIntegerField='INT64',
-            TextField='STRING',
-            TimeField='STRING',  # With or without the time zone, Spanner
+            TextField='STRING(10000)',
+            TimeField='STRING(50)',  # With or without the time zone, Spanner
                                  # expects the time field as a string.
             UUIDField='STRING(36)',  # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
     )
@@ -93,24 +96,29 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             'iendswith': 'ENDS_WITH(%s, %s)',
     }
 
+    Database = Database
+    SchemaEditorClass = DatabaseSchemaEditor
+    creation_class = DatabaseCreation
+    features_class = DatabaseFeatures
+    introspection_class = DatabaseIntrospection
+    ops_class = DatabaseOperations
+    client_class = DatabaseClient
+
     def get_connection_params(self):
-        return extract_connection_params(self.settings_dict)
+        return {'spanner_url': self.settings_dict['SPANNER_URL']}
 
     def get_new_connection(self, conn_params):
-        kwargs = dict(
-            project=conn_params.get('project_id'),
-            user_agent='spanner-django/v1',
-        )
-        credentials_uri = conn_params.get('credentials_uri')
-        client = None
-        if credentials_uri:
-            client = spanner.Client.from_service_account_json(credentials_uri, **kwargs)
-        else:
-            client = spanner.Client(**kwargs)
-        return client
+        return Database.connect(**conn_params)
+
+    def init_connection_state(self):
+        pass
 
     def create_cursor(self, name=None):
-        raise Exception('unimplemented')
+        return self.connection.cursor()
+
+    def _set_autocommit(self, autocommit):
+        with self.wrap_database_errors:
+            self.connection.autocommit = autocommit
 
     def disable_constraint_checking(self):
         raise Exception('unimplemented')
@@ -122,12 +130,4 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         raise Exception('unimplemented')
 
     def is_usable(self):
-        raise Exception('unimplemented')
-
-    @cached_property
-    def display_name(self):
-        return 'Spanner'
-
-    @cached_property
-    def data_type_check_constraints(self):
         raise Exception('unimplemented')
