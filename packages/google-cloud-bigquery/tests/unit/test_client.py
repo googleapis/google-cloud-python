@@ -2997,6 +2997,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         job_config = LoadJobConfig()
+        original_config_copy = copy.deepcopy(job_config)
+
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
         destination = client.dataset(self.DS_ID).table(DESTINATION)
@@ -3009,6 +3011,9 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
         )
+
+        # the original config object should not have been modified
+        self.assertEqual(job_config.to_api_repr(), original_config_copy.to_api_repr())
 
         self.assertIsInstance(job, LoadJob)
         self.assertIsInstance(job._configuration, LoadJobConfig)
@@ -3496,18 +3501,23 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        job_config = CopyJobConfig()
         conn = client._connection = make_connection(RESOURCE)
         dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
 
+        job_config = CopyJobConfig()
+        original_config_copy = copy.deepcopy(job_config)
         job = client.copy_table(source, destination, job_id=JOB, job_config=job_config)
+
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
             method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
         )
         self.assertIsInstance(job._configuration, CopyJobConfig)
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
 
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -3679,6 +3689,7 @@ class TestClient(unittest.TestCase):
         source = dataset.table(SOURCE)
         job_config = ExtractJobConfig()
         job_config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
+        original_config_copy = copy.deepcopy(job_config)
 
         job = client.extract_table(source, DESTINATION, job_config=job_config)
 
@@ -3694,6 +3705,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(job._client, client)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
 
     def test_extract_table_w_destination_uris(self):
         from google.cloud.bigquery.job import ExtractJob
@@ -3840,6 +3854,7 @@ class TestClient(unittest.TestCase):
         job_config = QueryJobConfig()
         job_config.use_query_cache = True
         job_config.maximum_bytes_billed = 2000
+        original_config_copy = copy.deepcopy(job_config)
 
         client.query(
             query, job_id=job_id, location=self.LOCATION, job_config=job_config
@@ -3849,6 +3864,105 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="POST", path="/projects/PROJECT/jobs", data=resource
         )
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
+
+    def test_query_preserving_explicit_job_config(self):
+        job_id = "some-job-id"
+        query = "select count(*) from persons"
+        resource = {
+            "jobReference": {
+                "jobId": job_id,
+                "projectId": self.PROJECT,
+                "location": self.LOCATION,
+            },
+            "configuration": {
+                "query": {
+                    "query": query,
+                    "useLegacySql": False,
+                    "useQueryCache": True,
+                    "maximumBytesBilled": "2000",
+                }
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+
+        from google.cloud.bigquery import QueryJobConfig
+
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http,)
+        conn = client._connection = make_connection(resource)
+
+        job_config = QueryJobConfig()
+        job_config.use_query_cache = True
+        job_config.maximum_bytes_billed = 2000
+        original_config_copy = copy.deepcopy(job_config)
+
+        client.query(
+            query, job_id=job_id, location=self.LOCATION, job_config=job_config
+        )
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/PROJECT/jobs", data=resource
+        )
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
+
+    def test_query_preserving_explicit_default_job_config(self):
+        job_id = "some-job-id"
+        query = "select count(*) from persons"
+        resource = {
+            "jobReference": {
+                "jobId": job_id,
+                "projectId": self.PROJECT,
+                "location": self.LOCATION,
+            },
+            "configuration": {
+                "query": {
+                    "query": query,
+                    "defaultDataset": {
+                        "projectId": self.PROJECT,
+                        "datasetId": "some-dataset",
+                    },
+                    "useLegacySql": False,
+                    "maximumBytesBilled": "1000",
+                }
+            },
+        }
+
+        creds = _make_credentials()
+        http = object()
+
+        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+
+        default_job_config = QueryJobConfig()
+        default_job_config.default_dataset = DatasetReference(
+            self.PROJECT, "some-dataset"
+        )
+        default_job_config.maximum_bytes_billed = 1000
+        default_config_copy = copy.deepcopy(default_job_config)
+
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_query_job_config=default_job_config,
+        )
+        conn = client._connection = make_connection(resource)
+
+        client.query(query, job_id=job_id, location=self.LOCATION, job_config=None)
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/PROJECT/jobs", data=resource
+        )
+
+        # the original default config object should not have been modified
+        assert default_job_config.to_api_repr() == default_config_copy.to_api_repr()
 
     def test_query_w_invalid_job_config(self):
         from google.cloud.bigquery import QueryJobConfig, DatasetReference
@@ -5429,21 +5543,23 @@ class TestClientUpload(object):
 
         client = self._make_client()
         file_obj = self._make_file_obj()
+        job_config = self._make_config()
+        original_config_copy = copy.deepcopy(job_config)
 
         do_upload_patch = self._make_do_upload_patch(
             client, "_do_resumable_upload", self.EXPECTED_CONFIGURATION
         )
         with do_upload_patch as do_upload:
             client.load_table_from_file(
-                file_obj,
-                self.TABLE_REF,
-                job_id="job_id",
-                job_config=self._make_config(),
+                file_obj, self.TABLE_REF, job_id="job_id", job_config=job_config,
             )
 
         do_upload.assert_called_once_with(
             file_obj, self.EXPECTED_CONFIGURATION, _DEFAULT_NUM_RETRIES
         )
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
 
     def test_load_table_from_file_w_explicit_project(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
@@ -5790,6 +5906,7 @@ class TestClientUpload(object):
         job_config = job.LoadJobConfig(
             write_disposition=job.WriteDisposition.WRITE_TRUNCATE
         )
+        original_config_copy = copy.deepcopy(job_config)
 
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table",
@@ -5825,6 +5942,9 @@ class TestClientUpload(object):
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
         assert sent_config.source_format == job.SourceFormat.PARQUET
         assert sent_config.write_disposition == job.WriteDisposition.WRITE_TRUNCATE
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -6466,6 +6586,7 @@ class TestClientUpload(object):
         ]
         job_config = job.LoadJobConfig(schema=schema)
         job_config._properties["load"]["unknown_field"] = "foobar"
+        original_config_copy = copy.deepcopy(job_config)
 
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
@@ -6493,12 +6614,14 @@ class TestClientUpload(object):
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-        assert job_config.source_format is None  # the original was not modified
         assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
         assert sent_config.schema == schema
         assert not sent_config.autodetect
         # all properties should have been cloned and sent to the backend
         assert sent_config._properties.get("load", {}).get("unknown_field") == "foobar"
+
+        # the original config object should not have been modified
+        assert job_config.to_api_repr() == original_config_copy.to_api_repr()
 
     def test_load_table_from_json_w_invalid_job_config(self):
         from google.cloud.bigquery import job
