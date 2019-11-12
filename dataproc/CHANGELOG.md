@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## 0.6.1
+
+11-12-2019 08:24 PST
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
 ## 0.6.0
 
 11-07-2019 16:34 PST
