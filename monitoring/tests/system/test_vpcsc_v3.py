@@ -28,392 +28,646 @@ from google.cloud.monitoring_v3 import enums
 from test_utils.vpcsc_config import vpcsc_config
 
 
+_VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
+
+
+@pytest.fixture(scope="module")
+def aps_client():
+    return monitoring_v3.AlertPolicyServiceClient()
+
+
+@pytest.fixture(scope="module")
+def name_inside(aps_client):
+    return aps_client.project_path(vpcsc_config.project_inside)
+
+
+@pytest.fixture(scope="module")
+def name_outside(aps_client):
+    return aps_client.project_path(vpcsc_config.project_outside)
+
+
+@pytest.fixture(scope="module")
+def alert_policy_path_inside(aps_client):
+    alert_policy_id = "mock_alert_policy"
+    return aps_client.alert_policy_path(vpcsc_config.project_inside, alert_policy_id)
+
+
+@pytest.fixture(scope="module")
+def alert_policy_path_outside(aps_client):
+    alert_policy_id = "mock_alert_policy"
+    return aps_client.alert_policy_path(vpcsc_config.project_outside, alert_policy_id)
+
+
 @vpcsc_config.skip_unless_inside_vpcsc
-class TestVPCServiceControlV3(object):
+class TestCRUDAlertPolicies(object):
     @staticmethod
-    def _is_rejected(call):
-        try:
-            call()
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        return False
+    def test_create_alert_policy_inside(aps_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            aps_client.create_alert_policy(name_inside, {})
 
     @staticmethod
-    def _is_rejected_w_iterator(call):
-        try:
-            list(call())
-        except exceptions.PermissionDenied as e:
-            return e.message == "Request is prohibited by organization's policy"
-        return False
+    def test_create_alert_policy_outside(aps_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            aps_client.create_alert_policy(name_outside, {})
 
-    def _do_test(self, delayed_inside, delayed_outside):
-        assert self._is_rejected(delayed_outside)
-        assert not self._is_rejected(delayed_inside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def _do_test_w_list(self, delayed_inside, delayed_outside):
-        assert self._is_rejected_w_list(delayed_outside)
-        assert not self._is_rejected_w_list(delayed_inside)
+    @staticmethod
+    def test_list_alert_policies_inside(aps_client, name_inside):
+        list(aps_client.list_alert_policies(name_inside))
 
-    def test_create_alert_policy(self):
-        client = monitoring_v3.AlertPolicyServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_alert_policy(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_alert_policy(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_alert_policies_outside(aps_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(aps_client.list_alert_policies(name_outside))
 
-    def test_delete_alert_policy(self):
-        client = monitoring_v3.AlertPolicyServiceClient()
-        name_inside = client.alert_policy_path(
-            vpcsc_config.project_inside, "mock_alert_policy"
-        )
-        delayed_inside = lambda: client.delete_alert_policy(name_inside)
-        name_outside = client.alert_policy_path(
-            vpcsc_config.project_outside, "mock_alert_policy"
-        )
-        delayed_outside = lambda: client.delete_alert_policy(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_get_alert_policy(self):
-        client = monitoring_v3.AlertPolicyServiceClient()
-        name_inside = client.alert_policy_path(
-            vpcsc_config.project_inside, "mock_alert_policy"
-        )
-        delayed_inside = lambda: client.get_alert_policy(name_inside)
-        name_outside = client.alert_policy_path(
-            vpcsc_config.project_outside, "mock_alert_policy"
-        )
-        delayed_outside = lambda: client.get_alert_policy(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_alert_policy_inside(aps_client, alert_policy_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            aps_client.get_alert_policy(alert_policy_path_inside)
 
-    def test_list_alert_policies(self):
-        client = monitoring_v3.AlertPolicyServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_alert_policies(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_alert_policies(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_alert_policy_outside(aps_client, alert_policy_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            aps_client.get_alert_policy(alert_policy_path_outside)
 
-    def test_update_alert_policy(self):
-        client = monitoring_v3.AlertPolicyServiceClient()
-        name_inside = client.alert_policy_path(
-            vpcsc_config.project_inside, "mock_alert_policy"
-        )
-        delayed_inside = lambda: client.update_alert_policy({"name": name_inside})
-        name_outside = client.alert_policy_path(
-            vpcsc_config.project_outside, "mock_alert_policy"
-        )
-        delayed_outside = lambda: client.update_alert_policy({"name": name_outside})
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_create_group(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_group(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_group(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_alert_policy_inside(aps_client, alert_policy_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            aps_client.update_alert_policy({"name": alert_policy_path_inside})
 
-    def test_delete_group(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.group_path(vpcsc_config.project_inside, "mock_group")
-        delayed_inside = lambda: client.delete_group(name_inside)
-        name_outside = client.group_path(vpcsc_config.project_outside, "mock_group")
-        delayed_outside = lambda: client.delete_group(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_alert_policy_outside(aps_client, alert_policy_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            aps_client.update_alert_policy({"name": alert_policy_path_outside})
 
-    def test_get_group(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.group_path(vpcsc_config.project_inside, "mock_group")
-        delayed_inside = lambda: client.get_group(name_inside)
-        name_outside = client.group_path(vpcsc_config.project_outside, "mock_group")
-        delayed_outside = lambda: client.get_group(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_list_group_members(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.group_path(vpcsc_config.project_inside, "mock_group")
-        delayed_inside = lambda: client.list_group_members(name_inside)
-        name_outside = client.group_path(vpcsc_config.project_outside, "mock_group")
-        delayed_outside = lambda: client.list_group_members(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_delete_alert_policy_inside(aps_client, alert_policy_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            aps_client.delete_alert_policy(alert_policy_path_inside)
 
-    def test_list_groups(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_groups(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_groups(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_delete_alert_policy_outside(aps_client, alert_policy_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            aps_client.delete_alert_policy(alert_policy_path_outside)
 
-    def test_update_group(self):
-        client = monitoring_v3.GroupServiceClient()
-        name_inside = client.group_path(vpcsc_config.project_inside, "mock_group")
-        delayed_inside = lambda: client.update_group({"name": name_inside})
-        name_outside = client.group_path(vpcsc_config.project_outside, "mock_group")
-        delayed_outside = lambda: client.update_group({"name": name_outside})
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_create_metric_descriptor(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_metric_descriptor(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_metric_descriptor(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
 
-    def test_create_time_series(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_time_series(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_time_series(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
+@pytest.fixture(scope="module")
+def gs_client():
+    return monitoring_v3.GroupServiceClient()
 
-    def test_delete_metric_descriptor(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.metric_descriptor_path(
-            vpcsc_config.project_inside, "mock_metric_descriptor"
-        )
-        delayed_inside = lambda: client.delete_metric_descriptor(name_inside)
-        name_outside = client.metric_descriptor_path(
-            vpcsc_config.project_outside, "mock_metric_descriptor"
-        )
-        delayed_outside = lambda: client.delete_metric_descriptor(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
 
-    def test_get_metric_descriptor(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.metric_descriptor_path(
-            vpcsc_config.project_inside, "mock_metric_descriptor"
-        )
-        delayed_inside = lambda: client.get_metric_descriptor(name_inside)
-        name_outside = client.metric_descriptor_path(
-            vpcsc_config.project_outside, "mock_metric_descriptor"
-        )
-        delayed_outside = lambda: client.get_metric_descriptor(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+@pytest.fixture(scope="module")
+def group_path_inside(gs_client):
+    group_id = "mock_group"
+    return gs_client.group_path(vpcsc_config.project_inside, group_id)
 
-    def test_get_monitored_resource_descriptor(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.monitored_resource_descriptor_path(
-            vpcsc_config.project_inside, "mock_monitored_resource_descriptor"
-        )
-        delayed_inside = lambda: client.get_monitored_resource_descriptor(name_inside)
-        name_outside = client.monitored_resource_descriptor_path(
-            vpcsc_config.project_outside, "mock_monitored_resource_descriptor"
-        )
-        delayed_outside = lambda: client.get_monitored_resource_descriptor(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
 
-    def test_list_metric_descriptors(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_metric_descriptors(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_metric_descriptors(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+@pytest.fixture(scope="module")
+def group_path_outside(gs_client):
+    group_id = "mock_group"
+    return gs_client.group_path(vpcsc_config.project_outside, group_id)
 
-    def test_list_monitored_resource_descriptors(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_monitored_resource_descriptors(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_monitored_resource_descriptors(
-            name_outside
-        )
-        self._do_test_w_list(delayed_inside, delayed_outside)
 
-    def test_list_time_series(self):
-        client = monitoring_v3.MetricServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_time_series(
-            name_inside, "", {}, enums.ListTimeSeriesRequest.TimeSeriesView.FULL
-        )
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_time_series(
-            name_outside, "", {}, enums.ListTimeSeriesRequest.TimeSeriesView.FULL
-        )
-        self._do_test_w_list(delayed_inside, delayed_outside)
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDGroups(object):
+    @staticmethod
+    def test_create_group_inside(gs_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            gs_client.create_group(name_inside, {})
 
-    def test_create_notification_channel(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_notification_channel(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_notification_channel(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_create_group_outside(gs_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            gs_client.create_group(name_outside, {})
 
-    def test_delete_notification_channel(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.delete_notification_channel(name_inside)
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.delete_notification_channel(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_get_notification_channel(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.get_notification_channel(name_inside)
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.get_notification_channel(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_groups_inside(gs_client, name_inside):
+        list(gs_client.list_groups(name_inside))
 
-    def test_get_notification_channel_descriptor(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_descriptor_path(
-            vpcsc_config.project_inside, "mock_notification_channel_descriptor"
-        )
-        delayed_inside = lambda: client.get_notification_channel_descriptor(name_inside)
-        name_outside = client.notification_channel_descriptor_path(
-            vpcsc_config.project_outside, "mock_notification_channel_descriptor"
-        )
-        delayed_outside = lambda: client.get_notification_channel_descriptor(
-            name_outside
-        )
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_groups_outside(gs_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(gs_client.list_groups(name_outside))
 
-    def test_get_notification_channel_verification_code(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.get_notification_channel_verification_code(
-            name_inside
-        )
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.get_notification_channel_verification_code(
-            name_outside
-        )
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_list_notification_channel_descriptors(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_notification_channel_descriptors(
-            name_inside
-        )
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_notification_channel_descriptors(
-            name_outside
-        )
-        self._do_test_w_list(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_group_inside(gs_client, group_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            gs_client.get_group(group_path_inside)
 
-    def test_list_notification_channels(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_notification_channels(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_notification_channels(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_get_group_outside(gs_client, group_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            gs_client.get_group(group_path_outside)
 
-    def test_send_notification_channel_verification_code(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.send_notification_channel_verification_code(
-            name_inside
-        )
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.send_notification_channel_verification_code(
-            name_outside
-        )
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_update_notification_channel(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.update_notification_channel(
-            {"name": name_inside}
-        )
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.update_notification_channel(
-            {"name": name_outside}
-        )
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_group_members_inside(gs_client, group_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            list(gs_client.list_group_members(group_path_inside))
 
-    def test_verify_notification_channel(self):
-        client = monitoring_v3.NotificationChannelServiceClient()
-        name_inside = client.notification_channel_path(
-            vpcsc_config.project_inside, "mock_notification_channel"
-        )
-        delayed_inside = lambda: client.verify_notification_channel(name_inside, "")
-        name_outside = client.notification_channel_path(
-            vpcsc_config.project_outside, "mock_notification_channel"
-        )
-        delayed_outside = lambda: client.verify_notification_channel(name_outside, "")
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_list_group_members_outside(gs_client, group_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(gs_client.list_group_members(group_path_outside))
 
-    def test_create_uptime_check_config(self):
-        client = monitoring_v3.UptimeCheckServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.create_uptime_check_config(name_inside, {})
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.create_uptime_check_config(name_outside, {})
-        self._do_test(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_delete_uptime_check_config(self):
-        client = monitoring_v3.UptimeCheckServiceClient()
-        name_inside = client.uptime_check_config_path(
-            vpcsc_config.project_inside, "mock_uptime_check_config"
-        )
-        delayed_inside = lambda: client.delete_uptime_check_config(name_inside)
-        name_outside = client.uptime_check_config_path(
-            vpcsc_config.project_outside, "mock_uptime_check_config"
-        )
-        delayed_outside = lambda: client.delete_uptime_check_config(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_group_inside(gs_client, group_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            gs_client.update_group({"name": group_path_inside})
 
-    def test_get_uptime_check_config(self):
-        client = monitoring_v3.UptimeCheckServiceClient()
-        name_inside = client.uptime_check_config_path(
-            vpcsc_config.project_inside, "mock_uptime_check_config"
-        )
-        delayed_inside = lambda: client.get_uptime_check_config(name_inside)
-        name_outside = client.uptime_check_config_path(
-            vpcsc_config.project_outside, "mock_uptime_check_config"
-        )
-        delayed_outside = lambda: client.get_uptime_check_config(name_outside)
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_update_group_outside(gs_client, group_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            gs_client.update_group({"name": group_path_outside})
 
-    def test_list_uptime_check_configs(self):
-        client = monitoring_v3.UptimeCheckServiceClient()
-        name_inside = client.project_path(vpcsc_config.project_inside)
-        delayed_inside = lambda: client.list_uptime_check_configs(name_inside)
-        name_outside = client.project_path(vpcsc_config.project_outside)
-        delayed_outside = lambda: client.list_uptime_check_configs(name_outside)
-        self._do_test_w_list(delayed_inside, delayed_outside)
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
-    def test_update_uptime_check_config(self):
-        client = monitoring_v3.UptimeCheckServiceClient()
-        name_inside = client.uptime_check_config_path(
-            vpcsc_config.project_inside, "mock_uptime_check_config"
-        )
-        delayed_inside = lambda: client.update_uptime_check_config(
-            {"name": name_inside}
-        )
-        name_outside = client.uptime_check_config_path(
-            vpcsc_config.project_outside, "mock_uptime_check_config"
-        )
-        delayed_outside = lambda: client.update_uptime_check_config(
-            {"name": name_outside}
-        )
-        self._do_test(delayed_inside, delayed_outside)
+    @staticmethod
+    def test_delete_group_inside(gs_client, group_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            gs_client.delete_group(group_path_inside)
+
+    @staticmethod
+    def test_delete_group_outside(gs_client, group_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            gs_client.delete_group(group_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def ms_client():
+    return monitoring_v3.MetricServiceClient()
+
+
+@pytest.fixture(scope="module")
+def metric_descriptor_path_inside(ms_client):
+    metric_descriptor_id = "mock_metric_descriptor"
+    return ms_client.metric_descriptor_path(
+        vpcsc_config.project_inside, metric_descriptor_id
+    )
+
+
+@pytest.fixture(scope="module")
+def metric_descriptor_path_outside(ms_client):
+    metric_descriptor_id = "mock_metric_descriptor"
+    return ms_client.metric_descriptor_path(
+        vpcsc_config.project_outside, metric_descriptor_id
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDMetricDescriptors(object):
+    @staticmethod
+    def test_create_metric_descriptor_inside(ms_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ms_client.create_metric_descriptor(name_inside, {})
+
+    @staticmethod
+    def test_create_metric_descriptor_outside(ms_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ms_client.create_metric_descriptor(name_outside, {})
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_metric_descriptors_inside(ms_client, name_inside):
+        list(ms_client.list_metric_descriptors(name_inside))
+
+    @staticmethod
+    def test_list_metric_descriptors_outside(ms_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(ms_client.list_metric_descriptors(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_metric_descriptor_inside(ms_client, metric_descriptor_path_inside):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ms_client.get_metric_descriptor(metric_descriptor_path_inside)
+
+    @staticmethod
+    def test_get_metric_descriptor_outside(ms_client, metric_descriptor_path_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ms_client.get_metric_descriptor(metric_descriptor_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_metric_descriptor_inside(ms_client, metric_descriptor_path_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ms_client.delete_metric_descriptor(metric_descriptor_path_inside)
+
+    @staticmethod
+    def test_delete_metric_descriptor_outside(
+        ms_client, metric_descriptor_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ms_client.delete_metric_descriptor(metric_descriptor_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDTimeSeries(object):
+    @staticmethod
+    def test_create_time_series_inside(ms_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ms_client.create_time_series(name_inside, {})
+
+    @staticmethod
+    def test_create_time_series_outside(ms_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ms_client.create_time_series(name_outside, {})
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_time_series_inside(ms_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            list(
+                ms_client.list_time_series(
+                    name_inside, "", {}, enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+                )
+            )
+
+    @staticmethod
+    def test_list_time_series_outside(ms_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(
+                ms_client.list_time_series(
+                    name_outside,
+                    "",
+                    {},
+                    enums.ListTimeSeriesRequest.TimeSeriesView.FULL,
+                )
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def monitored_resource_descriptor_path_inside(ms_client):
+    monitored_resource_descriptor_id = "mock_monitored_resource_descriptor"
+    return ms_client.monitored_resource_descriptor_path(
+        vpcsc_config.project_inside, monitored_resource_descriptor_id
+    )
+
+
+@pytest.fixture(scope="module")
+def monitored_resource_descriptor_path_outside(ms_client):
+    monitored_resource_descriptor_id = "mock_monitored_resource_descriptor"
+    return ms_client.monitored_resource_descriptor_path(
+        vpcsc_config.project_outside, monitored_resource_descriptor_id
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDMonitoredResourceDescriptor(object):
+    @staticmethod
+    def test_list_monitored_resource_descriptors_inside(ms_client, name_inside):
+        list(ms_client.list_monitored_resource_descriptors(name_inside))
+
+    @staticmethod
+    def test_list_monitored_resource_descriptors_outside(ms_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(ms_client.list_monitored_resource_descriptors(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_monitored_resource_descriptor_inside(
+        ms_client, monitored_resource_descriptor_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ms_client.get_monitored_resource_descriptor(
+                monitored_resource_descriptor_path_inside
+            )
+
+    @staticmethod
+    def test_get_monitored_resource_descriptor_outside(
+        ms_client, monitored_resource_descriptor_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ms_client.get_monitored_resource_descriptor(
+                monitored_resource_descriptor_path_outside
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def ncs_client():
+    return monitoring_v3.NotificationChannelServiceClient()
+
+
+@pytest.fixture(scope="module")
+def notification_channel_path_inside(ncs_client):
+    notification_channel_id = "mock_notification_channel"
+    return ncs_client.notification_channel_path(
+        vpcsc_config.project_inside, notification_channel_id
+    )
+
+
+@pytest.fixture(scope="module")
+def notification_channel_descriptor_path_inside(ncs_client):
+    notification_channel_descriptor_id = "mock_notification_channel_descriptor"
+    return ncs_client.notification_channel_descriptor_path(
+        vpcsc_config.project_inside, notification_channel_descriptor_id
+    )
+
+
+@pytest.fixture(scope="module")
+def notification_channel_path_outside(ncs_client):
+    notification_channel_id = "mock_notification_channel"
+    return ncs_client.notification_channel_path(
+        vpcsc_config.project_outside, notification_channel_id
+    )
+
+
+@pytest.fixture(scope="module")
+def notification_channel_descriptor_path_outside(ncs_client):
+    notification_channel_descriptor_id = "mock_notification_channel_descriptor"
+    return ncs_client.notification_channel_descriptor_path(
+        vpcsc_config.project_outside, notification_channel_descriptor_id
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDNotificationChannels(object):
+    @staticmethod
+    def test_create_notification_channel_inside(ncs_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ncs_client.create_notification_channel(name_inside, {})
+
+    @staticmethod
+    def test_create_notification_channel_outside(ncs_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.create_notification_channel(name_outside, {})
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_notification_channels_inside(ncs_client, name_inside):
+        list(ncs_client.list_notification_channels(name_inside))
+
+    @staticmethod
+    def test_list_notification_channels_outside(ncs_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(ncs_client.list_notification_channels(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_notification_channel_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.get_notification_channel(notification_channel_path_inside)
+
+    @staticmethod
+    def test_get_notification_channel_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.get_notification_channel(notification_channel_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_notification_channel_verification_code_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.get_notification_channel_verification_code(
+                notification_channel_path_inside
+            )
+
+    @staticmethod
+    def test_get_notification_channel_verification_code_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.get_notification_channel_verification_code(
+                notification_channel_path_outside
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_send_notification_channel_verification_code_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.send_notification_channel_verification_code(
+                notification_channel_path_inside
+            )
+
+    @staticmethod
+    def test_send_notification_channel_verification_code_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.send_notification_channel_verification_code(
+                notification_channel_path_outside
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_verify_notification_channel_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.verify_notification_channel(notification_channel_path_inside, "")
+
+    @staticmethod
+    def test_verify_notification_channel_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.verify_notification_channel(
+                notification_channel_path_outside, ""
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_update_notification_channel_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ncs_client.update_notification_channel(
+                {"name": notification_channel_path_inside}
+            )
+
+    @staticmethod
+    def test_update_notification_channel_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.update_notification_channel(
+                {"name": notification_channel_path_outside}
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_notification_channel_inside(
+        ncs_client, notification_channel_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.delete_notification_channel(notification_channel_path_inside)
+
+    @staticmethod
+    def test_delete_notification_channel_outside(
+        ncs_client, notification_channel_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.delete_notification_channel(notification_channel_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_notification_channel_descriptors_inside(ncs_client, name_inside):
+        list(ncs_client.list_notification_channel_descriptors(name_inside))
+
+    @staticmethod
+    def test_list_notification_channel_descriptors_outside(ncs_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(ncs_client.list_notification_channel_descriptors(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_notification_channel_descriptor_inside(
+        ncs_client, notification_channel_descriptor_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ncs_client.get_notification_channel_descriptor(
+                notification_channel_descriptor_path_inside
+            )
+
+    @staticmethod
+    def test_get_notification_channel_descriptor_outside(
+        ncs_client, notification_channel_descriptor_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ncs_client.get_notification_channel_descriptor(
+                notification_channel_descriptor_path_outside
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+
+@pytest.fixture(scope="module")
+def ucc_client():
+    return monitoring_v3.UptimeCheckServiceClient()
+
+
+@pytest.fixture(scope="module")
+def uptime_check_config_path_inside(ucc_client):
+    uptime_check_config_id = "mock_notification_channel"
+    return ucc_client.uptime_check_config_path(
+        vpcsc_config.project_inside, uptime_check_config_id
+    )
+
+
+@pytest.fixture(scope="module")
+def uptime_check_config_path_outside(ucc_client):
+    uptime_check_config_id = "mock_notification_channel"
+    return ucc_client.uptime_check_config_path(
+        vpcsc_config.project_outside, uptime_check_config_id
+    )
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+class TestCRUDUptimeCheckConfigs(object):
+    @staticmethod
+    def test_create_uptime_check_config_inside(ucc_client, name_inside):
+        with pytest.raises(exceptions.InvalidArgument):  # no perms issue
+            ucc_client.create_uptime_check_config(name_inside, {})
+
+    @staticmethod
+    def test_create_uptime_check_config_outside(ucc_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ucc_client.create_uptime_check_config(name_outside, {})
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_list_uptime_check_configs_inside(ucc_client, name_inside):
+        list(ucc_client.list_uptime_check_configs(name_inside))
+
+    @staticmethod
+    def test_list_uptime_check_configs_outside(ucc_client, name_outside):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            list(ucc_client.list_uptime_check_configs(name_outside))
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_get_uptime_check_config_inside(
+        ucc_client, uptime_check_config_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ucc_client.get_uptime_check_config(uptime_check_config_path_inside)
+
+    @staticmethod
+    def test_get_uptime_check_config_outside(
+        ucc_client, uptime_check_config_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ucc_client.get_uptime_check_config(uptime_check_config_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_update_uptime_check_config_inside(
+        ucc_client, uptime_check_config_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ucc_client.update_uptime_check_config({"name": uptime_check_config_path_inside})
+
+    @staticmethod
+    def test_update_uptime_check_config_outside(
+        ucc_client, uptime_check_config_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ucc_client.update_uptime_check_config(
+                {"name": uptime_check_config_path_outside}
+            )
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
+
+    @staticmethod
+    def test_delete_uptime_check_config_inside(
+        ucc_client, uptime_check_config_path_inside
+    ):
+        with pytest.raises(exceptions.NotFound):  # no perms issue
+            ucc_client.delete_uptime_check_config(uptime_check_config_path_inside)
+
+    @staticmethod
+    def test_delete_uptime_check_config_outside(
+        ucc_client, uptime_check_config_path_outside
+    ):
+        with pytest.raises(exceptions.PermissionDenied) as exc:
+            ucc_client.delete_uptime_check_config(uptime_check_config_path_outside)
+
+        assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
