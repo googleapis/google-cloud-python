@@ -11,99 +11,71 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""System tests for VideoIntelligence API."""
+"""Verify videointelligence requests are blocked by VPCSC policy."""
 
 import json
 import os
 import requests
-import unittest
 
 from google.auth.transport import requests as goog_auth_requests
-from google.cloud import videointelligence
 from google.oauth2 import service_account
+import pytest
+
+from test_utils.vpcsc_config import vpcsc_config
 
 CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 CREDENTIALS_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-OUTSIDE_BUCKET = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET")
-INSIDE_BUCKET = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET")
-IS_INSIDE_VPCSC = os.environ.get("GOOGLE_CLOUD_TESTS_IN_VPCSC")
+API_ENDPOINT_URL = "https://videointelligence.googleapis.com/v1/videos:annotate"
 
 
-def get_access_token():
-    """Returns an access token.
-
-  Generates access tokens using the provided service account key file.
-  """
+@pytest.fixture(scope="module")
+def access_token():
+    """Generate access token using the provided service account key file."""
     creds = service_account.Credentials.from_service_account_file(
         CREDENTIALS_FILE, scopes=[CLOUD_PLATFORM_SCOPE]
     )
     with requests.Session() as session:
         creds.refresh(goog_auth_requests.Request(session=session))
+
     return creds.token
 
 
-class VideoIntelligenceSystemTestBase(unittest.TestCase):
-    client = None
+@pytest.fixture(scope="module")
+def headers(access_token):
+    return {
+        "Authorization": "Bearer " + access_token,
+        "Content-Type": "application/json",
+    }
 
 
-def setUpModule():
-    VideoIntelligenceSystemTestBase.client = (
-        videointelligence.VideoIntelligenceServiceClient()
-    )
-
-
-@unittest.skipUnless(
-    CREDENTIALS_FILE, "GOOGLE_APPLICATION_CREDENTIALS not set in environment."
-)
-class TestVideoIntelligenceClientVpcSc(VideoIntelligenceSystemTestBase):
-    # Tests to verify VideoIntelligence service requests blocked when trying to
-    # access resources outside of a secure perimeter.
-    def setUp(self):
-        VideoIntelligenceSystemTestBase.setUp(self)
-        # api-endpoint
-        self.url = "https://videointelligence.googleapis.com/v1/videos:annotate"
-        self.body = {"features": ["LABEL_DETECTION"], "location_id": "us-west1"}
-
-    @unittest.skipUnless(
-        OUTSIDE_BUCKET,
-        "GOOGLE_CLOUD_TESTS_VPCSC_OUTSIDE_PERIMETER_BUCKET not set in environment.",
-    )
-    @unittest.skipUnless(
-        IS_INSIDE_VPCSC, "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment."
-    )
-    def test_outside_perimeter_blocked(self):
-        headers = {
-            "Authorization": "Bearer " + get_access_token(),
-            "Content-Type": "application/json",
+def _make_body(bucket_name):
+    return json.dumps(
+        {
+            "features": ["LABEL_DETECTION"],
+            "location_id": "us-west1",
+            "input_uri": "gs://{}/cat.mp4".format(bucket_name),
         }
-        self.body["input_uri"] = "gs://{bucket}/cat.mp4".format(bucket=OUTSIDE_BUCKET)
-        r = requests.post(url=self.url, data=json.dumps(self.body), headers=headers)
-        resp = json.loads(r.text)
-        print(resp)
-        # Assert it returns permission denied from VPC SC
-        self.assertEqual(resp["error"]["code"], 403)
-        self.assertEqual(resp["error"]["status"], "PERMISSION_DENIED")
-
-    @unittest.skipUnless(
-        INSIDE_BUCKET,
-        "GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET not set in environment.",
     )
-    @unittest.skipUnless(
-        IS_INSIDE_VPCSC, "GOOGLE_CLOUD_TESTS_IN_VPCSC not set in environment."
-    )
-    def test_inside_perimeter_allowed(self):
-        headers = {
-            "Authorization": "Bearer " + get_access_token(),
-            "Content-Type": "application/json",
-        }
-        self.body["input_uri"] = "gs://{bucket}/cat.mp4".format(bucket=INSIDE_BUCKET)
-        r = requests.post(url=self.url, data=json.dumps(self.body), headers=headers)
-        operation = json.loads(r.text)
-        print(operation)
 
-        get_op_url = "https://videointelligence.googleapis.com/v1/" + operation["name"]
-        get_op = requests.get(url=get_op_url, headers=headers)
-        get_op_resp = json.loads(get_op.text)
-        print(get_op_resp)
-        # Assert that we do not get an error.
-        self.assertEqual(get_op_resp["name"], operation["name"])
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_outside_perimeter_blocked(headers):
+    body = _make_body(bucket_name=vpcsc_config.bucket_outside)
+
+    response = requests.post(url=API_ENDPOINT_URL, data=body, headers=headers)
+
+    assert response.json["error"]["code"] == 403
+    assert response.json["error"]["status"] == "PERMISSION_DENIED"
+
+
+@vpcsc_config.skip_unless_inside_vpcsc
+def test_inside_perimeter_allowed(headers):
+    body = _make_body(bucket_name=vpcsc_config.inside_bucket)
+
+    response = requests.post(url=API_ENDPOINT_URL, data=body, headers=headers)
+
+    operation = response.json
+    op_url = "https://videointelligence.googleapis.com/v1/{}".format(operation["name"])
+    op_response = requests.get(url=op_url, headers=headers)
+    # Assert that we do not get an error.
+    assert op_response.json["name"] == operation["name"]
