@@ -13,16 +13,12 @@
 Fix TransactionPingingPool to stop thowing ''NoneType' object is not callable' error. ([#9609](https://github.com/googleapis/google-cloud-python/pull/9609))
 Return sessions from pool in LIFO order. ([#9454](https://github.com/googleapis/google-cloud-python/pull/9454))
 
-### New Features
-
-### Dependencies
-
 ### Documentation
 - Add Python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
-- Update description of the timeout_secs parameter. ([#9381](https://github.com/googleapis/google-cloud-python/pull/9381))
+- Update description of the `timeout_secs` parameter. ([#9381](https://github.com/googleapis/google-cloud-python/pull/9381))
 
 ### Internal / Testing Changes
-- Harden 'test_transaction_batch_update*' systests against partial success + abort. ([#9579](https://github.com/googleapis/google-cloud-python/pull/9579))
+- Harden `test_transaction_batch_update*` systests against partial success + abort. ([#9579](https://github.com/googleapis/google-cloud-python/pull/9579))
 
 ## 1.12.0
 
