@@ -643,7 +643,9 @@ class TestCRUDUptimeCheckConfigs(object):
         ucc_client, uptime_check_config_path_inside
     ):
         with pytest.raises(exceptions.NotFound):  # no perms issue
-            ucc_client.update_uptime_check_config({"name": uptime_check_config_path_inside})
+            ucc_client.update_uptime_check_config(
+                {"name": uptime_check_config_path_inside}
+            )
 
     @staticmethod
     def test_update_uptime_check_config_outside(
