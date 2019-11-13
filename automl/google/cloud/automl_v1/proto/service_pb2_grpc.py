@@ -2,6 +2,9 @@
 import grpc
 
 from google.cloud.automl_v1.proto import (
+    annotation_spec_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_annotation__spec__pb2,
+)
+from google.cloud.automl_v1.proto import (
     dataset_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_dataset__pb2,
 )
 from google.cloud.automl_v1.proto import (
@@ -76,6 +79,11 @@ class AutoMlStub(object):
             request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.ExportDataRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
+        self.GetAnnotationSpec = channel.unary_unary(
+            "/google.cloud.automl.v1.AutoMl/GetAnnotationSpec",
+            request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.GetAnnotationSpecRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_annotation__spec__pb2.AnnotationSpec.FromString,
+        )
         self.CreateModel = channel.unary_unary(
             "/google.cloud.automl.v1.AutoMl/CreateModel",
             request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.CreateModelRequest.SerializeToString,
@@ -100,6 +108,21 @@ class AutoMlStub(object):
             "/google.cloud.automl.v1.AutoMl/UpdateModel",
             request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.UpdateModelRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_model__pb2.Model.FromString,
+        )
+        self.DeployModel = channel.unary_unary(
+            "/google.cloud.automl.v1.AutoMl/DeployModel",
+            request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.DeployModelRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.UndeployModel = channel.unary_unary(
+            "/google.cloud.automl.v1.AutoMl/UndeployModel",
+            request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.UndeployModelRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.ExportModel = channel.unary_unary(
+            "/google.cloud.automl.v1.AutoMl/ExportModel",
+            request_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.ExportModelRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.GetModelEvaluation = channel.unary_unary(
             "/google.cloud.automl.v1.AutoMl/GetModelEvaluation",
@@ -185,6 +208,13 @@ class AutoMlServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def GetAnnotationSpec(self, request, context):
+        """Gets an annotation spec.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def CreateModel(self, request, context):
         """Creates a model.
     Returns a Model in the [response][google.longrunning.Operation.response]
@@ -223,6 +253,50 @@ class AutoMlServicer(object):
 
     def UpdateModel(self, request, context):
         """Updates a model.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeployModel(self, request, context):
+        """Deploys a model. If a model is already deployed, deploying it with the
+    same parameters has no effect. Deploying with different parametrs
+    (as e.g. changing
+
+    [node_number][google.cloud.automl.v1.ImageObjectDetectionModelDeploymentMetadata.node_number])
+    will reset the deployment state without pausing the model's availability.
+
+    Only applicable for Text Classification, Image Object Detection; all other
+    domains manage deployment automatically.
+
+    Returns an empty response in the
+    [response][google.longrunning.Operation.response] field when it completes.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def UndeployModel(self, request, context):
+        """Undeploys a model. If the model is not deployed this method has no effect.
+
+    Only applicable for Text Classification, Image Object Detection;
+    all other domains manage deployment automatically.
+
+    Returns an empty response in the
+    [response][google.longrunning.Operation.response] field when it completes.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ExportModel(self, request, context):
+        """Exports a trained, "export-able", model to a user specified Google Cloud
+    Storage location. A model is considered export-able if and only if it has
+    an export format defined for it in
+    [ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig].
+
+    Returns an empty response in the
+    [response][google.longrunning.Operation.response] field when it completes.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -280,6 +354,11 @@ def add_AutoMlServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.ExportDataRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
+        "GetAnnotationSpec": grpc.unary_unary_rpc_method_handler(
+            servicer.GetAnnotationSpec,
+            request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.GetAnnotationSpecRequest.FromString,
+            response_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_annotation__spec__pb2.AnnotationSpec.SerializeToString,
+        ),
         "CreateModel": grpc.unary_unary_rpc_method_handler(
             servicer.CreateModel,
             request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.CreateModelRequest.FromString,
@@ -304,6 +383,21 @@ def add_AutoMlServicer_to_server(servicer, server):
             servicer.UpdateModel,
             request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.UpdateModelRequest.FromString,
             response_serializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_model__pb2.Model.SerializeToString,
+        ),
+        "DeployModel": grpc.unary_unary_rpc_method_handler(
+            servicer.DeployModel,
+            request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.DeployModelRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "UndeployModel": grpc.unary_unary_rpc_method_handler(
+            servicer.UndeployModel,
+            request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.UndeployModelRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "ExportModel": grpc.unary_unary_rpc_method_handler(
+            servicer.ExportModel,
+            request_deserializer=google_dot_cloud_dot_automl__v1_dot_proto_dot_service__pb2.ExportModelRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetModelEvaluation": grpc.unary_unary_rpc_method_handler(
             servicer.GetModelEvaluation,

@@ -15,10 +15,10 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.automl_v1beta1.proto import (
     classification_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2,
 )
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -29,11 +29,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1B\tTextProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto\x1a\x1cgoogle/api/annotations.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"!\n\x1fTextClassificationModelMetadata"\x1f\n\x1dTextExtractionDatasetMetadata"\x1d\n\x1bTextExtractionModelMetadata"5\n\x1cTextSentimentDatasetMetadata\x12\x15\n\rsentiment_max\x18\x01 \x01(\x05"\x1c\n\x1aTextSentimentModelMetadataB\xb0\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n,google/cloud/automl_v1beta1/proto/text.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x36google/cloud/automl_v1beta1/proto/classification.proto"q\n!TextClassificationDatasetMetadata\x12L\n\x13\x63lassification_type\x18\x01 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"o\n\x1fTextClassificationModelMetadata\x12L\n\x13\x63lassification_type\x18\x03 \x01(\x0e\x32/.google.cloud.automl.v1beta1.ClassificationType"\x1f\n\x1dTextExtractionDatasetMetadata"\x1d\n\x1bTextExtractionModelMetadata"5\n\x1cTextSentimentDatasetMetadata\x12\x15\n\rsentiment_max\x18\x01 \x01(\x05"\x1c\n\x1aTextSentimentModelMetadataB\xb0\x01\n\x1f\x63om.google.cloud.automl.v1beta1B\tTextProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
-        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2.DESCRIPTOR,
     ],
 )
 
@@ -83,7 +83,26 @@ _TEXTCLASSIFICATIONMODELMETADATA = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
-    fields=[],
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="classification_type",
+            full_name="google.cloud.automl.v1beta1.TextClassificationModelMetadata.classification_type",
+            index=0,
+            number=3,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
     extensions=[],
     nested_types=[],
     enum_types=[],
@@ -93,7 +112,7 @@ _TEXTCLASSIFICATIONMODELMETADATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=278,
-    serialized_end=311,
+    serialized_end=389,
 )
 
 
@@ -112,8 +131,8 @@ _TEXTEXTRACTIONDATASETMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=313,
-    serialized_end=344,
+    serialized_start=391,
+    serialized_end=422,
 )
 
 
@@ -132,8 +151,8 @@ _TEXTEXTRACTIONMODELMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=346,
-    serialized_end=375,
+    serialized_start=424,
+    serialized_end=453,
 )
 
 
@@ -171,8 +190,8 @@ _TEXTSENTIMENTDATASETMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=377,
-    serialized_end=430,
+    serialized_start=455,
+    serialized_end=508,
 )
 
 
@@ -191,11 +210,16 @@ _TEXTSENTIMENTMODELMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=432,
-    serialized_end=460,
+    serialized_start=510,
+    serialized_end=538,
 )
 
 _TEXTCLASSIFICATIONDATASETMETADATA.fields_by_name[
+    "classification_type"
+].enum_type = (
+    google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._CLASSIFICATIONTYPE
+)
+_TEXTCLASSIFICATIONMODELMETADATA.fields_by_name[
     "classification_type"
 ].enum_type = (
     google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_classification__pb2._CLASSIFICATIONTYPE
@@ -245,6 +269,12 @@ TextClassificationModelMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTCLASSIFICATIONMODELMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.text_pb2",
         __doc__="""Model metadata that is specific to text classification.
+  
+  
+  Attributes:
+      classification_type:
+          Output only. Classification type of the dataset used to train
+          this model.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.TextClassificationModelMetadata)
     ),

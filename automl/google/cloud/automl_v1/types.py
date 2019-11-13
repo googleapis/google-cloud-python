@@ -21,14 +21,23 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.automl_v1.proto import annotation_payload_pb2
+from google.cloud.automl_v1.proto import annotation_spec_pb2
+from google.cloud.automl_v1.proto import classification_pb2
 from google.cloud.automl_v1.proto import data_items_pb2
 from google.cloud.automl_v1.proto import dataset_pb2
+from google.cloud.automl_v1.proto import detection_pb2
+from google.cloud.automl_v1.proto import geometry_pb2
+from google.cloud.automl_v1.proto import image_pb2
 from google.cloud.automl_v1.proto import io_pb2
 from google.cloud.automl_v1.proto import model_evaluation_pb2
 from google.cloud.automl_v1.proto import model_pb2
 from google.cloud.automl_v1.proto import operations_pb2 as proto_operations_pb2
 from google.cloud.automl_v1.proto import prediction_service_pb2
 from google.cloud.automl_v1.proto import service_pb2
+from google.cloud.automl_v1.proto import text_extraction_pb2
+from google.cloud.automl_v1.proto import text_pb2
+from google.cloud.automl_v1.proto import text_segment_pb2
+from google.cloud.automl_v1.proto import text_sentiment_pb2
 from google.cloud.automl_v1.proto import translation_pb2
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import any_pb2
@@ -47,14 +56,23 @@ _shared_modules = [
 
 _local_modules = [
     annotation_payload_pb2,
+    annotation_spec_pb2,
+    classification_pb2,
     data_items_pb2,
     dataset_pb2,
+    detection_pb2,
+    geometry_pb2,
+    image_pb2,
     io_pb2,
     model_evaluation_pb2,
     model_pb2,
     proto_operations_pb2,
     prediction_service_pb2,
     service_pb2,
+    text_extraction_pb2,
+    text_pb2,
+    text_segment_pb2,
+    text_sentiment_pb2,
     translation_pb2,
 ]
 

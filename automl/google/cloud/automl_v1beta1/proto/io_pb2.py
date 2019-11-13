@@ -1046,7 +1046,74 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      are supported now, and each document may be up to 2MB large.
      Currently, annotations on documents cannot be specified at import.
      Three sample CSV rows: TRAIN,gs://folder/file1.jsonl
-     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl 
+     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl Sample
+     in-line JSON Lines file for entity extraction (presented here with
+     artificial line breaks, but the only actual line break is denoted by
+     ``\\n``).: { "document": { "document\_text": {"content": "dog
+     cat"} "layout": [ { "text\_segment": { "start\_offset": 0,
+     "end\_offset": 3, }, "page\_number": 1, "bounding\_poly": {
+     "normalized\_vertices": [ {"x": 0.1, "y": 0.1}, {"x": 0.1, "y": 0.3},
+     {"x": 0.3, "y": 0.3}, {"x": 0.3, "y": 0.1}, ], },
+     "text\_segment\_type": TOKEN, }, { "text\_segment": {
+     "start\_offset": 4, "end\_offset": 7, }, "page\_number": 1,
+     "bounding\_poly": { "normalized\_vertices": [ {"x": 0.4, "y": 0.1},
+     {"x": 0.4, "y": 0.3}, {"x": 0.8, "y": 0.3}, {"x": 0.8, "y": 0.1}, ],
+     }, "text\_segment\_type": TOKEN, }
+  
+     ::
+  
+               ],
+               "document_dimensions": {
+                 "width": 8.27,
+                 "height": 11.69,
+                 "unit": INCH,
+               }
+               "page_count": 1,
+             },
+             "annotations": [
+               {
+                 "display_name": "animal",
+                 "text_extraction": {"text_segment": {"start_offset": 0,
+                 "end_offset": 3}}
+               },
+               {
+                 "display_name": "animal",
+                 "text_extraction": {"text_segment": {"start_offset": 4,
+                 "end_offset": 7}}
+               }
+             ],
+           }\\n
+           {
+              "text_snippet": {
+                "content": "This dog is good."
+              },
+              "annotations": [
+                {
+                  "display_name": "animal",
+                  "text_extraction": {
+                    "text_segment": {"start_offset": 5, "end_offset": 8}
+                  }
+                }
+              ]
+           }
+         Sample document JSON Lines file (presented here with artificial line
+         breaks, but the only actual line break is denoted by \n).:
+           {
+             "document": {
+               "input_config": {
+                 "gcs_source": { "input_uris": [ "gs://folder/document1.pdf" ]
+                 }
+               }
+             }
+           }\\n
+           {
+             "document": {
+               "input_config": {
+                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
+                 }
+               }
+             }
+           }
   
   -  For Text Classification: CSV file(s) with each line in format:
      ML\_USE,(TEXT\_SNIPPET \| GCS\_FILE\_PATH),LABEL,LABEL,...
@@ -1247,7 +1314,33 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      contain, per line, a proto that wraps a Document proto with
      input\_config set. Only PDF documents are supported now, and each
      document must be up to 2MB large. Any given .JSONL file must be 100MB
-     or smaller, and no more than 20 files may be given. 
+     or smaller, and no more than 20 files may be given. Sample in-line
+     JSON Lines file (presented here with artificial line breaks, but the
+     only actual line break is denoted by ``\\n``): { "id":
+     "my\_first\_id", "text\_snippet": { "content": "dog car cat"},
+     "text\_features": [ { "text\_segment": {"start\_offset": 4,
+     "end\_offset": 6}, "structural\_type": PARAGRAPH, "bounding\_poly": {
+     "normalized\_vertices": [ {"x": 0.1, "y": 0.1}, {"x": 0.1, "y": 0.3},
+     {"x": 0.3, "y": 0.3}, {"x": 0.3, "y": 0.1}, ] }, } ], }:raw-latex:`\n
+           {
+             "id": "2",
+             "text_snippet": {
+               "content": "An elaborate content",
+               "mime_type": "text/plain"
+             }
+           }` Sample document JSON Lines file (presented here with
+     artificial line breaks, but the only actual line break is denoted by
+     ``\\n``).: { "document": { "input\_config": { "gcs\_source":
+     { "input\_uris": [ "gs://folder/document1.pdf" ] } } }
+     }:raw-latex:`\n
+           {
+             "document": {
+               "input_config": {
+                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
+                 }
+               }
+             }
+           }`
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
@@ -1716,11 +1809,12 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
       gcs_destination:
           The Google Cloud Storage location where the model is to be
           written to. This location may only be set for the following
-          model formats: "tflite", "edgetpu\_tflite", "core\_ml",
-          "docker".  Under the directory given as the destination a new
-          one with name "model-export--", where timestamp is in YYYY-MM-
-          DDThh:mm:ss.sssZ ISO-8601 format, will be created. Inside the
-          model and any of its supporting files will be written.
+          model formats: "tflite", "edgetpu\_tflite",
+          "tf\_saved\_model", "tf\_js", "core\_ml".  Under the directory
+          given as the destination a new one with name "model-export--",
+          where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601
+          format, will be created. Inside the model and any of its
+          supporting files will be written.
       gcr_destination:
           The GCR location where model image is to be pushed to. This
           location may only be set for the following model formats:
@@ -1733,17 +1827,19 @@ ModelExportOutputConfig = _reflection.GeneratedProtocolMessageType(
           listed, it means its models are not exportable):  -  For Image
           Classification mobile-low-latency-1, mobile-versatile-1,
           mobile-high-accuracy-1: "tflite" (default), "edgetpu\_tflite",
-          "tf\_saved\_model", "docker".  -  For Image Classification
-          mobile-core-ml-low-latency-1,    mobile-core-ml-versatile-1,
-          mobile-core-ml-high-accuracy-1:    "core\_ml" (default).
-          Formats description:  -  tflite - Used for Android mobile
-          devices. -  edgetpu\_tflite - Used for `Edge    TPU
+          "tf\_saved\_model", "tf\_js", "docker".  -  For Image
+          Classification mobile-core-ml-low-latency-1,    mobile-core-
+          ml-versatile-1, mobile-core-ml-high-accuracy-1:    "core\_ml"
+          (default). Formats description:  -  tflite - Used for Android
+          mobile devices. -  edgetpu\_tflite - Used for `Edge    TPU
           <https://cloud.google.com/edge-tpu/>`__ devices. -
           tf\_saved\_model - A tensorflow model in SavedModel format. -
-          docker - Used for Docker containers. Use the params field to
-          customize the container. The container is verified to work
-          correctly    on ubuntu 16.04 operating system. See more at
-          [containers  quickstart](https:
+          tf\_js - A `TensorFlow.js <https://www.tensorflow.org/js>`__
+          model    that can be used in the browser and in Node.js using
+          JavaScript. -  docker - Used for Docker containers. Use the
+          params field to    customize the container. The container is
+          verified to work correctly    on ubuntu 16.04 operating
+          system. See more at [containers  quickstart](https:
           //cloud.google.com/vision/automl/docs/containers-gcs-
           quickstart) \* core\_ml - Used for iOS mobile devices.
       params:
