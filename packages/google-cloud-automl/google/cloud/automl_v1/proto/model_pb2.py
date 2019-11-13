@@ -15,6 +15,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
+from google.cloud.automl_v1.proto import (
+    image_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_image__pb2,
+)
+from google.cloud.automl_v1.proto import (
+    text_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_text__pb2,
+)
 from google.cloud.automl_v1.proto import (
     translation_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_translation__pb2,
 )
@@ -27,12 +34,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
+        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoMl\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n(google/cloud/automl_v1/proto/model.proto\x12\x16google.cloud.automl.v1\x1a.google/cloud/automl_v1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x91\x04\n\x05Model\x12V\n\x1atranslation_model_metadata\x18\x0f \x01(\x0b\x32\x30.google.cloud.automl.v1.TranslationModelMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x12\n\ndataset_id\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12G\n\x10\x64\x65ployment_state\x18\x08 \x01(\x0e\x32-.google.cloud.automl.v1.Model.DeploymentState\x12\x39\n\x06labels\x18" \x03(\x0b\x32).google.cloud.automl.v1.Model.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"Q\n\x0f\x44\x65ploymentState\x12 \n\x1c\x44\x45PLOYMENT_STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44\x45PLOYED\x10\x01\x12\x0e\n\nUNDEPLOYED\x10\x02\x42\x10\n\x0emodel_metadataB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n(google/cloud/automl_v1/proto/model.proto\x12\x16google.cloud.automl.v1\x1a\x19google/api/resource.proto\x1a(google/cloud/automl_v1/proto/image.proto\x1a\'google/cloud/automl_v1/proto/text.proto\x1a.google/cloud/automl_v1/proto/translation.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xfa\x08\n\x05Model\x12V\n\x1atranslation_model_metadata\x18\x0f \x01(\x0b\x32\x30.google.cloud.automl.v1.TranslationModelMetadataH\x00\x12g\n#image_classification_model_metadata\x18\r \x01(\x0b\x32\x38.google.cloud.automl.v1.ImageClassificationModelMetadataH\x00\x12\x65\n"text_classification_model_metadata\x18\x0e \x01(\x0b\x32\x37.google.cloud.automl.v1.TextClassificationModelMetadataH\x00\x12j\n%image_object_detection_model_metadata\x18\x14 \x01(\x0b\x32\x39.google.cloud.automl.v1.ImageObjectDetectionModelMetadataH\x00\x12]\n\x1etext_extraction_model_metadata\x18\x13 \x01(\x0b\x32\x33.google.cloud.automl.v1.TextExtractionModelMetadataH\x00\x12[\n\x1dtext_sentiment_model_metadata\x18\x16 \x01(\x0b\x32\x32.google.cloud.automl.v1.TextSentimentModelMetadataH\x00\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x12\n\ndataset_id\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12G\n\x10\x64\x65ployment_state\x18\x08 \x01(\x0e\x32-.google.cloud.automl.v1.Model.DeploymentState\x12\x0c\n\x04\x65tag\x18\n \x01(\t\x12\x39\n\x06labels\x18" \x03(\x0b\x32).google.cloud.automl.v1.Model.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"Q\n\x0f\x44\x65ploymentState\x12 \n\x1c\x44\x45PLOYMENT_STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x44\x45PLOYED\x10\x01\x12\x0e\n\nUNDEPLOYED\x10\x02:a\xea\x41^\n\x1b\x61utoml.googleapis.com/Model\x12?projects/{project_id}/locations/{location_id}/models/{model_id}B\x10\n\x0emodel_metadataB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoMl\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1_dot_proto_dot_image__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_automl__v1_dot_proto_dot_text__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_translation__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -62,8 +72,8 @@ _MODEL_DEPLOYMENTSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=610,
-    serialized_end=691,
+    serialized_start=1238,
+    serialized_end=1319,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_DEPLOYMENTSTATE)
 
@@ -120,8 +130,8 @@ _MODEL_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=563,
-    serialized_end=608,
+    serialized_start=1191,
+    serialized_end=1236,
 )
 
 _MODEL = _descriptor.Descriptor(
@@ -150,9 +160,99 @@ _MODEL = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="image_classification_model_metadata",
+            full_name="google.cloud.automl.v1.Model.image_classification_model_metadata",
+            index=1,
+            number=13,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_classification_model_metadata",
+            full_name="google.cloud.automl.v1.Model.text_classification_model_metadata",
+            index=2,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="image_object_detection_model_metadata",
+            full_name="google.cloud.automl.v1.Model.image_object_detection_model_metadata",
+            index=3,
+            number=20,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_extraction_model_metadata",
+            full_name="google.cloud.automl.v1.Model.text_extraction_model_metadata",
+            index=4,
+            number=19,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="text_sentiment_model_metadata",
+            full_name="google.cloud.automl.v1.Model.text_sentiment_model_metadata",
+            index=5,
+            number=22,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="name",
             full_name="google.cloud.automl.v1.Model.name",
-            index=1,
+            index=6,
             number=1,
             type=9,
             cpp_type=9,
@@ -170,7 +270,7 @@ _MODEL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="display_name",
             full_name="google.cloud.automl.v1.Model.display_name",
-            index=2,
+            index=7,
             number=2,
             type=9,
             cpp_type=9,
@@ -188,7 +288,7 @@ _MODEL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="dataset_id",
             full_name="google.cloud.automl.v1.Model.dataset_id",
-            index=3,
+            index=8,
             number=3,
             type=9,
             cpp_type=9,
@@ -206,7 +306,7 @@ _MODEL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="create_time",
             full_name="google.cloud.automl.v1.Model.create_time",
-            index=4,
+            index=9,
             number=7,
             type=11,
             cpp_type=10,
@@ -224,7 +324,7 @@ _MODEL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="update_time",
             full_name="google.cloud.automl.v1.Model.update_time",
-            index=5,
+            index=10,
             number=11,
             type=11,
             cpp_type=10,
@@ -242,7 +342,7 @@ _MODEL = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="deployment_state",
             full_name="google.cloud.automl.v1.Model.deployment_state",
-            index=6,
+            index=11,
             number=8,
             type=14,
             cpp_type=8,
@@ -258,9 +358,27 @@ _MODEL = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="etag",
+            full_name="google.cloud.automl.v1.Model.etag",
+            index=12,
+            number=10,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="labels",
             full_name="google.cloud.automl.v1.Model.labels",
-            index=7,
+            index=13,
             number=34,
             type=11,
             cpp_type=10,
@@ -279,7 +397,9 @@ _MODEL = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_MODEL_LABELSENTRY],
     enum_types=[_MODEL_DEPLOYMENTSTATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A^\n\033automl.googleapis.com/Model\022?projects/{project_id}/locations/{location_id}/models/{model_id}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -292,8 +412,8 @@ _MODEL = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=180,
-    serialized_end=709,
+    serialized_start=290,
+    serialized_end=1436,
 )
 
 _MODEL_LABELSENTRY.containing_type = _MODEL
@@ -301,6 +421,31 @@ _MODEL.fields_by_name[
     "translation_model_metadata"
 ].message_type = (
     google_dot_cloud_dot_automl__v1_dot_proto_dot_translation__pb2._TRANSLATIONMODELMETADATA
+)
+_MODEL.fields_by_name[
+    "image_classification_model_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1_dot_proto_dot_image__pb2._IMAGECLASSIFICATIONMODELMETADATA
+)
+_MODEL.fields_by_name[
+    "text_classification_model_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1_dot_proto_dot_text__pb2._TEXTCLASSIFICATIONMODELMETADATA
+)
+_MODEL.fields_by_name[
+    "image_object_detection_model_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1_dot_proto_dot_image__pb2._IMAGEOBJECTDETECTIONMODELMETADATA
+)
+_MODEL.fields_by_name[
+    "text_extraction_model_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1_dot_proto_dot_text__pb2._TEXTEXTRACTIONMODELMETADATA
+)
+_MODEL.fields_by_name[
+    "text_sentiment_model_metadata"
+].message_type = (
+    google_dot_cloud_dot_automl__v1_dot_proto_dot_text__pb2._TEXTSENTIMENTMODELMETADATA
 )
 _MODEL.fields_by_name[
     "create_time"
@@ -316,6 +461,36 @@ _MODEL.oneofs_by_name["model_metadata"].fields.append(
 )
 _MODEL.fields_by_name[
     "translation_model_metadata"
+].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
+_MODEL.oneofs_by_name["model_metadata"].fields.append(
+    _MODEL.fields_by_name["image_classification_model_metadata"]
+)
+_MODEL.fields_by_name[
+    "image_classification_model_metadata"
+].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
+_MODEL.oneofs_by_name["model_metadata"].fields.append(
+    _MODEL.fields_by_name["text_classification_model_metadata"]
+)
+_MODEL.fields_by_name[
+    "text_classification_model_metadata"
+].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
+_MODEL.oneofs_by_name["model_metadata"].fields.append(
+    _MODEL.fields_by_name["image_object_detection_model_metadata"]
+)
+_MODEL.fields_by_name[
+    "image_object_detection_model_metadata"
+].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
+_MODEL.oneofs_by_name["model_metadata"].fields.append(
+    _MODEL.fields_by_name["text_extraction_model_metadata"]
+)
+_MODEL.fields_by_name[
+    "text_extraction_model_metadata"
+].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
+_MODEL.oneofs_by_name["model_metadata"].fields.append(
+    _MODEL.fields_by_name["text_sentiment_model_metadata"]
+)
+_MODEL.fields_by_name[
+    "text_sentiment_model_metadata"
 ].containing_oneof = _MODEL.oneofs_by_name["model_metadata"]
 DESCRIPTOR.message_types_by_name["Model"] = _MODEL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -345,6 +520,16 @@ Model = _reflection.GeneratedProtocolMessageType(
           train the model.
       translation_model_metadata:
           Metadata for translation models.
+      image_classification_model_metadata:
+          Metadata for image classification models.
+      text_classification_model_metadata:
+          Metadata for text classification models.
+      image_object_detection_model_metadata:
+          Metadata for image object detection models.
+      text_extraction_model_metadata:
+          Metadata for text extraction models.
+      text_sentiment_model_metadata:
+          Metadata for text sentiment models.
       name:
           Output only. Resource name of the model. Format: ``projects/{p
           roject_id}/locations/{location_id}/models/{model_id}``
@@ -365,6 +550,9 @@ Model = _reflection.GeneratedProtocolMessageType(
       deployment_state:
           Output only. Deployment state of the model. A model can only
           serve prediction requests after it gets deployed.
+      etag:
+          Used to perform a consistent read-modify-write updates. If not
+          set, a blind "overwrite" update happens.
       labels:
           Optional. The labels with user-defined metadata to organize
           your model.  Label keys and values can be no longer than 64
@@ -384,4 +572,5 @@ _sym_db.RegisterMessage(Model.LabelsEntry)
 
 DESCRIPTOR._options = None
 _MODEL_LABELSENTRY._options = None
+_MODEL._options = None
 # @@protoc_insertion_point(module_scope)
