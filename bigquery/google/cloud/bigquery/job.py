@@ -1141,7 +1141,7 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def hive_partitioning(self):
-        """Optional[:class:`~.external_config.HivePartitioningOptions`]: When set, \
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: [Beta] When set, \
         it configures hive partitioning support.
 
         .. note::

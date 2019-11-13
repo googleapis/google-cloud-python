@@ -565,7 +565,11 @@ _OPTION_CLASSES = (BigtableOptions, CSVOptions, GoogleSheetsOptions)
 
 
 class HivePartitioningOptions(object):
-    """Options that configure hive partitioning.
+    """[Beta] Options that configure hive partitioning.
+
+    .. note::
+        **Experimental**. This feature is experimental and might change or
+        have limited support.
 
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions
@@ -692,8 +696,12 @@ class ExternalConfig(object):
 
     @property
     def hive_partitioning(self):
-        """Optional[:class:`~.external_config.HivePartitioningOptions`]: When set, \
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: [Beta] When set, \
         it configures hive partitioning support.
+
+        .. note::
+            **Experimental**. This feature is experimental and might change or
+            have limited support.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.hive_partitioning_options
