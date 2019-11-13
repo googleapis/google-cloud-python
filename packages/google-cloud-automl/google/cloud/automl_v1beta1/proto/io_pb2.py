@@ -1046,74 +1046,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
      are supported now, and each document may be up to 2MB large.
      Currently, annotations on documents cannot be specified at import.
      Three sample CSV rows: TRAIN,gs://folder/file1.jsonl
-     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl Sample
-     in-line JSON Lines file for entity extraction (presented here with
-     artificial line breaks, but the only actual line break is denoted by
-     ``\\n``).: { "document": { "document\_text": {"content": "dog
-     cat"} "layout": [ { "text\_segment": { "start\_offset": 0,
-     "end\_offset": 3, }, "page\_number": 1, "bounding\_poly": {
-     "normalized\_vertices": [ {"x": 0.1, "y": 0.1}, {"x": 0.1, "y": 0.3},
-     {"x": 0.3, "y": 0.3}, {"x": 0.3, "y": 0.1}, ], },
-     "text\_segment\_type": TOKEN, }, { "text\_segment": {
-     "start\_offset": 4, "end\_offset": 7, }, "page\_number": 1,
-     "bounding\_poly": { "normalized\_vertices": [ {"x": 0.4, "y": 0.1},
-     {"x": 0.4, "y": 0.3}, {"x": 0.8, "y": 0.3}, {"x": 0.8, "y": 0.1}, ],
-     }, "text\_segment\_type": TOKEN, }
-  
-     ::
-  
-               ],
-               "document_dimensions": {
-                 "width": 8.27,
-                 "height": 11.69,
-                 "unit": INCH,
-               }
-               "page_count": 1,
-             },
-             "annotations": [
-               {
-                 "display_name": "animal",
-                 "text_extraction": {"text_segment": {"start_offset": 0,
-                 "end_offset": 3}}
-               },
-               {
-                 "display_name": "animal",
-                 "text_extraction": {"text_segment": {"start_offset": 4,
-                 "end_offset": 7}}
-               }
-             ],
-           }\\n
-           {
-              "text_snippet": {
-                "content": "This dog is good."
-              },
-              "annotations": [
-                {
-                  "display_name": "animal",
-                  "text_extraction": {
-                    "text_segment": {"start_offset": 5, "end_offset": 8}
-                  }
-                }
-              ]
-           }
-         Sample document JSON Lines file (presented here with artificial line
-         breaks, but the only actual line break is denoted by \n).:
-           {
-             "document": {
-               "input_config": {
-                 "gcs_source": { "input_uris": [ "gs://folder/document1.pdf" ]
-                 }
-               }
-             }
-           }\\n
-           {
-             "document": {
-               "input_config": {
-                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
-                 }
-               }
-             }
-           }
+     VALIDATE,gs://folder/file2.jsonl TEST,gs://folder/file3.jsonl 
   
   -  For Text Classification: CSV file(s) with each line in format:
      ML\_USE,(TEXT\_SNIPPET \| GCS\_FILE\_PATH),LABEL,LABEL,...
@@ -1314,33 +1247,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
      contain, per line, a proto that wraps a Document proto with
      input\_config set. Only PDF documents are supported now, and each
      document must be up to 2MB large. Any given .JSONL file must be 100MB
-     or smaller, and no more than 20 files may be given. Sample in-line
-     JSON Lines file (presented here with artificial line breaks, but the
-     only actual line break is denoted by ``\\n``): { "id":
-     "my\_first\_id", "text\_snippet": { "content": "dog car cat"},
-     "text\_features": [ { "text\_segment": {"start\_offset": 4,
-     "end\_offset": 6}, "structural\_type": PARAGRAPH, "bounding\_poly": {
-     "normalized\_vertices": [ {"x": 0.1, "y": 0.1}, {"x": 0.1, "y": 0.3},
-     {"x": 0.3, "y": 0.3}, {"x": 0.3, "y": 0.1}, ] }, } ], }:raw-latex:`\n
-           {
-             "id": "2",
-             "text_snippet": {
-               "content": "An elaborate content",
-               "mime_type": "text/plain"
-             }
-           }` Sample document JSON Lines file (presented here with
-     artificial line breaks, but the only actual line break is denoted by
-     ``\\n``).: { "document": { "input\_config": { "gcs\_source":
-     { "input\_uris": [ "gs://folder/document1.pdf" ] } } }
-     }:raw-latex:`\n
-           {
-             "document": {
-               "input_config": {
-                 "gcs_source": { "input_uris": [ "gs://folder/document2.pdf" ]
-                 }
-               }
-             }
-           }`
+     or smaller, and no more than 20 files may be given. 
   
   -  For Tables: Either
      [gcs\_source][google.cloud.automl.v1beta1.InputConfig.gcs\_source] or
