@@ -233,8 +233,8 @@ class Query(object):
             field_path (str): A field path (``.``-delimited list of
                 field names) for the field to filter on.
             op_string (str): A comparison operation in the form of a string.
-                Acceptable values are ``<``, ``<=``, ``==``, ``>=``
-                and ``>``.
+                Acceptable values are ``<``, ``<=``, ``==``, ``>=``, ``>``,
+                ``in``, ``array_contains`` and ``array_contains_any``.
             value (Any): The value to compare the field against in the filter.
                 If ``value`` is :data:`None` or a NaN, then ``==`` is the only
                 allowed operation.
