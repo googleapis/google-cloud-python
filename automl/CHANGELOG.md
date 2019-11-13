@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.8.0
+
+11-13-2019 13:44 PST
+
+### Implementation Changes
+- Fix uploading pandas dataframe to AutoML Tables. ([#9647](https://github.com/googleapis/google-cloud-python/pull/9647))
+
+### New Features
+- Add support for image classification, image object detection, text classification, text extraction. (via synth). ([#9628](https://github.com/googleapis/google-cloud-python/pull/9628))
+- Add `batch_predict`. (via synth). ([#9628](https://github.com/googleapis/google-cloud-python/pull/9628))
+- Add `deploy_model`, `undeploy_model`, `export_model`. (via synth). ([#9628](https://github.com/googleapis/google-cloud-python/pull/9628))
+- Add annotation specs (via synth). ([#9628](https://github.com/googleapis/google-cloud-python/pull/9628))
+- Expose `disable_early_stopping` option for `create_model`. ([#9779](https://github.com/googleapis/google-cloud-python/pull/9779))
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
+### Internal / Testing Changes
+- Normalize VPCSC configuration in systests. ([#9607](https://github.com/googleapis/google-cloud-python/pull/9607))
+- Fix docstring formatting. ([#9793](https://github.com/googleapis/google-cloud-python/pull/9793))
+
 ## 0.7.1
 
 10-29-2019 13:45 PDT
