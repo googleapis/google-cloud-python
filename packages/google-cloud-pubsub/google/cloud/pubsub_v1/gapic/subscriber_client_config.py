@@ -4,7 +4,13 @@ config = {
             "retry_codes": {
                 "idempotent": ["ABORTED", "UNAVAILABLE", "UNKNOWN"],
                 "non_idempotent": ["UNAVAILABLE"],
-                "none": [],
+                "streaming_pull": [
+                    "ABORTED",
+                    "DEADLINE_EXCEEDED",
+                    "INTERNAL",
+                    "RESOURCE_EXHAUSTED",
+                    "UNAVAILABLE",
+                ],
             },
             "retry_params": {
                 "default": {
@@ -78,7 +84,7 @@ config = {
                 },
                 "StreamingPull": {
                     "timeout_millis": 900000,
-                    "retry_codes_name": "none",
+                    "retry_codes_name": "streaming_pull",
                     "retry_params_name": "streaming_messaging",
                 },
                 "ModifyPushConfig": {

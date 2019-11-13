@@ -31,8 +31,8 @@ config = {
                     "max_retry_delay_millis": 60000,
                     "initial_rpc_timeout_millis": 5000,
                     "rpc_timeout_multiplier": 1.3,
-                    "max_rpc_timeout_millis": 600000,
-                    "total_timeout_millis": 600000,
+                    "max_rpc_timeout_millis": 60000,
+                    "total_timeout_millis": 60000,
                 },
             },
             "methods": {
@@ -51,9 +51,9 @@ config = {
                     "retry_codes_name": "publish",
                     "retry_params_name": "messaging",
                     "bundling": {
-                        "element_count_threshold": 10,
+                        "element_count_threshold": 100,
                         "element_count_limit": 1000,
-                        "request_byte_threshold": 1024,
+                        "request_byte_threshold": 1048576,
                         "request_byte_limit": 10485760,
                         "delay_threshold_millis": 10,
                     },
