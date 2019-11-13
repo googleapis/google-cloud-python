@@ -16,8 +16,9 @@ from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    extract_connection_params, parse_spanner_url, reINSTANCE_CONFIG,
-    validate_instance_config,
+    classify_stmt, extract_connection_params, parse_spanner_url,
+    reINSTANCE_CONFIG, validate_instance_config,
+    STMT_DDL, STMT_NON_UPDATING
 )
 
 
@@ -160,3 +161,27 @@ class ParseUtilsTests(TestCase):
             config, want_err = tt
             got = validate_instance_config(config)
             self.assertEqual(got, want_err, "expected '%s' to error" % config)
+
+    def test_classify_stmt(self):
+        cases = [
+                ('SELECT 1', STMT_NON_UPDATING,),
+                ('SELECT s.SongName FROM Songs AS s', STMT_NON_UPDATING,),
+                ('EXPLAIN app', STMT_NON_UPDATING,),
+                (
+                    'CREATE TABLE django_content_type (id STRING(64) NOT NULL, name STRING(100) '
+                    'NOT NULL, app_label STRING(100) NOT NULL, model STRING(100) NOT NULL) PRIMARY KEY(id)',
+                    STMT_DDL,
+                ),
+                (
+                    'CREATE INDEX SongsBySingerAlbumSongNameDesc ON '
+                    'Songs(SingerId, AlbumId, SongName DESC), INTERLEAVE IN Albums',
+                    STMT_DDL,
+                ),
+                ('CREATE INDEX SongsBySongName ON Songs(SongName)', STMT_DDL,),
+                ('CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle) STORING (MarketingBudget)', STMT_DDL,),
+        ]
+
+        for tt in cases:
+            sql, want_classification = tt
+            got_classification = classify_stmt(sql)
+            self.assertEqual(got_classification, want_classification, 'Classification mismatch')

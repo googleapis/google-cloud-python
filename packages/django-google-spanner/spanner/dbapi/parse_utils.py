@@ -219,8 +219,8 @@ re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICOD
 
 # DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
 re_DDL = re.compile(
-    r'^\s*(CREATE TABLE|CREATE DATABASE|ALTER TABLE|DROP TABLE|DROP INDEX)',
-    re.UNICODE | re.IGNORECASE
+    r'^\s*(CREATE|ALTER|DROP)',
+    re.UNICODE | re.IGNORECASE | re.DOTALL,
 )
 
 

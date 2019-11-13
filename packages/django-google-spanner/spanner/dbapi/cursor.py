@@ -71,12 +71,13 @@ class Cursor(object):
         param_types = {} if args else None
         # Classify whether this is a read-only SQL statement.
         try:
-            if classify_stmt(sql) == STMT_DDL:
+            classification = classify_stmt(sql)
+            if classification == STMT_DDL:
                 # Special case: since Spanner.Session won't execute DDL updates
                 # by invoking `execute_sql` or `execute_update`, we must run
                 # DDL updates on the database handle itself.
                 self.__do_update_ddl(sql)
-            elif classify_stmt(sql) == STMT_NON_UPDATING:
+            elif classification == STMT_NON_UPDATING:
                 self.__do_execute_non_update(
                     sql, args or None,
                     param_types=param_types,
