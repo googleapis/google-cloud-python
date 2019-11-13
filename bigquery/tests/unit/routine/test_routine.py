@@ -73,6 +73,7 @@ def test_ctor_w_properties(target_class):
         type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
     )
     type_ = "SCALAR_FUNCTION"
+    description = "A routine description."
 
     actual_routine = target_class(
         routine_id,
@@ -81,6 +82,7 @@ def test_ctor_w_properties(target_class):
         language=language,
         return_type=return_type,
         type_=type_,
+        description=description,
     )
 
     ref = RoutineReference.from_string(routine_id)
@@ -90,6 +92,7 @@ def test_ctor_w_properties(target_class):
     assert actual_routine.language == language
     assert actual_routine.return_type == return_type
     assert actual_routine.type_ == type_
+    assert actual_routine.description == description
 
 
 def test_from_api_repr(target_class):
@@ -117,6 +120,7 @@ def test_from_api_repr(target_class):
         "returnType": {"typeKind": "INT64"},
         "routineType": "SCALAR_FUNCTION",
         "someNewField": "someValue",
+        "description": "A routine description.",
     }
     actual_routine = target_class.from_api_repr(resource)
 
@@ -148,6 +152,7 @@ def test_from_api_repr(target_class):
     )
     assert actual_routine.type_ == "SCALAR_FUNCTION"
     assert actual_routine._properties["someNewField"] == "someValue"
+    assert actual_routine.description == "A routine description."
 
 
 def test_from_api_repr_w_minimal_resource(target_class):
@@ -172,6 +177,7 @@ def test_from_api_repr_w_minimal_resource(target_class):
     assert actual_routine.language is None
     assert actual_routine.return_type is None
     assert actual_routine.type_ is None
+    assert actual_routine.description is None
 
 
 def test_from_api_repr_w_unknown_fields(target_class):
@@ -202,6 +208,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
                 "language": "SQL",
                 "returnType": {"typeKind": "INT64"},
                 "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
             },
             ["arguments"],
             {"arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}]},
@@ -213,6 +220,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
                 "language": "SQL",
                 "returnType": {"typeKind": "INT64"},
                 "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
             },
             ["body"],
             {"definitionBody": "x * 3"},
@@ -224,6 +232,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
                 "language": "SQL",
                 "returnType": {"typeKind": "INT64"},
                 "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
             },
             ["language"],
             {"language": "SQL"},
@@ -235,6 +244,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
                 "language": "SQL",
                 "returnType": {"typeKind": "INT64"},
                 "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
             },
             ["return_type"],
             {"returnType": {"typeKind": "INT64"}},
@@ -246,19 +256,33 @@ def test_from_api_repr_w_unknown_fields(target_class):
                 "language": "SQL",
                 "returnType": {"typeKind": "INT64"},
                 "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
             },
             ["type_"],
             {"routineType": "SCALAR_FUNCTION"},
         ),
         (
+            {
+                "arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}],
+                "definitionBody": "x * 3",
+                "language": "SQL",
+                "returnType": {"typeKind": "INT64"},
+                "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
+            },
+            ["description"],
+            {"description": "A routine description."},
+        ),
+        (
             {},
-            ["arguments", "language", "body", "type_", "return_type"],
+            ["arguments", "language", "body", "type_", "return_type", "description"],
             {
                 "arguments": None,
                 "definitionBody": None,
                 "language": None,
                 "returnType": None,
                 "routineType": None,
+                "description": None,
             },
         ),
         (
@@ -297,6 +321,12 @@ def test_set_return_type_w_none(object_under_test):
     object_under_test.return_type = None
     assert object_under_test.return_type is None
     assert object_under_test._properties["returnType"] is None
+
+
+def test_set_description_w_none(object_under_test):
+    object_under_test.description = None
+    assert object_under_test.description is None
+    assert object_under_test._properties["description"] is None
 
 
 def test_repr(target_class):
