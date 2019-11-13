@@ -3,6 +3,7 @@ from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_create_table = "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
+    sql_create_unique = "CREATE UNIQUE INDEX %(name)s ON %(table)s (%(columns)s)"
 
     def create_model(self, model):
         """
