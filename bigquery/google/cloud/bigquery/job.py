@@ -1913,7 +1913,7 @@ class ExtractJobConfig(_JobConfig):
     @property
     def use_avro_logical_types(self):
         """bool: For loads of Avro data, governs whether Avro logical types are
-        converted to their corresponding BigQuery types(e.g. TIMESTAMP) rather than
+        converted to their corresponding BigQuery types (e.g. TIMESTAMP) rather than
         raw types (e.g. INTEGER).
         """
         return self._get_sub_prop("useAvroLogicalTypes")
