@@ -118,8 +118,8 @@ class UptimeCheckServiceGrpcTransport(object):
     def list_uptime_check_configs(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.list_uptime_check_configs`.
 
-        Lists the existing valid uptime check configurations for the project,
-        leaving out any invalid configurations.
+        Lists the existing valid Uptime check configurations for the project
+        (leaving out any invalid configurations).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -132,7 +132,7 @@ class UptimeCheckServiceGrpcTransport(object):
     def get_uptime_check_config(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.get_uptime_check_config`.
 
-        Gets a single uptime check configuration.
+        Gets a single Uptime check configuration.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -145,7 +145,7 @@ class UptimeCheckServiceGrpcTransport(object):
     def create_uptime_check_config(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.create_uptime_check_config`.
 
-        Creates a new uptime check configuration.
+        Creates a new Uptime check configuration.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -158,10 +158,10 @@ class UptimeCheckServiceGrpcTransport(object):
     def update_uptime_check_config(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.update_uptime_check_config`.
 
-        Updates an uptime check configuration. You can either replace the entire
+        Updates an Uptime check configuration. You can either replace the entire
         configuration with a new one or replace only certain fields in the
         current configuration by specifying the fields to be updated via
-        ``"updateMask"``. Returns the updated configuration.
+        ``updateMask``. Returns the updated configuration.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -174,8 +174,8 @@ class UptimeCheckServiceGrpcTransport(object):
     def delete_uptime_check_config(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.delete_uptime_check_config`.
 
-        Deletes an uptime check configuration. Note that this method will fail
-        if the uptime check configuration is referenced by an alert policy or
+        Deletes an Uptime check configuration. Note that this method will fail
+        if the Uptime check configuration is referenced by an alert policy or
         other dependent configs that would be rendered invalid by the deletion.
 
         Returns:
@@ -189,7 +189,7 @@ class UptimeCheckServiceGrpcTransport(object):
     def list_uptime_check_ips(self):
         """Return the gRPC stub for :meth:`UptimeCheckServiceClient.list_uptime_check_ips`.
 
-        Returns the list of IPs that checkers run from
+        Returns the list of IP addresses that checkers run from
 
         Returns:
             Callable: A callable which accepts the appropriate
