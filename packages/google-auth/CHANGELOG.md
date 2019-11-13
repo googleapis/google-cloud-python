@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.7.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.7.0...v1.7.1) (2019-11-13)
+
+
+### Bug Fixes
+
+* change 'internal_failure' condition to also use `error' field ([#387](https://www.github.com/googleapis/google-auth-library-python/issues/387)) ([46bb58e](https://www.github.com/googleapis/google-auth-library-python/commit/46bb58e694716908a5ed00f05dbb794cdec667dd))
+
 ## 1.7.0
 
 10-30-2019 17:11 PDT
