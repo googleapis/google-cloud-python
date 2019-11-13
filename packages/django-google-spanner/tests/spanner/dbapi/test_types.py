@@ -19,6 +19,8 @@ from spanner.dbapi.types import (
     Date, DateFromTicks, Time, TimeFromTicks, Timestamp, TimestampFromTicks,
 )
 
+tzUTC = 0  # 0 hours offset from UTC
+
 
 class TypesTests(TestCase):
     def test_Date(self):
@@ -39,17 +41,38 @@ class TypesTests(TestCase):
     def test_DateFromTicks(self):
         epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
         got = DateFromTicks(epochTicks)
-        want = datetime.date(2019, 11, 3)
-        self.assertEqual(got, want, 'mismatch between conversion')
+        # Since continuous integration infrastructure such as Travis CI
+        # uses clocks on UTC, it is useful to be able to compare against
+        # either of UTC or the known standard time.
+        want = (
+            datetime.date(2019, 11, 3),
+            datetime.datetime(2019, 11, 4, tzUTC).date(),
+        )
+        matches = got in want
+        self.assertTrue(matches, '`%s` not present in any of\n`%s`' % (got, want))
 
     def test_TimeFromTicks(self):
         epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
         got = TimeFromTicks(epochTicks)
-        want = datetime.time(23, 14, 22)
-        self.assertEqual(got, want, 'mismatch between conversion')
+        # Since continuous integration infrastructure such as Travis CI
+        # uses clocks on UTC, it is useful to be able to compare against
+        # either of UTC or the known standard time.
+        want = (
+            datetime.time(23, 14, 22),
+            datetime.datetime(2019, 11, 4, 7, 14, 22, tzUTC).time(),
+        )
+        matches = got in want
+        self.assertTrue(matches, '`%s` not present in any of\n`%s`' % (got, want))
 
     def test_TimestampFromTicks(self):
         epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
         got = TimestampFromTicks(epochTicks)
-        want = datetime.datetime(2019, 11, 3, 23, 14, 22)
-        self.assertEqual(got, want, 'mismatch between conversion')
+        # Since continuous integration infrastructure such as Travis CI
+        # uses clocks on UTC, it is useful to be able to compare against
+        # either of UTC or the known standard time.
+        want = (
+            datetime.datetime(2019, 11, 3, 23, 14, 22),
+            datetime.datetime(2019, 11, 4, 7, 14, 22, tzUTC),
+        )
+        matches = got in want
+        self.assertTrue(matches, '`%s` not present in any of\n`%s`' % (got, want))

@@ -1,0 +1,11 @@
+language: python
+python:
+    - "3.5"
+    - "3.6"
+    - "3.7"
+    - "3.8"
+cache: pip
+install:
+    - pip install . tox-travis flake8
+script:
+    - tox

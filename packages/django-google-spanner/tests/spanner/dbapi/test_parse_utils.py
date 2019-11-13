@@ -16,9 +16,8 @@ from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    classify_stmt, extract_connection_params, parse_spanner_url,
-    reINSTANCE_CONFIG, validate_instance_config,
-    STMT_DDL, STMT_NON_UPDATING
+    STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
+    parse_spanner_url, reINSTANCE_CONFIG, validate_instance_config,
 )
 
 
