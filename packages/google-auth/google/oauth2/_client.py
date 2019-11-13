@@ -104,17 +104,20 @@ def _token_endpoint_request(request, token_uri, body):
     while True:
         response = request(method="POST", url=token_uri, headers=headers, body=body)
         response_body = response.data.decode("utf-8")
+        response_data = json.loads(response_body)
 
         if response.status == http_client.OK:
             break
         else:
-            error_desc = json.loads(response_body).get("error_description") or ""
-            if error_desc == "internal_failure" and retry < 1:
+            error_desc = response_data.get("error_description") or ""
+            error_code = response_data.get("error") or ""
+            if (
+                any(e == "internal_failure" for e in (error_code, error_desc))
+                and retry < 1
+            ):
                 retry += 1
                 continue
             _handle_error_response(response_body)
-
-    response_data = json.loads(response_body)
 
     return response_data
 
