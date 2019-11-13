@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.23.0
+
+11-12-2019 12:57 PST
+
+
+### Implementation Changes
+- Move `create_bucket` implementation from `Bucket` to `Client`. ([#8604](https://github.com/googleapis/google-cloud-python/pull/8604))
+
+### New Features
+- Add opt-in raw download support. ([#9572](https://github.com/googleapis/google-cloud-python/pull/9572))
+
+### Dependencies
+- Pin `google-resumable-media >= 0.5.0, < 0.6dev`. ([#9572](https://github.com/googleapis/google-cloud-python/pull/9572))
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
+### Internal / Testing Changes
+- Fix query-string order dependent assert. ([#9728](https://github.com/googleapis/google-cloud-python/pull/9728))
+- Normalize VPCSC configuration in system tests. ([#9616](https://github.com/googleapis/google-cloud-python/pull/9616))
+
 ## 1.22.0
 
 11-05-2019 10:22 PST
