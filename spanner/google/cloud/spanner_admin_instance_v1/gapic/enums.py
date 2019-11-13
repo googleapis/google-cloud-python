@@ -32,7 +32,6 @@ class Instance(object):
           READY (int): The instance is fully created and ready to do work such as
           creating databases.
         """
-
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -68,8 +67,8 @@ class ReplicaInfo(object):
           -  Vote whether to commit writes.
           -  Participate in leader election but are not eligible to become leader.
         """
-
         TYPE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
         WITNESS = 3
+    

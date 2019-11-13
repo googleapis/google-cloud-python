@@ -45,7 +45,10 @@ from google.protobuf import empty_pb2
 from google.protobuf import struct_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
+
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-spanner',
+).version
 
 
 class SpannerClient(object):
@@ -56,12 +59,13 @@ class SpannerClient(object):
     transactions on data stored in Cloud Spanner databases.
     """
 
-    SERVICE_ADDRESS = "spanner.googleapis.com:443"
+    SERVICE_ADDRESS = 'spanner.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.spanner.v1.Spanner"
+    _INTERFACE_NAME = 'google.spanner.v1.Spanner'
+
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -77,17 +81,19 @@ class SpannerClient(object):
         Returns:
             SpannerClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
 
     @classmethod
     def database_path(cls, project, instance, database):
         """Return a fully-qualified database string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}/databases/{database}",
+            'projects/{project}/instances/{instance}/databases/{database}',
             project=project,
             instance=instance,
             database=database,
@@ -97,22 +103,15 @@ class SpannerClient(object):
     def session_path(cls, project, instance, database, session):
         """Return a fully-qualified session string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}/databases/{database}/sessions/{session}",
+            'projects/{project}/instances/{instance}/databases/{database}/sessions/{session}',
             project=project,
             instance=instance,
             database=database,
             session=session,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-        client_options=None,
-    ):
+    def __init__(self, transport=None, channel=None, credentials=None,
+            client_config=None, client_info=None, client_options=None):
         """Constructor.
 
         Args:
@@ -148,27 +147,20 @@ class SpannerClient(object):
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
-            warnings.warn(
-                "The `client_config` argument is deprecated.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning, stacklevel=2)
         else:
             client_config = spanner_client_config.config
 
         if channel:
-            warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+            warnings.warn('The `channel` argument is deprecated; use '
+                          '`transport` instead.',
+                          PendingDeprecationWarning, stacklevel=2)
 
         api_endpoint = self.SERVICE_ADDRESS
         if client_options:
             if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
+                client_options = google.api_core.client_options.from_dict(client_options)
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
 
@@ -185,18 +177,20 @@ class SpannerClient(object):
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.'
                     )
                 self.transport = transport
         else:
             self.transport = spanner_grpc_transport.SpannerGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -207,7 +201,7 @@ class SpannerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config['interfaces'][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -218,13 +212,12 @@ class SpannerClient(object):
 
     # Service calls
     def create_session(
-        self,
-        database,
-        session=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            database,
+            session=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates a new session. A session can be used to perform transactions
         that read and/or modify data in a Cloud Spanner database. Sessions are
@@ -279,43 +272,39 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_session" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_session"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'create_session' not in self._inner_api_calls:
+            self._inner_api_calls['create_session'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.create_session,
-                default_retry=self._method_configs["CreateSession"].retry,
-                default_timeout=self._method_configs["CreateSession"].timeout,
+                default_retry=self._method_configs['CreateSession'].retry,
+                default_timeout=self._method_configs['CreateSession'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_pb2.CreateSessionRequest(database=database, session=session)
+        request = spanner_pb2.CreateSessionRequest(
+            database=database,
+            session=session,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("database", database)]
+            routing_header = [('database', database)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["create_session"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['create_session'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def batch_create_sessions(
-        self,
-        database,
-        session_count,
-        session_template=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            database,
+            session_count,
+            session_template=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates multiple new sessions.
 
@@ -364,13 +353,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "batch_create_sessions" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "batch_create_sessions"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'batch_create_sessions' not in self._inner_api_calls:
+            self._inner_api_calls['batch_create_sessions'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.batch_create_sessions,
-                default_retry=self._method_configs["BatchCreateSessions"].retry,
-                default_timeout=self._method_configs["BatchCreateSessions"].timeout,
+                default_retry=self._method_configs['BatchCreateSessions'].retry,
+                default_timeout=self._method_configs['BatchCreateSessions'].timeout,
                 client_info=self._client_info,
             )
 
@@ -383,26 +370,21 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("database", database)]
+            routing_header = [('database', database)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["batch_create_sessions"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['batch_create_sessions'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_session(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
         This is mainly useful for determining whether a session is still alive.
@@ -438,43 +420,38 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_session" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_session"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'get_session' not in self._inner_api_calls:
+            self._inner_api_calls['get_session'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_session,
-                default_retry=self._method_configs["GetSession"].retry,
-                default_timeout=self._method_configs["GetSession"].timeout,
+                default_retry=self._method_configs['GetSession'].retry,
+                default_timeout=self._method_configs['GetSession'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_pb2.GetSessionRequest(name=name)
+        request = spanner_pb2.GetSessionRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [('name', name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_session"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['get_session'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_sessions(
-        self,
-        database,
-        page_size=None,
-        filter_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            database,
+            page_size=None,
+            filter_=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Lists all sessions in a given database.
 
@@ -539,54 +516,46 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_sessions" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_sessions"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'list_sessions' not in self._inner_api_calls:
+            self._inner_api_calls['list_sessions'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_sessions,
-                default_retry=self._method_configs["ListSessions"].retry,
-                default_timeout=self._method_configs["ListSessions"].timeout,
+                default_retry=self._method_configs['ListSessions'].retry,
+                default_timeout=self._method_configs['ListSessions'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_pb2.ListSessionsRequest(
-            database=database, page_size=page_size, filter=filter_
+            database=database,
+            page_size=page_size,
+            filter=filter_,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("database", database)]
+            routing_header = [('database', database)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_sessions"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
+            method=functools.partial(self._inner_api_calls['list_sessions'], retry=retry, timeout=timeout, metadata=metadata),
             request=request,
-            items_field="sessions",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='sessions',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
     def delete_session(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Ends a session, releasing server resources associated with it. This will
         asynchronously trigger cancellation of any operations that are running with
@@ -620,49 +589,44 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_session" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_session"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'delete_session' not in self._inner_api_calls:
+            self._inner_api_calls['delete_session'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.delete_session,
-                default_retry=self._method_configs["DeleteSession"].retry,
-                default_timeout=self._method_configs["DeleteSession"].timeout,
+                default_retry=self._method_configs['DeleteSession'].retry,
+                default_timeout=self._method_configs['DeleteSession'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_pb2.DeleteSessionRequest(name=name)
+        request = spanner_pb2.DeleteSessionRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [('name', name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        self._inner_api_calls["delete_session"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        self._inner_api_calls['delete_session'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_sql(
-        self,
-        session,
-        sql,
-        transaction=None,
-        params=None,
-        param_types=None,
-        resume_token=None,
-        query_mode=None,
-        partition_token=None,
-        seqno=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            sql,
+            transaction=None,
+            params=None,
+            param_types=None,
+            resume_token=None,
+            query_mode=None,
+            partition_token=None,
+            seqno=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Executes an SQL statement, returning all results in a single reply. This
         method cannot be used to return a result set larger than 10 MiB; if the
@@ -772,13 +736,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "execute_sql" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "execute_sql"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'execute_sql' not in self._inner_api_calls:
+            self._inner_api_calls['execute_sql'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.execute_sql,
-                default_retry=self._method_configs["ExecuteSql"].retry,
-                default_timeout=self._method_configs["ExecuteSql"].timeout,
+                default_retry=self._method_configs['ExecuteSql'].retry,
+                default_timeout=self._method_configs['ExecuteSql'].timeout,
                 client_info=self._client_info,
             )
 
@@ -797,34 +759,29 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["execute_sql"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['execute_sql'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_streaming_sql(
-        self,
-        session,
-        sql,
-        transaction=None,
-        params=None,
-        param_types=None,
-        resume_token=None,
-        query_mode=None,
-        partition_token=None,
-        seqno=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            sql,
+            transaction=None,
+            params=None,
+            param_types=None,
+            resume_token=None,
+            query_mode=None,
+            partition_token=None,
+            seqno=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Like ``ExecuteSql``, except returns the result set as a stream. Unlike
         ``ExecuteSql``, there is no limit on the size of the returned result
@@ -929,13 +886,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "execute_streaming_sql" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "execute_streaming_sql"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'execute_streaming_sql' not in self._inner_api_calls:
+            self._inner_api_calls['execute_streaming_sql'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.execute_streaming_sql,
-                default_retry=self._method_configs["ExecuteStreamingSql"].retry,
-                default_timeout=self._method_configs["ExecuteStreamingSql"].timeout,
+                default_retry=self._method_configs['ExecuteStreamingSql'].retry,
+                default_timeout=self._method_configs['ExecuteStreamingSql'].timeout,
                 client_info=self._client_info,
             )
 
@@ -954,29 +909,24 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["execute_streaming_sql"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['execute_streaming_sql'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_batch_dml(
-        self,
-        session,
-        transaction,
-        statements,
-        seqno,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            transaction,
+            statements,
+            seqno,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Executes a batch of SQL DML statements. This method allows many
         statements to be run with lower latency than submitting them
@@ -1028,9 +978,9 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Statement`
-            seqno (long): Required. A per-transaction sequence number used to identify this request. This field
-                makes each request idempotent such that if the request is received multiple
-                times, at most one will succeed.
+            seqno (long): Required. A per-transaction sequence number used to identify this request.
+                This field makes each request idempotent such that if the request is
+                received multiple times, at most one will succeed.
 
                 The sequence number must be monotonically increasing within the
                 transaction. If a request arrives for the first time with an out-of-order
@@ -1056,51 +1006,47 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "execute_batch_dml" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "execute_batch_dml"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'execute_batch_dml' not in self._inner_api_calls:
+            self._inner_api_calls['execute_batch_dml'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.execute_batch_dml,
-                default_retry=self._method_configs["ExecuteBatchDml"].retry,
-                default_timeout=self._method_configs["ExecuteBatchDml"].timeout,
+                default_retry=self._method_configs['ExecuteBatchDml'].retry,
+                default_timeout=self._method_configs['ExecuteBatchDml'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_pb2.ExecuteBatchDmlRequest(
-            session=session, transaction=transaction, statements=statements, seqno=seqno
+            session=session,
+            transaction=transaction,
+            statements=statements,
+            seqno=seqno,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["execute_batch_dml"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['execute_batch_dml'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def read(
-        self,
-        session,
-        table,
-        columns,
-        key_set,
-        transaction=None,
-        index=None,
-        limit=None,
-        resume_token=None,
-        partition_token=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            table,
+            columns,
+            key_set,
+            transaction=None,
+            index=None,
+            limit=None,
+            resume_token=None,
+            partition_token=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Reads rows from the database using key lookups and scans, as a simple
         key/value style alternative to ``ExecuteSql``. This method cannot be
@@ -1192,11 +1138,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "read" not in self._inner_api_calls:
-            self._inner_api_calls["read"] = google.api_core.gapic_v1.method.wrap_method(
+        if 'read' not in self._inner_api_calls:
+            self._inner_api_calls['read'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.read,
-                default_retry=self._method_configs["Read"].retry,
-                default_timeout=self._method_configs["Read"].timeout,
+                default_retry=self._method_configs['Read'].retry,
+                default_timeout=self._method_configs['Read'].timeout,
                 client_info=self._client_info,
             )
 
@@ -1215,34 +1161,29 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["read"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['read'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def streaming_read(
-        self,
-        session,
-        table,
-        columns,
-        key_set,
-        transaction=None,
-        index=None,
-        limit=None,
-        resume_token=None,
-        partition_token=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            table,
+            columns,
+            key_set,
+            transaction=None,
+            index=None,
+            limit=None,
+            resume_token=None,
+            partition_token=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Like ``Read``, except returns the result set as a stream. Unlike
         ``Read``, there is no limit on the size of the returned result set.
@@ -1329,13 +1270,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "streaming_read" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "streaming_read"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'streaming_read' not in self._inner_api_calls:
+            self._inner_api_calls['streaming_read'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.streaming_read,
-                default_retry=self._method_configs["StreamingRead"].retry,
-                default_timeout=self._method_configs["StreamingRead"].timeout,
+                default_retry=self._method_configs['StreamingRead'].retry,
+                default_timeout=self._method_configs['StreamingRead'].timeout,
                 client_info=self._client_info,
             )
 
@@ -1354,27 +1293,22 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["streaming_read"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['streaming_read'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def begin_transaction(
-        self,
-        session,
-        options_,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            options_,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Begins a new transaction. This step can often be skipped: ``Read``,
         ``ExecuteSql`` and ``Commit`` can begin a new transaction as a
@@ -1418,44 +1352,40 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "begin_transaction" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "begin_transaction"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'begin_transaction' not in self._inner_api_calls:
+            self._inner_api_calls['begin_transaction'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.begin_transaction,
-                default_retry=self._method_configs["BeginTransaction"].retry,
-                default_timeout=self._method_configs["BeginTransaction"].timeout,
+                default_retry=self._method_configs['BeginTransaction'].retry,
+                default_timeout=self._method_configs['BeginTransaction'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_pb2.BeginTransactionRequest(session=session, options=options_)
+        request = spanner_pb2.BeginTransactionRequest(
+            session=session,
+            options=options_,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["begin_transaction"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['begin_transaction'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def commit(
-        self,
-        session,
-        mutations,
-        transaction_id=None,
-        single_use_transaction=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            transaction_id=None,
+            single_use_transaction=None,
+            mutations=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Commits a transaction. The request includes the mutations to be applied
         to rows in the database.
@@ -1473,19 +1403,10 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize `mutations`:
-            >>> mutations = []
-            >>>
-            >>> response = client.commit(session, mutations)
+            >>> response = client.commit(session)
 
         Args:
             session (str): Required. The session in which the transaction to be committed is running.
-            mutations (list[Union[dict, ~google.cloud.spanner_v1.types.Mutation]]): The mutations to be executed when this transaction commits. All
-                mutations are applied atomically, in the order they appear in
-                this list.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.types.Mutation`
             transaction_id (bytes): Commit a previously-started transaction.
             single_use_transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Execute mutations in a temporary transaction. Note that unlike commit of
                 a previously-started transaction, commit with a temporary transaction is
@@ -1497,6 +1418,12 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
+            mutations (list[Union[dict, ~google.cloud.spanner_v1.types.Mutation]]): The mutations to be executed when this transaction commits. All
+                mutations are applied atomically, in the order they appear in
+                this list.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.Mutation`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1517,53 +1444,47 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "commit" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "commit"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'commit' not in self._inner_api_calls:
+            self._inner_api_calls['commit'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.commit,
-                default_retry=self._method_configs["Commit"].retry,
-                default_timeout=self._method_configs["Commit"].timeout,
+                default_retry=self._method_configs['Commit'].retry,
+                default_timeout=self._method_configs['Commit'].timeout,
                 client_info=self._client_info,
             )
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
         google.api_core.protobuf_helpers.check_oneof(
-            transaction_id=transaction_id, single_use_transaction=single_use_transaction
+            transaction_id=transaction_id,
+            single_use_transaction=single_use_transaction,
         )
 
         request = spanner_pb2.CommitRequest(
             session=session,
-            mutations=mutations,
             transaction_id=transaction_id,
             single_use_transaction=single_use_transaction,
+            mutations=mutations,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["commit"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['commit'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def rollback(
-        self,
-        session,
-        transaction_id,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            transaction_id,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Rolls back a transaction, releasing any locks it holds. It is a good
         idea to call this for any transaction that includes one or more ``Read``
@@ -1605,48 +1526,42 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "rollback" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "rollback"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'rollback' not in self._inner_api_calls:
+            self._inner_api_calls['rollback'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.rollback,
-                default_retry=self._method_configs["Rollback"].retry,
-                default_timeout=self._method_configs["Rollback"].timeout,
+                default_retry=self._method_configs['Rollback'].retry,
+                default_timeout=self._method_configs['Rollback'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_pb2.RollbackRequest(
-            session=session, transaction_id=transaction_id
+            session=session,
+            transaction_id=transaction_id,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        self._inner_api_calls["rollback"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        self._inner_api_calls['rollback'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def partition_query(
-        self,
-        session,
-        sql,
-        transaction=None,
-        params=None,
-        param_types=None,
-        partition_options=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            sql,
+            transaction=None,
+            params=None,
+            param_types=None,
+            partition_options=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates a set of partition tokens that can be used to execute a query
         operation in parallel. Each of the returned partition tokens can be used
@@ -1738,13 +1653,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "partition_query" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "partition_query"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'partition_query' not in self._inner_api_calls:
+            self._inner_api_calls['partition_query'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.partition_query,
-                default_retry=self._method_configs["PartitionQuery"].retry,
-                default_timeout=self._method_configs["PartitionQuery"].timeout,
+                default_retry=self._method_configs['PartitionQuery'].retry,
+                default_timeout=self._method_configs['PartitionQuery'].timeout,
                 client_info=self._client_info,
             )
 
@@ -1760,32 +1673,27 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["partition_query"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['partition_query'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def partition_read(
-        self,
-        session,
-        table,
-        key_set,
-        transaction=None,
-        index=None,
-        columns=None,
-        partition_options=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            session,
+            table,
+            key_set,
+            transaction=None,
+            index=None,
+            columns=None,
+            partition_options=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates a set of partition tokens that can be used to execute a read
         operation in parallel. Each of the returned partition tokens can be used
@@ -1864,13 +1772,11 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "partition_read" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "partition_read"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'partition_read' not in self._inner_api_calls:
+            self._inner_api_calls['partition_read'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.partition_read,
-                default_retry=self._method_configs["PartitionRead"].retry,
-                default_timeout=self._method_configs["PartitionRead"].timeout,
+                default_retry=self._method_configs['PartitionRead'].retry,
+                default_timeout=self._method_configs['PartitionRead'].timeout,
                 client_info=self._client_info,
             )
 
@@ -1887,15 +1793,11 @@ class SpannerClient(object):
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("session", session)]
+            routing_header = [('session', session)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["partition_read"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['partition_read'](request, retry=retry, timeout=timeout, metadata=metadata)

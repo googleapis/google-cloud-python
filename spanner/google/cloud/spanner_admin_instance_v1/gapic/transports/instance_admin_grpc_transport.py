@@ -29,17 +29,15 @@ class InstanceAdminGrpcTransport(object):
     which can be used to take advantage of advanced
     features of gRPC.
     """
-
     # The scopes needed to make gRPC calls to all of the methods defined
     # in this service.
     _OAUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/spanner.admin",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/spanner.admin',
     )
 
-    def __init__(
-        self, channel=None, credentials=None, address="spanner.googleapis.com:443"
-    ):
+    def __init__(self, channel=None, credentials=None,
+                 address='spanner.googleapis.com:443'):
         """Instantiate the transport class.
 
         Args:
@@ -57,7 +55,8 @@ class InstanceAdminGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                'The `channel` and `credentials` arguments are mutually '
+                'exclusive.',
             )
 
         # Create the channel.
@@ -66,8 +65,8 @@ class InstanceAdminGrpcTransport(object):
                 address=address,
                 credentials=credentials,
                 options={
-                    "grpc.max_send_message_length": -1,
-                    "grpc.max_receive_message_length": -1,
+                    'grpc.max_send_message_length': -1,
+                    'grpc.max_receive_message_length': -1,
                 }.items(),
             )
 
@@ -76,22 +75,20 @@ class InstanceAdminGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "instance_admin_stub": spanner_instance_admin_pb2_grpc.InstanceAdminStub(
-                channel
-            )
+            'instance_admin_stub': spanner_instance_admin_pb2_grpc.InstanceAdminStub(channel),
         }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
         # instantiate an LRO client.
-        self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel
-        )
+        self._operations_client = google.api_core.operations_v1.OperationsClient(channel)
 
     @classmethod
     def create_channel(
-        cls, address="spanner.googleapis.com:443", credentials=None, **kwargs
-    ):
+                cls,
+                address='spanner.googleapis.com:443',
+                credentials=None,
+                **kwargs):
         """Create and return a gRPC channel object.
 
         Args:
@@ -108,7 +105,10 @@ class InstanceAdminGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return google.api_core.grpc_helpers.create_channel(
-            address, credentials=credentials, scopes=cls._OAUTH_SCOPES, **kwargs
+            address,
+            credentials=credentials,
+            scopes=cls._OAUTH_SCOPES,
+            **kwargs
         )
 
     @property
@@ -131,7 +131,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].ListInstanceConfigs
+        return self._stubs['instance_admin_stub'].ListInstanceConfigs
 
     @property
     def get_instance_config(self):
@@ -144,7 +144,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].GetInstanceConfig
+        return self._stubs['instance_admin_stub'].GetInstanceConfig
 
     @property
     def list_instances(self):
@@ -157,7 +157,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].ListInstances
+        return self._stubs['instance_admin_stub'].ListInstances
 
     @property
     def get_instance(self):
@@ -170,7 +170,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].GetInstance
+        return self._stubs['instance_admin_stub'].GetInstance
 
     @property
     def create_instance(self):
@@ -213,7 +213,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].CreateInstance
+        return self._stubs['instance_admin_stub'].CreateInstance
 
     @property
     def update_instance(self):
@@ -261,7 +261,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].UpdateInstance
+        return self._stubs['instance_admin_stub'].UpdateInstance
 
     @property
     def delete_instance(self):
@@ -284,7 +284,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].DeleteInstance
+        return self._stubs['instance_admin_stub'].DeleteInstance
 
     @property
     def set_iam_policy(self):
@@ -301,7 +301,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].SetIamPolicy
+        return self._stubs['instance_admin_stub'].SetIamPolicy
 
     @property
     def get_iam_policy(self):
@@ -318,7 +318,7 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].GetIamPolicy
+        return self._stubs['instance_admin_stub'].GetIamPolicy
 
     @property
     def test_iam_permissions(self):
@@ -337,4 +337,4 @@ class InstanceAdminGrpcTransport(object):
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["instance_admin_stub"].TestIamPermissions
+        return self._stubs['instance_admin_stub'].TestIamPermissions

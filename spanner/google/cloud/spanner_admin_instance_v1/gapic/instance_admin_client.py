@@ -35,9 +35,7 @@ import grpc
 
 from google.cloud.spanner_admin_instance_v1.gapic import enums
 from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client_config
-from google.cloud.spanner_admin_instance_v1.gapic.transports import (
-    instance_admin_grpc_transport,
-)
+from google.cloud.spanner_admin_instance_v1.gapic.transports import instance_admin_grpc_transport
 from google.cloud.spanner_admin_instance_v1.proto import spanner_instance_admin_pb2
 from google.cloud.spanner_admin_instance_v1.proto import spanner_instance_admin_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
@@ -48,7 +46,10 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
+
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-spanner',
+).version
 
 
 class InstanceAdminClient(object):
@@ -76,12 +77,13 @@ class InstanceAdminClient(object):
     databases in that instance, and their performance may suffer.
     """
 
-    SERVICE_ADDRESS = "spanner.googleapis.com:443"
+    SERVICE_ADDRESS = 'spanner.googleapis.com:443'
     """The default address of the service."""
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.spanner.admin.instance.v1.InstanceAdmin"
+    _INTERFACE_NAME = 'google.spanner.admin.instance.v1.InstanceAdmin'
+
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -97,17 +99,19 @@ class InstanceAdminClient(object):
         Returns:
             InstanceAdminClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
 
     @classmethod
     def instance_path(cls, project, instance):
         """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/instances/{instance}",
+            'projects/{project}/instances/{instance}',
             project=project,
             instance=instance,
         )
@@ -116,7 +120,7 @@ class InstanceAdminClient(object):
     def instance_config_path(cls, project, instance_config):
         """Return a fully-qualified instance_config string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/instanceConfigs/{instance_config}",
+            'projects/{project}/instanceConfigs/{instance_config}',
             project=project,
             instance_config=instance_config,
         )
@@ -125,18 +129,12 @@ class InstanceAdminClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            'projects/{project}',
+            project=project,
         )
 
-    def __init__(
-        self,
-        transport=None,
-        channel=None,
-        credentials=None,
-        client_config=None,
-        client_info=None,
-        client_options=None,
-    ):
+    def __init__(self, transport=None, channel=None, credentials=None,
+            client_config=None, client_info=None, client_options=None):
         """Constructor.
 
         Args:
@@ -172,27 +170,20 @@ class InstanceAdminClient(object):
         """
         # Raise deprecation warnings for things we want to go away.
         if client_config is not None:
-            warnings.warn(
-                "The `client_config` argument is deprecated.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+            warnings.warn('The `client_config` argument is deprecated.',
+                          PendingDeprecationWarning, stacklevel=2)
         else:
             client_config = instance_admin_client_config.config
 
         if channel:
-            warnings.warn(
-                "The `channel` argument is deprecated; use " "`transport` instead.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
+            warnings.warn('The `channel` argument is deprecated; use '
+                          '`transport` instead.',
+                          PendingDeprecationWarning, stacklevel=2)
 
         api_endpoint = self.SERVICE_ADDRESS
         if client_options:
             if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
-                )
+                client_options = google.api_core.client_options.from_dict(client_options)
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
 
@@ -209,18 +200,20 @@ class InstanceAdminClient(object):
             else:
                 if credentials:
                     raise ValueError(
-                        "Received both a transport instance and "
-                        "credentials; these are mutually exclusive."
+                        'Received both a transport instance and '
+                        'credentials; these are mutually exclusive.'
                     )
                 self.transport = transport
         else:
             self.transport = instance_admin_grpc_transport.InstanceAdminGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -231,7 +224,7 @@ class InstanceAdminClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config['interfaces'][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -242,13 +235,12 @@ class InstanceAdminClient(object):
 
     # Service calls
     def list_instance_configs(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            page_size=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Lists the supported instance configurations for a given project.
 
@@ -305,54 +297,45 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_instance_configs" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_instance_configs"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'list_instance_configs' not in self._inner_api_calls:
+            self._inner_api_calls['list_instance_configs'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_instance_configs,
-                default_retry=self._method_configs["ListInstanceConfigs"].retry,
-                default_timeout=self._method_configs["ListInstanceConfigs"].timeout,
+                default_retry=self._method_configs['ListInstanceConfigs'].retry,
+                default_timeout=self._method_configs['ListInstanceConfigs'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_instance_admin_pb2.ListInstanceConfigsRequest(
-            parent=parent, page_size=page_size
+            parent=parent,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("parent", parent)]
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_instance_configs"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
+            method=functools.partial(self._inner_api_calls['list_instance_configs'], retry=retry, timeout=timeout, metadata=metadata),
             request=request,
-            items_field="instance_configs",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='instance_configs',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
     def get_instance_config(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Gets information about a particular instance configuration.
 
@@ -388,43 +371,38 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_instance_config" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_instance_config"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'get_instance_config' not in self._inner_api_calls:
+            self._inner_api_calls['get_instance_config'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_instance_config,
-                default_retry=self._method_configs["GetInstanceConfig"].retry,
-                default_timeout=self._method_configs["GetInstanceConfig"].timeout,
+                default_retry=self._method_configs['GetInstanceConfig'].retry,
+                default_timeout=self._method_configs['GetInstanceConfig'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_instance_admin_pb2.GetInstanceConfigRequest(name=name)
+        request = spanner_instance_admin_pb2.GetInstanceConfigRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [('name', name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_instance_config"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['get_instance_config'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_instances(
-        self,
-        parent,
-        page_size=None,
-        filter_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            page_size=None,
+            filter_=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Lists all instances in the given project.
 
@@ -498,54 +476,47 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "list_instances" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_instances"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'list_instances' not in self._inner_api_calls:
+            self._inner_api_calls['list_instances'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.list_instances,
-                default_retry=self._method_configs["ListInstances"].retry,
-                default_timeout=self._method_configs["ListInstances"].timeout,
+                default_retry=self._method_configs['ListInstances'].retry,
+                default_timeout=self._method_configs['ListInstances'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_instance_admin_pb2.ListInstancesRequest(
-            parent=parent, page_size=page_size, filter=filter_
+            parent=parent,
+            page_size=page_size,
+            filter=filter_,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("parent", parent)]
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_instances"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
+            method=functools.partial(self._inner_api_calls['list_instances'], retry=retry, timeout=timeout, metadata=metadata),
             request=request,
-            items_field="instances",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+            items_field='instances',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
         )
         return iterator
 
     def get_instance(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            field_mask=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Gets information about a particular instance.
 
@@ -561,6 +532,12 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field\_mask is present, specifies the subset of [][google.spanner.admin.instance.v1.Instance] fields
+                that should be returned. If absent, all [][google.spanner.admin.instance.v1.Instance] fields are
+                returned.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -581,43 +558,39 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'get_instance' not in self._inner_api_calls:
+            self._inner_api_calls['get_instance'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_instance,
-                default_retry=self._method_configs["GetInstance"].retry,
-                default_timeout=self._method_configs["GetInstance"].timeout,
+                default_retry=self._method_configs['GetInstance'].retry,
+                default_timeout=self._method_configs['GetInstance'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_instance_admin_pb2.GetInstanceRequest(name=name)
+        request = spanner_instance_admin_pb2.GetInstanceRequest(
+            name=name,
+            field_mask=field_mask,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [('name', name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['get_instance'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_instance(
-        self,
-        parent,
-        instance_id,
-        instance,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            parent,
+            instance_id,
+            instance,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Creates an instance and begins preparing it to begin serving. The
         returned ``long-running operation`` can be used to track the progress of
@@ -706,35 +679,31 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "create_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'create_instance' not in self._inner_api_calls:
+            self._inner_api_calls['create_instance'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.create_instance,
-                default_retry=self._method_configs["CreateInstance"].retry,
-                default_timeout=self._method_configs["CreateInstance"].timeout,
+                default_retry=self._method_configs['CreateInstance'].retry,
+                default_timeout=self._method_configs['CreateInstance'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_instance_admin_pb2.CreateInstanceRequest(
-            parent=parent, instance_id=instance_id, instance=instance
+            parent=parent,
+            instance_id=instance_id,
+            instance=instance,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("parent", parent)]
+            routing_header = [('parent', parent)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        operation = self._inner_api_calls["create_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        operation = self._inner_api_calls['create_instance'](request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -743,13 +712,12 @@ class InstanceAdminClient(object):
         )
 
     def update_instance(
-        self,
-        instance,
-        field_mask,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            instance,
+            field_mask,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Updates an instance, and begins allocating or releasing resources as
         requested. The returned ``long-running operation`` can be used to track
@@ -847,35 +815,30 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "update_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "update_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'update_instance' not in self._inner_api_calls:
+            self._inner_api_calls['update_instance'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.update_instance,
-                default_retry=self._method_configs["UpdateInstance"].retry,
-                default_timeout=self._method_configs["UpdateInstance"].timeout,
+                default_retry=self._method_configs['UpdateInstance'].retry,
+                default_timeout=self._method_configs['UpdateInstance'].timeout,
                 client_info=self._client_info,
             )
 
         request = spanner_instance_admin_pb2.UpdateInstanceRequest(
-            instance=instance, field_mask=field_mask
+            instance=instance,
+            field_mask=field_mask,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("instance.name", instance.name)]
+            routing_header = [('instance.name', instance.name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        operation = self._inner_api_calls["update_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        operation = self._inner_api_calls['update_instance'](request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.transport._operations_client,
@@ -884,12 +847,11 @@ class InstanceAdminClient(object):
         )
 
     def delete_instance(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            name,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Deletes an instance.
 
@@ -932,42 +894,37 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'delete_instance' not in self._inner_api_calls:
+            self._inner_api_calls['delete_instance'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.delete_instance,
-                default_retry=self._method_configs["DeleteInstance"].retry,
-                default_timeout=self._method_configs["DeleteInstance"].timeout,
+                default_retry=self._method_configs['DeleteInstance'].retry,
+                default_timeout=self._method_configs['DeleteInstance'].timeout,
                 client_info=self._client_info,
             )
 
-        request = spanner_instance_admin_pb2.DeleteInstanceRequest(name=name)
+        request = spanner_instance_admin_pb2.DeleteInstanceRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [('name', name)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        self._inner_api_calls["delete_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        self._inner_api_calls['delete_instance'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_iam_policy(
-        self,
-        resource,
-        policy,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            resource,
+            policy,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Sets the access control policy on an instance resource. Replaces any
         existing policy.
@@ -980,7 +937,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1017,42 +975,38 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "set_iam_policy" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "set_iam_policy"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'set_iam_policy' not in self._inner_api_calls:
+            self._inner_api_calls['set_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.set_iam_policy,
-                default_retry=self._method_configs["SetIamPolicy"].retry,
-                default_timeout=self._method_configs["SetIamPolicy"].timeout,
+                default_retry=self._method_configs['SetIamPolicy'].retry,
+                default_timeout=self._method_configs['SetIamPolicy'].timeout,
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=resource,
+            policy=policy,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("resource", resource)]
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["set_iam_policy"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['set_iam_policy'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_iam_policy(
-        self,
-        resource,
-        options_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            resource,
+            options_=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Gets the access control policy for an instance resource. Returns an
         empty policy if an instance exists but does not have a policy set.
@@ -1065,7 +1019,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1097,44 +1052,38 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "get_iam_policy" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_iam_policy"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'get_iam_policy' not in self._inner_api_calls:
+            self._inner_api_calls['get_iam_policy'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.get_iam_policy,
-                default_retry=self._method_configs["GetIamPolicy"].retry,
-                default_timeout=self._method_configs["GetIamPolicy"].timeout,
+                default_retry=self._method_configs['GetIamPolicy'].retry,
+                default_timeout=self._method_configs['GetIamPolicy'].timeout,
                 client_info=self._client_info,
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_
+            resource=resource,
+            options=options_,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("resource", resource)]
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_iam_policy"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['get_iam_policy'](request, retry=retry, timeout=timeout, metadata=metadata)
 
     def test_iam_permissions(
-        self,
-        resource,
-        permissions,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
+            self,
+            resource,
+            permissions=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Returns permissions that the caller has on the specified instance
         resource.
@@ -1149,12 +1098,10 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
-            >>> # TODO: Initialize `permissions`:
-            >>> permissions = []
-            >>>
-            >>> response = client.test_iam_permissions(resource, permissions)
+            >>> response = client.test_iam_permissions(resource)
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
@@ -1183,32 +1130,27 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         # Wrap the transport method to add retry and timeout logic.
-        if "test_iam_permissions" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "test_iam_permissions"
-            ] = google.api_core.gapic_v1.method.wrap_method(
+        if 'test_iam_permissions' not in self._inner_api_calls:
+            self._inner_api_calls['test_iam_permissions'] = google.api_core.gapic_v1.method.wrap_method(
                 self.transport.test_iam_permissions,
-                default_retry=self._method_configs["TestIamPermissions"].retry,
-                default_timeout=self._method_configs["TestIamPermissions"].timeout,
+                default_retry=self._method_configs['TestIamPermissions'].retry,
+                default_timeout=self._method_configs['TestIamPermissions'].timeout,
                 client_info=self._client_info,
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
+            resource=resource,
+            permissions=permissions,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("resource", resource)]
+            routing_header = [('resource', resource)]
         except AttributeError:
             pass
         else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(routing_header)
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["test_iam_permissions"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return self._inner_api_calls['test_iam_permissions'](request, retry=retry, timeout=timeout, metadata=metadata)

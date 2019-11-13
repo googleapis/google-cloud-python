@@ -3,13 +3,11 @@
 # source: google/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto
 
 import sys
-
-_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
+_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -21,1227 +19,783 @@ from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior_
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
-from google.longrunning import (
-    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
-)
+from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto",
-    package="google.spanner.admin.instance.v1",
-    syntax="proto3",
-    serialized_options=_b(
-        "\n$com.google.spanner.admin.instance.v1B\031SpannerInstanceAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\252\002&Google.Cloud.Spanner.Admin.Instance.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Instance\\V1"
-    ),
-    serialized_pb=_b(
-        '\nIgoogle/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto\x12 google.spanner.admin.instance.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xda\x01\n\x0bReplicaInfo\x12\x10\n\x08location\x18\x01 \x01(\t\x12G\n\x04type\x18\x02 \x01(\x0e\x32\x39.google.spanner.admin.instance.v1.ReplicaInfo.ReplicaType\x12\x1f\n\x17\x64\x65\x66\x61ult_leader_location\x18\x03 \x01(\x08"O\n\x0bReplicaType\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nREAD_WRITE\x10\x01\x12\r\n\tREAD_ONLY\x10\x02\x12\x0b\n\x07WITNESS\x10\x03"\xd7\x01\n\x0eInstanceConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12?\n\x08replicas\x18\x03 \x03(\x0b\x32-.google.spanner.admin.instance.v1.ReplicaInfo:`\xea\x41]\n%spanner.googleapis.com/InstanceConfig\x12\x34projects/{project}/instanceConfigs/{instance_config}"\xbe\x03\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x06\x63onfig\x18\x02 \x01(\tB*\xfa\x41\'\n%spanner.googleapis.com/InstanceConfig\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x12\n\nnode_count\x18\x05 \x01(\x05\x12?\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.spanner.admin.instance.v1.Instance.State\x12\x46\n\x06labels\x18\x07 \x03(\x0b\x32\x36.google.spanner.admin.instance.v1.Instance.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:M\xea\x41J\n\x1fspanner.googleapis.com/Instance\x12\'projects/{project}/instances/{instance}"\x88\x01\n\x1aListInstanceConfigsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x82\x01\n\x1bListInstanceConfigsResponse\x12J\n\x10instance_configs\x18\x01 \x03(\x0b\x32\x30.google.spanner.admin.instance.v1.InstanceConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"W\n\x18GetInstanceConfigRequest\x12;\n\x04name\x18\x01 \x01(\tB-\xe0\x41\x02\xfa\x41\'\n%spanner.googleapis.com/InstanceConfig"K\n\x12GetInstanceRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance"\xb9\x01\n\x15\x43reateInstanceRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x18\n\x0binstance_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x08instance\x18\x03 \x01(\x0b\x32*.google.spanner.admin.instance.v1.InstanceB\x03\xe0\x41\x02"\x92\x01\n\x14ListInstancesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t"o\n\x15ListInstancesResponse\x12=\n\tinstances\x18\x01 \x03(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8f\x01\n\x15UpdateInstanceRequest\x12\x41\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.InstanceB\x03\xe0\x41\x02\x12\x33\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"N\n\x15\x44\x65leteInstanceRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance"\xe5\x01\n\x16\x43reateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xe5\x01\n\x16UpdateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xbf\x10\n\rInstanceAdmin\x12\xcc\x01\n\x13ListInstanceConfigs\x12<.google.spanner.admin.instance.v1.ListInstanceConfigsRequest\x1a=.google.spanner.admin.instance.v1.ListInstanceConfigsResponse"8\x82\xd3\xe4\x93\x02)\x12\'/v1/{parent=projects/*}/instanceConfigs\xda\x41\x06parent\x12\xb9\x01\n\x11GetInstanceConfig\x12:.google.spanner.admin.instance.v1.GetInstanceConfigRequest\x1a\x30.google.spanner.admin.instance.v1.InstanceConfig"6\x82\xd3\xe4\x93\x02)\x12\'/v1/{name=projects/*/instanceConfigs/*}\xda\x41\x04name\x12\xb4\x01\n\rListInstances\x12\x36.google.spanner.admin.instance.v1.ListInstancesRequest\x1a\x37.google.spanner.admin.instance.v1.ListInstancesResponse"2\x82\xd3\xe4\x93\x02#\x12!/v1/{parent=projects/*}/instances\xda\x41\x06parent\x12\xa1\x01\n\x0bGetInstance\x12\x34.google.spanner.admin.instance.v1.GetInstanceRequest\x1a*.google.spanner.admin.instance.v1.Instance"0\x82\xd3\xe4\x93\x02#\x12!/v1/{name=projects/*/instances/*}\xda\x41\x04name\x12\x9c\x02\n\x0e\x43reateInstance\x12\x37.google.spanner.admin.instance.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation"\xb1\x01\x82\xd3\xe4\x93\x02&"!/v1/{parent=projects/*}/instances:\x01*\xda\x41\x1bparent,instance_id,instance\xca\x41\x64\n)google.spanner.admin.instance.v1.Instance\x12\x37google.spanner.admin.instance.v1.CreateInstanceMetadata\x12\x9d\x02\n\x0eUpdateInstance\x12\x37.google.spanner.admin.instance.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation"\xb2\x01\x82\xd3\xe4\x93\x02/2*/v1/{instance.name=projects/*/instances/*}:\x01*\xda\x41\x13instance,field_mask\xca\x41\x64\n)google.spanner.admin.instance.v1.Instance\x12\x37google.spanner.admin.instance.v1.UpdateInstanceMetadata\x12\x93\x01\n\x0e\x44\x65leteInstance\x12\x37.google.spanner.admin.instance.v1.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty"0\x82\xd3\xe4\x93\x02#*!/v1/{name=projects/*/instances/*}\xda\x41\x04name\x12\x9a\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"O\x82\xd3\xe4\x93\x02\x37"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\x93\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"H\x82\xd3\xe4\x93\x02\x37"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xc5\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"Z\x82\xd3\xe4\x93\x02="8/v1/{resource=projects/*/instances/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x1ax\xca\x41\x16spanner.googleapis.com\xd2\x41\\https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.adminB\xdf\x01\n$com.google.spanner.admin.instance.v1B\x19SpannerInstanceAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\xaa\x02&Google.Cloud.Spanner.Admin.Instance.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Instance\\V1b\x06proto3'
-    ),
-    dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
-        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
-        google_dot_api_dot_resource__pb2.DESCRIPTOR,
-        google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
-        google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
-        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-    ],
-)
+  name='google/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto',
+  package='google.spanner.admin.instance.v1',
+  syntax='proto3',
+  serialized_options=_b('\n$com.google.spanner.admin.instance.v1B\031SpannerInstanceAdminProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\252\002&Google.Cloud.Spanner.Admin.Instance.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Instance\\V1'),
+  serialized_pb=_b('\nIgoogle/cloud/spanner/admin/instance_v1/proto/spanner_instance_admin.proto\x12 google.spanner.admin.instance.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xda\x01\n\x0bReplicaInfo\x12\x10\n\x08location\x18\x01 \x01(\t\x12G\n\x04type\x18\x02 \x01(\x0e\x32\x39.google.spanner.admin.instance.v1.ReplicaInfo.ReplicaType\x12\x1f\n\x17\x64\x65\x66\x61ult_leader_location\x18\x03 \x01(\x08\"O\n\x0bReplicaType\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nREAD_WRITE\x10\x01\x12\r\n\tREAD_ONLY\x10\x02\x12\x0b\n\x07WITNESS\x10\x03\"\xd7\x01\n\x0eInstanceConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12?\n\x08replicas\x18\x03 \x03(\x0b\x32-.google.spanner.admin.instance.v1.ReplicaInfo:`\xea\x41]\n%spanner.googleapis.com/InstanceConfig\x12\x34projects/{project}/instanceConfigs/{instance_config}\"\xd5\x03\n\x08Instance\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x06\x63onfig\x18\x02 \x01(\tB*\xfa\x41\'\n%spanner.googleapis.com/InstanceConfig\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x12\n\nnode_count\x18\x05 \x01(\x05\x12?\n\x05state\x18\x06 \x01(\x0e\x32\x30.google.spanner.admin.instance.v1.Instance.State\x12\x46\n\x06labels\x18\x07 \x03(\x0b\x32\x36.google.spanner.admin.instance.v1.Instance.LabelsEntry\x12\x15\n\rendpoint_urls\x18\x08 \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:M\xea\x41J\n\x1fspanner.googleapis.com/Instance\x12\'projects/{project}/instances/{instance}\"\x88\x01\n\x1aListInstanceConfigsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\"\x82\x01\n\x1bListInstanceConfigsResponse\x12J\n\x10instance_configs\x18\x01 \x03(\x0b\x32\x30.google.spanner.admin.instance.v1.InstanceConfig\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"W\n\x18GetInstanceConfigRequest\x12;\n\x04name\x18\x01 \x01(\tB-\xe0\x41\x02\xfa\x41\'\n%spanner.googleapis.com/InstanceConfig\"{\n\x12GetInstanceRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\"\xb9\x01\n\x15\x43reateInstanceRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x18\n\x0binstance_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x08instance\x18\x03 \x01(\x0b\x32*.google.spanner.admin.instance.v1.InstanceB\x03\xe0\x41\x02\"\x92\x01\n\x14ListInstancesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x04 \x01(\t\"o\n\x15ListInstancesResponse\x12=\n\tinstances\x18\x01 \x03(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\"\x8f\x01\n\x15UpdateInstanceRequest\x12\x41\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.InstanceB\x03\xe0\x41\x02\x12\x33\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02\"N\n\x15\x44\x65leteInstanceRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\"\xe5\x01\n\x16\x43reateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xe5\x01\n\x16UpdateInstanceMetadata\x12<\n\x08instance\x18\x01 \x01(\x0b\x32*.google.spanner.admin.instance.v1.Instance\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63\x61ncel_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xbf\x10\n\rInstanceAdmin\x12\xcc\x01\n\x13ListInstanceConfigs\x12<.google.spanner.admin.instance.v1.ListInstanceConfigsRequest\x1a=.google.spanner.admin.instance.v1.ListInstanceConfigsResponse\"8\x82\xd3\xe4\x93\x02)\x12\'/v1/{parent=projects/*}/instanceConfigs\xda\x41\x06parent\x12\xb9\x01\n\x11GetInstanceConfig\x12:.google.spanner.admin.instance.v1.GetInstanceConfigRequest\x1a\x30.google.spanner.admin.instance.v1.InstanceConfig\"6\x82\xd3\xe4\x93\x02)\x12\'/v1/{name=projects/*/instanceConfigs/*}\xda\x41\x04name\x12\xb4\x01\n\rListInstances\x12\x36.google.spanner.admin.instance.v1.ListInstancesRequest\x1a\x37.google.spanner.admin.instance.v1.ListInstancesResponse\"2\x82\xd3\xe4\x93\x02#\x12!/v1/{parent=projects/*}/instances\xda\x41\x06parent\x12\xa1\x01\n\x0bGetInstance\x12\x34.google.spanner.admin.instance.v1.GetInstanceRequest\x1a*.google.spanner.admin.instance.v1.Instance\"0\x82\xd3\xe4\x93\x02#\x12!/v1/{name=projects/*/instances/*}\xda\x41\x04name\x12\x9c\x02\n\x0e\x43reateInstance\x12\x37.google.spanner.admin.instance.v1.CreateInstanceRequest\x1a\x1d.google.longrunning.Operation\"\xb1\x01\x82\xd3\xe4\x93\x02&\"!/v1/{parent=projects/*}/instances:\x01*\xda\x41\x1bparent,instance_id,instance\xca\x41\x64\n)google.spanner.admin.instance.v1.Instance\x12\x37google.spanner.admin.instance.v1.CreateInstanceMetadata\x12\x9d\x02\n\x0eUpdateInstance\x12\x37.google.spanner.admin.instance.v1.UpdateInstanceRequest\x1a\x1d.google.longrunning.Operation\"\xb2\x01\x82\xd3\xe4\x93\x02/2*/v1/{instance.name=projects/*/instances/*}:\x01*\xda\x41\x13instance,field_mask\xca\x41\x64\n)google.spanner.admin.instance.v1.Instance\x12\x37google.spanner.admin.instance.v1.UpdateInstanceMetadata\x12\x93\x01\n\x0e\x44\x65leteInstance\x12\x37.google.spanner.admin.instance.v1.DeleteInstanceRequest\x1a\x16.google.protobuf.Empty\"0\x82\xd3\xe4\x93\x02#*!/v1/{name=projects/*/instances/*}\xda\x41\x04name\x12\x9a\x01\n\x0cSetIamPolicy\x12\".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"O\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\x93\x01\n\x0cGetIamPolicy\x12\".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy\"H\x82\xd3\xe4\x93\x02\x37\"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xc5\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse\"Z\x82\xd3\xe4\x93\x02=\"8/v1/{resource=projects/*/instances/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x1ax\xca\x41\x16spanner.googleapis.com\xd2\x41\\https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.adminB\xdf\x01\n$com.google.spanner.admin.instance.v1B\x19SpannerInstanceAdminProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/instance/v1;instance\xaa\x02&Google.Cloud.Spanner.Admin.Instance.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Instance\\V1b\x06proto3')
+  ,
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_api_dot_client__pb2.DESCRIPTOR,google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,google_dot_api_dot_resource__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+
 
 
 _REPLICAINFO_REPLICATYPE = _descriptor.EnumDescriptor(
-    name="ReplicaType",
-    full_name="google.spanner.admin.instance.v1.ReplicaInfo.ReplicaType",
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="TYPE_UNSPECIFIED",
-            index=0,
-            number=0,
-            serialized_options=None,
-            type=None,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="READ_WRITE", index=1, number=1, serialized_options=None, type=None
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="READ_ONLY", index=2, number=2, serialized_options=None, type=None
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="WITNESS", index=3, number=3, serialized_options=None, type=None
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=559,
-    serialized_end=638,
+  name='ReplicaType',
+  full_name='google.spanner.admin.instance.v1.ReplicaInfo.ReplicaType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='TYPE_UNSPECIFIED', index=0, number=0,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='READ_WRITE', index=1, number=1,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='READ_ONLY', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='WITNESS', index=3, number=3,
+      serialized_options=None,
+      type=None),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=559,
+  serialized_end=638,
 )
 _sym_db.RegisterEnumDescriptor(_REPLICAINFO_REPLICATYPE)
 
 _INSTANCE_STATE = _descriptor.EnumDescriptor(
-    name="State",
-    full_name="google.spanner.admin.instance.v1.Instance.State",
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="STATE_UNSPECIFIED",
-            index=0,
-            number=0,
-            serialized_options=None,
-            type=None,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="CREATING", index=1, number=1, serialized_options=None, type=None
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="READY", index=2, number=2, serialized_options=None, type=None
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=1171,
-    serialized_end=1226,
+  name='State',
+  full_name='google.spanner.admin.instance.v1.Instance.State',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='STATE_UNSPECIFIED', index=0, number=0,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CREATING', index=1, number=1,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='READY', index=2, number=2,
+      serialized_options=None,
+      type=None),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=1194,
+  serialized_end=1249,
 )
 _sym_db.RegisterEnumDescriptor(_INSTANCE_STATE)
 
 
 _REPLICAINFO = _descriptor.Descriptor(
-    name="ReplicaInfo",
-    full_name="google.spanner.admin.instance.v1.ReplicaInfo",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="location",
-            full_name="google.spanner.admin.instance.v1.ReplicaInfo.location",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="type",
-            full_name="google.spanner.admin.instance.v1.ReplicaInfo.type",
-            index=1,
-            number=2,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="default_leader_location",
-            full_name="google.spanner.admin.instance.v1.ReplicaInfo.default_leader_location",
-            index=2,
-            number=3,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[_REPLICAINFO_REPLICATYPE],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=420,
-    serialized_end=638,
+  name='ReplicaInfo',
+  full_name='google.spanner.admin.instance.v1.ReplicaInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='location', full_name='google.spanner.admin.instance.v1.ReplicaInfo.location', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='google.spanner.admin.instance.v1.ReplicaInfo.type', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='default_leader_location', full_name='google.spanner.admin.instance.v1.ReplicaInfo.default_leader_location', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _REPLICAINFO_REPLICATYPE,
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=420,
+  serialized_end=638,
 )
 
 
 _INSTANCECONFIG = _descriptor.Descriptor(
-    name="InstanceConfig",
-    full_name="google.spanner.admin.instance.v1.InstanceConfig",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.spanner.admin.instance.v1.InstanceConfig.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="display_name",
-            full_name="google.spanner.admin.instance.v1.InstanceConfig.display_name",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="replicas",
-            full_name="google.spanner.admin.instance.v1.InstanceConfig.replicas",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=_b(
-        "\352A]\n%spanner.googleapis.com/InstanceConfig\0224projects/{project}/instanceConfigs/{instance_config}"
-    ),
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=641,
-    serialized_end=856,
+  name='InstanceConfig',
+  full_name='google.spanner.admin.instance.v1.InstanceConfig',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.spanner.admin.instance.v1.InstanceConfig.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='display_name', full_name='google.spanner.admin.instance.v1.InstanceConfig.display_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='replicas', full_name='google.spanner.admin.instance.v1.InstanceConfig.replicas', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=_b('\352A]\n%spanner.googleapis.com/InstanceConfig\0224projects/{project}/instanceConfigs/{instance_config}'),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=641,
+  serialized_end=856,
 )
 
 
 _INSTANCE_LABELSENTRY = _descriptor.Descriptor(
-    name="LabelsEntry",
-    full_name="google.spanner.admin.instance.v1.Instance.LabelsEntry",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="key",
-            full_name="google.spanner.admin.instance.v1.Instance.LabelsEntry.key",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="value",
-            full_name="google.spanner.admin.instance.v1.Instance.LabelsEntry.value",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=_b("8\001"),
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1124,
-    serialized_end=1169,
+  name='LabelsEntry',
+  full_name='google.spanner.admin.instance.v1.Instance.LabelsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='google.spanner.admin.instance.v1.Instance.LabelsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='google.spanner.admin.instance.v1.Instance.LabelsEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=_b('8\001'),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1147,
+  serialized_end=1192,
 )
 
 _INSTANCE = _descriptor.Descriptor(
-    name="Instance",
-    full_name="google.spanner.admin.instance.v1.Instance",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.spanner.admin.instance.v1.Instance.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="config",
-            full_name="google.spanner.admin.instance.v1.Instance.config",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b("\372A'\n%spanner.googleapis.com/InstanceConfig"),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="display_name",
-            full_name="google.spanner.admin.instance.v1.Instance.display_name",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="node_count",
-            full_name="google.spanner.admin.instance.v1.Instance.node_count",
-            index=3,
-            number=5,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="state",
-            full_name="google.spanner.admin.instance.v1.Instance.state",
-            index=4,
-            number=6,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="labels",
-            full_name="google.spanner.admin.instance.v1.Instance.labels",
-            index=5,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_INSTANCE_LABELSENTRY],
-    enum_types=[_INSTANCE_STATE],
-    serialized_options=_b(
-        "\352AJ\n\037spanner.googleapis.com/Instance\022'projects/{project}/instances/{instance}"
-    ),
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=859,
-    serialized_end=1305,
+  name='Instance',
+  full_name='google.spanner.admin.instance.v1.Instance',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.spanner.admin.instance.v1.Instance.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='config', full_name='google.spanner.admin.instance.v1.Instance.config', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\372A\'\n%spanner.googleapis.com/InstanceConfig'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='display_name', full_name='google.spanner.admin.instance.v1.Instance.display_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='node_count', full_name='google.spanner.admin.instance.v1.Instance.node_count', index=3,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='google.spanner.admin.instance.v1.Instance.state', index=4,
+      number=6, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='labels', full_name='google.spanner.admin.instance.v1.Instance.labels', index=5,
+      number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='endpoint_urls', full_name='google.spanner.admin.instance.v1.Instance.endpoint_urls', index=6,
+      number=8, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_INSTANCE_LABELSENTRY, ],
+  enum_types=[
+    _INSTANCE_STATE,
+  ],
+  serialized_options=_b('\352AJ\n\037spanner.googleapis.com/Instance\022\'projects/{project}/instances/{instance}'),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=859,
+  serialized_end=1328,
 )
 
 
 _LISTINSTANCECONFIGSREQUEST = _descriptor.Descriptor(
-    name="ListInstanceConfigsRequest",
-    full_name="google.spanner.admin.instance.v1.ListInstanceConfigsRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.spanner.admin.instance.v1.ListInstanceConfigsRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
-            ),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1308,
-    serialized_end=1444,
+  name='ListInstanceConfigsRequest',
+  full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1331,
+  serialized_end=1467,
 )
 
 
 _LISTINSTANCECONFIGSRESPONSE = _descriptor.Descriptor(
-    name="ListInstanceConfigsResponse",
-    full_name="google.spanner.admin.instance.v1.ListInstanceConfigsResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="instance_configs",
-            full_name="google.spanner.admin.instance.v1.ListInstanceConfigsResponse.instance_configs",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.spanner.admin.instance.v1.ListInstanceConfigsResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1447,
-    serialized_end=1577,
+  name='ListInstanceConfigsResponse',
+  full_name='google.spanner.admin.instance.v1.ListInstanceConfigsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_configs', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsResponse.instance_configs', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.spanner.admin.instance.v1.ListInstanceConfigsResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1470,
+  serialized_end=1600,
 )
 
 
 _GETINSTANCECONFIGREQUEST = _descriptor.Descriptor(
-    name="GetInstanceConfigRequest",
-    full_name="google.spanner.admin.instance.v1.GetInstanceConfigRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.spanner.admin.instance.v1.GetInstanceConfigRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A'\n%spanner.googleapis.com/InstanceConfig"
-            ),
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1579,
-    serialized_end=1666,
+  name='GetInstanceConfigRequest',
+  full_name='google.spanner.admin.instance.v1.GetInstanceConfigRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.spanner.admin.instance.v1.GetInstanceConfigRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A\'\n%spanner.googleapis.com/InstanceConfig'), file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1602,
+  serialized_end=1689,
 )
 
 
 _GETINSTANCEREQUEST = _descriptor.Descriptor(
-    name="GetInstanceRequest",
-    full_name="google.spanner.admin.instance.v1.GetInstanceRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.spanner.admin.instance.v1.GetInstanceRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A!\n\037spanner.googleapis.com/Instance"
-            ),
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1668,
-    serialized_end=1743,
+  name='GetInstanceRequest',
+  full_name='google.spanner.admin.instance.v1.GetInstanceRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.spanner.admin.instance.v1.GetInstanceRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A!\n\037spanner.googleapis.com/Instance'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='field_mask', full_name='google.spanner.admin.instance.v1.GetInstanceRequest.field_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1691,
+  serialized_end=1814,
 )
 
 
 _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
-    name="CreateInstanceRequest",
-    full_name="google.spanner.admin.instance.v1.CreateInstanceRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
-            ),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="instance_id",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceRequest.instance_id",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b("\340A\002"),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="instance",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceRequest.instance",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b("\340A\002"),
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1746,
-    serialized_end=1931,
+  name='CreateInstanceRequest',
+  full_name='google.spanner.admin.instance.v1.CreateInstanceRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.spanner.admin.instance.v1.CreateInstanceRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='google.spanner.admin.instance.v1.CreateInstanceRequest.instance_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='instance', full_name='google.spanner.admin.instance.v1.CreateInstanceRequest.instance', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1817,
+  serialized_end=2002,
 )
 
 
 _LISTINSTANCESREQUEST = _descriptor.Descriptor(
-    name="ListInstancesRequest",
-    full_name="google.spanner.admin.instance.v1.ListInstancesRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="parent",
-            full_name="google.spanner.admin.instance.v1.ListInstancesRequest.parent",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
-            ),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_size",
-            full_name="google.spanner.admin.instance.v1.ListInstancesRequest.page_size",
-            index=1,
-            number=2,
-            type=5,
-            cpp_type=1,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="page_token",
-            full_name="google.spanner.admin.instance.v1.ListInstancesRequest.page_token",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="filter",
-            full_name="google.spanner.admin.instance.v1.ListInstancesRequest.filter",
-            index=3,
-            number=4,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=1934,
-    serialized_end=2080,
+  name='ListInstancesRequest',
+  full_name='google.spanner.admin.instance.v1.ListInstancesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='parent', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.parent', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_size', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.page_size', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='page_token', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.page_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='filter', full_name='google.spanner.admin.instance.v1.ListInstancesRequest.filter', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2005,
+  serialized_end=2151,
 )
 
 
 _LISTINSTANCESRESPONSE = _descriptor.Descriptor(
-    name="ListInstancesResponse",
-    full_name="google.spanner.admin.instance.v1.ListInstancesResponse",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="instances",
-            full_name="google.spanner.admin.instance.v1.ListInstancesResponse.instances",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="next_page_token",
-            full_name="google.spanner.admin.instance.v1.ListInstancesResponse.next_page_token",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2082,
-    serialized_end=2193,
+  name='ListInstancesResponse',
+  full_name='google.spanner.admin.instance.v1.ListInstancesResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instances', full_name='google.spanner.admin.instance.v1.ListInstancesResponse.instances', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_page_token', full_name='google.spanner.admin.instance.v1.ListInstancesResponse.next_page_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2153,
+  serialized_end=2264,
 )
 
 
 _UPDATEINSTANCEREQUEST = _descriptor.Descriptor(
-    name="UpdateInstanceRequest",
-    full_name="google.spanner.admin.instance.v1.UpdateInstanceRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="instance",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceRequest.instance",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b("\340A\002"),
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="field_mask",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b("\340A\002"),
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2196,
-    serialized_end=2339,
+  name='UpdateInstanceRequest',
+  full_name='google.spanner.admin.instance.v1.UpdateInstanceRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance', full_name='google.spanner.admin.instance.v1.UpdateInstanceRequest.instance', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='field_mask', full_name='google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2267,
+  serialized_end=2410,
 )
 
 
 _DELETEINSTANCEREQUEST = _descriptor.Descriptor(
-    name="DeleteInstanceRequest",
-    full_name="google.spanner.admin.instance.v1.DeleteInstanceRequest",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.spanner.admin.instance.v1.DeleteInstanceRequest.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b("").decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=_b(
-                "\340A\002\372A!\n\037spanner.googleapis.com/Instance"
-            ),
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2341,
-    serialized_end=2419,
+  name='DeleteInstanceRequest',
+  full_name='google.spanner.admin.instance.v1.DeleteInstanceRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.spanner.admin.instance.v1.DeleteInstanceRequest.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=_b('\340A\002\372A!\n\037spanner.googleapis.com/Instance'), file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2412,
+  serialized_end=2490,
 )
 
 
 _CREATEINSTANCEMETADATA = _descriptor.Descriptor(
-    name="CreateInstanceMetadata",
-    full_name="google.spanner.admin.instance.v1.CreateInstanceMetadata",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="instance",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceMetadata.instance",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="start_time",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceMetadata.start_time",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="cancel_time",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceMetadata.cancel_time",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="end_time",
-            full_name="google.spanner.admin.instance.v1.CreateInstanceMetadata.end_time",
-            index=3,
-            number=4,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2422,
-    serialized_end=2651,
+  name='CreateInstanceMetadata',
+  full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.instance', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='start_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.start_time', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cancel_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.cancel_time', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='end_time', full_name='google.spanner.admin.instance.v1.CreateInstanceMetadata.end_time', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2493,
+  serialized_end=2722,
 )
 
 
 _UPDATEINSTANCEMETADATA = _descriptor.Descriptor(
-    name="UpdateInstanceMetadata",
-    full_name="google.spanner.admin.instance.v1.UpdateInstanceMetadata",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="instance",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceMetadata.instance",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="start_time",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceMetadata.start_time",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="cancel_time",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time",
-            index=2,
-            number=3,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="end_time",
-            full_name="google.spanner.admin.instance.v1.UpdateInstanceMetadata.end_time",
-            index=3,
-            number=4,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=2654,
-    serialized_end=2883,
+  name='UpdateInstanceMetadata',
+  full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.instance', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='start_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.start_time', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cancel_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='end_time', full_name='google.spanner.admin.instance.v1.UpdateInstanceMetadata.end_time', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2725,
+  serialized_end=2954,
 )
 
-_REPLICAINFO.fields_by_name["type"].enum_type = _REPLICAINFO_REPLICATYPE
+_REPLICAINFO.fields_by_name['type'].enum_type = _REPLICAINFO_REPLICATYPE
 _REPLICAINFO_REPLICATYPE.containing_type = _REPLICAINFO
-_INSTANCECONFIG.fields_by_name["replicas"].message_type = _REPLICAINFO
+_INSTANCECONFIG.fields_by_name['replicas'].message_type = _REPLICAINFO
 _INSTANCE_LABELSENTRY.containing_type = _INSTANCE
-_INSTANCE.fields_by_name["state"].enum_type = _INSTANCE_STATE
-_INSTANCE.fields_by_name["labels"].message_type = _INSTANCE_LABELSENTRY
+_INSTANCE.fields_by_name['state'].enum_type = _INSTANCE_STATE
+_INSTANCE.fields_by_name['labels'].message_type = _INSTANCE_LABELSENTRY
 _INSTANCE_STATE.containing_type = _INSTANCE
-_LISTINSTANCECONFIGSRESPONSE.fields_by_name[
-    "instance_configs"
-].message_type = _INSTANCECONFIG
-_CREATEINSTANCEREQUEST.fields_by_name["instance"].message_type = _INSTANCE
-_LISTINSTANCESRESPONSE.fields_by_name["instances"].message_type = _INSTANCE
-_UPDATEINSTANCEREQUEST.fields_by_name["instance"].message_type = _INSTANCE
-_UPDATEINSTANCEREQUEST.fields_by_name[
-    "field_mask"
-].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
-_CREATEINSTANCEMETADATA.fields_by_name["instance"].message_type = _INSTANCE
-_CREATEINSTANCEMETADATA.fields_by_name[
-    "start_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_CREATEINSTANCEMETADATA.fields_by_name[
-    "cancel_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_CREATEINSTANCEMETADATA.fields_by_name[
-    "end_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_UPDATEINSTANCEMETADATA.fields_by_name["instance"].message_type = _INSTANCE
-_UPDATEINSTANCEMETADATA.fields_by_name[
-    "start_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_UPDATEINSTANCEMETADATA.fields_by_name[
-    "cancel_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_UPDATEINSTANCEMETADATA.fields_by_name[
-    "end_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name["ReplicaInfo"] = _REPLICAINFO
-DESCRIPTOR.message_types_by_name["InstanceConfig"] = _INSTANCECONFIG
-DESCRIPTOR.message_types_by_name["Instance"] = _INSTANCE
-DESCRIPTOR.message_types_by_name[
-    "ListInstanceConfigsRequest"
-] = _LISTINSTANCECONFIGSREQUEST
-DESCRIPTOR.message_types_by_name[
-    "ListInstanceConfigsResponse"
-] = _LISTINSTANCECONFIGSRESPONSE
-DESCRIPTOR.message_types_by_name["GetInstanceConfigRequest"] = _GETINSTANCECONFIGREQUEST
-DESCRIPTOR.message_types_by_name["GetInstanceRequest"] = _GETINSTANCEREQUEST
-DESCRIPTOR.message_types_by_name["CreateInstanceRequest"] = _CREATEINSTANCEREQUEST
-DESCRIPTOR.message_types_by_name["ListInstancesRequest"] = _LISTINSTANCESREQUEST
-DESCRIPTOR.message_types_by_name["ListInstancesResponse"] = _LISTINSTANCESRESPONSE
-DESCRIPTOR.message_types_by_name["UpdateInstanceRequest"] = _UPDATEINSTANCEREQUEST
-DESCRIPTOR.message_types_by_name["DeleteInstanceRequest"] = _DELETEINSTANCEREQUEST
-DESCRIPTOR.message_types_by_name["CreateInstanceMetadata"] = _CREATEINSTANCEMETADATA
-DESCRIPTOR.message_types_by_name["UpdateInstanceMetadata"] = _UPDATEINSTANCEMETADATA
+_LISTINSTANCECONFIGSRESPONSE.fields_by_name['instance_configs'].message_type = _INSTANCECONFIG
+_GETINSTANCEREQUEST.fields_by_name['field_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_CREATEINSTANCEREQUEST.fields_by_name['instance'].message_type = _INSTANCE
+_LISTINSTANCESRESPONSE.fields_by_name['instances'].message_type = _INSTANCE
+_UPDATEINSTANCEREQUEST.fields_by_name['instance'].message_type = _INSTANCE
+_UPDATEINSTANCEREQUEST.fields_by_name['field_mask'].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
+_CREATEINSTANCEMETADATA.fields_by_name['instance'].message_type = _INSTANCE
+_CREATEINSTANCEMETADATA.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_CREATEINSTANCEMETADATA.fields_by_name['cancel_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_CREATEINSTANCEMETADATA.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_UPDATEINSTANCEMETADATA.fields_by_name['instance'].message_type = _INSTANCE
+_UPDATEINSTANCEMETADATA.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_UPDATEINSTANCEMETADATA.fields_by_name['cancel_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_UPDATEINSTANCEMETADATA.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name['ReplicaInfo'] = _REPLICAINFO
+DESCRIPTOR.message_types_by_name['InstanceConfig'] = _INSTANCECONFIG
+DESCRIPTOR.message_types_by_name['Instance'] = _INSTANCE
+DESCRIPTOR.message_types_by_name['ListInstanceConfigsRequest'] = _LISTINSTANCECONFIGSREQUEST
+DESCRIPTOR.message_types_by_name['ListInstanceConfigsResponse'] = _LISTINSTANCECONFIGSRESPONSE
+DESCRIPTOR.message_types_by_name['GetInstanceConfigRequest'] = _GETINSTANCECONFIGREQUEST
+DESCRIPTOR.message_types_by_name['GetInstanceRequest'] = _GETINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name['CreateInstanceRequest'] = _CREATEINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name['ListInstancesRequest'] = _LISTINSTANCESREQUEST
+DESCRIPTOR.message_types_by_name['ListInstancesResponse'] = _LISTINSTANCESRESPONSE
+DESCRIPTOR.message_types_by_name['UpdateInstanceRequest'] = _UPDATEINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name['DeleteInstanceRequest'] = _DELETEINSTANCEREQUEST
+DESCRIPTOR.message_types_by_name['CreateInstanceMetadata'] = _CREATEINSTANCEMETADATA
+DESCRIPTOR.message_types_by_name['UpdateInstanceMetadata'] = _UPDATEINSTANCEMETADATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ReplicaInfo = _reflection.GeneratedProtocolMessageType(
-    "ReplicaInfo",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_REPLICAINFO,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""Protocol buffer.
+ReplicaInfo = _reflection.GeneratedProtocolMessageType('ReplicaInfo', (_message.Message,), dict(
+  DESCRIPTOR = _REPLICAINFO,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """Protocol buffer.
 
   Attributes:
       location:
@@ -1254,18 +808,15 @@ ReplicaInfo = _reflection.GeneratedProtocolMessageType(
           types documentation <https://cloud.google.com/spanner/docs/ins
           tances#region_types>`__ for more details.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ReplicaInfo)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ReplicaInfo)
+  ))
 _sym_db.RegisterMessage(ReplicaInfo)
 
-InstanceConfig = _reflection.GeneratedProtocolMessageType(
-    "InstanceConfig",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_INSTANCECONFIG,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""A possible configuration for a Cloud Spanner instance. Configurations
+InstanceConfig = _reflection.GeneratedProtocolMessageType('InstanceConfig', (_message.Message,), dict(
+  DESCRIPTOR = _INSTANCECONFIG,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """A possible configuration for a Cloud Spanner instance. Configurations
   define the geographic placement of nodes and their replication.
   
   
@@ -1280,27 +831,22 @@ InstanceConfig = _reflection.GeneratedProtocolMessageType(
           The geographic placement of nodes in this instance
           configuration and their replication properties.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.InstanceConfig)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.InstanceConfig)
+  ))
 _sym_db.RegisterMessage(InstanceConfig)
 
-Instance = _reflection.GeneratedProtocolMessageType(
-    "Instance",
-    (_message.Message,),
-    dict(
-        LabelsEntry=_reflection.GeneratedProtocolMessageType(
-            "LabelsEntry",
-            (_message.Message,),
-            dict(
-                DESCRIPTOR=_INSTANCE_LABELSENTRY,
-                __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2"
-                # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.Instance.LabelsEntry)
-            ),
-        ),
-        DESCRIPTOR=_INSTANCE,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""An isolated set of Cloud Spanner resources on which databases can be
+Instance = _reflection.GeneratedProtocolMessageType('Instance', (_message.Message,), dict(
+
+  LabelsEntry = _reflection.GeneratedProtocolMessageType('LabelsEntry', (_message.Message,), dict(
+    DESCRIPTOR = _INSTANCE_LABELSENTRY,
+    __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+    # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.Instance.LabelsEntry)
+    ))
+  ,
+  DESCRIPTOR = _INSTANCE,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """An isolated set of Cloud Spanner resources on which databases can be
   hosted.
   
   
@@ -1357,20 +903,27 @@ Instance = _reflection.GeneratedProtocolMessageType(
           characters being disallowed. For example, representing labels
           as the string: name + "*" + value would prove problematic if
           we were to allow "*" in a future release.
+      endpoint_urls:
+          Output only. The endpoint URLs based on the instance config.
+          For example, instances located in a specific cloud region (or
+          multi region) such as nam3, would have a nam3 specific
+          endpoint URL. This URL is to be used implictly by SDK clients,
+          with fallback to default URL. These endpoints are intended to
+          optimize the network routing between the client and the
+          instance's serving resources. If multiple endpoints are
+          present, client may establish connections using any of the
+          given URLs.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.Instance)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.Instance)
+  ))
 _sym_db.RegisterMessage(Instance)
 _sym_db.RegisterMessage(Instance.LabelsEntry)
 
-ListInstanceConfigsRequest = _reflection.GeneratedProtocolMessageType(
-    "ListInstanceConfigsRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINSTANCECONFIGSREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+ListInstanceConfigsRequest = _reflection.GeneratedProtocolMessageType('ListInstanceConfigsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINSTANCECONFIGSREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
   
   
@@ -1390,18 +943,15 @@ ListInstanceConfigsRequest = _reflection.GeneratedProtocolMessageType(
           onse][google.spanner.admin.instance.v1.ListInstanceConfigsResp
           onse].
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstanceConfigsRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstanceConfigsRequest)
+  ))
 _sym_db.RegisterMessage(ListInstanceConfigsRequest)
 
-ListInstanceConfigsResponse = _reflection.GeneratedProtocolMessageType(
-    "ListInstanceConfigsResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINSTANCECONFIGSRESPONSE,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The response for
+ListInstanceConfigsResponse = _reflection.GeneratedProtocolMessageType('ListInstanceConfigsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINSTANCECONFIGSRESPONSE,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The response for
   [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
   
   
@@ -1414,18 +964,15 @@ ListInstanceConfigsResponse = _reflection.GeneratedProtocolMessageType(
           tanceConfigs] call to fetch more of the matching instance
           configurations.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstanceConfigsResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstanceConfigsResponse)
+  ))
 _sym_db.RegisterMessage(ListInstanceConfigsResponse)
 
-GetInstanceConfigRequest = _reflection.GeneratedProtocolMessageType(
-    "GetInstanceConfigRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETINSTANCECONFIGREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+GetInstanceConfigRequest = _reflection.GeneratedProtocolMessageType('GetInstanceConfigRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETINSTANCECONFIGREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig].
   
   
@@ -1435,18 +982,15 @@ GetInstanceConfigRequest = _reflection.GeneratedProtocolMessageType(
           Values are of the form
           ``projects/<project>/instanceConfigs/<config>``.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.GetInstanceConfigRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.GetInstanceConfigRequest)
+  ))
 _sym_db.RegisterMessage(GetInstanceConfigRequest)
 
-GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
-    "GetInstanceRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_GETINSTANCEREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+GetInstanceRequest = _reflection.GeneratedProtocolMessageType('GetInstanceRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETINSTANCEREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance].
   
   
@@ -1454,19 +998,20 @@ GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The name of the requested instance. Values are of
           the form ``projects/<project>/instances/<instance>``.
+      field_mask:
+          If field\_mask is present, specifies the subset of
+          [][Instance] fields that should be returned. If absent, all
+          [][Instance] fields are returned.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.GetInstanceRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.GetInstanceRequest)
+  ))
 _sym_db.RegisterMessage(GetInstanceRequest)
 
-CreateInstanceRequest = _reflection.GeneratedProtocolMessageType(
-    "CreateInstanceRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEINSTANCEREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+CreateInstanceRequest = _reflection.GeneratedProtocolMessageType('CreateInstanceRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEINSTANCEREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
   
   
@@ -1482,18 +1027,15 @@ CreateInstanceRequest = _reflection.GeneratedProtocolMessageType(
           Required. The instance to create. The name may be omitted, but
           if specified must be ``<parent>/instances/<instance_id>``.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.CreateInstanceRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.CreateInstanceRequest)
+  ))
 _sym_db.RegisterMessage(CreateInstanceRequest)
 
-ListInstancesRequest = _reflection.GeneratedProtocolMessageType(
-    "ListInstancesRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINSTANCESREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+ListInstancesRequest = _reflection.GeneratedProtocolMessageType('ListInstancesRequest', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINSTANCESREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
   
   
@@ -1525,18 +1067,15 @@ ListInstancesRequest = _reflection.GeneratedProtocolMessageType(
           The instance's name contains "howl"    and it has the label
           "env" with its value containing "dev".
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesRequest)
+  ))
 _sym_db.RegisterMessage(ListInstancesRequest)
 
-ListInstancesResponse = _reflection.GeneratedProtocolMessageType(
-    "ListInstancesResponse",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_LISTINSTANCESRESPONSE,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The response for
+ListInstancesResponse = _reflection.GeneratedProtocolMessageType('ListInstancesResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTINSTANCESRESPONSE,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The response for
   [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
   
   
@@ -1548,18 +1087,15 @@ ListInstancesResponse = _reflection.GeneratedProtocolMessageType(
           ][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances
           ] call to fetch more of the matching instances.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesResponse)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesResponse)
+  ))
 _sym_db.RegisterMessage(ListInstancesResponse)
 
-UpdateInstanceRequest = _reflection.GeneratedProtocolMessageType(
-    "UpdateInstanceRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATEINSTANCEREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+UpdateInstanceRequest = _reflection.GeneratedProtocolMessageType('UpdateInstanceRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEINSTANCEREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
   
   
@@ -1577,18 +1113,15 @@ UpdateInstanceRequest = _reflection.GeneratedProtocolMessageType(
           [][google.spanner.admin.instance.v1.Instance] from being
           erased accidentally by clients that do not know about them.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.UpdateInstanceRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.UpdateInstanceRequest)
+  ))
 _sym_db.RegisterMessage(UpdateInstanceRequest)
 
-DeleteInstanceRequest = _reflection.GeneratedProtocolMessageType(
-    "DeleteInstanceRequest",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_DELETEINSTANCEREQUEST,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""The request for
+DeleteInstanceRequest = _reflection.GeneratedProtocolMessageType('DeleteInstanceRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DELETEINSTANCEREQUEST,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """The request for
   [DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance].
   
   
@@ -1597,18 +1130,15 @@ DeleteInstanceRequest = _reflection.GeneratedProtocolMessageType(
           Required. The name of the instance to be deleted. Values are
           of the form ``projects/<project>/instances/<instance>``
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.DeleteInstanceRequest)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.DeleteInstanceRequest)
+  ))
 _sym_db.RegisterMessage(DeleteInstanceRequest)
 
-CreateInstanceMetadata = _reflection.GeneratedProtocolMessageType(
-    "CreateInstanceMetadata",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_CREATEINSTANCEMETADATA,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""Metadata type for the operation returned by
+CreateInstanceMetadata = _reflection.GeneratedProtocolMessageType('CreateInstanceMetadata', (_message.Message,), dict(
+  DESCRIPTOR = _CREATEINSTANCEMETADATA,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """Metadata type for the operation returned by
   [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
   
   
@@ -1626,18 +1156,15 @@ CreateInstanceMetadata = _reflection.GeneratedProtocolMessageType(
           The time at which this operation failed or was completed
           successfully.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.CreateInstanceMetadata)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.CreateInstanceMetadata)
+  ))
 _sym_db.RegisterMessage(CreateInstanceMetadata)
 
-UpdateInstanceMetadata = _reflection.GeneratedProtocolMessageType(
-    "UpdateInstanceMetadata",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_UPDATEINSTANCEMETADATA,
-        __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""Metadata type for the operation returned by
+UpdateInstanceMetadata = _reflection.GeneratedProtocolMessageType('UpdateInstanceMetadata', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEINSTANCEMETADATA,
+  __module__ = 'google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2'
+  ,
+  __doc__ = """Metadata type for the operation returned by
   [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
   
   
@@ -1655,153 +1182,129 @@ UpdateInstanceMetadata = _reflection.GeneratedProtocolMessageType(
           The time at which this operation failed or was completed
           successfully.
   """,
-        # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.UpdateInstanceMetadata)
-    ),
-)
+  # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.UpdateInstanceMetadata)
+  ))
 _sym_db.RegisterMessage(UpdateInstanceMetadata)
 
 
 DESCRIPTOR._options = None
 _INSTANCECONFIG._options = None
 _INSTANCE_LABELSENTRY._options = None
-_INSTANCE.fields_by_name["config"]._options = None
+_INSTANCE.fields_by_name['config']._options = None
 _INSTANCE._options = None
-_LISTINSTANCECONFIGSREQUEST.fields_by_name["parent"]._options = None
-_GETINSTANCECONFIGREQUEST.fields_by_name["name"]._options = None
-_GETINSTANCEREQUEST.fields_by_name["name"]._options = None
-_CREATEINSTANCEREQUEST.fields_by_name["parent"]._options = None
-_CREATEINSTANCEREQUEST.fields_by_name["instance_id"]._options = None
-_CREATEINSTANCEREQUEST.fields_by_name["instance"]._options = None
-_LISTINSTANCESREQUEST.fields_by_name["parent"]._options = None
-_UPDATEINSTANCEREQUEST.fields_by_name["instance"]._options = None
-_UPDATEINSTANCEREQUEST.fields_by_name["field_mask"]._options = None
-_DELETEINSTANCEREQUEST.fields_by_name["name"]._options = None
+_LISTINSTANCECONFIGSREQUEST.fields_by_name['parent']._options = None
+_GETINSTANCECONFIGREQUEST.fields_by_name['name']._options = None
+_GETINSTANCEREQUEST.fields_by_name['name']._options = None
+_CREATEINSTANCEREQUEST.fields_by_name['parent']._options = None
+_CREATEINSTANCEREQUEST.fields_by_name['instance_id']._options = None
+_CREATEINSTANCEREQUEST.fields_by_name['instance']._options = None
+_LISTINSTANCESREQUEST.fields_by_name['parent']._options = None
+_UPDATEINSTANCEREQUEST.fields_by_name['instance']._options = None
+_UPDATEINSTANCEREQUEST.fields_by_name['field_mask']._options = None
+_DELETEINSTANCEREQUEST.fields_by_name['name']._options = None
 
 _INSTANCEADMIN = _descriptor.ServiceDescriptor(
-    name="InstanceAdmin",
-    full_name="google.spanner.admin.instance.v1.InstanceAdmin",
-    file=DESCRIPTOR,
+  name='InstanceAdmin',
+  full_name='google.spanner.admin.instance.v1.InstanceAdmin',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=_b('\312A\026spanner.googleapis.com\322A\\https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.admin'),
+  serialized_start=2957,
+  serialized_end=5068,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='ListInstanceConfigs',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs',
     index=0,
-    serialized_options=_b(
-        "\312A\026spanner.googleapis.com\322A\\https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spanner.admin"
-    ),
-    serialized_start=2886,
-    serialized_end=4997,
-    methods=[
-        _descriptor.MethodDescriptor(
-            name="ListInstanceConfigs",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs",
-            index=0,
-            containing_service=None,
-            input_type=_LISTINSTANCECONFIGSREQUEST,
-            output_type=_LISTINSTANCECONFIGSRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\002)\022'/v1/{parent=projects/*}/instanceConfigs\332A\006parent"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetInstanceConfig",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig",
-            index=1,
-            containing_service=None,
-            input_type=_GETINSTANCECONFIGREQUEST,
-            output_type=_INSTANCECONFIG,
-            serialized_options=_b(
-                "\202\323\344\223\002)\022'/v1/{name=projects/*/instanceConfigs/*}\332A\004name"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="ListInstances",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.ListInstances",
-            index=2,
-            containing_service=None,
-            input_type=_LISTINSTANCESREQUEST,
-            output_type=_LISTINSTANCESRESPONSE,
-            serialized_options=_b(
-                "\202\323\344\223\002#\022!/v1/{parent=projects/*}/instances\332A\006parent"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetInstance",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.GetInstance",
-            index=3,
-            containing_service=None,
-            input_type=_GETINSTANCEREQUEST,
-            output_type=_INSTANCE,
-            serialized_options=_b(
-                "\202\323\344\223\002#\022!/v1/{name=projects/*/instances/*}\332A\004name"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="CreateInstance",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance",
-            index=4,
-            containing_service=None,
-            input_type=_CREATEINSTANCEREQUEST,
-            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            serialized_options=_b(
-                '\202\323\344\223\002&"!/v1/{parent=projects/*}/instances:\001*\332A\033parent,instance_id,instance\312Ad\n)google.spanner.admin.instance.v1.Instance\0227google.spanner.admin.instance.v1.CreateInstanceMetadata'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="UpdateInstance",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance",
-            index=5,
-            containing_service=None,
-            input_type=_UPDATEINSTANCEREQUEST,
-            output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
-            serialized_options=_b(
-                "\202\323\344\223\002/2*/v1/{instance.name=projects/*/instances/*}:\001*\332A\023instance,field_mask\312Ad\n)google.spanner.admin.instance.v1.Instance\0227google.spanner.admin.instance.v1.UpdateInstanceMetadata"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="DeleteInstance",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance",
-            index=6,
-            containing_service=None,
-            input_type=_DELETEINSTANCEREQUEST,
-            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-            serialized_options=_b(
-                "\202\323\344\223\002#*!/v1/{name=projects/*/instances/*}\332A\004name"
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="SetIamPolicy",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.SetIamPolicy",
-            index=7,
-            containing_service=None,
-            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
-            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            serialized_options=_b(
-                '\202\323\344\223\0027"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\001*\332A\017resource,policy'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="GetIamPolicy",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.GetIamPolicy",
-            index=8,
-            containing_service=None,
-            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
-            output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
-            serialized_options=_b(
-                '\202\323\344\223\0027"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\001*\332A\010resource'
-            ),
-        ),
-        _descriptor.MethodDescriptor(
-            name="TestIamPermissions",
-            full_name="google.spanner.admin.instance.v1.InstanceAdmin.TestIamPermissions",
-            index=9,
-            containing_service=None,
-            input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
-            output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
-            serialized_options=_b(
-                '\202\323\344\223\002="8/v1/{resource=projects/*/instances/*}:testIamPermissions:\001*\332A\024resource,permissions'
-            ),
-        ),
-    ],
-)
+    containing_service=None,
+    input_type=_LISTINSTANCECONFIGSREQUEST,
+    output_type=_LISTINSTANCECONFIGSRESPONSE,
+    serialized_options=_b('\202\323\344\223\002)\022\'/v1/{parent=projects/*}/instanceConfigs\332A\006parent'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetInstanceConfig',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig',
+    index=1,
+    containing_service=None,
+    input_type=_GETINSTANCECONFIGREQUEST,
+    output_type=_INSTANCECONFIG,
+    serialized_options=_b('\202\323\344\223\002)\022\'/v1/{name=projects/*/instanceConfigs/*}\332A\004name'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListInstances',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.ListInstances',
+    index=2,
+    containing_service=None,
+    input_type=_LISTINSTANCESREQUEST,
+    output_type=_LISTINSTANCESRESPONSE,
+    serialized_options=_b('\202\323\344\223\002#\022!/v1/{parent=projects/*}/instances\332A\006parent'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetInstance',
+    index=3,
+    containing_service=None,
+    input_type=_GETINSTANCEREQUEST,
+    output_type=_INSTANCE,
+    serialized_options=_b('\202\323\344\223\002#\022!/v1/{name=projects/*/instances/*}\332A\004name'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='CreateInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance',
+    index=4,
+    containing_service=None,
+    input_type=_CREATEINSTANCEREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    serialized_options=_b('\202\323\344\223\002&\"!/v1/{parent=projects/*}/instances:\001*\332A\033parent,instance_id,instance\312Ad\n)google.spanner.admin.instance.v1.Instance\0227google.spanner.admin.instance.v1.CreateInstanceMetadata'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance',
+    index=5,
+    containing_service=None,
+    input_type=_UPDATEINSTANCEREQUEST,
+    output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
+    serialized_options=_b('\202\323\344\223\002/2*/v1/{instance.name=projects/*/instances/*}:\001*\332A\023instance,field_mask\312Ad\n)google.spanner.admin.instance.v1.Instance\0227google.spanner.admin.instance.v1.UpdateInstanceMetadata'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeleteInstance',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance',
+    index=6,
+    containing_service=None,
+    input_type=_DELETEINSTANCEREQUEST,
+    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=_b('\202\323\344\223\002#*!/v1/{name=projects/*/instances/*}\332A\004name'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='SetIamPolicy',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.SetIamPolicy',
+    index=7,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    serialized_options=_b('\202\323\344\223\0027\"2/v1/{resource=projects/*/instances/*}:setIamPolicy:\001*\332A\017resource,policy'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetIamPolicy',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.GetIamPolicy',
+    index=8,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
+    serialized_options=_b('\202\323\344\223\0027\"2/v1/{resource=projects/*/instances/*}:getIamPolicy:\001*\332A\010resource'),
+  ),
+  _descriptor.MethodDescriptor(
+    name='TestIamPermissions',
+    full_name='google.spanner.admin.instance.v1.InstanceAdmin.TestIamPermissions',
+    index=9,
+    containing_service=None,
+    input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
+    output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
+    serialized_options=_b('\202\323\344\223\002=\"8/v1/{resource=projects/*/instances/*}:testIamPermissions:\001*\332A\024resource,permissions'),
+  ),
+])
 _sym_db.RegisterServiceDescriptor(_INSTANCEADMIN)
 
-DESCRIPTOR.services_by_name["InstanceAdmin"] = _INSTANCEADMIN
+DESCRIPTOR.services_by_name['InstanceAdmin'] = _INSTANCEADMIN
 
 # @@protoc_insertion_point(module_scope)

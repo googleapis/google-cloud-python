@@ -30,7 +30,7 @@ class Database(object):
           with ``FAILED_PRECONDITION`` in this state.
           READY (int): The database is fully created and ready for use.
         """
-
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
+    
