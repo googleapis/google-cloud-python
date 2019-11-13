@@ -34,11 +34,12 @@ Example usage:
 """
 
 import collections
+import warnings
+
 try:
     from collections import abc as collections_abc
 except ImportError:  # Python 2.7
     import collections as collections_abc
-import warnings
 
 # Generic IAM roles
 
