@@ -30,7 +30,7 @@ option go_package = "google.golang.org/genproto/googleapis/cloud/automl/v1;autom
 option java_multiple_files = true;
 option java_outer_classname = "PredictionServiceProto";
 option java_package = "com.google.cloud.automl.v1";
-option php_namespace = "Google\\Cloud\\AutoML\\V1";
+option php_namespace = "Google\\Cloud\\AutoMl\\V1";
 option ruby_package = "Google::Cloud::AutoML::V1";
 
 // AutoML Prediction API.
@@ -124,15 +124,15 @@ message PredictResponse {
   // Empty if AutoML does not preprocess the input example.
   // * For Text Extraction:
   //   If the input is a .pdf file, the OCR'ed text will be provided in
-  //   [document_text][google.cloud.automl.v1p1beta.Document.document_text].
+  //   [document_text][google.cloud.automl.v1.Document.document_text].
   //
   // * For Text Classification:
   //   If the input is a .pdf file, the OCR'ed trucated text will be provided in
-  //   [document_text][google.cloud.automl.v1p1beta.Document.document_text].
+  //   [document_text][google.cloud.automl.v1.Document.document_text].
   //
   // * For Text Sentiment:
   //   If the input is a .pdf file, the OCR'ed trucated text will be provided in
-  //   [document_text][google.cloud.automl.v1p1beta.Document.document_text].
+  //   [document_text][google.cloud.automl.v1.Document.document_text].
   ExamplePayload preprocessed_input = 3;
 
   // Additional domain-specific prediction response metadata.

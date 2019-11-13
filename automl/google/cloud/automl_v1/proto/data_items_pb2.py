@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.automl_v1.proto import (
     geometry_pb2 as google_dot_cloud_dot_automl__v1_dot_proto_dot_geometry__pb2,
 )
@@ -27,7 +28,6 @@ from google.cloud.automl_v1.proto import (
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -35,19 +35,19 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
+        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoMl\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/automl_v1/proto/data_items.proto\x12\x16google.cloud.automl.v1\x1a+google/cloud/automl_v1/proto/geometry.proto\x1a%google/cloud/automl_v1/proto/io.proto\x1a/google/cloud/automl_v1/proto/text_segment.proto\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1cgoogle/api/annotations.proto"\x85\x01\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12\x46\n\x12image_input_config\x18\x07 \x01(\x0b\x32(.google.cloud.automl.v1.ImageInputConfigH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"\xea\x01\n\x12\x44ocumentDimensions\x12N\n\x04unit\x18\x01 \x01(\x0e\x32@.google.cloud.automl.v1.DocumentDimensions.DocumentDimensionUnit\x12\r\n\x05width\x18\x02 \x01(\x02\x12\x0e\n\x06height\x18\x03 \x01(\x02"e\n\x15\x44ocumentDimensionUnit\x12\'\n#DOCUMENT_DIMENSION_UNIT_UNSPECIFIED\x10\x00\x12\x08\n\x04INCH\x10\x01\x12\x0e\n\nCENTIMETER\x10\x02\x12\t\n\x05POINT\x10\x03"\xd6\x05\n\x08\x44ocument\x12\x41\n\x0cinput_config\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1.DocumentInputConfig\x12:\n\rdocument_text\x18\x02 \x01(\x0b\x32#.google.cloud.automl.v1.TextSnippet\x12\x37\n\x06layout\x18\x03 \x03(\x0b\x32\'.google.cloud.automl.v1.Document.Layout\x12G\n\x13\x64ocument_dimensions\x18\x04 \x01(\x0b\x32*.google.cloud.automl.v1.DocumentDimensions\x12\x12\n\npage_count\x18\x05 \x01(\x05\x1a\xb4\x03\n\x06Layout\x12\x39\n\x0ctext_segment\x18\x01 \x01(\x0b\x32#.google.cloud.automl.v1.TextSegment\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\x12;\n\rbounding_poly\x18\x03 \x01(\x0b\x32$.google.cloud.automl.v1.BoundingPoly\x12R\n\x11text_segment_type\x18\x04 \x01(\x0e\x32\x37.google.cloud.automl.v1.Document.Layout.TextSegmentType"\xc8\x01\n\x0fTextSegmentType\x12!\n\x1dTEXT_SEGMENT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05TOKEN\x10\x01\x12\r\n\tPARAGRAPH\x10\x02\x12\x0e\n\nFORM_FIELD\x10\x03\x12\x13\n\x0f\x46ORM_FIELD_NAME\x10\x04\x12\x17\n\x13\x46ORM_FIELD_CONTENTS\x10\x05\x12\t\n\x05TABLE\x10\x06\x12\x10\n\x0cTABLE_HEADER\x10\x07\x12\r\n\tTABLE_ROW\x10\x08\x12\x0e\n\nTABLE_CELL\x10\t"\xbe\x01\n\x0e\x45xamplePayload\x12.\n\x05image\x18\x01 \x01(\x0b\x32\x1d.google.cloud.automl.v1.ImageH\x00\x12;\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32#.google.cloud.automl.v1.TextSnippetH\x00\x12\x34\n\x08\x64ocument\x18\x04 \x01(\x0b\x32 .google.cloud.automl.v1.DocumentH\x00\x42\t\n\x07payloadB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n-google/cloud/automl_v1/proto/data_items.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/automl_v1/proto/geometry.proto\x1a%google/cloud/automl_v1/proto/io.proto\x1a/google/cloud/automl_v1/proto/text_segment.proto\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto"=\n\x05Image\x12\x15\n\x0bimage_bytes\x18\x01 \x01(\x0cH\x00\x12\x15\n\rthumbnail_uri\x18\x04 \x01(\tB\x06\n\x04\x64\x61ta"F\n\x0bTextSnippet\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_uri\x18\x04 \x01(\t"\xea\x01\n\x12\x44ocumentDimensions\x12N\n\x04unit\x18\x01 \x01(\x0e\x32@.google.cloud.automl.v1.DocumentDimensions.DocumentDimensionUnit\x12\r\n\x05width\x18\x02 \x01(\x02\x12\x0e\n\x06height\x18\x03 \x01(\x02"e\n\x15\x44ocumentDimensionUnit\x12\'\n#DOCUMENT_DIMENSION_UNIT_UNSPECIFIED\x10\x00\x12\x08\n\x04INCH\x10\x01\x12\x0e\n\nCENTIMETER\x10\x02\x12\t\n\x05POINT\x10\x03"\xd6\x05\n\x08\x44ocument\x12\x41\n\x0cinput_config\x18\x01 \x01(\x0b\x32+.google.cloud.automl.v1.DocumentInputConfig\x12:\n\rdocument_text\x18\x02 \x01(\x0b\x32#.google.cloud.automl.v1.TextSnippet\x12\x37\n\x06layout\x18\x03 \x03(\x0b\x32\'.google.cloud.automl.v1.Document.Layout\x12G\n\x13\x64ocument_dimensions\x18\x04 \x01(\x0b\x32*.google.cloud.automl.v1.DocumentDimensions\x12\x12\n\npage_count\x18\x05 \x01(\x05\x1a\xb4\x03\n\x06Layout\x12\x39\n\x0ctext_segment\x18\x01 \x01(\x0b\x32#.google.cloud.automl.v1.TextSegment\x12\x13\n\x0bpage_number\x18\x02 \x01(\x05\x12;\n\rbounding_poly\x18\x03 \x01(\x0b\x32$.google.cloud.automl.v1.BoundingPoly\x12R\n\x11text_segment_type\x18\x04 \x01(\x0e\x32\x37.google.cloud.automl.v1.Document.Layout.TextSegmentType"\xc8\x01\n\x0fTextSegmentType\x12!\n\x1dTEXT_SEGMENT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05TOKEN\x10\x01\x12\r\n\tPARAGRAPH\x10\x02\x12\x0e\n\nFORM_FIELD\x10\x03\x12\x13\n\x0f\x46ORM_FIELD_NAME\x10\x04\x12\x17\n\x13\x46ORM_FIELD_CONTENTS\x10\x05\x12\t\n\x05TABLE\x10\x06\x12\x10\n\x0cTABLE_HEADER\x10\x07\x12\r\n\tTABLE_ROW\x10\x08\x12\x0e\n\nTABLE_CELL\x10\t"\xbe\x01\n\x0e\x45xamplePayload\x12.\n\x05image\x18\x01 \x01(\x0b\x32\x1d.google.cloud.automl.v1.ImageH\x00\x12;\n\x0ctext_snippet\x18\x02 \x01(\x0b\x32#.google.cloud.automl.v1.TextSnippetH\x00\x12\x34\n\x08\x64ocument\x18\x04 \x01(\x0b\x32 .google.cloud.automl.v1.DocumentH\x00\x42\t\n\x07payloadB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoMl\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_io__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1_dot_proto_dot_text__segment__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -77,8 +77,8 @@ _DOCUMENTDIMENSIONS_DOCUMENTDIMENSIONUNIT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=667,
-    serialized_end=768,
+    serialized_start=594,
+    serialized_end=695,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENTDIMENSIONS_DOCUMENTDIMENSIONUNIT)
 
@@ -133,8 +133,8 @@ _DOCUMENT_LAYOUT_TEXTSEGMENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1297,
-    serialized_end=1497,
+    serialized_start=1224,
+    serialized_end=1424,
 )
 _sym_db.RegisterEnumDescriptor(_DOCUMENT_LAYOUT_TEXTSEGMENTTYPE)
 
@@ -165,27 +165,9 @@ _IMAGE = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="image_input_config",
-            full_name="google.cloud.automl.v1.Image.image_input_config",
-            index=1,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="thumbnail_uri",
             full_name="google.cloud.automl.v1.Image.thumbnail_uri",
-            index=2,
+            index=1,
             number=4,
             type=9,
             cpp_type=9,
@@ -217,8 +199,8 @@ _IMAGE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=326,
-    serialized_end=459,
+    serialized_start=325,
+    serialized_end=386,
 )
 
 
@@ -292,8 +274,8 @@ _TEXTSNIPPET = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=461,
-    serialized_end=531,
+    serialized_start=388,
+    serialized_end=458,
 )
 
 
@@ -367,8 +349,8 @@ _DOCUMENTDIMENSIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=534,
-    serialized_end=768,
+    serialized_start=461,
+    serialized_end=695,
 )
 
 
@@ -460,8 +442,8 @@ _DOCUMENT_LAYOUT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1061,
-    serialized_end=1497,
+    serialized_start=988,
+    serialized_end=1424,
 )
 
 _DOCUMENT = _descriptor.Descriptor(
@@ -570,8 +552,8 @@ _DOCUMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=771,
-    serialized_end=1497,
+    serialized_start=698,
+    serialized_end=1424,
 )
 
 
@@ -653,19 +635,12 @@ _EXAMPLEPAYLOAD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1500,
-    serialized_end=1690,
+    serialized_start=1427,
+    serialized_end=1617,
 )
 
-_IMAGE.fields_by_name[
-    "image_input_config"
-].message_type = google_dot_cloud_dot_automl__v1_dot_proto_dot_io__pb2._IMAGEINPUTCONFIG
 _IMAGE.oneofs_by_name["data"].fields.append(_IMAGE.fields_by_name["image_bytes"])
 _IMAGE.fields_by_name["image_bytes"].containing_oneof = _IMAGE.oneofs_by_name["data"]
-_IMAGE.oneofs_by_name["data"].fields.append(_IMAGE.fields_by_name["image_input_config"])
-_IMAGE.fields_by_name["image_input_config"].containing_oneof = _IMAGE.oneofs_by_name[
-    "data"
-]
 _DOCUMENTDIMENSIONS.fields_by_name[
     "unit"
 ].enum_type = _DOCUMENTDIMENSIONS_DOCUMENTDIMENSIONUNIT
@@ -733,19 +708,11 @@ Image = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       data:
-          Input only. The data representing the image. For Predict calls
-          [image\_bytes][google.cloud.automl.v1.Image.image\_bytes] must
-          be set, as other options are not currently supported by
-          prediction API. You can read the contents of an uploaded image
-          by using the
-          [content\_uri][google.cloud.automl.v1.Image.content\_uri]
-          field.
+          Input only. The data representing the image.
       image_bytes:
           Image content represented as a stream of bytes. Note: As with
           all ``bytes`` fields, protobuffers use a pure binary
           representation, whereas JSON representations use base64.
-      image_input_config:
-          An input config specifying the content of the image.
       thumbnail_uri:
           Output only. HTTP URI to the thumbnail image.
   """,
@@ -822,7 +789,7 @@ Document = _reflection.GeneratedProtocolMessageType(
     Attributes:
         text_segment:
             Text Segment that represents a segment in [document\_text][goo
-            gle.cloud.automl.v1p1beta.Document.document\_text].
+            gle.cloud.automl.v1.Document.document\_text].
         page_number:
             Page number of the [text\_segment][google.cloud.automl.v1.Docu
             ment.Layout.text\_segment] in the original document, starts
@@ -830,12 +797,13 @@ Document = _reflection.GeneratedProtocolMessageType(
         bounding_poly:
             The position of the [text\_segment][google.cloud.automl.v1.Doc
             ument.Layout.text\_segment] in the page. Contains exactly 4  [
-            normalized\_vertices][google.cloud.automl.v1p1beta.BoundingPol
-            y.normalized\_vertices] and they are connected by edges in the
-            order provided, which will represent a rectangle parallel to
-            the frame. The [NormalizedVertex-s][google.cloud.automl.v1p1be
-            ta.NormalizedVertex] are relative to the page. Coordinates are
-            based on top-left as point (0,0).
+            normalized\_vertices][google.cloud.automl.v1.BoundingPoly.norm
+            alized\_vertices] and they are connected by edges in the order
+            provided, which will represent a rectangle parallel to the
+            frame. The
+            [NormalizedVertex-s][google.cloud.automl.v1.NormalizedVertex]
+            are relative to the page. Coordinates are based on top-left as
+            point (0,0).
         text_segment_type:
             The type of the [text\_segment][google.cloud.automl.v1.Documen
             t.Layout.text\_segment] in document.
@@ -878,7 +846,7 @@ ExamplePayload = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       payload:
-          Required. Input only. The example data.
+          Required. The example data.
       image:
           Example image.
       text_snippet:

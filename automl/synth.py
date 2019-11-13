@@ -109,6 +109,24 @@ s.replace(
 )
 
 s.replace("google/cloud/**/io_pb2.py", r":raw-latex:`\\t `", r"\\\\t")
+
+# Remove html bits that can't be rendered correctly
+s.replace("google/cloud/**/io_pb2.py", 
+r""".. raw:: html.+?
+     \</.+?\>""",
+r"", flags=re.DOTALL)
+
+# Remove raw-latex wrapping newline
+s.replace("google/cloud/**/io_pb2.py",
+r""":raw-latex:`\\n`""",
+r"``\\\\n``")
+
+# Make \n visible in JSONL samples
+s.replace("google/cloud/**/io_pb2.py",
+r"\}\\n",
+r"}\\\\n")
+
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

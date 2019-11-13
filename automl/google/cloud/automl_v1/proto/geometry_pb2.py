@@ -23,10 +23,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
+        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoMl\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n+google/cloud/automl_v1/proto/geometry.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"U\n\x0c\x42oundingPoly\x12\x45\n\x13normalized_vertices\x18\x02 \x03(\x0b\x32(.google.cloud.automl.v1.NormalizedVertexB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n+google/cloud/automl_v1/proto/geometry.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"U\n\x0c\x42oundingPoly\x12\x45\n\x13normalized_vertices\x18\x02 \x03(\x0b\x32(.google.cloud.automl.v1.NormalizedVertexB\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoMl\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )

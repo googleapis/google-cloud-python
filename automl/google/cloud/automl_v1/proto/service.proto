@@ -35,7 +35,7 @@ option go_package = "google.golang.org/genproto/googleapis/cloud/automl/v1;autom
 option java_multiple_files = true;
 option java_outer_classname = "AutoMlProto";
 option java_package = "com.google.cloud.automl.v1";
-option php_namespace = "Google\\Cloud\\AutoML\\V1";
+option php_namespace = "Google\\Cloud\\AutoMl\\V1";
 option ruby_package = "Google::Cloud::AutoML::V1";
 
 // AutoML Server API.
@@ -175,7 +175,7 @@ service AutoMl {
   // same parameters has no effect. Deploying with different parametrs
   // (as e.g. changing
   //
-  // [node_number][google.cloud.automl.v1p1beta.ImageObjectDetectionModelDeploymentMetadata.node_number])
+  // [node_number][google.cloud.automl.v1.ImageObjectDetectionModelDeploymentMetadata.node_number])
   //  will reset the deployment state without pausing the model's availability.
   //
   // Only applicable for Text Classification, Image Object Detection; all other

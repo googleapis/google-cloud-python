@@ -24,10 +24,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.automl.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoML\\V1\352\002\031Google::Cloud::AutoML::V1"
+        "\n\032com.google.cloud.automl.v1P\001Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\252\002\026Google.Cloud.AutoML.V1\312\002\026Google\\Cloud\\AutoMl\\V1\352\002\031Google::Cloud::AutoML::V1"
     ),
     serialized_pb=_b(
-        '\n%google/cloud/automl_v1/proto/io.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto"\xc0\x01\n\x0bInputConfig\x12\x37\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSourceH\x00\x12?\n\x06params\x18\x02 \x03(\x0b\x32/.google.cloud.automl.v1.InputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06source"a\n\x17\x42\x61tchPredictInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSourceB\x03\xe0\x41\x02H\x00\x42\x08\n\x06source"I\n\x10ImageInputConfig\x12\x35\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSource"L\n\x13\x44ocumentInputConfig\x12\x35\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSource"e\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x42\r\n\x0b\x64\x65stination"q\n\x18\x42\x61tchPredictOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x42\r\n\x0b\x64\x65stination"\x82\x02\n\x17ModelExportOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x12\x14\n\x0cmodel_format\x18\x04 \x01(\t\x12K\n\x06params\x18\x02 \x03(\x0b\x32;.google.cloud.automl.v1.ModelExportOutputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\r\n\x0b\x64\x65stination"$\n\tGcsSource\x12\x17\n\ninput_uris\x18\x01 \x03(\tB\x03\xe0\x41\x02"0\n\x0eGcsDestination\x12\x1e\n\x11output_uri_prefix\x18\x01 \x01(\tB\x03\xe0\x41\x02\x42\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoML\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
+        '\n%google/cloud/automl_v1/proto/io.proto\x12\x16google.cloud.automl.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto"\xc0\x01\n\x0bInputConfig\x12\x37\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSourceH\x00\x12?\n\x06params\x18\x02 \x03(\x0b\x32/.google.cloud.automl.v1.InputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x08\n\x06source"a\n\x17\x42\x61tchPredictInputConfig\x12<\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSourceB\x03\xe0\x41\x02H\x00\x42\x08\n\x06source"L\n\x13\x44ocumentInputConfig\x12\x35\n\ngcs_source\x18\x01 \x01(\x0b\x32!.google.cloud.automl.v1.GcsSource"e\n\x0cOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x42\r\n\x0b\x64\x65stination"q\n\x18\x42\x61tchPredictOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x42\r\n\x0b\x64\x65stination"\x82\x02\n\x17ModelExportOutputConfig\x12\x46\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32&.google.cloud.automl.v1.GcsDestinationB\x03\xe0\x41\x02H\x00\x12\x14\n\x0cmodel_format\x18\x04 \x01(\t\x12K\n\x06params\x18\x02 \x03(\x0b\x32;.google.cloud.automl.v1.ModelExportOutputConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\r\n\x0b\x64\x65stination"$\n\tGcsSource\x12\x17\n\ninput_uris\x18\x01 \x03(\tB\x03\xe0\x41\x02"0\n\x0eGcsDestination\x12\x1e\n\x11output_uri_prefix\x18\x01 \x01(\tB\x03\xe0\x41\x02\x42\xaa\x01\n\x1a\x63om.google.cloud.automl.v1P\x01Z<google.golang.org/genproto/googleapis/cloud/automl/v1;automl\xaa\x02\x16Google.Cloud.AutoML.V1\xca\x02\x16Google\\Cloud\\AutoMl\\V1\xea\x02\x19Google::Cloud::AutoML::V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -204,45 +204,6 @@ _BATCHPREDICTINPUTCONFIG = _descriptor.Descriptor(
 )
 
 
-_IMAGEINPUTCONFIG = _descriptor.Descriptor(
-    name="ImageInputConfig",
-    full_name="google.cloud.automl.v1.ImageInputConfig",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="gcs_source",
-            full_name="google.cloud.automl.v1.ImageInputConfig.gcs_source",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=422,
-    serialized_end=495,
-)
-
-
 _DOCUMENTINPUTCONFIG = _descriptor.Descriptor(
     name="DocumentInputConfig",
     full_name="google.cloud.automl.v1.DocumentInputConfig",
@@ -277,8 +238,8 @@ _DOCUMENTINPUTCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=497,
-    serialized_end=573,
+    serialized_start=422,
+    serialized_end=498,
 )
 
 
@@ -324,8 +285,8 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=575,
-    serialized_end=676,
+    serialized_start=500,
+    serialized_end=601,
 )
 
 
@@ -371,8 +332,8 @@ _BATCHPREDICTOUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=678,
-    serialized_end=791,
+    serialized_start=603,
+    serialized_end=716,
 )
 
 
@@ -510,8 +471,8 @@ _MODELEXPORTOUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=794,
-    serialized_end=1052,
+    serialized_start=719,
+    serialized_end=977,
 )
 
 
@@ -549,8 +510,8 @@ _GCSSOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1054,
-    serialized_end=1090,
+    serialized_start=979,
+    serialized_end=1015,
 )
 
 
@@ -588,8 +549,8 @@ _GCSDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1092,
-    serialized_end=1140,
+    serialized_start=1017,
+    serialized_end=1065,
 )
 
 _INPUTCONFIG_PARAMSENTRY.containing_type = _INPUTCONFIG
@@ -608,7 +569,6 @@ _BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"].fields.append(
 _BATCHPREDICTINPUTCONFIG.fields_by_name[
     "gcs_source"
 ].containing_oneof = _BATCHPREDICTINPUTCONFIG.oneofs_by_name["source"]
-_IMAGEINPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
 _DOCUMENTINPUTCONFIG.fields_by_name["gcs_source"].message_type = _GCSSOURCE
 _OUTPUTCONFIG.fields_by_name["gcs_destination"].message_type = _GCSDESTINATION
 _OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
@@ -641,7 +601,6 @@ _MODELEXPORTOUTPUTCONFIG.fields_by_name[
 ].containing_oneof = _MODELEXPORTOUTPUTCONFIG.oneofs_by_name["destination"]
 DESCRIPTOR.message_types_by_name["InputConfig"] = _INPUTCONFIG
 DESCRIPTOR.message_types_by_name["BatchPredictInputConfig"] = _BATCHPREDICTINPUTCONFIG
-DESCRIPTOR.message_types_by_name["ImageInputConfig"] = _IMAGEINPUTCONFIG
 DESCRIPTOR.message_types_by_name["DocumentInputConfig"] = _DOCUMENTINPUTCONFIG
 DESCRIPTOR.message_types_by_name["OutputConfig"] = _OUTPUTCONFIG
 DESCRIPTOR.message_types_by_name["BatchPredictOutputConfig"] = _BATCHPREDICTOUTPUTCONFIG
@@ -684,33 +643,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   non-terminal symbols defined near the end of this comment. The formats
   are:
   
-  .. raw:: html
   
-     <h4>
   
-  AutoML Vision
   
-  .. raw:: html
-  
-     </h4>
-  
-  .. raw:: html
-  
-     <div class="ds-selector-tabs">
-  
-  .. raw:: html
-  
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Classification
-  
-  .. raw:: html
-  
-     </h5>
   
   See `Preparing your training
   data <https://cloud.google.com/vision/automl/docs/prepare>`__ for more
@@ -751,23 +686,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
       UNASSIGNED,gs://folder/image3.jpg,daisy
       UNASSIGNED,gs://folder/image4.jpg
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Object Detection
-  
-  .. raw:: html
-  
-     </h5>
   
   See `Preparing your training
   data <https://cloud.google.com/vision/automl/object-detection/docs/prepare>`__
@@ -812,41 +733,13 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
       UNASSIGNED,gs://folder/im2.png,car,0.1,0.1,0.2,0.1,0.2,0.3,0.1,0.3
       TEST,gs://folder/im3.png,,,,,,,,,
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     </div>
   
-  .. raw:: html
   
-     <h4>
   
-  AutoML Natural Language
   
-  .. raw:: html
-  
-     </h4>
-  
-  .. raw:: html
-  
-     <div class="ds-selector-tabs">
-  
-  .. raw:: html
-  
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Entity Extraction
-  
-  .. raw:: html
-  
-     </h5>
   
   See `Preparing your training
   data </natural-language/automl/entity-analysis/docs/prepare>`__ for more
@@ -891,7 +784,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   one or more [``annotations``][google.cloud.automl.v1.AnnotationPayload]
   fields, which have ``display_name`` and ``text_extraction`` fields to
   describe the entity from the text snippet. Multiple JSON documents can
-  be separated using line breaks (:raw-latex:`\n`).
+  be separated using line breaks (``\\n``).
   
   The supplied text must be annotated exhaustively. For example, if you
   include the text "horse", but do not label it as "animal", then "horse"
@@ -928,7 +821,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
              }
            }
        ]
-      }\n
+      }\\n
       {
          "text_snippet": {
            "content": "This dog is good."
@@ -948,7 +841,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
   .JSONL files contain, per line, a JSON document that wraps a
   ``input_config`` that contains the path to a source PDF document.
   Multiple JSON documents can be separated using line breaks
-  (:raw-latex:`\n`).
+  (``\\n``).
   
   For example:
   
@@ -961,7 +854,7 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
             }
           }
         }
-      }\n
+      }\\n
       {
         "document": {
           "input_config": {
@@ -1036,23 +929,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
                 },
               ],
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Classification
-  
-  .. raw:: html
-  
-     </h5>
   
   See `Preparing your training
   data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -1102,23 +981,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
       TEST,gs://folder/document.pdf
       VALIDATE,gs://folder/text_files.zip,BadFood
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Sentiment Analysis
-  
-  .. raw:: html
-  
-     </h5>
   
   See `Preparing your training
   data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -1181,13 +1046,9 @@ InputConfig = _reflection.GeneratedProtocolMessageType(
       TEST,gs://folder/document.pdf
       VALIDATE,gs://folder/text_files.zip,2
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     </div>
   
   **Input field definitions:**
   
@@ -1269,33 +1130,9 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   non-terminal symbols defined near the end of this comment. The formats
   are:
   
-  .. raw:: html
   
-     <h4>
   
-  AutoML Natural Language
   
-  .. raw:: html
-  
-     </h4>
-  
-  .. raw:: html
-  
-     <div class="ds-selector-tabs">
-  
-  .. raw:: html
-  
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Classification
-  
-  .. raw:: html
-  
-     </h5>
   
   One or more CSV files where each line is a single column:
   
@@ -1314,23 +1151,9 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
       gs://folder/text1.txt
       gs://folder/text2.pdf
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Sentiment Analysis
-  
-  .. raw:: html
-  
-     </h5>
   
   One or more CSV files where each line is a single column:
   
@@ -1349,23 +1172,9 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
       gs://folder/text1.txt
       gs://folder/text2.pdf
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     <section>
-  
-  .. raw:: html
-  
-     <h5>
-  
-  Entity Extraction
-  
-  .. raw:: html
-  
-     </h5>
   
   One or more JSONL (JSON Lines) files that either provide inline text or
   documents. You can only use one format, either inline text or documents,
@@ -1386,7 +1195,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
   files may be passed.
   
   Sample inline JSONL file (Shown with artificial line breaks. Actual line
-  breaks are denoted by ":raw-latex:`\n`".):
+  breaks are denoted by "``\\n``".):
   
   ::
   
@@ -1407,7 +1216,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
              },
            }
          ],
-       }\n
+       }\\n
        {
          "id": "2",
          "text_snippet": {
@@ -1417,7 +1226,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
        }
   
   Sample document JSONL file (Shown with artificial line breaks. Actual
-  line breaks are denoted by ":raw-latex:`\n`".):
+  line breaks are denoted by "``\\n``".):
   
   ::
   
@@ -1428,7 +1237,7 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
              }
            }
          }
-       }\n
+       }\\n
        {
          "document": {
            "input_config": {
@@ -1438,13 +1247,9 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
          }
        }
   
-  .. raw:: html
   
-     </section>
   
-  .. raw:: html
   
-     </div>
   
   **Input field definitions:**
   
@@ -1472,25 +1277,6 @@ BatchPredictInputConfig = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(BatchPredictInputConfig)
-
-ImageInputConfig = _reflection.GeneratedProtocolMessageType(
-    "ImageInputConfig",
-    (_message.Message,),
-    dict(
-        DESCRIPTOR=_IMAGEINPUTCONFIG,
-        __module__="google.cloud.automl_v1.proto.io_pb2",
-        __doc__="""Input configuration of an [Document][google.cloud.automl.v1.Image].
-  
-  
-  Attributes:
-      gcs_source:
-          The Google Cloud Storage location of the document file. Only a
-          single path should be given.
-  """,
-        # @@protoc_insertion_point(class_scope:google.cloud.automl.v1.ImageInputConfig)
-    ),
-)
-_sym_db.RegisterMessage(ImageInputConfig)
 
 DocumentInputConfig = _reflection.GeneratedProtocolMessageType(
     "DocumentInputConfig",
