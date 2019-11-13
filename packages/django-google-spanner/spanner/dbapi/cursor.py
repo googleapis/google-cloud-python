@@ -67,6 +67,10 @@ class Cursor(object):
         if not self.__session:
             raise ProgrammingError('Cursor is not connected to the database')
 
+        # param_types doesn't seem required except as an empty dict to avoid
+        # ValueError("Specify 'param_types' when passing 'params'.").
+        # See https://github.com/orijtech/spanner-orm/issues/35
+        param_types = {} if args else None
         # Classify whether this is a read-only SQL statement.
         try:
             if classify_stmt(sql) == STMT_DDL:
@@ -74,31 +78,17 @@ class Cursor(object):
                 # by invoking `execute_sql` or `execute_update`, we must run
                 # DDL updates on the database handle itself.
                 self.__do_update_ddl(sql)
-
             elif classify_stmt(sql) == STMT_NON_UPDATING:
                 self.__do_execute_non_update(
                     sql, args or None,
-                    # param_types aren't actually required but an empty dict must be passed
-                    # to avoid
-                    #   "ValueError("Specify 'param_types' when passing 'params'.").
-                    # See https://github.com/orijtech/spanner-orm/issues/35
-                    # Instead of examining every parameter and making
-                    # a corresponding protobuf cast, we can just pass
-                    # in param_types={}
-                    param_types={})
-
+                    param_types=param_types,
+                )
             else:
                 self.__session.run_in_transaction(
                     self.__do_execute_update,
                     sql, args or None,
-                    # param_types aren't actually required but an empty dict must be
-                    # passed to avoid
-                    #   "ValueError("Specify 'param_types' when passing 'params'.").
-                    # See https://github.com/orijtech/spanner-orm/issues/35
-                    # Instead of examining every parameter and making
-                    # a corresponding protobuf cast, we can just pass
-                    # in param_types={}
-                    param_types={})
+                    param_types=param_types,
+                )
 
         except grpc_exceptions.AlreadyExists as e:
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
