@@ -15,16 +15,18 @@
 """Helpers for :mod:`protobuf`."""
 
 import collections
-try:
-    from collections import abc as collections_abc
-except ImportError:  # Python 2.7
-    import collections as collections_abc
 import copy
 import inspect
 
 from google.protobuf import field_mask_pb2
 from google.protobuf import message
 from google.protobuf import wrappers_pb2
+
+try:
+    from collections import abc as collections_abc
+except ImportError:  # Python 2.7
+    import collections as collections_abc
+
 
 _SENTINEL = object()
 _WRAPPER_TYPES = (

@@ -172,7 +172,9 @@ class _Throttle(object):
 
         self._time_window = time_window
         self._access_limit = access_limit
-        self._past_entries = collections.deque(maxlen=access_limit)  # least recent first
+        self._past_entries = collections.deque(
+            maxlen=access_limit
+        )  # least recent first
         self._entry_lock = threading.Lock()
 
     def __enter__(self):
@@ -198,9 +200,7 @@ class _Throttle(object):
 
     def __repr__(self):
         return "{}(access_limit={}, time_window={})".format(
-            self.__class__.__name__,
-            self._access_limit,
-            repr(self._time_window),
+            self.__class__.__name__, self._access_limit, repr(self._time_window)
         )
 
 
@@ -423,7 +423,7 @@ class ResumableBidiRpc(BidiRpc):
 
         if throttle_reopen:
             self._reopen_throttle = _Throttle(
-                access_limit=5, time_window=datetime.timedelta(seconds=10),
+                access_limit=5, time_window=datetime.timedelta(seconds=10)
             )
         else:
             self._reopen_throttle = None

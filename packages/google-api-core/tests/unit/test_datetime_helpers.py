@@ -82,18 +82,18 @@ def test_from_rfc3339():
     )
 
 
-def test_from_rfc3339_with_bad_tz():
-    value = "2009-12-17T12:44:32.123456BAD"
+def test_from_rfc3339_nanos():
+    value = "2009-12-17T12:44:32.123456Z"
+    assert datetime_helpers.from_rfc3339_nanos(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, 123456, pytz.utc
+    )
 
-    with pytest.raises(ValueError):
-        datetime_helpers.from_rfc3339(value)
 
-
-def test_from_rfc3339_with_nanos():
-    value = "2009-12-17T12:44:32.123456789Z"
-
-    with pytest.raises(ValueError):
-        datetime_helpers.from_rfc3339(value)
+def test_from_rfc3339_without_nanos():
+    value = "2009-12-17T12:44:32Z"
+    assert datetime_helpers.from_rfc3339(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, 0, pytz.utc
+    )
 
 
 def test_from_rfc3339_nanos_without_nanos():
@@ -103,11 +103,33 @@ def test_from_rfc3339_nanos_without_nanos():
     )
 
 
-def test_from_rfc3339_nanos_with_bad_tz():
-    value = "2009-12-17T12:44:32.123456789BAD"
+@pytest.mark.parametrize(
+    "truncated, micros",
+    [
+        ("12345678", 123456),
+        ("1234567", 123456),
+        ("123456", 123456),
+        ("12345", 123450),
+        ("1234", 123400),
+        ("123", 123000),
+        ("12", 120000),
+        ("1", 100000),
+    ],
+)
+def test_from_rfc3339_with_truncated_nanos(truncated, micros):
+    value = "2009-12-17T12:44:32.{}Z".format(truncated)
+    assert datetime_helpers.from_rfc3339(value) == datetime.datetime(
+        2009, 12, 17, 12, 44, 32, micros, pytz.utc
+    )
 
-    with pytest.raises(ValueError):
-        datetime_helpers.from_rfc3339_nanos(value)
+
+def test_from_rfc3339_nanos_is_deprecated():
+    value = "2009-12-17T12:44:32.123456Z"
+
+    result = datetime_helpers.from_rfc3339(value)
+    result_nanos = datetime_helpers.from_rfc3339_nanos(value)
+
+    assert result == result_nanos
 
 
 @pytest.mark.parametrize(
@@ -128,6 +150,18 @@ def test_from_rfc3339_nanos_with_truncated_nanos(truncated, micros):
     assert datetime_helpers.from_rfc3339_nanos(value) == datetime.datetime(
         2009, 12, 17, 12, 44, 32, micros, pytz.utc
     )
+
+
+def test_from_rfc3339_wo_nanos_raise_exception():
+    value = "2009-12-17T12:44:32"
+    with pytest.raises(ValueError):
+        datetime_helpers.from_rfc3339(value)
+
+
+def test_from_rfc3339_w_nanos_raise_exception():
+    value = "2009-12-17T12:44:32.123456"
+    with pytest.raises(ValueError):
+        datetime_helpers.from_rfc3339(value)
 
 
 def test_to_rfc3339():
@@ -157,10 +191,11 @@ def test_to_rfc3339_with_non_utc_ignore_zone():
 
 
 class Test_DateTimeWithNanos(object):
-
     @staticmethod
     def test_ctor_wo_nanos():
-        stamp = datetime_helpers.DatetimeWithNanoseconds(2016, 12, 20, 21, 13, 47, 123456)
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         assert stamp.year == 2016
         assert stamp.month == 12
         assert stamp.day == 20
@@ -200,7 +235,9 @@ class Test_DateTimeWithNanos(object):
 
     @staticmethod
     def test_rfc3339_wo_nanos():
-        stamp = datetime_helpers.DatetimeWithNanoseconds(2016, 12, 20, 21, 13, 47, 123456)
+        stamp = datetime_helpers.DatetimeWithNanoseconds(
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         assert stamp.rfc3339() == "2016-12-20T21:13:47.123456Z"
 
     @staticmethod
@@ -285,12 +322,16 @@ class Test_DateTimeWithNanos(object):
     )
     def test_from_rfc3339_test_nanoseconds(fractional, nanos):
         value = "2009-12-17T12:44:32.{}Z".format(fractional)
-        assert datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(value).nanosecond == nanos
+        assert (
+            datetime_helpers.DatetimeWithNanoseconds.from_rfc3339(value).nanosecond
+            == nanos
+        )
 
     @staticmethod
     def test_timestamp_pb_wo_nanos_naive():
         stamp = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, 123456)
+            2016, 12, 20, 21, 13, 47, 123456
+        )
         delta = stamp.replace(tzinfo=pytz.UTC) - datetime_helpers._UTC_EPOCH
         seconds = int(delta.total_seconds())
         nanos = 123456000
@@ -304,7 +345,8 @@ class Test_DateTimeWithNanos(object):
         )
         delta = stamp - datetime_helpers._UTC_EPOCH
         timestamp = timestamp_pb2.Timestamp(
-            seconds=int(delta.total_seconds()), nanos=123456789)
+            seconds=int(delta.total_seconds()), nanos=123456789
+        )
         assert stamp.timestamp_pb() == timestamp
 
     @staticmethod
@@ -314,8 +356,7 @@ class Test_DateTimeWithNanos(object):
         seconds = int(delta.total_seconds())
         timestamp = timestamp_pb2.Timestamp(seconds=seconds)
 
-        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
-            timestamp)
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(timestamp)
 
         assert _to_seconds(when) == _to_seconds(stamp)
         assert stamp.microsecond == 0
@@ -329,8 +370,7 @@ class Test_DateTimeWithNanos(object):
         seconds = int(delta.total_seconds())
         timestamp = timestamp_pb2.Timestamp(seconds=seconds, nanos=123456789)
 
-        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(
-            timestamp)
+        stamp = datetime_helpers.DatetimeWithNanoseconds.from_timestamp_pb(timestamp)
 
         assert _to_seconds(when) == _to_seconds(stamp)
         assert stamp.microsecond == 123456
