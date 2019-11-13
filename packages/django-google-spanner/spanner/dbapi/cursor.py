@@ -14,9 +14,7 @@
 
 import google.api_core.exceptions as grpc_exceptions
 
-from .exceptions import (
-    Error, IntegrityError, OperationalError, ProgrammingError,
-)
+from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import STMT_DDL, STMT_NON_UPDATING, classify_stmt
 
 _UNSET_COUNT = -1
@@ -98,9 +96,6 @@ class Cursor(object):
 
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
-
-        except Exception as e:  # Catch all other exceptions and re-raise them.
-            raise Error(e.details if hasattr(e, 'details') else e)
 
     def __do_execute_update(self, transaction, sql, *args, **kwargs):
         res = transaction.execute_update(sql, *args, **kwargs)
