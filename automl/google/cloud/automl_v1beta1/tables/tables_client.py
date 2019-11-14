@@ -25,9 +25,7 @@ from google.cloud.automl_v1beta1 import gapic
 from google.cloud.automl_v1beta1.proto import data_types_pb2
 from google.cloud.automl_v1beta1.tables import gcs_client
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-automl"
-).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -189,11 +187,7 @@ class TablesClient(object):
         region=None,
         **kwargs
     ):
-        if (
-            dataset is None
-            and dataset_display_name is None
-            and dataset_name is None
-        ):
+        if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
                 "One of 'dataset', 'dataset_name' or "
                 "'dataset_display_name' must be set."
@@ -222,8 +216,7 @@ class TablesClient(object):
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
-                "One of 'model', 'model_name' or "
-                "'model_display_name' must be set."
+                "One of 'model', 'model_name' or " "'model_display_name' must be set."
             )
         # we prefer to make a live call here in the case that the
         # model object is out-of-date
@@ -247,11 +240,7 @@ class TablesClient(object):
         region=None,
         **kwargs
     ):
-        if (
-            dataset is None
-            and dataset_display_name is None
-            and dataset_name is None
-        ):
+        if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
                 "One of 'dataset', 'dataset_name' or "
                 "'dataset_display_name' must be set."
@@ -270,10 +259,7 @@ class TablesClient(object):
         else:
             # we do this to force a NotFound error when needed
             self.get_dataset(
-                dataset_name=dataset_name,
-                project=project,
-                region=region,
-                **kwargs
+                dataset_name=dataset_name, project=project, region=region, **kwargs
             )
         return dataset_name
 
@@ -297,8 +283,7 @@ class TablesClient(object):
         )
 
         table_specs = [
-            t
-            for t in self.list_table_specs(dataset_name=dataset_name, **kwargs)
+            t for t in self.list_table_specs(dataset_name=dataset_name, **kwargs)
         ]
 
         table_spec_full_id = table_specs[table_spec_index].name
@@ -315,8 +300,7 @@ class TablesClient(object):
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
-                "One of 'model', 'model_name' or "
-                "'model_display_name' must be set."
+                "One of 'model', 'model_name' or " "'model_display_name' must be set."
             )
 
         if model_name is None:
@@ -543,8 +527,7 @@ class TablesClient(object):
         """
         if dataset_name is None and dataset_display_name is None:
             raise ValueError(
-                "One of 'dataset_name' or "
-                "'dataset_display_name' must be set."
+                "One of 'dataset_name' or " "'dataset_display_name' must be set."
             )
 
         if dataset_name is not None:
@@ -557,12 +540,7 @@ class TablesClient(object):
         )
 
     def create_dataset(
-        self,
-        dataset_display_name,
-        metadata={},
-        project=None,
-        region=None,
-        **kwargs
+        self, dataset_display_name, metadata={}, project=None, region=None, **kwargs
     ):
         """Create a dataset. Keep in mind, importing data is a separate step.
 
@@ -602,10 +580,7 @@ class TablesClient(object):
         """
         return self.auto_ml_client.create_dataset(
             self.__location_path(project, region),
-            {
-                "display_name": dataset_display_name,
-                "tables_dataset_metadata": metadata,
-            },
+            {"display_name": dataset_display_name, "tables_dataset_metadata": metadata},
             **kwargs
         )
 
@@ -792,9 +767,7 @@ class TablesClient(object):
             credentials = credentials or self.credentials
             self.__ensure_gcs_client_is_initialized(credentials, project)
             self.gcs_client.ensure_bucket_exists(project, region)
-            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
-                pandas_dataframe
-            )
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
         elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
@@ -895,13 +868,9 @@ class TablesClient(object):
 
         request = {}
         if gcs_output_uri_prefix is not None:
-            request = {
-                "gcs_destination": {"output_uri_prefix": gcs_output_uri_prefix}
-            }
+            request = {"gcs_destination": {"output_uri_prefix": gcs_output_uri_prefix}}
         elif bigquery_output_uri is not None:
-            request = {
-                "bigquery_destination": {"output_uri": bigquery_output_uri}
-            }
+            request = {"bigquery_destination": {"output_uri": bigquery_output_uri}}
         else:
             raise ValueError(
                 "One of 'gcs_output_uri_prefix', or 'bigquery_output_uri' must be set."
@@ -911,9 +880,7 @@ class TablesClient(object):
         self.__log_operation_info("Export data", op)
         return op
 
-    def get_table_spec(
-        self, table_spec_name, project=None, region=None, **kwargs
-    ):
+    def get_table_spec(self, table_spec_name, project=None, region=None, **kwargs):
         """Gets a single table spec in a particular project and region.
 
         Example:
@@ -1025,9 +992,7 @@ class TablesClient(object):
 
         return self.auto_ml_client.list_table_specs(dataset_name, **kwargs)
 
-    def get_column_spec(
-        self, column_spec_name, project=None, region=None, **kwargs
-    ):
+    def get_column_spec(self, column_spec_name, project=None, region=None, **kwargs):
         """Gets a single column spec in a particular project and region.
 
         Example:
@@ -1607,10 +1572,7 @@ class TablesClient(object):
             dataset_name=dataset_name, **kwargs
         )
 
-        my_table_spec = {
-            "name": table_spec_full_id,
-            "time_column_spec_id": None,
-        }
+        my_table_spec = {"name": table_spec_full_id, "time_column_spec_id": None}
 
         return self.auto_ml_client.update_table_spec(my_table_spec, **kwargs)
 
@@ -1804,9 +1766,7 @@ class TablesClient(object):
             **kwargs
         )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(
-            metadata, "weight_column_spec_id", None
-        )
+        metadata = self.__update_metadata(metadata, "weight_column_spec_id", None)
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
@@ -2004,9 +1964,7 @@ class TablesClient(object):
             **kwargs
         )
         metadata = dataset.tables_dataset_metadata
-        metadata = self.__update_metadata(
-            metadata, "ml_use_column_spec_id", None
-        )
+        metadata = self.__update_metadata(metadata, "ml_use_column_spec_id", None)
 
         request = {"name": dataset.name, "tables_dataset_metadata": metadata}
 
@@ -2259,9 +2217,7 @@ class TablesClient(object):
             **kwargs
         )
 
-        model_metadata[
-            "train_budget_milli_node_hours"
-        ] = train_budget_milli_node_hours
+        model_metadata["train_budget_milli_node_hours"] = train_budget_milli_node_hours
         if optimization_objective is not None:
             model_metadata["optimization_objective"] = optimization_objective
         if disable_early_stopping:
@@ -2299,9 +2255,7 @@ class TablesClient(object):
         }
 
         op = self.auto_ml_client.create_model(
-            self.__location_path(project=project, region=region),
-            request,
-            **kwargs
+            self.__location_path(project=project, region=region), request, **kwargs
         )
         self.__log_operation_info("Model creation", op)
         return op
@@ -2423,9 +2377,7 @@ class TablesClient(object):
                 to a retryable error and retry attempts failed.
             ValueError: If required parameters are missing.
         """
-        return self.auto_ml_client.get_model_evaluation(
-            model_evaluation_name, **kwargs
-        )
+        return self.auto_ml_client.get_model_evaluation(model_evaluation_name, **kwargs)
 
     def get_model(
         self,
@@ -2488,9 +2440,7 @@ class TablesClient(object):
             return self.auto_ml_client.get_model(model_name, **kwargs)
 
         return self.__lookup_by_display_name(
-            "model",
-            self.list_models(project, region, **kwargs),
-            model_display_name,
+            "model", self.list_models(project, region, **kwargs), model_display_name
         )
 
     # TODO(jonathanskim): allow deployment from just model ID
@@ -2732,16 +2682,12 @@ class TablesClient(object):
 
         values = []
         for i, c in zip(inputs, column_specs):
-            value_type = self.__type_code_to_value_type(
-                c.data_type.type_code, i
-            )
+            value_type = self.__type_code_to_value_type(c.data_type.type_code, i)
             values.append(value_type)
 
         request = {"row": {"values": values}}
 
-        return self.prediction_client.predict(
-            model.name, request, params, **kwargs
-        )
+        return self.prediction_client.predict(model.name, request, params, **kwargs)
 
     def batch_predict(
         self,
@@ -2853,18 +2799,14 @@ class TablesClient(object):
             credentials = credentials or self.credentials
             self.__ensure_gcs_client_is_initialized(credentials, project)
             self.gcs_client.ensure_bucket_exists(project, region)
-            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(
-                pandas_dataframe
-            )
+            gcs_input_uri = self.gcs_client.upload_pandas_dataframe(pandas_dataframe)
             input_request = {"gcs_source": {"input_uris": [gcs_input_uri]}}
         elif gcs_input_uris is not None:
             if type(gcs_input_uris) != list:
                 gcs_input_uris = [gcs_input_uris]
             input_request = {"gcs_source": {"input_uris": gcs_input_uris}}
         elif bigquery_input_uri is not None:
-            input_request = {
-                "bigquery_source": {"input_uri": bigquery_input_uri}
-            }
+            input_request = {"bigquery_source": {"input_uri": bigquery_input_uri}}
         else:
             raise ValueError(
                 "One of 'gcs_input_uris'/'bigquery_input_uris' must" "be set"
