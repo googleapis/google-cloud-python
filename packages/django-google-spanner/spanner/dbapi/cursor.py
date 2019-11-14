@@ -119,12 +119,21 @@ class Cursor(object):
         return res
 
     def __do_execute_insert(self, transaction, sql, params):
-        parts = parse_insert(sql)
-        return transaction.insert_or_update(
-            table=parts.get('table'),
-            columns=parts.get('columns'),
-            values=params,
-        )
+        # There are 3 variants of an INSERT statement:
+        # a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
+        # b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
+        # c) INSERT INTO <table> (columns...) VALUES (%s,...):           with params
+        if params:
+            # Case c)
+            parts = parse_insert(sql)
+            return transaction.insert_or_update(
+                table=parts.get('table'),
+                columns=parts.get('columns'),
+                values=params,
+            )
+        else:
+            # Either of cases a) or b)
+            return transaction.execute_update(sql)
 
     def __do_execute_non_update(self, sql, *args, **kwargs):
         # Reference
