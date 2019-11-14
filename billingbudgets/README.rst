@@ -1,7 +1,9 @@
 Python Client for Cloud Billing Budget API (`Alpha`_)
 =====================================================
 
-`Cloud Billing Budget API`_:
+`Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
+budget plan and the rules to execute as spend is tracked against that
+plan.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -10,6 +12,7 @@ Python Client for Cloud Billing Budget API (`Alpha`_)
 .. _Cloud Billing Budget API: https://cloud.google.com/billing/docs/how-to/budget-api-overview
 .. _Client Library Documentation: https://googleapis.dev/python/billingbudgets/latest
 .. _Product Documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
+
 Quick Start
 -----------
 

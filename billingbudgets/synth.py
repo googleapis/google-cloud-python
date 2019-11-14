@@ -36,7 +36,7 @@ library = gapic.py_library(
 excludes = [
     "nox.py",
     "setup.py",
-    "README.rst"
+    "README.rst",
     library / "docs/index.rst",
     library
     / "google/cloud/billingbudgets_v1beta1/proto",  # proto files are copied to the wrong place

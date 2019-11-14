@@ -54,8 +54,9 @@ class BudgetServiceServicer(object):
   """
 
     def CreateBudget(self, request, context):
-        """Creates a new budget if none exists. There is a limit of 1,000 budgets
-    per billing account.
+        """Creates a new budget. See
+    <a href="https://cloud.google.com/billing/quotas">Quotas and limits</a>
+    for more information on the limits of the number of budgets you can create.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -76,7 +77,7 @@ class BudgetServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListBudgets(self, request, context):
-        """Returns the budgets for a billing account.
+        """Returns a list of budgets for a billing account.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

@@ -114,8 +114,9 @@ class BudgetServiceGrpcTransport(object):
     def create_budget(self):
         """Return the gRPC stub for :meth:`BudgetServiceClient.create_budget`.
 
-        Creates a new budget if none exists. There is a limit of 1,000 budgets
-        per billing account.
+        Creates a new budget. See
+        <a href="https://cloud.google.com/billing/quotas">Quotas and limits</a>
+        for more information on the limits of the number of budgets you can create.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -154,7 +155,7 @@ class BudgetServiceGrpcTransport(object):
     def list_budgets(self):
         """Return the gRPC stub for :meth:`BudgetServiceClient.list_budgets`.
 
-        Returns the budgets for a billing account.
+        Returns a list of budgets for a billing account.
 
         Returns:
             Callable: A callable which accepts the appropriate

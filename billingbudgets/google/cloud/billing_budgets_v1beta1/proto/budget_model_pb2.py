@@ -567,11 +567,11 @@ Budget = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BUDGET,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""A budget is a plan that describes what the user expects to spend on
-  Cloud projects, plus rules to execute as spend is tracked against that
-  plan, e.g. alert at 90% of $100 target. Currently all plans are monthly
-  budgets so the usage period(s) tracked are implied (calendar months of
-  usage back-to-back).
+        __doc__="""A budget is a plan that describes what you expect to spend on Cloud
+  projects, plus the rules to execute as spend is tracked against that
+  plan, (for example, send an alert when 90% of the target spend is met).
+  Currently all plans are monthly budgets so the usage period(s) tracked
+  are implied (calendar months of usage back-to-back).
   
   
   Attributes:
@@ -634,9 +634,10 @@ LastPeriodAmount = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LASTPERIODAMOUNT,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""Describes a plan to target last period's spend. There are no options
-  yet. The amount is automatically 100% of last period's spend. Future
-  configuration will go here (e.g. configuring the percentage).
+        __doc__="""Describes a budget amount targeted to last period's spend. At this time,
+  the amount is automatically 100% of last period's spend; that is, there
+  are no other options yet. Future configuration will be described here
+  (for example, configuring a percentage of last period's spend).
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.billing.budgets.v1beta1.LastPeriodAmount)
     ),
@@ -652,9 +653,9 @@ ThresholdRule = _reflection.GeneratedProtocolMessageType(
         __doc__="""ThresholdRule contains a definition of a threshold which triggers an
   alert (a notification of a threshold being crossed) to be sent when
   spend goes above the specified amount. Alerts are automatically e-mailed
-  to the billing users who have access to the billing account. The
-  thresholds here have no effect on notifications sent to anything
-  configured under ``Budget.all_updates_rule``.
+  to users with the Billing Account Administrator role or the Billing
+  Account User role. The thresholds here have no effect on notifications
+  sent to anything configured under ``Budget.all_updates_rule``.
   
   
   Attributes:
@@ -688,7 +689,10 @@ AllUpdatesRule = _reflection.GeneratedProtocolMessageType(
           Required. The name of the Cloud Pub/Sub topic where budget
           related messages will be published, in the form
           ``projects/{project_id}/topics/{topic_id}``. Updates are sent
-          at regular intervals to the topic. Caller is expected to have
+          at regular intervals to the topic. The topic needs to be
+          created before the budget is created; see
+          https://cloud.google.com/billing/docs/how-to/budgets#manage-
+          notifications for more details. Caller is expected to have
           ``pubsub.topics.setIamPolicy`` permission on the topic when
           it's set for a budget, otherwise, the API call will fail with
           PERMISSION\_DENIED. See

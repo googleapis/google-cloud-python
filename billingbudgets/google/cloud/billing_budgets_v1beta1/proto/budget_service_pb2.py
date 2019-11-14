@@ -416,7 +416,7 @@ CreateBudgetRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. the name of the billing account to create the budget
+          Required. The name of the billing account to create the budget
           in. Values are of the form
           ``billingAccounts/{billingAccountId}``.
       budget:

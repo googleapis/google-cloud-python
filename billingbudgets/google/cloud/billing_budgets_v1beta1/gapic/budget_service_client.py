@@ -219,8 +219,9 @@ class BudgetServiceClient(object):
         metadata=None,
     ):
         """
-        Creates a new budget if none exists. There is a limit of 1,000 budgets
-        per billing account.
+        Creates a new budget. See
+        <a href="https://cloud.google.com/billing/quotas">Quotas and limits</a>
+        for more information on the limits of the number of budgets you can create.
 
         Example:
             >>> from google.cloud import billing_budgets_v1beta1
@@ -235,7 +236,7 @@ class BudgetServiceClient(object):
             >>> response = client.create_budget(parent, budget)
 
         Args:
-            parent (str): Required. the name of the billing account to create the budget in.
+            parent (str): Required. The name of the billing account to create the budget in.
                 Values are of the form ``billingAccounts/{billingAccountId}``.
             budget (Union[dict, ~google.cloud.billing_budgets_v1beta1.types.Budget]): Required. Budget to create.
 
@@ -454,7 +455,7 @@ class BudgetServiceClient(object):
         metadata=None,
     ):
         """
-        Returns the budgets for a billing account.
+        Returns a list of budgets for a billing account.
 
         Example:
             >>> from google.cloud import billing_budgets_v1beta1
