@@ -164,7 +164,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = []
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -264,7 +264,7 @@ latex_documents = [
         u"google-cloud-monitoring Documentation",
         author,
         "manual",
-    )
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -320,7 +320,7 @@ texinfo_documents = [
         "google-cloud-monitoring",
         "GAPIC library for the {metadata.shortName} v3 service",
         "APIs",
-    )
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.

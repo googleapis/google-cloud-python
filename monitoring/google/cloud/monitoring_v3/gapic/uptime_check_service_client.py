@@ -51,6 +51,9 @@ from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
+from google.cloud.monitoring_v3.proto import service_pb2
+from google.cloud.monitoring_v3.proto import service_service_pb2
+from google.cloud.monitoring_v3.proto import service_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import uptime_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2_grpc
@@ -60,7 +63,7 @@ from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-monitoring"
+    "google-cloud-monitoring",
 ).version
 
 
@@ -107,7 +110,7 @@ class UptimeCheckServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
@@ -206,12 +209,12 @@ class UptimeCheckServiceClient(object):
                 self.transport = transport
         else:
             self.transport = uptime_check_service_grpc_transport.UptimeCheckServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -222,7 +225,7 @@ class UptimeCheckServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -310,7 +313,7 @@ class UptimeCheckServiceClient(object):
             )
 
         request = uptime_service_pb2.ListUptimeCheckConfigsRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -395,7 +398,7 @@ class UptimeCheckServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = uptime_service_pb2.GetUptimeCheckConfigRequest(name=name)
+        request = uptime_service_pb2.GetUptimeCheckConfigRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -477,7 +480,7 @@ class UptimeCheckServiceClient(object):
             )
 
         request = uptime_service_pb2.CreateUptimeCheckConfigRequest(
-            parent=parent, uptime_check_config=uptime_check_config
+            parent=parent, uptime_check_config=uptime_check_config,
         )
         if metadata is None:
             metadata = []
@@ -576,7 +579,7 @@ class UptimeCheckServiceClient(object):
             )
 
         request = uptime_service_pb2.UpdateUptimeCheckConfigRequest(
-            uptime_check_config=uptime_check_config, update_mask=update_mask
+            uptime_check_config=uptime_check_config, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -649,7 +652,7 @@ class UptimeCheckServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = uptime_service_pb2.DeleteUptimeCheckConfigRequest(name=name)
+        request = uptime_service_pb2.DeleteUptimeCheckConfigRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -738,7 +741,7 @@ class UptimeCheckServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = uptime_service_pb2.ListUptimeCheckIpsRequest(page_size=page_size)
+        request = uptime_service_pb2.ListUptimeCheckIpsRequest(page_size=page_size,)
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(

@@ -108,10 +108,10 @@ _DROPPEDLABELS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
-    nested_types=[_DROPPEDLABELS_LABELENTRY],
+    nested_types=[_DROPPEDLABELS_LABELENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

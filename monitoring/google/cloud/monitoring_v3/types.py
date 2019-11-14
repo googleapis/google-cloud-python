@@ -35,6 +35,8 @@ from google.cloud.monitoring_v3.proto import metric_service_pb2
 from google.cloud.monitoring_v3.proto import mutation_record_pb2
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
+from google.cloud.monitoring_v3.proto import service_pb2
+from google.cloud.monitoring_v3.proto import service_service_pb2
 from google.cloud.monitoring_v3.proto import span_context_pb2
 from google.cloud.monitoring_v3.proto import uptime_pb2
 from google.cloud.monitoring_v3.proto import uptime_service_pb2
@@ -75,6 +77,8 @@ _local_modules = [
     mutation_record_pb2,
     notification_pb2,
     notification_service_pb2,
+    service_pb2,
+    service_service_pb2,
     span_context_pb2,
     uptime_pb2,
     uptime_service_pb2,

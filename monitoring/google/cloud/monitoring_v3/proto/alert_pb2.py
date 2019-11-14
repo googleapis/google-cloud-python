@@ -195,7 +195,7 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1120,
     serialized_end=1173,
@@ -555,7 +555,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=892,
     serialized_end=1780,
@@ -829,7 +829,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _ALERTPOLICY_CONDITION,
         _ALERTPOLICY_USERLABELSENTRY,
     ],
-    enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE],
+    enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -1002,7 +1002,7 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               A `filter </monitoring/api/v3/filters>`__ that identifies
               which time series should be compared with the threshold.  The
               filter is similar to the one that is specified in the
-              ```MetricService.ListTimeSeries`` request
+              ```ListTimeSeries`` request
               </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
               (that call is useful to verify the time series that will be
               retrieved / processed) and must specify the metric type and
@@ -1017,7 +1017,7 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               aggregating streams across all members of a group of
               resrouces). Multiple aggregations are applied in the order
               specified.  This field is similar to the one in the
-              ```MetricService.ListTimeSeries`` request
+              ```ListTimeSeries`` request
               </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
               It is advisable to use the ``ListTimeSeries`` method when
               debugging this field.
@@ -1092,7 +1092,7 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               A `filter </monitoring/api/v3/filters>`__ that identifies
               which time series should be compared with the threshold.  The
               filter is similar to the one that is specified in the
-              ```MetricService.ListTimeSeries`` request
+              ```ListTimeSeries`` request
               </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
               (that call is useful to verify the time series that will be
               retrieved / processed) and must specify the metric type and
@@ -1107,7 +1107,7 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               aggregating streams across all members of a group of
               resrouces). Multiple aggregations are applied in the order
               specified.  This field is similar to the one in the
-              ```MetricService.ListTimeSeries`` request
+              ```ListTimeSeries`` request
               </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
               It is advisable to use the ``ListTimeSeries`` method when
               debugging this field.
