@@ -27,7 +27,7 @@ version = 'v1beta1'
 library = gapic.py_library(
     'datacatalog',
     version,
-    config_path='/google/cloud/datacatalog/artman_datacatalog_v1beta1.yaml',
+    config_path='/google/cloud/datacatalog/v1beta1/artman_datacatalog_v1beta1.yaml',
     artman_output_name='datacatalog-v1beta1',
     include_protos=True,
     generator_args=["--dev_samples"],

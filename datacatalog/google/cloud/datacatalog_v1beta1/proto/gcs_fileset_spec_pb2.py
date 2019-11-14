@@ -26,10 +26,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\034com.google.cloud.datacatalogP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
+        "\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n=google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x37google/cloud/datacatalog_v1beta1/proto/timestamps.proto"\x7f\n\x0eGcsFilesetSpec\x12\x1a\n\rfile_patterns\x18\x01 \x03(\tB\x03\xe0\x41\x02\x12Q\n\x15sample_gcs_file_specs\x18\x02 \x03(\x0b\x32-.google.cloud.datacatalog.v1beta1.GcsFileSpecB\x03\xe0\x41\x03"\x8f\x01\n\x0bGcsFileSpec\x12\x16\n\tfile_path\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12O\n\x0egcs_timestamps\x18\x02 \x01(\x0b\x32\x32.google.cloud.datacatalog.v1beta1.SystemTimestampsB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x04 \x01(\x03\x42\x03\xe0\x41\x03\x42p\n\x1c\x63om.google.cloud.datacatalogP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n=google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x37google/cloud/datacatalog_v1beta1/proto/timestamps.proto"\x7f\n\x0eGcsFilesetSpec\x12\x1a\n\rfile_patterns\x18\x01 \x03(\tB\x03\xe0\x41\x02\x12Q\n\x15sample_gcs_file_specs\x18\x02 \x03(\x0b\x32-.google.cloud.datacatalog.v1beta1.GcsFileSpecB\x03\xe0\x41\x03"\x8f\x01\n\x0bGcsFileSpec\x12\x16\n\tfile_path\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12O\n\x0egcs_timestamps\x18\x02 \x01(\x0b\x32\x32.google.cloud.datacatalog.v1beta1.SystemTimestampsB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x04 \x01(\x03\x42\x03\xe0\x41\x03\x42x\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -213,7 +213,7 @@ GcsFileSpec = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSFILESPEC,
         __module__="google.cloud.datacatalog_v1beta1.proto.gcs_fileset_spec_pb2",
-        __doc__="""Specifications of a single file in GCS.
+        __doc__="""Specifications of a single file in Cloud Storage.
   
   
   Attributes:
@@ -221,7 +221,7 @@ GcsFileSpec = _reflection.GeneratedProtocolMessageType(
           Required. The full file path. Example:
           ``gs://bucket_name/a/b.txt``.
       gcs_timestamps:
-          Output only. Timestamps about the GCS file.
+          Output only. Timestamps about the Cloud Storage file.
       size_bytes:
           Output only. The size of the file, in bytes.
   """,
