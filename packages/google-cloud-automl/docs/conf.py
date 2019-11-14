@@ -164,7 +164,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = []
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -344,7 +344,7 @@ intersphinx_mapping = {
     "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.readthedocs.org/en/latest", None),
+    "requests": ("https://requests.kennethreitz.org/en/master/", None),
     "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
