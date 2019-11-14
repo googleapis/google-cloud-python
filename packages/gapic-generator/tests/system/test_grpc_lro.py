@@ -18,12 +18,12 @@ from google import showcase_v1beta1
 
 
 def test_lro(echo):
-    wait_request = {
-        'end_time': datetime.now(tz=timezone.utc) + timedelta(seconds=1),
-        'success': {'content': 'The hail in Wales falls mainly '
-                               'on the snails...eventually.'},
-    }
-    future = echo.wait(wait_request)
+    future = echo.wait(
+        end_time=datetime.now(tz=timezone.utc) + timedelta(seconds=1),
+        success={
+            'content': 'The hail in Wales falls mainly on the snails...eventually.'
+        }
+    )
     response = future.result()
     assert isinstance(response, showcase_v1beta1.WaitResponse)
     assert response.content.endswith('the snails...eventually.')

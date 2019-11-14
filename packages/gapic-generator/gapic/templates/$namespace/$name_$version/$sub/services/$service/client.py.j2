@@ -12,7 +12,7 @@ from google.auth import credentials           # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
-{% for ref_type in method.ref_types -%}
+{% for ref_type in method.ref_types_legacy -%}
 {{ ref_type.ident.python_import }}
 {% endfor -%}
 {% endfor -%}
@@ -87,10 +87,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
-            request: {{ method.input.ident }} = None, *,
-            {% for field in method.flattened_fields.values() -%}
+            {% for field in method.legacy_flattened_fields.values() -%}
+            {% if field.required -%}
+            {{ field.name }}: {{ field.ident }},
+            {% else -%}
             {{ field.name }}: {{ field.ident }} = None,
+            {% endif -%}
             {% endfor -%}
+            *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -120,23 +124,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {{ method.client_output.meta.doc|rst(width=72, indent=16) }}
         {%- endif %}
         """
-        {% if method.flattened_fields -%}
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        if request is not None and any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}]):
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
-
-        {% endif -%}
         # Create or coerce a protobuf request object.
-        {% if method.flattened_fields -%}
+        {% if method.legacy_flattened_fields -%}
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         {% endif -%}
-        request = {{ method.input.ident }}(request)
-        {%- for key, field in method.flattened_fields.items() %}
-        if {{ field.name }} is not None:
-            request.{{ key }} = {{ field.name }}
+        request = {{ method.input.ident }}()
+        {%- for field in method.legacy_flattened_fields.values() %}
+        request.{{ field.name }} = {{ field.name }}
         {%- endfor %}
 
         # Wrap the RPC method; this adds retry and timeout information,

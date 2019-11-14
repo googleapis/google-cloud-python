@@ -15,9 +15,9 @@
 
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
-    responses = echo.expand({
-        'content': content,
-    })
+    responses = echo.expand(
+        content=content,
+    )
 
     # Consume the response and ensure it matches what we expect.
     # with pytest.raises(exceptions.NotFound) as exc:

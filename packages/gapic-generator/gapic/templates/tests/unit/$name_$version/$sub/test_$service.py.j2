@@ -33,10 +33,6 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = {{ method.input.ident }}()
-
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client._transport.{{ method.name|snake_case }}),
@@ -55,12 +51,18 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
             {%- endfor %}
         )
         {% endif -%}
-        response = client.{{ method.name|snake_case }}(request)
+        # Everything is optional in proto3 as far as the runtime is concerned,
+        # and we are mocking out the actual API, so just send an empty request.
+        response = client.{{ method.name|snake_case }}(
+            {% for field in method.legacy_flattened_fields.values() -%}
+            {{ field.name }}=None,
+            {% endfor -%}
+        )
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == request
+        assert args[0] == {{ method.input.ident }}()
 
     # Establish that the response is the type that we expect.
     {% if method.void -%}
@@ -83,24 +85,27 @@ def test_{{ method.name|snake_case }}_field_headers():
         credentials=credentials.AnonymousCredentials(),
     )
 
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = {{ method.input.ident }}(
-        {%- for field_header in method.field_headers %}
-        {{ field_header }}='{{ field_header }}/value',
-        {%- endfor %}
-    )
-
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client._transport.{{ method.name|snake_case }}),
             '__call__') as call:
         call.return_value = {{ method.output.ident }}()
-        response = client.{{ method.name|snake_case }}(request)
+        # Any value that is part of the HTTP/1.1 URI should be sent as
+        # a field header. Set these to a non-empty value.
+        response = client.{{ method.name|snake_case }}(
+        {%- for field_header in method.field_headers %}
+            {{ field_header }}='{{ field_header }}/value',
+        {%- endfor %}
+        )
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+        request = {{ method.input.ident }}(
+        {%- for field_header in method.field_headers %}
+            {{ field_header }}='{{ field_header }}/value',
+        {%- endfor %}
+        )
         assert args[0] == request
 
     # Establish that the field header was sent.
@@ -114,58 +119,61 @@ def test_{{ method.name|snake_case }}_field_headers():
     ) in kw['metadata']
 {% endif %} {#- method.field_headers #}
 
-{% if method.flattened_fields %}
-def test_{{ method.name|snake_case }}_flattened():
-    client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
-    )
+{# NOTE: the backwards compatibility requirements of legacy flattening make these tests no longer relevant #}
+{# If the legacy flattening is ever abandoned, these tests or something like them will be needed again. #}
+{#  #}
+{# {% if method.flattened_fields %} #}
+{# def test_{{ method.name|snake_case }}_flattened(): #}
+{#     client = {{ service.client_name }}( #}
+{#         credentials=credentials.AnonymousCredentials(), #}
+{#     ) #}
 
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        {% if method.void -%}
-        call.return_value = None
-        {% elif method.lro -%}
-        call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming -%}
-        call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
-        call.return_value = {{ method.output.ident }}()
-        {% endif %}
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = client.{{ method.name|snake_case }}(
-            {%- for key, field in method.flattened_fields.items() %}
-            {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
-        )
+{#     # Mock the actual call within the gRPC stub, and fake the request. #}
+{#     with mock.patch.object( #}
+{#             type(client._transport.{{ method.name|snake_case }}), #}
+{#             '__call__') as call: #}
+{#         # Designate an appropriate return value for the call. #}
+{#         {% if method.void -%} #}
+{#         call.return_value = None #}
+{#         {% elif method.lro -%} #}
+{#         call.return_value = operations_pb2.Operation(name='operations/op') #}
+{#         {% elif method.server_streaming -%} #}
+{#         call.return_value = iter([{{ method.output.ident }}()]) #}
+{#         {% else -%} #}
+{#         call.return_value = {{ method.output.ident }}() #}
+{#         {% endif %} #}
+{#         # Call the method with a truthy value for each flattened field, #}
+{#         # using the keyword arguments to the method. #}
+{#         response = client.{{ method.name|snake_case }}( #}
+{#             {%- for key, field in method.flattened_fields.items() %} #}
+{#             {{ field.name }}={{ field.mock_value }}, #}
+{#             {%- endfor %} #}
+{#         ) #}
 
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        {% for key, field in method.flattened_fields.items() -%}
-        assert args[0].{{ key }} == {{ field.mock_value }}
-        {% endfor %}
+{#         # Establish that the underlying call was made with the expected #}
+{#         # request object values. #}
+{#         assert len(call.mock_calls) == 1 #}
+{#         _, args, _ = call.mock_calls[0] #}
+{#         {% for key, field in method.flattened_fields.items() -%} #}
+{#         assert args[0].{{ key }} == {{ field.mock_value }} #}
+{#         {% endfor %} #}
 
 
-def test_{{ method.name|snake_case }}_flattened_error():
-    client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
-    )
+{# def test_{{ method.name|snake_case }}_flattened_error(): #}
+{#     client = {{ service.client_name }}( #}
+{#         credentials=credentials.AnonymousCredentials(), #}
+{#     ) #}
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.{{ method.name|snake_case }}(
-            {{ method.input.ident }}(),
-            {%- for key, field in method.flattened_fields.items() %}
-            {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
-        )
-{% endif %} {#- method.flattened_fields #}
+{#     # Attempting to call a method with both a request object and flattened #}
+{#     # fields is an error. #}
+{#     with pytest.raises(ValueError): #}
+{#         client.{{ method.name|snake_case }}( #}
+{#             {{ method.input.ident }}(), #}
+{#             {%- for key, field in method.flattened_fields.items() %} #}
+{#             {{ field.name }}={{ field.mock_value }}, #}
+{#             {%- endfor %} #}
+{#         ) #}
+{# {% endif %} {\#- method.flattened_fields #\} #}
 
 
 {% if method.paged_result_field %}
@@ -206,9 +214,7 @@ def test_{{ method.name|snake_case }}_pager():
             ),
             RuntimeError,
         )
-        results = [i for i in client.{{ method.name|snake_case }}(
-            request={},
-        )]
+        results = [i for i in client.{{ method.name|snake_case }}({% for field in method.legacy_flattened_fields.values() if field.required -%}None,{% endfor -%})]
         assert len(results) == 6
         assert all([isinstance(i, {{ method.paged_result_field.message.ident }})
                     for i in results])
@@ -250,7 +256,7 @@ def test_{{ method.name|snake_case }}_pages():
             ),
             RuntimeError,
         )
-        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        pages = list(client.{{ method.name|snake_case }}({% for field in method.legacy_flattened_fields.values() if field.required -%}None,{% endfor -%}).pages)
         for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
 {% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
@@ -308,7 +314,7 @@ def test_{{ service.name|snake_case }}_base_transport():
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
-            getattr(transport, method)(request=object())
+            getattr(transport, method)()
 
     {% if service.has_lro -%}
     # Additionally, the LRO client (a property) should

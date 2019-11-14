@@ -20,9 +20,9 @@ from google.rpc import code_pb2
 
 def test_retry_bubble(echo):
     with pytest.raises(exceptions.DeadlineExceeded):
-        echo.echo({
-            'error': {
+        echo.echo(
+            error={
                 'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
                 'message': 'This took longer than you said it should.',
             },
-        })
+        )

@@ -17,6 +17,7 @@ from typing import Sequence
 
 from google.api import annotations_pb2
 from google.api import client_pb2
+from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.protobuf import descriptor_pb2
 
@@ -70,8 +71,8 @@ def test_method_client_output_paged():
         make_field(name='next_page_token', type=9),  # str
     ))
     method = make_method('ListFoos',
-        input_message=input_msg,
-        output_message=output_msg,
+                         input_message=input_msg,
+                         output_message=output_msg,
                          )
     assert method.paged_result_field == paged
     assert method.client_output.ident.name == 'ListFoosPager'
@@ -89,8 +90,8 @@ def test_method_paged_result_field_not_first():
         paged,
     ))
     method = make_method('ListFoos',
-        input_message=input_msg,
-        output_message=output_msg,
+                         input_message=input_msg,
+                         output_message=output_msg,
                          )
     assert method.paged_result_field == paged
 
@@ -106,8 +107,8 @@ def test_method_paged_result_field_no_page_field():
         make_field(name='next_page_token', type=9),  # str
     ))
     method = make_method('ListFoos',
-        input_message=input_msg,
-        output_message=output_msg,
+                         input_message=input_msg,
+                         output_message=output_msg,
                          )
     assert method.paged_result_field is None
 
@@ -178,6 +179,57 @@ def test_method_ignored_flattened_fields():
     assert len(method.flattened_fields) == 0
 
 
+def test_method_legacy_flattened_fields():
+    required_options = descriptor_pb2.FieldOptions()
+    required_options.Extensions[field_behavior_pb2.field_behavior].append(
+        field_behavior_pb2.FieldBehavior.Value("REQUIRED"))
+
+    # Cephalopods are required.
+    squid = make_field(name="squid", options=required_options)
+    octopus = make_field(
+        name="octopus",
+        message=make_message(
+            name="Octopus",
+            fields=[make_field(name="mass", options=required_options)]
+        ),
+        options=required_options)
+
+    # Bivalves are optional.
+    clam = make_field(name="clam")
+    oyster = make_field(
+        name="oyster",
+        message=make_message(
+            name="Oyster",
+            fields=[make_field(name="has_pearl")]
+        )
+    )
+
+    # Interleave required and optional fields to make sure
+    # that, in the legacy flattening, required fields are always first.
+    request = make_message("request", fields=[squid, clam, octopus, oyster])
+
+    method = make_method(
+        name="CreateMolluscs",
+        input_message=request,
+        # Signatures should be ignored.
+        signatures=[
+            "squid,octopus.mass",
+            "squid,octopus,oyster.has_pearl"
+        ]
+    )
+
+    # Use an ordered dict because ordering is important:
+    # required fields should come first.
+    expected = collections.OrderedDict([
+        ("squid", squid),
+        ("octopus", octopus),
+        ("clam", clam),
+        ("oyster", oyster)
+    ])
+
+    assert method.legacy_flattened_fields == expected
+
+
 def make_method(
         name: str, input_message: wrappers.MessageType = None,
         output_message: wrappers.MessageType = None,
@@ -222,7 +274,7 @@ def make_method(
 
 
 def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-        fields: Sequence[wrappers.Field] = (),
+                 fields: Sequence[wrappers.Field] = (),
                  ) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,

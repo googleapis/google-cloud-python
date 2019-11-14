@@ -79,9 +79,11 @@ def test_service_python_modules():
         get_method('Jump', 'foo.bacon.JumpRequest', 'foo.bacon.JumpResponse'),
         get_method('Yawn', 'a.b.v1.c.YawnRequest', 'x.y.v1.z.YawnResponse'),
     ))
-    imports = set()
-    for m in service.methods.values():
-        imports = imports.union({i.ident.python_import for i in m.ref_types})
+    imports = {
+        i.ident.python_import
+        for m in service.methods.values()
+        for i in m.ref_types_legacy
+    }
     assert imports == {
         imp.Import(package=('a', 'b', 'v1'), module='c'),
         imp.Import(package=('foo',), module='bacon'),
@@ -163,11 +165,12 @@ def make_service(name: str = 'Placeholder', host: str = '',
 
 # FIXME (lukesneeringer): This test method is convoluted and it makes these
 #                         tests difficult to understand and maintain.
-def make_service_with_method_options(*,
-        http_rule: http_pb2.HttpRule = None,
-        method_signature: str = '',
-        in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = ()
-        ) -> wrappers.Service:
+def make_service_with_method_options(
+    *,
+    http_rule: http_pb2.HttpRule = None,
+    method_signature: str = '',
+    in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = ()
+) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
     # field headers.
     method = get_method(
@@ -192,13 +195,13 @@ def make_service_with_method_options(*,
 
 
 def get_method(name: str,
-        in_type: str,
-        out_type: str,
-        lro_response_type: str = '',
-        lro_metadata_type: str = '', *,
-        in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
-        http_rule: http_pb2.HttpRule = None,
-        method_signature: str = '',
+               in_type: str,
+               out_type: str,
+               lro_response_type: str = '',
+               lro_metadata_type: str = '', *,
+               in_fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
+               http_rule: http_pb2.HttpRule = None,
+               method_signature: str = '',
                ) -> wrappers.Method:
     input_ = get_message(in_type, fields=in_fields)
     output = get_message(out_type)
@@ -231,7 +234,7 @@ def get_method(name: str,
 
 
 def get_message(dot_path: str, *,
-        fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
+                fields: typing.Tuple[descriptor_pb2.FieldDescriptorProto] = (),
                 ) -> wrappers.MessageType:
     # Pass explicit None through (for lro_metadata).
     if dot_path is None:
