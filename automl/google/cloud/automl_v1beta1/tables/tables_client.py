@@ -2596,6 +2596,7 @@ class TablesClient(object):
         model=None,
         model_name=None,
         model_display_name=None,
+        params=None,
         project=None,
         region=None,
         **kwargs
@@ -2642,6 +2643,14 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
+            params (Dict[str, str]): 
+                Additional domain-specific parameters, any string must be up to 
+                25000 characters long.
+                ``feature_importance`` - (boolean) Whether
+                [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]
+                should be populated in the returned
+                [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
+                The default is false.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.PredictResponse`
@@ -2683,7 +2692,7 @@ class TablesClient(object):
 
         request = {"row": {"values": values}}
 
-        return self.prediction_client.predict(model.name, request, **kwargs)
+        return self.prediction_client.predict(model.name, request, params, **kwargs)
 
     def batch_predict(
         self,
