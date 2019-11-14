@@ -92,12 +92,19 @@ class Options:
                 os.path.join(os.path.dirname(__file__), '..', 'templates'),
             )
 
+        retry_cfg = None
+        retry_paths = opts.pop(cls.RETRY_OPT, None)
+        if retry_paths:
+            # Just use the last config specified.
+            with open(retry_paths[-1]) as f:
+                retry_cfg = json.load(f)
+
         # Build the options instance.
         sample_paths = opts.pop(cls.SAMPLES_OPT, [])
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
-            retry=json.loads(str(opts.pop(cls.RETRY_OPT, 'null'))),
+            retry=retry_cfg,
             sample_configs=tuple(
                 cfg_path
                 for s in sample_paths

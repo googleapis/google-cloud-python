@@ -54,3 +54,64 @@ def test_options_no_valid_sample_config(fs):
     fs.create_file("sampledir/not_a_config.yaml")
     with pytest.raises(types.InvalidConfig):
         options.Options.build("samples=sampledir/")
+
+
+def test_options_service_config(fs):
+    opts = options.Options.build("")
+    assert opts.retry is None
+
+    # Default of None is okay, verify build can read a config.
+    service_config_fpath = "service_config.json"
+    fs.create_file(service_config_fpath, contents="""{
+    "methodConfig": [
+        {
+            "name": [
+                {
+                  "service": "animalia.mollusca.v1beta1.Cephalopod",
+                  "method": "IdentifySquid"
+                }
+            ],
+            "retryPolicy": {
+                "maxAttempts": 5,
+                "maxBackoff": "3s",
+                "initialBackoff": "0.2s",
+                "backoffMultiplier": 2,
+                "retryableStatusCodes": [
+                    "UNAVAILABLE",
+                    "UNKNOWN"
+                ]
+            },
+            "timeout": "5s"
+        }
+      ]
+    }""")
+
+    opt_string = f"retry-config={service_config_fpath}"
+    opts = options.Options.build(opt_string)
+
+    # Verify the config was read in correctly.
+    expected_cfg = {
+        "methodConfig": [
+            {
+                "name": [
+                    {
+                        "service": "animalia.mollusca.v1beta1.Cephalopod",
+                        "method": "IdentifySquid",
+                    }
+                ],
+                "retryPolicy": {
+                    "maxAttempts": 5,
+                    "maxBackoff": "3s",
+                    "initialBackoff": "0.2s",
+                    "backoffMultiplier": 2,
+                    "retryableStatusCodes":
+                    [
+                        "UNAVAILABLE",
+                        "UNKNOWN"
+                    ]
+                },
+                "timeout":"5s"
+            }
+        ]
+    }
+    assert opts.retry == expected_cfg
