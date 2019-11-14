@@ -18,52 +18,52 @@ config = {
             },
             "methods": {
                 "ListNotificationChannelDescriptors": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetNotificationChannelDescriptor": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListNotificationChannels": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetNotificationChannel": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateNotificationChannel": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateNotificationChannel": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteNotificationChannel": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "SendNotificationChannelVerificationCode": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetNotificationChannelVerificationCode": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "VerifyNotificationChannel": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

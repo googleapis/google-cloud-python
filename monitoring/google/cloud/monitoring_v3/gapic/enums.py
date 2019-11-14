@@ -19,6 +19,37 @@
 import enum
 
 
+class CalendarPeriod(enum.IntEnum):
+    """
+    A ``CalendarPeriod`` represents the abstract concept of a time period
+    that has a canonical start. Grammatically, "the start of the current
+    ``CalendarPeriod``." All calendar times begin at midnight UTC.
+
+    Attributes:
+      CALENDAR_PERIOD_UNSPECIFIED (int): Undefined period, raises an error.
+      DAY (int): A day.
+      WEEK (int): A week. Weeks begin on Monday, following `ISO
+      8601 <https://en.wikipedia.org/wiki/ISO_week_date>`__.
+      FORTNIGHT (int): A fortnight. The first calendar fortnight of the year begins at the
+      start of week 1 according to `ISO
+      8601 <https://en.wikipedia.org/wiki/ISO_week_date>`__.
+      MONTH (int): A month.
+      QUARTER (int): A quarter. Quarters start on dates 1-Jan, 1-Apr, 1-Jul, and 1-Oct of each
+      year.
+      HALF (int): A half-year. Half-years start on dates 1-Jan and 1-Jul.
+      YEAR (int): A year.
+    """
+
+    CALENDAR_PERIOD_UNSPECIFIED = 0
+    DAY = 1
+    WEEK = 2
+    FORTNIGHT = 3
+    MONTH = 4
+    QUARTER = 5
+    HALF = 6
+    YEAR = 7
+
+
 class ComparisonType(enum.IntEnum):
     """
     Specifies an ordering relationship on two arguments, here called left and
@@ -525,6 +556,32 @@ class NotificationChannel(object):
         VERIFIED = 2
 
 
+class ServiceLevelObjective(object):
+    class View(enum.IntEnum):
+        """
+        ``ServiceLevelObjective.View`` determines what form of
+        ``ServiceLevelObjective`` is returned from ``GetServiceLevelObjective``,
+        ``ListServiceLevelObjectives``, and
+        ``ListServiceLevelObjectiveVersions`` RPCs.
+
+        Attributes:
+          VIEW_UNSPECIFIED (int): Same as FULL.
+          FULL (int): Return the embedded ``ServiceLevelIndicator`` in the form in which it
+          was defined. If it was defined using a ``BasicSli``, return that
+          ``BasicSli``.
+          EXPLICIT (int): For ``ServiceLevelIndicator``\ s using ``BasicSli`` articulation,
+          instead return the ``ServiceLevelIndicator`` with its mode of
+          computation fully spelled out as a ``RequestBasedSli``. For
+          ``ServiceLevelIndicator``\ s using ``RequestBasedSli`` or
+          ``WindowsBasedSli``, return the ``ServiceLevelIndicator`` as it was
+          provided.
+        """
+
+        VIEW_UNSPECIFIED = 0
+        FULL = 2
+        EXPLICIT = 1
+
+
 class UptimeCheckConfig(object):
     class ContentMatcher(object):
         class ContentMatcherOption(enum.IntEnum):
@@ -535,17 +592,17 @@ class UptimeCheckConfig(object):
               CONTENT_MATCHER_OPTION_UNSPECIFIED (int): No content matcher type specified (maintained for backward
               compatibility, but deprecated for future use). Treated as
               ``CONTAINS_STRING``.
-              CONTAINS_STRING (int): Selects substring matching (there is a match if the output contains the
-              ``content`` string). This is the default value for checks without a
+              CONTAINS_STRING (int): Selects substring matching. The match succeeds if the output contains
+              the ``content`` string. This is the default value for checks without a
               ``matcher`` option, or where the value of ``matcher`` is
               ``CONTENT_MATCHER_OPTION_UNSPECIFIED``.
-              NOT_CONTAINS_STRING (int): Selects negation of substring matching (there is a match if the output
-              does NOT contain the ``content`` string).
-              MATCHES_REGEX (int): Selects regular expression matching (there is a match of the output
-              matches the regular expression specified in the ``content`` string).
-              NOT_MATCHES_REGEX (int): Selects negation of regular expression matching (there is a match if the
-              output does NOT match the regular expression specified in the
-              ``content`` string).
+              NOT_CONTAINS_STRING (int): Selects negation of substring matching. The match succeeds if the output
+              does *NOT* contain the ``content`` string.
+              MATCHES_REGEX (int): Selects regular-expression matching. The match succeeds of the output
+              matches the regular expression specified in the ``content`` string.
+              NOT_MATCHES_REGEX (int): Selects negation of regular-expression matching. The match succeeds if
+              the output does *NOT* match the regular expression specified in the
+              ``content`` string.
             """
 
             CONTENT_MATCHER_OPTION_UNSPECIFIED = 0

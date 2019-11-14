@@ -43,7 +43,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\022MetricServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/monitoring_v3/proto/metric_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a-google/cloud/monitoring_v3/proto/metric.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/rpc/status.proto\x1a\x17google/api/client.proto"n\n\'ListMonitoredResourceDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"5\n%GetMonitoredResourceDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"c\n\x1cListMetricDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"r\n\x1dListMetricDescriptorsResponse\x12\x38\n\x12metric_descriptors\x18\x01 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"f\n\x1d\x43reateMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x02 \x01(\x0b\x32\x1c.google.api.MetricDescriptor"-\n\x1d\x44\x65leteMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\xcf\x02\n\x15ListTimeSeriesRequest\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x34\n\x08interval\x18\x04 \x01(\x0b\x32".google.monitoring.v3.TimeInterval\x12\x36\n\x0b\x61ggregation\x18\x05 \x01(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12H\n\x04view\x18\x07 \x01(\x0e\x32:.google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView\x12\x11\n\tpage_size\x18\x08 \x01(\x05\x12\x12\n\npage_token\x18\t \x01(\t"\'\n\x0eTimeSeriesView\x12\x08\n\x04\x46ULL\x10\x00\x12\x0b\n\x07HEADERS\x10\x01"\x96\x01\n\x16ListTimeSeriesResponse\x12\x35\n\x0btime_series\x18\x01 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12,\n\x10\x65xecution_errors\x18\x03 \x03(\x0b\x32\x12.google.rpc.Status"^\n\x17\x43reateTimeSeriesRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x35\n\x0btime_series\x18\x02 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries"r\n\x15\x43reateTimeSeriesError\x12\x35\n\x0btime_series\x18\x01 \x01(\x0b\x32 .google.monitoring.v3.TimeSeries\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status2\xd2\x0c\n\rMetricService\x12\xdd\x01\n ListMonitoredResourceDescriptors\x12=.google.monitoring.v3.ListMonitoredResourceDescriptorsRequest\x1a>.google.monitoring.v3.ListMonitoredResourceDescriptorsResponse":\x82\xd3\xe4\x93\x02\x34\x12\x32/v3/{name=projects/*}/monitoredResourceDescriptors\x12\xc4\x01\n\x1eGetMonitoredResourceDescriptor\x12;.google.monitoring.v3.GetMonitoredResourceDescriptorRequest\x1a\'.google.api.MonitoredResourceDescriptor"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*/monitoredResourceDescriptors/*}\x12\xb1\x01\n\x15ListMetricDescriptors\x12\x32.google.monitoring.v3.ListMetricDescriptorsRequest\x1a\x33.google.monitoring.v3.ListMetricDescriptorsResponse"/\x82\xd3\xe4\x93\x02)\x12\'/v3/{name=projects/*}/metricDescriptors\x12\x99\x01\n\x13GetMetricDescriptor\x12\x30.google.monitoring.v3.GetMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/metricDescriptors/**}\x12\xaf\x01\n\x16\x43reateMetricDescriptor\x12\x33.google.monitoring.v3.CreateMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"B\x82\xd3\xe4\x93\x02<"\'/v3/{name=projects/*}/metricDescriptors:\x11metric_descriptor\x12\x99\x01\n\x16\x44\x65leteMetricDescriptor\x12\x33.google.monitoring.v3.DeleteMetricDescriptorRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/metricDescriptors/**}\x12\x95\x01\n\x0eListTimeSeries\x12+.google.monitoring.v3.ListTimeSeriesRequest\x1a,.google.monitoring.v3.ListTimeSeriesResponse"(\x82\xd3\xe4\x93\x02"\x12 /v3/{name=projects/*}/timeSeries\x12\x86\x01\n\x10\x43reateTimeSeries\x12-.google.monitoring.v3.CreateTimeSeriesRequest\x1a\x16.google.protobuf.Empty"+\x82\xd3\xe4\x93\x02%" /v3/{name=projects/*}/timeSeries:\x01*\x1a\xda\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\xba\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read,https://www.googleapis.com/auth/monitoring.writeB\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12MetricServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n5google/cloud/monitoring_v3/proto/metric_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a,google/cloud/monitoring_v3/proto/alert.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a-google/cloud/monitoring_v3/proto/metric.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/rpc/status.proto\x1a\x17google/api/client.proto"n\n\'ListMonitoredResourceDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8a\x01\n(ListMonitoredResourceDescriptorsResponse\x12\x45\n\x14resource_descriptors\x18\x01 \x03(\x0b\x32\'.google.api.MonitoredResourceDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"5\n%GetMonitoredResourceDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"c\n\x1cListMetricDescriptorsRequest\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"r\n\x1dListMetricDescriptorsResponse\x12\x38\n\x12metric_descriptors\x18\x01 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"f\n\x1d\x43reateMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x37\n\x11metric_descriptor\x18\x02 \x01(\x0b\x32\x1c.google.api.MetricDescriptor"-\n\x1d\x44\x65leteMetricDescriptorRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"\xcf\x02\n\x15ListTimeSeriesRequest\x12\x0c\n\x04name\x18\n \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x34\n\x08interval\x18\x04 \x01(\x0b\x32".google.monitoring.v3.TimeInterval\x12\x36\n\x0b\x61ggregation\x18\x05 \x01(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x10\n\x08order_by\x18\x06 \x01(\t\x12H\n\x04view\x18\x07 \x01(\x0e\x32:.google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView\x12\x11\n\tpage_size\x18\x08 \x01(\x05\x12\x12\n\npage_token\x18\t \x01(\t"\'\n\x0eTimeSeriesView\x12\x08\n\x04\x46ULL\x10\x00\x12\x0b\n\x07HEADERS\x10\x01"\x96\x01\n\x16ListTimeSeriesResponse\x12\x35\n\x0btime_series\x18\x01 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12,\n\x10\x65xecution_errors\x18\x03 \x03(\x0b\x32\x12.google.rpc.Status"^\n\x17\x43reateTimeSeriesRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x35\n\x0btime_series\x18\x02 \x03(\x0b\x32 .google.monitoring.v3.TimeSeries"z\n\x15\x43reateTimeSeriesError\x12\x39\n\x0btime_series\x18\x01 \x01(\x0b\x32 .google.monitoring.v3.TimeSeriesB\x02\x18\x01\x12&\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.StatusB\x02\x18\x01"\xd8\x01\n\x17\x43reateTimeSeriesSummary\x12\x19\n\x11total_point_count\x18\x01 \x01(\x05\x12\x1b\n\x13success_point_count\x18\x02 \x01(\x05\x12\x43\n\x06\x65rrors\x18\x03 \x03(\x0b\x32\x33.google.monitoring.v3.CreateTimeSeriesSummary.Error\x1a@\n\x05\x45rror\x12"\n\x06status\x18\x01 \x01(\x0b\x32\x12.google.rpc.Status\x12\x13\n\x0bpoint_count\x18\x02 \x01(\x05\x32\xd2\x0c\n\rMetricService\x12\xdd\x01\n ListMonitoredResourceDescriptors\x12=.google.monitoring.v3.ListMonitoredResourceDescriptorsRequest\x1a>.google.monitoring.v3.ListMonitoredResourceDescriptorsResponse":\x82\xd3\xe4\x93\x02\x34\x12\x32/v3/{name=projects/*}/monitoredResourceDescriptors\x12\xc4\x01\n\x1eGetMonitoredResourceDescriptor\x12;.google.monitoring.v3.GetMonitoredResourceDescriptorRequest\x1a\'.google.api.MonitoredResourceDescriptor"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v3/{name=projects/*/monitoredResourceDescriptors/*}\x12\xb1\x01\n\x15ListMetricDescriptors\x12\x32.google.monitoring.v3.ListMetricDescriptorsRequest\x1a\x33.google.monitoring.v3.ListMetricDescriptorsResponse"/\x82\xd3\xe4\x93\x02)\x12\'/v3/{name=projects/*}/metricDescriptors\x12\x99\x01\n\x13GetMetricDescriptor\x12\x30.google.monitoring.v3.GetMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"2\x82\xd3\xe4\x93\x02,\x12*/v3/{name=projects/*/metricDescriptors/**}\x12\xaf\x01\n\x16\x43reateMetricDescriptor\x12\x33.google.monitoring.v3.CreateMetricDescriptorRequest\x1a\x1c.google.api.MetricDescriptor"B\x82\xd3\xe4\x93\x02<"\'/v3/{name=projects/*}/metricDescriptors:\x11metric_descriptor\x12\x99\x01\n\x16\x44\x65leteMetricDescriptor\x12\x33.google.monitoring.v3.DeleteMetricDescriptorRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,**/v3/{name=projects/*/metricDescriptors/**}\x12\x95\x01\n\x0eListTimeSeries\x12+.google.monitoring.v3.ListTimeSeriesRequest\x1a,.google.monitoring.v3.ListTimeSeriesResponse"(\x82\xd3\xe4\x93\x02"\x12 /v3/{name=projects/*}/timeSeries\x12\x86\x01\n\x10\x43reateTimeSeries\x12-.google.monitoring.v3.CreateTimeSeriesRequest\x1a\x16.google.protobuf.Empty"+\x82\xd3\xe4\x93\x02%" /v3/{name=projects/*}/timeSeries:\x01*\x1a\xda\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\xba\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read,https://www.googleapis.com/auth/monitoring.writeB\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12MetricServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -255,7 +255,7 @@ _GETMONITOREDRESOURCEDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -444,7 +444,7 @@ _GETMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -540,7 +540,7 @@ _DELETEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -709,7 +709,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_LISTTIMESERIESREQUEST_TIMESERIESVIEW],
+    enum_types=[_LISTTIMESERIESREQUEST_TIMESERIESVIEW,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -874,7 +874,7 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -892,7 +892,7 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -905,7 +905,138 @@ _CREATETIMESERIESERROR = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=1729,
-    serialized_end=1843,
+    serialized_end=1851,
+)
+
+
+_CREATETIMESERIESSUMMARY_ERROR = _descriptor.Descriptor(
+    name="Error",
+    full_name="google.monitoring.v3.CreateTimeSeriesSummary.Error",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="status",
+            full_name="google.monitoring.v3.CreateTimeSeriesSummary.Error.status",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="point_count",
+            full_name="google.monitoring.v3.CreateTimeSeriesSummary.Error.point_count",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2006,
+    serialized_end=2070,
+)
+
+_CREATETIMESERIESSUMMARY = _descriptor.Descriptor(
+    name="CreateTimeSeriesSummary",
+    full_name="google.monitoring.v3.CreateTimeSeriesSummary",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="total_point_count",
+            full_name="google.monitoring.v3.CreateTimeSeriesSummary.total_point_count",
+            index=0,
+            number=1,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="success_point_count",
+            full_name="google.monitoring.v3.CreateTimeSeriesSummary.success_point_count",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="errors",
+            full_name="google.monitoring.v3.CreateTimeSeriesSummary.errors",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_CREATETIMESERIESSUMMARY_ERROR,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1854,
+    serialized_end=2070,
 )
 
 _LISTMONITOREDRESOURCEDESCRIPTORSRESPONSE.fields_by_name[
@@ -954,6 +1085,13 @@ _CREATETIMESERIESERROR.fields_by_name[
 _CREATETIMESERIESERROR.fields_by_name[
     "status"
 ].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_CREATETIMESERIESSUMMARY_ERROR.fields_by_name[
+    "status"
+].message_type = google_dot_rpc_dot_status__pb2._STATUS
+_CREATETIMESERIESSUMMARY_ERROR.containing_type = _CREATETIMESERIESSUMMARY
+_CREATETIMESERIESSUMMARY.fields_by_name[
+    "errors"
+].message_type = _CREATETIMESERIESSUMMARY_ERROR
 DESCRIPTOR.message_types_by_name[
     "ListMonitoredResourceDescriptorsRequest"
 ] = _LISTMONITOREDRESOURCEDESCRIPTORSREQUEST
@@ -982,6 +1120,7 @@ DESCRIPTOR.message_types_by_name["ListTimeSeriesRequest"] = _LISTTIMESERIESREQUE
 DESCRIPTOR.message_types_by_name["ListTimeSeriesResponse"] = _LISTTIMESERIESRESPONSE
 DESCRIPTOR.message_types_by_name["CreateTimeSeriesRequest"] = _CREATETIMESERIESREQUEST
 DESCRIPTOR.message_types_by_name["CreateTimeSeriesError"] = _CREATETIMESERIESERROR
+DESCRIPTOR.message_types_by_name["CreateTimeSeriesSummary"] = _CREATETIMESERIESSUMMARY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ListMonitoredResourceDescriptorsRequest = _reflection.GeneratedProtocolMessageType(
@@ -1213,12 +1352,14 @@ ListTimeSeriesRequest = _reflection.GeneratedProtocolMessageType(
           time series that contain data points in the specified interval
           are included in the response.
       aggregation:
-          By default, the raw time series data is returned. Use this
-          field to combine multiple time series for different views of
-          the data.
+          Specifies the alignment of data points in individual time
+          series as well as how to combine the retrieved time series
+          across specified labels.  By default (if no ``aggregation`` is
+          explicitly specified), the raw time series data is returned.
       order_by:
           Unsupported: must be left blank. The points in each time
-          series are returned in reverse time order.
+          series are currently returned in reverse time order (most
+          recent to oldest).
       view:
           Specifies which information is returned about the time series.
       page_size:
@@ -1299,25 +1440,70 @@ CreateTimeSeriesError = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CREATETIMESERIESERROR,
         __module__="google.cloud.monitoring_v3.proto.metric_service_pb2",
-        __doc__="""Describes the result of a failed request to write data to a time series.
+        __doc__="""DEPRECATED. Used to hold per-time-series error status.
   
   
   Attributes:
       time_series:
-          The time series, including the ``Metric``,
-          ``MonitoredResource``, and ``Point``\ s (including timestamp
-          and value) that resulted in the error. This field provides all
-          of the context that would be needed to retry the operation.
+          DEPRECATED. Time series ID that resulted in the ``status``
+          error.
       status:
-          The status of the requested write operation.
+          DEPRECATED. The status of the requested write operation for
+          ``time_series``.
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateTimeSeriesError)
     ),
 )
 _sym_db.RegisterMessage(CreateTimeSeriesError)
 
+CreateTimeSeriesSummary = _reflection.GeneratedProtocolMessageType(
+    "CreateTimeSeriesSummary",
+    (_message.Message,),
+    dict(
+        Error=_reflection.GeneratedProtocolMessageType(
+            "Error",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_CREATETIMESERIESSUMMARY_ERROR,
+                __module__="google.cloud.monitoring_v3.proto.metric_service_pb2",
+                __doc__="""Detailed information about an error category.
+    
+    
+    Attributes:
+        status:
+            The status of the requested write operation.
+        point_count:
+            The number of points that couldn't be written because of
+            ``status``.
+    """,
+                # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateTimeSeriesSummary.Error)
+            ),
+        ),
+        DESCRIPTOR=_CREATETIMESERIESSUMMARY,
+        __module__="google.cloud.monitoring_v3.proto.metric_service_pb2",
+        __doc__="""Summary of the result of a failed request to write data to a time
+  series.
+  
+  
+  Attributes:
+      total_point_count:
+          The number of points in the request.
+      success_point_count:
+          The number of points that were successfully written.
+      errors:
+          The number of points that failed to be written. Order is not
+          guaranteed.
+  """,
+        # @@protoc_insertion_point(class_scope:google.monitoring.v3.CreateTimeSeriesSummary)
+    ),
+)
+_sym_db.RegisterMessage(CreateTimeSeriesSummary)
+_sym_db.RegisterMessage(CreateTimeSeriesSummary.Error)
+
 
 DESCRIPTOR._options = None
+_CREATETIMESERIESERROR.fields_by_name["time_series"]._options = None
+_CREATETIMESERIESERROR.fields_by_name["status"]._options = None
 
 _METRICSERVICE = _descriptor.ServiceDescriptor(
     name="MetricService",
@@ -1327,8 +1513,8 @@ _METRICSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\031monitoring.googleapis.com\322A\272\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read,https://www.googleapis.com/auth/monitoring.write"
     ),
-    serialized_start=1846,
-    serialized_end=3464,
+    serialized_start=2073,
+    serialized_end=3691,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListMonitoredResourceDescriptors",

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Accesses the google.monitoring.v3 NotificationChannelService API."""
+"""Accesses the google.monitoring.v3 ServiceMonitoringService API."""
 
 import functools
 import pkg_resources
@@ -34,9 +34,9 @@ import grpc
 from google.api import metric_pb2 as api_metric_pb2
 from google.api import monitored_resource_pb2
 from google.cloud.monitoring_v3.gapic import enums
-from google.cloud.monitoring_v3.gapic import notification_channel_service_client_config
+from google.cloud.monitoring_v3.gapic import service_monitoring_service_client_config
 from google.cloud.monitoring_v3.gapic.transports import (
-    notification_channel_service_grpc_transport,
+    service_monitoring_service_grpc_transport,
 )
 from google.cloud.monitoring_v3.proto import alert_pb2
 from google.cloud.monitoring_v3.proto import alert_service_pb2
@@ -51,6 +51,9 @@ from google.cloud.monitoring_v3.proto import metric_service_pb2_grpc
 from google.cloud.monitoring_v3.proto import notification_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2
 from google.cloud.monitoring_v3.proto import notification_service_pb2_grpc
+from google.cloud.monitoring_v3.proto import service_pb2
+from google.cloud.monitoring_v3.proto import service_service_pb2
+from google.cloud.monitoring_v3.proto import service_service_pb2_grpc
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
@@ -61,10 +64,12 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 ).version
 
 
-class NotificationChannelServiceClient(object):
+class ServiceMonitoringServiceClient(object):
     """
-    The Notification Channel API provides access to configuration that
-    controls how messages related to incidents are sent.
+    The Stackdriver Monitoring Service-Oriented Monitoring API has endpoints
+    for managing and querying aspects of a workspace's services. These
+    include the ``Service``'s monitored resources, its Service-Level
+    Objectives, and a taxonomy of categorized Health Metrics.
     """
 
     SERVICE_ADDRESS = "monitoring.googleapis.com:443"
@@ -72,7 +77,7 @@ class NotificationChannelServiceClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.monitoring.v3.NotificationChannelService"
+    _INTERFACE_NAME = "google.monitoring.v3.ServiceMonitoringService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -86,7 +91,7 @@ class NotificationChannelServiceClient(object):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            NotificationChannelServiceClient: The constructed client.
+            ServiceMonitoringServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -95,28 +100,27 @@ class NotificationChannelServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def notification_channel_path(cls, project, notification_channel):
-        """Return a fully-qualified notification_channel string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/notificationChannels/{notification_channel}",
-            project=project,
-            notification_channel=notification_channel,
-        )
-
-    @classmethod
-    def notification_channel_descriptor_path(cls, project, channel_descriptor):
-        """Return a fully-qualified notification_channel_descriptor string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}/notificationChannelDescriptors/{channel_descriptor}",
-            project=project,
-            channel_descriptor=channel_descriptor,
-        )
-
-    @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
+        )
+
+    @classmethod
+    def service_path(cls, project, service):
+        """Return a fully-qualified service string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/services/{service}", project=project, service=service,
+        )
+
+    @classmethod
+    def service_level_objective_path(cls, project, service, service_level_objective):
+        """Return a fully-qualified service_level_objective string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}",
+            project=project,
+            service=service,
+            service_level_objective=service_level_objective,
         )
 
     def __init__(
@@ -131,8 +135,8 @@ class NotificationChannelServiceClient(object):
         """Constructor.
 
         Args:
-            transport (Union[~.NotificationChannelServiceGrpcTransport,
-                    Callable[[~.Credentials, type], ~.NotificationChannelServiceGrpcTransport]): A transport
+            transport (Union[~.ServiceMonitoringServiceGrpcTransport,
+                    Callable[[~.Credentials, type], ~.ServiceMonitoringServiceGrpcTransport]): A transport
                 instance, responsible for actually making the API calls.
                 The default transport uses the gRPC protocol.
                 This argument may also be a callable which returns a
@@ -169,7 +173,7 @@ class NotificationChannelServiceClient(object):
                 stacklevel=2,
             )
         else:
-            client_config = notification_channel_service_client_config.config
+            client_config = service_monitoring_service_client_config.config
 
         if channel:
             warnings.warn(
@@ -194,7 +198,7 @@ class NotificationChannelServiceClient(object):
             if callable(transport):
                 self.transport = transport(
                     credentials=credentials,
-                    default_class=notification_channel_service_grpc_transport.NotificationChannelServiceGrpcTransport,
+                    default_class=service_monitoring_service_grpc_transport.ServiceMonitoringServiceGrpcTransport,
                     address=api_endpoint,
                 )
             else:
@@ -205,7 +209,7 @@ class NotificationChannelServiceClient(object):
                     )
                 self.transport = transport
         else:
-            self.transport = notification_channel_service_grpc_transport.NotificationChannelServiceGrpcTransport(
+            self.transport = service_monitoring_service_grpc_transport.ServiceMonitoringServiceGrpcTransport(
                 address=api_endpoint, channel=channel, credentials=credentials,
             )
 
@@ -232,448 +236,39 @@ class NotificationChannelServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_notification_channel_descriptors(
+    def create_service(
         self,
-        name,
-        page_size=None,
+        parent,
+        service,
+        service_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Lists the descriptors for supported channel types. The use of descriptors
-        makes it possible for new channel types to be dynamically added.
+        Create a ``Service``.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
             >>>
-            >>> name = client.project_path('[PROJECT]')
+            >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_notification_channel_descriptors(name):
-            ...     # process element
-            ...     pass
+            >>> # TODO: Initialize `service`:
+            >>> service = {}
             >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_notification_channel_descriptors(name).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
+            >>> response = client.create_service(parent, service)
 
         Args:
-            name (str): The REST resource name of the parent from which to retrieve the
-                notification channel descriptors. The expected syntax is:
-
-                ::
-
-                     projects/[PROJECT_ID]
-
-                Note that this names the parent container in which to look for the
-                descriptors; to retrieve a single descriptor by name, use the
-                ``GetNotificationChannelDescriptor`` operation, instead.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_notification_channel_descriptors" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_notification_channel_descriptors"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_notification_channel_descriptors,
-                default_retry=self._method_configs[
-                    "ListNotificationChannelDescriptors"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "ListNotificationChannelDescriptors"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = notification_service_pb2.ListNotificationChannelDescriptorsRequest(
-            name=name, page_size=page_size,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_notification_channel_descriptors"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="channel_descriptors",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
-    def get_notification_channel_descriptor(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets a single channel descriptor. The descriptor indicates which fields
-        are expected / permitted for a notification channel of the given type.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
-            >>>
-            >>> name = client.notification_channel_descriptor_path('[PROJECT]', '[CHANNEL_DESCRIPTOR]')
-            >>>
-            >>> response = client.get_notification_channel_descriptor(name)
-
-        Args:
-            name (str): The channel type for which to execute the request. The format is
-                ``projects/[PROJECT_ID]/notificationChannelDescriptors/{channel_type}``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.monitoring_v3.types.NotificationChannelDescriptor` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_notification_channel_descriptor" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_notification_channel_descriptor"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_notification_channel_descriptor,
-                default_retry=self._method_configs[
-                    "GetNotificationChannelDescriptor"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "GetNotificationChannelDescriptor"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = notification_service_pb2.GetNotificationChannelDescriptorRequest(
-            name=name,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_notification_channel_descriptor"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def list_notification_channels(
-        self,
-        name,
-        filter_=None,
-        order_by=None,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Lists the notification channels that have been created for the project.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
-            >>>
-            >>> name = client.project_path('[PROJECT]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_notification_channels(name):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_notification_channels(name).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            name (str): The project on which to execute the request. The format is
-                ``projects/[PROJECT_ID]``. That is, this names the container in which to
-                look for the notification channels; it does not name a specific channel.
-                To query a specific channel by REST resource name, use the
-                ``GetNotificationChannel`` operation.
-            filter_ (str): If provided, this field specifies the criteria that must be met by
-                notification channels to be included in the response.
-
-                For more details, see `sorting and
-                filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
-            order_by (str): A comma-separated list of fields by which to sort the result. Supports
-                the same set of fields as in ``filter``. Entries can be prefixed with a
-                minus sign to sort in descending rather than ascending order.
-
-                For more details, see `sorting and
-                filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_notification_channels" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_notification_channels"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_notification_channels,
-                default_retry=self._method_configs["ListNotificationChannels"].retry,
-                default_timeout=self._method_configs[
-                    "ListNotificationChannels"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = notification_service_pb2.ListNotificationChannelsRequest(
-            name=name, filter=filter_, order_by=order_by, page_size=page_size,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_notification_channels"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="notification_channels",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
-    def get_notification_channel(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets a single notification channel. The channel includes the relevant
-        configuration details with which the channel was created. However, the
-        response may truncate or omit passwords, API keys, or other private key
-        matter and thus the response may not be 100% identical to the information
-        that was supplied in the call to the create method.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
-            >>>
-            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
-            >>>
-            >>> response = client.get_notification_channel(name)
-
-        Args:
-            name (str): The channel for which to execute the request. The format is
-                ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_notification_channel" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_notification_channel"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_notification_channel,
-                default_retry=self._method_configs["GetNotificationChannel"].retry,
-                default_timeout=self._method_configs["GetNotificationChannel"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = notification_service_pb2.GetNotificationChannelRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_notification_channel"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def create_notification_channel(
-        self,
-        name,
-        notification_channel,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates a new notification channel, representing a single notification
-        endpoint such as an email address, SMS number, or PagerDuty service.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
-            >>>
-            >>> name = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize `notification_channel`:
-            >>> notification_channel = {}
-            >>>
-            >>> response = client.create_notification_channel(name, notification_channel)
-
-        Args:
-            name (str): The project on which to execute the request. The format is:
-
-                ::
-
-                     projects/[PROJECT_ID]
-
-                Note that this names the container into which the channel will be
-                written. This does not name the newly created channel. The resulting
-                channel's name will have a normalized version of this field as a prefix,
-                but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the
-                channel.
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): The definition of the ``NotificationChannel`` to create.
+            parent (str): Resource name of the parent workspace. Of the form
+                ``projects/{project_id}``.
+            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): The ``Service`` to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
+                message :class:`~google.cloud.monitoring_v3.types.Service`
+            service_id (str): Optional. The Service id to use for this Service. If omitted, an id will
+                be generated instead. Must match the pattern [a-z0-9-]+
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -684,7 +279,7 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+            A :class:`~google.cloud.monitoring_v3.types.Service` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -697,21 +292,92 @@ class NotificationChannelServiceClient(object):
             metadata = []
         metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
-        if "create_notification_channel" not in self._inner_api_calls:
+        if "create_service" not in self._inner_api_calls:
             self._inner_api_calls[
-                "create_notification_channel"
+                "create_service"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_notification_channel,
-                default_retry=self._method_configs["CreateNotificationChannel"].retry,
-                default_timeout=self._method_configs[
-                    "CreateNotificationChannel"
-                ].timeout,
+                self.transport.create_service,
+                default_retry=self._method_configs["CreateService"].retry,
+                default_timeout=self._method_configs["CreateService"].timeout,
                 client_info=self._client_info,
             )
 
-        request = notification_service_pb2.CreateNotificationChannelRequest(
-            name=name, notification_channel=notification_channel,
+        request = service_service_pb2.CreateServiceRequest(
+            parent=parent, service=service, service_id=service_id,
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_service"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_service(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Get the named ``Service``.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
+            >>>
+            >>> name = client.service_path('[PROJECT]', '[SERVICE]')
+            >>>
+            >>> response = client.get_service(name)
+
+        Args:
+            name (str): Resource name of the ``Service``. Of the form
+                ``projects/{project_id}/services/{service_id}``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.Service` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_service" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_service"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_service,
+                default_retry=self._method_configs["GetService"].retry,
+                default_timeout=self._method_configs["GetService"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_service_pb2.GetServiceRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -725,41 +391,163 @@ class NotificationChannelServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["create_notification_channel"](
+        return self._inner_api_calls["get_service"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def update_notification_channel(
+    def list_services(
         self,
-        notification_channel,
+        parent,
+        filter_=None,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        List ``Service``\ s for this workspace.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_services(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_services(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Resource name of the parent ``Workspace``. Of the form
+                ``projects/{project_id}``.
+            filter_ (str): A filter specifying what ``Service``\ s to return. The filter currently
+                supports the following fields:
+
+                ::
+
+                     - `identifier_case`
+                     - `app_engine.module_id`
+                     - `cloud_endpoints.service`
+                     - `cluster_istio.location`
+                     - `cluster_istio.cluster_name`
+                     - `cluster_istio.service_namespace`
+                     - `cluster_istio.service_name`
+
+                ``identifier_case`` refers to which option in the identifier oneof is
+                populated. For example, the filter ``identifier_case = "CUSTOM"`` would
+                match all services with a value for the ``custom`` field. Valid options
+                are "CUSTOM", "APP\_ENGINE", "CLOUD\_ENDPOINTS", and "CLUSTER\_ISTIO".
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.monitoring_v3.types.Service` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_services" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_services"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_services,
+                default_retry=self._method_configs["ListServices"].retry,
+                default_timeout=self._method_configs["ListServices"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_service_pb2.ListServicesRequest(
+            parent=parent, filter=filter_, page_size=page_size,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_services"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="services",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def update_service(
+        self,
+        service,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates a notification channel. Fields not specified in the field mask
-        remain unchanged.
+        Update this ``Service``.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
             >>>
-            >>> # TODO: Initialize `notification_channel`:
-            >>> notification_channel = {}
+            >>> # TODO: Initialize `service`:
+            >>> service = {}
             >>>
-            >>> response = client.update_notification_channel(notification_channel)
+            >>> response = client.update_service(service)
 
         Args:
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified notification
-                channel. The description must provide a definition for fields to be
-                updated; the names of these fields should also be included in the
-                ``update_mask``.
+            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): The ``Service`` to draw updates from. The given ``name`` specifies the
+                resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
-            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): The fields to update.
+                message :class:`~google.cloud.monitoring_v3.types.Service`
+            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): A set of field paths defining which fields to use for the update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.FieldMask`
@@ -773,7 +561,7 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+            A :class:`~google.cloud.monitoring_v3.types.Service` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -786,26 +574,24 @@ class NotificationChannelServiceClient(object):
             metadata = []
         metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
-        if "update_notification_channel" not in self._inner_api_calls:
+        if "update_service" not in self._inner_api_calls:
             self._inner_api_calls[
-                "update_notification_channel"
+                "update_service"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_notification_channel,
-                default_retry=self._method_configs["UpdateNotificationChannel"].retry,
-                default_timeout=self._method_configs[
-                    "UpdateNotificationChannel"
-                ].timeout,
+                self.transport.update_service,
+                default_retry=self._method_configs["UpdateService"].retry,
+                default_timeout=self._method_configs["UpdateService"].timeout,
                 client_info=self._client_info,
             )
 
-        request = notification_service_pb2.UpdateNotificationChannelRequest(
-            notification_channel=notification_channel, update_mask=update_mask,
+        request = service_service_pb2.UpdateServiceRequest(
+            service=service, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("notification_channel.name", notification_channel.name)]
+            routing_header = [("service.name", service.name)]
         except AttributeError:
             pass
         else:
@@ -814,37 +600,32 @@ class NotificationChannelServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["update_notification_channel"](
+        return self._inner_api_calls["update_service"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_notification_channel(
+    def delete_service(
         self,
         name,
-        force=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Deletes a notification channel.
+        Soft delete this ``Service``.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
             >>>
-            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>> name = client.service_path('[PROJECT]', '[SERVICE]')
             >>>
-            >>> client.delete_notification_channel(name)
+            >>> client.delete_service(name)
 
         Args:
-            name (str): The channel for which to execute the request. The format is
-                ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
-            force (bool): If true, the notification channel will be deleted regardless of its
-                use in alert policies (the policies will be updated to remove the
-                channel). If false, channels that are still referenced by an existing
-                alerting policy will fail to be deleted in a delete operation.
+            name (str): Resource name of the ``Service`` to delete. Of the form
+                ``projects/{project_id}/service/{service_id}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -865,21 +646,17 @@ class NotificationChannelServiceClient(object):
             metadata = []
         metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
-        if "delete_notification_channel" not in self._inner_api_calls:
+        if "delete_service" not in self._inner_api_calls:
             self._inner_api_calls[
-                "delete_notification_channel"
+                "delete_service"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_notification_channel,
-                default_retry=self._method_configs["DeleteNotificationChannel"].retry,
-                default_timeout=self._method_configs[
-                    "DeleteNotificationChannel"
-                ].timeout,
+                self.transport.delete_service,
+                default_retry=self._method_configs["DeleteService"].retry,
+                default_timeout=self._method_configs["DeleteService"].timeout,
                 client_info=self._client_info,
             )
 
-        request = notification_service_pb2.DeleteNotificationChannelRequest(
-            name=name, force=force,
-        )
+        request = service_service_pb2.DeleteServiceRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -893,142 +670,45 @@ class NotificationChannelServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        self._inner_api_calls["delete_notification_channel"](
+        self._inner_api_calls["delete_service"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def send_notification_channel_verification_code(
+    def create_service_level_objective(
         self,
-        name,
+        parent,
+        service_level_objective,
+        service_level_objective_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Causes a verification code to be delivered to the channel. The code can
-        then be supplied in ``VerifyNotificationChannel`` to verify the channel.
+        Create a ``ServiceLevelObjective`` for the given ``Service``.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
             >>>
-            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>> parent = client.service_path('[PROJECT]', '[SERVICE]')
             >>>
-            >>> client.send_notification_channel_verification_code(name)
+            >>> # TODO: Initialize `service_level_objective`:
+            >>> service_level_objective = {}
+            >>>
+            >>> response = client.create_service_level_objective(parent, service_level_objective)
 
         Args:
-            name (str): The notification channel to which to send a verification code.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        # Wrap the transport method to add retry and timeout logic.
-        if "send_notification_channel_verification_code" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "send_notification_channel_verification_code"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.send_notification_channel_verification_code,
-                default_retry=self._method_configs[
-                    "SendNotificationChannelVerificationCode"
-                ].retry,
-                default_timeout=self._method_configs[
-                    "SendNotificationChannelVerificationCode"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = notification_service_pb2.SendNotificationChannelVerificationCodeRequest(
-            name=name,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["send_notification_channel_verification_code"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_notification_channel_verification_code(
-        self,
-        name,
-        expire_time=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Requests a verification code for an already verified channel that can then
-        be used in a call to VerifyNotificationChannel() on a different channel
-        with an equivalent identity in the same or in a different project. This
-        makes it possible to copy a channel between projects without requiring
-        manual reverification of the channel. If the channel is not in the
-        verified state, this method will fail (in other words, this may only be
-        used if the SendNotificationChannelVerificationCode and
-        VerifyNotificationChannel paths have already been used to put the given
-        channel into the verified state).
-
-        There is no guarantee that the verification codes returned by this method
-        will be of a similar structure or form as the ones that are delivered
-        to the channel via SendNotificationChannelVerificationCode; while
-        VerifyNotificationChannel() will recognize both the codes delivered via
-        SendNotificationChannelVerificationCode() and returned from
-        GetNotificationChannelVerificationCode(), it is typically the case that
-        the verification codes delivered via
-        SendNotificationChannelVerificationCode() will be shorter and also
-        have a shorter expiration (e.g. codes such as "G-123456") whereas
-        GetVerificationCode() will typically return a much longer, websafe base
-        64 encoded string that has a longer expiration time.
-
-        Example:
-            >>> from google.cloud import monitoring_v3
-            >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
-            >>>
-            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
-            >>>
-            >>> response = client.get_notification_channel_verification_code(name)
-
-        Args:
-            name (str): The notification channel for which a verification code is to be generated
-                and retrieved. This must name a channel that is already verified; if
-                the specified channel is not verified, the request will fail.
-            expire_time (Union[dict, ~google.cloud.monitoring_v3.types.Timestamp]): The desired expiration time. If specified, the API will guarantee that
-                the returned code will not be valid after the specified timestamp;
-                however, the API cannot guarantee that the returned code will be
-                valid for at least as long as the requested time (the API puts an upper
-                bound on the amount of time for which a code may be valid). If omitted,
-                a default expiration will be used, which may be less than the max
-                permissible expiration (so specifying an expiration may extend the
-                code's lifetime over omitting an expiration, even though the API does
-                impose an upper limit on the maximum expiration that is permitted).
+            parent (str): Resource name of the parent ``Service``. Of the form
+                ``projects/{project_id}/services/{service_id}``.
+            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): The ``ServiceLevelObjective`` to create. The provided ``name`` will be
+                respected if no ``ServiceLevelObjective`` exists with this name.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.monitoring_v3.types.Timestamp`
+                message :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective`
+            service_level_objective_id (str): Optional. The ServiceLevelObjective id to use for this
+                ServiceLevelObjective. If omitted, an id will be generated instead. Must
+                match the pattern [a-z0-9-]+
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1039,7 +719,7 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse` instance.
+            A :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1052,28 +732,28 @@ class NotificationChannelServiceClient(object):
             metadata = []
         metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
-        if "get_notification_channel_verification_code" not in self._inner_api_calls:
+        if "create_service_level_objective" not in self._inner_api_calls:
             self._inner_api_calls[
-                "get_notification_channel_verification_code"
+                "create_service_level_objective"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_notification_channel_verification_code,
-                default_retry=self._method_configs[
-                    "GetNotificationChannelVerificationCode"
-                ].retry,
+                self.transport.create_service_level_objective,
+                default_retry=self._method_configs["CreateServiceLevelObjective"].retry,
                 default_timeout=self._method_configs[
-                    "GetNotificationChannelVerificationCode"
+                    "CreateServiceLevelObjective"
                 ].timeout,
                 client_info=self._client_info,
             )
 
-        request = notification_service_pb2.GetNotificationChannelVerificationCodeRequest(
-            name=name, expire_time=expire_time,
+        request = service_service_pb2.CreateServiceLevelObjectiveRequest(
+            parent=parent,
+            service_level_objective=service_level_objective,
+            service_level_objective_id=service_level_objective_id,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("name", name)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
@@ -1082,44 +762,38 @@ class NotificationChannelServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["get_notification_channel_verification_code"](
+        return self._inner_api_calls["create_service_level_objective"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def verify_notification_channel(
+    def get_service_level_objective(
         self,
         name,
-        code,
+        view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Verifies a ``NotificationChannel`` by proving receipt of the code
-        delivered to the channel as a result of calling
-        ``SendNotificationChannelVerificationCode``.
+        Get a ``ServiceLevelObjective`` by name.
 
         Example:
             >>> from google.cloud import monitoring_v3
             >>>
-            >>> client = monitoring_v3.NotificationChannelServiceClient()
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
             >>>
-            >>> name = client.notification_channel_path('[PROJECT]', '[NOTIFICATION_CHANNEL]')
+            >>> name = client.service_level_objective_path('[PROJECT]', '[SERVICE]', '[SERVICE_LEVEL_OBJECTIVE]')
             >>>
-            >>> # TODO: Initialize `code`:
-            >>> code = ''
-            >>>
-            >>> response = client.verify_notification_channel(name, code)
+            >>> response = client.get_service_level_objective(name)
 
         Args:
-            name (str): The notification channel to verify.
-            code (str): The verification code that was delivered to the channel as a result of
-                invoking the ``SendNotificationChannelVerificationCode`` API method or
-                that was retrieved from a verified channel via
-                ``GetNotificationChannelVerificationCode``. For example, one might have
-                "G-123456" or "TKNZGhhd2EyN3I1MnRnMjRv" (in general, one is only
-                guaranteed that the code is valid UTF-8; one should not make any
-                assumptions regarding the structure or format of the code).
+            name (str): Resource name of the ``ServiceLevelObjective`` to get. Of the form
+                ``projects/{project_id}/services/{service_id}/serviceLevelObjectives/{slo_name}``.
+            view (~google.cloud.monitoring_v3.types.View): View of the ``ServiceLevelObjective`` to return. If ``DEFAULT``, return
+                the ``ServiceLevelObjective`` as originally defined. If ``EXPLICIT`` and
+                the ``ServiceLevelObjective`` is defined in terms of a ``BasicSli``,
+                replace the ``BasicSli`` with a ``RequestBasedSli`` spelling out how the
+                SLI is computed.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1130,7 +804,7 @@ class NotificationChannelServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.monitoring_v3.types.NotificationChannel` instance.
+            A :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1143,20 +817,20 @@ class NotificationChannelServiceClient(object):
             metadata = []
         metadata = list(metadata)
         # Wrap the transport method to add retry and timeout logic.
-        if "verify_notification_channel" not in self._inner_api_calls:
+        if "get_service_level_objective" not in self._inner_api_calls:
             self._inner_api_calls[
-                "verify_notification_channel"
+                "get_service_level_objective"
             ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.verify_notification_channel,
-                default_retry=self._method_configs["VerifyNotificationChannel"].retry,
+                self.transport.get_service_level_objective,
+                default_retry=self._method_configs["GetServiceLevelObjective"].retry,
                 default_timeout=self._method_configs[
-                    "VerifyNotificationChannel"
+                    "GetServiceLevelObjective"
                 ].timeout,
                 client_info=self._client_info,
             )
 
-        request = notification_service_pb2.VerifyNotificationChannelRequest(
-            name=name, code=code,
+        request = service_service_pb2.GetServiceLevelObjectiveRequest(
+            name=name, view=view,
         )
         if metadata is None:
             metadata = []
@@ -1171,6 +845,283 @@ class NotificationChannelServiceClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["verify_notification_channel"](
+        return self._inner_api_calls["get_service_level_objective"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def list_service_level_objectives(
+        self,
+        parent,
+        filter_=None,
+        page_size=None,
+        view=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        List the ``ServiceLevelObjective``\ s for the given ``Service``.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
+            >>>
+            >>> parent = client.service_path('[PROJECT]', '[SERVICE]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_service_level_objectives(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_service_level_objectives(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Resource name of the parent ``Service``. Of the form
+                ``projects/{project_id}/services/{service_id}``.
+            filter_ (str): A filter specifying what ``ServiceLevelObjective``\ s to return.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            view (~google.cloud.monitoring_v3.types.View): View of the ``ServiceLevelObjective``\ s to return. If ``DEFAULT``,
+                return each ``ServiceLevelObjective`` as originally defined. If
+                ``EXPLICIT`` and the ``ServiceLevelObjective`` is defined in terms of a
+                ``BasicSli``, replace the ``BasicSli`` with a ``RequestBasedSli``
+                spelling out how the SLI is computed.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_service_level_objectives" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_service_level_objectives"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_service_level_objectives,
+                default_retry=self._method_configs["ListServiceLevelObjectives"].retry,
+                default_timeout=self._method_configs[
+                    "ListServiceLevelObjectives"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_service_pb2.ListServiceLevelObjectivesRequest(
+            parent=parent, filter=filter_, page_size=page_size, view=view,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_service_level_objectives"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="service_level_objectives",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def update_service_level_objective(
+        self,
+        service_level_objective,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Update the given ``ServiceLevelObjective``.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
+            >>>
+            >>> # TODO: Initialize `service_level_objective`:
+            >>> service_level_objective = {}
+            >>>
+            >>> response = client.update_service_level_objective(service_level_objective)
+
+        Args:
+            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): The ``ServiceLevelObjective`` to draw updates from. The given ``name``
+                specifies the resource to update.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective`
+            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): A set of field paths defining which fields to use for the update.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.monitoring_v3.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_service_level_objective" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_service_level_objective"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_service_level_objective,
+                default_retry=self._method_configs["UpdateServiceLevelObjective"].retry,
+                default_timeout=self._method_configs[
+                    "UpdateServiceLevelObjective"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_service_pb2.UpdateServiceLevelObjectiveRequest(
+            service_level_objective=service_level_objective, update_mask=update_mask,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [
+                ("service_level_objective.name", service_level_objective.name)
+            ]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_service_level_objective"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_service_level_objective(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Delete the given ``ServiceLevelObjective``.
+
+        Example:
+            >>> from google.cloud import monitoring_v3
+            >>>
+            >>> client = monitoring_v3.ServiceMonitoringServiceClient()
+            >>>
+            >>> name = client.service_level_objective_path('[PROJECT]', '[SERVICE]', '[SERVICE_LEVEL_OBJECTIVE]')
+            >>>
+            >>> client.delete_service_level_objective(name)
+
+        Args:
+            name (str): Resource name of the ``ServiceLevelObjective`` to delete. Of the form
+                ``projects/{project_id}/services/{service_id}/serviceLevelObjectives/{slo_name}``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_service_level_objective" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_service_level_objective"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_service_level_objective,
+                default_retry=self._method_configs["DeleteServiceLevelObjective"].retry,
+                default_timeout=self._method_configs[
+                    "DeleteServiceLevelObjective"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = service_service_pb2.DeleteServiceLevelObjectiveRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_service_level_objective"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
