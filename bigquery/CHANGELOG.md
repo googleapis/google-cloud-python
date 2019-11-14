@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.22.0
+
+11-13-2019 12:23 PST
+
+
+### Implementation Changes
+- Preserve job config passed to Client methods. ([#9735](https://github.com/googleapis/google-cloud-python/pull/9735))
+- Use pyarrow fallback for improved schema detection. ([#9321](https://github.com/googleapis/google-cloud-python/pull/9321))
+- Add TypeError if wrong `job_config type` is passed to client job methods. ([#9506](https://github.com/googleapis/google-cloud-python/pull/9506))
+- Fix arrow deprecation warning. ([#9504](https://github.com/googleapis/google-cloud-python/pull/9504))
+
+### New Features
+- Add `--destination_table` parameter to IPython magic. ([#9599](https://github.com/googleapis/google-cloud-python/pull/9599))
+- Allow passing schema as a sequence of dicts. ([#9550](https://github.com/googleapis/google-cloud-python/pull/9550))
+- Implement defaultEncryptionConfiguration on datasets. ([#9489](https://github.com/googleapis/google-cloud-python/pull/9489))
+- Add range partitioning to tables, load jobs, and query jobs. ([#9477](https://github.com/googleapis/google-cloud-python/pull/9477))
+
+### Dependencies
+- Pin `google-resumable-media` to includ 0.5.x. ([#9572](https://github.com/googleapis/google-cloud-python/pull/9572))
+
+### Documentation
+- Fix link anchors in external config docstrings. ([#9627](https://github.com/googleapis/google-cloud-python/pull/9627))
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Add table create sample using integer range partitioning. ([#9478](https://github.com/googleapis/google-cloud-python/pull/9478))
+- Document how to achieve higher write limit and add tests. ([#9574](https://github.com/googleapis/google-cloud-python/pull/9574))
+- Add code sample for scripting. ([#9537](https://github.com/googleapis/google-cloud-python/pull/9537))
+- Rewrite docs in Google style, part 2. ([#9481](https://github.com/googleapis/google-cloud-python/pull/9481))
+- Use multi-regional key path for CMEK in snippets. ([#9523](https://github.com/googleapis/google-cloud-python/pull/9523))
+
+### Internal / Testing Changes
+- Fix undelete table system test to use milliseconds in snapshot decorator. ([#9649](https://github.com/googleapis/google-cloud-python/pull/9649))
+- Format code with latest version of black. ([#9556](https://github.com/googleapis/google-cloud-python/pull/9556))
+- Remove duplicate test dependencies. ([#9503](https://github.com/googleapis/google-cloud-python/pull/9503))
+
 ## 1.21.0
 
 10-16-2019 10:33 PDT
