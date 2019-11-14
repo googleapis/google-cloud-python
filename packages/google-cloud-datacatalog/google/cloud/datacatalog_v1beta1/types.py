@@ -22,6 +22,8 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2
 from google.cloud.datacatalog_v1beta1.proto import gcs_fileset_spec_pb2
+from google.cloud.datacatalog_v1beta1.proto import policytagmanager_pb2
+from google.cloud.datacatalog_v1beta1.proto import policytagmanagerserialization_pb2
 from google.cloud.datacatalog_v1beta1.proto import schema_pb2
 from google.cloud.datacatalog_v1beta1.proto import search_pb2
 from google.cloud.datacatalog_v1beta1.proto import table_spec_pb2
@@ -49,6 +51,8 @@ _shared_modules = [
 _local_modules = [
     datacatalog_pb2,
     gcs_fileset_spec_pb2,
+    policytagmanager_pb2,
+    policytagmanagerserialization_pb2,
     schema_pb2,
     search_pb2,
     table_spec_pb2,

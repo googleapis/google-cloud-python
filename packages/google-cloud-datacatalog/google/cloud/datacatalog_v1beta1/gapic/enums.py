@@ -89,3 +89,18 @@ class FieldType(object):
         STRING = 2
         BOOL = 3
         TIMESTAMP = 4
+
+
+class Taxonomy(object):
+    class PolicyType(enum.IntEnum):
+        """
+        Defines policy types where policy tag can be used for.
+
+        Attributes:
+          POLICY_TYPE_UNSPECIFIED (int): Unspecified policy type.
+          FINE_GRAINED_ACCESS_CONTROL (int): Fine grained access control policy, which enables access control on
+          tagged resources.
+        """
+
+        POLICY_TYPE_UNSPECIFIED = 0
+        FINE_GRAINED_ACCESS_CONTROL = 1

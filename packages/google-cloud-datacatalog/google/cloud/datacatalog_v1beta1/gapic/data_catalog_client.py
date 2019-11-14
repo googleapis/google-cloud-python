@@ -436,6 +436,8 @@ class DataCatalogClient(object):
                 Note that this EntryGroup and its child resources may not actually be
                 stored in the location in this name.
             entry_group_id (str): Required. The id of the entry group to create.
+                The id must begin with a letter or underscore, contain only English
+                letters, numbers and underscores, and be at most 64 characters.
             entry_group (Union[dict, ~google.cloud.datacatalog_v1beta1.types.EntryGroup]): The entry group to create. Defaults to an empty entry group.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1012,7 +1014,8 @@ class DataCatalogClient(object):
 
                 -  ``cloud_pubsub.project_id.topic_id``
                 -  ``pubsub.project_id.`topic.id.with.dots```
-                -  ``bigquery.project_id.dataset_id.table_id``
+                -  ``bigquery.table.project_id.dataset_id.table_id``
+                -  ``bigquery.dataset.project_id.dataset_id``
                 -  ``datacatalog.project_id.location_id.entry_group_id.entry_id``
 
                 ``*_id``\ s shoud satisfy the standard SQL rules for identifiers.

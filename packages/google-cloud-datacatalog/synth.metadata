@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-11-12T13:21:51.381239Z",
+  "updateTime": "2019-11-14T18:45:51.389155Z",
   "sources": [
     {
       "generator": {
@@ -11,16 +11,16 @@
     {
       "git": {
         "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "f69562be0608904932bdcfbc5ad8b9a22d9dceb8",
-        "internalRef": "279774957"
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "1935fb8889686f5c9d107f11b3c6870fc3aa7cdc",
+        "internalRef": "280451656"
       }
     },
     {
       "template": {
         "name": "python_library",
         "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+        "version": "2019.5.2"
       }
     }
   ],
@@ -32,7 +32,7 @@
         "apiVersion": "v1beta1",
         "language": "python",
         "generator": "gapic",
-        "config": "google/cloud/datacatalog/artman_datacatalog_v1beta1.yaml"
+        "config": "google/cloud/datacatalog/v1beta1/artman_datacatalog_v1beta1.yaml"
       }
     }
   ]
