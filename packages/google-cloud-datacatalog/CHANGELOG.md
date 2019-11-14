@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## 0.5.0
+
+11-14-2019 12:54 PST
+
+### New Features
+
+- add policy tag manager clients ([#9804](https://github.com/googleapis/google-cloud-python/pull/9804))
+
+### Documentation
+
+- add python 2 sunset banner to documentation ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- add sample to create a fileset entry ([#9590](https://github.com/googleapis/google-cloud-python/pull/9590))
+- add sample to create an entry group ([#9584](https://github.com/googleapis/google-cloud-python/pull/9584))
+
+### Internal / Testing Changes
+
+- change spacing in docs templates (via synth) ([#9743](https://github.com/googleapis/google-cloud-python/pull/9743))
+
 ## 0.4.0
 
 10-23-2019 08:54 PDT
