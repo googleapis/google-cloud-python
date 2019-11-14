@@ -5,6 +5,15 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_create_table = "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
     sql_create_unique = "CREATE UNIQUE INDEX %(name)s ON %(table)s (%(columns)s)"
 
+    # Cloud Spanner requires when changing if a column is NULLABLE,
+    # that it should get redefined with its type and size.
+    # See https://cloud.google.com/spanner/docs/schema-updates#updates-that-require-validation
+    sql_alter_column_null = "ALTER COLUMN %(column)s %(type)s"
+    sql_alter_column_not_null = "ALTER COLUMN %(column)s %(type)s NOT NULL"
+    sql_alter_column_type = "ALTER COLUMN %(column)s %(type)s"
+
+    sql_delete_column = "ALTER TABLE %(table)s DROP COLUMN %(column)s"
+
     def create_model(self, model):
         """
         Create a table and any accompanying indexes or unique constraints for

@@ -16,9 +16,9 @@ from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
-    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
-    validate_instance_config,
+    STMT_DDL, STMT_NON_UPDATING, add_missing_id, classify_stmt,
+    extract_connection_params, parse_insert, parse_spanner_url,
+    reINSTANCE_CONFIG, validate_instance_config,
 )
 
 
@@ -209,3 +209,39 @@ class ParseUtilsTests(TestCase):
             with self.subTest(sql=sql):
                 got = parse_insert(sql)
                 self.assertEqual(got, want, 'Mismatch with parse_insert of `%s`' % sql)
+
+    def test_add_missing_id(self):
+        def gen_id():
+            cur_id = 0
+            while 1:
+                cur_id += 1
+                yield cur_id
+
+        gen_gen_id = gen_id()
+
+        def next_id():
+            return next(gen_gen_id)
+
+        cases = [
+            (
+                ['id', 'app', 'name'],
+                [(5, 'ap', 'n',), (6, 'bp', 'm',)],
+                (
+                    ['id', 'app', 'name'],
+                    [(5, 'ap', 'n',), (6, 'bp', 'm',)],
+                ),
+            ),
+            (
+                ['app', 'name'],
+                [('ap', 'n',), ('bp', 'm',)],
+                (
+                    ['app', 'name', 'id'],
+                    [('ap', 'n', 1,), ('bp', 'm', 2,)]
+                ),
+            ),
+        ]
+        for i, case in enumerate(cases):
+            columns, params, want = case
+            with self.subTest(i=i):
+                got = add_missing_id(columns, params, next_id)
+                self.assertEqual(got, want)

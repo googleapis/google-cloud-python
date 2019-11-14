@@ -40,10 +40,12 @@ class Connection(object):
         return self.close()
 
     def commit(self):
-        raise Error('unimplemented')
+        # We don't manage transactions.
+        pass
 
     def rollback(self):
-        raise Error('unimplemented')
+        # We don't manage transactions.
+        pass
 
     def cursor(self):
         session = self.__dbhandle.session()

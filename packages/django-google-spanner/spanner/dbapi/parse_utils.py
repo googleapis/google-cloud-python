@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import re
 from urllib.parse import urlparse
 
@@ -259,3 +260,23 @@ def parse_insert(insert_sql):
         }
     else:
         return None
+
+
+def add_missing_id(columns, params, gen_id):
+    if 'id' in columns:
+        return (columns, params,)
+
+    # It is imperative that we copy and NOT mutate our original arguments as
+    # references to them might be used elsewhere.
+    new_columns = copy.deepcopy(columns)
+    new_params = copy.deepcopy(params)
+
+    # Otherwise auto insert 'id'.
+    new_columns += type(columns)(['id'])
+
+    # param is an iterable of iterables e.g. list of list.
+    for i, new_param in enumerate(new_params):
+        new_param += type(new_param)([gen_id()])
+        new_params[i] = new_param
+
+    return (new_columns, new_params,)
