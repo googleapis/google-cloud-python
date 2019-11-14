@@ -41,7 +41,9 @@ _STORAGE_REQUIRED = (
 class GcsClient(object):
     """Uploads Pandas DataFrame to a bucket in Google Cloud Storage."""
 
-    def __init__(self, bucket_name=None, client=None, credentials=None, project=None):
+    def __init__(
+        self, bucket_name=None, client=None, credentials=None, project=None
+    ):
         """Constructor.
 
         Args:
@@ -65,7 +67,9 @@ class GcsClient(object):
         if client is not None:
             self.client = client
         elif credentials is not None:
-            self.client = storage.Client(credentials=credentials, project=project)
+            self.client = storage.Client(
+                credentials=credentials, project=project
+            )
         else:
             self.client = storage.Client()
 
@@ -97,7 +101,9 @@ class GcsClient(object):
         except (exceptions.Forbidden, exceptions.NotFound) as e:
             if isinstance(e, exceptions.Forbidden):
                 used_bucket_name = self.bucket_name
-                self.bucket_name = used_bucket_name + "-{}".format(int(time.time()))
+                self.bucket_name = used_bucket_name + "-{}".format(
+                    int(time.time())
+                )
                 _LOGGER.warning(
                     "Created a bucket named {} because a bucket named {} already exists in a different project.".format(
                         self.bucket_name, used_bucket_name
@@ -123,10 +129,14 @@ class GcsClient(object):
             raise ImportError(_PANDAS_REQUIRED)
 
         if not isinstance(dataframe, pandas.DataFrame):
-            raise ValueError("'dataframe' must be a pandas.DataFrame instance.")
+            raise ValueError(
+                "'dataframe' must be a pandas.DataFrame instance."
+            )
 
         if self.bucket_name is None:
-            raise ValueError("Must ensure a bucket exists before uploading data.")
+            raise ValueError(
+                "Must ensure a bucket exists before uploading data."
+            )
 
         if uploaded_csv_name is None:
             uploaded_csv_name = "automl-tables-dataframe-{}.csv".format(
