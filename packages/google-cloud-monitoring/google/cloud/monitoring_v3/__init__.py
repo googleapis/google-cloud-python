@@ -25,6 +25,7 @@ from google.cloud.monitoring_v3.gapic import metric_service_client
 from google.cloud.monitoring_v3.gapic import (
     notification_channel_service_client as notification_client,
 )
+from google.cloud.monitoring_v3.gapic import service_monitoring_service_client
 from google.cloud.monitoring_v3.gapic import uptime_check_service_client
 
 
@@ -50,6 +51,13 @@ class NotificationChannelServiceClient(
     enums = enums
 
 
+class ServiceMonitoringServiceClient(
+    service_monitoring_service_client.ServiceMonitoringServiceClient
+):
+    __doc__ = service_monitoring_service_client.ServiceMonitoringServiceClient.__doc__
+    enums = enums
+
+
 class UptimeCheckServiceClient(uptime_check_service_client.UptimeCheckServiceClient):
     __doc__ = uptime_check_service_client.UptimeCheckServiceClient.__doc__
     enums = enums
@@ -62,5 +70,6 @@ __all__ = (
     "GroupServiceClient",
     "MetricServiceClient",
     "NotificationChannelServiceClient",
+    "ServiceMonitoringServiceClient",
     "UptimeCheckServiceClient",
 )

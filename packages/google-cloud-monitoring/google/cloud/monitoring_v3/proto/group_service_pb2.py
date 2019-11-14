@@ -180,7 +180,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=293,
     serialized_end=466,
@@ -268,7 +268,7 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],

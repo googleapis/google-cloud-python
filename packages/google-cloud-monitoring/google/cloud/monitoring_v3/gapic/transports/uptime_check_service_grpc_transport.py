@@ -58,7 +58,7 @@ class UptimeCheckServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -79,7 +79,7 @@ class UptimeCheckServiceGrpcTransport(object):
         self._stubs = {
             "uptime_check_service_stub": uptime_service_pb2_grpc.UptimeCheckServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod

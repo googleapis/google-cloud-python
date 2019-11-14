@@ -17,12 +17,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.monitoring_v3.proto import alert_service_pb2_grpc
+from google.cloud.monitoring_v3.proto import service_service_pb2_grpc
 
 
-class AlertPolicyServiceGrpcTransport(object):
+class ServiceMonitoringServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.monitoring.v3 AlertPolicyService API.
+    google.monitoring.v3 ServiceMonitoringService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -77,7 +77,7 @@ class AlertPolicyServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "alert_policy_service_stub": alert_service_pb2_grpc.AlertPolicyServiceStub(
+            "service_monitoring_service_stub": service_service_pb2_grpc.ServiceMonitoringServiceStub(
                 channel
             ),
         }
@@ -115,69 +115,137 @@ class AlertPolicyServiceGrpcTransport(object):
         return self._channel
 
     @property
-    def list_alert_policies(self):
-        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.list_alert_policies`.
+    def create_service(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.create_service`.
 
-        Lists the existing alerting policies for the project.
+        Create a ``Service``.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["alert_policy_service_stub"].ListAlertPolicies
+        return self._stubs["service_monitoring_service_stub"].CreateService
 
     @property
-    def get_alert_policy(self):
-        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.get_alert_policy`.
+    def get_service(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.get_service`.
 
-        Gets a single alerting policy.
+        Get the named ``Service``.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["alert_policy_service_stub"].GetAlertPolicy
+        return self._stubs["service_monitoring_service_stub"].GetService
 
     @property
-    def create_alert_policy(self):
-        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.create_alert_policy`.
+    def list_services(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.list_services`.
 
-        Creates a new alerting policy.
+        List ``Service``\ s for this workspace.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["alert_policy_service_stub"].CreateAlertPolicy
+        return self._stubs["service_monitoring_service_stub"].ListServices
 
     @property
-    def delete_alert_policy(self):
-        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.delete_alert_policy`.
+    def update_service(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.update_service`.
 
-        Deletes an alerting policy.
+        Update this ``Service``.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["alert_policy_service_stub"].DeleteAlertPolicy
+        return self._stubs["service_monitoring_service_stub"].UpdateService
 
     @property
-    def update_alert_policy(self):
-        """Return the gRPC stub for :meth:`AlertPolicyServiceClient.update_alert_policy`.
+    def delete_service(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.delete_service`.
 
-        Updates an alerting policy. You can either replace the entire policy
-        with a new one or replace only certain fields in the current alerting
-        policy by specifying the fields to be updated via ``updateMask``.
-        Returns the updated alerting policy.
+        Soft delete this ``Service``.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["alert_policy_service_stub"].UpdateAlertPolicy
+        return self._stubs["service_monitoring_service_stub"].DeleteService
+
+    @property
+    def create_service_level_objective(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.create_service_level_objective`.
+
+        Create a ``ServiceLevelObjective`` for the given ``Service``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "service_monitoring_service_stub"
+        ].CreateServiceLevelObjective
+
+    @property
+    def get_service_level_objective(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.get_service_level_objective`.
+
+        Get a ``ServiceLevelObjective`` by name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["service_monitoring_service_stub"].GetServiceLevelObjective
+
+    @property
+    def list_service_level_objectives(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.list_service_level_objectives`.
+
+        List the ``ServiceLevelObjective``\ s for the given ``Service``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["service_monitoring_service_stub"].ListServiceLevelObjectives
+
+    @property
+    def update_service_level_objective(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.update_service_level_objective`.
+
+        Update the given ``ServiceLevelObjective``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "service_monitoring_service_stub"
+        ].UpdateServiceLevelObjective
+
+    @property
+    def delete_service_level_objective(self):
+        """Return the gRPC stub for :meth:`ServiceMonitoringServiceClient.delete_service_level_objective`.
+
+        Delete the given ``ServiceLevelObjective``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs[
+            "service_monitoring_service_stub"
+        ].DeleteServiceLevelObjective

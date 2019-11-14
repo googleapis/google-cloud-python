@@ -435,7 +435,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        )
+        ),
     ],
     serialized_start=168,
     serialized_end=338,
@@ -581,7 +581,7 @@ _AGGREGATION = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_AGGREGATION_ALIGNER, _AGGREGATION_REDUCER],
+    enum_types=[_AGGREGATION_ALIGNER, _AGGREGATION_REDUCER,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
