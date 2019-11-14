@@ -2644,13 +2644,8 @@ class TablesClient(object):
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
             params (Dict[str, str]): 
-                Additional domain-specific parameters, any string must be up to 
-                25000 characters long.
-                ``feature_importance`` - (boolean) Whether
-                [feature\_importance][[google.cloud.automl.v1beta1.TablesModelColumnInfo.feature\_importance]
-                should be populated in the returned
-                [TablesAnnotation(-s)][[google.cloud.automl.v1beta1.TablesAnnotation].
-                The default is false.
+                `feature_importance` can be set as True to enable local
+                explainability. The default is false.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.PredictResponse`
