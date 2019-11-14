@@ -242,7 +242,7 @@ class Routine(object):
 
     @property
     def description(self):
-        """Union[str, None]: Description of the routine (defaults to
+        """Optional[str]: Description of the routine (defaults to
         :data:`None`).
         """
         return self._properties.get(self._PROPERTY_TO_API_FIELD["description"])

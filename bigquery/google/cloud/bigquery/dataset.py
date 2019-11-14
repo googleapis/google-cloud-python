@@ -509,7 +509,7 @@ class Dataset(object):
 
     @property
     def description(self):
-        """Union[str, None]: Description of the dataset as set by the user
+        """Optional[str]: Description of the dataset as set by the user
         (defaults to :data:`None`).
 
         Raises:
