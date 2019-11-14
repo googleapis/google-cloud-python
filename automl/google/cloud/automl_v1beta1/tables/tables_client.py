@@ -2643,7 +2643,7 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
-            params (Dict[str, str]): 
+            params (dict[str, str]): 
                 Additional domain-specific parameters, any string must be up to 
                 25000 characters long.
                 ``feature_importance`` - (boolean) Whether
