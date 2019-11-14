@@ -19,6 +19,10 @@ from __future__ import absolute_import
 from google.cloud.datacatalog_v1beta1 import types
 from google.cloud.datacatalog_v1beta1.gapic import data_catalog_client
 from google.cloud.datacatalog_v1beta1.gapic import enums
+from google.cloud.datacatalog_v1beta1.gapic import policy_tag_manager_client
+from google.cloud.datacatalog_v1beta1.gapic import (
+    policy_tag_manager_serialization_client,
+)
 
 
 class DataCatalogClient(data_catalog_client.DataCatalogClient):
@@ -26,4 +30,24 @@ class DataCatalogClient(data_catalog_client.DataCatalogClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "DataCatalogClient")
+class PolicyTagManagerClient(policy_tag_manager_client.PolicyTagManagerClient):
+    __doc__ = policy_tag_manager_client.PolicyTagManagerClient.__doc__
+    enums = enums
+
+
+class PolicyTagManagerSerializationClient(
+    policy_tag_manager_serialization_client.PolicyTagManagerSerializationClient
+):
+    __doc__ = (
+        policy_tag_manager_serialization_client.PolicyTagManagerSerializationClient.__doc__
+    )
+    enums = enums
+
+
+__all__ = (
+    "enums",
+    "types",
+    "DataCatalogClient",
+    "PolicyTagManagerClient",
+    "PolicyTagManagerSerializationClient",
+)
