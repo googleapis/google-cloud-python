@@ -15,7 +15,9 @@
 import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
-from .parse_utils import STMT_DDL, STMT_NON_UPDATING, classify_stmt
+from .parse_utils import (
+    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, parse_insert,
+)
 
 _UNSET_COUNT = -1
 
@@ -82,6 +84,16 @@ class Cursor(object):
                     sql, args or None,
                     param_types=param_types,
                 )
+            elif classification == STMT_INSERT:
+                self.__session.run_in_transaction(
+                    self.__do_execute_insert,
+                    sql,
+                    # Insert statements' params are only passed as tuples or lists,
+                    # yet for do_execute_update, we've got to pass in list of list.
+                    # https://googleapis.dev/python/spanner/latest/transaction-api.html\
+                    #           #google.cloud.spanner_v1.transaction.Transaction.insert
+                    [args] if args else None,
+                )
             else:
                 self.__session.run_in_transaction(
                     self.__do_execute_update,
@@ -105,6 +117,14 @@ class Cursor(object):
             self.__row_count = res
 
         return res
+
+    def __do_execute_insert(self, transaction, sql, params):
+        parts = parse_insert(sql)
+        return transaction.insert_or_update(
+            table=parts.get('table'),
+            columns=parts.get('columns'),
+            values=params,
+        )
 
     def __do_execute_non_update(self, sql, *args, **kwargs):
         # Reference

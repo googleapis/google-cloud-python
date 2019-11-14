@@ -17,7 +17,8 @@ from unittest import TestCase
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
-    parse_spanner_url, reINSTANCE_CONFIG, validate_instance_config,
+    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    validate_instance_config,
 )
 
 
@@ -184,3 +185,27 @@ class ParseUtilsTests(TestCase):
             sql, want_classification = tt
             got_classification = classify_stmt(sql)
             self.assertEqual(got_classification, want_classification, 'Classification mismatch')
+
+    def test_parse_insert(self):
+        cases = [
+            (
+                'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                {
+                    'table': 'django_migrations',
+                    'columns': ['app', 'name', 'applied'],
+                },
+            ),
+            (
+                'INSERT INTO sales.addresses (street, city, state, zip_code)'
+                'SELECT street, city, state, zip_code FROM sales.customers'
+                'ORDER BY first_name, last_name',
+                {
+                    'table': 'sales.addresses',
+                    'columns': ['street', 'city', 'state', 'zip_code'],
+                },
+            ),
+        ]
+        for sql, want in cases:
+            with self.subTest(sql=sql):
+                got = parse_insert(sql)
+                self.assertEqual(got, want, 'Mismatch with parse_insert of `%s`' % sql)

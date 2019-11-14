@@ -213,6 +213,7 @@ def validate_instance_config(instance_config):
 STMT_DDL = 'DDL'
 STMT_NON_UPDATING = 'NON_UPDATING'
 STMT_UPDATING = 'UPDATING'
+STMT_INSERT = 'INSERT'
 
 # Heuristic for identifying statements that don't need to be run as updates.
 re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE | re.IGNORECASE)
@@ -223,11 +224,38 @@ re_DDL = re.compile(
     re.UNICODE | re.IGNORECASE | re.DOTALL,
 )
 
+re_IS_INSERT = re.compile(
+    r'^\s*(INSERT)',
+    re.UNICODE | re.IGNORECASE | re.DOTALL,
+)
+
 
 def classify_stmt(sql):
     if re_DDL.match(sql):
         return STMT_DDL
+    elif re_IS_INSERT.match(sql):
+        return STMT_INSERT
     elif re_NON_UPDATE.match(sql):
         return STMT_NON_UPDATING
     else:
         return STMT_UPDATING
+
+
+re_INSERT = re.compile(
+    # Only match the `INSERT INTO <table_name> (columns...)
+    # otherwise the rest of the statement could be a complex
+    # operation.
+    r'^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s+\((?P<columns>[^\(\)]+)\)',
+    re.IGNORECASE | re.UNICODE | re.DOTALL,
+)
+
+
+def parse_insert(insert_sql):
+    match = re_INSERT.search(insert_sql)
+    if match:
+        return {
+            'table': match.group('table_name'),
+            'columns': [mi.strip() for mi in match.group('columns').split(',')],
+        }
+    else:
+        return None
