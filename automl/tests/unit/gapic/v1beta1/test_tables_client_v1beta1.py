@@ -1137,6 +1137,25 @@ class TestTablesClient(object):
             None,
         )
 
+    def test_predict_from_dict_with_feature_importance(self):
+        data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
+        column_spec_a = mock.Mock(display_name="a", data_type=data_type)
+        column_spec_b = mock.Mock(display_name="b", data_type=data_type)
+        model_metadata = mock.Mock(
+            input_feature_column_specs=[column_spec_a, column_spec_b]
+        )
+        model = mock.Mock()
+        model.configure_mock(tables_model_metadata=model_metadata, name="my_model")
+        client = self.tables_client({"get_model.return_value": model}, {})
+        client.predict(
+            {"a": "1", "b": "2"}, model_name="my_model", feature_importance=True
+        )
+        client.prediction_client.predict.assert_called_with(
+            "my_model",
+            {"row": {"values": [{"string_value": "1"}, {"string_value": "2"}]}},
+            {"feature_importance": "true"},
+        )
+
     def test_predict_from_dict_missing(self):
         data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
         column_spec_a = mock.Mock(display_name="a", data_type=data_type)

@@ -2596,7 +2596,7 @@ class TablesClient(object):
         model=None,
         model_name=None,
         model_display_name=None,
-        params=None,
+        feature_importance=False,
         project=None,
         region=None,
         **kwargs
@@ -2643,9 +2643,9 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
-            params (dict[str, str]):
-                `feature_importance` can be set as True to enable local
-                explainability. The default is false.
+            feature_importance (bool):
+                True if enable feature importance explainability. The default is
+                False.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.PredictResponse`
@@ -2686,6 +2686,10 @@ class TablesClient(object):
             values.append(value_type)
 
         request = {"row": {"values": values}}
+
+        params = None
+        if feature_importance:
+            params = {"feature_importance": "true"}
 
         return self.prediction_client.predict(model.name, request, params, **kwargs)
 
