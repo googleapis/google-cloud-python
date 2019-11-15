@@ -18,7 +18,7 @@ from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, add_missing_id, classify_stmt,
     extract_connection_params, parse_insert, parse_spanner_url,
-    reINSTANCE_CONFIG, validate_instance_config,
+    reINSTANCE_CONFIG, sql_pyformat_args_to_spanner, validate_instance_config,
 )
 
 
@@ -245,3 +245,52 @@ class ParseUtilsTests(TestCase):
             with self.subTest(i=i):
                 got = add_missing_id(columns, params, next_id)
                 self.assertEqual(got, want)
+
+    def test_sql_pyformat_args_to_spanner(self):
+        cases = [
+            (
+                ('SELECT * from t WHERE f1=%s, f2 = %s, f3=%s', (10, 'abc', 'y**$22l3f',)),
+                ('SELECT * from t WHERE f1=@a0, f2 = @a1, f3=@a2', {'a0': 10, 'a1': 'abc', 'a2': 'y**$22l3f'}),
+            ),
+            (
+                ('INSERT INTO t (f1, f2, f2) VALUES (%s, %s, %s)', ('app', 'name', 'applied',)),
+                ('INSERT INTO t (f1, f2, f2) VALUES (@a0, @a1, @a2)', {'a0': 'app', 'a1': 'name', 'a2': 'applied'}),
+            ),
+            (
+                (
+                    'INSERT INTO t (f1, f2, f2) VALUES (%(f1)s, %(f2)s, %(f3)s)',
+                    {'f1': 'app', 'f2': 'name', 'f3': 'applied'},
+                ),
+                (
+                    'INSERT INTO t (f1, f2, f2) VALUES (@a0, @a1, @a2)',
+                    {'a0': 'app', 'a1': 'name', 'a2': 'applied'},
+                ),
+            ),
+            (
+                # Intentionally using a dict with more keys than will be resolved.
+                ('SELECT * from t WHERE f1=%(f1)s', {'f1': 'app', 'f2': 'name'}),
+                ('SELECT * from t WHERE f1=@a0', {'a0': 'app'}),
+            ),
+            (
+                # No args to replace, we MUST return the original params dict
+                # since it might be useful to pass to the next user.
+                ('SELECT * from t WHERE id=10', {'f1': 'app', 'f2': 'name'}),
+                ('SELECT * from t WHERE id=10', {'f1': 'app', 'f2': 'name'}),
+            ),
+        ]
+        for ((sql_in, params), sql_want) in cases:
+            with self.subTest(sql=sql_in):
+                got_sql, got_named_args = sql_pyformat_args_to_spanner(sql_in, params)
+                want_sql, want_named_args = sql_want
+                self.assertEqual(got_sql, want_sql, 'SQL does not match')
+                self.assertEqual(got_named_args, want_named_args, 'Named args do not match')
+
+    def test_sql_pyformat_args_to_spanner_invalid(self):
+        cases = [
+            ('SELECT * from t WHERE f1=%s, f2 = %s, f3=%s, extra=%s', (10, 'abc', 'y**$22l3f',)),
+        ]
+        for sql, params in cases:
+            with self.subTest(sql=sql):
+                self.assertRaisesRegex(Error, 'pyformat_args mismatch',
+                                       lambda: sql_pyformat_args_to_spanner(sql, params),
+                                       )

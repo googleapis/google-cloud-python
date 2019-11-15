@@ -275,3 +275,62 @@ def add_missing_id(columns, params, gen_id):
         new_params[i] = new_param
 
     return (new_columns, new_params,)
+
+
+re_PYFORMAT = re.compile(r'(%s|%\([^\(\)]+\)s)+', re.DOTALL)
+
+
+def sql_pyformat_args_to_spanner(sql, params):
+    """
+    Transform pyformat set SQL to named arguments for Cloud Spanner.
+    For example:
+        SQL:      'SELECT * from t where f1=%s, f2=%s, f3=%s'
+        Params:   ('a', 23, '888***')
+    becomes:
+        SQL:      'SELECT * from t where f1=@a0, f2=@a1, f3=@a2'
+        Params:   {'a0': 'a', 'a1': 23, 'a2': '888***'}
+
+    OR
+        SQL:      'SELECT * from t where f1=%(f1)s, f2=%(f2)s, f3=%(f3)s'
+        Params:   {'f1': 'a', 'f2': 23, 'f3': '888***', 'extra': 'aye')
+    becomes:
+        SQL:      'SELECT * from t where f1=@a0, f2=@a1, f3=@a2'
+        Params:   {'a0': 'a', 'a1': 23, 'a2': '888***'}
+    """
+    if not params:
+        return sql, params
+
+    found_pyformat_placeholders = re_PYFORMAT.findall(sql)
+    params_is_dict = isinstance(params, dict)
+
+    if params_is_dict:
+        if not found_pyformat_placeholders:
+            return sql, params
+    else:
+        n_params = len(params) if params else 0
+        n_matches = len(found_pyformat_placeholders)
+        if n_matches != n_params:
+            raise Error(
+                'pyformat_args mismatch\ngot %d args from %s\n'
+                'want %d args in %s' % (n_matches, found_pyformat_placeholders, n_params, params))
+
+    if len(params) == 0:
+        return sql, params
+
+    named_args = {}
+    # We've now got for example:
+    # Case a) Params is a non-dict
+    #   SQL:      'SELECT * from t where f1=%s, f2=%s, f3=%s'
+    #   Params:   ('a', 23, '888***')
+    # Case b) Params is a dict and the matches are %(value)s'
+    for i, pyfmt in enumerate(found_pyformat_placeholders):
+        key = 'a%d' % i
+        sql = sql.replace(pyfmt, '@'+key, 1)
+        if params_is_dict:
+            # The '%(key)s' case, so interpolate it.
+            resolved_value = pyfmt % params
+            named_args[key] = resolved_value
+        else:
+            named_args[key] = params[i]
+
+    return sql, named_args

@@ -19,7 +19,7 @@ import google.api_core.exceptions as grpc_exceptions
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, add_missing_id, classify_stmt,
-    parse_insert,
+    parse_insert, sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -142,10 +142,11 @@ class Cursor(object):
     def gen_uuid4(self):
         return str(uuid4())
 
-    def __do_execute_non_update(self, sql, *args, **kwargs):
+    def __do_execute_non_update(self, sql, params, **kwargs):
         # Reference
         #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
-        res = self.__session.execute_sql(sql, *args, **kwargs)
+        sql, params = sql_pyformat_args_to_spanner(sql, params)
+        res = self.__session.execute_sql(sql, params=params, **kwargs)
         if type(res) == int:
             self.__row_count = res
             self.__itr = None
