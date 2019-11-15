@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## 1.12.1
+
+11-14-2019 16:12 PST
+
+### Implementation Changes
+- Revert [#9440](https://github.com/googleapis/google-cloud-python/pull/9440). Make `features` a keyword parameter to `annotate_video`. ([#9810](https://github.com/googleapis/google-cloud-python/pull/9810))
+
 ## 1.12.0
 
 11-08-2019 09:32 PST
