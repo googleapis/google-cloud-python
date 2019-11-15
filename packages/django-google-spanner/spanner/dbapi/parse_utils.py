@@ -96,7 +96,8 @@ def parse_properties(kv_pairs, sep=';'):
 
 
 rePROJECTID_INSTANCE_DBNAME = re.compile(
-        '/projects/([^/]+)/instances/([^/]+)/databases/([^/]+)$', re.UNICODE)
+    '/projects/([^/]+)/instances/([^/]+)/databases/([^/]+)$'
+)
 
 
 def parse_projectid_instance_dbname(url_path):
@@ -183,7 +184,7 @@ def filter_out_unset_keys(unfiltered):
     return {key: value for key, value in unfiltered.items() if value}
 
 
-reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$', re.UNICODE)
+reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$')
 
 
 def validate_instance_config(instance_config):
@@ -217,18 +218,12 @@ STMT_UPDATING = 'UPDATING'
 STMT_INSERT = 'INSERT'
 
 # Heuristic for identifying statements that don't need to be run as updates.
-re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.UNICODE | re.IGNORECASE)
+re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.IGNORECASE)
 
 # DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
-re_DDL = re.compile(
-    r'^\s*(CREATE|ALTER|DROP)',
-    re.UNICODE | re.IGNORECASE | re.DOTALL,
-)
+re_DDL = re.compile(r'^\s*(CREATE|ALTER|DROP)', re.IGNORECASE | re.DOTALL)
 
-re_IS_INSERT = re.compile(
-    r'^\s*(INSERT)',
-    re.UNICODE | re.IGNORECASE | re.DOTALL,
-)
+re_IS_INSERT = re.compile(r'^\s*(INSERT)', re.IGNORECASE | re.DOTALL)
 
 
 def classify_stmt(sql):
@@ -247,7 +242,7 @@ re_INSERT = re.compile(
     # otherwise the rest of the statement could be a complex
     # operation.
     r'^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s+\((?P<columns>[^\(\)]+)\)',
-    re.IGNORECASE | re.UNICODE | re.DOTALL,
+    re.IGNORECASE | re.DOTALL,
 )
 
 
