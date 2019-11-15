@@ -11,6 +11,7 @@ import pytest
 {% filter sort_lines -%}
 from google import auth
 from google.auth import credentials
+from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 {% if service.has_lro -%}
@@ -24,6 +25,17 @@ from google.longrunning import operations_pb2
 {% endfor -%}
 {% endfor -%}
 {% endfilter %}
+
+
+def test_{{ service.client_name|snake_case }}_from_service_account_file():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
+        factory.return_value = creds
+        client = {{ service.client_name }}.from_service_account_file("dummy/file/path.json")
+        assert client._transport._credentials == creds
+
+        client = {{ service.client_name }}.from_service_account_json("dummy/file/path.json")
+        assert client._transport._credentials == creds
 
 
 {% for method in service.methods.values() -%}

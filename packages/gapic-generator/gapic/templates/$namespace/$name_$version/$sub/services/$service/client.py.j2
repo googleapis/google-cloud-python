@@ -9,7 +9,8 @@ from google.api_core import exceptions        # type: ignore
 from google.api_core import gapic_v1          # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials           # type: ignore
-
+from google.oauth2 import service_account     # type: ignore
+  
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
 {% for ref_type in method.ref_types_legacy -%}
@@ -54,6 +55,29 @@ class {{ service.client_name }}Meta(type):
 
 class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            {@api.name}: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    from_service_account_json = from_service_account_file
+
+
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
