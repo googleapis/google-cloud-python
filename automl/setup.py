@@ -26,7 +26,7 @@ dependencies = [
     'enum34; python_version < "3.4"',
 ]
 extras = {
-    "pandas": ["pandas>=0.24.0"],
+    "pandas": ["pandas>=0.17.1"],
     "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
 }
 
