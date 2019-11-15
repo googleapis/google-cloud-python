@@ -1134,7 +1134,7 @@ class TestTablesClient(object):
         client.prediction_client.predict.assert_called_with(
             "my_model",
             {"row": {"values": [{"string_value": "1"}, {"string_value": "2"}]}},
-            None
+            None,
         )
 
     def test_predict_from_dict_missing(self):
@@ -1149,9 +1149,9 @@ class TestTablesClient(object):
         client = self.tables_client({"get_model.return_value": model}, {})
         client.predict({"a": "1"}, model_name="my_model")
         client.prediction_client.predict.assert_called_with(
-            "my_model", 
-            {"row": {"values": [{"string_value": "1"}, {"null_value": 0}]}}, 
-            None
+            "my_model",
+            {"row": {"values": [{"string_value": "1"}, {"null_value": 0}]}},
+            None,
         )
 
     def test_predict_all_types(self):
@@ -1213,7 +1213,7 @@ class TestTablesClient(object):
                     ]
                 }
             },
-            None
+            None,
         )
 
     def test_predict_from_array_missing(self):
