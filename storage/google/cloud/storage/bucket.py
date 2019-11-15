@@ -1367,7 +1367,7 @@ class Bucket(_PropertyMixin):
         incoming = set([k for k in mapping.keys()])
         self._label_removals = self._label_removals.union(existing.difference(incoming))
         mapping = {k: str(v) for k, v in mapping.items()}
-        
+
         # Actually update the labels on the object.
         self._patch_property("labels", copy.deepcopy(mapping))
 
