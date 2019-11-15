@@ -2643,7 +2643,7 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
-            params (dict[str, str]): 
+            params (dict[str, str]):
                 `feature_importance` can be set as True to enable local
                 explainability. The default is false.
 
