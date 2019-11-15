@@ -56,7 +56,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
 
