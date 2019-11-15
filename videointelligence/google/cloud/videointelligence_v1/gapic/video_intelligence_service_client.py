@@ -191,9 +191,9 @@ class VideoIntelligenceServiceClient(object):
     # Service calls
     def annotate_video(
         self,
-        features,
         input_uri=None,
         input_content=None,
+        features=None,
         video_context=None,
         output_uri=None,
         location_id=None,
@@ -213,11 +213,11 @@ class VideoIntelligenceServiceClient(object):
             >>>
             >>> client = videointelligence_v1.VideoIntelligenceServiceClient()
             >>>
+            >>> input_uri = 'gs://cloud-samples-data/video/cat.mp4'
             >>> features_element = enums.Feature.LABEL_DETECTION
             >>> features = [features_element]
-            >>> input_uri = 'gs://cloud-samples-data/video/cat.mp4'
             >>>
-            >>> response = client.annotate_video(features, input_uri=input_uri)
+            >>> response = client.annotate_video(input_uri=input_uri, features=features)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -229,7 +229,6 @@ class VideoIntelligenceServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            features (list[~google.cloud.videointelligence_v1.types.Feature]): Required. Requested video annotation features.
             input_uri (str): Input video location. Currently, only `Google Cloud
                 Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
                 must be specified in the following format: ``gs://bucket-id/object-id``
@@ -242,6 +241,7 @@ class VideoIntelligenceServiceClient(object):
                 request as ``input_content``. If set, ``input_content`` should be unset.
             input_content (bytes): The video data bytes. If unset, the input video(s) should be specified
                 via ``input_uri``. If set, ``input_uri`` should be unset.
+            features (list[~google.cloud.videointelligence_v1.types.Feature]): Required. Requested video annotation features.
             video_context (Union[dict, ~google.cloud.videointelligence_v1.types.VideoContext]): Additional video context and/or feature-specific parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -288,9 +288,9 @@ class VideoIntelligenceServiceClient(object):
             )
 
         request = video_intelligence_pb2.AnnotateVideoRequest(
-            features=features,
             input_uri=input_uri,
             input_content=input_content,
+            features=features,
             video_context=video_context,
             output_uri=output_uri,
             location_id=location_id,
