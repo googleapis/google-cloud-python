@@ -237,7 +237,7 @@ class TraceServiceClient(object):
         Args:
             name (str): Required. The name of the project where the spans belong. The format is
                 ``projects/[PROJECT_ID]``.
-            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A list of new spans. The span names must not match existing
+            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): Required. A list of new spans. The span names must not match existing
                 spans, or the results are undefined.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -343,13 +343,13 @@ class TraceServiceClient(object):
                 [SPAN\_ID] is a unique identifier for a span within a trace; it is a
                 16-character hexadecimal encoding of an 8-byte array.
             span_id (str): The [SPAN\_ID] portion of the span's resource name.
-            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes). Stackdriver
-                Trace displays the description in the {% dynamic print
-                site\_values.console\_name %}. For example, the display name can be a
-                qualified method name or a file name and a line number where the
-                operation is called. A best practice is to use the same display name
-                within an application and at the same call point. This makes it easier
-                to correlate spans in different traces.
+            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes).
+                Stackdriver Trace displays the description in the
+                Google Cloud Platform Console.
+                For example, the display name can be a qualified method name or a file name
+                and a line number where the operation is called. A best practice is to use
+                the same display name within an application and at the same call point.
+                This makes it easier to correlate spans in different traces.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.TruncatableString`
@@ -385,18 +385,18 @@ class TraceServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Links`
-            status (Union[dict, ~google.cloud.trace_v2.types.Status]): An optional final status for this span.
+            status (Union[dict, ~google.cloud.trace_v2.types.Status]): Optional. The final status for this span.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Status`
-            same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): (Optional) Set this parameter to indicate whether this span is in
+            same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): Optional. Set this parameter to indicate whether this span is in
                 the same process as its parent. If you do not set this parameter,
                 Stackdriver Trace is unable to take advantage of this helpful
                 information.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.BoolValue`
-            child_span_count (Union[dict, ~google.cloud.trace_v2.types.Int32Value]): An optional number of child spans that were generated while this span
+            child_span_count (Union[dict, ~google.cloud.trace_v2.types.Int32Value]): Optional. The number of child spans that were generated while this span
                 was active. If set, allows implementation to detect missing child spans.
 
                 If a dict is provided, it must be of the same form as the protobuf
