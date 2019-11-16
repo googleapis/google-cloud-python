@@ -1932,7 +1932,7 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
           Required. Location to output data to.
       gcs_destination:
           Output to a file in Cloud Storage. Should be used for labeling
-          output other thanimage segmentation.
+          output other than image segmentation.
       gcs_folder_destination:
           Output to a folder in Cloud Storage. Should be used for image
           segmentation labeling output.
