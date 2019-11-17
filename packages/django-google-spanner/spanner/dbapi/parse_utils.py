@@ -15,6 +15,7 @@
 import copy
 import re
 from urllib.parse import urlparse
+from uuid import uuid4
 
 from .exceptions import Error
 
@@ -334,3 +335,8 @@ def sql_pyformat_args_to_spanner(sql, params):
             named_args[key] = params[i]
 
     return sql, named_args
+
+
+def gen_rand_int64():
+    # Credit to https://stackoverflow.com/a/3530326.
+    return uuid4().int & 0x7FFFFFFFFFFFFFFF

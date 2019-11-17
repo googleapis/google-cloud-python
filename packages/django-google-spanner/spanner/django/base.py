@@ -30,8 +30,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # Mapping of Field objects to their column types.
     # TODO: audit max lengths of all STRING fields.
     data_types = dict(
-            AutoField='STRING(64)',  # Possibly using a UUID in place of AutoField.
-            BigAutoField='UUID',
+            AutoField='INT64',
+            BigAutoField='INT64',
             BinaryField='BYTES',
             BooleanField='BOOL',
             CharField='STRING(%(max_length)s)',

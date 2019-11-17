@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from uuid import uuid4
-
 import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, add_missing_id, classify_stmt,
-    parse_insert, sql_pyformat_args_to_spanner,
+    gen_rand_int64, parse_insert, sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -129,7 +127,7 @@ class Cursor(object):
         if params:
             # Case c)
             parts = parse_insert(sql)
-            columns, params = add_missing_id(parts.get('columns'), params, self.gen_uuid4)
+            columns, params = add_missing_id(parts.get('columns'), params, gen_rand_int64)
             return transaction.insert_or_update(
                 table=parts.get('table'),
                 columns=columns,
@@ -138,9 +136,6 @@ class Cursor(object):
         else:
             # Either of cases a) or b)
             return transaction.execute_update(sql)
-
-    def gen_uuid4(self):
-        return str(uuid4())
 
     def __do_execute_non_update(self, sql, params, **kwargs):
         # Reference
