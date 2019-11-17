@@ -207,7 +207,8 @@ class ParseUtilsTests(TestCase):
             ),
             (
 
-                'INSERT INTO auth_permission (name, content_type_id, codename) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s),(%s,      %s, %s)',
+                'INSERT INTO auth_permission (name, content_type_id, codename) '
+                'VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s),(%s,      %s, %s)',
                 {
                     'table': 'auth_permission',
                     'columns': ['name', 'content_type_id', 'codename'],
@@ -236,6 +237,7 @@ class ParseUtilsTests(TestCase):
             (
                 ['id', 'app', 'name'],
                 [(5, 'ap', 'n',), (6, 'bp', 'm',)],
+                None,
                 (
                     ['id', 'app', 'name'],
                     [(5, 'ap', 'n',), (6, 'bp', 'm',)],
@@ -244,16 +246,48 @@ class ParseUtilsTests(TestCase):
             (
                 ['app', 'name'],
                 [('ap', 'n',), ('bp', 'm',)],
+                None,
                 (
                     ['app', 'name', 'id'],
                     [('ap', 'n', 1,), ('bp', 'm', 2,)]
                 ),
             ),
+            (
+                ['app', 'name', 'fn'],
+                ['ap', 'n', 'f1', 'bp', 'm', 'f2', 'cp', 'o', 'f3'],
+                ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)'],
+                (
+                    ['app', 'name', 'fn', 'id'],
+                    [('ap', 'n', 'f1', 3,), ('bp', 'm', 'f2', 4,), ('cp', 'o', 'f3', 5,)]
+                ),
+            ),
+            (
+                ['app', 'name', 'fn', 'ln'],
+                [('ap', 'n', (45, 'nested',), 'll',), ('bp', 'm', 'f2', 'mt',), ('fp', 'cp', 'o', 'f3',)],
+                None,
+                (
+                    ['app', 'name', 'fn', 'ln', 'id'],
+                    [
+                        ('ap', 'n', (45, 'nested',), 'll', 6,),
+                        ('bp', 'm', 'f2', 'mt', 7,),
+                        ('fp', 'cp', 'o', 'f3', 8,),
+                    ],
+                ),
+            ),
+            (
+                ['app', 'name', 'fn'],
+                ['ap', 'n', 'f1'],
+                None,
+                (
+                    ['app', 'name', 'fn', 'id'],
+                    [('ap', 'n', 'f1', 9,)]
+                ),
+            ),
         ]
-        for i, case in enumerate(cases):
-            columns, params, want = case
+
+        for i, (columns, params, pyformat_args, want) in enumerate(cases):
             with self.subTest(i=i):
-                got = add_missing_id(columns, params, next_id)
+                got = add_missing_id(columns, params, next_id, pyformat_args)
                 self.assertEqual(got, want)
 
     def test_sql_pyformat_args_to_spanner(self):

@@ -257,6 +257,7 @@ re_VALUES_PYFORMAT = re.compile(
     re.DOTALL,
 )
 
+
 def parse_insert(insert_sql):
     match = re_INSERT.search(insert_sql)
     if not match:
@@ -275,22 +276,71 @@ def parse_insert(insert_sql):
     return parsed
 
 
-def add_missing_id(columns, params, gen_id):
+def add_missing_id(columns, params, gen_id, pyformat_args=None):
     if 'id' in columns:
         return (columns, params,)
+
+    new_params = copy.deepcopy(params)
+
+    if not pyformat_args:
+        # This is the case where we have for example:
+        # SQL:        'INSERT INTO t (f1, f2, f3)'
+        # Params A:   [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+        # Params B:   [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        #
+        # We'll have to convert both params types into:
+        #           [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)]
+
+        contains_all_list_or_tuples = True
+        for param in params:
+            if not (isinstance(param, list) or isinstance(param, tuple)):
+                contains_all_list_or_tuples = False
+                break
+
+        if contains_all_list_or_tuples:
+            # The case with Params B: [(1, 2, 3,)]
+            for i, new_param in enumerate(new_params):
+                new_param += type(new_param)([gen_id()])
+                new_params[i] = new_param
+        else:
+            # The case with Params B: Params: [1, 2, 3]
+            new_params += type(new_params)([gen_id()])
+            # Insert statements' params are only passed as tuples or lists,
+            # yet for do_execute_update, we've got to pass in list of list.
+            # https://googleapis.dev/python/spanner/latest/transaction-api.html\
+            #           #google.cloud.spanner_v1.transaction.Transaction.insert
+            new_params = [tuple(new_params)]
+    else:
+        # This is the case where we have for example:
+        # SQL:      'INSERT INTO t (f1, f2, f3) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s)'
+        # Params:   [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        #    which should become
+        # Columns:      (f1, f2, f3)
+        # new_params:   [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)]
+
+        # Sanity check: all the pyformat_values should have the exact same length.
+        first, rest = pyformat_args[0], pyformat_args[1:]
+        n_stride = first.count('%s')
+        for pyfmt_value in rest:
+            n = pyfmt_value.count('%s')
+            if n_stride != n:
+                raise Error('\nlen(`%s`)=%d\n!=\nlen(`%s`)=%d' % (
+                    first, n_stride, pyfmt_value, n))
+
+        # Now chop up the strides.
+        strides = []
+        for step in range(0, len(params), n_stride):
+            stride = tuple(params[step:step+n_stride:])
+            stride += (gen_id(),)
+            strides.append(stride)
+
+        new_params = strides
 
     # It is imperative that we copy and NOT mutate our original arguments as
     # references to them might be used elsewhere.
     new_columns = copy.deepcopy(columns)
-    new_params = copy.deepcopy(params)
-
-    # Otherwise auto insert 'id'.
+    # Now insert 'id' into all columns.
     new_columns += type(columns)(['id'])
-
-    # param is an iterable of iterables e.g. list of list.
-    for i, new_param in enumerate(new_params):
-        new_param += type(new_param)([gen_id()])
-        new_params[i] = new_param
 
     return (new_columns, new_params,)
 

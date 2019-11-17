@@ -89,11 +89,7 @@ class Cursor(object):
                 self.__session.run_in_transaction(
                     self.__do_execute_insert,
                     sql,
-                    # Insert statements' params are only passed as tuples or lists,
-                    # yet for do_execute_update, we've got to pass in list of list.
-                    # https://googleapis.dev/python/spanner/latest/transaction-api.html\
-                    #           #google.cloud.spanner_v1.transaction.Transaction.insert
-                    [args] if args else None,
+                    args if args else None,
                 )
             else:
                 self.__session.run_in_transaction(
@@ -127,7 +123,11 @@ class Cursor(object):
         if params:
             # Case c)
             parts = parse_insert(sql)
-            columns, params = add_missing_id(parts.get('columns'), params, gen_rand_int64)
+            columns, params = add_missing_id(parts.get('columns'), params,
+                                             gen_rand_int64,
+                                             parts.get('values_pyformat'),
+                                             )
+
             return transaction.insert_or_update(
                 table=parts.get('table'),
                 columns=columns,
