@@ -193,6 +193,7 @@ class ParseUtilsTests(TestCase):
                 {
                     'table': 'django_migrations',
                     'columns': ['app', 'name', 'applied'],
+                    'values_pyformat': ['(%s, %s, %s)'],
                 },
             ),
             (
@@ -202,6 +203,15 @@ class ParseUtilsTests(TestCase):
                 {
                     'table': 'sales.addresses',
                     'columns': ['street', 'city', 'state', 'zip_code'],
+                },
+            ),
+            (
+
+                'INSERT INTO auth_permission (name, content_type_id, codename) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s),(%s,      %s, %s)',
+                {
+                    'table': 'auth_permission',
+                    'columns': ['name', 'content_type_id', 'codename'],
+                    'values_pyformat': ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)', '(%s,      %s, %s)'],
                 },
             ),
         ]

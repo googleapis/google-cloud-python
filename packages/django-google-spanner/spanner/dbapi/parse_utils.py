@@ -246,16 +246,33 @@ re_INSERT = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+re_VALUES_TILL_END = re.compile(
+    r'VALUES\s*\(.+$',
+    re.IGNORECASE | re.DOTALL,
+)
+
+re_VALUES_PYFORMAT = re.compile(
+    # To match: (%s, %s,....%s)
+    r'(\(\s*%s[^\(\)]+\))',
+    re.DOTALL,
+)
 
 def parse_insert(insert_sql):
     match = re_INSERT.search(insert_sql)
-    if match:
-        return {
-            'table': match.group('table_name'),
-            'columns': [mi.strip() for mi in match.group('columns').split(',')],
-        }
-    else:
+    if not match:
         return None
+
+    parsed = {
+        'table': match.group('table_name'),
+        'columns': [mi.strip() for mi in match.group('columns').split(',')],
+    }
+    after_VALUES_sql = re_VALUES_TILL_END.findall(insert_sql)
+    if after_VALUES_sql:
+        values_pyformat = re_VALUES_PYFORMAT.findall(after_VALUES_sql[0])
+        if values_pyformat:
+            parsed['values_pyformat'] = values_pyformat
+
+    return parsed
 
 
 def add_missing_id(columns, params, gen_id):
