@@ -91,8 +91,9 @@ def positional(max_pos_args):
     """
 
     def positional_decorator(wrapped):
+        root = getattr(wrapped, "_wrapped", wrapped)
         wrapped._positional_args = max_pos_args
-        argspec = inspect.getargspec(wrapped)
+        argspec = inspect.getargspec(root)
         wrapped._argspec = argspec
         wrapped._positional_names = argspec.args[:max_pos_args]
 

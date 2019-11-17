@@ -3262,7 +3262,34 @@ class KeyProperty(Property):
 
     _kind = None
 
+    def _handle_positional(wrapped):
+        @functools.wraps(wrapped)
+        def wrapper(self, *args, **kwargs):
+            for arg in args:
+                if isinstance(arg, six.string_types):
+                    if "name" in kwargs:
+                        raise TypeError("You can only specify name once")
+
+                    kwargs["name"] = arg
+
+                elif isinstance(arg, type):
+                    if "kind" in kwargs:
+                        raise TypeError("You can only specify kind once")
+
+                    kwargs["kind"] = arg
+
+                elif arg is not None:
+                    raise TypeError(
+                        "Unexpected positional argument: {!r}".format(arg)
+                    )
+
+            return wrapped(self, **kwargs)
+
+        wrapper._wrapped = wrapped
+        return wrapper
+
     @utils.positional(3)
+    @_handle_positional
     def __init__(
         self,
         name=None,
@@ -3276,27 +3303,13 @@ class KeyProperty(Property):
         verbose_name=None,
         write_empty_list=None,
     ):
-        # Removed handle_positional method, as what it does is not possible in
-        # Python 2.7.
-        if isinstance(kind, type) and isinstance(name, type):
-            raise TypeError("You can only specify one kind")
-        if isinstance(kind, six.string_types) and isinstance(name, type):
-            temp = kind
-            kind = name
-            name = temp
-        if isinstance(kind, six.string_types) and name is None:
-            temp = kind
-            kind = name
-            name = temp
-        if isinstance(name, type) and kind is None:
-            temp = kind
-            kind = name
-            name = temp
         if isinstance(kind, type) and issubclass(kind, Model):
             kind = kind._get_kind()
+
         else:
             if kind is not None and not isinstance(kind, six.string_types):
                 raise TypeError("Kind must be a Model class or a string")
+
         super(KeyProperty, self).__init__(
             name=name,
             indexed=indexed,

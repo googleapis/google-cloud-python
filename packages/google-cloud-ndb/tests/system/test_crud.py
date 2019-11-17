@@ -411,6 +411,24 @@ def test_key_property(dispose_of, ds_client):
     assert retrieved.foo == key_value
 
 
+@pytest.mark.usefixtures("client_context")
+def test_multiple_key_properties(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.KeyProperty(kind="Whatevs")
+        bar = ndb.KeyProperty(kind="Whatevs")
+
+    foo = ndb.Key("Whatevs", 123)
+    bar = ndb.Key("Whatevs", 321)
+    entity = SomeKind(foo=foo, bar=bar)
+    key = entity.put()
+    dispose_of(key._key)
+
+    retrieved = key.get()
+    assert retrieved.foo == foo
+    assert retrieved.bar == bar
+    assert retrieved.foo != retrieved.bar
+
+
 def test_insert_entity_with_caching(client_context):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
