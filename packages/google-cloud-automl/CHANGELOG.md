@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## 0.9.0
+
+11-18-2019 09:49 PST
+
+### Implementation Changes
+- Change proto imports (via synth). ([#9817](https://github.com/googleapis/google-cloud-python/pull/9817))
+- Pass params passed to `tables_client` to underlying client. ([#9794](https://github.com/googleapis/google-cloud-python/pull/9794))
+
+### New Features
+- Add support for `feature_importance` to `TablesClient`. ([#9816](https://github.com/googleapis/google-cloud-python/pull/9816))
+
+### Documentation
+- Fix typo in code example for AutoML Tables. ([#9806](https://github.com/googleapis/google-cloud-python/pull/9806))
+- Update docs templates (via synth). ([#9797](https://github.com/googleapis/google-cloud-python/pull/9797))
+
 ## 0.8.0
 
 11-13-2019 13:44 PST
