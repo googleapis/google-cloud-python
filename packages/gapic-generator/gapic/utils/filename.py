@@ -28,7 +28,7 @@ def to_valid_filename(filename: str) -> str:
     Returns:
         str: A valid filename.
     """
-    return re.sub(r'[^a-z0-9.%_-]+', '-', filename.lower())
+    return re.sub(r'[^a-z0-9.$_-]+', '-', filename.lower())
 
 
 def to_valid_module_name(module_name: str) -> str:

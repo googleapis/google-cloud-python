@@ -30,11 +30,11 @@ __protobuf__ = {{ p }}.module(
 
 
 {% for enum in proto.enums.values() -%}
-    {% include '$namespace/$name_$version/$sub/types/_enum.py.j2' with context %}
+    {% include '%namespace/%name_%version/%sub/types/_enum.py.j2' with context %}
 {% endfor %}
 
 {% for message in proto.messages.values() -%}
-    {% include "$namespace/$name_$version/$sub/types/_message.py.j2" with context %}
+    {% include "%namespace/%name_%version/%sub/types/_message.py.j2" with context %}
 {% endfor %}
 {% endwith %}
 

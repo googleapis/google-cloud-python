@@ -229,14 +229,14 @@ class Generator:
         # Sanity check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
         # ever wants. Error colorfully on it.
-        if '$service' in template_name and '$proto' in template_name:
-            raise ValueError('Template files may live under a $proto or '
-                             '$service directory, but not both.')
+        if '%service' in template_name and '%proto' in template_name:
+            raise ValueError('Template files may live under a %proto or '
+                             '%service directory, but not both.')
 
         # If this template should be rendered for subpackages, process it
         # for all subpackages and set the strict flag (restricting what
         # services and protos we pull from for the remainder of the method).
-        if '$sub' in template_name:
+        if '%sub' in template_name:
             for subpackage in api_schema.subpackages.values():
                 answer.update(self._render_template(template_name,
                                                     api_schema=subpackage,
@@ -245,7 +245,7 @@ class Generator:
 
         # If this template should be rendered once per proto, iterate over
         # all protos to be rendered
-        if '$proto' in template_name:
+        if '%proto' in template_name:
             for proto in api_schema.protos.values():
                 if (skip_subpackages and proto.meta.address.subpackage !=
                         api_schema.subpackage_view):
@@ -258,7 +258,7 @@ class Generator:
 
         # If this template should be rendered once per service, iterate
         # over all services to be rendered.
-        if '$service' in template_name:
+        if '%service' in template_name:
             for service in api_schema.services.values():
                 if (skip_subpackages and service.meta.address.subpackage !=
                         api_schema.subpackage_view):
@@ -313,12 +313,12 @@ class Generator:
         """Return the appropriate output filename for this template.
 
         This entails running the template name through a series of
-        replacements to replace the "filename variables" (``$name``,
-        ``$service``, etc.).
+        replacements to replace the "filename variables" (``%name``,
+        ``%service``, etc.).
 
         Additionally, any of these variables may be substituted with an
         empty value, and we should do the right thing in this case.
-        (The exception to this is ``$service``, which is guaranteed to be
+        (The exception to this is ``%service``, which is guaranteed to be
         set if it is needed.)
 
         Args:
@@ -332,37 +332,37 @@ class Generator:
         """
         filename = template_name[:-len('.j2')]
 
-        # Replace the $namespace variable.
+        # Replace the %namespace variable.
         filename = filename.replace(
-            '$namespace',
+            '%namespace',
             os.path.sep.join([i.lower() for i in api_schema.naming.namespace]),
         ).lstrip(os.path.sep)
 
-        # Replace the $name, $version, and $sub variables.
-        filename = filename.replace('$name_$version',
+        # Replace the %name, %version, and %sub variables.
+        filename = filename.replace('%name_%version',
                                     api_schema.naming.versioned_module_name)
-        filename = filename.replace('$version', api_schema.naming.version)
-        filename = filename.replace('$name', api_schema.naming.module_name)
-        filename = filename.replace('$sub',
+        filename = filename.replace('%version', api_schema.naming.version)
+        filename = filename.replace('%name', api_schema.naming.module_name)
+        filename = filename.replace('%sub',
                                     '/'.join(api_schema.subpackage_view))
 
-        # Replace the $service variable if applicable.
+        # Replace the %service variable if applicable.
         if context and 'service' in context:
             filename = filename.replace(
-                '$service',
+                '%service',
                 context['service'].module_name,
             )
 
-        # Replace the $proto variable if appliable.
+        # Replace the %proto variable if appliable.
         # In the cases of protos, we also honor subpackages.
         if context and 'proto' in context:
             filename = filename.replace(
-                '$proto',
+                '%proto',
                 context['proto'].module_name,
             )
 
         # Paths may have empty path segments if components are empty
-        # (e.g. no $version); handle this.
+        # (e.g. no %version); handle this.
         filename = re.sub(r'/+', '/', filename)
 
         # Done, return the filename.

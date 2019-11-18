@@ -96,21 +96,21 @@ def test_get_response_fails_invalid_file_paths():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = [
-            'foo/bar/$service/$proto/baz.py.j2',
+            'foo/bar/%service/%proto/baz.py.j2',
             'molluscs/squid/sample.py.j2',
         ]
         with pytest.raises(ValueError) as ex:
             g.get_response(api_schema=make_api())
 
         ex_str = str(ex.value)
-        assert '$proto' in ex_str and '$service' in ex_str
+        assert '%proto' in ex_str and '%service' in ex_str
 
 
 def test_get_response_enumerates_services():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = [
-            'foo/$service/baz.py.j2',
+            'foo/%service/baz.py.j2',
             'molluscs/squid/sample.py.j2',
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -132,7 +132,7 @@ def test_get_response_enumerates_proto():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = [
-            'foo/$proto.py.j2',
+            'foo/%proto.py.j2',
             'molluscs/squid/sample.py.j2',
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -166,8 +166,8 @@ def test_get_response_divides_subpackages():
     ], package='foo.v1')
     with mock.patch.object(jinja2.FileSystemLoader, 'list_templates') as lt:
         lt.return_value = [
-            'foo/$sub/types/$proto.py.j2',
-            'foo/$sub/services/$service.py.j2',
+            'foo/%sub/types/%proto.py.j2',
+            'foo/%sub/services/%service.py.j2',
             'molluscs/squid/sample.py.j2',
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
@@ -188,7 +188,7 @@ def test_get_response_divides_subpackages():
 
 def test_get_filename():
     g = make_generator()
-    template_name = '$namespace/$name_$version/foo.py.j2'
+    template_name = '%namespace/%name_%version/foo.py.j2'
     assert g._get_filename(template_name,
                            api_schema=make_api(
                                naming=make_naming(
@@ -199,7 +199,7 @@ def test_get_filename():
 
 def test_get_filename_with_namespace():
     g = make_generator()
-    template_name = '$namespace/$name_$version/foo.py.j2'
+    template_name = '%namespace/%name_%version/foo.py.j2'
     assert g._get_filename(template_name,
                            api_schema=make_api(
                                naming=make_naming(
@@ -213,7 +213,7 @@ def test_get_filename_with_namespace():
 
 def test_get_filename_with_service():
     g = make_generator()
-    template_name = '$name/$service/foo.py.j2'
+    template_name = '%name/%service/foo.py.j2'
     assert g._get_filename(
         template_name,
         api_schema=make_api(
@@ -240,7 +240,7 @@ def test_get_filename_with_proto():
 
     g = make_generator()
     assert g._get_filename(
-        '$name/types/$proto.py.j2',
+        '%name/types/%proto.py.j2',
         api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'spam/types/bacon.py'
@@ -265,7 +265,7 @@ def test_get_filename_with_proto_and_sub():
 
     g = make_generator()
     assert g._get_filename(
-        '$name/types/$sub/$proto.py.j2',
+        '%name/types/%sub/%proto.py.j2',
         api_schema=api,
         context={'proto': api.protos['bacon.proto']},
     ) == 'bar/types/baz/bacon.py'
