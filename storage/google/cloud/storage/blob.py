@@ -444,10 +444,10 @@ class Blob(_PropertyMixin):
                         Must be one of 'v2' | 'v4'.
 
         :type service_account_email: str
-        :param service_account_email: e-mail address of the service account.
+        :param service_account_email: (Optional) E-mail address of the service account.
 
         :type access_token: str
-        :param access_token: access token for a service account.
+        :param access_token: (Optional) Access token for a service account.
 
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.

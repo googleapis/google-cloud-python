@@ -347,10 +347,10 @@ def generate_signed_url_v2(
         (name and value) with each request for the URL.
 
     :type service_account_email: str
-    :param service_account_email: e-mail address of the service account.
+    :param service_account_email: (Optional) E-mail address of the service account.
 
     :type access_token: str
-    :param access_token: access token for a service account.
+    :param access_token: (Optional) Access token for a service account.
 
     :type query_parameters: dict
     :param query_parameters:
@@ -381,6 +381,7 @@ def generate_signed_url_v2(
     elements_to_sign.append(canonical.resource)
     string_to_sign = "\n".join(elements_to_sign)
 
+    # Set the right query parameters.
     if access_token and service_account_email:
         signature = _sign_message(string_to_sign, access_token, service_account_email)
         signed_query_params = {
@@ -389,7 +390,6 @@ def generate_signed_url_v2(
             "Signature": signature,
         }
     else:
-        # Set the right query parameters.
         signed_query_params = get_signed_query_params_v2(
             credentials, expiration_stamp, string_to_sign
         )
@@ -515,10 +515,10 @@ def generate_signed_url_v4(
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
     :type service_account_email: str
-    :param service_account_email: e-mail address of the service account.
+    :param service_account_email: (Optional) E-mail address of the service account.
 
     :type access_token: str
-    :param access_token: access token for a service account.
+    :param access_token: (Optional) Access token for a service account.
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`AttributeError` if credentials is not an instance
@@ -613,6 +613,8 @@ def generate_signed_url_v4(
 
     if access_token and service_account_email:
         signature = _sign_message(string_to_sign, access_token, service_account_email)
+        signature_bytes = base64.b64decode(signature)
+        signature = binascii.hexlify(signature_bytes).decode("ascii")
     else:
         signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
         signature = binascii.hexlify(signature_bytes).decode("ascii")
@@ -630,15 +632,15 @@ def _sign_message(message, access_token, service_account_email):
     :param message: The message to be signed.
 
     :type access_token: str
-    :param access_token: access token for a service account.
+    :param access_token: Access token for a service account.
 
 
     :type service_account_email: str
-    :param service_account_email: e-mail address of the service account.
+    :param service_account_email: E-mail address of the service account.
 
-    :raises: :exc:`TransportError` if access_token is an unauthorized`.
+    :raises: :exc:`TransportError` if an `access_token` is unauthorized.
 
-    :rtype: bytes
+    :rtype: str
     :returns: The signature of the message.
 
     """
@@ -663,4 +665,4 @@ def _sign_message(message, access_token, service_account_email):
         )
 
     data = json.loads(response.data.decode("utf-8"))
-    return base64.b64decode(data["signature"])
+    return data["signature"]

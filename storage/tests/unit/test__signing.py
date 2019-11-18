@@ -680,9 +680,8 @@ class Test_sign_message(unittest.TestCase):
         return _sign_message(*args, **kwargs)
 
     def test_sign_bytes(self):
-        signature = b"DEADBEEF"
-        encoded_signature = base64.b64encode(signature).decode("utf-8")
-        data = {"signature": encoded_signature}
+        signature = "DEADBEEF"
+        data = {"signature": signature}
         request = make_request(200, data)
         with mock.patch("google.auth.transport.requests.Request", return_value=request):
             returned_signature = self._call_fut(
