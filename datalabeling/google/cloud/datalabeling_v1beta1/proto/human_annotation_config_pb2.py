@@ -949,8 +949,7 @@ HumanAnnotationConfig = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       instruction:
-          Required except for LabelAudio case. Instruction resource
-          name.
+          Required. Instruction resource name.
       annotated_dataset_display_name:
           Required. A human-readable name for AnnotatedDataset defined
           by users. Maximum of 64 characters .
@@ -965,8 +964,7 @@ HumanAnnotationConfig = _reflection.GeneratedProtocolMessageType(
           Optional. The Language of this question, as a `BCP-47
           <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__. Default
           value is en-US. Only need to set this when task is language
-          related. For example, French text classification or Chinese
-          audio transcription.
+          related. For example, French text classification.
       replica_count:
           Optional. Replication of questions. Each question will be sent
           to up to this number of contributors to label. Aggregated
