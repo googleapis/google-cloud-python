@@ -19,13 +19,6 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.cloud.automl_v1beta1.proto import (
     io_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_io__pb2,
 )
-from google.cloud.automl_v1beta1.proto import (
-    model_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__pb2,
-)
-from google.cloud.automl_v1beta1.proto import (
-    model_evaluation_pb2 as google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__evaluation__pb2,
-)
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
@@ -38,14 +31,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.automl.v1beta1P\001ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\312\002\033Google\\Cloud\\AutoMl\\V1beta1\352\002\036Google::Cloud::AutoML::V1beta1"
     ),
     serialized_pb=_b(
-        '\n2google/cloud/automl_v1beta1/proto/operations.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a-google/cloud/automl_v1beta1/proto/model.proto\x1a\x38google/cloud/automl_v1beta1/proto/model_evaluation.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\x8b\x08\n\x11OperationMetadata\x12N\n\x0e\x64\x65lete_details\x18\x08 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.DeleteOperationMetadataH\x00\x12Y\n\x14\x64\x65ploy_model_details\x18\x18 \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.DeployModelOperationMetadataH\x00\x12]\n\x16undeploy_model_details\x18\x19 \x01(\x0b\x32;.google.cloud.automl.v1beta1.UndeployModelOperationMetadataH\x00\x12Y\n\x14\x63reate_model_details\x18\n \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.CreateModelOperationMetadataH\x00\x12W\n\x13import_data_details\x18\x0f \x01(\x0b\x32\x38.google.cloud.automl.v1beta1.ImportDataOperationMetadataH\x00\x12[\n\x15\x62\x61tch_predict_details\x18\x10 \x01(\x0b\x32:.google.cloud.automl.v1beta1.BatchPredictOperationMetadataH\x00\x12W\n\x13\x65xport_data_details\x18\x15 \x01(\x0b\x32\x38.google.cloud.automl.v1beta1.ExportDataOperationMetadataH\x00\x12Y\n\x14\x65xport_model_details\x18\x16 \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.ExportModelOperationMetadataH\x00\x12r\n!export_evaluated_examples_details\x18\x1a \x01(\x0b\x32\x45.google.cloud.automl.v1beta1.ExportEvaluatedExamplesOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\r \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"\x19\n\x17\x44\x65leteOperationMetadata"\x1e\n\x1c\x44\x65ployModelOperationMetadata" \n\x1eUndeployModelOperationMetadata"\x1e\n\x1c\x43reateModelOperationMetadata"\x1d\n\x1bImportDataOperationMetadata"\xef\x01\n\x1b\x45xportDataOperationMetadata\x12\x62\n\x0boutput_info\x18\x01 \x01(\x0b\x32M.google.cloud.automl.v1beta1.ExportDataOperationMetadata.ExportDataOutputInfo\x1al\n\x14\x45xportDataOutputInfo\x12\x1e\n\x14gcs_output_directory\x18\x01 \x01(\tH\x00\x12!\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tH\x00\x42\x11\n\x0foutput_location"\xc3\x02\n\x1d\x42\x61tchPredictOperationMetadata\x12J\n\x0cinput_config\x18\x01 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.BatchPredictInputConfig\x12\x66\n\x0boutput_info\x18\x02 \x01(\x0b\x32Q.google.cloud.automl.v1beta1.BatchPredictOperationMetadata.BatchPredictOutputInfo\x1an\n\x16\x42\x61tchPredictOutputInfo\x12\x1e\n\x14gcs_output_directory\x18\x01 \x01(\tH\x00\x12!\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tH\x00\x42\x11\n\x0foutput_location"\xbb\x01\n\x1c\x45xportModelOperationMetadata\x12\x64\n\x0boutput_info\x18\x02 \x01(\x0b\x32O.google.cloud.automl.v1beta1.ExportModelOperationMetadata.ExportModelOutputInfo\x1a\x35\n\x15\x45xportModelOutputInfo\x12\x1c\n\x14gcs_output_directory\x18\x01 \x01(\t"\xee\x01\n(ExportEvaluatedExamplesOperationMetadata\x12|\n\x0boutput_info\x18\x02 \x01(\x0b\x32g.google.cloud.automl.v1beta1.ExportEvaluatedExamplesOperationMetadata.ExportEvaluatedExamplesOutputInfo\x1a\x44\n!ExportEvaluatedExamplesOutputInfo\x12\x1f\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tB\xa5\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
+        '\n2google/cloud/automl_v1beta1/proto/operations.proto\x12\x1bgoogle.cloud.automl.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a*google/cloud/automl_v1beta1/proto/io.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\x8b\x08\n\x11OperationMetadata\x12N\n\x0e\x64\x65lete_details\x18\x08 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.DeleteOperationMetadataH\x00\x12Y\n\x14\x64\x65ploy_model_details\x18\x18 \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.DeployModelOperationMetadataH\x00\x12]\n\x16undeploy_model_details\x18\x19 \x01(\x0b\x32;.google.cloud.automl.v1beta1.UndeployModelOperationMetadataH\x00\x12Y\n\x14\x63reate_model_details\x18\n \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.CreateModelOperationMetadataH\x00\x12W\n\x13import_data_details\x18\x0f \x01(\x0b\x32\x38.google.cloud.automl.v1beta1.ImportDataOperationMetadataH\x00\x12[\n\x15\x62\x61tch_predict_details\x18\x10 \x01(\x0b\x32:.google.cloud.automl.v1beta1.BatchPredictOperationMetadataH\x00\x12W\n\x13\x65xport_data_details\x18\x15 \x01(\x0b\x32\x38.google.cloud.automl.v1beta1.ExportDataOperationMetadataH\x00\x12Y\n\x14\x65xport_model_details\x18\x16 \x01(\x0b\x32\x39.google.cloud.automl.v1beta1.ExportModelOperationMetadataH\x00\x12r\n!export_evaluated_examples_details\x18\x1a \x01(\x0b\x32\x45.google.cloud.automl.v1beta1.ExportEvaluatedExamplesOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\r \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"\x19\n\x17\x44\x65leteOperationMetadata"\x1e\n\x1c\x44\x65ployModelOperationMetadata" \n\x1eUndeployModelOperationMetadata"\x1e\n\x1c\x43reateModelOperationMetadata"\x1d\n\x1bImportDataOperationMetadata"\xef\x01\n\x1b\x45xportDataOperationMetadata\x12\x62\n\x0boutput_info\x18\x01 \x01(\x0b\x32M.google.cloud.automl.v1beta1.ExportDataOperationMetadata.ExportDataOutputInfo\x1al\n\x14\x45xportDataOutputInfo\x12\x1e\n\x14gcs_output_directory\x18\x01 \x01(\tH\x00\x12!\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tH\x00\x42\x11\n\x0foutput_location"\xc3\x02\n\x1d\x42\x61tchPredictOperationMetadata\x12J\n\x0cinput_config\x18\x01 \x01(\x0b\x32\x34.google.cloud.automl.v1beta1.BatchPredictInputConfig\x12\x66\n\x0boutput_info\x18\x02 \x01(\x0b\x32Q.google.cloud.automl.v1beta1.BatchPredictOperationMetadata.BatchPredictOutputInfo\x1an\n\x16\x42\x61tchPredictOutputInfo\x12\x1e\n\x14gcs_output_directory\x18\x01 \x01(\tH\x00\x12!\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tH\x00\x42\x11\n\x0foutput_location"\xbb\x01\n\x1c\x45xportModelOperationMetadata\x12\x64\n\x0boutput_info\x18\x02 \x01(\x0b\x32O.google.cloud.automl.v1beta1.ExportModelOperationMetadata.ExportModelOutputInfo\x1a\x35\n\x15\x45xportModelOutputInfo\x12\x1c\n\x14gcs_output_directory\x18\x01 \x01(\t"\xee\x01\n(ExportEvaluatedExamplesOperationMetadata\x12|\n\x0boutput_info\x18\x02 \x01(\x0b\x32g.google.cloud.automl.v1beta1.ExportEvaluatedExamplesOperationMetadata.ExportEvaluatedExamplesOutputInfo\x1a\x44\n!ExportEvaluatedExamplesOutputInfo\x12\x1f\n\x17\x62igquery_output_dataset\x18\x02 \x01(\tB\xa5\x01\n\x1f\x63om.google.cloud.automl.v1beta1P\x01ZAgoogle.golang.org/genproto/googleapis/cloud/automl/v1beta1;automl\xca\x02\x1bGoogle\\Cloud\\AutoMl\\V1beta1\xea\x02\x1eGoogle::Cloud::AutoML::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_io__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_automl__v1beta1_dot_proto_dot_model__evaluation__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
     ],
@@ -310,8 +300,8 @@ _OPERATIONMETADATA = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=350,
-    serialized_end=1385,
+    serialized_start=216,
+    serialized_end=1251,
 )
 
 
@@ -330,8 +320,8 @@ _DELETEOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1387,
-    serialized_end=1412,
+    serialized_start=1253,
+    serialized_end=1278,
 )
 
 
@@ -350,8 +340,8 @@ _DEPLOYMODELOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1414,
-    serialized_end=1444,
+    serialized_start=1280,
+    serialized_end=1310,
 )
 
 
@@ -370,8 +360,8 @@ _UNDEPLOYMODELOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1446,
-    serialized_end=1478,
+    serialized_start=1312,
+    serialized_end=1344,
 )
 
 
@@ -390,8 +380,8 @@ _CREATEMODELOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1480,
-    serialized_end=1510,
+    serialized_start=1346,
+    serialized_end=1376,
 )
 
 
@@ -410,8 +400,8 @@ _IMPORTDATAOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1512,
-    serialized_end=1541,
+    serialized_start=1378,
+    serialized_end=1407,
 )
 
 
@@ -475,8 +465,8 @@ _EXPORTDATAOPERATIONMETADATA_EXPORTDATAOUTPUTINFO = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1675,
-    serialized_end=1783,
+    serialized_start=1541,
+    serialized_end=1649,
 )
 
 _EXPORTDATAOPERATIONMETADATA = _descriptor.Descriptor(
@@ -513,8 +503,8 @@ _EXPORTDATAOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1544,
-    serialized_end=1783,
+    serialized_start=1410,
+    serialized_end=1649,
 )
 
 
@@ -578,8 +568,8 @@ _BATCHPREDICTOPERATIONMETADATA_BATCHPREDICTOUTPUTINFO = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1999,
-    serialized_end=2109,
+    serialized_start=1865,
+    serialized_end=1975,
 )
 
 _BATCHPREDICTOPERATIONMETADATA = _descriptor.Descriptor(
@@ -634,8 +624,8 @@ _BATCHPREDICTOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1786,
-    serialized_end=2109,
+    serialized_start=1652,
+    serialized_end=1975,
 )
 
 
@@ -673,8 +663,8 @@ _EXPORTMODELOPERATIONMETADATA_EXPORTMODELOUTPUTINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2246,
-    serialized_end=2299,
+    serialized_start=2112,
+    serialized_end=2165,
 )
 
 _EXPORTMODELOPERATIONMETADATA = _descriptor.Descriptor(
@@ -711,8 +701,8 @@ _EXPORTMODELOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2112,
-    serialized_end=2299,
+    serialized_start=1978,
+    serialized_end=2165,
 )
 
 
@@ -750,8 +740,8 @@ _EXPORTEVALUATEDEXAMPLESOPERATIONMETADATA_EXPORTEVALUATEDEXAMPLESOUTPUTINFO = _d
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2472,
-    serialized_end=2540,
+    serialized_start=2338,
+    serialized_end=2406,
 )
 
 _EXPORTEVALUATEDEXAMPLESOPERATIONMETADATA = _descriptor.Descriptor(
@@ -790,8 +780,8 @@ _EXPORTEVALUATEDEXAMPLESOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2302,
-    serialized_end=2540,
+    serialized_start=2168,
+    serialized_end=2406,
 )
 
 _OPERATIONMETADATA.fields_by_name[
