@@ -184,7 +184,10 @@ class Cursor(object):
         return self.__itr
 
     def fetchone(self):
-        return next(self)
+        try:
+            return next(self)
+        except StopIteration:
+            return None
 
     def fetchall(self):
         return list(self.__iter__())
@@ -205,7 +208,7 @@ class Cursor(object):
         items = []
         for i in range(size):
             try:
-                items.append(self.__next__())
+                items.append(tuple(self.__next__()))
             except StopIteration:
                 break
 
