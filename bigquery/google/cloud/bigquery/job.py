@@ -29,6 +29,7 @@ from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
@@ -1137,6 +1138,33 @@ class LoadJobConfig(_JobConfig):
     @field_delimiter.setter
     def field_delimiter(self, value):
         self._set_sub_prop("fieldDelimiter", value)
+
+    @property
+    def hive_partitioning(self):
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: [Beta] When set, \
+        it configures hive partitioning support.
+
+        .. note::
+            **Experimental**. This feature is experimental and might change or
+            have limited support.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.hive_partitioning_options
+        """
+        prop = self._get_sub_prop("hivePartitioningOptions")
+        if prop is None:
+            return None
+        return HivePartitioningOptions.from_api_repr(prop)
+
+    @hive_partitioning.setter
+    def hive_partitioning(self, value):
+        if value is not None:
+            if isinstance(value, HivePartitioningOptions):
+                value = value.to_api_repr()
+            else:
+                raise TypeError("Expected a HivePartitioningOptions instance or None.")
+
+        self._set_sub_prop("hivePartitioningOptions", value)
 
     @property
     def ignore_unknown_values(self):
