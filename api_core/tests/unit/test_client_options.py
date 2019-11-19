@@ -34,3 +34,9 @@ def test_from_dict_bad_argument():
         client_options.from_dict(
             {"api_endpoint": "foo.googleapis.com", "bad_arg": "1234"}
         )
+
+
+def test_repr():
+    options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
+
+    assert repr(options) == "ClientOptions: {'api_endpoint': 'foo.googleapis.com'}"
