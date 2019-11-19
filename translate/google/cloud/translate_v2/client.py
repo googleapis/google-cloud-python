@@ -195,7 +195,7 @@ class Client(BaseClient):
         self,
         values,
         target_language=None,
-        format_=None,
+        format_='html',
         source_language=None,
         customization_ids=(),
         model=None,
@@ -214,7 +214,8 @@ class Client(BaseClient):
 
         :type format_: str
         :param format_: (Optional) One of ``text`` or ``html``, to specify
-                        if the input text is plain text or HTML.
+                        if the input text is plain text or HTML. Defaults to 
+                        ``html``.
 
         :type source_language: str
         :param source_language: (Optional) The language of the text to
