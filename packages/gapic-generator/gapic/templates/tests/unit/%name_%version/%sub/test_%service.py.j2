@@ -14,6 +14,7 @@ from google.auth import credentials
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
+from google.api_core import client_options
 {% if service.has_lro -%}
 from google.api_core import future
 from google.api_core import operations_v1
@@ -36,6 +37,31 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file():
 
         client = {{ service.client_name }}.from_service_account_json("dummy/file/path.json")
         assert client._transport._credentials == creds
+
+        {% if service.host %}assert client._transport._host == '{{ service.host }}'{% endif %}
+
+
+def test_{{ service.client_name|snake_case }}_client_options():
+    # Check the default options have their expected values.
+    {% if service.host %}assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == '{{ service.host }}'{% endif %}
+
+    # Check that options can be customized.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
+        transport = gtc.return_value = mock.MagicMock()
+        client = {{ service.client_name }}(
+            client_options=options
+        )
+        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+
+
+def test_{{ service.client_name|snake_case }}_client_options_from_dict():
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
+        transport = gtc.return_value = mock.MagicMock()
+        client = {{ service.client_name }}(
+            client_options={'api_endpoint': 'squid.clam.whelk'}
+        )
+        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
 
 
 {% for method in service.methods.values() -%}
@@ -352,7 +378,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
-        host='{{ host }}',
+        client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
         transport='grpc',
     )
     assert client._transport._host == '{{ host }}:443'
@@ -363,7 +389,7 @@ def test_{{ service.name|snake_case }}_host_with_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
-        host='{{ host }}:8000',
+        client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
         transport='grpc',
     )
     assert client._transport._host == '{{ host }}:8000'

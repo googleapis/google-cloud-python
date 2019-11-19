@@ -5,11 +5,12 @@ from collections import OrderedDict
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import exceptions        # type: ignore
-from google.api_core import gapic_v1          # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials           # type: ignore
-from google.oauth2 import service_account     # type: ignore
+import google.api_core.client_options as ClientOptions # type: ignore
+from google.api_core import exceptions                 # type: ignore
+from google.api_core import gapic_v1                   # type: ignore
+from google.api_core import retry as retries           # type: ignore
+from google.auth import credentials                    # type: ignore
+from google.oauth2 import service_account              # type: ignore
   
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -56,6 +57,8 @@ class {{ service.client_name }}Meta(type):
 class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
 
+    DEFAULT_OPTIONS = ClientOptions.ClientOptions({% if service.host %}api_endpoint='{{ service.host }}'{% endif %})
+
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
@@ -79,15 +82,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
 
     def __init__(self, *,
-            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
-            transport: Union[str, {{ service.name }}Transport] = None
+            transport: Union[str, {{ service.name }}Transport] = None,
+            client_options: ClientOptions = DEFAULT_OPTIONS,
             ) -> None:
         """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
 
         Args:
-            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{- ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -96,7 +97,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             transport (Union[str, ~.{{ service.name }}Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
+            client_options (ClientOptions): Custom options for the client.
         """
+        if isinstance(client_options, dict):
+            client_options = ClientOptions.from_dict(client_options)
+
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
@@ -107,7 +112,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             self._transport = transport
         else:
             Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(credentials=credentials, host=host)
+            self._transport = Transport(
+                credentials=credentials,
+                host=client_options.api_endpoint{% if service.host %} or '{{ service.host }}'{% endif %},
+            )
 
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
