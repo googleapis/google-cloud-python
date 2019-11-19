@@ -50,6 +50,9 @@ class ClientOptions(object):
     def __init__(self, api_endpoint=None):
         self.api_endpoint = api_endpoint
 
+    def __repr__(self):
+        return "ClientOptions: " + repr(self.__dict__)
+
 
 def from_dict(options):
     """Construct a client options object from a dictionary.
