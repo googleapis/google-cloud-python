@@ -107,8 +107,9 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
-    def __do_execute_update(self, transaction, sql, *args, **kwargs):
-        res = transaction.execute_update(sql, *args, **kwargs)
+    def __do_execute_update(self, transaction, sql, params, **kwargs):
+        sql, params = sql_pyformat_args_to_spanner(sql, params)
+        res = transaction.execute_update(sql, params=params, **kwargs)
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
