@@ -567,15 +567,12 @@ class TestSpannerClient(object):
         session = client.session_path(
             "[PROJECT]", "[INSTANCE]", "[DATABASE]", "[SESSION]"
         )
-        mutations = []
 
-        response = client.commit(session, mutations)
+        response = client.commit(session)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = spanner_pb2.CommitRequest(
-            session=session, mutations=mutations
-        )
+        expected_request = spanner_pb2.CommitRequest(session=session)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -591,10 +588,9 @@ class TestSpannerClient(object):
         session = client.session_path(
             "[PROJECT]", "[INSTANCE]", "[DATABASE]", "[SESSION]"
         )
-        mutations = []
 
         with pytest.raises(CustomException):
-            client.commit(session, mutations)
+            client.commit(session)
 
     def test_rollback(self):
         channel = ChannelStub()
