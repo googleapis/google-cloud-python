@@ -30,7 +30,7 @@
 - Normalize VPCSC configuration in systests. ([#9615](https://github.com/googleapis/google-cloud-python/pull/9615))
 - Make VPCSC env comparison case-insensitive. ([#9564](https://github.com/googleapis/google-cloud-python/pull/9564))
 - Refresh VPCSC tests. ([#9437](https://github.com/googleapis/google-cloud-python/pull/9437))
-- Monitoring: Fix environment variables for VPC tests. ([#8302](https://github.com/googleapis/google-cloud-python/pull/8302))
+- Fix environment variables for VPC tests. ([#8302](https://github.com/googleapis/google-cloud-python/pull/8302))
 
 ## 0.33.0
 
