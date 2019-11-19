@@ -101,21 +101,36 @@ class ServiceMonitoringServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
 
     @classmethod
     def service_path(cls, project, service):
-        """Return a fully-qualified service string."""
+        """DEPRECATED. Return a fully-qualified service string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/services/{service}", project=project, service=service,
         )
 
     @classmethod
     def service_level_objective_path(cls, project, service, service_level_objective):
-        """Return a fully-qualified service_level_objective string."""
+        """DEPRECATED. Return a fully-qualified service_level_objective string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}",
             project=project,
