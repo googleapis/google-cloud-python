@@ -79,7 +79,12 @@ class CompanyServiceClient(object):
 
     @classmethod
     def company_path(cls, project, tenant, company):
-        """Return a fully-qualified company string."""
+        """DEPRECATED. Return a fully-qualified company string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/companies/{company}",
             project=project,
@@ -89,21 +94,36 @@ class CompanyServiceClient(object):
 
     @classmethod
     def company_without_tenant_path(cls, project, company):
-        """Return a fully-qualified company_without_tenant string."""
+        """DEPRECATED. Return a fully-qualified company_without_tenant string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/companies/{company}", project=project, company=company
         )
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """Return a fully-qualified tenant string."""
+        """DEPRECATED. Return a fully-qualified tenant string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
