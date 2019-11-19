@@ -87,7 +87,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def entry_path(cls, project, location, entry_group, entry):
-        """Return a fully-qualified entry string."""
+        """DEPRECATED. Return a fully-qualified entry string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}",
             project=project,
@@ -98,7 +103,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def entry_group_path(cls, project, location, entry_group):
-        """Return a fully-qualified entry_group string."""
+        """DEPRECATED. Return a fully-qualified entry_group string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/entryGroups/{entry_group}",
             project=project,
@@ -108,7 +118,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def field_path(cls, project, location, tag_template, field):
-        """Return a fully-qualified field string."""
+        """DEPRECATED. Return a fully-qualified field string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}",
             project=project,
@@ -119,7 +134,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+        """DEPRECATED. Return a fully-qualified location string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
@@ -128,7 +148,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def tag_path(cls, project, location, entry_group, entry, tag):
-        """Return a fully-qualified tag string."""
+        """DEPRECATED. Return a fully-qualified tag string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}",
             project=project,
@@ -140,7 +165,12 @@ class DataCatalogClient(object):
 
     @classmethod
     def tag_template_path(cls, project, location, tag_template):
-        """Return a fully-qualified tag_template string."""
+        """DEPRECATED. Return a fully-qualified tag_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/tagTemplates/{tag_template}",
             project=project,
