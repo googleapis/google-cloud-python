@@ -85,7 +85,12 @@ class FirestoreAdminClient(object):
 
     @classmethod
     def database_path(cls, project, database):
-        """Return a fully-qualified database string."""
+        """DEPRECATED. Return a fully-qualified database string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/databases/{database}",
             project=project,
@@ -94,7 +99,12 @@ class FirestoreAdminClient(object):
 
     @classmethod
     def field_path(cls, project, database, collection_id, field_id):
-        """Return a fully-qualified field string."""
+        """DEPRECATED. Return a fully-qualified field string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/databases/{database}/collectionGroups/{collection_id}/fields/{field_id}",
             project=project,
@@ -105,7 +115,12 @@ class FirestoreAdminClient(object):
 
     @classmethod
     def index_path(cls, project, database, collection_id, index_id):
-        """Return a fully-qualified index string."""
+        """DEPRECATED. Return a fully-qualified index string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/databases/{database}/collectionGroups/{collection_id}/indexes/{index_id}",
             project=project,
@@ -116,7 +131,12 @@ class FirestoreAdminClient(object):
 
     @classmethod
     def parent_path(cls, project, database, collection_id):
-        """Return a fully-qualified parent string."""
+        """DEPRECATED. Return a fully-qualified parent string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/databases/{database}/collectionGroups/{collection_id}",
             project=project,
