@@ -217,7 +217,7 @@ class Model(object):
 
     @property
     def description(self):
-        """Union[str, None]: Description of the model (defaults to
+        """Optional[str]: Description of the model (defaults to
         :data:`None`).
         """
         return self._properties.get("description")
