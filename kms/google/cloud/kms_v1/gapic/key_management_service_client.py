@@ -92,7 +92,12 @@ class KeyManagementServiceClient(object):
 
     @classmethod
     def crypto_key_path(cls, project, location, key_ring, crypto_key):
-        """Return a fully-qualified crypto_key string."""
+        """DEPRECATED. Return a fully-qualified crypto_key string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}",
             project=project,
@@ -103,7 +108,12 @@ class KeyManagementServiceClient(object):
 
     @classmethod
     def crypto_key_path_path(cls, project, location, key_ring, crypto_key_path):
-        """Return a fully-qualified crypto_key_path string."""
+        """DEPRECATED. Return a fully-qualified crypto_key_path string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key_path=**}",
             project=project,
@@ -116,7 +126,12 @@ class KeyManagementServiceClient(object):
     def crypto_key_version_path(
         cls, project, location, key_ring, crypto_key, crypto_key_version
     ):
-        """Return a fully-qualified crypto_key_version string."""
+        """DEPRECATED. Return a fully-qualified crypto_key_version string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}",
             project=project,
@@ -128,7 +143,12 @@ class KeyManagementServiceClient(object):
 
     @classmethod
     def import_job_path(cls, project, location, key_ring, import_job):
-        """Return a fully-qualified import_job string."""
+        """DEPRECATED. Return a fully-qualified import_job string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}",
             project=project,
@@ -139,7 +159,12 @@ class KeyManagementServiceClient(object):
 
     @classmethod
     def key_ring_path(cls, project, location, key_ring):
-        """Return a fully-qualified key_ring string."""
+        """DEPRECATED. Return a fully-qualified key_ring string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}",
             project=project,
@@ -149,7 +174,12 @@ class KeyManagementServiceClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+        """DEPRECATED. Return a fully-qualified location string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
