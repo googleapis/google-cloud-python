@@ -91,7 +91,12 @@ class SecurityCenterClient(object):
 
     @classmethod
     def asset_security_marks_path(cls, organization, asset):
-        """Return a fully-qualified asset_security_marks string."""
+        """DEPRECATED. Return a fully-qualified asset_security_marks string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/assets/{asset}/securityMarks",
             organization=organization,
@@ -100,7 +105,12 @@ class SecurityCenterClient(object):
 
     @classmethod
     def finding_path(cls, organization, source, finding):
-        """Return a fully-qualified finding string."""
+        """DEPRECATED. Return a fully-qualified finding string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/sources/{source}/findings/{finding}",
             organization=organization,
@@ -110,7 +120,12 @@ class SecurityCenterClient(object):
 
     @classmethod
     def finding_security_marks_path(cls, organization, source, finding):
-        """Return a fully-qualified finding_security_marks string."""
+        """DEPRECATED. Return a fully-qualified finding_security_marks string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/sources/{source}/findings/{finding}/securityMarks",
             organization=organization,
@@ -120,14 +135,24 @@ class SecurityCenterClient(object):
 
     @classmethod
     def organization_path(cls, organization):
-        """Return a fully-qualified organization string."""
+        """DEPRECATED. Return a fully-qualified organization string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def organization_settings_path(cls, organization):
-        """Return a fully-qualified organization_settings string."""
+        """DEPRECATED. Return a fully-qualified organization_settings string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/organizationSettings",
             organization=organization,
@@ -135,7 +160,12 @@ class SecurityCenterClient(object):
 
     @classmethod
     def source_path(cls, organization, source):
-        """Return a fully-qualified source string."""
+        """DEPRECATED. Return a fully-qualified source string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/sources/{source}",
             organization=organization,
