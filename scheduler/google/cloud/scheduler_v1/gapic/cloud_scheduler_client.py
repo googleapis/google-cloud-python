@@ -81,7 +81,12 @@ class CloudSchedulerClient(object):
 
     @classmethod
     def job_path(cls, project, location, job):
-        """Return a fully-qualified job string."""
+        """DEPRECATED. Return a fully-qualified job string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/jobs/{job}",
             project=project,
@@ -91,7 +96,12 @@ class CloudSchedulerClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+        """DEPRECATED. Return a fully-qualified location string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
