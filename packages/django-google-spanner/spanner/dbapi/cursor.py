@@ -208,7 +208,7 @@ class Cursor(object):
         items = []
         for i in range(size):
             try:
-                items.append(self.__next__())
+                items.append(tuple(self.__next__()))
             except StopIteration:
                 break
 
