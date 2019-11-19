@@ -184,7 +184,10 @@ class Cursor(object):
         return self.__itr
 
     def fetchone(self):
-        return next(self)
+        try:
+            return next(self)
+        except StopIteration:
+            return None
 
     def fetchall(self):
         return list(self.__iter__())
