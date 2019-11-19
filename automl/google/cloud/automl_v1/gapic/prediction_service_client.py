@@ -91,7 +91,12 @@ class PredictionServiceClient(object):
 
     @classmethod
     def model_path(cls, project, location, model):
-        """Return a fully-qualified model string."""
+        """DEPRECATED. Return a fully-qualified model string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/models/{model}",
             project=project,
