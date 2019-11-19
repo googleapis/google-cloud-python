@@ -83,9 +83,8 @@ class TestErrorStatsServiceClient(object):
 
         # Setup Request
         project_name = client.project_path("[PROJECT]")
-        time_range = {}
 
-        paged_list_response = client.list_group_stats(project_name, time_range)
+        paged_list_response = client.list_group_stats(project_name)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
@@ -93,7 +92,7 @@ class TestErrorStatsServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = error_stats_service_pb2.ListGroupStatsRequest(
-            project_name=project_name, time_range=time_range
+            project_name=project_name
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -107,9 +106,8 @@ class TestErrorStatsServiceClient(object):
 
         # Setup request
         project_name = client.project_path("[PROJECT]")
-        time_range = {}
 
-        paged_list_response = client.list_group_stats(project_name, time_range)
+        paged_list_response = client.list_group_stats(project_name)
         with pytest.raises(CustomException):
             list(paged_list_response)
 

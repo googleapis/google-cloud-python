@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.errorreporting_v1beta1.proto import (
     common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2,
 )
@@ -27,13 +30,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\030ReportErrorsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\030ReportErrorsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\370\001\001\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
     ),
     serialized_pb=_b(
-        '\nMgoogle/devtools/clouderrorreporting_v1beta1/proto/report_errors_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x7f\n\x17ReportErrorEventRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12N\n\x05\x65vent\x18\x02 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent"\x1a\n\x18ReportErrorEventResponse"\xf7\x01\n\x12ReportedErrorEvent\x12.\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12T\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x0f\n\x07message\x18\x03 \x01(\t\x12J\n\x07\x63ontext\x18\x04 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContext2\xf8\x01\n\x13ReportErrorsService\x12\xe0\x01\n\x10ReportErrorEvent\x12\x44.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest\x1a\x45.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventResponse"?\x82\xd3\xe4\x93\x02\x39"0/v1beta1/{project_name=projects/*}/events:report:\x05\x65ventB\xf9\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x18ReportErrorsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
+        '\nMgoogle/devtools/clouderrorreporting_v1beta1/proto/report_errors_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb9\x01\n\x17ReportErrorEventRequest\x12I\n\x0cproject_name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12S\n\x05\x65vent\x18\x02 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.ReportedErrorEventB\x03\xe0\x41\x02"\x1a\n\x18ReportErrorEventResponse"\x8b\x02\n\x12ReportedErrorEvent\x12\x33\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x01\x12Y\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContextB\x03\xe0\x41\x02\x12\x14\n\x07message\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12O\n\x07\x63ontext\x18\x04 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContextB\x03\xe0\x41\x01\x32\xe5\x02\n\x13ReportErrorsService\x12\xf5\x01\n\x10ReportErrorEvent\x12\x44.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest\x1a\x45.google.devtools.clouderrorreporting.v1beta1.ReportErrorEventResponse"T\x82\xd3\xe4\x93\x02\x39"0/v1beta1/{project_name=projects/*}/events:report:\x05\x65vent\xda\x41\x12project_name,event\x1aV\xca\x41"clouderrorreporting.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xfc\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x18ReportErrorsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xf8\x01\x01\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -62,7 +68,9 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -80,7 +88,7 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -92,8 +100,8 @@ _REPORTERROREVENTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=253,
-    serialized_end=380,
+    serialized_start=339,
+    serialized_end=524,
 )
 
 
@@ -112,8 +120,8 @@ _REPORTERROREVENTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=382,
-    serialized_end=408,
+    serialized_start=526,
+    serialized_end=552,
 )
 
 
@@ -139,7 +147,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -157,7 +165,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -175,7 +183,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -193,7 +201,7 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -205,8 +213,8 @@ _REPORTEDERROREVENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=411,
-    serialized_end=658,
+    serialized_start=555,
+    serialized_end=822,
 )
 
 _REPORTERROREVENTREQUEST.fields_by_name["event"].message_type = _REPORTEDERROREVENT
@@ -239,13 +247,13 @@ ReportErrorEventRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_name:
-          [Required] The resource name of the Google Cloud Platform
+          Required. The resource name of the Google Cloud Platform
           project. Written as ``projects/`` plus the `Google Cloud
           Platform project ID
           <https://support.google.com/cloud/answer/6158840>`__. Example:
           ``projects/my-project-123``.
       event:
-          [Required] The error event to be reported.
+          Required. The error event to be reported.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.ReportErrorEventRequest)
     ),
@@ -277,20 +285,41 @@ ReportedErrorEvent = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       event_time:
-          [Optional] Time when the event occurred. If not provided, the
+          Optional. Time when the event occurred. If not provided, the
           time when the event was received by the Error Reporting system
           will be used.
       service_context:
-          [Required] The service context in which this error has
+          Required. The service context in which this error has
           occurred.
       message:
-          [Required] A message describing the error. The message can
-          contain an exception stack in one of the supported programming
-          languages and formats. In that case, the message is parsed and
-          detailed exception information is returned when retrieving the
-          error event again.
+          Required. The error message. If no ``context.reportLocation``
+          is provided, the message must contain a header (typically
+          consisting of the exception type name and an error message)
+          and an exception stack trace in one of the supported
+          programming languages and formats. Supported languages are
+          Java, Python, JavaScript, Ruby, C#, PHP, and Go. Supported
+          stack trace formats are:  -  **Java**: Must be the return
+          value of    ```Throwable.printStackTrace()`` <https://docs.ora
+          cle.com/javase/7/docs/api/java/lang/Throwable.html#printStackT
+          race%28%29>`__. -  **Python**: Must be the return value of
+          ```traceback.format_exc()`` <https://docs.python.org/2/library
+          /traceback.html#traceback.format_exc>`__. -  **JavaScript**:
+          Must be the value of    ```error.stack``
+          <https://github.com/v8/v8/wiki/Stack-Trace-API>`__    as
+          returned by V8. -  **Ruby**: Must contain frames returned by
+          ```Exception.backtrace`` <https://ruby-
+          doc.org/core-2.2.0/Exception.html#method-i-backtrace>`__. -
+          **C#**: Must be the return value of
+          ```Exception.ToString()`` <https://msdn.microsoft.com/en-
+          us/library/system.exception.tostring.aspx>`__. -  **PHP**:
+          Must start with    ``PHP (Notice|Parse error|Fatal
+          error|Warning)`` and contain the    result of
+          ```(string)$exception``
+          <http://php.net/manual/en/exception.tostring.php>`__. -
+          **Go**: Must be the return value of    ```runtime.Stack()``
+          <https://golang.org/pkg/runtime/debug/#Stack>`__.
       context:
-          [Optional] A description of the context in which the error
+          Optional. A description of the context in which the error
           occurred.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent)
@@ -300,15 +329,23 @@ _sym_db.RegisterMessage(ReportedErrorEvent)
 
 
 DESCRIPTOR._options = None
+_REPORTERROREVENTREQUEST.fields_by_name["project_name"]._options = None
+_REPORTERROREVENTREQUEST.fields_by_name["event"]._options = None
+_REPORTEDERROREVENT.fields_by_name["event_time"]._options = None
+_REPORTEDERROREVENT.fields_by_name["service_context"]._options = None
+_REPORTEDERROREVENT.fields_by_name["message"]._options = None
+_REPORTEDERROREVENT.fields_by_name["context"]._options = None
 
 _REPORTERRORSSERVICE = _descriptor.ServiceDescriptor(
     name="ReportErrorsService",
     full_name="google.devtools.clouderrorreporting.v1beta1.ReportErrorsService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=661,
-    serialized_end=909,
+    serialized_options=_b(
+        '\312A"clouderrorreporting.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform'
+    ),
+    serialized_start=825,
+    serialized_end=1182,
     methods=[
         _descriptor.MethodDescriptor(
             name="ReportErrorEvent",
@@ -318,7 +355,7 @@ _REPORTERRORSSERVICE = _descriptor.ServiceDescriptor(
             input_type=_REPORTERROREVENTREQUEST,
             output_type=_REPORTERROREVENTRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\0029"0/v1beta1/{project_name=projects/*}/events:report:\005event'
+                '\202\323\344\223\0029"0/v1beta1/{project_name=projects/*}/events:report:\005event\332A\022project_name,event'
             ),
         )
     ],
