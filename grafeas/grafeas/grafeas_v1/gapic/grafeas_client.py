@@ -67,14 +67,24 @@ class GrafeasClient(object):
 
     @classmethod
     def note_path(cls, project, note):
-        """Return a fully-qualified note string."""
+        """DEPRECATED. Return a fully-qualified note string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/notes/{note}", project=project, note=note,
         )
 
     @classmethod
     def occurrence_path(cls, project, occurrence):
-        """Return a fully-qualified occurrence string."""
+        """DEPRECATED. Return a fully-qualified occurrence string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/occurrences/{occurrence}",
             project=project,
@@ -83,7 +93,12 @@ class GrafeasClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
