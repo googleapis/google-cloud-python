@@ -77,7 +77,12 @@ class IncidentServiceClient(object):
 
     @classmethod
     def annotation_path(cls, project, incident, annotation):
-        """Return a fully-qualified annotation string."""
+        """DEPRECATED. Return a fully-qualified annotation string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/annotations/{annotation}",
             project=project,
@@ -87,7 +92,12 @@ class IncidentServiceClient(object):
 
     @classmethod
     def artifact_path(cls, project, incident, artifact):
-        """Return a fully-qualified artifact string."""
+        """DEPRECATED. Return a fully-qualified artifact string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/artifacts/{artifact}",
             project=project,
@@ -97,7 +107,12 @@ class IncidentServiceClient(object):
 
     @classmethod
     def incident_path(cls, project, incident):
-        """Return a fully-qualified incident string."""
+        """DEPRECATED. Return a fully-qualified incident string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}",
             project=project,
@@ -106,14 +121,24 @@ class IncidentServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def role_assignment_path(cls, project, incident, role_assignment):
-        """Return a fully-qualified role_assignment string."""
+        """DEPRECATED. Return a fully-qualified role_assignment string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/roleAssignments/{role_assignment}",
             project=project,
@@ -123,14 +148,24 @@ class IncidentServiceClient(object):
 
     @classmethod
     def signal_path(cls, project, signal):
-        """Return a fully-qualified signal string."""
+        """DEPRECATED. Return a fully-qualified signal string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/signals/{signal}", project=project, signal=signal
         )
 
     @classmethod
     def subscription_path(cls, project, incident, subscription):
-        """Return a fully-qualified subscription string."""
+        """DEPRECATED. Return a fully-qualified subscription string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/subscriptions/{subscription}",
             project=project,
@@ -140,7 +175,12 @@ class IncidentServiceClient(object):
 
     @classmethod
     def tag_path(cls, project, incident, tag):
-        """Return a fully-qualified tag string."""
+        """DEPRECATED. Return a fully-qualified tag string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/tags/{tag}",
             project=project,
