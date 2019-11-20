@@ -89,14 +89,24 @@ class WorkflowTemplateServiceClient(object):
 
     @classmethod
     def region_path(cls, project, region):
-        """Return a fully-qualified region string."""
+        """DEPRECATED. Return a fully-qualified region string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/regions/{region}", project=project, region=region
         )
 
     @classmethod
     def workflow_template_path(cls, project, region, workflow_template):
-        """Return a fully-qualified workflow_template string."""
+        """DEPRECATED. Return a fully-qualified workflow_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/regions/{region}/workflowTemplates/{workflow_template}",
             project=project,

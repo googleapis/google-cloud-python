@@ -79,7 +79,12 @@ class AutoscalingPolicyServiceClient(object):
 
     @classmethod
     def autoscaling_policy_path(cls, project, region, autoscaling_policy):
-        """Return a fully-qualified autoscaling_policy string."""
+        """DEPRECATED. Return a fully-qualified autoscaling_policy string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}",
             project=project,
@@ -89,7 +94,12 @@ class AutoscalingPolicyServiceClient(object):
 
     @classmethod
     def region_path(cls, project, region):
-        """Return a fully-qualified region string."""
+        """DEPRECATED. Return a fully-qualified region string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/regions/{region}", project=project, region=region
         )
