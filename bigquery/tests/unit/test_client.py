@@ -46,6 +46,7 @@ import google.cloud._helpers
 from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
 from tests.unit.helpers import make_connection
+from google.cloud.bigquery.retry import DEFAULT_RETRY
 
 
 def _make_credentials():
@@ -2583,6 +2584,94 @@ class TestClient(unittest.TestCase):
         )
 
         conn.api_request.assert_called_with(method="DELETE", path=path)
+
+    def _create_job_helper(
+        self, job_config, client_method, query=None, source=None, destination=None
+    ):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        client._connection = make_connection()
+        rf1 = mock.Mock()
+        get_config_patch = mock.patch(
+            "google.cloud.bigquery.job._JobConfig.from_api_repr", return_value=rf1,
+        )
+        load_patch = mock.patch(client_method, autospec=True)
+        with load_patch as client_method, get_config_patch:
+            client.create_job(
+                job_config=job_config,
+                source=source,
+                destination=destination,
+                query=query,
+            )
+        if query:
+            client_method.assert_called_once_with(
+                client, query, job_config=rf1, retry=DEFAULT_RETRY
+            )
+        else:
+            client_method.assert_called_once_with(
+                client, source, destination, job_config=rf1, retry=DEFAULT_RETRY
+            )
+
+    def test_create_job_load_config(self):
+        configuration = {"load": {"sourceUris": "http://example.com/source.csv"}}
+        self._create_job_helper(
+            configuration,
+            "google.cloud.bigquery.client.Client.load_table_from_uri",
+            source="http://example.com/source.csv",
+            destination="dataset_id",
+        )
+
+    def test_create_job_copy_config(self):
+        configuration = {
+            "copy": {
+                "sourceTables": "sourceTable",
+                "destinationTable": "destinationTable",
+            }
+        }
+
+        self._create_job_helper(
+            configuration,
+            "google.cloud.bigquery.client.Client.copy_table",
+            source=mock.Mock(),
+            destination=mock.Mock(),
+        )
+
+    def test_create_job_extract_config(self):
+        configuration = {
+            "extract": {
+                "sourceTable": {"projectId": "project"},
+                "destinationUris": ["destination"],
+            }
+        }
+        self._create_job_helper(
+            configuration,
+            "google.cloud.bigquery.client.Client.extract_table",
+            source=mock.Mock(),
+            destination=mock.Mock(),
+        )
+
+    def test_create_job_query_config(self):
+        configuration = {
+            "query": {"query": "query", "destinationTable": {"tableId": "table_id"}}
+        }
+        self._create_job_helper(
+            configuration,
+            "google.cloud.bigquery.client.Client.query",
+            query=mock.Mock(),
+        )
+
+    def test_create_job_w_invalid_job_config(self):
+        configuration = {"unknown": {}}
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        with self.assertRaises(TypeError) as exc:
+            client.create_job(job_config=configuration)
+
+        self.assertIn("Invalid job configuration", exc.exception.args[0])
 
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob

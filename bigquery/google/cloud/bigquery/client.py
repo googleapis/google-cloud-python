@@ -74,7 +74,6 @@ from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 
-
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
@@ -1126,6 +1125,82 @@ class Client(ClientWithProject):
         elif "query" in config:
             return job.QueryJob.from_api_repr(resource, self)
         return job.UnknownJob.from_api_repr(resource, self)
+
+    def create_job(
+        self, job_config, source=None, destination=None, query=None, retry=DEFAULT_RETRY
+    ):
+        """Create a new job.
+        Arguments:
+            job_config (dict): configuration job representation returned from the API
+
+        Keyword Arguments:
+            source (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
+                Sequence[str]
+            ]):
+                (Optional) URIs of data files to be loaded; in format
+                ``gs://<bucket_name>/<object_name_or_glob>`` or  Table
+                into which data is to be loaded.
+
+            destination (Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
+            ]):
+                (Optional) Table into which data is to be loaded. If a string is passed
+                in, this method attempts to create a table reference from a string using
+                :func:`google.cloud.bigquery.table.TableReference.from_string` or URIs of
+                Cloud Storage file(s) into which table data is to be extracted; in format
+                ``gs://<bucket_name>/<object_name_or_glob>``.
+
+            query (str):
+                (Optional) SQL query to be executed. Defaults to the standard SQL dialect.
+                Use the ``job_config`` parameter to change dialects.
+
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
+
+        Returns:
+            Union[ \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
+            ]:
+                A new job instance.
+        """
+
+        if "load" in job_config:
+            job_config = google.cloud.bigquery.job.LoadJobConfig.from_api_repr(
+                job_config
+            )
+            return self.load_table_from_uri(
+                source, destination, job_config=job_config, retry=retry
+            )
+        elif "copy" in job_config:
+            job_config = google.cloud.bigquery.job.CopyJobConfig.from_api_repr(
+                job_config
+            )
+            return self.copy_table(
+                source, destination, job_config=job_config, retry=retry
+            )
+        elif "extract" in job_config:
+            job_config = google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(
+                job_config
+            )
+            return self.extract_table(
+                source, destination, job_config=job_config, retry=retry
+            )
+        elif "query" in job_config:
+            del job_config["query"]["destinationTable"]
+            job_config = google.cloud.bigquery.job.QueryJobConfig.from_api_repr(
+                job_config
+            )
+            return self.query(query, job_config=job_config, retry=retry)
+        else:
+            raise TypeError("Invalid job configuration received.")
 
     def get_job(self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
         """Fetch a job for the project associated with this client.
