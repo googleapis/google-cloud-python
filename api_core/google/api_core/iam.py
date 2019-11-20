@@ -96,7 +96,10 @@ class Policy(collections_abc.MutableMapping):
 
     def __getitem__(self, key):
         self.__check_version__()
-        next(set(b['members']) for b in self._bindings if b['role'] is key)
+        for b in self._bindings:
+            if b['role'] is key:
+                return set(b['members'])
+        return set()
 
     def __setitem__(self, key, value):
         self.__check_version__()
@@ -109,7 +112,11 @@ class Policy(collections_abc.MutableMapping):
 
     def __delitem__(self, key):
         self.__check_version__()
+        old_length = len(self._bindings)
         self._bindings = [b for b in self._bindings if b['role'] is not key]
+
+        if len(self._bindings) is old_length:
+            raise KeyError(key)
 
     def __getiterator__(self):
         for binding in self._bindings:
