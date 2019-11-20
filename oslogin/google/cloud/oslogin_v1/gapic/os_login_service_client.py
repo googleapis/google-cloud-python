@@ -79,14 +79,24 @@ class OsLoginServiceClient(object):
 
     @classmethod
     def posix_account_path(cls, user, project):
-        """Return a fully-qualified posix_account string."""
+        """DEPRECATED. Return a fully-qualified posix_account string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "users/{user}/projects/{project}", user=user, project=project
         )
 
     @classmethod
     def ssh_public_key_path(cls, user, fingerprint):
-        """Return a fully-qualified ssh_public_key string."""
+        """DEPRECATED. Return a fully-qualified ssh_public_key string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "users/{user}/sshPublicKeys/{fingerprint}",
             user=user,
@@ -95,7 +105,12 @@ class OsLoginServiceClient(object):
 
     @classmethod
     def user_path(cls, user):
-        """Return a fully-qualified user string."""
+        """DEPRECATED. Return a fully-qualified user string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand("users/{user}", user=user)
 
     def __init__(
