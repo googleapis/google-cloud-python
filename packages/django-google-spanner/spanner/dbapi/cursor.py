@@ -17,7 +17,7 @@ import google.api_core.exceptions as grpc_exceptions
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, parse_insert,
-    sql_pyformat_args_to_spanner,
+    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -124,10 +124,12 @@ class Cursor(object):
         if params:
             # Case c)
             parts = parse_insert(sql)
+            columns = parts.get('columns')
+            rows = rows_for_insert_or_update(columns, params, parts.get('values_pyformat'))
             return transaction.insert_or_update(
                 table=parts.get('table'),
-                columns=parts.get('columns'),
-                values=[params],
+                columns=columns,
+                values=rows,
             )
         else:
             # Either of cases a) or b)

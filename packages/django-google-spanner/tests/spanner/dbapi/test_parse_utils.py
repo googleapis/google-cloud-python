@@ -18,7 +18,8 @@ from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
     parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
-    sql_pyformat_args_to_spanner, validate_instance_config,
+    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    validate_instance_config,
 )
 
 
@@ -220,6 +221,49 @@ class ParseUtilsTests(TestCase):
             with self.subTest(sql=sql):
                 got = parse_insert(sql)
                 self.assertEqual(got, want, 'Mismatch with parse_insert of `%s`' % sql)
+
+    def test_rows_for_insert_or_update(self):
+        cases = [
+            (
+                ['id', 'app', 'name'],
+                [(5, 'ap', 'n',), (6, 'bp', 'm',)],
+                None,
+                [(5, 'ap', 'n',), (6, 'bp', 'm',)],
+            ),
+            (
+                ['app', 'name'],
+                [('ap', 'n',), ('bp', 'm',)],
+                None,
+                [('ap', 'n'), ('bp', 'm',)]
+            ),
+            (
+                ['app', 'name', 'fn'],
+                ['ap', 'n', 'f1', 'bp', 'm', 'f2', 'cp', 'o', 'f3'],
+                ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)'],
+                [('ap', 'n', 'f1',), ('bp', 'm', 'f2',), ('cp', 'o', 'f3',)]
+            ),
+            (
+                ['app', 'name', 'fn', 'ln'],
+                [('ap', 'n', (45, 'nested',), 'll',), ('bp', 'm', 'f2', 'mt',), ('fp', 'cp', 'o', 'f3',)],
+                None,
+                [
+                    ('ap', 'n', (45, 'nested',), 'll',),
+                    ('bp', 'm', 'f2', 'mt',),
+                    ('fp', 'cp', 'o', 'f3',),
+                ],
+            ),
+            (
+                ['app', 'name', 'fn'],
+                ['ap', 'n', 'f1'],
+                None,
+                [('ap', 'n', 'f1',)]
+            ),
+        ]
+
+        for i, (columns, params, pyformat_args, want) in enumerate(cases):
+            with self.subTest(i=i):
+                got = rows_for_insert_or_update(columns, params, pyformat_args)
+                self.assertEqual(got, want)
 
     def test_sql_pyformat_args_to_spanner(self):
         cases = [
