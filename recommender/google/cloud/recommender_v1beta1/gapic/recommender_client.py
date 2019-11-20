@@ -81,7 +81,12 @@ class RecommenderClient(object):
 
     @classmethod
     def recommendation_path(cls, project, location, recommender, recommendation):
-        """Return a fully-qualified recommendation string."""
+        """DEPRECATED. Return a fully-qualified recommendation string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}",
             project=project,
@@ -92,7 +97,12 @@ class RecommenderClient(object):
 
     @classmethod
     def recommender_path(cls, project, location, recommender):
-        """Return a fully-qualified recommender string."""
+        """DEPRECATED. Return a fully-qualified recommender string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}",
             project=project,
