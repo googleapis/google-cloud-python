@@ -16,9 +16,9 @@ from unittest import TestCase
 
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    STMT_DDL, STMT_NON_UPDATING, add_missing_id, classify_stmt,
-    extract_connection_params, parse_insert, parse_spanner_url,
-    reINSTANCE_CONFIG, sql_pyformat_args_to_spanner, validate_instance_config,
+    STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
+    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    sql_pyformat_args_to_spanner, validate_instance_config,
 )
 
 
@@ -220,75 +220,6 @@ class ParseUtilsTests(TestCase):
             with self.subTest(sql=sql):
                 got = parse_insert(sql)
                 self.assertEqual(got, want, 'Mismatch with parse_insert of `%s`' % sql)
-
-    def test_add_missing_id(self):
-        def gen_id():
-            cur_id = 0
-            while 1:
-                cur_id += 1
-                yield cur_id
-
-        gen_gen_id = gen_id()
-
-        def next_id():
-            return next(gen_gen_id)
-
-        cases = [
-            (
-                ['id', 'app', 'name'],
-                [(5, 'ap', 'n',), (6, 'bp', 'm',)],
-                None,
-                (
-                    ['id', 'app', 'name'],
-                    [(5, 'ap', 'n',), (6, 'bp', 'm',)],
-                ),
-            ),
-            (
-                ['app', 'name'],
-                [('ap', 'n',), ('bp', 'm',)],
-                None,
-                (
-                    ['app', 'name', 'id'],
-                    [('ap', 'n', 1,), ('bp', 'm', 2,)]
-                ),
-            ),
-            (
-                ['app', 'name', 'fn'],
-                ['ap', 'n', 'f1', 'bp', 'm', 'f2', 'cp', 'o', 'f3'],
-                ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)'],
-                (
-                    ['app', 'name', 'fn', 'id'],
-                    [('ap', 'n', 'f1', 3,), ('bp', 'm', 'f2', 4,), ('cp', 'o', 'f3', 5,)]
-                ),
-            ),
-            (
-                ['app', 'name', 'fn', 'ln'],
-                [('ap', 'n', (45, 'nested',), 'll',), ('bp', 'm', 'f2', 'mt',), ('fp', 'cp', 'o', 'f3',)],
-                None,
-                (
-                    ['app', 'name', 'fn', 'ln', 'id'],
-                    [
-                        ('ap', 'n', (45, 'nested',), 'll', 6,),
-                        ('bp', 'm', 'f2', 'mt', 7,),
-                        ('fp', 'cp', 'o', 'f3', 8,),
-                    ],
-                ),
-            ),
-            (
-                ['app', 'name', 'fn'],
-                ['ap', 'n', 'f1'],
-                None,
-                (
-                    ['app', 'name', 'fn', 'id'],
-                    [('ap', 'n', 'f1', 9,)]
-                ),
-            ),
-        ]
-
-        for i, (columns, params, pyformat_args, want) in enumerate(cases):
-            with self.subTest(i=i):
-                got = add_missing_id(columns, params, next_id, pyformat_args)
-                self.assertEqual(got, want)
 
     def test_sql_pyformat_args_to_spanner(self):
         cases = [

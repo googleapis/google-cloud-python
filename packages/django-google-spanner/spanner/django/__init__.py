@@ -12,19 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The first step is to monkey-patch AutoField that
-# contains a primary_key=True set and insert in a UUID.
+# Monkey-patch AutoField to generate a random value since Cloud Spanner can't
+# do that.
+from uuid import uuid4
 
-from django.db.models.fields import AutoField
-from spanner.dbapi import gen_rand_int64
-
-
-def with_rand_int64_pre_save(self, model_instance, add):
-    if add:
-        return gen_rand_int64()
-    else:
-        return getattr(model_instance, 'id', None)
+from django.db.models.fields import AutoField, Field
 
 
-# Overwrite any pre_save value.
-AutoField.pre_save = with_rand_int64_pre_save
+def gen_rand_int64():
+    # Credit to https://stackoverflow.com/a/3530326.
+    return uuid4().int & 0x7FFFFFFFFFFFFFFF
+
+
+def autofield_init(self, *args, **kwargs):
+    kwargs['blank'] = True
+    Field.__init__(self, *args, **kwargs)
+    self.default = gen_rand_int64
+
+
+AutoField.__init__ = autofield_init

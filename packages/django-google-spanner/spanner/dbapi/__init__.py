@@ -22,8 +22,7 @@ from .exceptions import (
     Warning,
 )
 from .parse_utils import (
-    extract_connection_params, gen_rand_int64, parse_spanner_url,
-    validate_instance_config,
+    extract_connection_params, parse_spanner_url, validate_instance_config,
 )
 from .types import (
     BINARY, DATETIME, NUMBER, ROWID, STRING, Date, DateFromTicks, Time,
@@ -122,7 +121,7 @@ __all__ = [
     'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
     'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
     'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
-    'extract_connection_params', 'parse_spanner_url', 'gen_rand_int64',
+    'extract_connection_params', 'parse_spanner_url',
     'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp', 'TimestampFromTicks',
     'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID',
 ]

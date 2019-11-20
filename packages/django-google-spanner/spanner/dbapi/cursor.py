@@ -16,8 +16,8 @@ import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
-    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, add_missing_id, classify_stmt,
-    gen_rand_int64, parse_insert, sql_pyformat_args_to_spanner,
+    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, parse_insert,
+    sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -124,15 +124,10 @@ class Cursor(object):
         if params:
             # Case c)
             parts = parse_insert(sql)
-            columns, params = add_missing_id(parts.get('columns'), params,
-                                             gen_rand_int64,
-                                             parts.get('values_pyformat'),
-                                             )
-
             return transaction.insert_or_update(
                 table=parts.get('table'),
-                columns=columns,
-                values=params,
+                columns=parts.get('columns'),
+                values=[params],
             )
         else:
             # Either of cases a) or b)
