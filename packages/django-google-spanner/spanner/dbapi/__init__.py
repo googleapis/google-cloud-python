@@ -105,14 +105,16 @@ def connect(spanner_url, credentials_uri=None):
 
         instance.configuration_name = instance_config
         lro = instance.create()
+        # Synchronously wait on the operation's completion.
         # TODO: Report the long-running operation result.
-        _ = lro
+        _ = lro.result()
 
     db = instance.database(db_name)
     if not db.exists():
         lro = db.create()
+        # Synchronously wait on the operation's completion.
         # TODO: Report the long-running operation result.
-        _ = lro
+        _ = lro.result()
 
     return Connection(db)
 
