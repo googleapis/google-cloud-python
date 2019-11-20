@@ -72,6 +72,22 @@ class Policy(BasePolicy):
 
                  If no etag is provided in the call to setIamPolicy, then the
                  existing policy is overwritten blindly.
+    :type version: int
+    :param version: The syntax schema version of the policy.
+
+    Note:
+        Using conditions in bindings requires the policy's version to be set
+        to `3` or greater, depending on the versions that are currently supported.
+
+        Accessing the policy using dict operations will raise InvalidOperationException
+        when the policy's version is set to 3.
+
+        Use the policy.bindings getter/setter to retrieve and modify the policy's bindings.
+
+    See:
+        IAM Policy https://cloud.google.com/iam/reference/rest/v1/Policy
+        Policy versions https://cloud.google.com/iam/docs/policies#versions
+        Conditions overview https://cloud.google.com/iam/docs/conditions-overview.
     """
 
     def __init__(self, etag=None, version=None):
@@ -83,6 +99,8 @@ class Policy(BasePolicy):
     def bigtable_admins(self):
         """Access to bigtable.admin role memebers
 
+        Raise InvalidOperationException if version is greater than 1 or policy contains conditions.
+
         For example:
 
         .. literalinclude:: snippets.py
@@ -90,13 +108,15 @@ class Policy(BasePolicy):
             :end-before: [END bigtable_admins_policy]
         """
         result = set()
-        for member in self._bindings.get(BIGTABLE_ADMIN_ROLE, ()):
+        for member in self.get(BIGTABLE_ADMIN_ROLE, ()):
             result.add(member)
         return frozenset(result)
 
     @property
     def bigtable_readers(self):
         """Access to bigtable.reader role memebers
+
+        Raise InvalidOperationException if version is greater than 1 or policy contains conditions.
 
         For example:
 
@@ -105,13 +125,15 @@ class Policy(BasePolicy):
             :end-before: [END bigtable_readers_policy]
         """
         result = set()
-        for member in self._bindings.get(BIGTABLE_READER_ROLE, ()):
+        for member in self.get(BIGTABLE_READER_ROLE, ()):
             result.add(member)
         return frozenset(result)
 
     @property
     def bigtable_users(self):
         """Access to bigtable.user role memebers
+
+        Raise InvalidOperationException if version is greater than 1 or policy contains conditions.
 
         For example:
 
@@ -120,13 +142,15 @@ class Policy(BasePolicy):
             :end-before: [END bigtable_users_policy]
         """
         result = set()
-        for member in self._bindings.get(BIGTABLE_USER_ROLE, ()):
+        for member in self.get(BIGTABLE_USER_ROLE, ()):
             result.add(member)
         return frozenset(result)
 
     @property
     def bigtable_viewers(self):
         """Access to bigtable.viewer role memebers
+
+        Raise InvalidOperationException if version is greater than 1 or policy contains conditions.
 
         For example:
 
@@ -135,7 +159,7 @@ class Policy(BasePolicy):
             :end-before: [END bigtable_viewers_policy]
         """
         result = set()
-        for member in self._bindings.get(BIGTABLE_VIEWER_ROLE, ()):
+        for member in self.get(BIGTABLE_VIEWER_ROLE, ()):
             result.add(member)
         return frozenset(result)
 
@@ -152,8 +176,17 @@ class Policy(BasePolicy):
         """
         policy = cls(policy_pb.etag, policy_pb.version)
 
-        for binding in policy_pb.bindings:
-            policy[binding.role] = sorted(binding.members)
+        policy.bindings = bindings = []
+        for binding_pb in policy_pb.bindings:
+            binding = {"role": binding_pb.role, "members": set(binding_pb.members)}
+            condition = binding_pb.condition
+            if condition and condition.expression:
+                binding["condition"] = {
+                    "title": condition.title,
+                    "description": condition.description,
+                    "expression": condition.expression,
+                }
+            bindings.append(binding)
 
         return policy
 
@@ -169,8 +202,13 @@ class Policy(BasePolicy):
             etag=self.etag,
             version=self.version or 0,
             bindings=[
-                policy_pb2.Binding(role=role, members=sorted(self[role]))
-                for role in self
+                policy_pb2.Binding(
+                    role=binding["role"],
+                    members=sorted(binding["members"]),
+                    condition=binding.get("condition"),
+                )
+                for binding in self.bindings
+                if binding["members"]
             ],
         )
 

@@ -38,7 +38,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(dict(policy), {})
 
     def test_ctor_explicit(self):
-        VERSION = 17
+        VERSION = 1
         ETAG = b"ETAG"
         empty = frozenset()
         policy = self._make_one(ETAG, VERSION)
@@ -108,7 +108,7 @@ class TestPolicy(unittest.TestCase):
         from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
         ETAG = b"ETAG"
-        VERSION = 17
+        VERSION = 1
         members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
         empty = frozenset()
         message = policy_pb2.Policy(
@@ -127,6 +127,46 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(len(policy), 1)
         self.assertEqual(dict(policy), {BIGTABLE_ADMIN_ROLE: set(members)})
 
+    def test_from_pb_with_condition(self):
+        import pytest
+        from google.iam.v1 import policy_pb2
+        from google.api_core.iam import InvalidOperationException, _DICT_ACCESS_MSG
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        ETAG = b"ETAG"
+        VERSION = 3
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        empty = frozenset()
+        BINDINGS = [
+            {
+                "role": BIGTABLE_ADMIN_ROLE,
+                "members": members,
+                "condition": {
+                    "title": "request_time",
+                    "description": "Requests made before 2021-01-01T00:00:00Z",
+                    "expression": 'request.time < timestamp("2021-01-01T00:00:00Z")',
+                },
+            }
+        ]
+        message = policy_pb2.Policy(etag=ETAG, version=VERSION, bindings=BINDINGS,)
+        klass = self._get_target_class()
+        policy = klass.from_pb(message)
+        self.assertEqual(policy.etag, ETAG)
+        self.assertEqual(policy.version, VERSION)
+        self.assertEqual(policy.bindings[0]["role"], BIGTABLE_ADMIN_ROLE)
+        self.assertEqual(policy.bindings[0]["members"], set(members))
+        self.assertEqual(policy.bindings[0]["condition"], BINDINGS[0]["condition"])
+        with pytest.raises(InvalidOperationException, match=_DICT_ACCESS_MSG):
+            policy.bigtable_admins
+        with pytest.raises(InvalidOperationException, match=_DICT_ACCESS_MSG):
+            policy.bigtable_readers
+        with pytest.raises(InvalidOperationException, match=_DICT_ACCESS_MSG):
+            policy.bigtable_users
+        with pytest.raises(InvalidOperationException, match=_DICT_ACCESS_MSG):
+            policy.bigtable_viewers
+        with pytest.raises(InvalidOperationException, match=_DICT_ACCESS_MSG):
+            len(policy)
+
     def test_to_pb_empty(self):
         from google.iam.v1 import policy_pb2
 
@@ -139,7 +179,7 @@ class TestPolicy(unittest.TestCase):
         from google.iam.v1 import policy_pb2
         from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
-        VERSION = 17
+        VERSION = 1
         ETAG = b"ETAG"
         members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
         policy = self._make_one(ETAG, VERSION)
@@ -154,8 +194,42 @@ class TestPolicy(unittest.TestCase):
 
         self.assertEqual(policy.to_pb(), expected)
 
+    def test_to_pb_with_condition(self):
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        VERSION = 3
+        ETAG = b"ETAG"
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        condition = {
+            "title": "request_time",
+            "description": "Requests made before 2021-01-01T00:00:00Z",
+            "expression": 'request.time < timestamp("2021-01-01T00:00:00Z")',
+        }
+        policy = self._make_one(ETAG, VERSION)
+        policy.bindings = [
+            {
+                "role": BIGTABLE_ADMIN_ROLE,
+                "members": set(members),
+                "condition": condition,
+            }
+        ]
+        expected = policy_pb2.Policy(
+            etag=ETAG,
+            version=VERSION,
+            bindings=[
+                policy_pb2.Binding(
+                    role=BIGTABLE_ADMIN_ROLE,
+                    members=sorted(members),
+                    condition=condition,
+                )
+            ],
+        )
+
+        self.assertEqual(policy.to_pb(), expected)
+
     def test_from_api_repr_wo_etag(self):
-        VERSION = 17
+        VERSION = 1
         empty = frozenset()
         resource = {"version": VERSION}
         klass = self._get_target_class()
@@ -187,7 +261,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(dict(policy), {})
 
     def test_to_api_repr_wo_etag(self):
-        VERSION = 17
+        VERSION = 1
         resource = {"version": VERSION}
         policy = self._make_one(version=VERSION)
         self.assertEqual(policy.to_api_repr(), resource)
