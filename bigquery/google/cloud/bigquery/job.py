@@ -1345,7 +1345,7 @@ class LoadJobConfig(_JobConfig):
     @property
     def use_avro_logical_types(self):
         """bool: For loads of Avro data, governs whether Avro logical types are
-        converted to their corresponding BigQuery types(e.g. TIMESTAMP) rather than
+        converted to their corresponding BigQuery types (e.g. TIMESTAMP) rather than
         raw types (e.g. INTEGER).
         """
         return self._get_sub_prop("useAvroLogicalTypes")
@@ -1937,6 +1937,18 @@ class ExtractJobConfig(_JobConfig):
     @print_header.setter
     def print_header(self, value):
         self._set_sub_prop("printHeader", value)
+
+    @property
+    def use_avro_logical_types(self):
+        """bool: For loads of Avro data, governs whether Avro logical types are
+        converted to their corresponding BigQuery types (e.g. TIMESTAMP) rather than
+        raw types (e.g. INTEGER).
+        """
+        return self._get_sub_prop("useAvroLogicalTypes")
+
+    @use_avro_logical_types.setter
+    def use_avro_logical_types(self, value):
+        self._set_sub_prop("useAvroLogicalTypes", bool(value))
 
 
 class ExtractJob(_AsyncJob):
