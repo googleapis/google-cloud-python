@@ -56,6 +56,11 @@ _ASSIGNMENT_DEPRECATED_MSG = """\
 Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 
 
+class InvalidOperationException(Exception):
+    """Raised when trying to use Policy class as a dict."""
+    pass
+
+
 class Policy(collections_abc.MutableMapping):
     """IAM Policy
 
@@ -79,22 +84,51 @@ class Policy(collections_abc.MutableMapping):
     def __init__(self, etag=None, version=None):
         self.etag = etag
         self.version = version
-        self._bindings = collections.defaultdict(set)
+        self._bindings = []
 
     def __iter__(self):
-        return iter(self._bindings)
+        self.__check_version__()
+        return self.__getiterator__()
 
     def __len__(self):
+        self.__check_version__()
         return len(self._bindings)
 
     def __getitem__(self, key):
-        return self._bindings[key]
+        self.__check_version__()
+        next(set(b['members']) for b in self._bindings if b['role'] is key)
 
     def __setitem__(self, key, value):
-        self._bindings[key] = set(value)
+        self.__check_version__()
+        value = list(value)
+        for binding in self._bindings:
+            if binding['role'] is key:
+                binding['member'] = value
+                return
+        self._bindings.append({'role': key, 'members': value})
 
     def __delitem__(self, key):
-        del self._bindings[key]
+        self.__check_version__()
+        self._bindings = [b for b in self._bindings if b['role'] is not key]
+
+    def __getiterator__(self):
+        for binding in self._bindings:
+            yield binding['role']
+
+    def __check_version__(self):
+        """Raise InvalidOperationException if version is greater than 1."""
+        if self.version is not None and self.version > 1: # TODO: add check for conditions in bindings (mirror C#)
+            raise InvalidOperationException("TODO: insert migration message")
+
+    @property
+    def bindings(self):
+        """Gets the policy's bindings."""
+        return self._bindings
+
+    @bindings.setter
+    def bindings(self, bindings):
+        """Sets the policy's bindings."""
+        self._bindings = bindings
 
     @property
     def owners(self):
@@ -103,7 +137,7 @@ class Policy(collections_abc.MutableMapping):
         DEPRECATED:  use ``policy["roles/owners"]`` instead."""
         result = set()
         for role in self._OWNER_ROLES:
-            for member in self._bindings.get(role, ()):
+            for member in self.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
@@ -124,7 +158,7 @@ class Policy(collections_abc.MutableMapping):
         DEPRECATED:  use ``policy["roles/editors"]`` instead."""
         result = set()
         for role in self._EDITOR_ROLES:
-            for member in self._bindings.get(role, ()):
+            for member in self.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
@@ -147,7 +181,7 @@ class Policy(collections_abc.MutableMapping):
         """
         result = set()
         for role in self._VIEWER_ROLES:
-            for member in self._bindings.get(role, ()):
+            for member in self.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
@@ -242,10 +276,7 @@ class Policy(collections_abc.MutableMapping):
         version = resource.get("version")
         etag = resource.get("etag")
         policy = cls(etag, version)
-        for binding in resource.get("bindings", ()):
-            role = binding["role"]
-            members = sorted(binding["members"])
-            policy[role] = members
+        policy.bindings = resource.get("bindings", ())
         return policy
 
     def to_api_repr(self):
@@ -262,13 +293,7 @@ class Policy(collections_abc.MutableMapping):
         if self.version is not None:
             resource["version"] = self.version
 
-        if self._bindings:
-            bindings = resource["bindings"] = []
-            for role, members in sorted(self._bindings.items()):
-                if members:
-                    bindings.append({"role": role, "members": sorted(set(members))})
-
-            if not bindings:
-                del resource["bindings"]
+        if self._bindings and len(self._bindings) > 0:
+            resource["bindings"] = self._bindings
 
         return resource
