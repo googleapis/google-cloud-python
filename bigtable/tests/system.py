@@ -707,7 +707,9 @@ class TestTableAdminAPI(unittest.TestCase):
         self.tables_to_delete.append(temp_table)
 
         new_policy = Policy()
-        new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account("test-email@gmail.com")]
+        new_policy[BIGTABLE_ADMIN_ROLE] = [
+            Policy.service_account("test-email@gmail.com")
+        ]
 
         policy_latest = temp_table.set_iam_policy(new_policy)
         self.assertTrue(len(policy_latest.bigtable_admins) > 0)
