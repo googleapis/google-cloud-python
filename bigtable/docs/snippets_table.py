@@ -365,9 +365,6 @@ def test_bigtable_table_test_iam_permissions():
     from google.cloud.bigtable import Client
 
     client = Client(admin=True)
-    table_admin_client = client.table_admin_client
-
-    client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     table = instance.table("table_id_iam_policy")
 
@@ -399,9 +396,6 @@ def test_bigtable_table_set_iam_policy_then_get_iam_policy():
 
     # [START bigtable_table_get_iam_policy]
     from google.cloud.bigtable import Client
-
-    client = Client(admin=True)
-    table_admin_client = client.table_admin_client
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
