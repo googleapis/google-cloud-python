@@ -32,6 +32,10 @@ import pytest
 import pytz
 
 try:
+    import fastparquet
+except (ImportError, AttributeError):  # pragma: NO COVER
+    fastparquet = None
+try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
@@ -6116,6 +6120,7 @@ class TestClientUpload(object):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
         client = self._make_client()
 
@@ -6306,6 +6311,7 @@ class TestClientUpload(object):
         assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
