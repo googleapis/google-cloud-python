@@ -31,6 +31,8 @@ try:
     import pyarrow
     import pyarrow.types
 except ImportError:  # pragma: NO COVER
+    # Mock out pyarrow when missing, because methods from pyarrow.types are
+    # used in test parameterization.
     pyarrow = mock.Mock()
 import pytest
 import pytz
