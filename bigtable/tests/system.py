@@ -29,6 +29,8 @@ from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
 from google.cloud.bigtable.client import Client
 from google.cloud.bigtable.column_family import MaxVersionsGCRule
+from google.cloud.bigtable.policy import Policy
+from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 from google.cloud.bigtable.row_filters import ApplyLabelFilter
 from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
 from google.cloud.bigtable.row_filters import RowFilterChain
@@ -687,6 +689,31 @@ class TestTableAdminAPI(unittest.TestCase):
         tables = Config.INSTANCE_DATA.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
+
+    def test_test_iam_permissions(self):
+        temp_table_id = "test-test-iam-policy-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        permissions = ["bigtable.tables.mutateRows", "bigtable.tables.readRows"]
+        permissions_allowed = temp_table.test_iam_permissions(permissions)
+        self.assertEqual(permissions, permissions_allowed)
+
+    def test_set_iam_policy_then_get_iam_policy(self):
+        temp_table_id = "test-iam-policy-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        new_policy = Policy()
+        new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account("test-email@gmail.com")]
+
+        policy_latest = temp_table.set_iam_policy(new_policy)
+        self.assertTrue(len(policy_latest.bigtable_admins) > 0)
+
+        policy = temp_table.get_iam_policy()
+        self.assertTrue(len(policy.bigtable_admins) > 0)
 
     def test_create_table_with_families(self):
         temp_table_id = "test-create-table-with-failies"
