@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## 0.34.0
+
+11-19-2019 14:27 PST
+
+### Implementation Changes
+- Deprecate resource name helper methods; update docs configuration (via synth). ([#9838](https://github.com/googleapis/google-cloud-python/pull/9838))
+
+### New Features
+- Add service monitoring (via synth). ([#9799](https://github.com/googleapis/google-cloud-python/pull/9799))
+- Add `monitoring.v3.InternalChecker.state` (via synth). ([#9546](https://github.com/googleapis/google-cloud-python/pull/9546))
+- Add `monitoring.v3.UptimeCheckConfig.ContentMatcher.ContentMatcherOption` (via synth). ([#9546](https://github.com/googleapis/google-cloud-python/pull/9546))
+- Add `recursive` parameter to `delete_group` (via synth). ([#9546](https://github.com/googleapis/google-cloud-python/pull/9546))
+- Add read-only `validity` field to `monitoring.v3.AlertPolicy` (via synth). ([#9546](https://github.com/googleapis/google-cloud-python/pull/9546))
+- Add `validate_ssl` parameter to `monitoring.v3.UptimeCheckConfig.HttpCheck` (via synth). ([#9546](https://github.com/googleapis/google-cloud-python/pull/9546))
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+
+### Internal / Testing Changes
+- Revert change to docs/conf.py. ([#9803](https://github.com/googleapis/google-cloud-python/pull/9803))
+- Normalize VPCSC configuration in systests. ([#9615](https://github.com/googleapis/google-cloud-python/pull/9615))
+- Make VPCSC env comparison case-insensitive. ([#9564](https://github.com/googleapis/google-cloud-python/pull/9564))
+- Refresh VPCSC tests. ([#9437](https://github.com/googleapis/google-cloud-python/pull/9437))
+- Fix environment variables for VPC tests. ([#8302](https://github.com/googleapis/google-cloud-python/pull/8302))
+
 ## 0.33.0
 
 08-12-2019 13:54 PDT
