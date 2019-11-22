@@ -13,9 +13,12 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from __future__ import division
 
 import collections
+import itertools
 import logging
+import math
 import threading
 
 from google.cloud.pubsub_v1 import types
@@ -33,6 +36,18 @@ _MAX_BATCH_SIZE = 100
 _MAX_BATCH_LATENCY = 0.01
 """The maximum amount of time in seconds to wait for additional request items
 before processing the next batch of requests."""
+
+_ACK_IDS_BATCH_SIZE = 2500
+"""The maximum number of ACK IDs to send in a single StreamingPullRequest.
+
+The backend imposes a maximum request size limit of 524288 bytes (512 KiB) per
+acknowledge / modifyAckDeadline request. ACK IDs have a maximum size of 164
+bytes, thus we cannot send more than o 524288/176 ~= 2979 ACK IDs in a single
+StreamingPullRequest message.
+
+Accounting for some overhead, we should thus only send a maximum of 2500 ACK
+IDs at a time.
+"""
 
 
 class Dispatcher(object):
@@ -119,9 +134,16 @@ class Dispatcher(object):
             if time_to_ack is not None:
                 self._manager.ack_histogram.add(time_to_ack)
 
-        ack_ids = [item.ack_id for item in items]
-        request = types.StreamingPullRequest(ack_ids=ack_ids)
-        self._manager.send(request)
+        # We must potentially split the request into multiple smaller requests
+        # to avoid the server-side max request size limit.
+        ack_ids = (item.ack_id for item in items)
+        total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
+
+        for _ in range(total_chunks):
+            request = types.StreamingPullRequest(
+                ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE)
+            )
+            self._manager.send(request)
 
         # Remove the message from lease management.
         self.drop(items)
@@ -150,13 +172,18 @@ class Dispatcher(object):
         Args:
             items(Sequence[ModAckRequest]): The items to modify.
         """
-        ack_ids = [item.ack_id for item in items]
-        seconds = [item.seconds for item in items]
+        # We must potentially split the request into multiple smaller requests
+        # to avoid the server-side max request size limit.
+        ack_ids = (item.ack_id for item in items)
+        seconds = (item.seconds for item in items)
+        total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
-        request = types.StreamingPullRequest(
-            modify_deadline_ack_ids=ack_ids, modify_deadline_seconds=seconds
-        )
-        self._manager.send(request)
+        for _ in range(total_chunks):
+            request = types.StreamingPullRequest(
+                modify_deadline_ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE),
+                modify_deadline_seconds=itertools.islice(seconds, _ACK_IDS_BATCH_SIZE),
+            )
+            self._manager.send(request)
 
     def nack(self, items):
         """Explicitly deny receipt of messages.
