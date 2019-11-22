@@ -96,18 +96,6 @@ class CloudTasksClient(object):
         )
 
     @classmethod
-    def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
     def queue_path(cls, project, location, queue):
         """DEPRECATED. Return a fully-qualified queue string."""
         warnings.warn(
@@ -979,7 +967,8 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta3.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1067,7 +1056,8 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta3.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1154,7 +1144,8 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta3.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []

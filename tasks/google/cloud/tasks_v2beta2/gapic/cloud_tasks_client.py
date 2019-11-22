@@ -16,7 +16,6 @@
 
 """Accesses the google.cloud.tasks.v2beta2 CloudTasks API."""
 
-import functools
 import pkg_resources
 import warnings
 
@@ -27,8 +26,6 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
-import google.api_core.page_iterator
-import google.api_core.path_template
 import grpc
 
 from google.cloud.tasks_v2beta2.gapic import cloud_tasks_client_config
@@ -82,63 +79,6 @@ class CloudTasksClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
-
-    @classmethod
-    def location_path(cls, project, location):
-        """DEPRECATED. Return a fully-qualified location string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}",
-            project=project,
-            location=location,
-        )
-
-    @classmethod
-    def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-
-    @classmethod
-    def queue_path(cls, project, location, queue):
-        """DEPRECATED. Return a fully-qualified queue string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/queues/{queue}",
-            project=project,
-            location=location,
-            queue=queue,
-        )
-
-    @classmethod
-    def task_path(cls, project, location, queue, task):
-        """DEPRECATED. Return a fully-qualified task string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}/locations/{location}/queues/{queue}/tasks/{task}",
-            project=project,
-            location=location,
-            queue=queue,
-            task=task,
-        )
 
     def __init__(
         self,
@@ -255,9 +195,10 @@ class CloudTasksClient(object):
     # Service calls
     def list_queues(
         self,
-        parent,
+        parent=None,
         filter_=None,
         page_size=None,
+        page_token=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -272,21 +213,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_queues(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_queues(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
+            >>> response = client.list_queues()
 
         Args:
             parent (str): Required. The location name. For example:
@@ -301,11 +228,19 @@ class CloudTasksClient(object):
 
                 Note that using filters might cause fewer queues than the
                 requested\_page size to be returned.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
+            page_size (int): Requested page size.
+
+                The maximum page size is 9800. If unspecified, the page size will be the
+                maximum. Fewer queues than requested might be returned, even if more
+                queues exist; use the ``next_page_token`` in the response to determine
+                if more queues exist.
+            page_token (str): A token identifying the page of results to return.
+
+                To request the first page results, page\_token must be empty. To request
+                the next page of results, page\_token must be the value of
+                ``next_page_token`` returned from the previous call to ``ListQueues``
+                method. It is an error to switch the value of the ``filter`` while
+                iterating through pages.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry client library requests. If ``None`` is specified,
                 requests will be retried using a default configuration.
@@ -316,10 +251,7 @@ class CloudTasksClient(object):
                 that is provided to the client library method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.tasks_v2beta2.types.Queue` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
+            A :class:`~google.cloud.tasks_v2beta2.types.ListQueuesResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -340,7 +272,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.ListQueuesRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size, page_token=page_token
         )
         if metadata is None:
             metadata = []
@@ -355,24 +287,13 @@ class CloudTasksClient(object):
             )
             metadata.append(routing_metadata)
 
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_queues"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="queues",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+        return self._inner_api_calls["list_queues"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return iterator
 
     def get_queue(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -385,9 +306,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> response = client.get_queue(name)
+            >>> response = client.get_queue()
 
         Args:
             name (str): Required. The resource name of the queue. For example:
@@ -442,8 +361,8 @@ class CloudTasksClient(object):
 
     def create_queue(
         self,
-        parent,
-        queue,
+        parent=None,
+        queue=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -466,12 +385,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
-            >>>
-            >>> # TODO: Initialize `queue`:
-            >>> queue = {}
-            >>>
-            >>> response = client.create_queue(parent, queue)
+            >>> response = client.create_queue()
 
         Args:
             parent (str): Required. The location name in which the queue will be created. For
@@ -535,7 +449,7 @@ class CloudTasksClient(object):
 
     def update_queue(
         self,
-        queue,
+        queue=None,
         update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -562,10 +476,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> # TODO: Initialize `queue`:
-            >>> queue = {}
-            >>>
-            >>> response = client.update_queue(queue)
+            >>> response = client.update_queue()
 
         Args:
             queue (Union[dict, ~google.cloud.tasks_v2beta2.types.Queue]): Required. The queue to create or update.
@@ -636,7 +547,7 @@ class CloudTasksClient(object):
 
     def delete_queue(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -660,9 +571,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> client.delete_queue(name)
+            >>> client.delete_queue()
 
         Args:
             name (str): Required. The queue name. For example:
@@ -714,7 +623,7 @@ class CloudTasksClient(object):
 
     def purge_queue(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -732,9 +641,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> response = client.purge_queue(name)
+            >>> response = client.purge_queue()
 
         Args:
             name (str): Required. The queue name. For example:
@@ -789,7 +696,7 @@ class CloudTasksClient(object):
 
     def pause_queue(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -806,9 +713,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> response = client.pause_queue(name)
+            >>> response = client.pause_queue()
 
         Args:
             name (str): Required. The queue name. For example:
@@ -863,7 +768,7 @@ class CloudTasksClient(object):
 
     def resume_queue(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -885,9 +790,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> response = client.resume_queue(name)
+            >>> response = client.resume_queue()
 
         Args:
             name (str): Required. The queue name. For example:
@@ -942,7 +845,7 @@ class CloudTasksClient(object):
 
     def get_iam_policy(
         self,
-        resource,
+        resource=None,
         options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -963,9 +866,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> response = client.get_iam_policy(resource)
+            >>> response = client.get_iam_policy()
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
@@ -1027,8 +928,8 @@ class CloudTasksClient(object):
 
     def set_iam_policy(
         self,
-        resource,
-        policy,
+        resource=None,
+        policy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1051,12 +952,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> # TODO: Initialize `policy`:
-            >>> policy = {}
-            >>>
-            >>> response = client.set_iam_policy(resource, policy)
+            >>> response = client.set_iam_policy()
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
@@ -1118,8 +1014,8 @@ class CloudTasksClient(object):
 
     def test_iam_permissions(
         self,
-        resource,
-        permissions,
+        resource=None,
+        permissions=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1138,12 +1034,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> resource = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> # TODO: Initialize `permissions`:
-            >>> permissions = []
-            >>>
-            >>> response = client.test_iam_permissions(resource, permissions)
+            >>> response = client.test_iam_permissions()
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
@@ -1204,9 +1095,10 @@ class CloudTasksClient(object):
 
     def list_tasks(
         self,
-        parent,
+        parent=None,
         response_view=None,
         page_size=None,
+        page_token=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1226,21 +1118,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_tasks(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_tasks(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
+            >>> response = client.list_tasks()
 
         Args:
             parent (str): Required. The queue name. For example:
@@ -1256,11 +1134,22 @@ class CloudTasksClient(object):
                 Authorization for ``FULL`` requires ``cloudtasks.tasks.fullView``
                 `Google IAM <https://cloud.google.com/iam/>`___ permission on the
                 ``Task`` resource.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
+            page_size (int): Maximum page size.
+
+                Fewer tasks than requested might be returned, even if more tasks exist;
+                use ``next_page_token`` in the response to determine if more tasks
+                exist.
+
+                The maximum page size is 1000. If unspecified, the page size will be the
+                maximum.
+            page_token (str): A token identifying the page of results to return.
+
+                To request the first page results, page\_token must be empty. To request
+                the next page of results, page\_token must be the value of
+                ``next_page_token`` returned from the previous call to ``ListTasks``
+                method.
+
+                The page token is valid for only 2 hours.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry client library requests. If ``None`` is specified,
                 requests will be retried using a default configuration.
@@ -1271,10 +1160,7 @@ class CloudTasksClient(object):
                 that is provided to the client library method.
 
         Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.tasks_v2beta2.types.Task` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
+            A :class:`~google.cloud.tasks_v2beta2.types.ListTasksResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1295,7 +1181,10 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.ListTasksRequest(
-            parent=parent, response_view=response_view, page_size=page_size
+            parent=parent,
+            response_view=response_view,
+            page_size=page_size,
+            page_token=page_token,
         )
         if metadata is None:
             metadata = []
@@ -1310,24 +1199,13 @@ class CloudTasksClient(object):
             )
             metadata.append(routing_metadata)
 
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_tasks"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="tasks",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
+        return self._inner_api_calls["list_tasks"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
-        return iterator
 
     def get_task(
         self,
-        name,
+        name=None,
         response_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1341,9 +1219,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> response = client.get_task(name)
+            >>> response = client.get_task()
 
         Args:
             name (str): Required. The task name. For example:
@@ -1409,8 +1285,8 @@ class CloudTasksClient(object):
 
     def create_task(
         self,
-        parent,
-        task,
+        parent=None,
+        task=None,
         response_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1429,12 +1305,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> # TODO: Initialize `task`:
-            >>> task = {}
-            >>>
-            >>> response = client.create_task(parent, task)
+            >>> response = client.create_task()
 
         Args:
             parent (str): Required. The queue name. For example:
@@ -1537,7 +1408,7 @@ class CloudTasksClient(object):
 
     def delete_task(
         self,
-        name,
+        name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1554,9 +1425,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> client.delete_task(name)
+            >>> client.delete_task()
 
         Args:
             name (str): Required. The task name. For example:
@@ -1608,9 +1477,9 @@ class CloudTasksClient(object):
 
     def lease_tasks(
         self,
-        parent,
-        lease_duration,
+        parent=None,
         max_tasks=None,
+        lease_duration=None,
         response_view=None,
         filter_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -1638,16 +1507,21 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> parent = client.queue_path('[PROJECT]', '[LOCATION]', '[QUEUE]')
-            >>>
-            >>> # TODO: Initialize `lease_duration`:
-            >>> lease_duration = {}
-            >>>
-            >>> response = client.lease_tasks(parent, lease_duration)
+            >>> response = client.lease_tasks()
 
         Args:
             parent (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
+            max_tasks (int): The maximum number of tasks to lease.
+
+                The system will make a best effort to return as close to as
+                ``max_tasks`` as possible.
+
+                The largest that ``max_tasks`` can be is 1000.
+
+                The maximum total size of a ``lease tasks response`` is 32 MB. If the
+                sum of all task sizes requested reaches this limit, fewer tasks than
+                requested are returned.
             lease_duration (Union[dict, ~google.cloud.tasks_v2beta2.types.Duration]): Required. The duration of the lease.
 
                 Each task returned in the ``response`` will have its ``schedule_time``
@@ -1665,16 +1539,6 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Duration`
-            max_tasks (int): The maximum number of tasks to lease.
-
-                The system will make a best effort to return as close to as
-                ``max_tasks`` as possible.
-
-                The largest that ``max_tasks`` can be is 1000.
-
-                The maximum total size of a ``lease tasks response`` is 32 MB. If the
-                sum of all task sizes requested reaches this limit, fewer tasks than
-                requested are returned.
             response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
                 returned.
 
@@ -1744,8 +1608,8 @@ class CloudTasksClient(object):
 
         request = cloudtasks_pb2.LeaseTasksRequest(
             parent=parent,
-            lease_duration=lease_duration,
             max_tasks=max_tasks,
+            lease_duration=lease_duration,
             response_view=response_view,
             filter=filter_,
         )
@@ -1768,8 +1632,8 @@ class CloudTasksClient(object):
 
     def acknowledge_task(
         self,
-        name,
-        schedule_time,
+        name=None,
+        schedule_time=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1790,12 +1654,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> # TODO: Initialize `schedule_time`:
-            >>> schedule_time = {}
-            >>>
-            >>> client.acknowledge_task(name, schedule_time)
+            >>> client.acknowledge_task()
 
         Args:
             name (str): Required. The task name. For example:
@@ -1856,9 +1715,9 @@ class CloudTasksClient(object):
 
     def renew_lease(
         self,
-        name,
-        schedule_time,
-        lease_duration,
+        name=None,
+        schedule_time=None,
+        lease_duration=None,
         response_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1876,15 +1735,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> # TODO: Initialize `schedule_time`:
-            >>> schedule_time = {}
-            >>>
-            >>> # TODO: Initialize `lease_duration`:
-            >>> lease_duration = {}
-            >>>
-            >>> response = client.renew_lease(name, schedule_time, lease_duration)
+            >>> response = client.renew_lease()
 
         Args:
             name (str): Required. The task name. For example:
@@ -1969,8 +1820,8 @@ class CloudTasksClient(object):
 
     def cancel_lease(
         self,
-        name,
-        schedule_time,
+        name=None,
+        schedule_time=None,
         response_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -1988,12 +1839,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> # TODO: Initialize `schedule_time`:
-            >>> schedule_time = {}
-            >>>
-            >>> response = client.cancel_lease(name, schedule_time)
+            >>> response = client.cancel_lease()
 
         Args:
             name (str): Required. The task name. For example:
@@ -2068,7 +1914,7 @@ class CloudTasksClient(object):
 
     def run_task(
         self,
-        name,
+        name=None,
         response_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -2104,9 +1950,7 @@ class CloudTasksClient(object):
             >>>
             >>> client = tasks_v2beta2.CloudTasksClient()
             >>>
-            >>> name = client.task_path('[PROJECT]', '[LOCATION]', '[QUEUE]', '[TASK]')
-            >>>
-            >>> response = client.run_task(name)
+            >>> response = client.run_task()
 
         Args:
             name (str): Required. The task name. For example:
