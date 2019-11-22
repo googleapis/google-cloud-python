@@ -1651,6 +1651,16 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNot(bucket._properties["labels"], LABELS)
         self.assertIn("labels", bucket._changes)
 
+    def test_labels_setter_with_nan(self):
+        NAME = "name"
+        LABELS = {"color": "red", "foo": float("nan")}
+        bucket = self._make_one(name=NAME)
+
+        self.assertEqual(bucket.labels, {})
+        bucket.labels = LABELS
+        value = bucket.labels["foo"]
+        self.assertIsInstance(value, str)
+
     def test_labels_setter_with_removal(self):
         # Make sure the bucket labels look correct and follow the expected
         # public structure.
