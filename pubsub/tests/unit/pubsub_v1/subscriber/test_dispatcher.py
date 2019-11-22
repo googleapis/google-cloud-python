@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import threading
 
 from google.cloud.pubsub_v1 import types
@@ -112,14 +113,15 @@ def test_ack_splitting_large_payload():
     assert len(calls) == 3
 
     all_ack_ids = {item.ack_id for item in items}
-    sent_ack_ids = set()
+    sent_ack_ids = collections.Counter()
 
     for call in calls:
         message = call.args[0]
         assert message.ByteSize() <= 524288  # server-side limit (2**19)
         sent_ack_ids.update(message.ack_ids)
 
-    assert sent_ack_ids == all_ack_ids  # all messages should have been ACK-ed
+    assert set(sent_ack_ids) == all_ack_ids  # all messages should have been ACK-ed
+    assert sent_ack_ids.most_common(1)[0][1] == 1  # each message ACK-ed exactly once
 
 
 def test_lease():
@@ -197,14 +199,15 @@ def test_modify_ack_deadline_splitting_large_payload():
     assert len(calls) == 3
 
     all_ack_ids = {item.ack_id for item in items}
-    sent_ack_ids = set()
+    sent_ack_ids = collections.Counter()
 
     for call in calls:
         message = call.args[0]
         assert message.ByteSize() <= 524288  # server-side limit (2**19)
         sent_ack_ids.update(message.modify_deadline_ack_ids)
 
-    assert sent_ack_ids == all_ack_ids  # all messages should have been ACK-ed
+    assert set(sent_ack_ids) == all_ack_ids  # all messages should have been MODACK-ed
+    assert sent_ack_ids.most_common(1)[0][1] == 1  # each message MODACK-ed exactly once
 
 
 @mock.patch("threading.Thread", autospec=True)
