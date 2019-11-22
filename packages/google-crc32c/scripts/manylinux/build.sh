@@ -15,8 +15,8 @@
 
 set -e -x
 
-SCRIPT_FI=$(readlink -f ${0})
-MANYLINUX_DIR=$(dirname ${SCRIPT_FI})
+
+MANYLINUX_DIR=$(echo $(cd $(dirname ${0}); pwd))
 SCRIPTS_DIR=$(dirname ${MANYLINUX_DIR})
 REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 
