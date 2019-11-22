@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import threading
 
 from google.cloud.pubsub_v1 import types
@@ -95,6 +96,34 @@ def test_ack_no_time():
     manager.ack_histogram.add.assert_not_called()
 
 
+def test_ack_splitting_large_payload():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [
+        # use realistic lengths for ACK IDs (max 176 bytes)
+        requests.AckRequest(ack_id=str(i).zfill(176), byte_size=0, time_to_ack=20)
+        for i in range(5001)
+    ]
+    dispatcher_.ack(items)
+
+    calls = manager.send.call_args_list
+    assert len(calls) == 3
+
+    all_ack_ids = {item.ack_id for item in items}
+    sent_ack_ids = collections.Counter()
+
+    for call in calls:
+        message = call.args[0]
+        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        sent_ack_ids.update(message.ack_ids)
+
+    assert set(sent_ack_ids) == all_ack_ids  # all messages should have been ACK-ed
+    assert sent_ack_ids.most_common(1)[0][1] == 1  # each message ACK-ed exactly once
+
+
 def test_lease():
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -151,6 +180,34 @@ def test_modify_ack_deadline():
             modify_deadline_ack_ids=["ack_id_string"], modify_deadline_seconds=[60]
         )
     )
+
+
+def test_modify_ack_deadline_splitting_large_payload():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [
+        # use realistic lengths for ACK IDs (max 176 bytes)
+        requests.ModAckRequest(ack_id=str(i).zfill(176), seconds=60)
+        for i in range(5001)
+    ]
+    dispatcher_.modify_ack_deadline(items)
+
+    calls = manager.send.call_args_list
+    assert len(calls) == 3
+
+    all_ack_ids = {item.ack_id for item in items}
+    sent_ack_ids = collections.Counter()
+
+    for call in calls:
+        message = call.args[0]
+        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        sent_ack_ids.update(message.modify_deadline_ack_ids)
+
+    assert set(sent_ack_ids) == all_ack_ids  # all messages should have been MODACK-ed
+    assert sent_ack_ids.most_common(1)[0][1] == 1  # each message MODACK-ed exactly once
 
 
 @mock.patch("threading.Thread", autospec=True)
