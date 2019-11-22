@@ -140,7 +140,7 @@ class Table(object):
         )
 
     def get_iam_policy(self):
-        """Gets the access control policy for a table.
+        """Gets the IAM access control policy for this table.
 
         For example:
 
@@ -156,7 +156,7 @@ class Table(object):
         return Policy.from_pb(resp)
 
     def set_iam_policy(self, policy):
-        """Sets the access control policy on a table. Replaces any
+        """Sets the IAM access control policy for this table. Replaces any
         existing policy.
 
         For more information about policy, please see documentation of
@@ -180,7 +180,8 @@ class Table(object):
         return Policy.from_pb(resp)
 
     def test_iam_permissions(self, permissions):
-        """Returns permissions that the caller has on the specified table.
+        """Tests whether the caller has the given permissions for the specified table.
+        Returns the permissions that the caller has.
 
         For example:
 
