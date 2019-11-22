@@ -1131,7 +1131,7 @@ class Client(ClientWithProject):
     ):
         """Create a new job.
         Arguments:
-            job_config (dict): configuration job representation returned from the API
+            job_config (dict): configuration job representation returned from the API.
 
         Keyword Arguments:
             source (Union[ \
@@ -1141,7 +1141,7 @@ class Client(ClientWithProject):
                 Sequence[str]
             ]):
                 (Optional) URIs of data files to be loaded; in format
-                ``gs://<bucket_name>/<object_name_or_glob>`` or  Table
+                ``gs://<bucket_name>/<object_name_or_glob>`` or Table
                 into which data is to be loaded.
 
             destination (Union[ \
