@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.3.0
+
+11-21-2019 14:03 PST
+
+
+### Implementation Changes
+- Mark `Recognize` as idempotent (via synth). ([#9874](https://github.com/googleapis/google-cloud-python/pull/9874))
+- Re-add unused `speaker_tag`; update spacing in docs templates (via synth). ([#9765](https://github.com/googleapis/google-cloud-python/pull/9765))
+- Move `speaker_tag` field from `SpeakerDiarizationConfig` to `WordInfo` (via synth). ([#9576](https://github.com/googleapis/google-cloud-python/pull/9576))
+- Remove send/recv msg size limit (via synth). ([#8969](https://github.com/googleapis/google-cloud-python/pull/8969))
+
+### New Features
+- Add speaker diarization configuration support (via synth). ([#9202](https://github.com/googleapis/google-cloud-python/pull/9202))
+- Add `SpeakerDiarizationConfig`, deprecate enable_speaker_diarization and diarization_speaker_count (via synth). ([#8795](https://github.com/googleapis/google-cloud-python/pull/8795))
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Reorder samples. ([#9313](https://github.com/googleapis/google-cloud-python/pull/9313))
+- Update docstrings (via synth). ([#9292](https://github.com/googleapis/google-cloud-python/pull/9292))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Add generated code samples. ([#9153](https://github.com/googleapis/google-cloud-python/pull/9153))
+- Remove CI for gh-pages, use googleapis.dev for `api_core` refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatibility badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+### Internal / Testing Changes
+- Add v1p1beta1 systests for longrunning / streaming recognize. ([#9287](https://github.com/googleapis/google-cloud-python/pull/9287))
+- Add v1 systests for longrunning / streaming recognize. ([#9285](https://github.com/googleapis/google-cloud-python/pull/9285))
+- Update samples manifest (via synth). ([#9211](https://github.com/googleapis/google-cloud-python/pull/9211))
+
 ## 1.2.0
 
 07-24-2019 17:35 PDT
