@@ -214,6 +214,14 @@ class TestQuery(unittest.TestCase):
         query.add_filter("__key__", "=", key)
         self.assertEqual(query.filters, [("__key__", "=", key)])
 
+    def test_add_filter_return_query_obj(self):
+        from google.cloud.datastore.query import Query
+
+        query = self._make_one(self._make_client())
+        query_obj = query.add_filter("firstname", "=", u"John")
+        self.assertIsInstance(query_obj, Query)
+        self.assertEqual(query_obj.filters, [("firstname", "=", u"John")])
+
     def test_filter___key__not_equal_operator(self):
         from google.cloud.datastore.key import Key
 
