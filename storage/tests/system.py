@@ -25,13 +25,13 @@ import requests
 import six
 
 from google.cloud import exceptions
+from google.cloud import iam_credentials_v1
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
 import google.oauth2
-from google.cloud import iam_credentials_v1
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 
@@ -953,7 +953,6 @@ class TestStorageSignURLs(unittest.TestCase):
         )
 
     def test_create_signed_read_url_v2_w_access_token(self):
-
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
         name = client.service_account_path("-", service_account_email)
@@ -965,17 +964,15 @@ class TestStorageSignURLs(unittest.TestCase):
         )
 
     def test_create_signed_read_url_v4_w_access_token(self):
-
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
-
         name = client.service_account_path("-", service_account_email)
         scope = ["https://www.googleapis.com/auth/devstorage.read_write"]
         response = client.generate_access_token(name, scope)
         self._create_signed_read_url_helper(
+            version="v4",
             service_account_email=service_account_email,
             access_token=response.access_token,
-            version="v4",
         )
 
     def _create_signed_delete_url_helper(self, version="v2", expiration=None):
