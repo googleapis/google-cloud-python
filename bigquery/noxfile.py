@@ -39,16 +39,21 @@ def default(session):
         session.install("-e", local_dep)
 
     session.install("-e", os.path.join("..", "test_utils"))
-    dev_install = ".[all]"
+
     coverage_fail_under = "--cov-fail-under=97"
+
+    # fastparquet is not included in .[all] because, in general, it's redundant
+    # with pyarrow. We still want to run some unit tests with fastparquet
+    # serialization, though.
+    dev_install = ".[all,fastparquet]"
 
     # There is no pyarrow or fastparquet wheel for Python 3.8.
     if session.python == "3.8":
-        dev_install = ".[pandas,tqdm,fastparquet]"
         # Since many tests are skipped due to missing dependencies, test
         # coverage is much lower in Python 3.8. Remove once we can test with
         # pyarrow.
         coverage_fail_under = "--cov-fail-under=92"
+        dev_install = ".[pandas,tqdm]"
 
     session.install("-e", dev_install)
 
