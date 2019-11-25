@@ -3,8 +3,8 @@ Changelog
 
 .. _changelog-0.12.0:
 
-0.12.0 / TBD
-------------
+0.12.0 / 2019-11-25
+-------------------
 
 - Add ``max_results`` argument to :func:`~pandas_gbq.read_gbq()`. Use this
   argument to limit the number of rows in the results DataFrame. Set
