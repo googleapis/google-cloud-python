@@ -16,6 +16,8 @@
 
 from __future__ import absolute_import
 
+from concurrent import futures
+
 import six
 
 try:
@@ -51,6 +53,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         super(AuthMetadataPlugin, self).__init__()
         self._credentials = credentials
         self._request = request
+        self._pool = futures.ThreadPoolExecutor(max_workers=1)
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
@@ -66,6 +69,13 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
         return list(six.iteritems(headers))
 
+    @staticmethod
+    def _callback_wrapper(callback):
+        def wrapped(future):
+            callback(future.result(), None)
+
+        return wrapped
+
     def __call__(self, context, callback):
         """Passes authorization metadata into the given callback.
 
@@ -74,7 +84,11 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             callback (grpc.AuthMetadataPluginCallback): The callback that will
                 be invoked to pass in the authorization metadata.
         """
-        callback(self._get_authorization_headers(context), None)
+        future = self._pool.submit(self._get_authorization_headers, context)
+        future.add_done_callback(self._callback_wrapper(callback))
+
+    def __del__(self):
+        self._pool.shutdown(wait=False)
 
 
 def secure_authorized_channel(

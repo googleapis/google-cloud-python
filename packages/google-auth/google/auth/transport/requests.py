@@ -95,7 +95,7 @@ class Request(transport.Request):
         self.session = session
 
     def __call__(
-        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
+        self, url, method="GET", body=None, headers=None, timeout=120, **kwargs
     ):
         """Make an HTTP request using requests.
 

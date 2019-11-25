@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import time
 
 import mock
 import pytest
@@ -58,6 +59,8 @@ class TestAuthMetadataPlugin(object):
 
         plugin(context, callback)
 
+        time.sleep(2)
+
         callback.assert_called_once_with(
             [(u"authorization", u"Bearer {}".format(credentials.token))], None
         )
@@ -75,6 +78,8 @@ class TestAuthMetadataPlugin(object):
         callback = mock.create_autospec(grpc.AuthMetadataPluginCallback)
 
         plugin(context, callback)
+
+        time.sleep(2)
 
         assert credentials.token == "token1"
         callback.assert_called_once_with(
