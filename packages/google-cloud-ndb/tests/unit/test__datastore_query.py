@@ -1079,7 +1079,9 @@ class Test_Result:
 
         assert result.entity() is entity
         model._entity_from_protobuf.assert_called_once_with(entity_pb)
-        entity._set_projection.assert_called_once_with(("a", "b"))
+        projection = entity._set_projection.call_args[0][0]
+        assert sorted(projection) == ["a", "b"]
+        entity._set_projection.assert_called_once_with(projection)
 
 
 @pytest.mark.usefixtures("in_context")
