@@ -533,19 +533,19 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
     """
     class_key = ds_entity.get("class")
     if class_key:
-        kind = class_key[-1]
+        # If this is a projection query, we'll get multiple entities with
+        # scalar values rather than single entities with array values.
+        # It's weird:
+        #   https://cloud.google.com/datastore/docs/concepts/queries#datastore-datastore-array-value-python
+        if not isinstance(class_key, list):
+            kind = class_key
+        else:
+            kind = class_key[-1]
     else:
         kind = ds_entity.kind
 
     model_class = model_class or Model._lookup_model(kind)
     entity = model_class()
-
-    # Check if we are dealing with a PolyModel, and if so get correct subclass.
-    # We need to import here to avoid circular import.
-    from google.cloud.ndb import PolyModel
-
-    if isinstance(entity, PolyModel) and "class" in ds_entity:
-        entity = entity._class_map[tuple(ds_entity["class"])]()
 
     if ds_entity.key:
         entity._key = key_module.Key._from_ds_key(ds_entity.key)
@@ -640,10 +640,18 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
         if value is not None:
             if prop._repeated:
-                value = [
-                    (_BaseValue(sub_value) if sub_value else None)
-                    for sub_value in value
-                ]
+                # A repeated property will have a scalar value if this is a
+                # projection query.
+                if isinstance(value, list):
+                    # Not a projection
+                    value = [
+                        (_BaseValue(sub_value) if sub_value else None)
+                        for sub_value in value
+                    ]
+                else:
+                    # Projection
+                    value = [_BaseValue(value)]
+
             else:
                 value = _BaseValue(value)
 

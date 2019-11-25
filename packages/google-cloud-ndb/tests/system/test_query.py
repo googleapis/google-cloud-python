@@ -608,6 +608,46 @@ def test_polymodel_query(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_polymodel_query_class_projection(ds_entity):
+    """Regression test for Issue #248
+
+    https://github.com/googleapis/python-ndb/issues/248
+    """
+
+    class Animal(ndb.PolyModel):
+        foo = ndb.IntegerProperty()
+
+    class Cat(Animal):
+        pass
+
+    animal = Animal(foo=1)
+    animal.put()
+    cat = Cat(foo=2)
+    cat.put()
+
+    query = Animal.query(projection=["class", "foo"])
+    results = eventually(query.fetch, _length_equals(3))
+
+    # Mostly reproduces odd behavior of legacy code
+    results = sorted(results, key=operator.attrgetter("foo"))
+
+    assert isinstance(results[0], Animal)
+    assert not isinstance(results[0], Cat)
+    assert results[0].foo == 1
+    assert results[0].class_ == ["Animal"]
+
+    assert isinstance(results[1], Animal)
+    assert not isinstance(results[1], Cat)
+    assert results[1].foo == 2
+    assert results[1].class_ == ["Animal"]
+
+    assert isinstance(results[2], Animal)
+    assert isinstance(results[2], Cat)  # This would be False in legacy
+    assert results[2].foo == 2
+    assert results[2].class_ == ["Cat"]
+
+
+@pytest.mark.usefixtures("client_context")
 def test_query_repeated_property(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
     ds_entity(KIND, entity_id, foo=1, bar=["a", "b", "c"])

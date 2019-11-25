@@ -21,3 +21,8 @@ indexes:
   - name: foo
   - name: bar.one
   - name: bar.two
+
+- kind: Animal
+  properties:
+  - name: class
+  - name: foo

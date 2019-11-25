@@ -37,6 +37,7 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
+from google.cloud.ndb import polymodel
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils as ndb_utils
@@ -5090,6 +5091,46 @@ class Test_entity_from_ds_entity:
         assert entity.baz[2].foo is None
         assert entity.baz[2].bar == "iminjail"
         assert entity.copacetic is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_polymodel():
+        class Animal(polymodel.PolyModel):
+            foo = model.IntegerProperty()
+
+        class Cat(Animal):
+            bar = model.StringProperty()
+
+        key = datastore.Key("Animal", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update(
+            {"foo": 42, "bar": "himom!", "class": ["Animal", "Cat"]}
+        )
+
+        entity = model._entity_from_ds_entity(datastore_entity)
+        assert isinstance(entity, Cat)
+        assert entity.foo == 42
+        assert entity.bar == "himom!"
+        assert entity.class_ == ["Animal", "Cat"]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_polymodel_projection():
+        class Animal(polymodel.PolyModel):
+            foo = model.IntegerProperty()
+
+        class Cat(Animal):
+            bar = model.StringProperty()
+
+        key = datastore.Key("Animal", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.update({"foo": 42, "bar": "himom!", "class": "Cat"})
+
+        entity = model._entity_from_ds_entity(datastore_entity)
+        assert isinstance(entity, Cat)
+        assert entity.foo == 42
+        assert entity.bar == "himom!"
+        assert entity.class_ == ["Cat"]
 
 
 class Test_entity_to_protobuf:
