@@ -22,7 +22,7 @@ INSTALL_REQUIRES = [
     "pydata-google-auth",
     "google-auth",
     "google-auth-oauthlib",
-    "google-cloud-bigquery>=1.9.0",
+    "google-cloud-bigquery>=1.11.1",
 ]
 
 extras = {"tqdm": "tqdm>=4.23.0"}

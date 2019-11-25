@@ -31,7 +31,7 @@ def _make_connector(project_id="some-project", **kwargs):
 def min_bq_version():
     import pkg_resources
 
-    return pkg_resources.parse_version("1.9.0")
+    return pkg_resources.parse_version("1.11.0")
 
 
 def mock_get_credentials_no_project(*args, **kwargs):
@@ -327,7 +327,7 @@ def test_read_gbq_with_inferred_project_id_from_service_account_credentials(
 
 
 def test_read_gbq_without_inferred_project_id_from_compute_engine_credentials(
-    mock_compute_engine_credentials
+    mock_compute_engine_credentials,
 ):
     with pytest.raises(ValueError, match="Could not determine project ID"):
         gbq.read_gbq(
@@ -406,7 +406,7 @@ def test_read_gbq_with_verbose_new_pandas_warns_deprecation(min_bq_version):
 
 
 def test_read_gbq_with_not_verbose_new_pandas_warns_deprecation(
-    min_bq_version
+    min_bq_version,
 ):
     import pkg_resources
 

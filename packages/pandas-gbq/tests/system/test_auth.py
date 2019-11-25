@@ -74,7 +74,7 @@ def test_get_service_account_credentials_private_key_path(private_key_path):
 
 
 def test_get_service_account_credentials_private_key_contents(
-    private_key_contents
+    private_key_contents,
 ):
     from google.auth.credentials import Credentials
 

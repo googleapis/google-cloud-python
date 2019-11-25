@@ -45,7 +45,7 @@ def _check_google_client_version():
         raise ImportError("Could not import pkg_resources (setuptools).")
 
     # https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/bigquery/CHANGELOG.md
-    bigquery_minimum_version = pkg_resources.parse_version("1.9.0")
+    bigquery_minimum_version = pkg_resources.parse_version("1.11.0")
     bigquery_client_info_version = pkg_resources.parse_version(
         BIGQUERY_CLIENT_INFO_VERSION
     )
