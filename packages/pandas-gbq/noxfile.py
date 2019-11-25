@@ -13,10 +13,13 @@ import nox
 supported_pythons = ["3.5", "3.6", "3.7"]
 latest_python = "3.7"
 
+# Use a consistent version of black so CI is deterministic.
+black_package = "black==19.10b0"
+
 
 @nox.session
 def lint(session, python=latest_python):
-    session.install("black", "flake8")
+    session.install(black_package, "flake8")
     session.install("-e", ".")
     session.run("flake8", "pandas_gbq")
     session.run("flake8", "tests")
@@ -25,7 +28,7 @@ def lint(session, python=latest_python):
 
 @nox.session(python=latest_python)
 def blacken(session):
-    session.install("black")
+    session.install(black_package)
     session.run("black", ".")
 
 

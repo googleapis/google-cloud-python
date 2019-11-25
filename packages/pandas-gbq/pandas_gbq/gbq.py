@@ -370,9 +370,7 @@ class GbqConnector(object):
             context.project = self.project_id
 
         self.client = self.get_client()
-        self.bqstorage_client = _make_bqstorage_client(
-            use_bqstorage_api, self.credentials
-        )
+        self.use_bqstorage_api = use_bqstorage_api
 
         # BQ Queries costs $5 per TB. First 1 TB per month is free
         # see here for more: https://cloud.google.com/bigquery/pricing
@@ -541,29 +539,35 @@ class GbqConnector(object):
         if max_results == 0:
             return None
 
-        if max_results is None:
-            # Only use the BigQuery Storage API if the full result set is requested.
-            bqstorage_client = self.bqstorage_client
-        else:
-            bqstorage_client = None
-
         try:
+            bqstorage_client = None
+            if max_results is None:
+                # Only use the BigQuery Storage API if the full result set is requested.
+                bqstorage_client = _make_bqstorage_client(
+                    self.use_bqstorage_api, self.credentials
+                )
+
             query_job.result()
             # Get the table schema, so that we can list rows.
             destination = self.client.get_table(query_job.destination)
             rows_iter = self.client.list_rows(
                 destination, max_results=max_results
             )
+
+            schema_fields = [field.to_api_repr() for field in rows_iter.schema]
+            nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
+            df = rows_iter.to_dataframe(
+                dtypes=nullsafe_dtypes,
+                bqstorage_client=bqstorage_client,
+                progress_bar_type=progress_bar_type,
+            )
         except self.http_error as ex:
             self.process_http_error(ex)
-
-        schema_fields = [field.to_api_repr() for field in rows_iter.schema]
-        nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
-        df = rows_iter.to_dataframe(
-            dtypes=nullsafe_dtypes,
-            bqstorage_client=bqstorage_client,
-            progress_bar_type=progress_bar_type,
-        )
+        finally:
+            if bqstorage_client:
+                # Clean up open socket resources. See:
+                # https://github.com/pydata/pandas-gbq/issues/294
+                bqstorage_client.transport.channel.close()
 
         if df.empty:
             df = _cast_empty_df_dtypes(schema_fields, df)
