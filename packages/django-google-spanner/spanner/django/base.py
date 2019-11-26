@@ -28,72 +28,72 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     display_name = 'Cloud Spanner'
 
     # Mapping of Field objects to their column types.
+    # https://cloud.google.com/spanner/docs/data-types#date-type
     # TODO: audit max lengths of all STRING fields.
-    data_types = dict(
-            AutoField='INT64',
-            BigAutoField='INT64',
-            BinaryField='BYTES',
-            BooleanField='BOOL',
-            CharField='STRING(%(max_length)s)',
-            DateField='DATE',        # Date with a zone is supported.
-                                     # https://cloud.google.com/spanner/docs/data-types#date-type
-            DateTimeField='STRING(50)',  # DateTimeField produces a timestamp with a timezone
-                                     # but Spanneronly supports timestamps without a timezone, see
-                                     #    https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
-            DecimalField='FLOAT64',
-            DurationField='STRING(50)',  # Django extracts this field with parse_duration by invoking
-                                     #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
-                                     # starting from
-                                     #   https://docs.djangoproject.com/en/2.2/_modules/django/db/models/fields/#DurationField
-                                     # expecting format "[DD] [HH:[MM:]]ss[.uuuuuu]"
-                                     # also see
-                                     #   https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
-                                     # which recommends either:
-                                     #   "INT64" if storing the value in milliseconds
-                                     #  OR
-                                     #   "STRING" if storing the value in an application-defined interval format.
-            EmailField='STRING(%(max_length)s)',
-            FileField='STRING(%(max_length)s)',
-            FilePathField='STRING(%(max_length)s)',
-            FloatField='FLOAT64',
-            IntegerField='INT64',
-            BigIntegerField='INT64',
-
-            IPAddressField='STRING(40)',
-            GenericIPAddressField='STRING(80)',
-
-            NullBooleanField='BOOL',
-            OneToOneField='INT64',
-            PositiveIntegerField='INT64',
-            PositiveSmallIntegerField='INT64',
-            SlugField='STRING(%(max_length)s)',
-            SmallAutoField='INT64',
-            SmallIntegerField='INT64',
-            TextField='STRING(10000)',
-            TimeField='STRING(50)',  # With or without the time zone, Spanner
-                                 # expects the time field as a string.
-            UUIDField='STRING(36)',  # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
-    )
+    data_types = {
+        'AutoField': 'INT64',
+        'BigAutoField': 'INT64',
+        'BinaryField': 'BYTES',
+        'BooleanField': 'BOOL',
+        'CharField': 'STRING(%(max_length)s)',
+        'DateField': 'DATE',
+        # DateTimeField produces a timestamp with a timezone
+        # but Spanneronly supports timestamps without a timezone, see
+        #    https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
+        'DateTimeField': 'STRING(50)',
+        'DecimalField': 'FLOAT64',
+        # Django extracts this field with parse_duration by invoking
+        #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
+        # starting from
+        #   https://docs.djangoproject.com/en/2.2/_modules/django/db/models/fields/#DurationField
+        # expecting format "[DD] [HH:[MM:]]ss[.uuuuuu]"
+        # also see
+        #   https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
+        # which recommends either:
+        #   "INT64" if storing the value in milliseconds
+        #  OR
+        #   "STRING" if storing the value in an application-defined interval format.
+        'DurationField': 'STRING(50)',
+        'EmailField': 'STRING(%(max_length)s)',
+        'FileField': 'STRING(%(max_length)s)',
+        'FilePathField': 'STRING(%(max_length)s)',
+        'FloatField': 'FLOAT64',
+        'IntegerField': 'INT64',
+        'BigIntegerField': 'INT64',
+        'IPAddressField': 'STRING(40)',
+        'GenericIPAddressField': 'STRING(80)',
+        'NullBooleanField': 'BOOL',
+        'OneToOneField': 'INT64',
+        'PositiveIntegerField': 'INT64',
+        'PositiveSmallIntegerField': 'INT64',
+        'SlugField': 'STRING(%(max_length)s)',
+        'SmallAutoField': 'INT64',
+        'SmallIntegerField': 'INT64',
+        'TextField': 'STRING(10000)',
+        # With or without the time zone, Spanner expects the time field as a string.
+        'TimeField': 'STRING(50)',
+        # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
+        'UUIDField': 'STRING(36)',
+    }
 
     # TODO: (@odeke-em) examine Spanner's data type constraints.
     data_types_check_constraints = {
     }
 
     operators = {
-            'exact': '= %s',
-            'iexact': '= %s',  # Spanner String comparison are case sensitive,
-                               # but it doesn't have a case insensitive
-                               # matching.
-            'contains': 'IN %s',
-            'icontains': 'LIKE %s',
-            'gt': '> %s',
-            'gte': '>= %s',
-            'lt': '< %s',
-            'lte': '<= %s',
-            'startswith': 'STARTS_WITH(%s, %s)',
-            'endswith': 'ENDS_WITH(%s, %s)',
-            'istartswith': 'STARTS_WITH(%s, %s)',
-            'iendswith': 'ENDS_WITH(%s, %s)',
+        'exact': '= %s',
+        # Spanner doesn't have a case insensitive matching.
+        'iexact': '= %s',
+        'contains': 'IN %s',
+        'icontains': 'LIKE %s',
+        'gt': '> %s',
+        'gte': '>= %s',
+        'lt': '< %s',
+        'lte': '<= %s',
+        'startswith': 'STARTS_WITH(%s, %s)',
+        'endswith': 'ENDS_WITH(%s, %s)',
+        'istartswith': 'STARTS_WITH(%s, %s)',
+        'iendswith': 'ENDS_WITH(%s, %s)',
     }
 
     Database = Database
