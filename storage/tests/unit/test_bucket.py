@@ -1753,6 +1753,34 @@ class Test_Bucket(unittest.TestCase):
         bucket.versioning_enabled = True
         self.assertTrue(bucket.versioning_enabled)
 
+    @mock.patch("warnings.warn")
+    def test_create_deprecated(self, mock_warn):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _make_connection(DATA)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = client.create_bucket(BUCKET_NAME)
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+        )
+
+        mock_warn.assert_called_with(
+            "Bucket.create() is deprecated and will be removed in future."
+            "Use Client.create_bucket() instead.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
+
     def test_requester_pays_getter_missing(self):
         NAME = "name"
         bucket = self._make_one(name=NAME)

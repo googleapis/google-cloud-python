@@ -552,6 +552,26 @@ class TestClient(unittest.TestCase):
             _target_object=mock.ANY,
         )
 
+    @mock.patch("warnings.warn")
+    def test_create_bucket_w_string_success(self, mock_warn):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        bucket_name = "bucket-name"
+        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        http = _make_requests_session([_make_json_response(json_expected)])
+        client._http_internal = http
+
+        client.create_bucket(bucket_name, requester_pays=True)
+
+        mock_warn.assert_called_with(
+            "requester_pays arg is deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
+
     def test_create_bucket_w_predefined_acl_invalid(self):
         project = "PROJECT"
         bucket_name = "bucket-name"
