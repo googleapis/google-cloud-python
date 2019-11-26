@@ -137,6 +137,7 @@ from __future__ import print_function
 
 import re
 import ast
+import functools
 import sys
 import time
 from concurrent import futures
@@ -494,6 +495,8 @@ def _cell_magic(line, query):
         args.use_bqstorage_api or context.use_bqstorage_api, context.credentials
     )
 
+    close_transports = functools.partial(_close_transports, client, bqstorage_client)
+
     if args.max_results:
         max_results = int(args.max_results)
     else:
@@ -509,13 +512,15 @@ def _cell_magic(line, query):
         except Exception as ex:
             _handle_error(ex, args.destination_var)
             return
-
-        result = rows.to_dataframe(bqstorage_client=bqstorage_client)
-        if args.destination_var:
-            IPython.get_ipython().push({args.destination_var: result})
-            return
         else:
-            return result
+            result = rows.to_dataframe(bqstorage_client=bqstorage_client)
+            if args.destination_var:
+                IPython.get_ipython().push({args.destination_var: result})
+                return
+            else:
+                return result
+        finally:
+            close_transports()
 
     job_config = bigquery.job.QueryJobConfig()
     job_config.query_parameters = params
@@ -535,7 +540,11 @@ def _cell_magic(line, query):
         job_config.destination = destination_table_ref
         job_config.create_disposition = "CREATE_IF_NEEDED"
         job_config.write_disposition = "WRITE_TRUNCATE"
-        _create_dataset_if_necessary(client, dataset_id)
+        try:
+            _create_dataset_if_necessary(client, dataset_id)
+        except Exception as ex:
+            close_transports()
+            raise ex
 
     if args.maximum_bytes_billed == "None":
         job_config.maximum_bytes_billed = 0
@@ -547,6 +556,7 @@ def _cell_magic(line, query):
         query_job = _run_query(client, query, job_config=job_config)
     except Exception as ex:
         _handle_error(ex, args.destination_var)
+        close_transports()
         return
 
     if not args.verbose:
@@ -554,6 +564,7 @@ def _cell_magic(line, query):
 
     if args.dry_run and args.destination_var:
         IPython.get_ipython().push({args.destination_var: query_job})
+        close_transports()
         return
     elif args.dry_run:
         print(
@@ -561,19 +572,27 @@ def _cell_magic(line, query):
                 query_job.total_bytes_processed
             )
         )
+        close_transports()
         return query_job
 
-    if max_results:
-        result = query_job.result(max_results=max_results).to_dataframe(
-            bqstorage_client=bqstorage_client
-        )
-    else:
-        result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+    try:
+        if max_results:
+            result = query_job.result(max_results=max_results).to_dataframe(
+                bqstorage_client=bqstorage_client
+            )
+        else:
+            result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+    except Exception as ex:
+        close_transports()
+        raise ex
 
     if args.destination_var:
         IPython.get_ipython().push({args.destination_var: result})
     else:
+        close_transports()
         return result
+
+    close_transports()
 
 
 def _make_bqstorage_client(use_bqstorage_api, credentials):
@@ -601,3 +620,21 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         credentials=credentials,
         client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )
+
+
+def _close_transports(client, bqstorage_client):
+    """Close the given clients' underlying transport channels.
+
+    Closing the transport is needed to release system resources, namely open
+    sockets.
+
+    Args:
+        client (:class:`~google.cloud.bigquery.client.Client`):
+        bqstorage_client
+            (Optional[:class:`~google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient`]):
+            A client for the BigQuery Storage API.
+
+    """
+    client.close()
+    if bqstorage_client is not None:
+        bqstorage_client.transport.channel.close()
