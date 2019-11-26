@@ -681,7 +681,7 @@ class Bucket(_PropertyMixin):
         predefined_acl=None,
         predefined_default_object_acl=None,
     ):
-        """Creates current bucket.
+        """DEPRECATED. Creates current bucket.
 
         If the bucket already exists, will raise
         :class:`google.cloud.exceptions.Conflict`.
@@ -718,43 +718,20 @@ class Bucket(_PropertyMixin):
             Optional. Name of predefined ACL to apply to bucket's objects. See:
             https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
         """
-        if self.user_project is not None:
-            raise ValueError("Cannot create bucket with 'user_project' set.")
-
-        client = self._require_client(client)
-
-        if project is None:
-            project = client.project
-
-        if project is None:
-            raise ValueError("Client project not set:  pass an explicit project.")
-
-        query_params = {"project": project}
-
-        if predefined_acl is not None:
-            predefined_acl = BucketACL.validate_predefined(predefined_acl)
-            query_params["predefinedAcl"] = predefined_acl
-
-        if predefined_default_object_acl is not None:
-            predefined_default_object_acl = DefaultObjectACL.validate_predefined(
-                predefined_default_object_acl
-            )
-            query_params["predefinedDefaultObjectAcl"] = predefined_default_object_acl
-
-        properties = {key: self._properties[key] for key in self._changes}
-        properties["name"] = self.name
-
-        if location is not None:
-            properties["location"] = location
-
-        api_response = client._connection.api_request(
-            method="POST",
-            path="/b",
-            query_params=query_params,
-            data=properties,
-            _target_object=self,
+        warnings.warn(
+            "Bucket.create() is deprecated and will be removed in future."
+            "Use Client.create_bucket() instead.",
+            PendingDeprecationWarning,
+            stacklevel=1,
         )
-        self._set_properties(api_response)
+        client = self._require_client(client)
+        client.create_bucket(
+            bucket_or_name=self,
+            project=project,
+            location=location,
+            predefined_acl=predefined_acl,
+            predefined_default_object_acl=predefined_default_object_acl,
+        )
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.
