@@ -51,8 +51,7 @@ def storage_get_started(client, to_delete):
 @snippet
 def client_bucket_acl(client, to_delete):
     bucket_name = "system-test-bucket"
-    bucket = client.bucket(bucket_name)
-    bucket.create()
+    client.create_bucket(bucket_name)
 
     # [START client_bucket_acl]
     client = storage.Client()

@@ -14,6 +14,8 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+import warnings
+
 import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
@@ -348,8 +350,8 @@ class Client(ClientWithProject):
             ]):
                 The bucket resource to pass or name to create.
             requester_pays (bool):
-                Optional. Whether requester pays for API requests for this
-                bucket and its blobs.
+                DEPRECATED. Optional. Whether requester pays for API
+                requests for this bucket and its blobs.
             project (str):
                 Optional. The project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
@@ -405,6 +407,11 @@ class Client(ClientWithProject):
             raise ValueError("Client project not set:  pass an explicit project.")
 
         if requester_pays is not None:
+            warnings.warn(
+                "requester_pays arg is deprecated.",
+                PendingDeprecationWarning,
+                stacklevel=1,
+            )
             bucket.requester_pays = requester_pays
 
         query_params = {"project": project}
