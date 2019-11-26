@@ -1764,7 +1764,8 @@ class Test_Bucket(unittest.TestCase):
         client = Client(project=PROJECT)
         client._base_connection = connection
 
-        bucket = client.create_bucket(BUCKET_NAME)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        bucket.create()
 
         connection.api_request.assert_called_once_with(
             method="POST",
