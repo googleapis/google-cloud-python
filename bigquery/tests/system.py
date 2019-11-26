@@ -27,6 +27,7 @@ import uuid
 import re
 
 import six
+import psutil
 import pytest
 import pytz
 
@@ -202,6 +203,27 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(bucket)
 
         return bucket
+
+    def test_close_releases_open_sockets(self):
+        current_process = psutil.Process()
+        conn_count_start = len(current_process.connections())
+
+        client = Config.CLIENT
+        client.query(
+            """
+            SELECT
+                source_year AS year, COUNT(is_male) AS birth_count
+            FROM `bigquery-public-data.samples.natality`
+            GROUP BY year
+            ORDER BY year DESC
+            LIMIT 15
+            """
+        )
+
+        client.close()
+
+        conn_count_end = len(current_process.connections())
+        self.assertEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id("create_dataset")
