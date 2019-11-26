@@ -180,7 +180,7 @@ class Table(object):
         return Policy.from_pb(resp)
 
     def test_iam_permissions(self, permissions):
-        """Tests whether the caller has the given permissions for the specified table.
+        """Tests whether the caller has the given permissions for this table.
         Returns the permissions that the caller has.
 
         For example:
