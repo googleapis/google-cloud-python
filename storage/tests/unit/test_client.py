@@ -553,7 +553,7 @@ class TestClient(unittest.TestCase):
         )
 
     @mock.patch("warnings.warn")
-    def test_create_bucket_w_string_success(self, mock_warn):
+    def test_create_requester_pays_deprecated(self, mock_warn):
         from google.cloud.storage.bucket import Bucket
 
         project = "PROJECT"
@@ -564,7 +564,25 @@ class TestClient(unittest.TestCase):
         http = _make_requests_session([_make_json_response(json_expected)])
         client._http_internal = http
 
-        client.create_bucket(bucket_name, requester_pays=True)
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (project,),
+            ]
+        )
+
+        bucket = client.create_bucket(bucket_name, requester_pays=True)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+        self.assertTrue(bucket.requester_pays)
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+        )
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(json_expected, json.loads(json_sent))
 
         mock_warn.assert_called_with(
             "requester_pays arg is deprecated.",
