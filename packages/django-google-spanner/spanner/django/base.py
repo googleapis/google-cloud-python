@@ -37,10 +37,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'BooleanField': 'BOOL',
         'CharField': 'STRING(%(max_length)s)',
         'DateField': 'DATE',
-        # DateTimeField produces a timestamp with a timezone
-        # but Spanneronly supports timestamps without a timezone, see
-        #    https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
-        'DateTimeField': 'STRING(50)',
+        'DateTimeField': 'TIMESTAMP',
         'DecimalField': 'FLOAT64',
         # Django extracts this field with parse_duration by invoking
         #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
