@@ -746,7 +746,7 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
-        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        json_expected = {"name": bucket_name}
         data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -755,7 +755,6 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
-        self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY
         )
