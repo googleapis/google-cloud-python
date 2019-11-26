@@ -585,9 +585,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(json_expected, json.loads(json_sent))
 
         mock_warn.assert_called_with(
-            "requester_pays arg is deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
+            "requester_pays arg is deprecated.", PendingDeprecationWarning, stacklevel=1
         )
 
     def test_create_bucket_w_predefined_acl_invalid(self):
