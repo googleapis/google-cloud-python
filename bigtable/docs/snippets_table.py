@@ -356,6 +356,55 @@ def test_bigtable_get_cluster_states():
     assert CLUSTER_ID in get_cluster_states
 
 
+def test_bigtable_table_test_iam_permissions():
+    table_policy = Config.INSTANCE.table("table_id_iam_policy")
+    table_policy.create()
+    assert table_policy.exists
+
+    # [START bigtable_table_test_iam_permissions]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("table_id_iam_policy")
+
+    permissions = ["bigtable.tables.mutateRows", "bigtable.tables.readRows"]
+    permissions_allowed = table.test_iam_permissions(permissions)
+    # [END bigtable_table_test_iam_permissions]
+    assert permissions_allowed == permissions
+
+
+def test_bigtable_table_set_iam_policy_then_get_iam_policy():
+    table_policy = Config.INSTANCE.table("table_id_iam_policy")
+    assert table_policy.exists
+    service_account_email = Config.CLIENT._credentials.service_account_email
+
+    # [START bigtable_table_set_iam_policy]
+    from google.cloud.bigtable import Client
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("table_id_iam_policy")
+    new_policy = Policy()
+    new_policy[BIGTABLE_ADMIN_ROLE] = [Policy.service_account(service_account_email)]
+
+    policy_latest = table.set_iam_policy(new_policy)
+    # [END bigtable_table_set_iam_policy]
+    assert len(policy_latest.bigtable_admins) > 0
+
+    # [START bigtable_table_get_iam_policy]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    table = instance.table("table_id_iam_policy")
+    policy = table.get_iam_policy()
+    # [END bigtable_table_get_iam_policy]
+    assert len(policy.bigtable_admins) > 0
+
+
 def test_bigtable_table_exists():
     # [START bigtable_check_table_exists]
     from google.cloud.bigtable import Client
