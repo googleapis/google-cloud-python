@@ -16,8 +16,8 @@ import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
-    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, parse_insert,
-    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, infer_param_types,
+    parse_insert, rows_for_insert_or_update, sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -107,9 +107,16 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
-    def __do_execute_update(self, transaction, sql, params, **kwargs):
+    def __do_execute_update(self, transaction, sql, params, param_types=None):
         sql, params = sql_pyformat_args_to_spanner(sql, params)
-        res = transaction.execute_update(sql, params=params, **kwargs)
+
+        # Given that we now format datetime as a Spanner TimeStamp,
+        # i.e. in ISO 8601 format, we need to give Cloud Spanner a
+        # hint that the parameter is of Spanner.TimeStamp.
+        # See https://cloud.google.com/spanner/docs/data-types#canonical-format_1
+        param_types = infer_param_types(params, param_types)
+
+        res = transaction.execute_update(sql, params=params, param_types=param_types)
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
@@ -135,11 +142,12 @@ class Cursor(object):
             # Either of cases a) or b)
             return transaction.execute_update(sql)
 
-    def __do_execute_non_update(self, sql, params, **kwargs):
+    def __do_execute_non_update(self, sql, params, param_types=None):
         # Reference
         #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
         sql, params = sql_pyformat_args_to_spanner(sql, params)
-        res = self.__session.execute_sql(sql, params=params, **kwargs)
+        param_types = infer_param_types(params, param_types)
+        res = self.__session.execute_sql(sql, params=params, param_types=param_types)
         if type(res) == int:
             self.__row_count = res
             self.__itr = None

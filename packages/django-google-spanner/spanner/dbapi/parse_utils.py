@@ -15,7 +15,10 @@
 import re
 from urllib.parse import urlparse
 
+from google.cloud import spanner_v1 as spanner
+
 from .exceptions import Error
+from .types import TimestampStr
 
 
 def resolve_project_id(project_id):
@@ -399,3 +402,33 @@ def sql_pyformat_args_to_spanner(sql, params):
             named_args[key] = params[i]
 
     return sql, named_args
+
+
+def infer_param_types(params, param_types):
+    # Given that we now format datetime as a Spanner TimeStamp,
+    # i.e. in ISO 8601 format, we need to give Cloud Spanner a
+    # hint that the parameter is of Spanner.TimeStamp.
+    # See https://cloud.google.com/spanner/docs/data-types#canonical-format_1
+    if not params:
+        return param_types
+
+    for key, value in params.items():
+        if isinstance(value, bool):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.BOOL)
+        elif isinstance(value, int):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.INT64)
+        elif isinstance(value, TimestampStr):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.TIMESTAMP)
+
+    return param_types
+
+
+def insert_key_in_param_types(key, param_types, spanner_type):
+    if param_types is None:
+        param_types = {}
+
+    typ = param_types.get(key)
+    if typ is None:
+        param_types[key] = spanner_type
+
+    return param_types
