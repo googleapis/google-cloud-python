@@ -497,102 +497,89 @@ def _cell_magic(line, query):
 
     close_transports = functools.partial(_close_transports, client, bqstorage_client)
 
-    if args.max_results:
-        max_results = int(args.max_results)
-    else:
-        max_results = None
-
-    query = query.strip()
-
-    # Any query that does not contain whitespace (aside from leading and trailing whitespace)
-    # is assumed to be a table id
-    if not re.search(r"\s", query):
-        try:
-            rows = client.list_rows(query, max_results=max_results)
-        except Exception as ex:
-            _handle_error(ex, args.destination_var)
-            return
+    try:
+        if args.max_results:
+            max_results = int(args.max_results)
         else:
+            max_results = None
+
+        query = query.strip()
+
+        # Any query that does not contain whitespace (aside from leading and trailing whitespace)
+        # is assumed to be a table id
+        if not re.search(r"\s", query):
+            try:
+                rows = client.list_rows(query, max_results=max_results)
+            except Exception as ex:
+                _handle_error(ex, args.destination_var)
+                return
+
             result = rows.to_dataframe(bqstorage_client=bqstorage_client)
             if args.destination_var:
                 IPython.get_ipython().push({args.destination_var: result})
                 return
             else:
                 return result
-        finally:
-            close_transports()
 
-    job_config = bigquery.job.QueryJobConfig()
-    job_config.query_parameters = params
-    job_config.use_legacy_sql = args.use_legacy_sql
-    job_config.dry_run = args.dry_run
+        job_config = bigquery.job.QueryJobConfig()
+        job_config.query_parameters = params
+        job_config.use_legacy_sql = args.use_legacy_sql
+        job_config.dry_run = args.dry_run
 
-    if args.destination_table:
-        split = args.destination_table.split(".")
-        if len(split) != 2:
-            raise ValueError(
-                "--destination_table should be in a <dataset_id>.<table_id> format."
-            )
-        dataset_id, table_id = split
-        job_config.allow_large_results = True
-        dataset_ref = client.dataset(dataset_id)
-        destination_table_ref = dataset_ref.table(table_id)
-        job_config.destination = destination_table_ref
-        job_config.create_disposition = "CREATE_IF_NEEDED"
-        job_config.write_disposition = "WRITE_TRUNCATE"
-        try:
+        if args.destination_table:
+            split = args.destination_table.split(".")
+            if len(split) != 2:
+                raise ValueError(
+                    "--destination_table should be in a <dataset_id>.<table_id> format."
+                )
+            dataset_id, table_id = split
+            job_config.allow_large_results = True
+            dataset_ref = client.dataset(dataset_id)
+            destination_table_ref = dataset_ref.table(table_id)
+            job_config.destination = destination_table_ref
+            job_config.create_disposition = "CREATE_IF_NEEDED"
+            job_config.write_disposition = "WRITE_TRUNCATE"
             _create_dataset_if_necessary(client, dataset_id)
+
+        if args.maximum_bytes_billed == "None":
+            job_config.maximum_bytes_billed = 0
+        elif args.maximum_bytes_billed is not None:
+            value = int(args.maximum_bytes_billed)
+            job_config.maximum_bytes_billed = value
+
+        try:
+            query_job = _run_query(client, query, job_config=job_config)
         except Exception as ex:
-            close_transports()
-            raise ex
+            _handle_error(ex, args.destination_var)
+            return
 
-    if args.maximum_bytes_billed == "None":
-        job_config.maximum_bytes_billed = 0
-    elif args.maximum_bytes_billed is not None:
-        value = int(args.maximum_bytes_billed)
-        job_config.maximum_bytes_billed = value
+        if not args.verbose:
+            display.clear_output()
 
-    try:
-        query_job = _run_query(client, query, job_config=job_config)
-    except Exception as ex:
-        _handle_error(ex, args.destination_var)
-        close_transports()
-        return
-
-    if not args.verbose:
-        display.clear_output()
-
-    if args.dry_run and args.destination_var:
-        IPython.get_ipython().push({args.destination_var: query_job})
-        close_transports()
-        return
-    elif args.dry_run:
-        print(
-            "Query validated. This query will process {} bytes.".format(
-                query_job.total_bytes_processed
+        if args.dry_run and args.destination_var:
+            IPython.get_ipython().push({args.destination_var: query_job})
+            return
+        elif args.dry_run:
+            print(
+                "Query validated. This query will process {} bytes.".format(
+                    query_job.total_bytes_processed
+                )
             )
-        )
-        close_transports()
-        return query_job
+            return query_job
 
-    try:
         if max_results:
             result = query_job.result(max_results=max_results).to_dataframe(
                 bqstorage_client=bqstorage_client
             )
         else:
             result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
-    except Exception as ex:
-        close_transports()
-        raise ex
 
-    if args.destination_var:
-        IPython.get_ipython().push({args.destination_var: result})
-    else:
+        if args.destination_var:
+            IPython.get_ipython().push({args.destination_var: result})
+        else:
+            return result
+    finally:
         close_transports()
-        return result
-
-    close_transports()
 
 
 def _make_bqstorage_client(use_bqstorage_api, credentials):
