@@ -27,6 +27,7 @@ import uuid
 import re
 
 import six
+import psutil
 import pytest
 import pytz
 
@@ -202,6 +203,27 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(bucket)
 
         return bucket
+
+    def test_close_releases_open_sockets(self):
+        current_process = psutil.Process()
+        conn_count_start = len(current_process.connections())
+
+        client = Config.CLIENT
+        client.query(
+            """
+            SELECT
+                source_year AS year, COUNT(is_male) AS birth_count
+            FROM `bigquery-public-data.samples.natality`
+            GROUP BY year
+            ORDER BY year DESC
+            LIMIT 15
+            """
+        )
+
+        client.close()
+
+        conn_count_end = len(current_process.connections())
+        self.assertEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id("create_dataset")
@@ -2417,6 +2439,9 @@ class TestBigQuery(unittest.TestCase):
 @pytest.mark.usefixtures("ipython_interactive")
 def test_bigquery_magic():
     ip = IPython.get_ipython()
+    current_process = psutil.Process()
+    conn_count_start = len(current_process.connections())
+
     ip.extension_manager.load_extension("google.cloud.bigquery")
     sql = """
         SELECT
@@ -2432,6 +2457,8 @@ def test_bigquery_magic():
     with io.capture_output() as captured:
         result = ip.run_cell_magic("bigquery", "", sql)
 
+    conn_count_end = len(current_process.connections())
+
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)
     updates = list(filter(lambda x: bool(x) and x != "\x1b[2K", lines))
@@ -2441,6 +2468,7 @@ def test_bigquery_magic():
     assert isinstance(result, pandas.DataFrame)
     assert len(result) == 10  # verify row count
     assert list(result) == ["url", "view_count"]  # verify column names
+    assert conn_count_end == conn_count_start  # system resources are released
 
 
 def _job_done(instance):

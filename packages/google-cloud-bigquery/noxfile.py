@@ -81,7 +81,7 @@ def system(session):
     session.install("--pre", "grpcio")
 
     # Install all test dependencies, then install local packages in place.
-    session.install("mock", "pytest")
+    session.install("mock", "pytest", "psutil")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
     session.install("-e", os.path.join("..", "storage"))

@@ -194,6 +194,18 @@ class Client(ClientWithProject):
         """Default location for jobs / datasets / tables."""
         return self._location
 
+    def close(self):
+        """Close the underlying transport objects, releasing system resources.
+
+        .. note::
+
+            The client instance can be used for making additional requests even
+            after closing, in which case the underlying connections are
+            automatically re-created.
+        """
+        self._http._auth_request.session.close()
+        self._http.close()
+
     def get_service_account_email(self, project=None):
         """Get the email address of the project's BigQuery service account
 
