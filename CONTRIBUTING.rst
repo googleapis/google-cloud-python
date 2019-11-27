@@ -182,7 +182,6 @@ The commit contains the following structural elements:
 .. _Conventional Commits: https://www.conventionalcommits.org/
 .. _git trailer format: https://git-scm.com/docs/git-interpret-trailers
 
-
 ********************
 Running System Tests
 ********************
