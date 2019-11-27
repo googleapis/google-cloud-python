@@ -50,7 +50,6 @@ extras = {
     ],
     "tqdm": ["tqdm >= 4.0.0, <5.0.0dev"],
     "fastparquet": ["fastparquet", "python-snappy"],
-    "test": ["psutil >= 5.6.7"],
 }
 
 all_extras = []
