@@ -24,7 +24,7 @@ from .schema import DatabaseSchemaEditor
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
-    vendor = 'google'
+    vendor = 'spanner'
     display_name = 'Cloud Spanner'
 
     # Mapping of Field objects to their column types.
