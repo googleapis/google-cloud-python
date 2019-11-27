@@ -151,6 +151,38 @@ Exceptions to PEP8:
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 
+*****************
+Commit Convention
+*****************
+
+We use `Conventional Commits`_ as a convention for writing commit messages.
+It provides an easy set of rules for creating an explicit commit history.
+
+The commit message should be structured as follows::
+
+  <type>[optional scope]: <description>
+
+  [optional body]
+
+  [optional footer(s)]
+
+The commit contains the following structural elements:
+
+- **fix**: a commit of the type `fix` patches a bug in the codebase.
+- **feat**: a commit of the type `feat` introduces a new feature to the codebase.
+- **BREAKING CHANGE**: a commit that has a footer `BREAKING CHANGE:`, or
+  appends a `!` after the type/scope, introduces a breaking API change. A
+  BREAKING CHANGE can be part of commits of any type.
+- types other than fix: and feat: are allowed, for example recommends `build:`,
+  `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `docs:`
+  and others.
+- footers other than BREAKING CHANGE: <description> may be provided and follow
+  a convention similar to `git trailer format`_.
+
+.. _Conventional Commits: https://www.conventionalcommits.org/
+.. _git trailer format: https://git-scm.com/docs/git-interpret-trailers
+
+
 ********************
 Running System Tests
 ********************
