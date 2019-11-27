@@ -860,9 +860,9 @@ ArrayValue = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       values:
-          Values in the array. The order of this array may not be
-          preserved if it contains a mix of indexed and unindexed
-          values.
+          Values in the array. The order of values in an array is
+          preserved as long as all values have identical settings for
+          'exclude\_from\_indexes'.
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.ArrayValue)
     ),
