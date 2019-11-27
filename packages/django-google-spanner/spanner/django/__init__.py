@@ -18,6 +18,10 @@ from uuid import uuid4
 
 from django.db.models.fields import AutoField, Field
 
+from .lookups import register_lookups
+
+register_lookups()
+
 
 def gen_rand_int64():
     # Credit to https://stackoverflow.com/a/3530326.

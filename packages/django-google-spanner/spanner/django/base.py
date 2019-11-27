@@ -87,10 +87,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'gte': '>= %s',
         'lt': '< %s',
         'lte': '<= %s',
-        'startswith': 'STARTS_WITH(%s, %s)',
-        'endswith': 'ENDS_WITH(%s, %s)',
-        'istartswith': 'STARTS_WITH(%s, %s)',
-        'iendswith': 'ENDS_WITH(%s, %s)',
+        'startswith': 'STARTS_WITH(%s, %%%%s)',
+        'endswith': 'ENDS_WITH(%s, %%%%s)',
+        # TODO: find a way to make istartswith/iendswith case insensitive.
+        'istartswith': 'STARTS_WITH(%s, %%%%s)',
+        'iendswith': 'ENDS_WITH(%s, %%%%s)',
     }
 
     Database = Database
