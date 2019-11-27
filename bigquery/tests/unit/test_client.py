@@ -1398,6 +1398,17 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_close(self):
+        creds = _make_credentials()
+        http = mock.Mock()
+        http._auth_request.session = mock.Mock()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        client.close()
+
+        http.close.assert_called_once()
+        http._auth_request.session.close.assert_called_once()
+
     def test_get_model(self):
         path = "projects/%s/datasets/%s/models/%s" % (
             self.PROJECT,
