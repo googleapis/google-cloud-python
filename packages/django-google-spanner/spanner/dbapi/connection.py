@@ -64,6 +64,4 @@ class Connection(object):
         Returns:
             google.api_core.operation.Operation
         """
-        lro = self.__dbhandle.update_ddl(ddl_statements)
-        # Synchronously wait on the operation's completion.
-        return lro.result()
+        return self.__dbhandle.update_ddl(ddl_statements)

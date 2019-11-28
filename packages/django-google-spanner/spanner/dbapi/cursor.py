@@ -230,7 +230,22 @@ class Cursor(object):
         if not self.__db_handle:
             raise ProgrammingError('Trying to run an DDL update but no database handle')
 
-        return self.__db_handle.update_ddl(ddl_statements)
+        lro = self.__db_handle.update_ddl(ddl_statements)
+
+        if has_create_table_stmt(ddl_statements):
+            # We only care about waiting on the result of CREATE TABLE DDL
+            # statements because tables could be referenced, whereas indices are
+            # most likely to be used not immediately, same thing for ALTER statements.
+            return lro.result()
+        else:
+            return lro
+
+
+def has_create_table_stmt(ddl_statements):
+    for ddl_stmt in ddl_statements:
+        if ddl_stmt.upper().startswith('CREATE TABLE'):
+            return True
+    return False
 
 
 class Column:
