@@ -20,6 +20,7 @@ def test_client_query_dry_run(capsys, client):
 
     query_job = client_query_dry_run.client_query_dry_run(client)
     out, err = capsys.readouterr()
-    assert "This query will process 0 bytes." not in out
+    assert "This query will process" in out
     assert query_job.state == "DONE"
     assert query_job.dry_run
+    assert query_job.total_bytes_processed > 0

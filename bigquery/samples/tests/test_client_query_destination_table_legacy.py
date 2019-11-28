@@ -16,10 +16,10 @@
 from .. import client_query_destination_table_legacy
 
 
-def test_client_query_destination_table_legacy(capsys, client, table_id):
+def test_client_query_destination_table_legacy(capsys, client, random_table_id):
 
     client_query_destination_table_legacy.client_query_destination_table_legacy(
-        client, table_id
+        client, random_table_id
     )
     out, err = capsys.readouterr()
-    assert "Query results loaded to the table {}".format(table_id) in out
+    assert "Query results loaded to the table {}".format(random_table_id) in out

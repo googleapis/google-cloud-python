@@ -47,8 +47,10 @@ def test_copy_table_multiple_source(capsys, client, random_table_id, random_data
     copy_table_multiple_source.copy_table_multiple_source(
         client, random_table_id, table_ids
     )
+    dest_table = client.get_table(random_table_id)
     out, err = capsys.readouterr()
     assert (
         "The tables {} have been appended to {}".format(table_ids, random_table_id)
         in out
     )
+    assert dest_table.num_rows > 0
