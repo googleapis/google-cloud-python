@@ -6,6 +6,8 @@ python:
     - "3.8"
 cache: pip
 install:
-    - pip install . tox-travis flake8
+    - pip install . tox-travis flake8 isort
 script:
     - tox
+    - flake8
+    - isort --recursive --check-only --diff
