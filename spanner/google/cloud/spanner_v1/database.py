@@ -18,6 +18,8 @@ import copy
 import functools
 import re
 import threading
+import os
+import grpc
 
 import google.auth.credentials
 from google.protobuf.struct_pb2 import Struct
@@ -40,6 +42,7 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import (
     TransactionSelector,
     TransactionOptions,
 )
+from google.cloud.spanner_v1.gapic.transports import spanner_grpc_transport
 
 # pylint: enable=ungrouped-imports
 
@@ -173,16 +176,22 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            credentials = self._instance._client.credentials
-            if isinstance(credentials, google.auth.credentials.Scoped):
-                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
-            client_info = self._instance._client._client_info
-            client_options = self._instance._client._client_options
-            self._spanner_api = SpannerClient(
-                credentials=credentials,
-                client_info=client_info,
-                client_options=client_options,
-            )
+            if os.environ.get('SPANNER_EMULATOR_HOST') == None:
+                credentials = self._instance._client.credentials
+                if isinstance(credentials, google.auth.credentials.Scoped):
+                    credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
+                client_info = self._instance._client._client_info
+                client_options = self._instance._client._client_options
+                self._spanner_api = SpannerClient(
+                    credentials=credentials,
+                    client_info=client_info,
+                    client_options=client_options,
+                )
+            else:
+                transport=spanner_grpc_transport.SpannerGrpcTransport(channel=grpc.insecure_channel(os.environ.get('SPANNER_EMULATOR_HOST')))
+                self._spanner_api = SpannerClient(
+                    transport=transport,
+                )
         return self._spanner_api
 
     def __eq__(self, other):

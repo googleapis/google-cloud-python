@@ -24,8 +24,18 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 import warnings
+import os
+import grpc
 
 from google.api_core.gapic_v1 import client_info
+
+from google.cloud.spanner_admin_instance_v1.gapic.transports import (
+    instance_admin_grpc_transport,
+)
+
+from google.cloud.spanner_admin_database_v1.gapic.transports import (
+    database_admin_grpc_transport,
+)
 
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
@@ -49,6 +59,11 @@ _USER_AGENT_DEPRECATED = (
     "The 'user_agent' argument to 'Client' is deprecated / unused. "
     "Please pass an appropriate 'client_info' instead."
 )
+
+
+if os.getenv('SPANNER_EMULATOR_HOST') != None and \
+    ('http://' in os.getenv('SPANNER_EMULATOR_HOST') or 'https://' in os.getenv('SPANNER_EMULATOR_HOST')):
+    warnings.warn("SPANNER_EMULATOR_HOST contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. SPANNER_EMULATOR_HOST is intended to be used without a scheme: ex SPANNER_EMULATOR_HOST=localhost:8080.")
 
 
 class InstanceConfig(object):
@@ -182,10 +197,15 @@ class Client(ClientWithProject):
     def instance_admin_api(self):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
+            transport=None
+            if os.environ.get('SPANNER_EMULATOR_HOST') != None:
+                transport=instance_admin_grpc_transport.InstanceAdminGrpcTransport(channel=grpc.insecure_channel(os.environ.get('SPANNER_EMULATOR_HOST')))
+
             self._instance_admin_api = InstanceAdminClient(
                 credentials=self.credentials,
                 client_info=self._client_info,
                 client_options=self._client_options,
+                transport=transport,
             )
         return self._instance_admin_api
 
@@ -193,10 +213,15 @@ class Client(ClientWithProject):
     def database_admin_api(self):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
+            transport=None
+            if os.environ.get('SPANNER_EMULATOR_HOST') != None:
+                transport=database_admin_grpc_transport.DatabaseAdminGrpcTransport(channel=grpc.insecure_channel(os.environ.get('SPANNER_EMULATOR_HOST')))
+
             self._database_admin_api = DatabaseAdminClient(
                 credentials=self.credentials,
                 client_info=self._client_info,
                 client_options=self._client_options,
+                transport=transport,
             )
         return self._database_admin_api
 
