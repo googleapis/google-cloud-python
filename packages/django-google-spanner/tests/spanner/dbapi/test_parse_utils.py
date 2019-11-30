@@ -14,12 +14,13 @@
 
 from unittest import TestCase
 
+from google.cloud import spanner_v1 as spanner
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    STMT_DDL, STMT_NON_UPDATING, classify_stmt, extract_connection_params,
-    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
-    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
-    validate_instance_config,
+    STMT_DDL, STMT_NON_UPDATING, TimestampStr, classify_stmt,
+    extract_connection_params, infer_param_types, parse_insert,
+    parse_spanner_url, reINSTANCE_CONFIG, rows_for_insert_or_update,
+    sql_pyformat_args_to_spanner, validate_instance_config,
 )
 
 
@@ -313,3 +314,56 @@ class ParseUtilsTests(TestCase):
                 self.assertRaisesRegex(Error, 'pyformat_args mismatch',
                                        lambda: sql_pyformat_args_to_spanner(sql, params),
                                        )
+
+    def test_infer_param_types(self):
+        cases = [
+            (
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z'},
+                None,
+                {'a1': spanner.param_types.INT64},
+            ),
+            (
+                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z')},
+                None,
+                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+            ),
+            (
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z'},
+                {},
+                {'a1': spanner.param_types.INT64},
+            ),
+            (
+                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z')},
+                {},
+                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+            ),
+            ({'a1': 10, 'b1': 'aaaaa08-30T01:01:01.000001Z'}, None, {'a1': spanner.param_types.INT64}),
+            (
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001', 't1': True, 't2': False},
+                None,
+                {
+                    'a1': spanner.param_types.INT64,
+                    't1': spanner.param_types.BOOL,
+                    't2': spanner.param_types.BOOL,
+                },
+            ),
+            (
+                {'a1': 10, 'b1': '2019-11-26T02:55:41.000000Z'},
+                None,
+                {'a1': spanner.param_types.INT64},
+            ),
+            (
+                {'a1': 10, 'b1': TimestampStr('2019-11-26T02:55:41.000000Z')},
+                None,
+                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+            ),
+            ({'a1': 10, 'b1': None}, None, {'a1': spanner.param_types.INT64}),
+            (None, None, None),
+            (None, {}, {}),
+            (None, {'a1': str}, {'a1': str}),
+        ]
+
+        for i, (params, param_types, want_param_types) in enumerate(cases):
+            with self.subTest(i=i):
+                got_param_types = infer_param_types(params, param_types)
+                self.assertEqual(got_param_types, want_param_types)

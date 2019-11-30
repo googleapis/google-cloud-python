@@ -1,6 +1,7 @@
-from datetime import datetime
-
+from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
+from django.utils import timezone
+from spanner.dbapi.parse_utils import TimestampStr
 
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -28,6 +29,20 @@ class DatabaseOperations(BaseDatabaseOperations):
         else:
             return []
 
+    def adapt_datetimefield_value(self, value):
+        if value is None:
+            return None
+        # Expression values are adapted by the database.
+        if hasattr(value, 'resolve_expression'):
+            return value
+        # Cloud Spanner doesn't support tz-aware datetimes
+        if timezone.is_aware(value):
+            if settings.USE_TZ:
+                value = timezone.make_naive(value, self.connection.timezone)
+            else:
+                raise ValueError("Cloud Spanner does not support timezone-aware datetimes when USE_TZ is False.")
+        return TimestampStr(value.isoformat(timespec='microseconds') + 'Z')
+
     def get_db_converters(self, expression):
         converters = super().get_db_converters(expression)
         internal_type = expression.output_field.get_internal_type()
@@ -36,9 +51,8 @@ class DatabaseOperations(BaseDatabaseOperations):
         return converters
 
     def convert_datetimefield_value(self, value, expression, connection):
-        if value is not None:
-            try:
-                value = datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f')
-            except ValueError:  # time data does not match format (no microsecond?)
-                value = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        return value
+        if value is None:
+            return value
+        if timezone.is_aware(value):
+            return value
+        return timezone.make_aware(value, self.connection.timezone)

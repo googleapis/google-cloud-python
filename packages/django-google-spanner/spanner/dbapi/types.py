@@ -88,3 +88,13 @@ class ROWID(object):
     """
     # TODO: Implement me.
     pass
+
+
+class TimestampStr(str):
+    """
+    TimestampStr exists so that we can purposefully format types as timestamps
+    compatible with Cloud Spanner's TIMESTAMP type, but right before making
+    queries, it'll help differentiate between normal strings and the case of
+    types that should be TIMESTAMP.
+    """
+    pass
