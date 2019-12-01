@@ -81,7 +81,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'exact': '= %s',
         # Spanner doesn't have a case insensitive matching.
         'iexact': '= %s',
-        'contains': 'IN %s',
+        'contains':  'LIKE %s',
+        # Spanner doesn't have a case insensitive LIKE.
         'icontains': 'LIKE %s',
         'gt': '> %s',
         'gte': '>= %s',
@@ -89,9 +90,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'lte': '<= %s',
         'startswith': 'STARTS_WITH(%s, %%%%s)',
         'endswith': 'ENDS_WITH(%s, %%%%s)',
-        # TODO: find a way to make istartswith/iendswith case insensitive.
-        'istartswith': 'STARTS_WITH(%s, %%%%s)',
-        'iendswith': 'ENDS_WITH(%s, %%%%s)',
+        'istartswith': 'REGEXP_CONTAINS(%s, r"^(?i)%s"',
+        'iendswith': 'REGEXP_CONTAINS(%s, r"(?i)%s$"',
     }
 
     Database = Database
