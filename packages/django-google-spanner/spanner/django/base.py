@@ -90,8 +90,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'lte': '<= %s',
         'startswith': 'STARTS_WITH(%s, %%%%s)',
         'endswith': 'ENDS_WITH(%s, %%%%s)',
-        'istartswith': 'REGEXP_CONTAINS(%s, r"^(?i)%s"',
-        'iendswith': 'REGEXP_CONTAINS(%s, r"(?i)%s$"',
+        'istartswith': 'REGEXP_CONTAINS(%s, %%%%s)',
+        'iendswith': 'REGEXP_CONTAINS(%s, %%%%s)',
     }
 
     Database = Database

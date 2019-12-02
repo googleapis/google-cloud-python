@@ -39,8 +39,26 @@ def startswith(self, compiler, connection):
     return rhs_sql % lhs_sql, params
 
 
+def istartswith(self, compiler, connection):
+    lhs_sql, params = self.process_lhs(compiler, connection)
+    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params.extend(rhs_params)
+    rhs_sql = self.get_rhs_op(connection, rhs_sql)
+    params[0] = "^(?i)%s" % params[0][:-1]
+    return rhs_sql % lhs_sql, params
+
+
+def iendswith(self, compiler, connection):
+    lhs_sql, params = self.process_lhs(compiler, connection)
+    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params.extend(rhs_params)
+    rhs_sql = self.get_rhs_op(connection, rhs_sql)
+    params[0] = "(?i)%s$" % params[0][1:]
+    return rhs_sql % lhs_sql, params
+
+
 def register_lookups():
     EndsWith.as_spanner = endswith
-    IEndsWith.as_spanner = endswith
+    IEndsWith.as_spanner = iendswith
     StartsWith.as_spanner = startswith
-    IStartsWith.as_spanner = startswith
+    IStartsWith.as_spanner = istartswith
