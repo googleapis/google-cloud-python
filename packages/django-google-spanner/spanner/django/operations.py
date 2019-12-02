@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
 from django.utils import timezone
@@ -53,6 +55,13 @@ class DatabaseOperations(BaseDatabaseOperations):
     def convert_datetimefield_value(self, value, expression, connection):
         if value is None:
             return value
-        if timezone.is_aware(value):
-            return value
-        return timezone.make_aware(value, self.connection.timezone)
+        # Cloud Spanner returns the
+        # google.api_core.datetime_helpers.DatetimeWithNanoseconds subclass
+        # of datetime with tzinfo=UTC (which should be replaced with the
+        # connection's timezone). Django doesn't support nanoseconds so that
+        # part is ignored.
+        return datetime(
+            value.year, value.month, value.day,
+            value.hour, value.minute, value.second, value.microsecond,
+            self.connection.timezone,
+        )
