@@ -39,7 +39,22 @@ def default(session):
         session.install("-e", local_dep)
 
     session.install("-e", os.path.join("..", "test_utils"))
-    dev_install = ".[all]"
+
+    coverage_fail_under = "--cov-fail-under=97"
+
+    # fastparquet is not included in .[all] because, in general, it's redundant
+    # with pyarrow. We still want to run some unit tests with fastparquet
+    # serialization, though.
+    dev_install = ".[all,fastparquet]"
+
+    # There is no pyarrow or fastparquet wheel for Python 3.8.
+    if session.python == "3.8":
+        # Since many tests are skipped due to missing dependencies, test
+        # coverage is much lower in Python 3.8. Remove once we can test with
+        # pyarrow.
+        coverage_fail_under = "--cov-fail-under=92"
+        dev_install = ".[pandas,tqdm]"
+
     session.install("-e", dev_install)
 
     # IPython does not support Python 2 after version 5.x
@@ -57,19 +72,19 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=97",
+        coverage_fail_under,
         os.path.join("tests", "unit"),
         *session.posargs
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.6"])
+@nox.session(python=["2.7", "3.7"])
 def system(session):
     """Run the system test suite."""
 
@@ -100,7 +115,7 @@ def system(session):
     )
 
 
-@nox.session(python=["2.7", "3.6"])
+@nox.session(python=["2.7", "3.7"])
 def snippets(session):
     """Run the snippets test suite."""
 
@@ -121,7 +136,7 @@ def snippets(session):
     session.run("py.test", "samples", *session.posargs)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def cover(session):
     """Run the final coverage report.
 
@@ -133,7 +148,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def lint(session):
     """Run linters.
 
@@ -152,7 +167,7 @@ def lint(session):
     session.run("black", "--check", *BLACK_PATHS)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -160,7 +175,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def blacken(session):
     """Run black.
     Format code to uniform standard.
@@ -169,7 +184,7 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def docs(session):
     """Build the docs."""
 

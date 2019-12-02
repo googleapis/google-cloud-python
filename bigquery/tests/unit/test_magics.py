@@ -153,6 +153,7 @@ def test_context_credentials_and_project_can_be_set_explicitly():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_connection_can_be_overriden():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -196,6 +197,7 @@ def test_context_connection_can_be_overriden():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_no_connection():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -326,6 +328,10 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     assert "pyarrow" in error_msg
 
 
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -795,6 +801,7 @@ def test_bigquery_magic_w_table_id_invalid():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_destination_var():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -831,6 +838,10 @@ def test_bigquery_magic_w_table_id_and_destination_var():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_bqstorage_client():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1027,6 +1038,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     "param_value,expected", [("987654321", "987654321"), ("None", "0")]
 )
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, expected):
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1065,6 +1077,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, ex
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1100,6 +1113,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
