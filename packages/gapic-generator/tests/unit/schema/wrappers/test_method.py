@@ -115,7 +115,7 @@ def test_method_paged_result_field_no_page_field():
 
 def test_method_field_headers_none():
     method = make_method('DoSomething')
-    assert isinstance(method.field_headers, collections.Sequence)
+    assert isinstance(method.field_headers, collections.abc.Sequence)
 
 
 def test_method_field_headers_present():

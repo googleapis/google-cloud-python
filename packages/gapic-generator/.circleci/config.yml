@@ -16,10 +16,15 @@ workflows:
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
+      - unit-3.8:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
       - showcase-unit-3.6:
           requires:
             - unit-3.6
             - unit-3.7
+            - unit-3.8
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
@@ -27,6 +32,15 @@ workflows:
           requires:
             - unit-3.6
             - unit-3.7
+            - unit-3.8
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - showcase-unit-3.8:
+          requires:
+            - unit-3.6
+            - unit-3.7
+            - unit-3.8
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
@@ -42,6 +56,7 @@ workflows:
             - mypy
             - showcase-unit-3.6
             - showcase-unit-3.7
+            - showcase-unit-3.8
             - showcase-mypy
           filters:
             tags:
@@ -86,7 +101,7 @@ jobs:
           command: nox -s docs
   mypy:
     docker:
-      - image: python:3.7-slim
+      - image: python:3.8-slim
     steps:
       - checkout
       - run:
@@ -135,7 +150,7 @@ jobs:
             docker push gcr.io/gapic-images/gapic-generator-python:latest
   publish_package:
     docker:
-      - image: python:3.7-slim
+      - image: python:3.8-slim
     steps:
       - checkout
       - run:
@@ -150,7 +165,7 @@ jobs:
           command: python setup.py sdist upload
   showcase:
     docker:
-      - image: python:3.7-slim
+      - image: python:3.8-slim
       - image: gcr.io/gapic-images/gapic-showcase:0.2.0
     steps:
       - checkout
@@ -221,9 +236,33 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s showcase_unit-3.7
+  showcase-unit-3.8:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies.
+          command: |
+            apt-get update
+            apt-get install -y curl pandoc unzip
+      - run:
+          name: Install protoc 3.7.1.
+          command: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.7.1/protoc-3.7.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.7.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.7.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - run:
+          name: Install nox.
+          command: pip install nox
+      - run:
+          name: Run unit tests.
+          command: nox -s showcase_unit-3.8
   showcase-mypy:
     docker:
-      - image: python:3.7-slim
+      - image: python:3.8-slim
     steps:
       - checkout
       - run:
@@ -285,6 +324,28 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s unit-3.7
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-3.8:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - checkout
+      - run:
+          name: Install pandoc
+          command: |
+            apt-get update
+            apt-get install -y pandoc
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install nox
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unit-3.8
       - run:
           name: Submit coverage data to codecov.
           command: codecov

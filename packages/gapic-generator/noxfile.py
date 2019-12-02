@@ -22,7 +22,7 @@ import nox  # type: ignore
 showcase_version = '0.2.0'
 
 
-@nox.session(python=['3.6', '3.7'])
+@nox.session(python=['3.6', '3.7', '3.8'])
 def unit(session):
     """Run the unit test suite."""
 
@@ -40,7 +40,7 @@ def unit(session):
     )
 
 
-@nox.session(python='3.7')
+@nox.session(python='3.8')
 def showcase(session):
     """Run the Showcase test suite."""
 
@@ -84,7 +84,7 @@ def showcase(session):
     session.run('py.test', '--quiet', os.path.join('tests', 'system'))
 
 
-@nox.session(python=['3.6', '3.7'])
+@nox.session(python=['3.6', '3.7', '3.8'])
 def showcase_unit(session):
     """Run the generated unit tests against the Showcase library."""
 
@@ -130,7 +130,7 @@ def showcase_unit(session):
         )
 
 
-@nox.session(python='3.7')
+@nox.session(python='3.8')
 def showcase_mypy(session):
     """Perform typecheck analysis on the generated Showcase library."""
 
@@ -182,7 +182,7 @@ def docs(session):
                 'docs/_build/doctrees', 'docs/', 'docs/_build/html/')
 
 
-@nox.session(python='3.7')
+@nox.session(python=['3.7', '3.8'])
 def mypy(session):
     """Perform typecheck analysis."""
 
