@@ -7,6 +7,15 @@ from spanner.dbapi.parse_utils import TimestampStr
 
 
 class DatabaseOperations(BaseDatabaseOperations):
+    # Django's lookup names that require a different name in Spanner's
+    # EXTRACT() function.
+    # https://cloud.google.com/spanner/docs/functions-and-operators#extract
+    extract_names = {
+        'week_day': 'dayofweek',
+        'iso_week': 'isoweek',
+        'iso_year': 'isoyear',
+    }
+
     def quote_name(self, name):
         return name
 
@@ -65,3 +74,12 @@ class DatabaseOperations(BaseDatabaseOperations):
             value.hour, value.minute, value.second, value.microsecond,
             self.connection.timezone,
         )
+
+    def date_extract_sql(self, lookup_type, field_name):
+        lookup_type = self.extract_names.get(lookup_type, lookup_type)
+        return 'EXTRACT(%s FROM %s)' % (lookup_type, field_name)
+
+    def datetime_extract_sql(self, lookup_type, field_name, tzname):
+        tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
+        lookup_type = self.extract_names.get(lookup_type, lookup_type)
+        return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (lookup_type, field_name, tzname)
