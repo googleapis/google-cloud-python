@@ -17,48 +17,29 @@ from django.db.models.lookups import (
 )
 
 
-def endswith(self, compiler, connection):
+def startswith_endswith(self, compiler, connection):
+    """startswith, endswith, istartswith, and iendswith lookups."""
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    # Chop leading '%' from param since this isn't a LIKE query.
-    params[0] = params[0][1:]
-    # rhs_sql is 'STARTS_WITH(%s, %%s)' and lhs_sql is the column name.
-    return rhs_sql % lhs_sql, params
-
-
-def startswith(self, compiler, connection):
-    # Same logic as endswith but chop trailing (rather than leading) '%' from
-    # param.
-    lhs_sql, params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    params[0] = params[0][:-1]
-    return rhs_sql % lhs_sql, params
-
-
-def istartswith(self, compiler, connection):
-    lhs_sql, params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    params[0] = "^(?i)%s" % params[0][:-1]
-    return rhs_sql % lhs_sql, params
-
-
-def iendswith(self, compiler, connection):
-    lhs_sql, params = self.process_lhs(compiler, connection)
-    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
-    params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    params[0] = "(?i)%s$" % params[0][1:]
+    # Chop the leading (endswith) or trailing (startswith) percent sign that
+    # Django adds to the param since this isn't a LIKE query as Django expects.
+    if 'endswith' in self.lookup_name:
+        params[0] = params[0][1:]
+    else:
+        params[0] = params[0][:-1]
+    # Construct the regex for istartswith or iendswith.
+    if self.lookup_name.startswith('i'):
+        regex = '^(?i)%s' if self.lookup_name == 'istartswith' else '(?i)%s$'
+        params[0] = regex % params[0]
+    # rhs_sql is e.g. 'STARTS_WITH(%s, %%s)' or REGEXP_CONTAINS(%s, %%s), and
+    # lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
 
 def register_lookups():
-    EndsWith.as_spanner = endswith
-    IEndsWith.as_spanner = iendswith
-    StartsWith.as_spanner = startswith
-    IStartsWith.as_spanner = istartswith
+    EndsWith.as_spanner = startswith_endswith
+    IEndsWith.as_spanner = startswith_endswith
+    StartsWith.as_spanner = startswith_endswith
+    IStartsWith.as_spanner = startswith_endswith
