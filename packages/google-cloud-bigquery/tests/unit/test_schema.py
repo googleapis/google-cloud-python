@@ -177,7 +177,6 @@ class TestSchemaField(unittest.TestCase):
             standard_field = field.to_standard_sql()
             self.assertEqual(standard_field.name, "some_field")
             self.assertEqual(standard_field.type.type_kind, standard_type)
-            self.assertFalse(standard_field.type.HasField("sub_type"))
 
     def test_to_standard_sql_struct_type(self):
         from google.cloud.bigquery_v2 import types
@@ -316,7 +315,6 @@ class TestSchemaField(unittest.TestCase):
 
         self.assertEqual(standard_field.name, "weird_field")
         self.assertEqual(standard_field.type.type_kind, sql_type.TYPE_KIND_UNSPECIFIED)
-        self.assertFalse(standard_field.type.HasField("sub_type"))
 
     def test___eq___wrong_type(self):
         field = self._make_one("test", "STRING")
