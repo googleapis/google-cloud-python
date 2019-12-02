@@ -19,7 +19,7 @@ import tempfile
 import nox  # type: ignore
 
 
-showcase_version = '0.2.0'
+showcase_version = '0.6.1'
 
 
 @nox.session(python=['3.6', '3.7', '3.8'])

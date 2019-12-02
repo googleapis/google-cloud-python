@@ -166,7 +166,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.8-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.2.0
+      - image: gcr.io/gapic-images/gapic-showcase:0.6.1
     steps:
       - checkout
       - run:
