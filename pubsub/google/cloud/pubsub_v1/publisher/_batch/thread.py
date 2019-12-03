@@ -29,6 +29,7 @@ from google.cloud.pubsub_v1.publisher._batch import base
 
 _LOGGER = logging.getLogger(__name__)
 _CAN_COMMIT = (base.BatchStatus.ACCEPTING_MESSAGES, base.BatchStatus.STARTING)
+_SERVER_PUBLISH_MAX_BYTES = 10 * 1000 * 1000  # max accepted size of PublishRequest
 
 
 class Batch(base.Batch):
@@ -79,8 +80,12 @@ class Batch(base.Batch):
         # in order to avoid race conditions
         self._futures = []
         self._messages = []
-        self._size = 0
         self._status = base.BatchStatus.ACCEPTING_MESSAGES
+
+        # The initial size is not zero, we need to account for the size overhead
+        # of the PublishRequest message itself.
+        self._base_request_size = types.PublishRequest(topic=topic).ByteSize()
+        self._size = self._base_request_size
 
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
@@ -124,9 +129,12 @@ class Batch(base.Batch):
     def size(self):
         """Return the total size of all of the messages currently in the batch.
 
+        The size includes any overhead of the actual ``PublishRequest`` that is
+        sent to the backend.
+
         Returns:
             int: The total size of all of the messages currently
-                 in the batch, in bytes.
+                 in the batch (including the request overhead), in bytes.
         """
         return self._size
 
@@ -292,12 +300,21 @@ class Batch(base.Batch):
             if not self.will_accept(message):
                 return future
 
-            new_size = self._size + message.ByteSize()
+            size_increase = types.PublishRequest(messages=[message]).ByteSize()
+
+            if (self._base_request_size + size_increase) > _SERVER_PUBLISH_MAX_BYTES:
+                err_msg = (
+                    "The message being published would produce too large a publish "
+                    "request that would exceed the maximum allowed size on the "
+                    "backend ({} bytes).".format(_SERVER_PUBLISH_MAX_BYTES)
+                )
+                raise ValueError(err_msg)
+
+            new_size = self._size + size_increase
             new_count = len(self._messages) + 1
-            overflow = (
-                new_size > self.settings.max_bytes
-                or new_count >= self._settings.max_messages
-            )
+
+            size_limit = min(self.settings.max_bytes, _SERVER_PUBLISH_MAX_BYTES)
+            overflow = new_size > size_limit or new_count >= self._settings.max_messages
 
             if not self._messages or not overflow:
 

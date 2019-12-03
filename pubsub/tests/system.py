@@ -92,6 +92,37 @@ def test_publish_messages(publisher, topic_path, cleanup):
         assert isinstance(result, six.string_types)
 
 
+def test_publish_large_messages(publisher, topic_path, cleanup):
+    futures = []
+    # Make sure the topic gets deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+
+    # Each message should be smaller than 10**7 bytes (the server side limit for
+    # PublishRequest), but all messages combined in a PublishRequest should
+    # slightly exceed that threshold to make sure the publish code handles these
+    # cases well.
+    # Mind that the total PublishRequest size must still be smaller than
+    # 10 * 1024 * 1024 bytes in order to not exceed the max request body size limit.
+    msg_data = b"x" * (2 * 10 ** 6)
+
+    publisher.batch_settings = types.BatchSettings(
+        max_bytes=11 * 1000 * 1000,  # more than the server limit of 10 ** 7
+        max_latency=2.0,  # so that autocommit happens after publishing all messages
+        max_messages=100,
+    )
+    publisher.create_topic(topic_path)
+
+    for index in six.moves.range(5):
+        futures.append(publisher.publish(topic_path, msg_data, num=str(index)))
+
+    # If the publishing logic correctly split all messages into more than a
+    # single batch despite a high BatchSettings.max_bytes limit, there should
+    # be no "InvalidArgument: request_size is too large" error.
+    for future in futures:
+        result = future.result(timeout=10)
+        assert isinstance(result, six.string_types)  # the message ID
+
+
 def test_subscribe_to_messages(
     publisher, topic_path, subscriber, subscription_path, cleanup
 ):
