@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
+
 from django.db.models.lookups import (
     EndsWith, IContains, IEndsWith, IExact, IStartsWith, StartsWith,
 )
@@ -24,7 +26,7 @@ def icontains(self, compiler, connection):
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Chop the leading and trailing percent signs that Django adds to the
     # param since this isn't a LIKE query as Django expects.
-    params[0] = '(?i)%s' % params[0][1:-1]
+    params[0] = '(?i)%s' % re.escape(params[0][1:-1])
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
@@ -35,7 +37,7 @@ def iexact(self, compiler, connection):
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
-    params[0] = '^(?i)%s$' % params[0]
+    params[0] = '^(?i)%s$' % re.escape(params[0])
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
@@ -55,7 +57,7 @@ def startswith_endswith(self, compiler, connection):
     # Construct the regex for istartswith or iendswith.
     if self.lookup_name.startswith('i'):
         regex = '^(?i)%s' if self.lookup_name == 'istartswith' else '(?i)%s$'
-        params[0] = regex % params[0]
+        params[0] = regex % re.escape(params[0])
     # rhs_sql is e.g. 'STARTS_WITH(%s, %%s)' or REGEXP_CONTAINS(%s, %%s), and
     # lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
