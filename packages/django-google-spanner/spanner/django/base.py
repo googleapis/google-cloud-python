@@ -79,11 +79,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     operators = {
         'exact': '= %s',
-        # Spanner doesn't have a case insensitive matching.
-        'iexact': '= %s',
+        'iexact': 'REGEXP_CONTAINS(%s, %%%%s)',
         'contains':  'LIKE %s',
-        # Spanner doesn't have a case insensitive LIKE.
-        'icontains': 'LIKE %s',
+        'icontains': 'REGEXP_CONTAINS(%s, %%%%s)',
         'gt': '> %s',
         'gte': '>= %s',
         'lt': '< %s',

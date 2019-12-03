@@ -13,8 +13,31 @@
 # limitations under the License.
 
 from django.db.models.lookups import (
-    EndsWith, IEndsWith, IStartsWith, StartsWith,
+    EndsWith, IContains, IEndsWith, IExact, IStartsWith, StartsWith,
 )
+
+
+def icontains(self, compiler, connection):
+    lhs_sql, params = self.process_lhs(compiler, connection)
+    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params.extend(rhs_params)
+    rhs_sql = self.get_rhs_op(connection, rhs_sql)
+    # Chop the leading and trailing percent signs that Django adds to the
+    # param since this isn't a LIKE query as Django expects.
+    params[0] = '(?i)%s' % params[0][1:-1]
+    # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
+    return rhs_sql % lhs_sql, params
+
+
+def iexact(self, compiler, connection):
+    lhs_sql, params = self.process_lhs(compiler, connection)
+    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params.extend(rhs_params)
+    rhs_sql = self.get_rhs_op(connection, rhs_sql)
+    # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
+    params[0] = '^(?i)%s$' % params[0]
+    # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
+    return rhs_sql % lhs_sql, params
 
 
 def startswith_endswith(self, compiler, connection):
@@ -39,6 +62,8 @@ def startswith_endswith(self, compiler, connection):
 
 
 def register_lookups():
+    IContains.as_spanner = icontains
+    IExact.as_spanner = iexact
     EndsWith.as_spanner = startswith_endswith
     IEndsWith.as_spanner = startswith_endswith
     StartsWith.as_spanner = startswith_endswith
