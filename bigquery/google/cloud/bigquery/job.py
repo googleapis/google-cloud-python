@@ -775,7 +775,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         if self.state is None:
             self._begin(retry=retry)
-        # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
     def cancelled(self):
