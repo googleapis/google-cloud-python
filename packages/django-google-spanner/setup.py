@@ -1,7 +1,6 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    'django >= 2.0',
     'google-cloud >= 0.34.0',
     'google-cloud-spanner >= 1.8.0',
 ]
@@ -27,8 +26,6 @@ setup(
             'Programming Language :: Python :: 3.7',
             'Topic :: Utilities',
             'Framework :: Django',
-            'Framework :: Django :: 2.1',
             'Framework :: Django :: 2.2',
-            'Framework :: Django :: 3.0',
         ],
 )
