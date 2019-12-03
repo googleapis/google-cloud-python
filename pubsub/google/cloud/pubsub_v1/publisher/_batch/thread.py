@@ -313,7 +313,7 @@ class Batch(base.Batch):
             new_size = self._size + size_increase
             new_count = len(self._messages) + 1
 
-            size_limit = min(self.settings.max_bytes, _SERVER_PUBLISH_MAX_BYTES)
+            size_limit = min(self._settings.max_bytes, _SERVER_PUBLISH_MAX_BYTES)
             overflow = new_size > size_limit or new_count >= self._settings.max_messages
 
             if not self._messages or not overflow:
