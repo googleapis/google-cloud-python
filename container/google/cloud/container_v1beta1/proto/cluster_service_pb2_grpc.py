@@ -206,12 +206,12 @@ class ClusterManagerServicer(object):
     [default network](/compute/docs/networks-and-firewalls#networks).
 
     One firewall is added for the cluster. After cluster creation,
-    the cluster creates routes for each node to allow the containers
+    the Kubelet creates routes for each node to allow the containers
     on that node to communicate with all other instances in the
     cluster.
 
     Finally, an entry is added to the project's global metadata indicating
-    which CIDR range is being used by the cluster.
+    which CIDR range the cluster is using.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -274,10 +274,9 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetMasterAuth(self, request, context):
-        """Used to set master auth materials. Currently supports :-
-    Changing the admin password for a specific cluster.
-    This can be either via password generation or explicitly set.
-    Modify basic_auth.csv and reset the K8S API server.
+        """Sets master auth materials. Currently supports changing the admin password
+    or a specific cluster, either via password generation or explicitly setting
+    the password.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -290,16 +289,16 @@ class ClusterManagerServicer(object):
     Firewalls and routes that were configured during cluster creation
     are also deleted.
 
-    Other Google Compute Engine resources that might be in use by the cluster
-    (e.g. load balancer resources) will not be deleted if they weren't present
-    at the initial create time.
+    Other Google Compute Engine resources that might be in use by the cluster,
+    such as load balancer resources, are not deleted if they weren't present
+    when the cluster was initially created.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListOperations(self, request, context):
-        """Lists all operations in a project in a specific zone or all zones.
+        """Lists all operations in a project in the specified zone or all zones.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -320,7 +319,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetServerConfig(self, request, context):
-        """Returns configuration info about the Kubernetes Engine service.
+        """Returns configuration info about the Google Kubernetes Engine service.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -334,7 +333,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetNodePool(self, request, context):
-        """Retrieves the node pool requested.
+        """Retrieves the requested node pool.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -355,8 +354,8 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def RollbackNodePoolUpgrade(self, request, context):
-        """Roll back the previously Aborted or Failed NodePool upgrade.
-    This will be an no-op if the last upgrade successfully completed.
+        """Rolls back a previously Aborted or Failed NodePool upgrade.
+    This makes no changes if the last upgrade successfully completed.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -384,7 +383,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def StartIPRotation(self, request, context):
-        """Start master IP rotation.
+        """Starts master IP rotation.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -405,7 +404,7 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetNetworkPolicy(self, request, context):
-        """Enables/Disables Network Policy for a cluster.
+        """Enables or disables Network Policy for a cluster.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -419,14 +418,14 @@ class ClusterManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListUsableSubnetworks(self, request, context):
-        """Lists subnetworks that are usable for creating clusters in a project.
+        """Lists subnetworks that can be used for creating clusters in a project.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListLocations(self, request, context):
-        """Used to fetch locations that offer GKE.
+        """Fetches locations that offer Google Kubernetes Engine.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

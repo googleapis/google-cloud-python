@@ -1190,12 +1190,14 @@ class TestClusterManagerClient(object):
         self_link = "selfLink-1691268851"
         version = "version351608024"
         status_message = "statusMessage-239442758"
+        pod_ipv4_cidr_size = 1098768716
         expected_response = {
             "name": name,
             "initial_node_count": initial_node_count,
             "self_link": self_link,
             "version": version,
             "status_message": status_message,
+            "pod_ipv4_cidr_size": pod_ipv4_cidr_size,
         }
         expected_response = cluster_service_pb2.NodePool(**expected_response)
 
