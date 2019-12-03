@@ -17,6 +17,8 @@ class DatabaseOperations(BaseDatabaseOperations):
     }
 
     def quote_name(self, name):
+        if '-' in name:
+            return '`' + name + '`'
         return name
 
     def bulk_insert_sql(self, fields, placeholder_rows):
