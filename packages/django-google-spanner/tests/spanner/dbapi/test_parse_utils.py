@@ -18,9 +18,10 @@ from google.cloud import spanner_v1 as spanner
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, TimestampStr, classify_stmt,
-    extract_connection_params, infer_param_types, parse_insert,
-    parse_spanner_url, reINSTANCE_CONFIG, rows_for_insert_or_update,
-    sql_pyformat_args_to_spanner, validate_instance_config,
+    ensure_where_clause, extract_connection_params, infer_param_types,
+    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    validate_instance_config,
 )
 
 
@@ -367,3 +368,36 @@ class ParseUtilsTests(TestCase):
             with self.subTest(i=i):
                 got_param_types = infer_param_types(params, param_types)
                 self.assertEqual(got_param_types, want_param_types)
+
+    def test_ensure_where_clause(self):
+        cases = [
+                (
+                    'UPDATE a SET a.b=10 FROM articles a JOIN d c ON a.ai = c.ai WHERE c.ci = 1',
+                    'UPDATE a SET a.b=10 FROM articles a JOIN d c ON a.ai = c.ai WHERE c.ci = 1',
+                ),
+                (
+                    'UPDATE (SELECT * FROM A JOIN c ON ai.id = c.id WHERE cl.ci = 1) SET d=5',
+                    'UPDATE (SELECT * FROM A JOIN c ON ai.id = c.id WHERE cl.ci = 1) SET d=5 WHERE 1=1',
+                ),
+                (
+                    'UPDATE T SET A = 1 WHERE C1 = 1 AND C2 = 2',
+                    'UPDATE T SET A = 1 WHERE C1 = 1 AND C2 = 2',
+                ),
+                (
+                    'UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)',
+                    'UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)',
+                ),
+                (
+                    'UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)',
+                    'UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)',
+                ),
+                (
+                    'DELETE * FROM TABLE',
+                    'DELETE * FROM TABLE WHERE 1=1',
+                ),
+        ]
+
+        for sql, want in cases:
+            with self.subTest(sql=sql):
+                got = ensure_where_clause(sql)
+                self.assertEqual(got, want)

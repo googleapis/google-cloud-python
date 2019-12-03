@@ -16,8 +16,9 @@ import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
-    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt, infer_param_types,
-    parse_insert, rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
+    ensure_where_clause, infer_param_types, parse_insert,
+    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -108,6 +109,7 @@ class Cursor(object):
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
     def __do_execute_update(self, transaction, sql, params, param_types=None):
+        sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
         # Given that we now format datetime as a Spanner TimeStamp,

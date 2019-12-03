@@ -15,6 +15,7 @@
 import re
 from urllib.parse import urlparse
 
+import sqlparse
 from google.cloud import spanner_v1 as spanner
 
 from .exceptions import Error
@@ -421,6 +422,16 @@ def infer_param_types(params, param_types):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.TIMESTAMP)
 
     return param_types
+
+
+def ensure_where_clause(sql):
+    """
+    Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
+    Add a dummy WHERE clause if necessary.
+    """
+    if any(isinstance(token, sqlparse.sql.Where) for token in sqlparse.parse(sql)[0]):
+        return sql
+    return sql + ' WHERE 1=1'
 
 
 def insert_key_in_param_types(key, param_types, spanner_type):
