@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.1.0
+
+12-04-2019 13:56 PST
+
+
+### New Features
+
+- Add timeout param to JSONConnection.api_request(). ([#9915](https://github.com/googleapis/google-cloud-python/pull/9915))
+
+
+### Documentation
+
+- Add Python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Fix Google Auth Credentials help link now. ([#9260](https://github.com/googleapis/google-cloud-python/pull/9260))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
 ## 1.0.3
 
 07-26-2019 10:34 PDT
