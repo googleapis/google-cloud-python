@@ -90,7 +90,7 @@ class Batch(base.Batch):
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
         self._thread = None
-        if autocommit and self._settings.max_latency < float("inf"):
+        if autocommit and self.settings.max_latency < float("inf"):
             self._thread = threading.Thread(
                 name="Thread-MonitorBatchPublisher", target=self.monitor
             )
@@ -259,14 +259,14 @@ class Batch(base.Batch):
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
 
-        This simply sleeps for ``self._settings.max_latency`` seconds,
+        This simply sleeps for ``self.settings.max_latency`` seconds,
         and then calls commit unless the batch has already been committed.
         """
         # NOTE: This blocks; it is up to the calling code to call it
         #       in a separate thread.
 
         # Sleep for however long we should be waiting.
-        time.sleep(self._settings.max_latency)
+        time.sleep(self.settings.max_latency)
 
         _LOGGER.debug("Monitor is waking up")
         return self._commit()
@@ -313,8 +313,8 @@ class Batch(base.Batch):
             new_size = self._size + size_increase
             new_count = len(self._messages) + 1
 
-            size_limit = min(self._settings.max_bytes, _SERVER_PUBLISH_MAX_BYTES)
-            overflow = new_size > size_limit or new_count >= self._settings.max_messages
+            size_limit = min(self.settings.max_bytes, _SERVER_PUBLISH_MAX_BYTES)
+            overflow = new_size > size_limit or new_count >= self.settings.max_messages
 
             if not self._messages or not overflow:
 

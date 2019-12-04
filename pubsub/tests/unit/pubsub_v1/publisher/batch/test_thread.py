@@ -41,7 +41,7 @@ def create_batch(autocommit=False, topic="topic_name", **batch_settings):
         autocommit (bool): Whether the batch should commit after
             ``max_latency`` seconds. By default, this is ``False``
             for unit testing.
-        autocommit (topic): The name of the topic the batch should publish
+        topic (str): The name of the topic the batch should publish
             the messages to.
         batch_settings (dict): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
@@ -319,11 +319,10 @@ def test_publish_updating_batch_size():
     # The size should have been incremented by the sum of the size
     # contributions of each message to the PublishRequest.
     base_request_size = types.PublishRequest(topic="topic_foo").ByteSize()
-    msg_size_overheads = [
+    expected_request_size = base_request_size + sum(
         types.PublishRequest(messages=[msg]).ByteSize() for msg in messages
-    ]
+    )
 
-    expected_request_size = base_request_size + sum(msg_size_overheads)
     assert batch.size == expected_request_size
     assert batch.size > 0  # I do not always trust protobuf.
 

@@ -74,26 +74,24 @@ def cleanup():
 
 
 def test_publish_messages(publisher, topic_path, cleanup):
-    futures = []
     # Make sure the topic gets deleted.
     cleanup.append((publisher.delete_topic, topic_path))
 
     publisher.create_topic(topic_path)
-    for index in six.moves.range(500):
-        futures.append(
-            publisher.publish(
-                topic_path,
-                b"The hail in Wales falls mainly on the snails.",
-                num=str(index),
-            )
+
+    futures = [
+        publisher.publish(
+            topic_path, b"The hail in Wales falls mainly on the snails.", num=str(i)
         )
+        for i in six.moves.range(500)
+    ]
+
     for future in futures:
         result = future.result()
         assert isinstance(result, six.string_types)
 
 
 def test_publish_large_messages(publisher, topic_path, cleanup):
-    futures = []
     # Make sure the topic gets deleted.
     cleanup.append((publisher.delete_topic, topic_path))
 
@@ -112,8 +110,7 @@ def test_publish_large_messages(publisher, topic_path, cleanup):
     )
     publisher.create_topic(topic_path)
 
-    for index in six.moves.range(5):
-        futures.append(publisher.publish(topic_path, msg_data, num=str(index)))
+    futures = [publisher.publish(topic_path, msg_data, num=str(i)) for i in range(5)]
 
     # If the publishing logic correctly split all messages into more than a
     # single batch despite a high BatchSettings.max_bytes limit, there should
