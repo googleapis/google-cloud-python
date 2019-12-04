@@ -117,4 +117,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             self.connection.autocommit = autocommit
 
     def is_usable(self):
-        raise Exception('unimplemented')
+        if self.connection is None:
+            return False
+        try:
+            # Use a cursor directly, bypassing Django's utilities.
+            self.connection.cursor().execute('SELECT 1')
+        except Database.Error:
+            return False
+        else:
+            return True
