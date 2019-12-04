@@ -116,14 +116,5 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         with self.wrap_database_errors:
             self.connection.autocommit = autocommit
 
-    def disable_constraint_checking(self):
-        raise Exception('unimplemented')
-
-    def enable_constraint_checking(self):
-        raise Exception('unimplemented')
-
-    def check_constraints(self, table_names=None):
-        raise Exception('unimplemented')
-
     def is_usable(self):
         raise Exception('unimplemented')
