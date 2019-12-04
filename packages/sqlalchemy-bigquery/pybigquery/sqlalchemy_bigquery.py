@@ -272,7 +272,7 @@ class BigQueryDialect(DefaultDialect):
     def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
         # If dataset_id is set, then we know the job_config isn't None
         if dataset_id:
-            # If project_id is missing, use defualt project_id
+            # If project_id is missing, use default project_id
             if not project_id:
                 _, project_id = auth.default()
 
