@@ -276,7 +276,7 @@ class BigQueryDialect(DefaultDialect):
             if not project_id:
                 _, project_id = auth.default()
 
-            job_config.default_dataset = f'{project_id}.{dataset_id}'
+            job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
 
 
     def _create_client_from_credentials(self, credentials, default_query_job_config):
