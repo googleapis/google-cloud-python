@@ -222,6 +222,7 @@ class JSONConnection(Connection):
         content_type=None,
         headers=None,
         target_object=None,
+        timeout=None,
     ):
         """A low level method to send a request to the API.
 
@@ -250,6 +251,13 @@ class JSONConnection(Connection):
             custom behavior, for example, to defer an HTTP request and complete
             initialization of the object at a later time.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response. By default, the method waits indefinitely.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype: :class:`requests.Response`
         :returns: The HTTP response.
         """
@@ -263,10 +271,12 @@ class JSONConnection(Connection):
         headers[CLIENT_INFO_HEADER] = self.user_agent
         headers["User-Agent"] = self.user_agent
 
-        return self._do_request(method, url, headers, data, target_object)
+        return self._do_request(
+            method, url, headers, data, target_object, timeout=timeout
+        )
 
     def _do_request(
-        self, method, url, headers, data, target_object
+        self, method, url, headers, data, target_object, timeout=None
     ):  # pylint: disable=unused-argument
         """Low-level helper:  perform the actual API request over HTTP.
 
@@ -289,10 +299,19 @@ class JSONConnection(Connection):
             (Optional) Unused ``target_object`` here but may be used by a
             superclass.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response. By default, the method waits indefinitely.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype: :class:`requests.Response`
         :returns: The HTTP response.
         """
-        return self.http.request(url=url, method=method, headers=headers, data=data)
+        return self.http.request(
+            url=url, method=method, headers=headers, data=data, timeout=timeout
+        )
 
     def api_request(
         self,
@@ -306,6 +325,7 @@ class JSONConnection(Connection):
         api_version=None,
         expect_json=True,
         _target_object=None,
+        timeout=None,
     ):
         """Make a request over the HTTP transport to the API.
 
@@ -360,6 +380,13 @@ class JSONConnection(Connection):
             can allow custom behavior, for example, to defer an HTTP request
             and complete initialization of the object at a later time.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response. By default, the method waits indefinitely.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :raises ~google.cloud.exceptions.GoogleCloudError: if the response code
             is not 200 OK.
         :raises ValueError: if the response content type is not JSON.
@@ -387,6 +414,7 @@ class JSONConnection(Connection):
             content_type=content_type,
             headers=headers,
             target_object=_target_object,
+            timeout=timeout,
         )
 
         if not 200 <= response.status_code < 300:
