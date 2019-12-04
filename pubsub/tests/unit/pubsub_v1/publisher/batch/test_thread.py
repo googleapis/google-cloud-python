@@ -383,12 +383,8 @@ def test_publish_single_message_size_exceeds_server_size_limit():
     ).ByteSize()
     assert request_size == 1001  # sanity check, just above the (mocked) server limit
 
-    with pytest.raises(ValueError) as error:
+    with pytest.raises(exceptions.MessageTooLargeError):
         batch.publish(big_message)
-
-    error_msg = str(error)
-    assert "too large" in error_msg
-    assert "1000 bytes" in error_msg
 
 
 @mock.patch.object(thread, "_SERVER_PUBLISH_MAX_BYTES", 1000)

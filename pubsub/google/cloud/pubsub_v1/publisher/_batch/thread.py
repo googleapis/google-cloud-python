@@ -289,6 +289,10 @@ class Batch(base.Batch):
             the :class:`~concurrent.futures.Future` interface or :data:`None`.
             If :data:`None` is returned, that signals that the batch cannot
             accept a message.
+
+        Raises:
+            pubsub_v1.publisher.exceptions.MessageTooLargeError: If publishing
+                the ``message`` would exceed the max size limit on the backend.
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
@@ -308,7 +312,7 @@ class Batch(base.Batch):
                     "request that would exceed the maximum allowed size on the "
                     "backend ({} bytes).".format(_SERVER_PUBLISH_MAX_BYTES)
                 )
-                raise ValueError(err_msg)
+                raise exceptions.MessageTooLargeError(err_msg)
 
             new_size = self._size + size_increase
             new_count = len(self._messages) + 1
