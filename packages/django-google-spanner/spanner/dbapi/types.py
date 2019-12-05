@@ -98,3 +98,13 @@ class TimestampStr(str):
     types that should be TIMESTAMP.
     """
     pass
+
+
+class DateStr(str):
+    """
+    DateStr is a sentinel type to help format Django dates as
+    compatible with Cloud Spanner's DATE type, but right before making
+    queries, it'll help differentiate between normal strings and the case of
+    types that should be DATE.
+    """
+    pass

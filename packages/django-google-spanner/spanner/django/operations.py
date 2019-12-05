@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
 from django.utils import timezone
-from spanner.dbapi.parse_utils import TimestampStr
+from spanner.dbapi.parse_utils import DateStr, TimestampStr
 
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -40,6 +40,11 @@ class DatabaseOperations(BaseDatabaseOperations):
             ]
         else:
             return []
+
+    def adapt_datefield_value(self, value):
+        if value is None:
+            return None
+        return DateStr(str(value))
 
     def adapt_datetimefield_value(self, value):
         if value is None:

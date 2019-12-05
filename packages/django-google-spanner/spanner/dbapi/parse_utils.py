@@ -19,7 +19,7 @@ import sqlparse
 from google.cloud import spanner_v1 as spanner
 
 from .exceptions import Error
-from .types import TimestampStr
+from .types import DateStr, TimestampStr
 
 
 def resolve_project_id(project_id):
@@ -420,6 +420,8 @@ def infer_param_types(params, param_types):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.INT64)
         elif isinstance(value, TimestampStr):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.TIMESTAMP)
+        elif isinstance(value, DateStr):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.DATE)
 
     return param_types
 

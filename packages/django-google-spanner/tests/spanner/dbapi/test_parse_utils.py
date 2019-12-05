@@ -17,7 +17,7 @@ from unittest import TestCase
 from google.cloud import spanner_v1 as spanner
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
-    STMT_DDL, STMT_NON_UPDATING, TimestampStr, classify_stmt,
+    STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, extract_connection_params, infer_param_types,
     parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner,
@@ -319,14 +319,19 @@ class ParseUtilsTests(TestCase):
     def test_infer_param_types(self):
         cases = [
             (
-                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z'},
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': '2019-12-05'},
                 None,
                 {'a1': spanner.param_types.INT64},
             ),
             (
-                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z')},
+                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z'), 'c1': '2019-12-05'},
                 None,
                 {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+            ),
+            (
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': DateStr('2019-12-05')},
+                None,
+                {'a1': spanner.param_types.INT64, 'c1': spanner.param_types.DATE},
             ),
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z'},
@@ -334,9 +339,9 @@ class ParseUtilsTests(TestCase):
                 {'a1': spanner.param_types.INT64},
             ),
             (
-                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z')},
+                {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z'), 'c1': DateStr('2005-08-30')},
                 {},
-                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP, 'c1': spanner.param_types.DATE},
             ),
             ({'a1': 10, 'b1': 'aaaaa08-30T01:01:01.000001Z'}, None, {'a1': spanner.param_types.INT64}),
             (
