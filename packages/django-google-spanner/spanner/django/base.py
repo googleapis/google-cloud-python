@@ -33,7 +33,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     data_types = {
         'AutoField': 'INT64',
         'BigAutoField': 'INT64',
-        'BinaryField': 'BYTES',
+        'BinaryField': 'BYTES(MAX)',
         'BooleanField': 'BOOL',
         'CharField': 'STRING(%(max_length)s)',
         'DateField': 'DATE',
@@ -66,7 +66,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'SlugField': 'STRING(%(max_length)s)',
         'SmallAutoField': 'INT64',
         'SmallIntegerField': 'INT64',
-        'TextField': 'STRING(10000)',
+        'TextField': 'STRING(MAX)',
         # With or without the time zone, Spanner expects the time field as a string.
         'TimeField': 'STRING(50)',
         # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
