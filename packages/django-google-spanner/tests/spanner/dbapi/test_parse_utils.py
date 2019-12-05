@@ -18,8 +18,8 @@ from google.cloud import spanner_v1 as spanner
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
-    ensure_where_clause, extract_connection_params, infer_param_types,
-    parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    ensure_where_clause, escape_name, extract_connection_params,
+    infer_param_types, parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner,
     validate_instance_config,
 )
@@ -405,4 +405,17 @@ class ParseUtilsTests(TestCase):
         for sql, want in cases:
             with self.subTest(sql=sql):
                 got = ensure_where_clause(sql)
+                self.assertEqual(got, want)
+
+    def test_escape_name(self):
+        cases = [
+                ('SELECT', '`SELECT`'),
+                ('id', 'id'),
+                ('', ''),
+                ('dashed-value', '`dashed-value`'),
+        ]
+
+        for name, want in cases:
+            with self.subTest(name=name):
+                got = escape_name(name)
                 self.assertEqual(got, want)

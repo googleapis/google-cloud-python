@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
 from django.utils import timezone
-from spanner.dbapi.parse_utils import DateStr, TimestampStr
+from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -17,9 +17,7 @@ class DatabaseOperations(BaseDatabaseOperations):
     }
 
     def quote_name(self, name):
-        if '-' in name:
-            return '`' + name + '`'
-        return name
+        return escape_name(name)
 
     def bulk_insert_sql(self, fields, placeholder_rows):
         placeholder_rows_sql = (", ".join(row) for row in placeholder_rows)
