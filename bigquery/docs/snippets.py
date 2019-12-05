@@ -1319,44 +1319,6 @@ def test_manage_job(client):
     # [END bigquery_get_job]
 
 
-def test_client_query_w_timestamp_params(client, capsys):
-    """Run a query using query parameters"""
-
-    # [START bigquery_query_params_timestamps]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    import datetime
-    import pytz
-
-    query = "SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);"
-    query_params = [
-        bigquery.ScalarQueryParameter(
-            "ts_value",
-            "TIMESTAMP",
-            datetime.datetime(2016, 12, 7, 8, 0, tzinfo=pytz.UTC),
-        )
-    ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_params
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request - starts the query
-
-    # Print the results
-    for row in query_job:
-        print(row)
-
-    assert query_job.state == "DONE"
-    # [END bigquery_query_params_timestamps]
-
-    out, _ = capsys.readouterr()
-    assert "2016, 12, 7, 9, 0" in out
-
-
 def test_client_query_w_array_params(client, capsys):
     """Run a query using array query parameters"""
     # [START bigquery_query_params_arrays]
