@@ -11,7 +11,7 @@
 
 ### New Features
 
-- Add timeout param to JSONConnection.api_request(). ([#9915](https://github.com/googleapis/google-cloud-python/pull/9915))
+- Add timeout param to `JSONConnection.api_request()`. ([#9915](https://github.com/googleapis/google-cloud-python/pull/9915))
 
 
 ### Documentation
