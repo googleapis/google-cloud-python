@@ -8,17 +8,12 @@
 
 12-05-2019 14:49 PST
 
-- fix(vision): deprecate resource name helper methods (via synth) ([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
-
-### Implementation Changes
 
 ### New Features
-- Add deprecation warning to resource name helper functions.
-([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
+- Add deprecation warning to resource name helper functions. ([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
 
 ### Documentation
-- Add deprecation information to resource name helper function documentation.
-([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
+- Add deprecation information to resource name helper function documentation. ([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
 
 ## 0.40.0
 
