@@ -1319,41 +1319,6 @@ def test_manage_job(client):
     # [END bigquery_get_job]
 
 
-def test_client_query_w_struct_params(client, capsys):
-    """Run a query using struct query parameters"""
-    # [START bigquery_query_params_structs]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    query = "SELECT @struct_value AS s;"
-    query_params = [
-        bigquery.StructQueryParameter(
-            "struct_value",
-            bigquery.ScalarQueryParameter("x", "INT64", 1),
-            bigquery.ScalarQueryParameter("y", "STRING", "foo"),
-        )
-    ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_params
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request - starts the query
-
-    # Print the results
-    for row in query_job:
-        print(row.s)
-
-    assert query_job.state == "DONE"
-    # [END bigquery_query_params_structs]
-
-    out, _ = capsys.readouterr()
-    assert "1" in out
-    assert "foo" in out
-
-
 def test_query_no_cache(client):
     # [START bigquery_query_no_cache]
     # from google.cloud import bigquery
