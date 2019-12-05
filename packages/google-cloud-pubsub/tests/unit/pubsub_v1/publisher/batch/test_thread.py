@@ -34,13 +34,15 @@ def create_client():
     return publisher.Client(credentials=creds)
 
 
-def create_batch(autocommit=False, **batch_settings):
+def create_batch(autocommit=False, topic="topic_name", **batch_settings):
     """Return a batch object suitable for testing.
 
     Args:
         autocommit (bool): Whether the batch should commit after
             ``max_latency`` seconds. By default, this is ``False``
             for unit testing.
+        topic (str): The name of the topic the batch should publish
+            the messages to.
         batch_settings (dict): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
 
@@ -49,7 +51,7 @@ def create_batch(autocommit=False, **batch_settings):
     """
     client = create_client()
     settings = types.BatchSettings(**batch_settings)
-    return Batch(client, "topic_name", settings, autocommit=autocommit)
+    return Batch(client, topic, settings, autocommit=autocommit)
 
 
 def test_init():
@@ -299,8 +301,8 @@ def test_monitor_already_committed():
     assert batch._status == status
 
 
-def test_publish():
-    batch = create_batch()
+def test_publish_updating_batch_size():
+    batch = create_batch(topic="topic_foo")
     messages = (
         types.PubsubMessage(data=b"foobarbaz"),
         types.PubsubMessage(data=b"spameggs"),
@@ -314,22 +316,27 @@ def test_publish():
     assert len(batch.messages) == 3
     assert batch._futures == futures
 
-    # The size should have been incremented by the sum of the size of the
-    # messages.
-    expected_size = sum([message_pb.ByteSize() for message_pb in messages])
-    assert batch.size == expected_size
+    # The size should have been incremented by the sum of the size
+    # contributions of each message to the PublishRequest.
+    base_request_size = types.PublishRequest(topic="topic_foo").ByteSize()
+    expected_request_size = base_request_size + sum(
+        types.PublishRequest(messages=[msg]).ByteSize() for msg in messages
+    )
+
+    assert batch.size == expected_request_size
     assert batch.size > 0  # I do not always trust protobuf.
 
 
 def test_publish_not_will_accept():
-    batch = create_batch(max_messages=0)
+    batch = create_batch(topic="topic_foo", max_messages=0)
+    base_request_size = types.PublishRequest(topic="topic_foo").ByteSize()
 
     # Publish the message.
     message = types.PubsubMessage(data=b"foobarbaz")
     future = batch.publish(message)
 
     assert future is None
-    assert batch.size == 0
+    assert batch.size == base_request_size
     assert batch.messages == []
     assert batch._futures == []
 
@@ -359,6 +366,47 @@ def test_publish_exceed_max_messages():
 
         assert future is None
         assert batch._futures == futures
+
+
+@mock.patch.object(thread, "_SERVER_PUBLISH_MAX_BYTES", 1000)
+def test_publish_single_message_size_exceeds_server_size_limit():
+    batch = create_batch(
+        topic="topic_foo",
+        max_messages=1000,
+        max_bytes=1000 * 1000,  # way larger than (mocked) server side limit
+    )
+
+    big_message = types.PubsubMessage(data=b"x" * 984)
+
+    request_size = types.PublishRequest(
+        topic="topic_foo", messages=[big_message]
+    ).ByteSize()
+    assert request_size == 1001  # sanity check, just above the (mocked) server limit
+
+    with pytest.raises(exceptions.MessageTooLargeError):
+        batch.publish(big_message)
+
+
+@mock.patch.object(thread, "_SERVER_PUBLISH_MAX_BYTES", 1000)
+def test_publish_total_messages_size_exceeds_server_size_limit():
+    batch = create_batch(topic="topic_foo", max_messages=10, max_bytes=1500)
+
+    messages = (
+        types.PubsubMessage(data=b"x" * 500),
+        types.PubsubMessage(data=b"x" * 600),
+    )
+
+    # Sanity check - request size is still below BatchSettings.max_bytes,
+    # but it exceeds the server-side size limit.
+    request_size = types.PublishRequest(topic="topic_foo", messages=messages).ByteSize()
+    assert 1000 < request_size < 1500
+
+    with mock.patch.object(batch, "commit") as fake_commit:
+        batch.publish(messages[0])
+        batch.publish(messages[1])
+
+    # The server side limit should kick in and cause a commit.
+    fake_commit.assert_called_once()
 
 
 def test_publish_dict():

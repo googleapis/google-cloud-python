@@ -75,9 +75,12 @@ class Batch(object):
     def size(self):
         """Return the total size of all of the messages currently in the batch.
 
+        The size includes any overhead of the actual ``PublishRequest`` that is
+        sent to the backend.
+
         Returns:
             int: The total size of all of the messages currently
-                 in the batch, in bytes.
+                 in the batch (including the request overhead), in bytes.
         """
         raise NotImplementedError
 

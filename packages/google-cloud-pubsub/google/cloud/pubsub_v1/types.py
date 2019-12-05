@@ -48,7 +48,9 @@ if sys.version_info >= (3, 5):
     BatchSettings.__doc__ = "The settings for batch publishing the messages."
     BatchSettings.max_bytes.__doc__ = (
         "The maximum total size of the messages to collect before automatically "
-        "publishing the batch."
+        "publishing the batch, including any byte size overhead of the publish "
+        "request itself. The maximum value is bound by the server-side limit of "
+        "10_000_000 bytes."
     )
     BatchSettings.max_latency.__doc__ = (
         "The maximum number of seconds to wait for additional messages before "
