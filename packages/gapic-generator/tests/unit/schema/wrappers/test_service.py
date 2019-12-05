@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import typing
 
 from google.api import annotations_pb2
 from google.api import client_pb2
 from google.api import http_pb2
+from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
@@ -146,6 +148,52 @@ def test_module_name():
     assert service.module_name == 'my_service'
 
 
+def test_resource_messages():
+    # Resources
+    squid_options = descriptor_pb2.MessageOptions()
+    squid_options.Extensions[resource_pb2.resource].pattern.append(
+        "squid/{squid}")
+    squid_message = make_message("Squid", options=squid_options)
+    clam_options = descriptor_pb2.MessageOptions()
+    clam_options.Extensions[resource_pb2.resource].pattern.append(
+        "clam/{clam}")
+    clam_message = make_message("Clam", options=clam_options)
+    whelk_options = descriptor_pb2.MessageOptions()
+    whelk_options.Extensions[resource_pb2.resource].pattern.append(
+        "whelk/{whelk}")
+    whelk_message = make_message("Whelk", options=whelk_options)
+
+    # Not resources
+    octopus_message = make_message("Octopus")
+    oyster_message = make_message("Oyster")
+    nudibranch_message = make_message("Nudibranch")
+
+    service = make_service(
+        'Molluscs',
+        methods=(
+            make_method(
+                f"Get{message.name}",
+                input_message=make_message(
+                    f"{message.name}Request",
+                    fields=[make_field(message.name, message=message)]
+                )
+            )
+            for message in (
+                squid_message,
+                clam_message,
+                whelk_message,
+                octopus_message,
+                oyster_message,
+                nudibranch_message
+            )
+        )
+    )
+
+    expected = {squid_message, clam_message, whelk_message}
+    actual = service.resource_messages
+    assert expected == actual
+
+
 def make_service(name: str = 'Placeholder', host: str = '',
                  methods: typing.Tuple[wrappers.Method] = (),
                  scopes: typing.Tuple[str] = ()) -> wrappers.Service:
@@ -248,6 +296,7 @@ def get_message(dot_path: str, *,
     # path is just google.protobuf.DescriptorProto).
     pieces = dot_path.split('.')
     pkg, module, name = pieces[:-2], pieces[-2], pieces[-1]
+
     return wrappers.MessageType(
         fields={i.name: wrappers.Field(
             field_pb=i,
@@ -259,6 +308,93 @@ def get_message(dot_path: str, *,
         meta=metadata.Metadata(address=metadata.Address(
             name=name,
             package=tuple(pkg),
+            module=module,
+        )),
+    )
+
+
+def make_method(
+        name: str, input_message: wrappers.MessageType = None,
+        output_message: wrappers.MessageType = None,
+        package: str = 'foo.bar.v1', module: str = 'baz',
+        http_rule: http_pb2.HttpRule = None,
+        signatures: typing.Sequence[str] = (),
+        **kwargs) -> wrappers.Method:
+    # Use default input and output messages if they are not provided.
+    input_message = input_message or make_message('MethodInput')
+    output_message = output_message or make_message('MethodOutput')
+
+    # Create the method pb2.
+    method_pb = descriptor_pb2.MethodDescriptorProto(
+        name=name,
+        input_type=str(input_message.meta.address),
+        output_type=str(output_message.meta.address),
+        **kwargs
+    )
+
+    # If there is an HTTP rule, process it.
+    if http_rule:
+        ext_key = annotations_pb2.http
+        method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
+
+    # If there are signatures, include them.
+    for sig in signatures:
+        ext_key = client_pb2.method_signature
+        method_pb.options.Extensions[ext_key].append(sig)
+
+    # Instantiate the wrapper class.
+    return wrappers.Method(
+        method_pb=method_pb,
+        input=input_message,
+        output=output_message,
+        meta=metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=package,
+            module=module,
+            parent=(f'{name}Service',),
+        )),
+    )
+
+
+def make_field(name: str, repeated: bool = False,
+               message: wrappers.MessageType = None,
+               enum: wrappers.EnumType = None,
+               meta: metadata.Metadata = None, **kwargs) -> wrappers.Method:
+    if message:
+        kwargs['type_name'] = str(message.meta.address)
+    if enum:
+        kwargs['type_name'] = str(enum.meta.address)
+    field_pb = descriptor_pb2.FieldDescriptorProto(
+        name=name,
+        label=3 if repeated else 1,
+        **kwargs
+    )
+    return wrappers.Field(
+        enum=enum,
+        field_pb=field_pb,
+        message=message,
+        meta=meta or metadata.Metadata(),
+    )
+
+
+def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
+                 fields: typing.Sequence[wrappers.Field] = (),
+                 meta: metadata.Metadata = None,
+                 options: descriptor_pb2.MethodOptions = None,
+                 ) -> wrappers.MessageType:
+    message_pb = descriptor_pb2.DescriptorProto(
+        name=name,
+        field=[i.field_pb for i in fields],
+        options=options,
+    )
+    return wrappers.MessageType(
+        message_pb=message_pb,
+        fields=collections.OrderedDict((i.name, i) for i in fields),
+        nested_messages={},
+        nested_enums={},
+        meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=tuple(package.split('.')),
             module=module,
         )),
     )

@@ -422,4 +422,17 @@ def test_{{ service.name|snake_case }}_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 {% endif -%}
+
+{% for message in service.resource_messages -%}
+{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle") -%}
+def test_{{ message.name|snake_case }}_path():
+  {% for arg in message.resource_path_args -%}
+  {{ arg }} = "{{ molluscs.next() }}"
+  {% endfor %}
+  expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+  actual = {{ service.client_name }}.{{ message.name|snake_case }}_path({{message.resource_path_args|join(", ") }})
+  assert expected == actual
+
+{% endwith -%}
+{% endfor -%}
 {% endblock %}

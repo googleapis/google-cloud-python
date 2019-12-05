@@ -43,3 +43,10 @@ def test_crud_positional(identity):
         assert identity.get_user(user.name).display_name == 'Monty Python'
     finally:
         identity.delete_user(user.name)
+
+
+def test_path_methods(identity):
+    expected = "users/bdfl"
+    actual = identity.user_path("bdfl")
+
+    assert expected == actual

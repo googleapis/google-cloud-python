@@ -81,6 +81,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     from_service_account_json = from_service_account_file
 
 
+    {% for message in service.resource_messages -%}
+    @staticmethod
+    def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
+        """Return a fully-qualified {{ message.resource_type|snake_case }} string."""
+        return "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    {% endfor %}
+
     def __init__(self, *,
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = None,
