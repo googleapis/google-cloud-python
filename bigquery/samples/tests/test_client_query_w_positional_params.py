@@ -17,8 +17,6 @@ from .. import client_query_w_positional_params
 
 def test_client_query_w_positional_params(capsys, client):
 
-    query_job = client_query_w_positional_params.client_query_w_positional_params(
-        client
-    )
+    client_query_w_positional_params.client_query_w_positional_params(client)
     out, err = capsys.readouterr()
     assert "the" in out

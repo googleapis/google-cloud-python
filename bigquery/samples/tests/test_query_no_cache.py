@@ -19,6 +19,6 @@ from .. import query_no_cache
 
 def test_query_no_cache(capsys, client):
 
-    query_job = query_no_cache.query_no_cache(client)
+    query_no_cache.query_no_cache(client)
     out, err = capsys.readouterr()
     assert re.search(r"(Row[\w(){}:', ]+)$", out)

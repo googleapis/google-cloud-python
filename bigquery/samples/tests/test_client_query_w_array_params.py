@@ -17,6 +17,6 @@ from .. import client_query_w_array_params
 
 def test_client_query_w_array_params(capsys, client):
 
-    query_job = client_query_w_array_params.client_query_w_array_params(client)
+    client_query_w_array_params.client_query_w_array_params(client)
     out, err = capsys.readouterr()
     assert "James" in out
