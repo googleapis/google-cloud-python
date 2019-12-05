@@ -18,12 +18,37 @@ config = {
             },
             "methods": {
                 "ExportAssets": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "BatchGetAssetsHistory": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "CreateFeed": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetFeed": {
+                    "timeout_millis": 10000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListFeeds": {
+                    "timeout_millis": 10000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateFeed": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteFeed": {
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
