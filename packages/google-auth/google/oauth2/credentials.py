@@ -223,3 +223,33 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         with io.open(filename, "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
             return cls.from_authorized_user_info(data, scopes)
+
+    def to_json(self, strip=None):
+        """Utility function that creates a JSON representation of a Credentials
+        object.
+
+        Args:
+            strip (Sequence[str]): Optional list of members to exclude from the
+                                   generated JSON.
+
+        Returns:
+            str: A JSON representation of this instance, suitable to pass to
+                 from_json().
+        """
+        prep = {
+            "token": self.token,
+            "refresh_token": self.refresh_token,
+            "token_uri": self.token_uri,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "scopes": self.scopes,
+        }
+
+        # Remove empty entries
+        prep = {k: v for k, v in prep.items() if v is not None}
+
+        # Remove entries that explicitely need to be removed
+        if strip is not None:
+            prep = {k: v for k, v in prep.items() if k not in strip}
+
+        return json.dumps(prep)

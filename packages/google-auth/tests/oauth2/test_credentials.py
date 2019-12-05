@@ -331,3 +331,27 @@ class TestCredentials(object):
         assert creds.refresh_token == info["refresh_token"]
         assert creds.token_uri == credentials._GOOGLE_OAUTH2_TOKEN_ENDPOINT
         assert creds.scopes == scopes
+
+    def test_to_json(self):
+        info = AUTH_USER_INFO.copy()
+        creds = credentials.Credentials.from_authorized_user_info(info)
+
+        # Test with no `strip` arg
+        json_output = creds.to_json()
+        json_asdict = json.loads(json_output)
+        assert json_asdict.get("token") == creds.token
+        assert json_asdict.get("refresh_token") == creds.refresh_token
+        assert json_asdict.get("token_uri") == creds.token_uri
+        assert json_asdict.get("client_id") == creds.client_id
+        assert json_asdict.get("scopes") == creds.scopes
+        assert json_asdict.get("client_secret") == creds.client_secret
+
+        # Test with a `strip` arg
+        json_output = creds.to_json(strip=["client_secret"])
+        json_asdict = json.loads(json_output)
+        assert json_asdict.get("token") == creds.token
+        assert json_asdict.get("refresh_token") == creds.refresh_token
+        assert json_asdict.get("token_uri") == creds.token_uri
+        assert json_asdict.get("client_id") == creds.client_id
+        assert json_asdict.get("scopes") == creds.scopes
+        assert json_asdict.get("client_secret") is None
