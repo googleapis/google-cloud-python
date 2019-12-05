@@ -1319,45 +1319,6 @@ def test_manage_job(client):
     # [END bigquery_get_job]
 
 
-def test_client_query_w_array_params(client, capsys):
-    """Run a query using array query parameters"""
-    # [START bigquery_query_params_arrays]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    query = """
-        SELECT name, sum(number) as count
-        FROM `bigquery-public-data.usa_names.usa_1910_2013`
-        WHERE gender = @gender
-        AND state IN UNNEST(@states)
-        GROUP BY name
-        ORDER BY count DESC
-        LIMIT 10;
-    """
-    query_params = [
-        bigquery.ScalarQueryParameter("gender", "STRING", "M"),
-        bigquery.ArrayQueryParameter("states", "STRING", ["WA", "WI", "WV", "WY"]),
-    ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_params
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request - starts the query
-
-    # Print the results
-    for row in query_job:
-        print("{}: \t{}".format(row.name, row.count))
-
-    assert query_job.state == "DONE"
-    # [END bigquery_query_params_arrays]
-
-    out, _ = capsys.readouterr()
-    assert "James" in out
-
-
 def test_client_query_w_struct_params(client, capsys):
     """Run a query using struct query parameters"""
     # [START bigquery_query_params_structs]
