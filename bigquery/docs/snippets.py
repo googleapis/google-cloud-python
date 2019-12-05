@@ -1319,46 +1319,6 @@ def test_manage_job(client):
     # [END bigquery_get_job]
 
 
-def test_client_query_w_positional_params(client, capsys):
-    """Run a query using query parameters"""
-
-    # [START bigquery_query_params_positional]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-
-    query = """
-        SELECT word, word_count
-        FROM `bigquery-public-data.samples.shakespeare`
-        WHERE corpus = ?
-        AND word_count >= ?
-        ORDER BY word_count DESC;
-    """
-    # Set the name to None to use positional parameters.
-    # Note that you cannot mix named and positional parameters.
-    query_params = [
-        bigquery.ScalarQueryParameter(None, "STRING", "romeoandjuliet"),
-        bigquery.ScalarQueryParameter(None, "INT64", 250),
-    ]
-    job_config = bigquery.QueryJobConfig()
-    job_config.query_parameters = query_params
-    query_job = client.query(
-        query,
-        # Location must match that of the dataset(s) referenced in the query.
-        location="US",
-        job_config=job_config,
-    )  # API request - starts the query
-
-    # Print the results
-    for row in query_job:
-        print("{}: \t{}".format(row.word, row.word_count))
-
-    assert query_job.state == "DONE"
-    # [END bigquery_query_params_positional]
-
-    out, _ = capsys.readouterr()
-    assert "the" in out
-
-
 def test_client_query_w_timestamp_params(client, capsys):
     """Run a query using query parameters"""
 
