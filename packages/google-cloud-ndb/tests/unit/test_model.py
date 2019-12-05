@@ -1518,6 +1518,13 @@ class TestIntegerProperty:
         assert prop._validate(value) is value
 
     @staticmethod
+    @pytest.mark.skipif(six.PY3, reason="Test for Python 2 only.")
+    def test__validate_long():  # pragma: NO PY3 COVER
+        prop = model.IntegerProperty(name="count")
+        value = long(829038402384)  # noqa F821
+        assert prop._validate(value) is not value
+
+    @staticmethod
     def test__validate_bool():
         prop = model.IntegerProperty(name="count")
         value = True

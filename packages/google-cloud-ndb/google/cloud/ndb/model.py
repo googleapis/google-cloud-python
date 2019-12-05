@@ -2272,7 +2272,7 @@ class IntegerProperty(Property):
             .BadValueError: If ``value`` is not an :class:`int` or convertible
                 to one.
         """
-        if not isinstance(value, int):
+        if not isinstance(value, six.integer_types):
             raise exceptions.BadValueError(
                 "Expected integer, got {!r}".format(value)
             )
