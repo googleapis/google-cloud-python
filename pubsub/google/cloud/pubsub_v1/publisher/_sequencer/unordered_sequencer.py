@@ -52,7 +52,7 @@ class UnorderedSequencer(base.Sequencer):
             self._current_batch.commit()
 
     def unpause(self):
-        """ Not relevant for this class.  """
+        """ Not relevant for this class. """
         raise NotImplementedError
 
     def _create_batch(self):
