@@ -51,6 +51,7 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
+from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
@@ -1126,39 +1127,12 @@ class Client(ClientWithProject):
             return job.QueryJob.from_api_repr(resource, self)
         return job.UnknownJob.from_api_repr(resource, self)
 
-    def create_job(
-        self, job_config, source=None, destination=None, query=None, retry=DEFAULT_RETRY
-    ):
+    def create_job(self, job_config, retry=DEFAULT_RETRY):
         """Create a new job.
         Arguments:
             job_config (dict): configuration job representation returned from the API.
 
         Keyword Arguments:
-            source (Union[ \
-                google.cloud.bigquery.table.Table, \
-                google.cloud.bigquery.table.TableReference, \
-                str, \
-                Sequence[str]
-            ]):
-                (Optional) URIs of data files to be loaded; in format
-                ``gs://<bucket_name>/<object_name_or_glob>`` or Table
-                into which data is to be loaded.
-
-            destination (Union[ \
-                google.cloud.bigquery.table.Table, \
-                google.cloud.bigquery.table.TableReference, \
-                str, \
-            ]):
-                (Optional) Table into which data is to be loaded. If a string is passed
-                in, this method attempts to create a table reference from a string using
-                :func:`google.cloud.bigquery.table.TableReference.from_string` or URIs of
-                Cloud Storage file(s) into which table data is to be extracted; in format
-                ``gs://<bucket_name>/<object_name_or_glob>``.
-
-            query (str):
-                (Optional) SQL query to be executed. Defaults to the standard SQL dialect.
-                Use the ``job_config`` parameter to change dialects.
-
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
 
@@ -1173,32 +1147,50 @@ class Client(ClientWithProject):
         """
 
         if "load" in job_config:
-            job_config = google.cloud.bigquery.job.LoadJobConfig.from_api_repr(
+            load_job_config = google.cloud.bigquery.job.LoadJobConfig.from_api_repr(
                 job_config
             )
+            destination = TableReference.from_api_repr(
+                job_config["load"]["destinationTable"]
+            )
+            source_uris = _get_sub_prop(job_config, ["load", "sourceUris"])
             return self.load_table_from_uri(
-                source, destination, job_config=job_config, retry=retry
+                source_uris, destination, job_config=load_job_config, retry=retry
             )
         elif "copy" in job_config:
-            job_config = google.cloud.bigquery.job.CopyJobConfig.from_api_repr(
+            copy_job_config = google.cloud.bigquery.job.CopyJobConfig.from_api_repr(
                 job_config
             )
+            copy_resource = job_config["copy"]
+            destination = TableReference.from_api_repr(
+                copy_resource["destinationTable"]
+            )
+            sources = []
+            source_configs = copy_resource.get("sourceTables")
+            if source_configs is None:
+                source_configs = [copy_resource["sourceTable"]]
+            for source_config in source_configs:
+                table_ref = TableReference.from_api_repr(source_config)
+                sources.append(table_ref)
             return self.copy_table(
-                source, destination, job_config=job_config, retry=retry
+                sources, destination, job_config=copy_job_config, retry=retry
             )
         elif "extract" in job_config:
-            job_config = google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(
+            extract_job_config = google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(
                 job_config
             )
+            source = TableReference.from_api_repr(job_config["extract"]["sourceTable"])
+            destination_uris = _get_sub_prop(job_config, ["extract", "destinationUris"])
             return self.extract_table(
-                source, destination, job_config=job_config, retry=retry
+                source, destination_uris, job_config=extract_job_config, retry=retry
             )
         elif "query" in job_config:
             del job_config["query"]["destinationTable"]
-            job_config = google.cloud.bigquery.job.QueryJobConfig.from_api_repr(
+            query_job_config = google.cloud.bigquery.job.QueryJobConfig.from_api_repr(
                 job_config
             )
-            return self.query(query, job_config=job_config, retry=retry)
+            query = _get_sub_prop(job_config, ["query", "query"])
+            return self.query(query, job_config=query_job_config, retry=retry)
         else:
             raise TypeError("Invalid job configuration received.")
 
