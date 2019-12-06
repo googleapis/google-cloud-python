@@ -319,9 +319,9 @@ class ParseUtilsTests(TestCase):
     def test_infer_param_types(self):
         cases = [
             (
-                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': '2019-12-05'},
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': '2019-12-05', 'd1': 10.39},
                 None,
-                {'a1': spanner.param_types.INT64},
+                {'a1': spanner.param_types.INT64, 'd1': spanner.param_types.FLOAT64},
             ),
             (
                 {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z'), 'c1': '2019-12-05'},
@@ -345,12 +345,13 @@ class ParseUtilsTests(TestCase):
             ),
             ({'a1': 10, 'b1': 'aaaaa08-30T01:01:01.000001Z'}, None, {'a1': spanner.param_types.INT64}),
             (
-                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001', 't1': True, 't2': False},
+                {'a1': 10, 'b1': '2005-08-30T01:01:01.000001', 't1': True, 't2': False, 'f1': 99e9},
                 None,
                 {
                     'a1': spanner.param_types.INT64,
                     't1': spanner.param_types.BOOL,
                     't2': spanner.param_types.BOOL,
+                    'f1': spanner.param_types.FLOAT64,
                 },
             ),
             (

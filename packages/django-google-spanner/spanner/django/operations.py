@@ -58,6 +58,15 @@ class DatabaseOperations(BaseDatabaseOperations):
                 raise ValueError("Cloud Spanner does not support timezone-aware datetimes when USE_TZ is False.")
         return TimestampStr(value.isoformat(timespec='microseconds') + 'Z')
 
+    def adapt_decimalfield_value(self, value, max_digits=None, decimal_places=None):
+        """
+        Convert value from decimal.Decimal into float, for a direct mapping
+        and correct serialization with RPCs to Cloud Spanner.
+        """
+        if value is None:
+            return None
+        return float(value)
+
     def get_db_converters(self, expression):
         converters = super().get_db_converters(expression)
         internal_type = expression.output_field.get_internal_type()

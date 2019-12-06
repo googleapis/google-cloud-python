@@ -416,6 +416,8 @@ def infer_param_types(params, param_types):
     for key, value in params.items():
         if isinstance(value, bool):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.BOOL)
+        elif isinstance(value, float):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.FLOAT64)
         elif isinstance(value, int):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.INT64)
         elif isinstance(value, TimestampStr):
