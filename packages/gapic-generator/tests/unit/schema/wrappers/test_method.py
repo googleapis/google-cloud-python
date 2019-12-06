@@ -171,12 +171,12 @@ def test_method_flattened_fields():
     assert 'b' in method.flattened_fields
 
 
-def test_method_ignored_flattened_fields():
+def test_method_include_flattened_message_fields():
     a = make_field('a', type=5)
     b = make_field('b', type=11, message=make_message('Eggs'))
     input_msg = make_message('Z', fields=(a, b))
     method = make_method('F', input_message=input_msg, signatures=('a,b',))
-    assert len(method.flattened_fields) == 0
+    assert len(method.flattened_fields) == 2
 
 
 def test_method_legacy_flattened_fields():

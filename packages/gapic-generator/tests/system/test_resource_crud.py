@@ -15,34 +15,34 @@
 
 def test_crud_with_request(identity):
     count = len(identity.list_users().users)
-    user = identity.create_user(user={
+    user = identity.create_user(request={'user': {
         'display_name': 'Guido van Rossum',
         'email': 'guido@guido.fake',
-    })
+    }})
     try:
         assert user.display_name == 'Guido van Rossum'
         assert user.email == 'guido@guido.fake'
         assert len(identity.list_users().users) == count + 1
-        assert identity.get_user(
-            name=user.name
-        ).display_name == 'Guido van Rossum'
+        assert identity.get_user({
+            'name': user.name
+        }).display_name == 'Guido van Rossum'
     finally:
-        identity.delete_user(name=user.name)
+        identity.delete_user({'name': user.name})
 
 
-def test_crud_positional(identity):
+def test_crud_flattened(identity):
     count = len(identity.list_users().users)
-    user = identity.create_user({
-        'display_name': 'Monty Python',
-        'email': 'monty@python.org',
-    })
+    user = identity.create_user(
+        display_name='Monty Python',
+        email='monty@python.org',
+    )
     try:
         assert user.display_name == 'Monty Python'
         assert user.email == 'monty@python.org'
         assert len(identity.list_users().users) == count + 1
-        assert identity.get_user(user.name).display_name == 'Monty Python'
+        assert identity.get_user(name=user.name).display_name == 'Monty Python'
     finally:
-        identity.delete_user(user.name)
+        identity.delete_user(name=user.name)
 
 
 def test_path_methods(identity):

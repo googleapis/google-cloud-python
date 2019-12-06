@@ -545,26 +545,14 @@ class Method:
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
-        answer: Dict[str, Field] = collections.OrderedDict()
         signatures = self.options.Extensions[client_pb2.method_signature]
 
-        # Iterate over each signature and add the appropriate fields.
-        for sig in signatures:
-            # Get all of the individual fields.
-            fields = collections.OrderedDict([
-                (f.strip(), self.input.get_field(*f.strip().split('.')))
-                for f in sig.split(',')
-            ])
+        answer: Dict[str, Field] = collections.OrderedDict(
+            (f.strip(), self.input.get_field(*f.strip().split('.')))
+            for sig in signatures
+            for f in sig.split(',')
+        )
 
-            # Sanity check: If any fields contain a message, we ignore the
-            # entire signature.
-            if any([i.message for i in fields.values()]):
-                continue
-
-            # Add the fields to the answer.
-            answer.update(fields)
-
-        # Done; return the flattened fields
         return answer
 
     @utils.cached_property

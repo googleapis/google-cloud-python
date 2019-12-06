@@ -20,28 +20,28 @@ from google.rpc import code_pb2
 from google import showcase
 
 
-def test_unary(echo):
-    content = 'The hail in Wales falls mainly on the snails.'
-    response = echo.echo(
-        content=content,
-    )
-    assert response.content == content
+def test_unary_with_request_object(echo):
+    response = echo.echo(showcase.EchoRequest(
+        content='The hail in Wales falls mainly on the snails.',
+    ))
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
 
 
-def test_unary_positional(echo):
-    content = 'The hail in Wales falls mainly on the snails.'
-    response = echo.echo(content,)
-    assert response.content == content
+def test_unary_with_dict(echo):
+    response = echo.echo({
+        'content': 'The hail in Wales falls mainly on the snails.',
+    })
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
 
 
 def test_unary_error(echo):
     message = 'Bad things! Bad things!'
     with pytest.raises(exceptions.InvalidArgument) as exc:
-        echo.echo(
-            error={
+        echo.echo({
+            'error': {
                 'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
                 'message': message,
             },
-        )
+        })
         assert exc.value.code == 400
         assert exc.value.message == message
