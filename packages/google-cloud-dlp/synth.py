@@ -50,7 +50,7 @@ s.replace(
 s.replace(
     "google/cloud/dlp_v2/proto/storage_pb2.py",
     "number regex.*\n(\s+)latex:.*\n",
-    'number regex "(\\d\{3\}) \\d\{3\}-\\d\{4\} "\\\n'
+    r'number regex "(\\d\{3\}) \\d\{3\}-\\d\{4\} "\\\n'
     "\g<1>could be adjusted upwards if the area code is \\\n",
 )
 
