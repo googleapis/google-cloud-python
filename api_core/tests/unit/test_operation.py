@@ -15,11 +15,10 @@
 
 import mock
 
+from google.api_core import exceptions
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.api_core import retry
-from google.api_core import exceptions
-from google.api_core.future import polling
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2
 from google.rpc import code_pb2
