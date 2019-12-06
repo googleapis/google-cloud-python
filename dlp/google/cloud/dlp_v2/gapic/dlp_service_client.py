@@ -86,21 +86,36 @@ class DlpServiceClient(object):
 
     @classmethod
     def dlp_job_path(cls, project, dlp_job):
-        """Return a fully-qualified dlp_job string."""
+        """DEPRECATED. Return a fully-qualified dlp_job string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """Return a fully-qualified organization string."""
+        """DEPRECATED. Return a fully-qualified organization string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization
         )
 
     @classmethod
     def organization_deidentify_template_path(cls, organization, deidentify_template):
-        """Return a fully-qualified organization_deidentify_template string."""
+        """DEPRECATED. Return a fully-qualified organization_deidentify_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/deidentifyTemplates/{deidentify_template}",
             organization=organization,
@@ -109,7 +124,12 @@ class DlpServiceClient(object):
 
     @classmethod
     def organization_inspect_template_path(cls, organization, inspect_template):
-        """Return a fully-qualified organization_inspect_template string."""
+        """DEPRECATED. Return a fully-qualified organization_inspect_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
@@ -118,7 +138,12 @@ class DlpServiceClient(object):
 
     @classmethod
     def organization_stored_info_type_path(cls, organization, stored_info_type):
-        """Return a fully-qualified organization_stored_info_type string."""
+        """DEPRECATED. Return a fully-qualified organization_stored_info_type string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "organizations/{organization}/storedInfoTypes/{stored_info_type}",
             organization=organization,
@@ -127,14 +152,24 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def project_deidentify_template_path(cls, project, deidentify_template):
-        """Return a fully-qualified project_deidentify_template string."""
+        """DEPRECATED. Return a fully-qualified project_deidentify_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/deidentifyTemplates/{deidentify_template}",
             project=project,
@@ -143,7 +178,12 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_inspect_template_path(cls, project, inspect_template):
-        """Return a fully-qualified project_inspect_template string."""
+        """DEPRECATED. Return a fully-qualified project_inspect_template string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/inspectTemplates/{inspect_template}",
             project=project,
@@ -152,7 +192,12 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_job_trigger_path(cls, project, job_trigger):
-        """Return a fully-qualified project_job_trigger string."""
+        """DEPRECATED. Return a fully-qualified project_job_trigger string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/jobTriggers/{job_trigger}",
             project=project,
@@ -161,7 +206,12 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_stored_info_type_path(cls, project, stored_info_type):
-        """Return a fully-qualified project_stored_info_type string."""
+        """DEPRECATED. Return a fully-qualified project_stored_info_type string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/storedInfoTypes/{stored_info_type}",
             project=project,
@@ -287,6 +337,7 @@ class DlpServiceClient(object):
         inspect_config=None,
         item=None,
         inspect_template_name=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -327,6 +378,8 @@ class DlpServiceClient(object):
                 that are set in this request will replace their corresponding fields in
                 the template. Repeated fields are appended. Singular sub-messages and
                 groups are recursively merged.
+            location_id (str): The geographic location to process content inspection. Reserved for future
+                extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -362,6 +415,7 @@ class DlpServiceClient(object):
             inspect_config=inspect_config,
             item=item,
             inspect_template_name=inspect_template_name,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -383,6 +437,7 @@ class DlpServiceClient(object):
     def redact_image(
         self,
         parent,
+        location_id=None,
         inspect_config=None,
         image_redaction_configs=None,
         include_findings=None,
@@ -412,6 +467,8 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): The parent resource name, for example projects/my-project-id.
+            location_id (str): The geographic location to process the request. Reserved for future
+                extensions.
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -458,6 +515,7 @@ class DlpServiceClient(object):
 
         request = dlp_pb2.RedactImageRequest(
             parent=parent,
+            location_id=location_id,
             inspect_config=inspect_config,
             image_redaction_configs=image_redaction_configs,
             include_findings=include_findings,
@@ -488,6 +546,7 @@ class DlpServiceClient(object):
         item=None,
         inspect_template_name=None,
         deidentify_template_name=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -538,6 +597,8 @@ class DlpServiceClient(object):
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
                 sub-messages and groups are recursively merged.
+            location_id (str): The geographic location to process de-identification. Reserved for future
+                extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -575,6 +636,7 @@ class DlpServiceClient(object):
             item=item,
             inspect_template_name=inspect_template_name,
             deidentify_template_name=deidentify_template_name,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -601,6 +663,7 @@ class DlpServiceClient(object):
         item=None,
         inspect_template_name=None,
         reidentify_template_name=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -653,6 +716,8 @@ class DlpServiceClient(object):
                 the template. Singular fields that are set in this request will replace
                 their corresponding fields in the template. Repeated fields are
                 appended. Singular sub-messages and groups are recursively merged.
+            location_id (str): The geographic location to process content reidentification.  Reserved for
+                future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -690,6 +755,7 @@ class DlpServiceClient(object):
             item=item,
             inspect_template_name=inspect_template_name,
             reidentify_template_name=reidentify_template_name,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -712,6 +778,7 @@ class DlpServiceClient(object):
         self,
         language_code=None,
         filter_=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -734,6 +801,8 @@ class DlpServiceClient(object):
                 en-US strings will be returned.
             filter_ (str): Optional filter to only return infoTypes supported by certain parts of
                 the API. Defaults to supported\_by=INSPECT.
+            location_id (str): The geographic location to list info types. Reserved for future
+                extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -765,8 +834,21 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListInfoTypesRequest(
-            language_code=language_code, filter=filter_
+            language_code=language_code, filter=filter_, location_id=location_id
         )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("location_id", location_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
         return self._inner_api_calls["list_info_types"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -776,6 +858,7 @@ class DlpServiceClient(object):
         parent,
         inspect_template=None,
         template_id=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -805,6 +888,8 @@ class DlpServiceClient(object):
                 and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
+            location_id (str): The geographic location to store the inspection template. Reserved for
+                future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -836,7 +921,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.CreateInspectTemplateRequest(
-            parent=parent, inspect_template=inspect_template, template_id=template_id
+            parent=parent,
+            inspect_template=inspect_template,
+            template_id=template_id,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -1015,6 +1103,7 @@ class DlpServiceClient(object):
         parent,
         page_size=None,
         order_by=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1064,6 +1153,8 @@ class DlpServiceClient(object):
                 -  ``update_time``: corresponds to time the template was last updated.
                 -  ``name``: corresponds to template's name.
                 -  ``display_name``: corresponds to template's display name.
+            location_id (str): The geographic location where inspection templates will be retrieved
+                from. Use ``-`` for all locations. Reserved for future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1098,7 +1189,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListInspectTemplatesRequest(
-            parent=parent, page_size=page_size, order_by=order_by
+            parent=parent,
+            page_size=page_size,
+            order_by=order_by,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -1203,6 +1297,7 @@ class DlpServiceClient(object):
         parent,
         deidentify_template=None,
         template_id=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1233,6 +1328,8 @@ class DlpServiceClient(object):
                 and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
+            location_id (str): The geographic location to store the deidentification template. Reserved
+                for future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1269,6 +1366,7 @@ class DlpServiceClient(object):
             parent=parent,
             deidentify_template=deidentify_template,
             template_id=template_id,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -1454,6 +1552,7 @@ class DlpServiceClient(object):
         parent,
         page_size=None,
         order_by=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1504,6 +1603,9 @@ class DlpServiceClient(object):
                 -  ``update_time``: corresponds to time the template was last updated.
                 -  ``name``: corresponds to template's name.
                 -  ``display_name``: corresponds to template's display name.
+            location_id (str): The geographic location where deidentifications templates will be
+                retrieved from. Use ``-`` for all locations. Reserved for future
+                extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1538,7 +1640,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListDeidentifyTemplatesRequest(
-            parent=parent, page_size=page_size, order_by=order_by
+            parent=parent,
+            page_size=page_size,
+            order_by=order_by,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -1647,6 +1752,7 @@ class DlpServiceClient(object):
         inspect_job=None,
         risk_job=None,
         job_id=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1681,6 +1787,8 @@ class DlpServiceClient(object):
                 hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
+            location_id (str): The geographic location to store and process the job. Reserved for
+                future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1718,7 +1826,11 @@ class DlpServiceClient(object):
         )
 
         request = dlp_pb2.CreateDlpJobRequest(
-            parent=parent, inspect_job=inspect_job, risk_job=risk_job, job_id=job_id
+            parent=parent,
+            inspect_job=inspect_job,
+            risk_job=risk_job,
+            job_id=job_id,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -1744,6 +1856,7 @@ class DlpServiceClient(object):
         page_size=None,
         type_=None,
         order_by=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1828,6 +1941,8 @@ class DlpServiceClient(object):
                 -  ``end_time``: corresponds to time the job ended.
                 -  ``name``: corresponds to job's name.
                 -  ``state``: corresponds to ``state``
+            location_id (str): The geographic location where jobs will be retrieved from. Use ``-`` for
+                all locations. Reserved for future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1867,6 +1982,7 @@ class DlpServiceClient(object):
             page_size=page_size,
             type=type_,
             order_by=order_by,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -2113,6 +2229,7 @@ class DlpServiceClient(object):
         page_size=None,
         order_by=None,
         filter_=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -2194,6 +2311,8 @@ class DlpServiceClient(object):
                 -  last\_run\_time > "2017-12-12T00:00:00+00:00"
 
                 The length of this field should be no more than 500 characters.
+            location_id (str): The geographic location where job triggers will be retrieved from. Use
+                ``-`` for all locations. Reserved for future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2228,7 +2347,11 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListJobTriggersRequest(
-            parent=parent, page_size=page_size, order_by=order_by, filter=filter_
+            parent=parent,
+            page_size=page_size,
+            order_by=order_by,
+            filter=filter_,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -2486,6 +2609,7 @@ class DlpServiceClient(object):
         parent,
         job_trigger=None,
         trigger_id=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -2514,6 +2638,8 @@ class DlpServiceClient(object):
                 hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
+            location_id (str): The geographic location to store the job trigger. Reserved for
+                future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2545,7 +2671,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.CreateJobTriggerRequest(
-            parent=parent, job_trigger=job_trigger, trigger_id=trigger_id
+            parent=parent,
+            job_trigger=job_trigger,
+            trigger_id=trigger_id,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -2569,6 +2698,7 @@ class DlpServiceClient(object):
         parent,
         config=None,
         stored_info_type_id=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -2598,6 +2728,8 @@ class DlpServiceClient(object):
                 numbers, and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
+            location_id (str): The geographic location to store the stored infoType. Reserved for
+                future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2629,7 +2761,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.CreateStoredInfoTypeRequest(
-            parent=parent, config=config, stored_info_type_id=stored_info_type_id
+            parent=parent,
+            config=config,
+            stored_info_type_id=stored_info_type_id,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
@@ -2815,6 +2950,7 @@ class DlpServiceClient(object):
         parent,
         page_size=None,
         order_by=None,
+        location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -2866,6 +3002,8 @@ class DlpServiceClient(object):
                 -  ``state``: corresponds to the state of the resource.
                 -  ``name``: corresponds to resource name.
                 -  ``display_name``: corresponds to info type's display name.
+            location_id (str): The geographic location where stored infoTypes will be retrieved from.
+                Use ``-`` for all locations. Reserved for future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2900,7 +3038,10 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListStoredInfoTypesRequest(
-            parent=parent, page_size=page_size, order_by=order_by
+            parent=parent,
+            page_size=page_size,
+            order_by=order_by,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
