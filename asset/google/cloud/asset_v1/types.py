@@ -25,6 +25,8 @@ from google.cloud.asset_v1.proto import assets_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
@@ -35,6 +37,8 @@ _shared_modules = [
     policy_pb2,
     operations_pb2,
     any_pb2,
+    empty_pb2,
+    field_mask_pb2,
     struct_pb2,
     timestamp_pb2,
     status_pb2,
