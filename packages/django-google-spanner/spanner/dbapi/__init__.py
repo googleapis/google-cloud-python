@@ -29,7 +29,7 @@ from .types import (
     BINARY, DATETIME, NUMBER, ROWID, STRING, Date, DateFromTicks, Time,
     TimeFromTicks, Timestamp, TimestampFromTicks,
 )
-from .version import USER_AGENT
+from .version import google_client_info
 
 # Globals that MUST be defined ###
 apilevel = "2.0"  # Implements the Python Database API specification 2.0 version.
@@ -74,7 +74,7 @@ def connect(spanner_url, credentials_uri=None):
 
     kwargs = dict(
         project=conn_params.get('project_id'),
-        user_agent=USER_AGENT,
+        client_info=google_client_info(),
     )
 
     # Pre-requisite are the database and instance names.

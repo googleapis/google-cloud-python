@@ -13,22 +13,18 @@
 # limitations under the License.
 
 import sys
+from unittest import TestCase
 
 from google.api_core.gapic_v1.client_info import ClientInfo
-
-VERSION = '0.0.1'
-USER_AGENT = 'spanner-django/' + VERSION
-
-vers = sys.version_info
+from spanner.dbapi.version import USER_AGENT, google_client_info
 
 
-def google_client_info():
-    """
-    Return a google.api_core.gapic_v1.client_info.ClientInfo
-    containg the user_agent and python_version for this library
-    """
-
-    return ClientInfo(
-        user_agent=USER_AGENT,
-        python_version='%d.%d.%d' % (vers.major, vers.minor, vers.micro or 0),
-    )
+class VersionUtils(TestCase):
+    def test_google_client_info(self):
+        vers = sys.version_info
+        got = google_client_info().to_grpc_metadata()
+        want = ClientInfo(
+            user_agent=USER_AGENT,
+            python_version='%d.%d.%d' % (vers.major, vers.minor, vers.micro or 0),
+        ).to_grpc_metadata()
+        self.assertEqual(got, want)
