@@ -22,6 +22,9 @@ from .parse_utils import (
 )
 
 _UNSET_COUNT = -1
+OP_INSERT = 'insert'
+OP_UPDATE = 'update'
+OP_DELETE = 'delete'
 
 
 class Cursor(object):
@@ -48,6 +51,8 @@ class Cursor(object):
         return self.__row_count
 
     def close(self):
+        self.__commit_preceding_batch()
+
         if not self.__session:
             return
 
@@ -87,12 +92,13 @@ class Cursor(object):
                     param_types=param_types,
                 )
             elif classification == STMT_INSERT:
-                self.__session.run_in_transaction(
-                    self.__do_execute_insert,
+                self.__handle_insert(
                     sql,
                     args if args else None,
                 )
+
             else:
+                self.__commit_preceding_batch()
                 self.__session.run_in_transaction(
                     self.__do_execute_update,
                     sql, args or None,
@@ -109,6 +115,7 @@ class Cursor(object):
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
     def __do_execute_update(self, transaction, sql, params, param_types=None):
+        # BATCH TARGET!
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
@@ -125,7 +132,7 @@ class Cursor(object):
 
         return res
 
-    def __do_execute_insert(self, transaction, sql, params):
+    def __handle_insert(self, sql, params):
         # There are 3 variants of an INSERT statement:
         # a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
         # b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
@@ -135,16 +142,29 @@ class Cursor(object):
             parts = parse_insert(sql)
             columns = parts.get('columns')
             rows = rows_for_insert_or_update(columns, params, parts.get('values_pyformat'))
-            return transaction.insert_or_update(
+            self.__db_handle.append_to_batch_stack(
+                op=OP_INSERT,
                 table=parts.get('table'),
                 columns=columns,
                 values=rows,
             )
         else:
-            # Either of cases a) or b)
-            return transaction.execute_update(sql)
+            # Either of cases a) and b)
+            self.__commit_preceding_batch()
+            self.__session.run_in_transaction(
+                self.__execute_insert_no_params,
+                sql,
+            )
+
+    def __execute_insert_no_params(self, transaction, sql):
+        return transaction.execute_update(sql)
+
+    def __commit_preceding_batch(self):
+        self.__db_handle.commit()
 
     def __do_execute_non_update(self, sql, params, param_types=None):
+        self.__commit_preceding_batch()
+
         # Reference
         #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
         sql, params = sql_pyformat_args_to_spanner(sql, params)
@@ -187,6 +207,8 @@ class Cursor(object):
         return next(self.__itr)
 
     def __iter__(self):
+        self.__commit_preceding_batch()
+
         if self.__itr is None:
             raise ProgrammingError('no results to return')
         return self.__itr

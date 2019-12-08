@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .cursor import Cursor
+from .cursor import OP_DELETE, OP_INSERT, OP_UPDATE, Cursor
 from .exceptions import Error
 
 
@@ -20,6 +20,7 @@ class Connection(object):
     def __init__(self, db_handle):
         self.__dbhandle = db_handle
         self.__closed = False
+        self.__ops = []
 
     def __raise_if_already_closed(self):
         """
@@ -29,6 +30,7 @@ class Connection(object):
             raise Error('attempting to use an already closed connection')
 
     def close(self):
+        self.commit()
         self.__raise_if_already_closed()
         self.__dbhandle = None
         self.__closed = True
@@ -40,12 +42,25 @@ class Connection(object):
         return self.close()
 
     def commit(self):
-        # We don't manage transactions.
-        pass
+        if not self.__ops:
+            return
+
+        ops, self.__ops = self.__ops, []
+        with self.__dbhandle.batch() as batch:
+            for (op, table, columns, values) in ops:
+                if op == OP_DELETE:
+                    batch.delete(table)
+                elif op == OP_INSERT:
+                    batch.insert(table, columns, values)
+                elif op == OP_UPDATE:
+                    batch.update(table, columns, values)
 
     def rollback(self):
         # We don't manage transactions.
         pass
+
+    def append_to_batch_stack(self, op, table, columns, values):
+        self.__ops.append((op, table, columns, values))
 
     def cursor(self):
         session = self.__dbhandle.session()
