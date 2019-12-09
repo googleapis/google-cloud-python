@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.8.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.7.2...v1.8.0) (2019-12-09)
+
+
+### Features
+
+* add `to_json` method to google.oauth2.credentials.Credentials ([#367](https://www.github.com/googleapis/google-auth-library-python/issues/367)) ([bfb1f8c](https://www.github.com/googleapis/google-auth-library-python/commit/bfb1f8cc8a706ce5ca2a14886c920ca2220ec349))
+* add timeout to AuthorizedSession.request() ([#397](https://www.github.com/googleapis/google-auth-library-python/issues/397)) ([381dd40](https://www.github.com/googleapis/google-auth-library-python/commit/381dd400911d29926ffbf04e0f2ba53ef7bb997e))
+* send quota project id in x-goog-user-project header for OAuth2 credentials ([#400](https://www.github.com/googleapis/google-auth-library-python/issues/400)) ([ab3dc1e](https://www.github.com/googleapis/google-auth-library-python/commit/ab3dc1e26f5240ea3456de364c7c5cb8f40f9583))
+
 ### [1.7.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.7.1...v1.7.2) (2019-12-02)
 
 
