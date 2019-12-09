@@ -141,9 +141,7 @@ def exponential_sleep_generator(initial, maximum, multiplier=_DEFAULT_DELAY_MULT
         delay = delay * multiplier
 
 
-def retry_target(
-    target, predicate, sleep_generator, deadline, on_error=None, strict_deadline=False
-):
+def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
     """Call a function and retry if it fails.
 
     This is the lowest-level retry helper. Generally, you'll use the
@@ -157,13 +155,12 @@ def retry_target(
             It should return True to retry or False otherwise.
         sleep_generator (Iterable[float]): An infinite iterator that determines
             how long to sleep between retries.
-        deadline (float): How long to keep retrying the target.
+        deadline (float): How long to keep retrying the target. The last sleep
+            period is shortened as necessary, so that the last retry runs at
+            ``deadline`` (and not considerably beyond it).
         on_error (Callable[Exception]): A function to call while processing a
             retryable exception.  Any error raised by this function will *not*
             be caught.
-        strict_deadline (bool): If :data:`True`, the last retry will run at
-            ``deadline``, shortening the last sleep interval as necessary.
-            Defaults to :data:`False`.
 
     Returns:
         Any: the return value of the target function.
@@ -208,7 +205,7 @@ def retry_target(
                     ),
                     last_exc,
                 )
-            elif strict_deadline:
+            else:
                 time_to_deadline = (deadline_datetime - now).total_seconds()
                 sleep = min(time_to_deadline, sleep)
 
@@ -237,10 +234,9 @@ class Retry(object):
             must be greater than 0.
         maximum (float): The maximum amout of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
-        deadline (float): How long to keep retrying in seconds.
-        strict_deadline (bool): If :data:`True`, the last retry will run at
-            ``deadline``, shortening the last sleep interval as necessary.
-            Defaults to :data:`False`.
+        deadline (float): How long to keep retrying in seconds. The last sleep
+            period is shortened as necessary, so that the last retry runs at
+            ``deadline`` (and not considerably beyond it).
     """
 
     def __init__(
@@ -251,7 +247,6 @@ class Retry(object):
         multiplier=_DEFAULT_DELAY_MULTIPLIER,
         deadline=_DEFAULT_DEADLINE,
         on_error=None,
-        strict_deadline=False,
     ):
         self._predicate = predicate
         self._initial = initial
@@ -259,7 +254,6 @@ class Retry(object):
         self._maximum = maximum
         self._deadline = deadline
         self._on_error = on_error
-        self._strict_deadline = strict_deadline
 
     def __call__(self, func, on_error=None):
         """Wrap a callable with retry behavior.
@@ -290,19 +284,15 @@ class Retry(object):
                 sleep_generator,
                 self._deadline,
                 on_error=on_error,
-                strict_deadline=self._strict_deadline
             )
 
         return retry_wrapped_func
 
-    def with_deadline(self, deadline, strict_deadline=False):
+    def with_deadline(self, deadline):
         """Return a copy of this retry with the given deadline.
 
         Args:
             deadline (float): How long to keep retrying.
-            strict_deadline (bool): If :data:`True`, the last retry will run at
-                ``deadline``, shortening the last sleep interval as necessary.
-                Defaults to :data:`False`.
 
         Returns:
             Retry: A new retry instance with the given deadline.
@@ -314,7 +304,6 @@ class Retry(object):
             multiplier=self._multiplier,
             deadline=deadline,
             on_error=self._on_error,
-            strict_deadline=strict_deadline,
         )
 
     def with_predicate(self, predicate):
@@ -334,7 +323,6 @@ class Retry(object):
             multiplier=self._multiplier,
             deadline=self._deadline,
             on_error=self._on_error,
-            strict_deadline=self._strict_deadline,
         )
 
     def with_delay(self, initial=None, maximum=None, multiplier=None):
@@ -356,20 +344,17 @@ class Retry(object):
             multiplier=multiplier if maximum is not None else self._multiplier,
             deadline=self._deadline,
             on_error=self._on_error,
-            strict_deadline=self._strict_deadline,
         )
 
     def __str__(self):
         return (
             "<Retry predicate={}, initial={:.1f}, maximum={:.1f}, "
-            "multiplier={:.1f}, deadline={:.1f}, on_error={}, "
-            "strict_deadline={}>".format(
+            "multiplier={:.1f}, deadline={:.1f}, on_error={}>".format(
                 self._predicate,
                 self._initial,
                 self._maximum,
                 self._multiplier,
                 self._deadline,
                 self._on_error,
-                self._strict_deadline,
             )
         )

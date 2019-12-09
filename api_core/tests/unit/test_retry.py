@@ -162,7 +162,6 @@ class TestRetry(object):
         assert retry_._multiplier == 2
         assert retry_._deadline == 120
         assert retry_._on_error is None
-        assert retry_._strict_deadline is False
 
     def test_constructor_options(self):
         _some_function = mock.Mock()
@@ -174,7 +173,6 @@ class TestRetry(object):
             multiplier=3,
             deadline=4,
             on_error=_some_function,
-            strict_deadline=True,
         )
         assert retry_._predicate == mock.sentinel.predicate
         assert retry_._initial == 1
@@ -182,7 +180,6 @@ class TestRetry(object):
         assert retry_._multiplier == 3
         assert retry_._deadline == 4
         assert retry_._on_error is _some_function
-        assert retry_._strict_deadline is True
 
     def test_with_deadline(self):
         retry_ = retry.Retry(
@@ -192,12 +189,10 @@ class TestRetry(object):
             multiplier=3,
             deadline=4,
             on_error=mock.sentinel.on_error,
-            strict_deadline=True,
         )
-        new_retry = retry_.with_deadline(42, strict_deadline=True)
+        new_retry = retry_.with_deadline(42)
         assert retry_ is not new_retry
         assert new_retry._deadline == 42
-        assert new_retry._strict_deadline is True
 
         # the rest of the attributes should remain the same
         assert new_retry._predicate is retry_._predicate
@@ -214,7 +209,6 @@ class TestRetry(object):
             multiplier=3,
             deadline=4,
             on_error=mock.sentinel.on_error,
-            strict_deadline=True,
         )
         new_retry = retry_.with_predicate(mock.sentinel.predicate)
         assert retry_ is not new_retry
@@ -222,7 +216,6 @@ class TestRetry(object):
 
         # the rest of the attributes should remain the same
         assert new_retry._deadline == retry_._deadline
-        assert new_retry._strict_deadline == retry_._strict_deadline
         assert new_retry._initial == retry_._initial
         assert new_retry._maximum == retry_._maximum
         assert new_retry._multiplier == retry_._multiplier
@@ -236,7 +229,6 @@ class TestRetry(object):
             multiplier=3,
             deadline=4,
             on_error=mock.sentinel.on_error,
-            strict_deadline=True,
         )
         new_retry = retry_.with_delay()
         assert retry_ is not new_retry
@@ -252,7 +244,6 @@ class TestRetry(object):
             multiplier=3,
             deadline=4,
             on_error=mock.sentinel.on_error,
-            strict_deadline=True,
         )
         new_retry = retry_.with_delay(initial=1, maximum=2, multiplier=3)
         assert retry_ is not new_retry
@@ -262,7 +253,6 @@ class TestRetry(object):
 
         # the rest of the attributes should remain the same
         assert new_retry._deadline == retry_._deadline
-        assert new_retry._strict_deadline == retry_._strict_deadline
         assert new_retry._predicate is retry_._predicate
         assert new_retry._on_error is retry_._on_error
 
@@ -279,13 +269,12 @@ class TestRetry(object):
             multiplier=2.0,
             deadline=120.0,
             on_error=None,
-            strict_deadline=False,
         )
         assert re.match(
             (
                 r"<Retry predicate=<function.*?if_exception_type.*?>, "
                 r"initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0, "
-                r"on_error=None, strict_deadline=False>"
+                r"on_error=None>"
             ),
             str(retry_),
         )
@@ -332,7 +321,7 @@ class TestRetry(object):
     # Make uniform return half of its maximum, which is the calculated sleep time.
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
     @mock.patch("time.sleep", autospec=True)
-    def test___call___and_execute_retry_strict_deadline(self, sleep, uniform):
+    def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
 
         on_error = mock.Mock(spec=["__call__"], side_effect=[None] * 10)
         retry_ = retry.Retry(
@@ -341,7 +330,6 @@ class TestRetry(object):
             maximum=1024.0,
             multiplier=2.0,
             deadline=9.9,
-            strict_deadline=True,
         )
 
         utcnow = datetime.datetime.utcnow()
@@ -376,7 +364,7 @@ class TestRetry(object):
         total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
 
         assert last_wait == 2.9   # and not 8.0, because the last delay was shortened
-        assert total_wait == 9.9  # the same as the (strict) deadline
+        assert total_wait == 9.9  # the same as the deadline
 
     @mock.patch("time.sleep", autospec=True)
     def test___init___without_retry_executed(self, sleep):
