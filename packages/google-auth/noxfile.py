@@ -16,6 +16,7 @@ import nox
 
 TEST_DEPENDENCIES = [
     "flask",
+    "freezegun",
     "mock",
     "oauth2client",
     "pytest",
