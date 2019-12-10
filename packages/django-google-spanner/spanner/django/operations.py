@@ -117,3 +117,10 @@ class DatabaseOperations(BaseDatabaseOperations):
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
         tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
         return 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (field_name, lookup_type, tzname)
+
+    def lookup_cast(self, lookup_type, internal_type=None):
+        # Cast text lookups to string to allow things like filter(x__contains=4)
+        if lookup_type in ('contains', 'icontains', 'startswith', 'istartswith',
+                           'endswith', 'iendswith', 'regex', 'iregex'):
+            return 'CAST(%s AS STRING)'
+        return '%s'

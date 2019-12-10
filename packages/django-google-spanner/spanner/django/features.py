@@ -37,4 +37,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
+        # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
+        'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
     )

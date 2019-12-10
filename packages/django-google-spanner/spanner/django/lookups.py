@@ -51,6 +51,8 @@ def regex(self, compiler, connection):
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     if self.lookup_name.startswith('i'):
         params[0] = '(?i)%s' % params[0]
+    else:
+        params[0] = str(params[0])
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
