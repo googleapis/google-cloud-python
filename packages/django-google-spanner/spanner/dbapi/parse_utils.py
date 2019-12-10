@@ -260,14 +260,26 @@ re_VALUES_PYFORMAT = re.compile(
 )
 
 
+def strip_backticks(name):
+    """
+    Strip backticks off of quoted names For example, '`no`' (a Spanner reserved
+    word) becomes 'no'.
+    """
+    has_quotes = name.startswith('`') and name.endswith('`')
+    return name[1:-1] if has_quotes else name
+
+
 def parse_insert(insert_sql):
     match = re_INSERT.search(insert_sql)
     if not match:
         return None
 
     parsed = {
-        'table': match.group('table_name'),
-        'columns': [mi.strip() for mi in match.group('columns').split(',')],
+        'table': strip_backticks(match.group('table_name')),
+        'columns': [
+            strip_backticks(mi.strip())
+            for mi in match.group('columns').split(',')
+        ],
     }
     after_VALUES_sql = re_VALUES_TILL_END.findall(insert_sql)
     if after_VALUES_sql:

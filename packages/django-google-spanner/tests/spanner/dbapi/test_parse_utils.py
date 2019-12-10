@@ -20,7 +20,7 @@ from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, escape_name, extract_connection_params,
     infer_param_types, parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
-    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
     validate_instance_config,
 )
 
@@ -216,6 +216,13 @@ class ParseUtilsTests(TestCase):
                     'table': 'auth_permission',
                     'columns': ['name', 'content_type_id', 'codename'],
                     'values_pyformat': ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)', '(%s,      %s, %s)'],
+                },
+            ),
+            (
+                'INSERT INTO `no` (`yes`) VALUES (%s)',
+                {
+                    'table': 'no',
+                    'columns': ['yes'],
                 },
             ),
         ]
@@ -419,4 +426,14 @@ class ParseUtilsTests(TestCase):
         for name, want in cases:
             with self.subTest(name=name):
                 got = escape_name(name)
+                self.assertEqual(got, want)
+
+    def test_strip_backticks(self):
+        cases = [
+            ('foo', 'foo'),
+            ('`foo`', 'foo'),
+        ]
+        for name, want in cases:
+            with self.subTest(name=name):
+                got = strip_backticks(name)
                 self.assertEqual(got, want)
