@@ -56,7 +56,10 @@ class DatabaseOperations(BaseDatabaseOperations):
             if settings.USE_TZ:
                 value = timezone.make_naive(value, self.connection.timezone)
             else:
-                raise ValueError("Cloud Spanner does not support timezone-aware datetimes when USE_TZ is False.")
+                raise ValueError(
+                    "The Cloud Spanner backend does not support "
+                    "timezone-aware datetimes when USE_TZ is False."
+                )
         return TimestampStr(value.isoformat(timespec='microseconds') + 'Z')
 
     def adapt_decimalfield_value(self, value, max_digits=None, decimal_places=None):
