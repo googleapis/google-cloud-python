@@ -21,7 +21,9 @@ from google.api_core import operations_v1
 from google.longrunning import operations_pb2
 {% endif -%}
 {% for method in service.methods.values() -%}
-{% for ref_type in method.ref_types -%}
+{% for ref_type in method.ref_types
+   if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
+           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') -%}
 {{ ref_type.ident.python_import }}
 {% endfor -%}
 {% endfor -%}
