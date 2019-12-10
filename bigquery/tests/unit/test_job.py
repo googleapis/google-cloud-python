@@ -725,6 +725,7 @@ class Test_AsyncJob(unittest.TestCase):
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"location": self.LOCATION},
+            timeout=None,
         )
         self.assertEqual(job._properties, resource)
 
@@ -746,13 +747,14 @@ class Test_AsyncJob(unittest.TestCase):
         call_api.return_value = resource
         retry = DEFAULT_RETRY.with_deadline(1)
 
-        job.reload(client=client, retry=retry)
+        job.reload(client=client, retry=retry, timeout=4.2)
 
         call_api.assert_called_once_with(
             retry,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={},
+            timeout=4.2,
         )
         self.assertEqual(job._properties, resource)
 
@@ -2489,7 +2491,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         job.reload()
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2506,7 +2508,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2527,6 +2529,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             method="GET",
             path="/projects/alternative-project/jobs/{}".format(self.JOB_ID),
             query_params={"location": "US"},
+            timeout=None,
         )
 
     def test_cancel_w_bound_client(self):
@@ -2988,7 +2991,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         job.reload()
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3007,7 +3010,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3351,7 +3354,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         job.reload()
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3372,7 +3375,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3900,6 +3903,46 @@ class TestQueryJob(unittest.TestCase, _Base):
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
+
+    def test_done_w_timeout(self):
+        client = _make_client(project=self.PROJECT)
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        with mock.patch.object(
+            client, "_get_query_results"
+        ) as fake_get_results, mock.patch.object(job, "reload") as fake_reload:
+            job.done(timeout=42)
+
+        fake_get_results.assert_called_once()
+        call_args = fake_get_results.call_args
+        self.assertEqual(call_args.kwargs.get("timeout"), 42)
+
+        call_args = fake_reload.call_args
+        self.assertEqual(call_args.kwargs.get("timeout"), 42)
+
+    def test_done_w_timeout_and_internal_api_timeout(self):
+        client = _make_client(project=self.PROJECT)
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        job._done_timeout = 8.8
+
+        with mock.patch.object(
+            client, "_get_query_results"
+        ) as fake_get_results, mock.patch.object(job, "reload") as fake_reload:
+            job.done(timeout=42)
+
+        # The expected timeout used is the job's own done_timeout minus a
+        # fixed amount (bigquery.job._TIMEOUT_BUFFER_SECS), which is smaller
+        # than the given timeout of 42 seconds.
+        expected_timeout = 8.7
+
+        fake_get_results.assert_called_once()
+        call_args = fake_get_results.call_args
+        self.assertEqual(call_args.kwargs.get("timeout"), 8.7)
+
+        call_args = fake_reload.call_args
+        self.assertEqual(call_args.kwargs.get("timeout"), 8.7)
 
     def test_query_plan(self):
         from google.cloud._helpers import _RFC3339_MICROS
@@ -5003,7 +5046,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertNotEqual(job.destination, table_ref)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -5028,9 +5071,33 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={}
+            method="GET", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_timeout(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.job import QueryJobConfig
+
+        PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
+        DS_ID = "DATASET"
+        DEST_TABLE = "dest_table"
+        RESOURCE = self._make_resource()
+        conn = _make_connection(RESOURCE)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        dataset_ref = DatasetReference(self.PROJECT, DS_ID)
+        table_ref = dataset_ref.table(DEST_TABLE)
+        config = QueryJobConfig()
+        config.destination = table_ref
+        job = self._make_one(self.JOB_ID, None, client, job_config=config)
+
+        job.reload(timeout=4.2)
+
+        self.assertNotEqual(job.destination, table_ref)
+
+        conn.api_request.assert_called_once_with(
+            method="GET", path=PATH, query_params={}, timeout=4.2
+        )
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):

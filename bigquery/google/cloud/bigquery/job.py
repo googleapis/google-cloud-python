@@ -14,6 +14,8 @@
 
 """Define API Jobs."""
 
+from __future__ import division
+
 import copy
 import re
 import threading
@@ -3029,9 +3031,9 @@ class QueryJob(_AsyncJob):
 
         if timeout_ms is not None and timeout_ms > 0:
             if timeout is not None:
-                timeout = min(timeout_ms, timeout)
+                timeout = min(timeout_ms / 1000, timeout)
             else:
-                timeout = timeout_ms
+                timeout = timeout_ms / 1000
 
         # Do not refresh is the state is already done, as the job will not
         # change once complete.

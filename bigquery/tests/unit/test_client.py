@@ -226,12 +226,14 @@ class TestClient(unittest.TestCase):
                 project="other-project",
                 location=self.LOCATION,
                 timeout_ms=500,
+                timeout=42,
             )
 
         conn.api_request.assert_called_once_with(
             method="GET",
             path="/projects/other-project/queries/nothere",
             query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
+            timeout=42,
         )
 
     def test__get_query_results_miss_w_client_location(self):
@@ -248,6 +250,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/PROJECT/queries/nothere",
             query_params={"maxResults": 0, "location": self.LOCATION},
+            timeout=None,
         )
 
     def test__get_query_results_hit(self):
