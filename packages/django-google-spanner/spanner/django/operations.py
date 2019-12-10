@@ -1,3 +1,4 @@
+from base64 import b64decode
 from datetime import datetime
 
 from django.conf import settings
@@ -72,7 +73,15 @@ class DatabaseOperations(BaseDatabaseOperations):
         internal_type = expression.output_field.get_internal_type()
         if internal_type == 'DateTimeField':
             converters.append(self.convert_datetimefield_value)
+        elif internal_type == 'BinaryField':
+            converters.append(self.convert_binaryfield_value)
         return converters
+
+    def convert_binaryfield_value(self, value, expression, connection):
+        if value is None:
+            return value
+        # Cloud Spanner stores bytes base64 encoded.
+        return b64decode(value)
 
     def convert_datetimefield_value(self, value, expression, connection):
         if value is None:

@@ -26,7 +26,7 @@ from .parse_utils import (
     validate_instance_config,
 )
 from .types import (
-    BINARY, DATETIME, NUMBER, ROWID, STRING, Date, DateFromTicks, Time,
+    BINARY, DATETIME, NUMBER, ROWID, STRING, Binary, Date, DateFromTicks, Time,
     TimeFromTicks, Timestamp, TimestampFromTicks,
 )
 from .version import google_client_info
@@ -125,6 +125,7 @@ __all__ = [
     'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
     'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
     'extract_connection_params', 'infer_param_types', 'parse_spanner_url',
-    'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp', 'TimestampFromTicks',
+    'Binary', 'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp',
+    'TimestampFromTicks',
     'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID', 'TimestampStr',
 ]

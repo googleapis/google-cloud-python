@@ -17,6 +17,7 @@
 
 import datetime
 import time
+from base64 import b64encode
 
 
 def Date(year, month, day):
@@ -47,7 +48,7 @@ def Binary(string):
     """
     Creates an object capable of holding a binary (long) string value.
     """
-    return BINARY(string)
+    return b64encode(string)
 
 
 class BINARY(object):
