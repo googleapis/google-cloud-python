@@ -155,10 +155,12 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
             It should return True to retry or False otherwise.
         sleep_generator (Iterable[float]): An infinite iterator that determines
             how long to sleep between retries.
-        deadline (float): How long to keep retrying the target.
-        on_error (Callable): A function to call while processing a retryable
-            exception.  Any error raised by this function will *not* be
-            caught.
+        deadline (float): How long to keep retrying the target. The last sleep
+            period is shortened as necessary, so that the last retry runs at
+            ``deadline`` (and not considerably beyond it).
+        on_error (Callable[Exception]): A function to call while processing a
+            retryable exception.  Any error raised by this function will *not*
+            be caught.
 
     Returns:
         Any: the return value of the target function.
@@ -191,16 +193,21 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
                 on_error(exc)
 
         now = datetime_helpers.utcnow()
-        if deadline_datetime is not None and deadline_datetime < now:
-            six.raise_from(
-                exceptions.RetryError(
-                    "Deadline of {:.1f}s exceeded while calling {}".format(
-                        deadline, target
+
+        if deadline_datetime is not None:
+            if deadline_datetime <= now:
+                six.raise_from(
+                    exceptions.RetryError(
+                        "Deadline of {:.1f}s exceeded while calling {}".format(
+                            deadline, target
+                        ),
+                        last_exc,
                     ),
                     last_exc,
-                ),
-                last_exc,
-            )
+                )
+            else:
+                time_to_deadline = (deadline_datetime - now).total_seconds()
+                sleep = min(time_to_deadline, sleep)
 
         _LOGGER.debug(
             "Retrying due to {}, sleeping {:.1f}s ...".format(last_exc, sleep)
@@ -227,7 +234,9 @@ class Retry(object):
             must be greater than 0.
         maximum (float): The maximum amout of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
-        deadline (float): How long to keep retrying in seconds.
+        deadline (float): How long to keep retrying in seconds. The last sleep
+            period is shortened as necessary, so that the last retry runs at
+            ``deadline`` (and not considerably beyond it).
     """
 
     def __init__(
@@ -251,8 +260,8 @@ class Retry(object):
 
         Args:
             func (Callable): The callable to add retry behavior to.
-            on_error (Callable): A function to call while processing a
-                retryable exception.  Any error raised by this function will
+            on_error (Callable[Exception]): A function to call while processing
+                a retryable exception. Any error raised by this function will
                 *not* be caught.
 
         Returns:
