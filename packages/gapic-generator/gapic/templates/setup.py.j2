@@ -21,6 +21,16 @@ setuptools.setup(
         'grpcio >= 1.10.0',
         'proto-plus >= 0.4.0',
     ),
+    setup_requires=[
+        'libcst >= 0.2.5',
+    ],
+    scripts=[
+        {% for proto in api.all_protos.values() -%}
+        {% for service in proto.services.values() -%}
+        'scripts/fixup_{{ service.module_name }}_keywords.py',
+        {% endfor -%}
+        {% endfor -%}
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
