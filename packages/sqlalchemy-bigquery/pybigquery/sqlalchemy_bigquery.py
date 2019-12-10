@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from google import auth
 from google.cloud import bigquery
 from google.cloud.bigquery import dbapi, QueryJobConfig
 from google.cloud.bigquery.schema import SchemaField
@@ -267,6 +268,35 @@ class BigQueryDialect(DefaultDialect):
     def dbapi(cls):
         return dbapi
 
+    @staticmethod
+    def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
+        # If dataset_id is set, then we know the job_config isn't None
+        if dataset_id:
+            # If project_id is missing, use default project_id
+            if not project_id:
+                _, project_id = auth.default()
+
+            job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
+
+
+    def _create_client_from_credentials(self, credentials, default_query_job_config):
+        scopes = (
+                'https://www.googleapis.com/auth/bigquery',
+                'https://www.googleapis.com/auth/cloud-platform',
+                'https://www.googleapis.com/auth/drive'
+            )
+        credentials = credentials.with_scopes(scopes)
+
+        self._add_default_dataset_to_job_config(default_query_job_config,
+                                        credentials.project_id, self.dataset_id)
+
+        return bigquery.Client(
+                project=credentials.project_id,
+                credentials=credentials,
+                location=self.location,
+                default_query_job_config=default_query_job_config,
+            )
+
     def create_connect_args(self, url):
         location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
 
@@ -276,37 +306,22 @@ class BigQueryDialect(DefaultDialect):
         self.dataset_id = dataset_id
 
         if self.credentials_path:
-            client = bigquery.Client.from_service_account_json(
-                self.credentials_path,
-                location=self.location,
-                default_query_job_config=default_query_job_config
-            )
+            credentials = service_account.Credentials.from_service_account_file(self.credentials_path)
+            client = self._create_client_from_credentials(credentials, default_query_job_config)
+
         elif self.credentials_info:
-            scopes = (
-                'https://www.googleapis.com/auth/bigquery',
-                'https://www.googleapis.com/auth/cloud-platform',
-                'https://www.googleapis.com/auth/drive'
-            )
-            credentials = service_account.Credentials.from_service_account_info(
-                self.credentials_info
-            )
-            credentials = credentials.with_scopes(scopes)
-            client = bigquery.Client(
-                project=self.credentials_info.get('project_id'),
-                credentials=credentials,
-                location=self.location,
-                default_query_job_config=default_query_job_config,
-            )
+            credentials = service_account.Credentials.from_service_account_info(self.credentials_info)
+            client = self._create_client_from_credentials(credentials, default_query_job_config)
+
         else:
+            self._add_default_dataset_to_job_config(default_query_job_config,
+                                        url.host, dataset_id)
+
             client = bigquery.Client(
                 project=url.host,
                 location=self.location,
                 default_query_job_config=default_query_job_config
             )
-
-        # if dataset_id is set, then we know the job_config isn't None
-        if dataset_id:
-            default_query_job_config.default_dataset = client.dataset(dataset_id)
 
         return ([client], {})
 
