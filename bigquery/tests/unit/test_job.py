@@ -3939,10 +3939,10 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         fake_get_results.assert_called_once()
         call_args = fake_get_results.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), 8.7)
+        self.assertEqual(call_args.kwargs.get("timeout"), expected_timeout)
 
         call_args = fake_reload.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), 8.7)
+        self.assertEqual(call_args.kwargs.get("timeout"), expected_timeout)
 
     def test_query_plan(self):
         from google.cloud._helpers import _RFC3339_MICROS
