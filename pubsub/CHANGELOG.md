@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 1.0.3
+
+12-09-2019 18:51 PST
+
+### Implementation Changes
+- Update client configurations (via synth) ([#9784](https://github.com/googleapis/google-cloud-python/pull/9784))
+- Include request overhead when computing publish batch size overflow ([#9911](https://github.com/googleapis/google-cloud-python/pull/9911))
+- Split large (mod)ACK requests into smaller ones ([#9594](https://github.com/googleapis/google-cloud-python/pull/9594))
+- Fix messages delivered multiple times despite a long ACK deadline ([#9525](https://github.com/googleapis/google-cloud-python/pull/9525))
+- Update batching and flow control parameters to be same as the other client libraries ([#9597](https://github.com/googleapis/google-cloud-python/pull/9597))
+- Add 'StreamingPullManager._should_terminate' ([#9335](https://github.com/googleapis/google-cloud-python/pull/9335))
+
+### New Features
+- Add stop method ([#9365](https://github.com/googleapis/google-cloud-python/pull/9365))
+
+### Dependencies
+- Add python 2 sunset banner to documentation ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
+### Documentation
+- Change spacing in docs templates (via synth) ([#9759](https://github.com/googleapis/google-cloud-python/pull/9759))
+
+### Internal / Testing Changes
+- Refactor fake leaser test helper ([#9632](https://github.com/googleapis/google-cloud-python/pull/9632))
+- Add subscriber role test for streaming ([#9507](https://github.com/googleapis/google-cloud-python/pull/9507))
+
 ## 1.0.2
 
 09-30-2019 11:57 PDT
