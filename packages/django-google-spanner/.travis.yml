@@ -1,9 +1,14 @@
 language: python
+before_install:
+    - openssl aes-256-cbc -K $encrypted_3bd81e4a6a4c_key -iv $encrypted_3bd81e4a6a4c_iv -in appdev-soda-spanner-staging-b842e628aa41-orijtech.json.enc -out ~/creds.json -d
+
+env:
+    # Reuse an available database to speed up Travis tests lest we can
+    # get terminations as the underlying tables are created.
+    - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 DJANGO_TEST_APPS="basic" SPANNER_TEST_DB=travisdb1 SPANNER_DROP_DB_ON_EXIT=false
+
 python:
-    - "3.5"
-    - "3.6"
     - "3.7"
-    - "3.8"
 cache: pip
 install:
     - pip install . tox-travis flake8 isort
@@ -11,3 +16,4 @@ script:
     - tox
     - flake8
     - isort --recursive --check-only --diff
+    - bash django_test_suite.sh
