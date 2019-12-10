@@ -18,6 +18,7 @@ import six
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import model
 from google.cloud.ndb import _gql as gql_module
+from google.cloud.ndb import query as query_module
 
 
 GQL_QUERY = """
@@ -329,10 +330,26 @@ class TestGQL:
     @pytest.mark.usefixtures("in_context")
     def test_get_query_in():
         class SomeKind(model.Model):
-            prop1 = model.StringProperty()
+            prop1 = model.IntegerProperty()
 
         gql = gql_module.GQL(
             "SELECT prop1 FROM SomeKind WHERE prop1 IN (1, 2, 3)"
+        )
+        query = gql.get_query()
+        assert query.filters == query_module.OR(
+            query_module.FilterNode("prop1", "=", 1),
+            query_module.FilterNode("prop1", "=", 2),
+            query_module.FilterNode("prop1", "=", 3),
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_get_query_in_parameterized():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+
+        gql = gql_module.GQL(
+            "SELECT prop1 FROM SomeKind WHERE prop1 IN (:1, :2, :3)"
         )
         query = gql.get_query()
         assert "'in'," in str(query.filters)
@@ -346,3 +363,19 @@ class TestGQL:
         gql = gql_module.GQL("SELECT __key__ FROM SomeKind WHERE prop1='a'")
         query = gql.get_query()
         assert query.default_options.keys_only is True
+
+
+class TestFUNCTIONS:
+    @staticmethod
+    def test_list():
+        assert gql_module.FUNCTIONS["list"]((1, 2)) == [1, 2]
+
+    @staticmethod
+    def test_user():
+        with pytest.raises(NotImplementedError):
+            gql_module.FUNCTIONS["user"]("any arg")
+
+    @staticmethod
+    def test_key():
+        with pytest.raises(NotImplementedError):
+            gql_module.FUNCTIONS["key"]("any arg")

@@ -299,29 +299,34 @@ class TestParameterizedFunction:
     @staticmethod
     def test_constructor():
         query = query_module.ParameterizedFunction(
-            "user", query_module.Parameter(1)
+            "user", [query_module.Parameter(1)]
         )
         assert query.func == "user"
-        assert query.values == query_module.Parameter(1)
+        assert query.values == [query_module.Parameter(1)]
+
+    @staticmethod
+    def test_constructor_bad_function():
+        with pytest.raises(ValueError):
+            query_module.ParameterizedFunction("notafunc", ())
 
     @staticmethod
     def test___repr__():
         query = query_module.ParameterizedFunction(
-            "user", query_module.Parameter(1)
+            "user", [query_module.Parameter(1)]
         )
         assert (
-            query.__repr__() == "ParameterizedFunction('user', Parameter(1))"
+            query.__repr__() == "ParameterizedFunction('user', [Parameter(1)])"
         )
 
     @staticmethod
     def test___eq__parameter():
         query = query_module.ParameterizedFunction(
-            "user", query_module.Parameter(1)
+            "user", [query_module.Parameter(1)]
         )
         assert (
             query.__eq__(
                 query_module.ParameterizedFunction(
-                    "user", query_module.Parameter(1)
+                    "user", [query_module.Parameter(1)]
                 )
             )
             is True
@@ -330,9 +335,36 @@ class TestParameterizedFunction:
     @staticmethod
     def test___eq__no_parameter():
         query = query_module.ParameterizedFunction(
-            "user", query_module.Parameter(1)
+            "user", [query_module.Parameter(1)]
         )
         assert query.__eq__(42) is NotImplemented
+
+    @staticmethod
+    def test_is_parameterized_True():
+        query = query_module.ParameterizedFunction(
+            "user", [query_module.Parameter(1)]
+        )
+        assert query.is_parameterized()
+
+    @staticmethod
+    def test_is_parameterized_False():
+        query = query_module.ParameterizedFunction("user", [1])
+        assert not query.is_parameterized()
+
+    @staticmethod
+    def test_is_parameterized_no_arguments():
+        query = query_module.ParameterizedFunction("user", ())
+        assert not query.is_parameterized()
+
+    @staticmethod
+    def test_resolve():
+        query = query_module.ParameterizedFunction(
+            "list", [1, query_module.Parameter(2), query_module.Parameter(3)]
+        )
+        used = {}
+        resolved = query.resolve({2: 4, 3: 6}, used)
+        assert resolved == [1, 4, 6]
+        assert used == {2: True, 3: True}
 
 
 class TestNode:

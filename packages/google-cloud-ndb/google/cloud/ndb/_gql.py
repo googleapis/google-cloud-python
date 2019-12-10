@@ -667,7 +667,9 @@ class GQL(object):
         if func == "nop":
             return vals[0]  # May be a Parameter
         pfunc = query_module.ParameterizedFunction(func, vals)
-        return pfunc
+        if pfunc.is_parameterized():
+            return pfunc
+        return pfunc.resolve({}, {})
 
     def query_filters(self, model_class, filters):
         """Get the filters in a format compatible with the Query constructor"""
@@ -681,6 +683,8 @@ class GQL(object):
                 val = self._args_to_val(func, args)
                 if isinstance(val, query_module.ParameterizedThing):
                     node = query_module.ParameterNode(prop, op, val)
+                elif op == "in":
+                    node = prop._IN(val)
                 else:
                     node = prop._comparison(op, val)
                 filters.append(node)
@@ -762,3 +766,19 @@ class Literal(object):
 
     def __repr__(self):
         return "Literal(%s)" % repr(self._value)
+
+
+def _raise_not_implemented(func):
+    def raise_inner(value):
+        raise NotImplementedError(
+            "GQL function {} is not implemented".format(func)
+        )
+
+    return raise_inner
+
+
+FUNCTIONS = {
+    "list": list,
+    "user": _raise_not_implemented("user"),
+    "key": _raise_not_implemented("key"),
+}

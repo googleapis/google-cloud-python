@@ -1421,3 +1421,27 @@ def test_gql(ds_entity):
     query = SomeKind.gql("WHERE foo = :1", 2)
     results = query.fetch()
     assert results[0].foo == 2
+
+
+@pytest.mark.usefixtures("client_context")
+def test_IN(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo in (2, 3)").order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == 2
+    assert results[1].foo == 3
+
+    query = SomeKind.gql("where foo in :1", [2, 3]).order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == 2
+    assert results[1].foo == 3

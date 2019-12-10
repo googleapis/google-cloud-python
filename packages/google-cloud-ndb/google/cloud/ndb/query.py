@@ -362,24 +362,38 @@ class ParameterizedFunction(ParameterizedThing):
     """
 
     def __init__(self, func, values):
-        self.__func = func
-        self.__values = values
+        self.func = func
+        self.values = values
+
+        from google.cloud.ndb import _gql  # avoid circular import
+
+        _func = _gql.FUNCTIONS.get(func)
+        if _func is None:
+            raise ValueError("Unknown GQL function: {}".format(func))
+        self._func = _func
 
     def __repr__(self):
-        return "ParameterizedFunction(%r, %r)" % (self.__func, self.__values)
+        return "ParameterizedFunction(%r, %r)" % (self.func, self.values)
 
     def __eq__(self, other):
         if not isinstance(other, ParameterizedFunction):
             return NotImplemented
-        return self.__func == other.__func and self.__values == other.__values
+        return self.func == other.func and self.values == other.values
 
-    @property
-    def func(self):
-        return self.__func
+    def is_parameterized(self):
+        for value in self.values:
+            if isinstance(value, Parameter):
+                return True
+            return False
 
-    @property
-    def values(self):
-        return self.__values
+    def resolve(self, bindings, used):
+        values = []
+        for value in self.values:
+            if isinstance(value, Parameter):
+                value = value.resolve(bindings, used)
+            values.append(value)
+
+        return self._func(values)
 
 
 class Node(object):
