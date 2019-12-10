@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## 0.41.0
+
+12-05-2019 14:49 PST
+
+
+### New Features
+- Add deprecation warning to resource name helper functions. ([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
+
+### Documentation
+- Add deprecation information to resource name helper function documentation. ([#9866](https://github.com/googleapis/google-cloud-python/pull/9866))
+
 ## 0.40.0
 
 11-08-2019 09:30 PST

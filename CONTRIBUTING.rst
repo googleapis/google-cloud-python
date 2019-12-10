@@ -151,6 +151,15 @@ Exceptions to PEP8:
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 
+*************************
+Commit Message Convention
+*************************
+
+We use `Conventional Commits`_ as a convention for writing commit messages.
+It provides an easy set of rules for creating an explicit commit history.
+
+.. _Conventional Commits: https://www.conventionalcommits.org/
+
 ********************
 Running System Tests
 ********************
