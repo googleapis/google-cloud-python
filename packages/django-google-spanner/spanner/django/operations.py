@@ -105,3 +105,12 @@ class DatabaseOperations(BaseDatabaseOperations):
         tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (lookup_type, field_name, tzname)
+
+    def date_trunc_sql(self, lookup_type, field_name):
+        # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
+        return 'DATE_TRUNC(%s, %s)' % (field_name, lookup_type)
+
+    def datetime_trunc_sql(self, lookup_type, field_name, tzname):
+        # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
+        tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
+        return 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (field_name, lookup_type, tzname)
