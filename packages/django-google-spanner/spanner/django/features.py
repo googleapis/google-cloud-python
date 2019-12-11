@@ -2,6 +2,8 @@ from django.db.backends.base.features import BaseDatabaseFeatures
 
 
 class DatabaseFeatures(BaseDatabaseFeatures):
+    # https://cloud.google.com/spanner/quotas#query_limits
+    max_query_params = 950
     supports_foreign_keys = False
     supports_regex_backreferencing = False
     supports_timezones = False
