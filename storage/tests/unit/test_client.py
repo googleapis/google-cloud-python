@@ -260,7 +260,6 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         service_account_email = client.get_service_account_email()
-
         self.assertEqual(service_account_email, EMAIL)
         URI = "/".join(
             [
@@ -270,8 +269,13 @@ class TestClient(unittest.TestCase):
                 "projects/%s/serviceAccount" % (PROJECT,),
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_get_service_account_email_w_project(self):
@@ -286,7 +290,6 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         service_account_email = client.get_service_account_email(project=OTHER_PROJECT)
-
         self.assertEqual(service_account_email, EMAIL)
         URI = "/".join(
             [
@@ -296,8 +299,13 @@ class TestClient(unittest.TestCase):
                 "projects/%s/serviceAccount" % (OTHER_PROJECT,),
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_bucket(self):
@@ -357,6 +365,12 @@ class TestClient(unittest.TestCase):
                 "nonesuch?projection=noAcl",
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
+
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -366,7 +380,7 @@ class TestClient(unittest.TestCase):
             client.get_bucket(NONESUCH)
 
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_get_bucket_with_string_hit(self):
@@ -386,7 +400,11 @@ class TestClient(unittest.TestCase):
                 "%s?projection=noAcl" % (BUCKET_NAME,),
             ]
         )
-
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -396,7 +414,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_get_bucket_with_object_miss(self):
@@ -418,6 +436,11 @@ class TestClient(unittest.TestCase):
                 "nonesuch?projection=noAcl",
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -427,7 +450,7 @@ class TestClient(unittest.TestCase):
             client.get_bucket(bucket_obj)
 
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_get_bucket_with_object_hit(self):
@@ -454,11 +477,15 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         bucket = client.get_bucket(bucket_obj)
-
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_lookup_bucket_miss(self):
@@ -476,6 +503,11 @@ class TestClient(unittest.TestCase):
                 "nonesuch?projection=noAcl",
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -485,7 +517,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(bucket)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_lookup_bucket_hit(self):
@@ -505,6 +537,11 @@ class TestClient(unittest.TestCase):
                 "%s?projection=noAcl" % (BUCKET_NAME,),
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -514,7 +551,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_create_bucket_w_missing_client_project(self):
@@ -655,18 +692,28 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
-        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        json_expected = {"billing": {"requesterPays": True}, "name": bucket_name}
         data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
         bucket = client.create_bucket(bucket_name, requester_pays=True)
 
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+            "Content-Type": "application/json",
+        }
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+            method="POST",
+            timeout=None,
+            url=URI,
+            data=json.dumps(data),
+            headers=expected_headers,
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
@@ -691,25 +738,35 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
+
         json_expected = {
-            "name": bucket_name,
-            "billing": {"requesterPays": True},
             "storageClass": "COLDLINE",
+            "billing": {"requesterPays": True},
+            "name": bucket_name,
         }
+
         data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
-
         bucket = client.create_bucket(bucket_obj)
-
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+            "Content-Type": "application/json",
+        }
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
-        http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
-        )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
+        http.request.assert_called_once_with(
+            method="POST",
+            url=URI,
+            data=json_sent,
+            timeout=None,
+            headers=expected_headers,
+        )
 
     def test_download_blob_to_file_with_blob(self):
         project = "PROJECT"
@@ -847,18 +904,27 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(buckets), 0)
 
-        http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
-        )
-
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         requested_url = http.request.mock_calls[0][2]["url"]
         expected_base_url = "/".join(
             [
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b",
+                "b?project=%s&projection=noAcl" % (PROJECT,),
             ]
+        )
+
+        http.request.assert_called_once_with(
+            method="GET",
+            timeout=None,
+            url=expected_base_url,
+            data=None,
+            headers=expected_headers,
         )
         self.assertTrue(requested_url.startswith(expected_base_url))
 
@@ -881,19 +947,22 @@ class TestClient(unittest.TestCase):
         buckets = list(client.list_buckets(project=OTHER_PROJECT))
 
         self.assertEqual(len(buckets), 0)
-
-        http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
-        )
-
         requested_url = http.request.mock_calls[0][2]["url"]
         expected_base_url = "/".join(
             [
                 client._connection.API_BASE_URL,
                 "storage",
                 client._connection.API_VERSION,
-                "b",
+                "b?project=%s&projection=noAcl" % (OTHER_PROJECT,),
             ]
+        )
+
+        http.request.assert_called_once_with(
+            method="GET",
+            timeout=None,
+            url=expected_base_url,
+            data=None,
+            headers=mock.ANY,
         )
         self.assertTrue(requested_url.startswith(expected_base_url))
 
@@ -913,12 +982,25 @@ class TestClient(unittest.TestCase):
         client._http_internal = http
 
         buckets = list(client.list_buckets())
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s&projection=noAcl" % (PROJECT,),
+            ]
+        )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
 
         self.assertEqual(len(buckets), 1)
         self.assertEqual(buckets[0].name, BUCKET_NAME)
 
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_list_buckets_all_arguments(self):
@@ -934,7 +1016,6 @@ class TestClient(unittest.TestCase):
         PREFIX = "subfolder"
         PROJECTION = "full"
         FIELDS = "items/id,nextPageToken"
-
         data = {"items": []}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -947,10 +1028,12 @@ class TestClient(unittest.TestCase):
         )
         buckets = list(iterator)
         self.assertEqual(buckets, [])
-        http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
-        )
 
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         requested_url = http.request.mock_calls[0][2]["url"]
         expected_base_url = "/".join(
             [
@@ -960,8 +1043,8 @@ class TestClient(unittest.TestCase):
                 "b",
             ]
         )
-        self.assertTrue(requested_url.startswith(expected_base_url))
 
+        self.assertTrue(requested_url.startswith(expected_base_url))
         expected_query = {
             "project": [PROJECT],
             "maxResults": [str(MAX_RESULTS)],
@@ -970,8 +1053,17 @@ class TestClient(unittest.TestCase):
             "projection": [PROJECTION],
             "fields": [FIELDS],
         }
+
         uri_parts = urlparse(requested_url)
         self.assertEqual(parse_qs(uri_parts.query), expected_query)
+        FULL_URI = expected_base_url + "?" + uri_parts.query
+        http.request.assert_called_once_with(
+            method="GET",
+            timeout=None,
+            url=FULL_URI,
+            data=None,
+            headers=expected_headers,
+        )
 
     def test_list_buckets_page_empty_response(self):
         from google.api_core import page_iterator
@@ -1059,7 +1151,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(metadata._client, client)
         self.assertEqual(metadata._properties, RESOURCE["metadata"])
         self.assertEqual(secret, RESOURCE["secret"])
-
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
@@ -1071,13 +1162,22 @@ class TestClient(unittest.TestCase):
             ]
         )
         qs_params = {"serviceAccountEmail": EMAIL}
-
         if user_project is not None:
             qs_params["userProject"] = user_project
 
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
+
         FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
         http.request.assert_called_once_with(
-            method="POST", url=FULL_URI, data=None, headers=mock.ANY
+            method="POST",
+            timeout=None,
+            url=FULL_URI,
+            data=None,
+            headers=expected_headers,
         )
 
     def test_create_hmac_key_defaults(self):
@@ -1096,11 +1196,9 @@ class TestClient(unittest.TestCase):
 
         http = _make_requests_session([_make_json_response({})])
         client._http_internal = http
-
         metadatas = list(client.list_hmac_keys())
 
         self.assertEqual(len(metadatas), 0)
-
         URI = "/".join(
             [
                 client._connection.API_BASE_URL,
@@ -1111,8 +1209,13 @@ class TestClient(unittest.TestCase):
                 "hmacKeys",
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_list_hmac_keys_explicit_non_empty(self):
@@ -1175,8 +1278,18 @@ class TestClient(unittest.TestCase):
             "showDeletedKeys": "True",
             "userProject": USER_PROJECT,
         }
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
+
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=None, headers=mock.ANY
+            method="GET",
+            timeout=None,
+            url=mock.ANY,
+            data=None,
+            headers=expected_headers,
         )
         kwargs = http.request.mock_calls[0].kwargs
         uri = kwargs["url"]
@@ -1222,8 +1335,14 @@ class TestClient(unittest.TestCase):
                 ACCESS_ID,
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
+
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", timeout=None, url=URI, data=None, headers=expected_headers
         )
 
     def test_get_hmac_key_metadata_w_project(self):
@@ -1268,10 +1387,19 @@ class TestClient(unittest.TestCase):
                 ACCESS_ID,
             ]
         )
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "X-Goog-API-Client": client._connection.user_agent,
+            "User-Agent": client._connection.user_agent,
+        }
 
         qs_params = {"userProject": USER_PROJECT}
         FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
 
         http.request.assert_called_once_with(
-            method="GET", url=FULL_URI, data=None, headers=mock.ANY
+            method="GET",
+            timeout=None,
+            url=FULL_URI,
+            data=None,
+            headers=expected_headers,
         )

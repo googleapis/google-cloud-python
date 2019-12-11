@@ -314,9 +314,9 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(client)
         batch.API_BASE_URL = "http://api.example.com"
 
-        batch._do_request("POST", url, {}, {"foo": 1, "bar": 2}, None)
-        batch._do_request("PATCH", url, {}, {"bar": 3}, None)
-        batch._do_request("DELETE", url, {}, None, None)
+        batch._do_request("POST", url, {}, {"foo": 1, "bar": 2}, None, None)
+        batch._do_request("PATCH", url, {}, {"bar": 3}, None, None)
+        batch._do_request("DELETE", url, {}, None, None, None)
         result = batch.finish()
 
         self.assertEqual(len(result), len(batch._requests))
@@ -389,8 +389,8 @@ class TestBatch(unittest.TestCase):
         target1 = _MockObject()
         target2 = _MockObject()
 
-        batch._do_request("GET", url, {}, None, target1)
-        batch._do_request("GET", url, {}, None, target2)
+        batch._do_request("GET", url, {}, None, target1, None)
+        batch._do_request("GET", url, {}, None, target2, None)
 
         # Make sure futures are not populated.
         self.assertEqual(

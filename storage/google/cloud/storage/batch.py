@@ -150,7 +150,7 @@ class Batch(Connection):
         self._requests = []
         self._target_objects = []
 
-    def _do_request(self, method, url, headers, data, target_object):
+    def _do_request(self, method, url, headers, data, target_object, timeout):
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -172,6 +172,13 @@ class Batch(Connection):
             (Optional) This allows us to enable custom behavior in our batch
             connection. Here we defer an HTTP request and complete
             initialization of the object at a later time.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response. By default, the method waits indefinitely.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
