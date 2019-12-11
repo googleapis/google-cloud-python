@@ -1,5 +1,6 @@
 from base64 import b64decode
 from datetime import datetime
+from uuid import UUID
 
 from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
@@ -78,6 +79,8 @@ class DatabaseOperations(BaseDatabaseOperations):
             converters.append(self.convert_datetimefield_value)
         elif internal_type == 'BinaryField':
             converters.append(self.convert_binaryfield_value)
+        elif internal_type == 'UUIDField':
+            converters.append(self.convert_uuidfield_value)
         return converters
 
     def convert_binaryfield_value(self, value, expression, connection):
@@ -99,6 +102,11 @@ class DatabaseOperations(BaseDatabaseOperations):
             value.hour, value.minute, value.second, value.microsecond,
             self.connection.timezone,
         )
+
+    def convert_uuidfield_value(self, value, expression, connection):
+        if value is not None:
+            value = UUID(value)
+        return value
 
     def date_extract_sql(self, lookup_type, field_name):
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
