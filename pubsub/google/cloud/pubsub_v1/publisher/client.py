@@ -187,7 +187,6 @@ class Client(object):
 
         Args:
             filename (str): The path to the service account private key json
-
                 file.
             batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
                 settings for batch publishing.
@@ -213,15 +212,16 @@ class Client(object):
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
     def _delete_sequencer(self, topic, ordering_key):
-        """ Called when a sequencer is done publishing all messages.
-            Removes the sequencer for the corresponding topic & ordering_key.
+        """ Delete sequencer strate for (topic, ordering_key).
+
+            Called when a sequencer is done publishing all messages.
         """
         with self._batch_lock:
             sequencer_key = (topic, ordering_key)
             del self._sequencers[sequencer_key]
 
     def _get_or_create_sequencer(self, topic, ordering_key):
-        """ Gets an existing sequencer or creates a new one given the (topic,
+        """ Get an existing sequencer or create a new one given the (topic,
             ordering_key) pair.
         """
         sequencer_key = (topic, ordering_key)
@@ -365,13 +365,19 @@ class Client(object):
             return future
 
     def ensure_commit_timer_runs(self):
-        """ Ensures a commit timer thread is running. If a commit timer thread
-            is already running, it does nothing.
+        """ Ensure a commit timer thread is running.
+
+            If a commit timer thread is already running, this does nothing.
         """
         with self._batch_lock:
             self._ensure_commit_timer_runs_no_lock()
 
     def _ensure_commit_timer_runs_no_lock(self):
+        """ Ensure a commit timer thread is running, without taking
+            _batch_lock.
+
+            _batch_lock must be held before calling this method.
+        """
         if not self._commit_thread and self.batch_settings.max_latency < float("inf"):
             self._commit_thread = threading.Thread(
                 name="Thread-PubSubBatchCommitter",
@@ -380,7 +386,7 @@ class Client(object):
             self._commit_thread.start()
 
     def _wait_and_commit_sequencers(self):
-        """ Waits up to the batching timeout, and commits all sequencers.
+        """ Wait up to the batching timeout, and commit all sequencers.
         """
         # Sleep for however long we should be waiting.
         time.sleep(self.batch_settings.max_latency)

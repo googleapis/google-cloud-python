@@ -42,6 +42,7 @@ class _OrderedSequencerStatus(object):
 
 class OrderedSequencer(base.Sequencer):
     """ Sequences messages into batches ordered by an ordering key for one topic.
+
         A sequencer always has at least one batch in it, unless paused or stopped.
         When no batches remain, the |publishes_done_callback| is called so the
         client can perform cleanup.
@@ -54,7 +55,7 @@ class OrderedSequencer(base.Sequencer):
             topic (str): The topic. The format for this is
                 ``projects/{project}/topics/{topic}``.
             ordering_key (str): The ordering key for this sequencer.
-            publishes_done_callback (callable[[str,str], None]): Callback called
+            publishes_done_callback (Callable[[str,str], None]): Callback called
                 when this sequencer is done publishing all messages. This
                 callback allows the client to remove sequencer state, preventing
                 a memory leak. It is not called on pause, but may be called
@@ -77,9 +78,10 @@ class OrderedSequencer(base.Sequencer):
         self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
     def stop(self):
-        """ Permanently stop this sequencer. This differs from pausing, which
-            may be resumed. Immediately commits the first batch and cancels the
-            rest.
+        """ Permanently stop this sequencer.
+
+            This differs from pausing, which may be resumed. Immediately commits
+            the first batch and cancels the rest.
 
             Raises:
                 RuntimeError:
@@ -99,8 +101,9 @@ class OrderedSequencer(base.Sequencer):
                     del self._ordered_batches[1:]
 
     def commit(self):
-        """ Commit the first batch, if unpaused. If paused or no batches
-            exist, this method does nothing.
+        """ Commit the first batch, if unpaused.
+
+            If paused or no batches exist, this method does nothing.
 
             Raises:
                 RuntimeError:
@@ -116,15 +119,19 @@ class OrderedSequencer(base.Sequencer):
                 self._ordered_batches[0].commit()
 
     def _batch_done_callback(self, success):
-        """ Called when a batch has finished publishing, with either a success
+        """ Deal with completion of a batch.
+
+            Called when a batch has finished publishing, with either a success
             or a failure. (Temporary failures are retried infinitely when
             ordering keys are enabled.)
         """
-        # Pause should cancel all batches, so this method should not be called.
-        assert self._state != _OrderedSequencerStatus.PAUSED
-
         ensure_commit_timer_runs = False
         with self._state_lock:
+            assert self._state != _OrderedSequencerStatus.PAUSED, (
+                "This method should not be called after pause() because "
+                "pause() should have cancelled all of the batches."
+            )
+
             # Message futures for the batch have been completed (either with a
             # result or an exception) already, so remove the batch.
             self._ordered_batches.pop(0)
@@ -152,8 +159,8 @@ class OrderedSequencer(base.Sequencer):
             self._client.ensure_commit_timer_runs()
 
     def _pause(self):
-        """ Pauses the sequencer: sets state to paused, cancels all batches, and
-            clears the list of ordered batches.
+        """ Pause this sequencer: set state to paused, cancel all batches, and
+            clear the list of ordered batches.
 
             _state_lock must be taken before calling this method.
         """
@@ -163,7 +170,7 @@ class OrderedSequencer(base.Sequencer):
         del self._ordered_batches[:]
 
     def unpause(self):
-        """ Unpauses this sequencer.
+        """ Unpause this sequencer.
 
         Raises:
             RuntimeError:
@@ -175,7 +182,7 @@ class OrderedSequencer(base.Sequencer):
             self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
     def _create_batch(self):
-        """ Creates a new batch using the client's batch class and other stored
+        """ Create a new batch using the client's batch class and other stored
             settings.
         """
         return self._client._batch_class(
@@ -213,7 +220,9 @@ class OrderedSequencer(base.Sequencer):
             if self._state == _OrderedSequencerStatus.STOPPED:
                 raise RuntimeError("Cannot publish on a stopped sequencer.")
 
-            assert self._state == _OrderedSequencerStatus.ACCEPTING_MESSAGES
+            assert (
+                self._state == _OrderedSequencerStatus.ACCEPTING_MESSAGES
+            ), "Publish is only allowed in accepting-messages state."
 
             if not self._ordered_batches:
                 new_batch = self._create_batch()

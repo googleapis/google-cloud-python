@@ -28,7 +28,9 @@ class UnorderedSequencer(base.Sequencer):
         self._stopped = False
 
     def stop(self):
-        """ Stop the sequencer. Subsequent publishes will fail.
+        """ Stop the sequencer.
+
+            Subsequent publishes will fail.
 
             Raises:
                 RuntimeError:
@@ -56,7 +58,7 @@ class UnorderedSequencer(base.Sequencer):
         raise NotImplementedError
 
     def _create_batch(self):
-        """ Creates a new batch using the client's batch class and other stored
+        """ Create a new batch using the client's batch class and other stored
             settings.
         """
         return self._client._batch_class(

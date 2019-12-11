@@ -62,11 +62,11 @@ class Batch(base.Batch):
         settings (~.pubsub_v1.types.BatchSettings): The settings for batch
             publishing. These should be considered immutable once the batch
             has been opened.
-        batch_done_callback (function): Callback called when the response
-            for a batch publish has been received. Called with one boolean
-            argument: successfully published or a permanent error occurred.
-            Temporary errors are not surfaced because they are retried at a
-            lower level.
+        batch_done_callback (Callable[[bool], Any]): Callback called when the
+            response for a batch publish has been received. Called with one
+            boolean argument: successfully published or a permanent error
+            occurred. Temporary errors are not surfaced because they are retried
+            at a lower level.
         commit_when_full (bool): Whether to commit the batch when the batch
             is full.
     """
@@ -148,14 +148,17 @@ class Batch(base.Batch):
         return self._status
 
     def cancel(self):
-        """Completes pending futures with an exception. This method must be
-           called before publishing starts (ie: while the batch is still
-           accepting messages.)
+        """Complete pending futures with an exception.
+
+           This method must be called before publishing starts (ie: while the
+           batch is still accepting messages.)
         """
 
-        # Cancel should not be called after sending has started.
-        assert self._status == base.BatchStatus.ACCEPTING_MESSAGES
         with self._state_lock:
+            assert (
+                self._status == base.BatchStatus.ACCEPTING_MESSAGES
+            ), "Cancel should not be called after sending has started."
+
             exc = RuntimeError("Message publish cancelled.")
             for future in self._futures:
                 future.set_exception(exc)
@@ -311,8 +314,6 @@ class Batch(base.Batch):
                 the ``message`` would exceed the max size limit on the backend.
         """
 
-        assert self._status != base.BatchStatus.ERROR
-
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
@@ -320,6 +321,10 @@ class Batch(base.Batch):
         future = None
 
         with self._state_lock:
+            assert (
+                self._status != base.BatchStatus.ERROR
+            ), "Publish after stop() or publish error."
+
             if not self.will_accept(message):
                 return future
 
