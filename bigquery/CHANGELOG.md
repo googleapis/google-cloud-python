@@ -10,19 +10,19 @@
 
 ### New Features
 
-- add `close()` method to client for releasing open sockets ([#9894](https://github.com/googleapis/google-cloud-python/pull/9894))
-- add support of `use_avro_logical_types` for extract jobs ([#9642](https://github.com/googleapis/google-cloud-python/pull/9642))
-- add support for hive partitioning options configuration ([#9626](https://github.com/googleapis/google-cloud-python/pull/9626))
-- add description for routine entities ([#9785](https://github.com/googleapis/google-cloud-python/pull/9785))
+- Add `close()` method to client for releasing open sockets. ([#9894](https://github.com/googleapis/google-cloud-python/pull/9894))
+- Add support of `use_avro_logical_types` for extract jobs. ([#9642](https://github.com/googleapis/google-cloud-python/pull/9642))
+- Add support for hive partitioning options configuration. ([#9626](https://github.com/googleapis/google-cloud-python/pull/9626))
+- Add description for routine entities. ([#9785](https://github.com/googleapis/google-cloud-python/pull/9785))
 
 ### Documentation
 
-- update code samples to use strings for table and dataset IDs ([#9495](https://github.com/googleapis/google-cloud-python/pull/9495))
+- Update code samples to use strings for table and dataset IDs. ([#9495](https://github.com/googleapis/google-cloud-python/pull/9495))
 
 ### Internal / Testing Changes
 
-- run unit tests with Python 3.8 ([#9880](https://github.com/googleapis/google-cloud-python/pull/9880))
-- import `Mapping` from `collections.abc` not from `collections` ([#9826](https://github.com/googleapis/google-cloud-python/pull/9826))
+- Run unit tests with Python 3.8. ([#9880](https://github.com/googleapis/google-cloud-python/pull/9880))
+- Import `Mapping` from `collections.abc` not from `collections`. ([#9826](https://github.com/googleapis/google-cloud-python/pull/9826))
 
 ## 1.22.0
 
