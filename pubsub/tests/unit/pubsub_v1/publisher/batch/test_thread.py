@@ -394,6 +394,7 @@ def test_do_not_commit_when_full_when_flag_is_off():
     with mock.patch.object(batch, "commit") as commit:
         # Publish 3 messages.
         futures = [batch.publish(message) for message in messages]
+        assert len(futures) == 3
 
         # When a fourth message is published, commit should not be called.
         future = batch.publish(types.PubsubMessage(data=b"last one"))

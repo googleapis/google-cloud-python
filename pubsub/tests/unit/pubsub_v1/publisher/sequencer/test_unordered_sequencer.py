@@ -65,12 +65,15 @@ def test_commit():
 
 def test_commit_no_batch():
     client = create_client()
-    sequencer.stop()
-    # Test no exceptions are raised.
-    #sequencer.commit()
-    # Commit after stop() throws
-    with pytest.raises(RuntimeError):
-        sequencer.commit()
+    sequencer = unordered_sequencer.UnorderedSequencer(client, "topic_name")
+    sequencer.commit()
+
+
+def test_unpause():
+    client = create_client()
+    sequencer = unordered_sequencer.UnorderedSequencer(client, "topic_name")
+    with pytest.raises(NotImplementedError):
+        sequencer.unpause()
 
 
 def test_basic_publish():

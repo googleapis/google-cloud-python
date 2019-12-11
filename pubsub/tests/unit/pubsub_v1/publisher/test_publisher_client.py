@@ -25,7 +25,9 @@ import time
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher._batch.thread import Batch
+from google.cloud.pubsub_v1.publisher._sequencer.ordered_sequencer import (
+    OrderedSequencer,
+)
 
 
 def test_init():
@@ -70,13 +72,13 @@ def test_init_emulator(monkeypatch):
 def test_message_ordering_enabled():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
-    assert client._enable_message_ordering == False
+    assert not client._enable_message_ordering
 
     client = publisher.Client(
         publisher_options=types.PublisherOptions(enable_message_ordering=True),
         credentials=creds,
     )
-    assert client._enable_message_ordering == True
+    assert client._enable_message_ordering
 
 
 def test_message_ordering_changes_retry_deadline():
@@ -228,9 +230,11 @@ def test_stop():
 
     assert batch1.commit.call_count == 1
 
-    # check that closed publisher doesn't accept new messages
     with pytest.raises(RuntimeError):
         client.publish("topic1", b"msg2")
+
+    with pytest.raises(RuntimeError):
+        client.resume_publish("topic", "ord_key")
 
     with pytest.raises(RuntimeError):
         client.stop()
@@ -309,7 +313,7 @@ def test_wait_and_commit_sequencers():
     client = publisher.Client(batch_settings=batch_settings, credentials=creds)
 
     # Mock out time so no sleep is actually done.
-    with mock.patch.object(time, "sleep") as sleep:
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(
             publisher.Client, "_commit_sequencers"
         ) as _commit_sequencers:
@@ -330,7 +334,7 @@ def test_stopped_client_does_not_commit_sequencers():
     client = publisher.Client(batch_settings=batch_settings, credentials=creds)
 
     # Mock out time so no sleep is actually done.
-    with mock.patch.object(time, "sleep") as sleep:
+    with mock.patch.object(time, "sleep"):
         with mock.patch.object(
             publisher.Client, "_commit_sequencers"
         ) as _commit_sequencers:
@@ -403,3 +407,27 @@ def test_delete_sequencer_for_ordered_sequencer():
     assert len(client._sequencers) == 1
     client._delete_sequencer(topic, ordering_key)
     assert len(client._sequencers) == 0
+
+
+def test_resume_publish():
+    creds = mock.Mock(spec=credentials.Credentials)
+    publisher_options = types.PublisherOptions(enable_message_ordering=True)
+    client = publisher.Client(publisher_options, credentials=creds)
+
+    topic = "topic"
+    ordering_key = "ord_key"
+    sequencer = mock.Mock(spec=OrderedSequencer)
+    client._set_sequencer(topic=topic, sequencer=sequencer, ordering_key=ordering_key)
+
+    client.resume_publish(topic, ordering_key)
+    assert sequencer.unpause.called_once()
+
+
+def test_resume_publish_no_sequencer_found():
+    creds = mock.Mock(spec=credentials.Credentials)
+    publisher_options = types.PublisherOptions(enable_message_ordering=True)
+    client = publisher.Client(publisher_options, credentials=creds)
+
+    # Throw if a sequencer with the (topic, ordering_key) pair does not exist.
+    with pytest.raises(ValueError):
+        client.resume_publish("topic", "ord_key")

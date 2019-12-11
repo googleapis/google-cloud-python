@@ -63,7 +63,7 @@ class Batch(base.Batch):
             publishing. These should be considered immutable once the batch
             has been opened.
         batch_done_callback (function): Callback called when the response
-            for a batch publish has been received. Called with one boolean 
+            for a batch publish has been received. Called with one boolean
             argument: successfully published or a permanent error occurred.
             Temporary errors are not surfaced because they are retried at a
             lower level.

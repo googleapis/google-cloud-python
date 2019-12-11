@@ -14,7 +14,6 @@
 
 from __future__ import absolute_import
 
-import concurrent.futures as futures
 import copy
 import logging
 import os
@@ -435,3 +434,8 @@ class Client(object):
     # Used only for testing.
     def _set_batch_class(self, batch_class):
         self._batch_class = batch_class
+
+    # Used only for testing.
+    def _set_sequencer(self, topic, sequencer, ordering_key=""):
+        sequencer_key = (topic, ordering_key)
+        self._sequencers[sequencer_key] = sequencer

@@ -39,9 +39,53 @@ def create_ordered_sequencer(client):
     )
 
 
-def test_stop():
+def test_stop_makes_sequencer_invalid():
     client = create_client()
     message = create_message()
+
+    sequencer = create_ordered_sequencer(client)
+
+    sequencer.stop()
+
+    # Publish after stop() throws
+    with pytest.raises(RuntimeError):
+        sequencer.publish(message)
+
+    # Commit after stop() throws
+    with pytest.raises(RuntimeError):
+        sequencer.commit()
+
+    # Stop after stop() throws
+    with pytest.raises(RuntimeError):
+        sequencer.stop()
+
+
+def test_stop_no_batches():
+    client = create_client()
+
+    sequencer = create_ordered_sequencer(client)
+
+    # No exceptions thrown if there are no batches.
+    sequencer.stop()
+
+
+def test_stop_one_batch():
+    client = create_client()
+
+    sequencer = create_ordered_sequencer(client)
+
+    batch1 = mock.Mock(spec=client._batch_class)
+    sequencer._set_batches([batch1])
+
+    sequencer.stop()
+
+    # Assert that the first batch is committed.
+    assert batch1.commit.call_count == 1
+    assert batch1.cancel.call_count == 0
+
+
+def test_stop_many_batches():
+    client = create_client()
 
     sequencer = create_ordered_sequencer(client)
 
@@ -56,18 +100,6 @@ def test_stop():
     assert batch1.cancel.call_count == 0
     assert batch2.commit.call_count == 0
     assert batch2.cancel.call_count == 1
-
-    # Publish after stop() throws
-    with pytest.raises(RuntimeError):
-        sequencer.publish(message)
-
-    # Commit after stop() throws
-    with pytest.raises(RuntimeError):
-        sequencer.commit()
-
-    # Stop after stop() throws
-    with pytest.raises(RuntimeError):
-        sequencer.stop()
 
 
 def test_commit():
