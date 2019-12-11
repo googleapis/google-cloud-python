@@ -50,8 +50,6 @@ class UnorderedSequencer(base.Sequencer):
             raise RuntimeError("Unordered sequencer already stopped.")
         if self._current_batch:
             self._current_batch.commit()
-        else:
-            print("QQQ")
 
     def unpause(self):
         """ Not relevant for this class. """
