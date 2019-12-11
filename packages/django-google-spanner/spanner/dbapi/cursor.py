@@ -162,29 +162,30 @@ class Cursor(object):
     def __do_execute_non_update(self, sql, params, param_types=None):
         self.__commit_preceding_batch()
 
-        # Reference
-        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
-        sql, params = sql_pyformat_args_to_spanner(sql, params)
-        param_types = infer_param_types(params, param_types)
-        res = self.__session.execute_sql(sql, params=params, param_types=param_types)
-        if type(res) == int:
-            self.__row_count = res
-            self.__itr = None
-        else:
-            # Immediately using:
-            #   iter(response)
-            # here, because this Spanner API doesn't provide
-            # easy mechanisms to detect when only a single item
-            # is returned or many, yet mixing results that
-            # are for .fetchone() with those that would result in
-            # many items returns a RuntimeError if .fetchone() is
-            # invoked and vice versa.
-            self.__res = res
-            self.__itr = iter(self.__res)
+        with self.__db_handle.read_snapshot() as snapshot:
+            # Reference
+            #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
+            sql, params = sql_pyformat_args_to_spanner(sql, params)
+            param_types = infer_param_types(params, param_types)
+            res = snapshot.execute_sql(sql, params=params, param_types=param_types)
+            if type(res) == int:
+                self.__row_count = res
+                self.__itr = None
+            else:
+                # Immediately using:
+                #   iter(response)
+                # here, because this Spanner API doesn't provide
+                # easy mechanisms to detect when only a single item
+                # is returned or many, yet mixing results that
+                # are for .fetchone() with those that would result in
+                # many items returns a RuntimeError if .fetchone() is
+                # invoked and vice versa.
+                self.__res = res
+                self.__itr = iter(self.__res)
 
-            # Unfortunately, Spanner doesn't seem to send back
-            # information about the number of rows available.
-            self.__row_count = _UNSET_COUNT
+                # Unfortunately, Spanner doesn't seem to send back
+                # information about the number of rows available.
+                self.__row_count = _UNSET_COUNT
 
     def __enter__(self):
         return self
