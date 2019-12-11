@@ -32,7 +32,6 @@ class Connection(object):
     def close(self):
         self.commit()
         self.__raise_if_already_closed()
-        self._clear_all_sessions()
         self.__dbhandle = None
         self.__closed = True
 
@@ -64,18 +63,7 @@ class Connection(object):
         self.__ops.append((op, table, columns, values))
 
     def cursor(self):
-        session = self._new_session()
-        return Cursor(session, self)
-
-    def _new_session(self):
-        return self.__dbhandle._pool.get()
-
-    def _done_with_session(self, session):
-        if session:
-            self.__dbhandle._pool.put(session)
-
-    def _clear_all_sessions(self):
-        return self.__dbhandle._pool.clear()
+        return Cursor(self)
 
     def update_ddl(self, ddl_statements):
         """
@@ -93,3 +81,6 @@ class Connection(object):
 
     def read_snapshot(self):
         return self.__dbhandle.snapshot()
+
+    def in_transaction(self, fn, *args, **kwargs):
+        return self.__dbhandle.run_in_transaction(fn, *args, **kwargs)

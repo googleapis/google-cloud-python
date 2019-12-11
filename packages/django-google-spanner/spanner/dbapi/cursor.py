@@ -28,8 +28,7 @@ OP_DELETE = 'delete'
 
 
 class Cursor(object):
-    def __init__(self, session, db_handle=None):
-        self.__session = session
+    def __init__(self, db_handle=None):
         self.__itr = None
         self.__res = None
         self.__row_count = _UNSET_COUNT
@@ -51,10 +50,11 @@ class Cursor(object):
         return self.__row_count
 
     def close(self):
-        self.__commit_preceding_batch()
+        if self.__db_handle is None:
+            return
 
-        self.__db_handle._done_with_session(self.__session)
-        self.__session = None
+        self.__commit_preceding_batch()
+        self.__db_handle = None
 
     def execute(self, sql, args=None):
         """
@@ -68,7 +68,7 @@ class Cursor(object):
         Returns:
             None
         """
-        if not self.__session:
+        if not self.__db_handle:
             raise ProgrammingError('Cursor is not connected to the database')
 
         # param_types doesn't seem required except as an empty dict to avoid
@@ -96,7 +96,7 @@ class Cursor(object):
 
             else:
                 self.__commit_preceding_batch()
-                self.__session.run_in_transaction(
+                self.__db_handle.in_transaction(
                     self.__do_execute_update,
                     sql, args or None,
                     param_types=param_types,
@@ -148,7 +148,7 @@ class Cursor(object):
         else:
             # Either of cases a) and b)
             self.__commit_preceding_batch()
-            self.__session.run_in_transaction(
+            self.__db_handle.in_transaction(
                 self.__execute_insert_no_params,
                 sql,
             )
@@ -194,7 +194,7 @@ class Cursor(object):
         self.close()
 
     def executemany(self, operation, seq_of_params):
-        if not self.__session:
+        if not self.__db_handle:
             raise ProgrammingError('Cursor is not connected to the database')
 
         raise ProgrammingError('Unimplemented')
