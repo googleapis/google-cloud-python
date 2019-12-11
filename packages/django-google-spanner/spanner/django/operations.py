@@ -1,5 +1,6 @@
 from base64 import b64decode
 from datetime import datetime
+from decimal import Decimal
 from uuid import UUID
 
 from django.conf import settings
@@ -77,6 +78,8 @@ class DatabaseOperations(BaseDatabaseOperations):
         internal_type = expression.output_field.get_internal_type()
         if internal_type == 'DateTimeField':
             converters.append(self.convert_datetimefield_value)
+        elif internal_type == 'DecimalField':
+            converters.append(self.convert_decimalfield_value)
         elif internal_type == 'BinaryField':
             converters.append(self.convert_binaryfield_value)
         elif internal_type == 'UUIDField':
@@ -102,6 +105,12 @@ class DatabaseOperations(BaseDatabaseOperations):
             value.hour, value.minute, value.second, value.microsecond,
             self.connection.timezone,
         )
+
+    def convert_decimalfield_value(self, value, expression, connection):
+        if value is None:
+            return value
+        # Cloud Spanner returns a float.
+        return Decimal(str(value))
 
     def convert_uuidfield_value(self, value, expression, connection):
         if value is not None:
