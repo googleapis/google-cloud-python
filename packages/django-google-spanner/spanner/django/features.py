@@ -19,6 +19,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'basic.tests.ModelTest.test_hash',
         'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
+        'model_fields.test_booleanfield.ValidationTest.test_nullbooleanfield_blank',
         # Tests that assume a serial pk.
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',
         'aggregation_regress.tests.AggregationTests.test_more_more',
@@ -28,6 +29,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'distinct_on_fields.tests.DistinctOnTests.test_basic_distinct_on',
         'generic_relations_regress.tests.GenericRelationTests.test_annotate',
         'migrations.test_operations.OperationTests.test_alter_order_with_respect_to',
+        'model_fields.tests.GetChoicesOrderingTests.test_get_choices_reverse_related_field',
         'model_formsets_regress.tests.FormfieldShouldDeleteFormTests.test_custom_delete',
         'multiple_database.tests.RouterTestCase.test_generic_key_cross_database_protection',
         'ordering.tests.OrderingTests.test_order_by_fk_attname',
@@ -43,4 +45,25 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
+        # FailedPrecondition and AlreadyExists should be raised as IntegrityError:
+        # https://github.com/orijtech/spanner-orm/issues/154
+        'model_fields.test_booleanfield.BooleanFieldTests.test_null_default',
+        # Implement DatabaseOperations.datetime_cast_date_sql():
+        # https://github.com/orijtech/spanner-orm/issues/170
+        'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
+        'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
+        # Store TimeField as Timestamp:
+        # https://github.com/orijtech/spanner-orm/issues/167
+        'model_fields.test_datetimefield.DateTimeFieldTests.test_datetimes_save_completely',
+        # DecimalField lookups crash:
+        # https://github.com/orijtech/spanner-orm/issues/168
+        'model_fields.test_decimalfield.DecimalFieldTests.test_filter_with_strings',
+        # Spanner loses DecimalField precision due to conversion to float:
+        # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
+        'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
+        'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
+        # No UNIQUE constraints in Spanner.
+        'model_fields.test_filefield.FileFieldTests.test_unique_when_same_filename',
+        # No CHECK constraints in Spanner.
+        'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
     )
