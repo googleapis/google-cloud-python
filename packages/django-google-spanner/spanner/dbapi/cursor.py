@@ -34,6 +34,11 @@ class Cursor(object):
         self.__row_count = _UNSET_COUNT
         self.__db_handle = db_handle
 
+        # arraysize is a readable and writable property mandated
+        # by PEP-0249 https://www.python.org/dev/peps/pep-0249/#arraysize
+        # It determines the results of .fetchmany
+        self.arraysize = 1
+
     @property
     def description(self):
         if not (self.__res and self.__res.metadata):
@@ -220,7 +225,7 @@ class Cursor(object):
     def fetchall(self):
         return list(self.__iter__())
 
-    def fetchmany(self, size=50):
+    def fetchmany(self, size=None):
         """
         Fetch the next set of rows of a query result, returning a sequence of sequences.
         An empty sequence is returned when no more rows are available.
@@ -233,6 +238,9 @@ class Cursor(object):
             Error if the previous call to .execute*() did not produce any result set
             or if no call was issued yet.
         """
+        if size is None:
+            size = self.arraysize
+
         items = []
         for i in range(size):
             try:
@@ -241,10 +249,6 @@ class Cursor(object):
                 break
 
         return items
-
-    @property
-    def arraysize(self):
-        raise ProgrammingError('Unimplemented')
 
     @property
     def lastrowid(self):
