@@ -17,6 +17,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
         # spanner.django monkey patches AutoField to have a default value.
         'basic.tests.ModelTest.test_hash',
+        'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
         # Tests that assume a serial pk.
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',

@@ -39,18 +39,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'DateField': 'DATE',
         'DateTimeField': 'TIMESTAMP',
         'DecimalField': 'FLOAT64',
-        # Django extracts this field with parse_duration by invoking
-        #   https://docs.djangoproject.com/en/2.2/_modules/django/utils/dateparse/#parse_duration
-        # starting from
-        #   https://docs.djangoproject.com/en/2.2/_modules/django/db/models/fields/#DurationField
-        # expecting format "[DD] [HH:[MM:]]ss[.uuuuuu]"
-        # also see
-        #   https://cloud.google.com/spanner/docs/migrating-postgres-spanner#data_types
-        # which recommends either:
-        #   "INT64" if storing the value in milliseconds
-        #  OR
-        #   "STRING" if storing the value in an application-defined interval format.
-        'DurationField': 'STRING(50)',
+        'DurationField': 'INT64',
         'EmailField': 'STRING(%(max_length)s)',
         'FileField': 'STRING(%(max_length)s)',
         'FilePathField': 'STRING(%(max_length)s)',
