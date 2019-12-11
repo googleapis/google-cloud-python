@@ -18,8 +18,10 @@ from uuid import uuid4
 
 from django.db.models.fields import AutoField, Field
 
+from .expressions import register_expressions
 from .lookups import register_lookups
 
+register_expressions()
 register_lookups()
 
 

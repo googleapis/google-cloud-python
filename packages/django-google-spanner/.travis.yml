@@ -5,7 +5,7 @@ before_install:
 env:
     # Reuse an available database to speed up Travis tests lest we can
     # get terminations as the underlying tables are created.
-    - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 DJANGO_TEST_APPS="basic" SPANNER_TEST_DB=travisdb1 SPANNER_DROP_DB_ON_EXIT=false
+    - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 DJANGO_TEST_APPS="admin_ordering basic" SPANNER_TEST_DB=travisdb1 SPANNER_DROP_DB_ON_EXIT=false
 
 python:
     - "3.7"
