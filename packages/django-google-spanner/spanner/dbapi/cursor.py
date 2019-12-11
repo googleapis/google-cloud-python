@@ -53,10 +53,7 @@ class Cursor(object):
     def close(self):
         self.__commit_preceding_batch()
 
-        if not self.__session:
-            return
-
-        self.__session.delete()
+        self.__db_handle._done_with_session(self.__session)
         self.__session = None
 
     def execute(self, sql, args=None):
