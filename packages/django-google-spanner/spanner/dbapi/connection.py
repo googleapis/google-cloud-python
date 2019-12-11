@@ -81,3 +81,6 @@ class Connection(object):
         """
         # Synchronously wait on the operation's completion.
         return self.__dbhandle.update_ddl(ddl_statements).result()
+
+    def read_snapshot(self):
+        return self.__dbhandle.snapshot()
