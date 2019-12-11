@@ -19,7 +19,6 @@ import types as stdlib_types
 
 import mock
 import pytest
-from six.moves import queue
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -31,6 +30,7 @@ from google.cloud.pubsub_v1.subscriber import scheduler
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
+from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 import grpc
@@ -95,6 +95,7 @@ def test_constructor_and_default_state():
     assert manager._client == mock.sentinel.client
     assert manager._subscription == mock.sentinel.subscription
     assert manager._scheduler is not None
+    assert manager._messages_on_hold is not None
 
 
 def test_constructor_with_options():
@@ -166,18 +167,24 @@ def test_lease_load_and_pause():
     # This should mean that our messages count is at 10%, and our bytes
     # are at 15%; load should return the higher (0.15), and shouldn't cause
     # the consumer to pause.
-    manager.leaser.add([requests.LeaseRequest(ack_id="one", byte_size=150)])
+    manager.leaser.add(
+        [requests.LeaseRequest(ack_id="one", byte_size=150, ordering_key="")]
+    )
     assert manager.load == 0.15
     manager.maybe_pause_consumer()
     manager._consumer.pause.assert_not_called()
 
     # After this message is added, the messages should be higher at 20%
     # (versus 16% for bytes).
-    manager.leaser.add([requests.LeaseRequest(ack_id="two", byte_size=10)])
+    manager.leaser.add(
+        [requests.LeaseRequest(ack_id="two", byte_size=10, ordering_key="")]
+    )
     assert manager.load == 0.2
 
     # Returning a number above 100% is fine, and it should cause this to pause.
-    manager.leaser.add([requests.LeaseRequest(ack_id="three", byte_size=1000)])
+    manager.leaser.add(
+        [requests.LeaseRequest(ack_id="three", byte_size=1000, ordering_key="")]
+    )
     assert manager.load == 1.16
     manager.maybe_pause_consumer()
     manager._consumer.pause.assert_called_once()
@@ -194,8 +201,8 @@ def test_drop_and_resume():
     # Add several messages until we're over the load threshold.
     manager.leaser.add(
         [
-            requests.LeaseRequest(ack_id="one", byte_size=750),
-            requests.LeaseRequest(ack_id="two", byte_size=250),
+            requests.LeaseRequest(ack_id="one", byte_size=750, ordering_key=""),
+            requests.LeaseRequest(ack_id="two", byte_size=250, ordering_key=""),
         ]
     )
 
@@ -207,7 +214,9 @@ def test_drop_and_resume():
 
     # Drop the 200 byte message, which should put us under the resume
     # threshold.
-    manager.leaser.remove([requests.DropRequest(ack_id="two", byte_size=250)])
+    manager.leaser.remove(
+        [requests.DropRequest(ack_id="two", byte_size=250, ordering_key="")]
+    )
     manager.maybe_resume_consumer()
     manager._consumer.resume.assert_called_once()
 
@@ -245,7 +254,7 @@ def test__maybe_release_messages_on_overload():
 
     manager._maybe_release_messages()
 
-    assert manager._messages_on_hold.qsize() == 1
+    assert manager._messages_on_hold.size == 1
     manager._leaser.add.assert_not_called()
     manager._scheduler.schedule.assert_not_called()
 
@@ -274,8 +283,8 @@ def test__maybe_release_messages_below_overload():
     # the actual call of MUT
     manager._maybe_release_messages()
 
-    assert manager._messages_on_hold.qsize() == 1
-    msg = manager._messages_on_hold.get_nowait()
+    assert manager._messages_on_hold.size == 1
+    msg = manager._messages_on_hold.get()
     assert msg.ack_id == "ack_baz"
 
     schedule_calls = manager._scheduler.schedule.mock_calls
@@ -661,7 +670,7 @@ def test__on_response_no_leaser_overload():
         assert isinstance(call[1][1], message.Message)
 
     # the leaser load limit not hit, no messages had to be put on hold
-    assert manager._messages_on_hold.qsize() == 0
+    assert manager._messages_on_hold.size == 0
 
 
 def test__on_response_with_leaser_overload():
@@ -710,11 +719,10 @@ def test__on_response_with_leaser_overload():
     assert call_args[1].message_id == "1"
 
     # the rest of the messages should have been put on hold
-    assert manager._messages_on_hold.qsize() == 2
+    assert manager._messages_on_hold.size == 2
     while True:
-        try:
-            msg = manager._messages_on_hold.get_nowait()
-        except queue.Empty:
+        msg = manager._messages_on_hold.get()
+        if msg is None:
             break
         else:
             assert isinstance(msg, message.Message)
@@ -734,6 +742,87 @@ def test__on_response_none_data(caplog):
 
     scheduler.schedule.assert_not_called()
     assert "callback invoked with None" in caplog.text
+
+
+def test__on_response_with_ordering_keys():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # Set up the messages.
+    response = types.StreamingPullResponse(
+        received_messages=[
+            types.ReceivedMessage(
+                ack_id="fack",
+                message=types.PubsubMessage(
+                    data=b"foo", message_id="1", ordering_key=""
+                ),
+            ),
+            types.ReceivedMessage(
+                ack_id="back",
+                message=types.PubsubMessage(
+                    data=b"bar", message_id="2", ordering_key="key1"
+                ),
+            ),
+            types.ReceivedMessage(
+                ack_id="zack",
+                message=types.PubsubMessage(
+                    data=b"baz", message_id="3", ordering_key="key1"
+                ),
+            ),
+        ]
+    )
+
+    # Make leaser with zero initial messages, so we don't test lease management
+    # behavior.
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
+
+    # Actually run the method and prove that modack and schedule are called in
+    # the expected way.
+    manager._on_response(response)
+
+    # All messages should be added to the lease management and have their ACK
+    # deadline extended, even those not dispatched to callbacks.
+    dispatcher.modify_ack_deadline.assert_called_once_with(
+        [
+            requests.ModAckRequest("fack", 10),
+            requests.ModAckRequest("back", 10),
+            requests.ModAckRequest("zack", 10),
+        ]
+    )
+
+    # The first two messages should be scheduled, The third should be put on
+    # hold because it's blocked by the completion of the second, which has the
+    # same ordering key.
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 2
+    call_args = schedule_calls[0][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "1"
+
+    call_args = schedule_calls[1][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "2"
+
+    # Message 3 should have been put on hold.
+    assert manager._messages_on_hold.size == 1
+    # No messages available because message 2 (with "key1") has not completed yet.
+    assert manager._messages_on_hold.get() is None
+
+    # Complete message 2 (with "key1").
+    manager.activate_ordering_keys(["key1"])
+
+    # Completing message 2 should release message 3.
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 3
+    call_args = schedule_calls[2][1]
+    assert call_args[0] == mock.sentinel.callback
+    assert isinstance(call_args[1], message.Message)
+    assert call_args[1].message_id == "3"
+
+    # No messages available in the queue.
+    assert manager._messages_on_hold.get() is None
 
 
 def test_retryable_stream_errors():
@@ -792,4 +881,17 @@ def test__on_rpc_done(thread):
 
     thread.assert_called_once_with(
         name=mock.ANY, target=manager.close, kwargs={"reason": mock.sentinel.error}
+    )
+
+
+def test_activate_ordering_keys():
+    manager = make_manager()
+    manager._messages_on_hold = mock.create_autospec(
+        messages_on_hold.MessagesOnHold, instance=True
+    )
+
+    manager.activate_ordering_keys(["key1", "key2"])
+
+    manager._messages_on_hold.activate_ordering_keys.assert_called_once_with(
+        ["key1", "key2"], mock.ANY
     )

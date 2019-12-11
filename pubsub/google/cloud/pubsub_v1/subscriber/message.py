@@ -26,6 +26,7 @@ from google.cloud.pubsub_v1.subscriber._protocol import requests
 _MESSAGE_REPR = """\
 Message {{
   data: {!r}
+  ordering_key: {!r}
   attributes: {}
 }}"""
 
@@ -108,7 +109,7 @@ class Message(object):
         pretty_attrs = _indent(pretty_attrs)
         # We don't actually want the first line indented.
         pretty_attrs = pretty_attrs.lstrip()
-        return _MESSAGE_REPR.format(abbv_data, pretty_attrs)
+        return _MESSAGE_REPR.format(abbv_data, str(self.ordering_key), pretty_attrs)
 
     @property
     def attributes(self):
@@ -153,6 +154,11 @@ class Message(object):
         return datetime_helpers._UTC_EPOCH + delta
 
     @property
+    def ordering_key(self):
+        """str: the ordering key used to publish the message."""
+        return self._message.ordering_key
+
+    @property
     def size(self):
         """Return the size of the underlying message, in bytes."""
         return self._message.ByteSize()
@@ -179,7 +185,10 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
-                ack_id=self._ack_id, byte_size=self.size, time_to_ack=time_to_ack
+                ack_id=self._ack_id,
+                byte_size=self.size,
+                time_to_ack=time_to_ack,
+                ordering_key=self.ordering_key,
             )
         )
 
@@ -192,12 +201,14 @@ class Message(object):
 
         .. warning::
             For most use cases, the only reason to drop a message from
-            lease management is on :meth:`ack` or :meth:`nack`; these methods
-            both call this one. You probably do not want to call this method
-            directly.
+            lease management is on `ack` or `nack`; this library
+            automatically drop()s the message on `ack` or `nack`. You probably
+            do not want to call this method directly.
         """
         self._request_queue.put(
-            requests.DropRequest(ack_id=self._ack_id, byte_size=self.size)
+            requests.DropRequest(
+                ack_id=self._ack_id, byte_size=self.size, ordering_key=self.ordering_key
+            )
         )
 
     def modify_ack_deadline(self, seconds):
@@ -225,5 +236,7 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self._request_queue.put(
-            requests.NackRequest(ack_id=self._ack_id, byte_size=self.size)
+            requests.NackRequest(
+                ack_id=self._ack_id, byte_size=self.size, ordering_key=self.ordering_key
+            )
         )

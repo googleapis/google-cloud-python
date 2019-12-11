@@ -33,7 +33,7 @@ PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
-def create_message(data, ack_id="ACKID", **attrs):
+def create_message(data, ack_id="ACKID", ordering_key="", **attrs):
     with mock.patch.object(time, "time") as time_:
         time_.return_value = RECEIVED_SECONDS
         msg = message.Message(
@@ -44,6 +44,7 @@ def create_message(data, ack_id="ACKID", **attrs):
                 publish_time=timestamp_pb2.Timestamp(
                     seconds=PUBLISHED_SECONDS, nanos=PUBLISHED_MICROS * 1000
                 ),
+                ordering_key=ordering_key,
             ),
             ack_id,
             queue.Queue(),
@@ -77,6 +78,11 @@ def test_publish_time():
     assert msg.publish_time == PUBLISHED
 
 
+def test_ordering_key():
+    msg = create_message(b"foo", ordering_key="key1")
+    assert msg.ordering_key == "key1"
+
+
 def check_call_types(mock, *args, **kwargs):
     """Checks a mock's call types.
 
@@ -106,7 +112,10 @@ def test_ack():
         msg.ack()
         put.assert_called_once_with(
             requests.AckRequest(
-                ack_id="bogus_ack_id", byte_size=30, time_to_ack=mock.ANY
+                ack_id="bogus_ack_id",
+                byte_size=30,
+                time_to_ack=mock.ANY,
+                ordering_key="",
             )
         )
         check_call_types(put, requests.AckRequest)
@@ -117,7 +126,7 @@ def test_drop():
     with mock.patch.object(msg._request_queue, "put") as put:
         msg.drop()
         put.assert_called_once_with(
-            requests.DropRequest(ack_id="bogus_ack_id", byte_size=30)
+            requests.DropRequest(ack_id="bogus_ack_id", byte_size=30, ordering_key="")
         )
         check_call_types(put, requests.DropRequest)
 
@@ -137,19 +146,22 @@ def test_nack():
     with mock.patch.object(msg._request_queue, "put") as put:
         msg.nack()
         put.assert_called_once_with(
-            requests.NackRequest(ack_id="bogus_ack_id", byte_size=30)
+            requests.NackRequest(ack_id="bogus_ack_id", byte_size=30, ordering_key="")
         )
         check_call_types(put, requests.NackRequest)
 
 
 def test_repr():
     data = b"foo"
-    msg = create_message(data, snow="cones", orange="juice")
+    ordering_key = "ord_key"
+    msg = create_message(data, ordering_key=ordering_key, snow="cones", orange="juice")
     data_line = "  data: {!r}".format(data)
+    ordering_key_line = "  ordering_key: {!r}".format(ordering_key)
     expected_repr = "\n".join(
         (
             "Message {",
             data_line,
+            ordering_key_line,
             "  attributes: {",
             '    "orange": "juice",',
             '    "snow": "cones"',

@@ -153,8 +153,12 @@ class Dispatcher(object):
 
         Args:
             items(Sequence[DropRequest]): The items to drop.
+            activate_ordering_keys(bool): Whether or not to send the next message
+                for ordered messages in `items`, if they exist.
         """
         self._manager.leaser.remove(items)
+        ordering_keys = (k.ordering_key for k in items if k.ordering_key)
+        self._manager.activate_ordering_keys(ordering_keys)
         self._manager.maybe_resume_consumer()
 
     def lease(self, items):

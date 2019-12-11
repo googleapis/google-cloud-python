@@ -29,11 +29,11 @@ import pytest
 @pytest.mark.parametrize(
     "item,method_name",
     [
-        (requests.AckRequest(0, 0, 0), "ack"),
-        (requests.DropRequest(0, 0), "drop"),
-        (requests.LeaseRequest(0, 0), "lease"),
+        (requests.AckRequest(0, 0, 0, ""), "ack"),
+        (requests.DropRequest(0, 0, ""), "drop"),
+        (requests.LeaseRequest(0, 0, ""), "lease"),
         (requests.ModAckRequest(0, 0), "modify_ack_deadline"),
-        (requests.NackRequest(0, 0), "nack"),
+        (requests.NackRequest(0, 0, ""), "nack"),
     ],
 )
 def test_dispatch_callback(item, method_name):
@@ -57,7 +57,7 @@ def test_dispatch_callback_inactive():
     manager.is_active = False
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    dispatcher_.dispatch_callback([requests.AckRequest(0, 0, 0)])
+    dispatcher_.dispatch_callback([requests.AckRequest(0, 0, 0, "")])
 
     manager.send.assert_not_called()
 
@@ -68,7 +68,11 @@ def test_ack():
     )
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    items = [requests.AckRequest(ack_id="ack_id_string", byte_size=0, time_to_ack=20)]
+    items = [
+        requests.AckRequest(
+            ack_id="ack_id_string", byte_size=0, time_to_ack=20, ordering_key=""
+        )
+    ]
     dispatcher_.ack(items)
 
     manager.send.assert_called_once_with(
@@ -86,7 +90,11 @@ def test_ack_no_time():
     )
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    items = [requests.AckRequest(ack_id="ack_id_string", byte_size=0, time_to_ack=None)]
+    items = [
+        requests.AckRequest(
+            ack_id="ack_id_string", byte_size=0, time_to_ack=None, ordering_key=""
+        )
+    ]
     dispatcher_.ack(items)
 
     manager.send.assert_called_once_with(
@@ -104,7 +112,9 @@ def test_ack_splitting_large_payload():
 
     items = [
         # use realistic lengths for ACK IDs (max 176 bytes)
-        requests.AckRequest(ack_id=str(i).zfill(176), byte_size=0, time_to_ack=20)
+        requests.AckRequest(
+            ack_id=str(i).zfill(176), byte_size=0, time_to_ack=20, ordering_key=""
+        )
         for i in range(5001)
     ]
     dispatcher_.ack(items)
@@ -130,23 +140,46 @@ def test_lease():
     )
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    items = [requests.LeaseRequest(ack_id="ack_id_string", byte_size=10)]
+    items = [
+        requests.LeaseRequest(ack_id="ack_id_string", byte_size=10, ordering_key="")
+    ]
     dispatcher_.lease(items)
 
     manager.leaser.add.assert_called_once_with(items)
     manager.maybe_pause_consumer.assert_called_once()
 
 
-def test_drop():
+def test_drop_unordered_messages():
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
     )
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    items = [requests.DropRequest(ack_id="ack_id_string", byte_size=10)]
+    items = [
+        requests.DropRequest(ack_id="ack_id_string", byte_size=10, ordering_key="")
+    ]
     dispatcher_.drop(items)
 
     manager.leaser.remove.assert_called_once_with(items)
+    assert list(manager.activate_ordering_keys.call_args.args[0]) == []
+    manager.maybe_resume_consumer.assert_called_once()
+
+
+def test_drop_ordered_messages():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    items = [
+        requests.DropRequest(ack_id="ack_id_string", byte_size=10, ordering_key=""),
+        requests.DropRequest(ack_id="ack_id_string", byte_size=10, ordering_key="key1"),
+        requests.DropRequest(ack_id="ack_id_string", byte_size=10, ordering_key="key2"),
+    ]
+    dispatcher_.drop(items)
+
+    manager.leaser.remove.assert_called_once_with(items)
+    assert list(manager.activate_ordering_keys.call_args.args[0]) == ["key1", "key2"]
     manager.maybe_resume_consumer.assert_called_once()
 
 
@@ -156,7 +189,9 @@ def test_nack():
     )
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
-    items = [requests.NackRequest(ack_id="ack_id_string", byte_size=10)]
+    items = [
+        requests.NackRequest(ack_id="ack_id_string", byte_size=10, ordering_key="")
+    ]
     dispatcher_.nack(items)
 
     manager.send.assert_called_once_with(

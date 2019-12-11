@@ -21,7 +21,6 @@ import threading
 
 import grpc
 import six
-from six.moves import queue
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -30,6 +29,7 @@ from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
 from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
+from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 import google.cloud.pubsub_v1.subscriber.message
 import google.cloud.pubsub_v1.subscriber.scheduler
@@ -80,6 +80,20 @@ def _wrap_callback_errors(callback, on_callback_error, message):
         on_callback_error(exc)
 
 
+# TODO
+# check if dropping behavior in Leaser is going to be a problem. (maybe disbale
+# for ordering keys). check if what i'm doing here is okay?
+# investigate other places where Drop is happening. Drop is dangerous because it
+# can happen without the user intending an ack or nack.
+
+# 1) dont drop ordering keys messages OR
+# 2) drop all messages from the ordering key (better user experience)
+#
+# if message is in hold, then lease expires, then you wait for server to send
+# again.
+#
+
+
 class StreamingPullManager(object):
     """The streaming pull manager coordinates pulling messages from Pub/Sub,
     leasing them, and scheduling them to be processed.
@@ -123,12 +137,11 @@ class StreamingPullManager(object):
         else:
             self._scheduler = scheduler
 
-        # A FIFO queue for the messages that have been received from the server,
-        # but not yet added to the lease management (and not sent to user callback),
-        # because the FlowControl limits have been hit.
-        self._messages_on_hold = queue.Queue()
+        # A collection for the messages that have been received from the server,
+        # but not yet sent to the user callback.
+        self._messages_on_hold = messages_on_hold.MessagesOnHold()
 
-        # the total number of bytes consumed by the messages currently on hold
+        # The total number of bytes consumed by the messages currently on hold
         self._on_hold_bytes = 0
 
         # A lock ensuring that pausing / resuming the consumer are both atomic
@@ -225,7 +238,7 @@ class StreamingPullManager(object):
         # be subtracted from the leaser's values.
         return max(
             [
-                (self._leaser.message_count - self._messages_on_hold.qsize())
+                (self._leaser.message_count - self._messages_on_hold.size)
                 / self._flow_control.max_messages,
                 (self._leaser.bytes - self._on_hold_bytes)
                 / self._flow_control.max_bytes,
@@ -239,6 +252,26 @@ class StreamingPullManager(object):
             callback (Callable): The method to call.
         """
         self._close_callbacks.append(callback)
+
+    def activate_ordering_keys(self, ordering_keys):
+        """Send the next message in the queue for each of the passed-in
+        ordering keys, if they exist. Clean up state for keys that no longer
+        have any queued messages.
+
+        There is enough load capacity to send one message per ordering key
+        because each key is the result of an ack or nack. Since the load went
+        down by one message, it's safe to send the user another message for the
+        same key. This is why this method does not check the load before
+        activating key.
+
+        Args:
+            ordering_keys(Sequence[str]): A sequence of ordering keys to
+                activate. May be empty.
+        """
+        with self._pause_resume_lock:
+            self._messages_on_hold.activate_ordering_keys(
+                ordering_keys, self._schedule_message_on_hold
+            )
 
     def maybe_pause_consumer(self):
         """Check the current load and pause the consumer if needed."""
@@ -285,35 +318,49 @@ class StreamingPullManager(object):
         would allow. Each released message is added to the lease management,
         and the user callback is scheduled for it.
 
-        If there are currently no messageges on hold, or if the leaser is
+        If there are currently no messages on hold, or if the leaser is
         already overloaded, this method is effectively a no-op.
 
         The method assumes the caller has acquired the ``_pause_resume_lock``.
         """
-        while True:
-            if self.load >= _MAX_LOAD:
-                break  # already overloaded
-
-            try:
-                msg = self._messages_on_hold.get_nowait()
-            except queue.Empty:
+        released_ack_ids = []
+        while self.load < _MAX_LOAD:
+            msg = self._messages_on_hold.get()
+            if not msg:
                 break
 
-            self._on_hold_bytes -= msg.size
+            self._schedule_message_on_hold(msg)
+            released_ack_ids.append(msg.ack_id)
+        self._leaser.start_lease_expiry_timer(released_ack_ids)
 
-            if self._on_hold_bytes < 0:
-                _LOGGER.warning(
-                    "On hold bytes was unexpectedly negative: %s", self._on_hold_bytes
-                )
-                self._on_hold_bytes = 0
+    def _schedule_message_on_hold(self, msg):
+        """Schedule a message on hold to be sent to the user and change
+        on-hold-bytes.
 
-            _LOGGER.debug(
-                "Released held message, scheduling callback for it, "
-                "still on hold %s (bytes %s).",
-                self._messages_on_hold.qsize(),
-                self._on_hold_bytes,
+        The method assumes the caller has acquired the ``_pause_resume_lock``.
+
+        Args:
+            msg (google.cloud.pubsub_v1.message.Message): The message to
+                schedule to be sent to the user.
+        """
+        assert msg, "Message must not be None."
+
+        # On-hold bytes goes down, increasing load.
+        self._on_hold_bytes -= msg.size
+
+        if self._on_hold_bytes < 0:
+            _LOGGER.warning(
+                "On hold bytes was unexpectedly negative: %s", self._on_hold_bytes
             )
-            self._scheduler.schedule(self._callback, msg)
+            self._on_hold_bytes = 0
+
+        _LOGGER.debug(
+            "Released held message, scheduling callback for it, "
+            "still on hold %s (bytes %s).",
+            self._messages_on_hold.size,
+            self._on_hold_bytes,
+        )
+        self._scheduler.schedule(self._callback, msg)
 
     def _send_unary_request(self, request):
         """Send a request using a separate unary request instead of over the
@@ -552,7 +599,7 @@ class StreamingPullManager(object):
         _LOGGER.debug(
             "Processing %s received message(s), currenty on hold %s (bytes %s).",
             len(response.received_messages),
-            self._messages_on_hold.qsize(),
+            self._messages_on_hold.size,
             self._on_hold_bytes,
         )
 
@@ -565,34 +612,26 @@ class StreamingPullManager(object):
         ]
         self._dispatcher.modify_ack_deadline(items)
 
-        invoke_callbacks_for = []
+        with self._pause_resume_lock:
+            for received_message in response.received_messages:
+                message = google.cloud.pubsub_v1.subscriber.message.Message(
+                    received_message.message,
+                    received_message.ack_id,
+                    self._scheduler.queue,
+                )
+                self._messages_on_hold.put(message)
+                self._on_hold_bytes += message.size
 
-        for received_message in response.received_messages:
-            message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message, received_message.ack_id, self._scheduler.queue
-            )
-            # Making a decision based on the load, and modifying the data that
-            # affects the load -> needs a lock, as that state can be modified
-            # by different threads.
-            with self._pause_resume_lock:
-                if self.load < _MAX_LOAD:
-                    invoke_callbacks_for.append(message)
-                else:
-                    self._messages_on_hold.put(message)
-                    self._on_hold_bytes += message.size
+                req = requests.LeaseRequest(
+                    ack_id=message.ack_id,
+                    byte_size=message.size,
+                    ordering_key=message.ordering_key,
+                )
+                self.leaser.add([req])
 
-            req = requests.LeaseRequest(ack_id=message.ack_id, byte_size=message.size)
-            self.leaser.add([req])
-            self.maybe_pause_consumer()
+            self._maybe_release_messages()
 
-        _LOGGER.debug(
-            "Scheduling callbacks for %s new messages, new total on hold %s (bytes %s).",
-            len(invoke_callbacks_for),
-            self._messages_on_hold.qsize(),
-            self._on_hold_bytes,
-        )
-        for msg in invoke_callbacks_for:
-            self._scheduler.schedule(self._callback, msg)
+        self.maybe_pause_consumer()
 
     def _should_recover(self, exception):
         """Determine if an error on the RPC stream should be recovered.

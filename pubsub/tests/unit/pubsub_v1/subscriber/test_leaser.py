@@ -29,14 +29,14 @@ import pytest
 def test_add_and_remove():
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
-    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=25)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50, ordering_key="")])
+    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=25, ordering_key="")])
 
     assert leaser_.message_count == 2
     assert set(leaser_.ack_ids) == set(["ack1", "ack2"])
     assert leaser_.bytes == 75
 
-    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50)])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50, ordering_key="")])
 
     assert leaser_.message_count == 1
     assert set(leaser_.ack_ids) == set(["ack2"])
@@ -48,8 +48,8 @@ def test_add_already_managed(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
-    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50, ordering_key="")])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50, ordering_key="")])
 
     assert "already lease managed" in caplog.text
 
@@ -59,7 +59,7 @@ def test_remove_not_managed(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50)])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=50, ordering_key="")])
 
     assert "not managed" in caplog.text
 
@@ -69,8 +69,8 @@ def test_remove_negative_bytes(caplog):
 
     leaser_ = leaser.Leaser(mock.sentinel.manager)
 
-    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
-    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=75)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50, ordering_key="")])
+    leaser_.remove([requests.DropRequest(ack_id="ack1", byte_size=75, ordering_key="")])
 
     assert leaser_.bytes == 0
     assert "unexpectedly negative" in caplog.text
@@ -125,7 +125,9 @@ def test_maintain_leases_ack_ids():
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
     make_sleep_mark_manager_as_inactive(leaser_)
-    leaser_.add([requests.LeaseRequest(ack_id="my ack id", byte_size=50)])
+    leaser_.add(
+        [requests.LeaseRequest(ack_id="my ack id", byte_size=50, ordering_key="")]
+    )
 
     leaser_.maintain_leases()
 
@@ -150,26 +152,50 @@ def test_maintain_leases_outdated_items(time):
     leaser_ = leaser.Leaser(manager)
     make_sleep_mark_manager_as_inactive(leaser_)
 
-    # Add these items at the beginning of the timeline
+    # Add and start expiry timer at the beginning of the timeline.
     time.return_value = 0
-    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack1", byte_size=50, ordering_key="")])
+    leaser_.start_lease_expiry_timer(["ack1"])
 
-    # Add another item at towards end of the timeline
+    # Add a message but don't start the lease expiry timer.
+    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=50, ordering_key="")])
+
+    # Add a message and start expiry timer towards the end of the timeline.
     time.return_value = manager.flow_control.max_lease_duration - 1
-    leaser_.add([requests.LeaseRequest(ack_id="ack2", byte_size=50)])
+    leaser_.add([requests.LeaseRequest(ack_id="ack3", byte_size=50, ordering_key="")])
+    leaser_.start_lease_expiry_timer(["ack3"])
 
-    # Now make sure time reports that we are at the end of our timeline.
+    # Add a message towards the end of the timeline, but DO NOT start expiry
+    # timer.
+    leaser_.add([requests.LeaseRequest(ack_id="ack4", byte_size=50, ordering_key="")])
+
+    # Now make sure time reports that we are past the end of our timeline.
     time.return_value = manager.flow_control.max_lease_duration + 1
 
     leaser_.maintain_leases()
 
-    # Only ack2 should be renewed. ack1 should've been dropped
-    manager.dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest(ack_id="ack2", seconds=10)]
-    )
+    # ack2, ack3, and ack4 should be renewed. ack1 should've been dropped
+    modacks = manager.dispatcher.modify_ack_deadline.call_args.args[0]
+    expected = [
+        requests.ModAckRequest(ack_id="ack2", seconds=10),
+        requests.ModAckRequest(ack_id="ack3", seconds=10),
+        requests.ModAckRequest(ack_id="ack4", seconds=10),
+    ]
+    # Use sorting to allow for ordering variance.
+    assert sorted(modacks) == sorted(expected)
+
     manager.dispatcher.drop.assert_called_once_with(
-        [requests.DropRequest(ack_id="ack1", byte_size=50)]
+        [requests.DropRequest(ack_id="ack1", byte_size=50, ordering_key="")]
     )
+
+
+def test_start_lease_expiry_timer_unknown_ack_id():
+    manager = create_manager()
+    leaser_ = leaser.Leaser(manager)
+
+    # Nothing happens when this method is called with an ack-id that hasn't been
+    # added yet.
+    leaser_.start_lease_expiry_timer(["ack1"])
 
 
 @mock.patch("threading.Thread", autospec=True)
