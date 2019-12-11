@@ -3,6 +3,7 @@ from django.db.backends.base.features import BaseDatabaseFeatures
 
 class DatabaseFeatures(BaseDatabaseFeatures):
     supports_foreign_keys = False
+    supports_regex_backreferencing = False
     supports_timezones = False
     supports_transactions = False
     supports_column_check_constraints = False

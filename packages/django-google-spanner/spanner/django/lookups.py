@@ -15,7 +15,8 @@
 import re
 
 from django.db.models.lookups import (
-    EndsWith, IContains, IEndsWith, IExact, IStartsWith, StartsWith,
+    EndsWith, IContains, IEndsWith, IExact, IRegex, IStartsWith, Regex,
+    StartsWith,
 )
 
 
@@ -38,6 +39,18 @@ def iexact(self, compiler, connection):
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
     params[0] = '^(?i)%s$' % re.escape(params[0])
+    # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
+    return rhs_sql % lhs_sql, params
+
+
+def regex(self, compiler, connection):
+    """regex and iregex"""
+    lhs_sql, params = self.process_lhs(compiler, connection)
+    rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params.extend(rhs_params)
+    rhs_sql = self.get_rhs_op(connection, rhs_sql)
+    if self.lookup_name.startswith('i'):
+        params[0] = '(?i)%s' % params[0]
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
@@ -66,6 +79,8 @@ def startswith_endswith(self, compiler, connection):
 def register_lookups():
     IContains.as_spanner = icontains
     IExact.as_spanner = iexact
+    Regex.as_spanner = regex
+    IRegex.as_spanner = regex
     EndsWith.as_spanner = startswith_endswith
     IEndsWith.as_spanner = startswith_endswith
     StartsWith.as_spanner = startswith_endswith
