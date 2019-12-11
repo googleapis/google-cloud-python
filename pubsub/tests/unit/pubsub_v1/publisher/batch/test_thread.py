@@ -34,7 +34,12 @@ def create_client():
     return publisher.Client(credentials=creds)
 
 
-def create_batch(topic="topic_name", commit_when_full=True, **batch_settings):
+def create_batch(
+    topic="topic_name",
+    batch_done_callback=None,
+    commit_when_full=True,
+    **batch_settings
+):
     """Return a batch object suitable for testing.
 
     Args:
@@ -47,7 +52,13 @@ def create_batch(topic="topic_name", commit_when_full=True, **batch_settings):
     """
     client = create_client()
     settings = types.BatchSettings(**batch_settings)
-    return Batch(client, topic, settings, commit_when_full=commit_when_full)
+    return Batch(
+        client,
+        topic,
+        settings,
+        batch_done_callback=batch_done_callback,
+        commit_when_full=commit_when_full,
+    )
 
 
 @mock.patch.object(threading, "Lock")
@@ -400,3 +411,79 @@ def test_do_not_commit_when_full_when_flag_is_off():
         future = batch.publish(types.PubsubMessage(data=b"last one"))
         assert commit.call_count == 0
         assert future is None
+
+
+class BatchDoneCallbackTracker(object):
+    def __init__(self):
+        self.called = False
+        self.success = None
+
+    def __call__(self, success):
+        self.called = True
+        self.success = success
+
+
+def test_batch_done_callback_called_on_success():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # One response for one published message.
+    publish_response = types.PublishResponse(message_ids=["a"])
+
+    with mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert batch_done_callback_tracker.success
+
+
+def test_batch_done_callback_called_on_publish_failure():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # One response for one published message.
+    publish_response = types.PublishResponse(message_ids=["a"])
+
+    # Induce publish error.
+    error = google.api_core.exceptions.InternalServerError("uh oh")
+
+    with mock.patch.object(
+        type(batch.client.api),
+        "publish",
+        return_value=publish_response,
+        side_effect=error,
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert not batch_done_callback_tracker.success
+
+
+def test_batch_done_callback_called_on_publish_response_invalid():
+    batch_done_callback_tracker = BatchDoneCallbackTracker()
+    batch = create_batch(batch_done_callback=batch_done_callback_tracker)
+
+    # Ensure messages exist.
+    message = types.PubsubMessage(data=b"foobarbaz")
+    batch.publish(message)
+
+    # No message ids returned in successful publish response -> invalid.
+    publish_response = types.PublishResponse(message_ids=[])
+
+    with mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    ):
+        batch._commit()
+
+    assert batch_done_callback_tracker.called
+    assert not batch_done_callback_tracker.success

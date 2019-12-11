@@ -25,9 +25,11 @@ import time
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher._sequencer.ordered_sequencer import (
-    OrderedSequencer,
-)
+
+# from google.cloud.pubsub_v1.publisher._sequencer.ordered_sequencer import (
+#    OrderedSequencer,
+# )
+from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 
 
 def test_init():
@@ -416,7 +418,7 @@ def test_resume_publish():
 
     topic = "topic"
     ordering_key = "ord_key"
-    sequencer = mock.Mock(spec=OrderedSequencer)
+    sequencer = mock.Mock(spec=ordered_sequencer.OrderedSequencer)
     client._set_sequencer(topic=topic, sequencer=sequencer, ordering_key=ordering_key)
 
     client.resume_publish(topic, ordering_key)

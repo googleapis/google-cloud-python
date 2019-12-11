@@ -203,7 +203,6 @@ class PublishesDoneCallbackTracker(object):
         self.called = True
         self.topic = topic
         self.ordering_key = ordering_key
-        print("Called with " + topic + " " + ordering_key)
 
 
 def test_batch_done_successfully():

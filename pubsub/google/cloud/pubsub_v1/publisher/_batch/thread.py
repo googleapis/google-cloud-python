@@ -241,10 +241,14 @@ class Batch(base.Batch):
             # We failed to publish, even after retries, so set the exception on
             # all futures and exit.
             self._status = base.BatchStatus.ERROR
-            batch_transport_succeeded = False
 
             for future in self._futures:
                 future.set_exception(exc)
+
+            batch_transport_succeeded = False
+            if self._batch_done_callback is not None:
+                # Failed to publish batch.
+                self._batch_done_callback(batch_transport_succeeded)
 
             _LOGGER.exception("Failed to publish %s messages.", len(self._futures))
             return
@@ -270,6 +274,9 @@ class Batch(base.Batch):
 
             for future in self._futures:
                 future.set_exception(exception)
+
+            # Unknown error -> batch failed to be correctly transported/
+            batch_transport_succeeded = False
 
             _LOGGER.error(
                 "Only %s of %s messages were published.",

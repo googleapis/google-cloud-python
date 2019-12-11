@@ -49,9 +49,7 @@ _BLACKLISTED_METHODS = (
 def _set_nested_value(container, value, keys):
     current = container
     for key in keys[:-1]:
-        if current.get(key) is None:
-            current[key] = {}
-        current = current[key]
+        current = current.setdefault(key, {})
     current[keys[-1]] = value
     return container
 
