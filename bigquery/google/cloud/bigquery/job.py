@@ -16,10 +16,12 @@
 
 from __future__ import division
 
+import concurrent.futures
 import copy
 import re
 import threading
 
+import requests
 import six
 from six.moves import http_client
 
@@ -3155,6 +3157,8 @@ class QueryJob(_AsyncJob):
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
             raise
+        except requests.exceptions.Timeout as exc:
+            six.raise_from(concurrent.futures.TimeoutError, exc)
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to

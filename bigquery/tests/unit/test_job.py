@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent
 import copy
 import json
 import textwrap
@@ -19,6 +20,7 @@ import unittest
 
 import mock
 import pytest
+import requests
 from six.moves import http_client
 
 try:
@@ -4603,6 +4605,26 @@ class TestQueryJob(unittest.TestCase, _Base):
         for i, line in enumerate(query.splitlines(), start=1):
             expected_line = "{}:{}".format(i, line)
             assert expected_line in full_text
+
+    def test_result_transport_timeout_error(self):
+        query = textwrap.dedent(
+            """
+            SELECT foo, bar
+            FROM table_baz
+            WHERE foo == bar"""
+        )
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, query, client)
+        call_api_patch = mock.patch(
+            "google.cloud.bigquery.client.Client._call_api",
+            autospec=True,
+            side_effect=requests.exceptions.Timeout("Server response took too long."),
+        )
+
+        # Make sure that timeout errors get rebranded to concurrent futures timeout.
+        with call_api_patch, self.assertRaises(concurrent.futures.TimeoutError):
+            job.result(timeout=1)
 
     def test__begin_error(self):
         from google.cloud import exceptions
