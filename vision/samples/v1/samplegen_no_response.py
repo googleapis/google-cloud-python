@@ -37,7 +37,7 @@ def sample_delete_product_set():
     name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
 
     client.delete_product_set(name)
-    # Deleted product set.
+    print(u"Deleted product set.")
 
 
 # [END samplegen_no_response]
