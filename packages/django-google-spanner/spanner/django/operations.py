@@ -1,6 +1,6 @@
 import re
 from base64 import b64decode
-from datetime import datetime
+from datetime import datetime, time
 from decimal import Decimal
 from uuid import UUID
 
@@ -74,6 +74,12 @@ class DatabaseOperations(BaseDatabaseOperations):
             return None
         return float(value)
 
+    def adapt_timefield_value(self, value):
+        if value is None:
+            return None
+        # Column is TIMESTAMP, so prefix a dummy date to the datetime.time.
+        return TimestampStr('0001-01-01T' + value.isoformat(timespec='microseconds') + 'Z')
+
     def get_db_converters(self, expression):
         converters = super().get_db_converters(expression)
         internal_type = expression.output_field.get_internal_type()
@@ -81,6 +87,8 @@ class DatabaseOperations(BaseDatabaseOperations):
             converters.append(self.convert_datetimefield_value)
         elif internal_type == 'DecimalField':
             converters.append(self.convert_decimalfield_value)
+        elif internal_type == 'TimeField':
+            converters.append(self.convert_timefield_value)
         elif internal_type == 'BinaryField':
             converters.append(self.convert_binaryfield_value)
         elif internal_type == 'UUIDField':
@@ -113,6 +121,12 @@ class DatabaseOperations(BaseDatabaseOperations):
         # Cloud Spanner returns a float.
         return Decimal(str(value))
 
+    def convert_timefield_value(self, value, expression, connection):
+        if value is None:
+            return value
+        # Convert DatetimeWithNanoseconds to time.
+        return time(value.hour, value.minute, value.second, value.microsecond)
+
     def convert_uuidfield_value(self, value, expression, connection):
         if value is not None:
             value = UUID(value)
@@ -126,6 +140,10 @@ class DatabaseOperations(BaseDatabaseOperations):
         tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (lookup_type, field_name, tzname)
+
+    def time_extract_sql(self, lookup_type, field_name):
+        # Time is stored as TIMESTAMP with UTC time zone.
+        return 'EXTRACT(%s FROM %s AT TIME ZONE "UTC")' % (lookup_type, field_name)
 
     def date_trunc_sql(self, lookup_type, field_name):
         # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc

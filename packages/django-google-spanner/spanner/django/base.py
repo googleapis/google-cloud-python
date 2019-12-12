@@ -56,8 +56,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'SmallAutoField': 'INT64',
         'SmallIntegerField': 'INT64',
         'TextField': 'STRING(MAX)',
-        # With or without the time zone, Spanner expects the time field as a string.
-        'TimeField': 'STRING(50)',
+        'TimeField': 'TIMESTAMP',
         # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
         'UUIDField': 'STRING(36)',
     }

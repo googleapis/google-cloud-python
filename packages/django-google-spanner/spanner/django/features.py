@@ -54,12 +54,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/issues/170
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
-        # Store TimeField as Timestamp:
-        # https://github.com/orijtech/spanner-orm/issues/167
-        'lookup.test_timefield.TimeFieldLookupTests.test_hour_lookups',
-        'lookup.test_timefield.TimeFieldLookupTests.test_minute_lookups',
-        'lookup.test_timefield.TimeFieldLookupTests.test_second_lookups',
-        'model_fields.test_datetimefield.DateTimeFieldTests.test_datetimes_save_completely',
         # DecimalField lookups crash:
         # https://github.com/orijtech/spanner-orm/issues/168
         'lookup.test_decimalfield.DecimalFieldLookupTests.test_gt',
