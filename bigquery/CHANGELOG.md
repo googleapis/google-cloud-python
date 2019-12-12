@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.23.0
+
+12-11-2019 13:31 PST
+
+### New Features
+
+- Add `close()` method to client for releasing open sockets. ([#9894](https://github.com/googleapis/google-cloud-python/pull/9894))
+- Add support of `use_avro_logical_types` for extract jobs. ([#9642](https://github.com/googleapis/google-cloud-python/pull/9642))
+- Add support for hive partitioning options configuration. ([#9626](https://github.com/googleapis/google-cloud-python/pull/9626))
+- Add description for routine entities. ([#9785](https://github.com/googleapis/google-cloud-python/pull/9785))
+
+### Documentation
+
+- Update code samples to use strings for table and dataset IDs. ([#9495](https://github.com/googleapis/google-cloud-python/pull/9495))
+
+### Internal / Testing Changes
+
+- Run unit tests with Python 3.8. ([#9880](https://github.com/googleapis/google-cloud-python/pull/9880))
+- Import `Mapping` from `collections.abc` not from `collections`. ([#9826](https://github.com/googleapis/google-cloud-python/pull/9826))
+
 ## 1.22.0
 
 11-13-2019 12:23 PST
