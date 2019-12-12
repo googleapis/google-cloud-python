@@ -29,7 +29,12 @@ from google.cloud import vision_v1
 
 
 def sample_create_product_set(display_name):
-    """This is the sample description"""
+    """
+    This is the sample description
+
+    Args:
+      display_name Description of the parameter
+    """
 
     client = vision_v1.ProductSearchClient()
 
