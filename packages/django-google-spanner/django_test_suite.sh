@@ -35,7 +35,8 @@ else:
 function checkout_django() {
     mkdir -p django_tests && cd django_tests
     git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git
-    cd django && pip install -e .
+    cd django && pip3 install -e .
+    pip3 install -r tests/requirements/py3.txt
     return $?
 }
 
