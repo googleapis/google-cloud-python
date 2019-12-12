@@ -271,7 +271,7 @@ class TestClient(unittest.TestCase):
             ]
         )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", url=URI, data=None, headers=mock.ANY, timeout=None
         )
 
     def test_get_service_account_email_w_project(self):
@@ -297,7 +297,7 @@ class TestClient(unittest.TestCase):
             ]
         )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", url=URI, data=None, headers=mock.ANY, timeout=None
         )
 
     def test_bucket(self):
@@ -366,7 +366,7 @@ class TestClient(unittest.TestCase):
             client.get_bucket(NONESUCH)
 
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_get_bucket_with_string_hit(self):
@@ -396,7 +396,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_get_bucket_with_object_miss(self):
@@ -427,7 +427,7 @@ class TestClient(unittest.TestCase):
             client.get_bucket(bucket_obj)
 
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_get_bucket_with_object_hit(self):
@@ -458,7 +458,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_lookup_bucket_miss(self):
@@ -485,7 +485,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(bucket)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_lookup_bucket_hit(self):
@@ -514,7 +514,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY
+            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_create_bucket_w_missing_client_project(self):
@@ -666,7 +666,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
@@ -706,7 +706,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=None
         )
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
@@ -848,7 +848,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(buckets), 0)
 
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
         requested_url = http.request.mock_calls[0][2]["url"]
@@ -883,7 +883,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(buckets), 0)
 
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
         requested_url = http.request.mock_calls[0][2]["url"]
@@ -918,7 +918,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(buckets[0].name, BUCKET_NAME)
 
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
     def test_list_buckets_all_arguments(self):
@@ -948,7 +948,7 @@ class TestClient(unittest.TestCase):
         buckets = list(iterator)
         self.assertEqual(buckets, [])
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=None
         )
 
         requested_url = http.request.mock_calls[0][2]["url"]
@@ -1077,7 +1077,7 @@ class TestClient(unittest.TestCase):
 
         FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
         http.request.assert_called_once_with(
-            method="POST", url=FULL_URI, data=None, headers=mock.ANY
+            method="POST", url=FULL_URI, data=None, headers=mock.ANY, timeout=None
         )
 
     def test_create_hmac_key_defaults(self):
@@ -1112,7 +1112,7 @@ class TestClient(unittest.TestCase):
             ]
         )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", url=URI, data=None, headers=mock.ANY, timeout=None
         )
 
     def test_list_hmac_keys_explicit_non_empty(self):
@@ -1176,7 +1176,7 @@ class TestClient(unittest.TestCase):
             "userProject": USER_PROJECT,
         }
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=None, headers=mock.ANY
+            method="GET", url=mock.ANY, data=None, headers=mock.ANY, timeout=None
         )
         kwargs = http.request.mock_calls[0].kwargs
         uri = kwargs["url"]
@@ -1223,7 +1223,7 @@ class TestClient(unittest.TestCase):
             ]
         )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY
+            method="GET", url=URI, data=None, headers=mock.ANY, timeout=None
         )
 
     def test_get_hmac_key_metadata_w_project(self):
@@ -1273,5 +1273,5 @@ class TestClient(unittest.TestCase):
         FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
 
         http.request.assert_called_once_with(
-            method="GET", url=FULL_URI, data=None, headers=mock.ANY
+            method="GET", url=FULL_URI, data=None, headers=mock.ANY, timeout=None
         )
