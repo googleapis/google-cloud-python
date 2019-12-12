@@ -43,20 +43,18 @@ def sample_analyze_entities():
 
     response = client.analyze_entities(document)
     for entity in response.entities:
-        # Each detected entity has a map of metadata:
-        map_ = entity.metadata
         # Access value by key:
-        print(u"URL: {}".format(map_["wikipedia_url"]))
+        print(u"URL: {}".format(entity.metadata["wikipedia_url"]))
         # Loop over keys and values:
-        for key, value in map_.items():
+        for key, value in entity.metadata.items():
             print(u"{}: {}".format(key, value))
 
         # Loop over just keys:
-        for the_key, _ in map_.items():
+        for the_key, _ in entity.metadata.items():
             print(u"Key: {}".format(the_key))
 
         # Loop over just values:
-        for _, the_value in map_.items():
+        for _, the_value in entity.metadata.items():
             print(u"Value: {}".format(the_value))
 
 
