@@ -81,8 +81,4 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # 'DatabaseWrapper' object has no attribute 'pattern_ops'
         # https://github.com/orijtech/spanner-orm/issues/178
         'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
-        # startswith lookup + underscore values not working
-        # https://github.com/orijtech/spanner-orm/issues/179
-        'lookup.tests.LookupTests.test_escaping',
-        'lookup.tests.LookupTests.test_exclude',
     )

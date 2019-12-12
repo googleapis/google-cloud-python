@@ -69,14 +69,21 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     operators = {
         'exact': '= %s',
         'iexact': 'REGEXP_CONTAINS(%s, %%%%s)',
-        'contains':  'LIKE %s',
+        # contains uses REGEXP_CONTAINS instead of LIKE to allow
+        # DatabaseOperations.prep_for_like_query() to do regular expression
+        # escaping. prep_for_like_query() is called for all the lookups that
+        # use REGEXP_CONTAINS except regex/iregex (see
+        # django.db.models.lookups.PatternLookup).
+        'contains':  'REGEXP_CONTAINS(%s, %%%%s)',
         'icontains': 'REGEXP_CONTAINS(%s, %%%%s)',
         'gt': '> %s',
         'gte': '>= %s',
         'lt': '< %s',
         'lte': '<= %s',
-        'startswith': 'STARTS_WITH(%s, %%%%s)',
-        'endswith': 'ENDS_WITH(%s, %%%%s)',
+        # Using REGEXP_CONTAINS instead of STARTS_WITH and ENDS_WITH for the
+        # same reasoning as described above for 'contains'.
+        'startswith': 'REGEXP_CONTAINS(%s, %%%%s)',
+        'endswith': 'REGEXP_CONTAINS(%s, %%%%s)',
         'istartswith': 'REGEXP_CONTAINS(%s, %%%%s)',
         'iendswith': 'REGEXP_CONTAINS(%s, %%%%s)',
         'regex': 'REGEXP_CONTAINS(%s, %%%%s)',
