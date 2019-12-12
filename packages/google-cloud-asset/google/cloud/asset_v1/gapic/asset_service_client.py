@@ -38,6 +38,8 @@ from google.cloud.asset_v1.proto import asset_service_pb2
 from google.cloud.asset_v1.proto import asset_service_pb2_grpc
 from google.cloud.asset_v1.proto import assets_pb2
 from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 
@@ -73,6 +75,18 @@ class AssetServiceClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def feed_path(cls, project, feed):
+        """DEPRECATED. Return a fully-qualified feed string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
+        return google.api_core.path_template.expand(
+            "projects/{project}/feeds/{feed}", project=project, feed=feed
+        )
 
     @classmethod
     def project_path(cls, project):
@@ -432,5 +446,401 @@ class AssetServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["batch_get_assets_history"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def create_feed(
+        self,
+        parent,
+        feed_id,
+        feed,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates a feed in a parent project/folder/organization to listen to its
+        asset updates.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
+            >>>
+            >>> # TODO: Initialize `feed_id`:
+            >>> feed_id = ''
+            >>>
+            >>> # TODO: Initialize `feed`:
+            >>> feed = {}
+            >>>
+            >>> response = client.create_feed(parent, feed_id, feed)
+
+        Args:
+            parent (str): Required. The name of the project/folder/organization where this feed
+                should be created in. It can only be an organization number (such as
+                "organizations/123"), a folder number (such as "folders/123"), a project ID
+                (such as "projects/my-project-id")", or a project number (such as
+                "projects/12345").
+            feed_id (str): Required. This is the client-assigned asset feed identifier and it needs to
+                be unique under a specific parent project/folder/organization.
+            feed (Union[dict, ~google.cloud.asset_v1.types.Feed]): Required. The feed details. The field ``name`` must be empty and it will
+                be generated in the format of: projects/project\_number/feeds/feed\_id
+                folders/folder\_number/feeds/feed\_id
+                organizations/organization\_number/feeds/feed\_id
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1.types.Feed`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.asset_v1.types.Feed` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_feed" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_feed"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_feed,
+                default_retry=self._method_configs["CreateFeed"].retry,
+                default_timeout=self._method_configs["CreateFeed"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.CreateFeedRequest(
+            parent=parent, feed_id=feed_id, feed=feed
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_feed"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_feed(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets details about an asset feed.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> name = client.feed_path('[PROJECT]', '[FEED]')
+            >>>
+            >>> response = client.get_feed(name)
+
+        Args:
+            name (str): Required. The name of the Feed and it must be in the format of:
+                projects/project\_number/feeds/feed\_id
+                folders/folder\_number/feeds/feed\_id
+                organizations/organization\_number/feeds/feed\_id
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.asset_v1.types.Feed` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_feed" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_feed"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_feed,
+                default_retry=self._method_configs["GetFeed"].retry,
+                default_timeout=self._method_configs["GetFeed"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.GetFeedRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_feed"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def list_feeds(
+        self,
+        parent,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists all asset feeds in a parent project/folder/organization.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
+            >>>
+            >>> response = client.list_feeds(parent)
+
+        Args:
+            parent (str): Required. The parent project/folder/organization whose feeds are to be
+                listed. It can only be using project/folder/organization number (such as
+                "folders/12345")", or a project ID (such as "projects/my-project-id").
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.asset_v1.types.ListFeedsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_feeds" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_feeds"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_feeds,
+                default_retry=self._method_configs["ListFeeds"].retry,
+                default_timeout=self._method_configs["ListFeeds"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.ListFeedsRequest(parent=parent)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["list_feeds"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_feed(
+        self,
+        feed,
+        update_mask,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates an asset feed configuration.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `feed`:
+            >>> feed = {}
+            >>>
+            >>> # TODO: Initialize `update_mask`:
+            >>> update_mask = {}
+            >>>
+            >>> response = client.update_feed(feed, update_mask)
+
+        Args:
+            feed (Union[dict, ~google.cloud.asset_v1.types.Feed]): Required. The new values of feed details. It must match an existing feed
+                and the field ``name`` must be in the format of:
+                projects/project\_number/feeds/feed\_id or
+                folders/folder\_number/feeds/feed\_id or
+                organizations/organization\_number/feeds/feed\_id.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1.types.Feed`
+            update_mask (Union[dict, ~google.cloud.asset_v1.types.FieldMask]): Required. Only updates the ``feed`` fields indicated by this mask. The
+                field mask must not be empty, and it must not contain fields that are
+                immutable or only set by the server.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.asset_v1.types.Feed` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_feed" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_feed"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_feed,
+                default_retry=self._method_configs["UpdateFeed"].retry,
+                default_timeout=self._method_configs["UpdateFeed"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.UpdateFeedRequest(
+            feed=feed, update_mask=update_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("feed.name", feed.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_feed"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_feed(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an asset feed.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> name = client.feed_path('[PROJECT]', '[FEED]')
+            >>>
+            >>> client.delete_feed(name)
+
+        Args:
+            name (str): Required. The name of the feed and it must be in the format of:
+                projects/project\_number/feeds/feed\_id
+                folders/folder\_number/feeds/feed\_id
+                organizations/organization\_number/feeds/feed\_id
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_feed" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_feed"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_feed,
+                default_retry=self._method_configs["DeleteFeed"].retry,
+                default_timeout=self._method_configs["DeleteFeed"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.DeleteFeedRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_feed"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
