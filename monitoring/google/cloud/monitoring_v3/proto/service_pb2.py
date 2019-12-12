@@ -1710,7 +1710,7 @@ ServiceLevelObjective = _reflection.GeneratedProtocolMessageType(
           single aspect of service quality.
       goal:
           The fraction of service that must be good in order for this
-          objective to be met. ``0 < goal <= 1``.
+          objective to be met. ``0 < goal <= 0.999``.
       period:
           The time period over which the objective will be evaluated.
       rolling_period:
