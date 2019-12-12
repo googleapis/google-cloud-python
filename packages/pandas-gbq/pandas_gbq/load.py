@@ -1,6 +1,7 @@
 """Helper methods for loading data into BigQuery"""
 
-import six
+import io
+
 from google.cloud import bigquery
 
 import pandas_gbq.schema
@@ -12,7 +13,7 @@ def encode_chunk(dataframe):
     Args:
       dataframe (pandas.DataFrame): A chunk of a dataframe to encode
     """
-    csv_buffer = six.StringIO()
+    csv_buffer = io.StringIO()
     dataframe.to_csv(
         csv_buffer,
         index=False,
@@ -25,10 +26,8 @@ def encode_chunk(dataframe):
     # Convert to a BytesIO buffer so that unicode text is properly handled.
     # See: https://github.com/pydata/pandas-gbq/issues/106
     body = csv_buffer.getvalue()
-    if isinstance(body, bytes):
-        body = body.decode("utf-8")
     body = body.encode("utf-8")
-    return six.BytesIO(body)
+    return io.BytesIO(body)
 
 
 def encode_chunks(dataframe, chunksize=None):

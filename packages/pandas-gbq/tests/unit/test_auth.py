@@ -1,28 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import json
-import os.path
+from unittest import mock
+
+import pytest
 
 from pandas_gbq import auth
 
-from unittest import mock
 
-
-def test_get_credentials_private_key_contents(monkeypatch):
-    from google.oauth2 import service_account
-
-    @classmethod
-    def from_service_account_info(cls, key_info):
-        mock_credentials = mock.create_autospec(cls)
-        mock_credentials.with_scopes.return_value = mock_credentials
-        mock_credentials.refresh.return_value = mock_credentials
-        return mock_credentials
-
-    monkeypatch.setattr(
-        service_account.Credentials,
-        "from_service_account_info",
-        from_service_account_info,
-    )
+def test_get_credentials_private_key_raises_notimplementederror(monkeypatch):
     private_key = json.dumps(
         {
             "private_key": "some_key",
@@ -30,34 +16,8 @@ def test_get_credentials_private_key_contents(monkeypatch):
             "project_id": "private-key-project",
         }
     )
-    credentials, project = auth.get_credentials(private_key=private_key)
-
-    assert credentials is not None
-    assert project == "private-key-project"
-
-
-def test_get_credentials_private_key_path(monkeypatch):
-    from google.oauth2 import service_account
-
-    @classmethod
-    def from_service_account_info(cls, key_info):
-        mock_credentials = mock.create_autospec(cls)
-        mock_credentials.with_scopes.return_value = mock_credentials
-        mock_credentials.refresh.return_value = mock_credentials
-        return mock_credentials
-
-    monkeypatch.setattr(
-        service_account.Credentials,
-        "from_service_account_info",
-        from_service_account_info,
-    )
-    private_key = os.path.join(
-        os.path.dirname(__file__), "..", "data", "dummy_key.json"
-    )
-    credentials, project = auth.get_credentials(private_key=private_key)
-
-    assert credentials is not None
-    assert project is None
+    with pytest.raises(NotImplementedError, match="private_key"):
+        auth.get_credentials(private_key=private_key)
 
 
 def test_get_credentials_default_credentials(monkeypatch):
@@ -101,3 +61,12 @@ def test_get_credentials_load_user_no_default(monkeypatch):
     credentials, project = auth.get_credentials()
     assert project is None
     assert credentials is mock_user_credentials
+
+
+def test_get_credentials_cache_w_reauth():
+    import pydata_google_auth.cache
+
+    cache = auth.get_credentials_cache(True)
+    assert isinstance(
+        cache, pydata_google_auth.cache.WriteOnlyCredentialsCache
+    )

@@ -1,6 +1,15 @@
 Changelog
 =========
 
+.. _changelog-0.13.0:
+
+0.13.0 / 2019-12-12
+-------------------
+
+- Raise ``NotImplementedError`` when the deprecated ``private_key`` argument
+  is used. (:issue:`301`)
+
+
 .. _changelog-0.12.0:
 
 0.12.0 / 2019-11-25

@@ -20,14 +20,6 @@ logger = logging.getLogger(__name__)
 BIGQUERY_INSTALLED_VERSION = None
 BIGQUERY_CLIENT_INFO_VERSION = "1.12.0"
 HAS_CLIENT_INFO = False
-SHOW_VERBOSE_DEPRECATION = False
-SHOW_PRIVATE_KEY_DEPRECATION = False
-PRIVATE_KEY_DEPRECATION_MESSAGE = (
-    "private_key is deprecated and will be removed in a future version."
-    "Use the credentials argument instead. See "
-    "https://pandas-gbq.readthedocs.io/en/latest/howto/authentication.html "
-    "for examples on using the credentials argument with service account keys."
-)
 
 try:
     import tqdm  # noqa
@@ -36,7 +28,7 @@ except ImportError:
 
 
 def _check_google_client_version():
-    global BIGQUERY_INSTALLED_VERSION, HAS_CLIENT_INFO, SHOW_VERBOSE_DEPRECATION, SHOW_PRIVATE_KEY_DEPRECATION
+    global BIGQUERY_INSTALLED_VERSION, HAS_CLIENT_INFO, SHOW_VERBOSE_DEPRECATION
 
     try:
         import pkg_resources
@@ -73,10 +65,6 @@ def _check_google_client_version():
     pandas_version_wo_verbosity = pkg_resources.parse_version("0.23.0")
     SHOW_VERBOSE_DEPRECATION = (
         pandas_installed_version >= pandas_version_wo_verbosity
-    )
-    pandas_version_with_credentials_arg = pkg_resources.parse_version("0.24.0")
-    SHOW_PRIVATE_KEY_DEPRECATION = (
-        pandas_installed_version >= pandas_version_with_credentials_arg
     )
 
 
@@ -951,27 +939,12 @@ def read_gbq(
         results.
 
         .. versionadded:: 0.12.0
-    verbose : None, deprecated
-        Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
-        to adjust verbosity instead
-        <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
-    private_key : str, deprecated
-        Deprecated in pandas-gbq version 0.8.0. Use the ``credentials``
-        parameter and
-        :func:`google.oauth2.service_account.Credentials.from_service_account_info`
-        or
-        :func:`google.oauth2.service_account.Credentials.from_service_account_file`
-        instead.
-
-        Service account private key in JSON format. Can be file path
-        or string contents. This is useful for remote server
-        authentication (eg. Jupyter/IPython notebook on remote host).
-
     progress_bar_type (Optional[str]):
-        If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+        If set, use the `tqdm <https://tqdm.github.io/>`__ library to
         display a progress bar while the data downloads. Install the
         ``tqdm`` package to use this feature.
         Possible values of ``progress_bar_type`` include:
+
         ``None``
             No progress bar.
         ``'tqdm'``
@@ -983,6 +956,17 @@ def read_gbq(
         ``'tqdm_gui'``
             Use the :func:`tqdm.tqdm_gui` function to display a
             progress bar as a graphical dialog box.
+    verbose : None, deprecated
+        Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
+        to adjust verbosity instead
+        <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
+    private_key : str, deprecated
+        Deprecated in pandas-gbq version 0.8.0. Use the ``credentials``
+        parameter and
+        :func:`google.oauth2.service_account.Credentials.from_service_account_info`
+        or
+        :func:`google.oauth2.service_account.Credentials.from_service_account_file`
+        instead.
 
     Returns
     -------
@@ -1006,11 +990,6 @@ def read_gbq(
             "verbosity",
             FutureWarning,
             stacklevel=2,
-        )
-
-    if private_key is not None and SHOW_PRIVATE_KEY_DEPRECATION:
-        warnings.warn(
-            PRIVATE_KEY_DEPRECATION_MESSAGE, FutureWarning, stacklevel=2
         )
 
     if dialect not in ("legacy", "standard"):
@@ -1172,10 +1151,6 @@ def to_gbq(
         or
         :func:`google.oauth2.service_account.Credentials.from_service_account_file`
         instead.
-
-        Service account private key in JSON format. Can be file path
-        or string contents. This is useful for remote server
-        authentication (eg. Jupyter/IPython notebook on remote host).
     """
 
     _test_google_api_imports()
@@ -1188,11 +1163,6 @@ def to_gbq(
             "verbosity",
             FutureWarning,
             stacklevel=1,
-        )
-
-    if private_key is not None and SHOW_PRIVATE_KEY_DEPRECATION:
-        warnings.warn(
-            PRIVATE_KEY_DEPRECATION_MESSAGE, FutureWarning, stacklevel=2
         )
 
     if if_exists not in ("fail", "replace", "append"):
