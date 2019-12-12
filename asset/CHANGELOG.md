@@ -14,7 +14,7 @@
 
 ### Documentation
 - Change spacing in docs templates (via synth). ([#9736](https://github.com/googleapis/google-cloud-python/pull/9736))
-- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Add Python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
 
 ### Internal / Testing Changes
 - Normalize VPCSC configuration in systests. ([#9614](https://github.com/googleapis/google-cloud-python/pull/9614))
@@ -152,4 +152,3 @@
 ## 0.1.0
 
 Initial release.
-
