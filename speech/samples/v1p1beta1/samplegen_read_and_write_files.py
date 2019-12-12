@@ -20,8 +20,8 @@
 #   pip install google-cloud-speech
 
 # sample-metadata
-#   title: Showing repeated fields (in request and response)
-#   description: Showing repeated fields (in request and response)
+#   title: Read binary file into bytes field & write string in response to file
+#   description: Read binary file into bytes field & write string in response to file
 #   usage: python3 samples/v1p1beta1/samplegen_read_and_write_files.py
 
 # [START samplegen_read_and_write_files]
@@ -31,7 +31,7 @@ import io
 
 
 def sample_recognize():
-    """Showing repeated fields (in request and response)"""
+    """Read binary file into bytes field & write string in response to file"""
 
     client = speech_v1p1beta1.SpeechClient()
 
