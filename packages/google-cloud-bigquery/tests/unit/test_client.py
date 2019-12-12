@@ -1552,6 +1552,7 @@ class TestClient(unittest.TestCase):
                 "User-Agent": expected_user_agent,
             },
             data=mock.ANY,
+            timeout=None,
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
