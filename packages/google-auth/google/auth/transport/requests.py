@@ -18,6 +18,8 @@ from __future__ import absolute_import
 
 import functools
 import logging
+import numbers
+import time
 
 try:
     import requests
@@ -62,6 +64,50 @@ class _Response(transport.Response):
     @property
     def data(self):
         return self._response.content
+
+
+class TimeoutGuard(object):
+    """A context manager raising an error if the suite execution took too long.
+
+    Args:
+        timeout ([Union[None, float, Tuple[float, float]]]):
+            The maximum number of seconds a suite can run without the context
+            manager raising a timeout exception on exit. If passed as a tuple,
+            the smaller of the values is taken as a timeout. If ``None``, a
+            timeout error is never raised.
+        timeout_error_type (Optional[Exception]):
+            The type of the error to raise on timeout. Defaults to
+            :class:`requests.exceptions.Timeout`.
+    """
+
+    def __init__(self, timeout, timeout_error_type=requests.exceptions.Timeout):
+        self._timeout = timeout
+        self.remaining_timeout = timeout
+        self._timeout_error_type = timeout_error_type
+
+    def __enter__(self):
+        self._start = time.time()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_value:
+            return  # let the error bubble up automatically
+
+        if self._timeout is None:
+            return  # nothing to do, the timeout was not specified
+
+        elapsed = time.time() - self._start
+        deadline_hit = False
+
+        if isinstance(self._timeout, numbers.Number):
+            self.remaining_timeout = self._timeout - elapsed
+            deadline_hit = self.remaining_timeout <= 0
+        else:
+            self.remaining_timeout = tuple(x - elapsed for x in self._timeout)
+            deadline_hit = min(self.remaining_timeout) <= 0
+
+        if deadline_hit:
+            raise self._timeout_error_type()
 
 
 class Request(transport.Request):
@@ -193,8 +239,19 @@ class AuthorizedSession(requests.Session):
         # credentials.refresh).
         self._auth_request = auth_request
 
-    def request(self, method, url, data=None, headers=None, **kwargs):
-        """Implementation of Requests' request."""
+    def request(self, method, url, data=None, headers=None, timeout=None, **kwargs):
+        """Implementation of Requests' request.
+
+        Args:
+            timeout (Optional[Union[float, Tuple[float, float]]]): The number
+                of seconds to wait before raising a ``Timeout`` exception. If
+                multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
+
+                If passed as a tuple ``(connect_timeout, read_timeout)``, the
+                smaller of the values is taken as the total allowed time across
+                all requests.
+        """
         # pylint: disable=arguments-differ
         # Requests has a ton of arguments to request, but only two
         # (method, url) are required. We pass through all of the other
@@ -208,13 +265,28 @@ class AuthorizedSession(requests.Session):
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy() if headers is not None else {}
 
-        self.credentials.before_request(
-            self._auth_request, method, url, request_headers
+        # Do not apply the timeout unconditionally in order to not override the
+        # _auth_request's default timeout.
+        auth_request = (
+            self._auth_request
+            if timeout is None
+            else functools.partial(self._auth_request, timeout=timeout)
         )
 
-        response = super(AuthorizedSession, self).request(
-            method, url, data=data, headers=request_headers, **kwargs
-        )
+        with TimeoutGuard(timeout) as guard:
+            self.credentials.before_request(auth_request, method, url, request_headers)
+        timeout = guard.remaining_timeout
+
+        with TimeoutGuard(timeout) as guard:
+            response = super(AuthorizedSession, self).request(
+                method,
+                url,
+                data=data,
+                headers=request_headers,
+                timeout=timeout,
+                **kwargs
+            )
+        timeout = guard.remaining_timeout
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
@@ -233,17 +305,34 @@ class AuthorizedSession(requests.Session):
                 self._max_refresh_attempts,
             )
 
-            auth_request_with_timeout = functools.partial(
-                self._auth_request, timeout=self._refresh_timeout
-            )
-            self.credentials.refresh(auth_request_with_timeout)
+            if self._refresh_timeout is not None:
+                if timeout is None:
+                    timeout = self._refresh_timeout
+                elif isinstance(timeout, numbers.Number):
+                    timeout = min(timeout, self._refresh_timeout)
+                else:
+                    timeout = tuple(min(x, self._refresh_timeout) for x in timeout)
 
-            # Recurse. Pass in the original headers, not our modified set.
+            # Do not apply the timeout unconditionally in order to not override the
+            # _auth_request's default timeout.
+            auth_request = (
+                self._auth_request
+                if timeout is None
+                else functools.partial(self._auth_request, timeout=timeout)
+            )
+
+            with TimeoutGuard(timeout) as guard:
+                self.credentials.refresh(auth_request)
+            timeout = guard.remaining_timeout
+
+            # Recurse. Pass in the original headers, not our modified set, but
+            # do pass the adjusted timeout (i.e. the remaining time).
             return self.request(
                 method,
                 url,
                 data=data,
                 headers=headers,
+                timeout=timeout,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
                 **kwargs
             )

@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import functools
+
+import freezegun
 import mock
+import pytest
 import requests
 import requests.adapters
 from six.moves import http_client
@@ -20,6 +25,12 @@ from six.moves import http_client
 import google.auth.credentials
 import google.auth.transport.requests
 from tests.transport import compliance
+
+
+@pytest.fixture
+def frozen_time():
+    with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen:
+        yield frozen
 
 
 class TestRequestResponse(compliance.RequestResponseTests):
@@ -32,6 +43,52 @@ class TestRequestResponse(compliance.RequestResponseTests):
         request(url="http://example.com", method="GET", timeout=5)
 
         assert http.request.call_args[1]["timeout"] == 5
+
+
+class TestTimeoutGuard(object):
+    def make_guard(self, *args, **kwargs):
+        return google.auth.transport.requests.TimeoutGuard(*args, **kwargs)
+
+    def test_tracks_elapsed_time_w_numeric_timeout(self, frozen_time):
+        with self.make_guard(timeout=10) as guard:
+            frozen_time.tick(delta=3.8)
+        assert guard.remaining_timeout == 6.2
+
+    def test_tracks_elapsed_time_w_tuple_timeout(self, frozen_time):
+        with self.make_guard(timeout=(16, 19)) as guard:
+            frozen_time.tick(delta=3.8)
+        assert guard.remaining_timeout == (12.2, 15.2)
+
+    def test_noop_if_no_timeout(self, frozen_time):
+        with self.make_guard(timeout=None) as guard:
+            frozen_time.tick(delta=datetime.timedelta(days=3650))
+        # NOTE: no timeout error raised, despite years have passed
+        assert guard.remaining_timeout is None
+
+    def test_timeout_error_w_numeric_timeout(self, frozen_time):
+        with pytest.raises(requests.exceptions.Timeout):
+            with self.make_guard(timeout=10) as guard:
+                frozen_time.tick(delta=10.001)
+        assert guard.remaining_timeout == pytest.approx(-0.001)
+
+    def test_timeout_error_w_tuple_timeout(self, frozen_time):
+        with pytest.raises(requests.exceptions.Timeout):
+            with self.make_guard(timeout=(11, 10)) as guard:
+                frozen_time.tick(delta=10.001)
+        assert guard.remaining_timeout == pytest.approx((0.999, -0.001))
+
+    def test_custom_timeout_error_type(self, frozen_time):
+        class FooError(Exception):
+            pass
+
+        with pytest.raises(FooError):
+            with self.make_guard(timeout=1, timeout_error_type=FooError):
+                frozen_time.tick(2)
+
+    def test_lets_suite_errors_bubble_up(self, frozen_time):
+        with pytest.raises(IndexError):
+            with self.make_guard(timeout=1):
+                [1, 2, 3][3]
 
 
 class CredentialsStub(google.auth.credentials.Credentials):
@@ -47,6 +104,18 @@ class CredentialsStub(google.auth.credentials.Credentials):
 
     def refresh(self, request):
         self.token += "1"
+
+
+class TimeTickCredentialsStub(CredentialsStub):
+    """Credentials that spend some (mocked) time when refreshing a token."""
+
+    def __init__(self, time_tick, token="token"):
+        self._time_tick = time_tick
+        super(TimeTickCredentialsStub, self).__init__(token=token)
+
+    def refresh(self, request):
+        self._time_tick()
+        super(TimeTickCredentialsStub, self).refresh(requests)
 
 
 class AdapterStub(requests.adapters.BaseAdapter):
@@ -67,6 +136,18 @@ class AdapterStub(requests.adapters.BaseAdapter):
         # pylint wants this to be here because it's abstract in the base
         # class, but requests never actually calls it.
         return
+
+
+class TimeTickAdapterStub(AdapterStub):
+    """Adapter that spends some (mocked) time when making a request."""
+
+    def __init__(self, time_tick, responses, headers=None):
+        self._time_tick = time_tick
+        super(TimeTickAdapterStub, self).__init__(responses, headers=headers)
+
+    def send(self, request, **kwargs):
+        self._time_tick()
+        return super(TimeTickAdapterStub, self).send(request, **kwargs)
 
 
 def make_response(status=http_client.OK, data=None):
@@ -121,7 +202,9 @@ class TestAuthorizedHttp(object):
             [make_response(status=http_client.UNAUTHORIZED), final_response]
         )
 
-        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=60
+        )
         authed_session.mount(self.TEST_URL, adapter)
 
         result = authed_session.request("GET", self.TEST_URL)
@@ -136,3 +219,72 @@ class TestAuthorizedHttp(object):
 
         assert adapter.requests[1].url == self.TEST_URL
         assert adapter.requests[1].headers["authorization"] == "token1"
+
+    def test_request_timeout(self, frozen_time):
+        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+
+        credentials = mock.Mock(
+            wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
+        )
+        adapter = TimeTickAdapterStub(
+            time_tick=tick_one_second,
+            responses=[
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ],
+        )
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session.mount(self.TEST_URL, adapter)
+
+        # Because at least two requests have to be made, and each takes one
+        # second, the total timeout specified will be exceeded.
+        with pytest.raises(requests.exceptions.Timeout):
+            authed_session.request("GET", self.TEST_URL, timeout=1.9)
+
+    def test_request_timeout_w_refresh_timeout(self, frozen_time):
+        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+
+        credentials = mock.Mock(
+            wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
+        )
+        adapter = TimeTickAdapterStub(
+            time_tick=tick_one_second,
+            responses=[
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ],
+        )
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=1.9
+        )
+        authed_session.mount(self.TEST_URL, adapter)
+
+        # The timeout is long, but the short refresh timeout will prevail.
+        with pytest.raises(requests.exceptions.Timeout):
+            authed_session.request("GET", self.TEST_URL, timeout=60)
+
+    def test_request_timeout_w_refresh_timeout_and_tuple_timeout(self, frozen_time):
+        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+
+        credentials = mock.Mock(
+            wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
+        )
+        adapter = TimeTickAdapterStub(
+            time_tick=tick_one_second,
+            responses=[
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ],
+        )
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=100
+        )
+        authed_session.mount(self.TEST_URL, adapter)
+
+        # The shortest timeout will prevail and cause a Timeout error, despite
+        # other timeouts being quite long.
+        with pytest.raises(requests.exceptions.Timeout):
+            authed_session.request("GET", self.TEST_URL, timeout=(100, 2.9))
