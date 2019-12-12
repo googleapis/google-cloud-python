@@ -70,7 +70,7 @@ _NO_PANDAS_ERROR = (
 )
 _NO_PYARROW_ERROR = (
     "The pyarrow library is not installed, please install "
-    "pandas to use the to_arrow() function."
+    "pyarrow to use the to_arrow() function."
 )
 _NO_TQDM_ERROR = (
     "A progress bar was requested, but there was an error loading the tqdm "
