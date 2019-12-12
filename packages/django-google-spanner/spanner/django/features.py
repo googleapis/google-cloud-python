@@ -28,6 +28,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'defer_regress.tests.DeferRegressionTest.test_ticket_23270',
         'distinct_on_fields.tests.DistinctOnTests.test_basic_distinct_on',
         'generic_relations_regress.tests.GenericRelationTests.test_annotate',
+        'lookup.tests.LookupTests.test_get_next_previous_by',
+        'lookup.tests.LookupTests.test_values_list',
         'migrations.test_operations.OperationTests.test_alter_order_with_respect_to',
         'model_fields.tests.GetChoicesOrderingTests.test_get_choices_reverse_related_field',
         'model_formsets_regress.tests.FormfieldShouldDeleteFormTests.test_custom_delete',
@@ -54,9 +56,16 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
         # Store TimeField as Timestamp:
         # https://github.com/orijtech/spanner-orm/issues/167
+        'lookup.test_timefield.TimeFieldLookupTests.test_hour_lookups',
+        'lookup.test_timefield.TimeFieldLookupTests.test_minute_lookups',
+        'lookup.test_timefield.TimeFieldLookupTests.test_second_lookups',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_datetimes_save_completely',
         # DecimalField lookups crash:
         # https://github.com/orijtech/spanner-orm/issues/168
+        'lookup.test_decimalfield.DecimalFieldLookupTests.test_gt',
+        'lookup.test_decimalfield.DecimalFieldLookupTests.test_gte',
+        'lookup.test_decimalfield.DecimalFieldLookupTests.test_lt',
+        'lookup.test_decimalfield.DecimalFieldLookupTests.test_lte',
         'model_fields.test_decimalfield.DecimalFieldTests.test_filter_with_strings',
         # Spanner loses DecimalField precision due to conversion to float:
         # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
@@ -66,4 +75,14 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_filefield.FileFieldTests.test_unique_when_same_filename',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
+        # No matching signature for function REGEXP_CONTAINS for argument
+        # types: INT64, INT64: https://github.com/orijtech/spanner-orm/issues/177
+        'lookup.tests.LookupTests.test_lookup_int_as_str',
+        # 'DatabaseWrapper' object has no attribute 'pattern_ops'
+        # https://github.com/orijtech/spanner-orm/issues/178
+        'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
+        # startswith lookup + underscore values not working
+        # https://github.com/orijtech/spanner-orm/issues/179
+        'lookup.tests.LookupTests.test_escaping',
+        'lookup.tests.LookupTests.test_exclude',
     )
