@@ -1379,7 +1379,8 @@ ListFeedsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTFEEDSRESPONSE,
         __module__="google.cloud.asset_v1.proto.asset_service_pb2",
-        __doc__="""Attributes:
+        __doc__ = """
+    Attributes:
       feeds:
           A list of feeds.
   """,
@@ -1420,7 +1421,8 @@ DeleteFeedRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEFEEDREQUEST,
         __module__="google.cloud.asset_v1.proto.asset_service_pb2",
-        __doc__="""Attributes:
+        __doc__ = """
+    Attributes:
       name:
           Required. The name of the feed and it must be in the format
           of: projects/project\_number/feeds/feed\_id
