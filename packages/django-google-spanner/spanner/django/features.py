@@ -20,6 +20,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
         'model_fields.test_booleanfield.ValidationTest.test_nullbooleanfield_blank',
+        'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
+        'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         # Tests that assume a serial pk.
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',
         'aggregation_regress.tests.AggregationTests.test_more_more',
@@ -51,6 +53,23 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',
+        'timezones.tests.ForcedTimeZoneDatabaseTests.test_read_datetime'
+        # Cursor.description returns None on raw queries:
+        # https://github.com/orijtech/spanner-orm/issues/155
+        'timezones.tests.LegacyDatabaseTests.test_raw_sql',
+        'timezones.tests.NewDatabaseTests.test_raw_sql',
+        # implement DatabaseOperations.date_interval_sql()
+        # https://github.com/orijtech/spanner-orm/issues/184
+        'timezones.tests.NewDatabaseTests.test_update_with_timedelta',
+        # Unable to infer type for parameter:
+        # https://github.com/orijtech/spanner-orm/issues/185
+        'timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime',
+        'timezones.tests.NewDatabaseTests.test_cursor_execute_returns_naive_datetime',
+        # To be investigated...
+        'timezones.tests.NewDatabaseTests.test_query_datetime_lookups',
+        # extract() with timezone not working as expected:
+        # https://github.com/orijtech/spanner-orm/issues/191
+        'timezones.tests.NewDatabaseTests.test_query_datetimes',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # FailedPrecondition and AlreadyExists should be raised as IntegrityError:
