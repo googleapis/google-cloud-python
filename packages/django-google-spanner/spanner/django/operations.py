@@ -147,12 +147,30 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def date_trunc_sql(self, lookup_type, field_name):
         # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
-        return 'DATE_TRUNC(%s, %s)' % (field_name, lookup_type)
+        if lookup_type == 'week':
+            # Spanner truncates to Sunday but Django expects Monday. First,
+            # subtract a day so that a Sunday will be truncated to the previous
+            # week...
+            field_name = 'DATE_SUB(' + field_name + ', INTERVAL 1 DAY)'
+        sql = 'DATE_TRUNC(%s, %s)' % (field_name, lookup_type)
+        if lookup_type == 'week':
+            # ...then add a day to get from Sunday to Monday.
+            sql = 'DATE_ADD(' + sql + ', INTERVAL 1 DAY)'
+        return sql
 
     def datetime_trunc_sql(self, lookup_type, field_name, tzname):
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
         tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
-        return 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (field_name, lookup_type, tzname)
+        if lookup_type == 'week':
+            # Spanner truncates to Sunday but Django expects Monday. First,
+            # subtract a day so that a Sunday will be truncated to the previous
+            # week...
+            field_name = 'TIMESTAMP_SUB(' + field_name + ', INTERVAL 1 DAY)'
+        sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (field_name, lookup_type, tzname)
+        if lookup_type == 'week':
+            # ...then add a day to get from Sunday to Monday.
+            sql = 'TIMESTAMP_ADD(' + sql + ', INTERVAL 1 DAY)'
+        return sql
 
     def lookup_cast(self, lookup_type, internal_type=None):
         # Cast text lookups to string to allow things like filter(x__contains=4)

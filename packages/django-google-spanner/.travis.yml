@@ -9,8 +9,8 @@ env:
         - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 SPANNER_DROP_DB_ON_EXIT=false
     jobs:
         # For every new job, please increment/use a separate SPANNER_TEST_DB.
-        - DJANGO_TEST_APPS="admin_changelist admin_ordering" SPANNER_TEST_DB=travisdb1
-        - DJANGO_TEST_APPS="basic lookup" SPANNER_TEST_DB=travisdb2
+        - DJANGO_TEST_APPS="admin_changelist admin_ordering basic" SPANNER_TEST_DB=travisdb1
+        - DJANGO_TEST_APPS="dates datetimes lookup" SPANNER_TEST_DB=travisdb2
         - DJANGO_TEST_APPS="model_fields" SPANNER_TEST_DB=travisdb3
 
 python:

@@ -45,6 +45,12 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
+        # can't use QuerySet.dates() on DateTimeField:
+        # https://github.com/orijtech/spanner-orm/issues/182
+        'dates.tests.DatesTests.test_dates_trunc_datetime_fields',
+        # datetimes retrieved from the database with the wrong hour when
+        # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
+        'datetimes.tests.DateTimesTests.test_21432',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # FailedPrecondition and AlreadyExists should be raised as IntegrityError:
