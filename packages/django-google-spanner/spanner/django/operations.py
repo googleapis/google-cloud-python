@@ -137,7 +137,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         return 'EXTRACT(%s FROM %s)' % (lookup_type, field_name)
 
     def datetime_extract_sql(self, lookup_type, field_name, tzname):
-        tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
+        tzname = tzname if settings.USE_TZ else 'UTC'
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (lookup_type, field_name, tzname)
 
@@ -160,7 +160,7 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def datetime_trunc_sql(self, lookup_type, field_name, tzname):
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        tzname = self.connection.timezone if settings.USE_TZ else 'UTC'
+        tzname = tzname if settings.USE_TZ else 'UTC'
         if lookup_type == 'week':
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous

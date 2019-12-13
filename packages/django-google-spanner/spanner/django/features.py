@@ -65,8 +65,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/issues/185
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_returns_naive_datetime',
-        # To be investigated...
-        'timezones.tests.NewDatabaseTests.test_query_datetime_lookups',
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
