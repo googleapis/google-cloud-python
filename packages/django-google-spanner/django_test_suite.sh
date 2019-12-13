@@ -6,30 +6,46 @@ ORIGWD=$(pwd)
 # conflicting which changes and constraints. We'll always
 # cleanup the created database.
 TEST_DBNAME=${SPANNER_TEST_DB:-testdb-$(date +%F%H%M%S)}
+TEST_DBNAME_OTHER="$TEST_DBNAME-other"
 TEST_APPS=${DJANGO_TEST_APPS:-basic}
 INSTANCE_NAME=${SPANNER_TEST_INSTANCE:-django-tests}
 PROJECT=${SPANNER_TEST_PROJECT:-appdev-soda-spanner-staging}
 SETTINGS_FILE="$TEST_DBNAME-settings"
 DROPDB_ON_EXIT=${SPANNER_DROP_DB_ON_EXIT:-true}
 
+# Use "regional-us-east4" to reduce latency to Travis CI, as per:
+# https://devops.stackexchange.com/questions/2488/geographically-where-are-the-travis-ci-jobs-run
+REGION=${SPANNER_TEST_REGION:-regional-us-east4}
+INSTANCE_CONFIG="projects/$PROJECT/instanceConfigs/$REGION"
+
+DBs=($TEST_DBNAME $TEST_DBNAME_OTHER)
+
 function create_db() {
-    echo "
+    for DB in ${DBs[*]}
+    do
+        echo "
 from google.cloud import spanner_v1 as sp
 ins = sp.Client(project='$PROJECT').instance('$INSTANCE_NAME')
 if not ins.exists():
-    ins.configuration_name = 'projects/$PROJECT/instanceConfigs/regional-us-west2'
+    ins.configuration_name = '$INSTANCE_CONFIG'
     lro = ins.create()
     _ = lro.result()
-    print('Created instance: $INSTANCE_NAME')
-db = ins.database('$TEST_DBNAME')
+    print('Created instance: $INSTANCE_NAME at $INSTANCE_CONFIG')
+
+db = ins.database('$DB')
 if not db.exists():
     lro = db.create()
     _ = lro.result()
-    print('Created database: $TEST_DBNAME')
+    print('Created database: $DB')
 else:
-    print('$TEST_DBNAME already exists')
+    print('$DB already exists')
 " | python3 -
-    return $?
+        code=$?
+        if [[ $code -ne 0 ]]
+        then
+            return $code
+        fi
+    done
 }
 
 function checkout_django() {
@@ -45,11 +61,18 @@ function create_settings() {
 DATABASES = {
    'default': {
        'ENGINE': 'spanner.django',
-       'SPANNER_URL': "cloudspanner:/projects/$PROJECT/instances/$INSTANCE_NAME/databases/$TEST_DBNAME?instance_config=projects/$PROJECT/instanceConfigs/regional-us-west2",
+       'SPANNER_URL': "cloudspanner:/projects/$PROJECT/instances/$INSTANCE_NAME/databases/$TEST_DBNAME?instance_config=$INSTANCE_CONFIG",
         'TEST': {
             'NAME': "$TEST_DBNAME",
         },
-   }
+   },
+   'other': {
+       'ENGINE': 'spanner.django',
+       'SPANNER_URL': "cloudspanner:/projects/$PROJECT/instances/$INSTANCE_NAME/databases/$TEST_DBNAME_OTHER?instance_config=$INSTANCE_CONFIG",
+        'TEST': {
+            'NAME': "$TEST_DBNAME_OTHER",
+        },
+   },
 }
 SECRET_KEY = 'spanner_tests_secret_key'
 PASSWORD_HASHERS = [
@@ -102,7 +125,7 @@ function cleanup_and_exit() {
 }
 
 install_spanner_django || cleanup_and_exit
-create_db || cleanup_and_exit "INSTANCE: $INSTANCE_NAME DB: $TEST_DBNAME could not be created"
+create_db || cleanup_and_exit "INSTANCE: $INSTANCE_NAME DB: $TEST_DBNAME and $TEST_DBNAME_OTHER could not be created"
 checkout_django || cleanup_and_exit
 run_django_tests || cleanup_and_exit
 # Unconditionally clean up before exit.
