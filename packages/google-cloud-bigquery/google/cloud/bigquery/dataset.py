@@ -123,7 +123,7 @@ class AccessEntry(object):
     """
 
     ENTITY_TYPES = frozenset(
-        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view"]
+        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view", "iamMember"]
     )
     """Allowed entity types."""
 
