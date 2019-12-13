@@ -84,26 +84,22 @@ class Cursor(object):
         try:
             classification = classify_stmt(sql)
             if classification == STMT_DDL:
-                # Special case: since Spanner.Session won't execute DDL updates
-                # by invoking `execute_sql` or `execute_update`, we must run
-                # DDL updates on the database handle itself.
-                self.__do_update_ddl(sql)
+                self.__handle_update_ddl(sql)
             elif classification == STMT_NON_UPDATING:
-                self.__do_execute_non_update(
-                    sql, args or None,
+                self.__handle_DQL(
+                    sql,
+                    args or None,
                     param_types=param_types,
                 )
             elif classification == STMT_INSERT:
                 self.__handle_insert(
                     sql,
-                    args if args else None,
+                    args or None,
                 )
-
             else:
-                self.__commit_preceding_batch()
-                self.__db_handle.in_transaction(
-                    self.__do_execute_update,
-                    sql, args or None,
+                self.__handle_update(
+                    sql,
+                    args or None,
                     param_types=param_types,
                 )
 
@@ -116,8 +112,14 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
+    def __handle_update(self, sql, params, param_types):
+        self.__commit_preceding_batch()
+        self.__db_handle.in_transaction(
+            self.__do_execute_update,
+            sql, params, param_types,
+        )
+
     def __do_execute_update(self, transaction, sql, params, param_types=None):
-        # BATCH TARGET!
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
@@ -139,24 +141,19 @@ class Cursor(object):
         # a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
         # b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
         # c) INSERT INTO <table> (columns...) VALUES (%s,...):           with params
+        parts = parse_insert(sql)
+        columns = parts.get('columns')
+        rows = None
         if params:
             # Case c)
-            parts = parse_insert(sql)
-            columns = parts.get('columns')
             rows = rows_for_insert_or_update(columns, params, parts.get('values_pyformat'))
-            self.__db_handle.append_to_batch_stack(
-                op=OP_INSERT,
-                table=parts.get('table'),
-                columns=columns,
-                values=rows,
-            )
-        else:
-            # Either of cases a) and b)
-            self.__commit_preceding_batch()
-            self.__db_handle.in_transaction(
-                self.__execute_insert_no_params,
-                sql,
-            )
+
+        self.__db_handle.append_to_batch_stack(
+            op=OP_INSERT,
+            table=parts.get('table'),
+            columns=columns,
+            values=rows,
+        )
 
     def __execute_insert_no_params(self, transaction, sql):
         return transaction.execute_update(sql)
@@ -164,7 +161,7 @@ class Cursor(object):
     def __commit_preceding_batch(self):
         self.__db_handle.commit()
 
-    def __do_execute_non_update(self, sql, params, param_types=None):
+    def __handle_DQL(self, sql, params, param_types=None):
         self.__commit_preceding_batch()
 
         with self.__db_handle.read_snapshot() as snapshot:
@@ -260,7 +257,7 @@ class Cursor(object):
     def setoutputsize(size, column=None):
         raise ProgrammingError('Unimplemented')
 
-    def __do_update_ddl(self, *ddl_statements):
+    def __handle_update_ddl(self, *ddl_statements):
         if not self.__db_handle:
             raise ProgrammingError('Trying to run an DDL update but no database handle')
 
