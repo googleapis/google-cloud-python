@@ -82,18 +82,25 @@ PASSWORD_HASHERS = [
 }
 
 function drop_db() {
-    echo "
+    for DB in ${DBs[*]}
+    do
+        echo "
 from google.cloud import spanner_v1 as sp
 ins = sp.Client(project='$PROJECT').instance('$INSTANCE_NAME')
 if not ins.exists():
     print('Instance $INSTANCE_NAME does not exist anyways')
 else:
-    db = ins.database('$TEST_DBNAME')
+    db = ins.database('$DB')
     if db.exists():
         db.drop()
-        print('Dropped $TEST_DBNAME')
+        print('Dropped $DB')
 " | python3 -
-    return $?
+         code=$?
+        if [[ $code -ne 0 ]]
+        then
+            return $code
+        fi
+    done
 }
 
 function run_django_tests() {

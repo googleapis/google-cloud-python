@@ -3,9 +3,15 @@ before_install:
     - openssl aes-256-cbc -K $encrypted_3bd81e4a6a4c_key -iv $encrypted_3bd81e4a6a4c_iv -in appdev-soda-spanner-staging-b842e628aa41-orijtech.json.enc -out ~/creds.json -d
 
 env:
-    # Reuse an available database to speed up Travis tests lest we can
-    # get terminations as the underlying tables are created.
-    - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 DJANGO_TEST_APPS="admin_changelist admin_ordering basic lookup model_fields" SPANNER_TEST_DB=travisdb1 SPANNER_DROP_DB_ON_EXIT=false
+    global:
+        # Reuse an available database to speed up Travis tests lest we can
+        # get terminations as the underlying tables are created.
+        - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json RUNNING_SPANNER_BACKEND_TESTS=1 SPANNER_DROP_DB_ON_EXIT=false
+    jobs:
+        # For every new job, please increment/use a separate SPANNER_TEST_DB.
+        - DJANGO_TEST_APPS="admin_changelist admin_ordering" SPANNER_TEST_DB=travisdb1
+        - DJANGO_TEST_APPS="basic lookup" SPANNER_TEST_DB=travisdb2
+        - DJANGO_TEST_APPS="model_fields" SPANNER_TEST_DB=travisdb3
 
 python:
     - "3.7"
