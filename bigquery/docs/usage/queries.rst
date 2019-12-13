@@ -43,7 +43,7 @@ Run a query using a named query parameter
 See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/client_query_w_named_params.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_query_params_named]
