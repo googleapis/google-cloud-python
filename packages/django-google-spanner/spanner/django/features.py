@@ -53,7 +53,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',
-        'timezones.tests.ForcedTimeZoneDatabaseTests.test_read_datetime'
         # Cursor.description returns None on raw queries:
         # https://github.com/orijtech/spanner-orm/issues/155
         'timezones.tests.LegacyDatabaseTests.test_raw_sql',

@@ -109,11 +109,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         # of datetime with tzinfo=UTC (which should be replaced with the
         # connection's timezone). Django doesn't support nanoseconds so that
         # part is ignored.
-        return datetime(
+        dt = datetime(
             value.year, value.month, value.day,
             value.hour, value.minute, value.second, value.microsecond,
-            self.connection.timezone,
         )
+        return timezone.make_aware(dt, self.connection.timezone) if settings.USE_TZ else dt
 
     def convert_decimalfield_value(self, value, expression, connection):
         if value is None:
