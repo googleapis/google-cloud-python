@@ -5,15 +5,11 @@ before_install:
 env:
     global:
         - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json
-        # Reuse the database to speed up tests. Without this, Travis terminates
-        # because of no ouput in 10 minutes while tables are created.
         - RUNNING_SPANNER_BACKEND_TESTS=1
-        - SPANNER_DROP_DB_ON_EXIT=false
     jobs:
-        # For every new job, please increment/use a separate SPANNER_TEST_DB.
-        - DJANGO_TEST_APPS="admin_changelist admin_ordering aggregation annotations basic" SPANNER_TEST_DB=travisdb1
-        - DJANGO_TEST_APPS="bulk_create dates datetimes lookup timezones" SPANNER_TEST_DB=travisdb2
-        - DJANGO_TEST_APPS="model_fields" SPANNER_TEST_DB=travisdb3
+        - DJANGO_TEST_APPS="admin_changelist admin_ordering aggregation annotations basic"
+        - DJANGO_TEST_APPS="bulk_create dates datetimes lookup timezones"
+        - DJANGO_TEST_APPS="model_fields"
 
 python:
     - "3.7"

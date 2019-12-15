@@ -25,6 +25,9 @@ _UNSET_COUNT = -1
 OP_INSERT = 'insert'
 OP_UPDATE = 'update'
 OP_DELETE = 'delete'
+OP_DQL = 'dql'
+OP_DDL = 'ddl'
+OP_CONN_CLOSE = 'conn_close'
 
 
 class Cursor(object):
@@ -33,6 +36,7 @@ class Cursor(object):
         self.__res = None
         self.__row_count = _UNSET_COUNT
         self.__db_handle = db_handle
+        self.__last_op = None
 
         # arraysize is a readable and writable property mandated
         # by PEP-0249 https://www.python.org/dev/peps/pep-0249/#arraysize
@@ -58,7 +62,7 @@ class Cursor(object):
         if self.__db_handle is None:
             return
 
-        self.__commit_preceding_batch()
+        self.__commit_preceding_batch(self.__last_op)
         self.__db_handle = None
 
     def execute(self, sql, args=None):
@@ -113,7 +117,7 @@ class Cursor(object):
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
     def __handle_update(self, sql, params, param_types):
-        self.__commit_preceding_batch()
+        self.__commit_preceding_batch(OP_UPDATE)
         self.__db_handle.in_transaction(
             self.__do_execute_update,
             sql, params, param_types,
@@ -158,11 +162,13 @@ class Cursor(object):
     def __execute_insert_no_params(self, transaction, sql):
         return transaction.execute_update(sql)
 
-    def __commit_preceding_batch(self):
-        self.__db_handle.commit()
+    def __commit_preceding_batch(self, op=None):
+        last_op = self.__last_op
+        self.__last_op = op
+        self.__db_handle.commit(last_op)
 
     def __handle_DQL(self, sql, params, param_types=None):
-        self.__commit_preceding_batch()
+        self.__commit_preceding_batch(OP_DQL)
 
         with self.__db_handle.read_snapshot() as snapshot:
             # Reference
@@ -207,7 +213,7 @@ class Cursor(object):
         return next(self.__itr)
 
     def __iter__(self):
-        self.__commit_preceding_batch()
+        self.__commit_preceding_batch(OP_DQL)
 
         if self.__itr is None:
             raise ProgrammingError('no results to return')
@@ -257,11 +263,13 @@ class Cursor(object):
     def setoutputsize(size, column=None):
         raise ProgrammingError('Unimplemented')
 
-    def __handle_update_ddl(self, *ddl_statements):
+    def __handle_update_ddl(self, ddl_statement):
+        self.__commit_preceding_batch(OP_DDL)
+
         if not self.__db_handle:
             raise ProgrammingError('Trying to run an DDL update but no database handle')
 
-        return self.__db_handle.update_ddl(ddl_statements)
+        return self.__db_handle.handle_update_ddl(ddl_statement, self.__last_op)
 
 
 class Column:

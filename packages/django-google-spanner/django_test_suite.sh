@@ -1,11 +1,10 @@
 #!/bin/sh
 
-ORIGWD=$(pwd)
 # If no SPANNER_TEST_DB is set, generate a unique one
 # so that we can have multiple tests running without
 # conflicting which changes and constraints. We'll always
 # cleanup the created database.
-TEST_DBNAME=${SPANNER_TEST_DB:-testdb-$(date +%F%H%M%S)}
+TEST_DBNAME=${SPANNER_TEST_DB:-testdb-$(python3 -c 'import random; print(random.randint(1e3, 0x7fffffff))')}
 TEST_DBNAME_OTHER="$TEST_DBNAME-other"
 TEST_APPS=${DJANGO_TEST_APPS:-basic}
 INSTANCE_NAME=${SPANNER_TEST_INSTANCE:-django-tests}
@@ -19,6 +18,7 @@ REGION=${SPANNER_TEST_REGION:-regional-us-east4}
 INSTANCE_CONFIG="projects/$PROJECT/instanceConfigs/$REGION"
 
 DBs=($TEST_DBNAME $TEST_DBNAME_OTHER)
+ORIGWD=$(pwd)
 
 function create_db() {
     for DB in ${DBs[*]}
