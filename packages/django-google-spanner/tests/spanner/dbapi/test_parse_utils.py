@@ -399,6 +399,7 @@ class ParseUtilsTests(TestCase):
                 ('id', 'id'),
                 ('', ''),
                 ('dashed-value', '`dashed-value`'),
+                ('with space', '`with space`'),
         ]
 
         for name, want in cases:

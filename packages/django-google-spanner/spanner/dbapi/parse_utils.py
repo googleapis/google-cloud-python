@@ -536,6 +536,6 @@ def escape_name(name):
     Escape name by applying backticks to value that either
     contain '-' or are any of Cloud Spanner's reserved keywords.
     """
-    if '-' in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
+    if '-' in name or ' ' in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
         return '`' + name + '`'
     return name
