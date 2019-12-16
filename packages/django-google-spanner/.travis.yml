@@ -12,7 +12,7 @@ env:
     jobs:
         # For every new job, please increment/use a separate SPANNER_TEST_DB.
         - DJANGO_TEST_APPS="admin_changelist admin_ordering basic" SPANNER_TEST_DB=travisdb1
-        - DJANGO_TEST_APPS="dates datetimes lookup timezones" SPANNER_TEST_DB=travisdb2
+        - DJANGO_TEST_APPS="bulk_create dates datetimes lookup timezones" SPANNER_TEST_DB=travisdb2
         - DJANGO_TEST_APPS="model_fields" SPANNER_TEST_DB=travisdb3
 
 python:

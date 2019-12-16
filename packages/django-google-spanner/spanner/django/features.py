@@ -5,6 +5,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 950
     supports_foreign_keys = False
+    supports_ignore_conflicts = False
     supports_regex_backreferencing = False
     supports_timezones = False
     supports_transactions = False
@@ -67,6 +68,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
+        # The current approach for inserting (which doesn't use SQL) doesn't
+        # support expressions: https://github.com/orijtech/spanner-orm/issues/198
+        'bulk_create.tests.BulkCreateTests.test_bulk_insert_expressions',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # FailedPrecondition and AlreadyExists should be raised as IntegrityError:
