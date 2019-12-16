@@ -3199,7 +3199,7 @@ class QueryJob(_AsyncJob):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.22.0
+                ..versionadded:: 1.24.0
 
         Returns:
             pyarrow.Table
@@ -3269,7 +3269,7 @@ class QueryJob(_AsyncJob):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.22.0
+                ..versionadded:: 1.24.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
