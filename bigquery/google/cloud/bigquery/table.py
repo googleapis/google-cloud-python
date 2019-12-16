@@ -1528,7 +1528,9 @@ class RowIterator(HTTPIterator):
             progress_bar = self._get_progress_bar(progress_bar_type)
 
             record_batches = []
-            for record_batch in self._to_arrow_iterable(bqstorage_client=bqstorage_client):
+            for record_batch in self._to_arrow_iterable(
+                bqstorage_client=bqstorage_client
+            ):
                 record_batches.append(record_batch)
 
                 if progress_bar is not None:
@@ -1661,7 +1663,9 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
-        if (bqstorage_client or create_bqstorage_client) and self.max_results is not None:
+        if (
+            bqstorage_client or create_bqstorage_client
+        ) and self.max_results is not None:
             warnings.warn(
                 "Cannot use bqstorage_client if max_results is set, "
                 "reverting to fetching data with the tabledata.list endpoint.",
