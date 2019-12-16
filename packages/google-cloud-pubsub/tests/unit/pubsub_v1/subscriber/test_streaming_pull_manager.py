@@ -721,6 +721,21 @@ def test__on_response_with_leaser_overload():
             assert msg.message_id in ("2", "3")
 
 
+def test__on_response_none_data(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
+
+    manager._on_response(response=None)
+
+    scheduler.schedule.assert_not_called()
+    assert "callback invoked with None" in caplog.text
+
+
 def test_retryable_stream_errors():
     # Make sure the config matches our hard-coded tuple of exceptions.
     interfaces = subscriber_client_config.config["interfaces"]
