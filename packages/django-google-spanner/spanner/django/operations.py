@@ -11,6 +11,7 @@ from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):
+    compiler_module = 'spanner.django.compiler'
     # Django's lookup names that require a different name in Spanner's
     # EXTRACT() function.
     # https://cloud.google.com/spanner/docs/functions-and-operators#extract
