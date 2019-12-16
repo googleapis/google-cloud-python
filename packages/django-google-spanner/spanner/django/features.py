@@ -25,6 +25,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         # Tests that assume a serial pk.
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',
+        'aggregation.test_filter_argument.FilteredAggregateTests.test_plain_annotate',
+        'aggregation.tests.AggregateTestCase.test_annotate_basic',
+        'aggregation.tests.AggregateTestCase.test_annotation',
         'aggregation_regress.tests.AggregationTests.test_more_more',
         'aggregation_regress.tests.AggregationTests.test_more_more_more',
         'aggregation_regress.tests.AggregationTests.test_ticket_11293',
@@ -82,6 +85,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
         # DecimalField lookups crash:
         # https://github.com/orijtech/spanner-orm/issues/168
+        'aggregation.tests.AggregateTestCase.test_filtering',
         'annotations.tests.NonAggregateAnnotationTestCase.test_filter_decimal_annotation',
         'lookup.test_decimalfield.DecimalFieldLookupTests.test_gt',
         'lookup.test_decimalfield.DecimalFieldLookupTests.test_gte',
@@ -95,6 +99,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:
         # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
+        'aggregation.tests.AggregateTestCase.test_decimal_max_digits_has_no_effect',
         'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No UNIQUE constraints in Spanner.
@@ -107,4 +112,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # 'DatabaseWrapper' object has no attribute 'pattern_ops'
         # https://github.com/orijtech/spanner-orm/issues/178
         'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
+        # Spanner doesn't supoprt the variance the standard deviation database
+        # functions:
+        'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
     )
