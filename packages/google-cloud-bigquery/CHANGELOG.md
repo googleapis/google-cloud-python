@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.23.1
+
+12-16-2019 09:39 PST
+
+
+### Implementation Changes
+
+- Add `iamMember` entity type to allowed access classes. ([#9973](https://github.com/googleapis/google-cloud-python/pull/9973))
+- Fix typo in import error message (pandas -> pyarrow). ([#9955](https://github.com/googleapis/google-cloud-python/pull/9955))
+
+### Dependencies
+
+- Add `six` as an explicit dependency. ([#9979](https://github.com/googleapis/google-cloud-python/pull/9979))
+
+### Documentation
+
+- Add sample to read from query destination table. ([#9964](https://github.com/googleapis/google-cloud-python/pull/9964))
+
 ## 1.23.0
 
 12-11-2019 13:31 PST
