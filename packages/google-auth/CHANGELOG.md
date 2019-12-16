@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.9.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.8.2...v1.9.0) (2019-12-12)
+
+
+### Features
+
+* add timeout parameter to `AuthorizedSession.request()` ([#406](https://www.github.com/googleapis/google-auth-library-python/issues/406)) ([d86d7b8](https://www.github.com/googleapis/google-auth-library-python/commit/d86d7b8c43df152765c7fc59a54015361b46dcde))
+
 ### [1.8.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.8.1...v1.8.2) (2019-12-11)
 
 
