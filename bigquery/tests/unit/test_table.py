@@ -26,8 +26,12 @@ import google.api_core.exceptions
 
 try:
     from google.cloud import bigquery_storage_v1beta1
+    from google.cloud.bigquery_storage_v1beta1.gapic.transports import (
+        big_query_storage_grpc_transport,
+    )
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+    big_query_storage_grpc_transport = None
 
 try:
     import pandas
@@ -1817,6 +1821,9 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
+        bqstorage_client.transport = mock.create_autospec(
+            big_query_storage_grpc_transport.BigQueryStorageGrpcTransport
+        )
         streams = [
             # Use two streams we want to check frames are read from each stream.
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
@@ -1882,6 +1889,9 @@ class TestRowIterator(unittest.TestCase):
         total_rows = expected_num_rows * total_pages
         self.assertEqual(actual_tbl.num_rows, total_rows)
 
+        # Don't close the client if it was passed in.
+        bqstorage_client.transport.channel.close.assert_not_called()
+
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
@@ -1893,6 +1903,9 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.transport = mock.create_autospec(
+            big_query_storage_grpc_transport.BigQueryStorageGrpcTransport
         )
         mock_client._create_bqstorage_client.return_value = bqstorage_client
         session = bigquery_storage_v1beta1.types.ReadSession()
@@ -1910,6 +1923,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_arrow(create_bqstorage_client=True)
         mock_client._create_bqstorage_client.assert_called_once()
+        bqstorage_client.transport.channel.close.assert_called_once()
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(
@@ -2322,6 +2336,43 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_max_results_w_create_bqstorage_warning(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        mock_client = _mock_client()
+
+        row_iterator = self._make_one(
+            client=mock_client,
+            api_request=api_request,
+            path=path,
+            schema=schema,
+            max_results=42,
+        )
+
+        with warnings.catch_warnings(record=True) as warned:
+            row_iterator.to_dataframe(create_bqstorage_client=True)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category is UserWarning
+            and "cannot use bqstorage_client" in str(warning).lower()
+            and "tabledata.list" in str(warning)
+        ]
+        self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
+        mock_client._create_bqstorage_client.assert_not_called()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
@@ -2332,6 +2383,9 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.transport = mock.create_autospec(
+            big_query_storage_grpc_transport.BigQueryStorageGrpcTransport
         )
         mock_client._create_bqstorage_client.return_value = bqstorage_client
         session = bigquery_storage_v1beta1.types.ReadSession()
@@ -2349,6 +2403,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_dataframe(create_bqstorage_client=True)
         mock_client._create_bqstorage_client.assert_called_once()
+        bqstorage_client.transport.channel.close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
@@ -2485,6 +2540,9 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client = mock.create_autospec(
             bigquery_storage_v1beta1.BigQueryStorageClient
         )
+        bqstorage_client.transport = mock.create_autospec(
+            big_query_storage_grpc_transport.BigQueryStorageGrpcTransport
+        )
         streams = [
             # Use two streams we want to check frames are read from each stream.
             {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
@@ -2538,6 +2596,9 @@ class TestRowIterator(unittest.TestCase):
         total_pages = len(streams) * len(mock_pages)
         total_rows = len(page_items) * total_pages
         self.assertEqual(len(got.index), total_rows)
+
+        # Don't close the client if it was passed in.
+        bqstorage_client.transport.channel.close.assert_not_called()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(

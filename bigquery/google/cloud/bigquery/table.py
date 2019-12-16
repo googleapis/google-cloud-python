@@ -1519,25 +1519,31 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
+        owns_bqstorage_client = False
         if not bqstorage_client and create_bqstorage_client:
+            owns_bqstorage_client = True
             bqstorage_client = self.client._create_bqstorage_client()
 
-        progress_bar = self._get_progress_bar(progress_bar_type)
+        try:
+            progress_bar = self._get_progress_bar(progress_bar_type)
 
-        record_batches = []
-        for record_batch in self._to_arrow_iterable(bqstorage_client=bqstorage_client):
-            record_batches.append(record_batch)
+            record_batches = []
+            for record_batch in self._to_arrow_iterable(bqstorage_client=bqstorage_client):
+                record_batches.append(record_batch)
+
+                if progress_bar is not None:
+                    # In some cases, the number of total rows is not populated
+                    # until the first page of rows is fetched. Update the
+                    # progress bar's total to keep an accurate count.
+                    progress_bar.total = progress_bar.total or self.total_rows
+                    progress_bar.update(record_batch.num_rows)
 
             if progress_bar is not None:
-                # In some cases, the number of total rows is not populated
-                # until the first page of rows is fetched. Update the
-                # progress bar's total to keep an accurate count.
-                progress_bar.total = progress_bar.total or self.total_rows
-                progress_bar.update(record_batch.num_rows)
-
-        if progress_bar is not None:
-            # Indicate that the download has finished.
-            progress_bar.close()
+                # Indicate that the download has finished.
+                progress_bar.close()
+        finally:
+            if owns_bqstorage_client:
+                bqstorage_client.transport.channel.close()
 
         if record_batches:
             return pyarrow.Table.from_batches(record_batches)
@@ -1655,35 +1661,42 @@ class RowIterator(HTTPIterator):
         if dtypes is None:
             dtypes = {}
 
-        if not bqstorage_client and create_bqstorage_client:
-            bqstorage_client = self.client._create_bqstorage_client()
-
-        if bqstorage_client and self.max_results is not None:
+        if (bqstorage_client or create_bqstorage_client) and self.max_results is not None:
             warnings.warn(
                 "Cannot use bqstorage_client if max_results is set, "
                 "reverting to fetching data with the tabledata.list endpoint.",
                 stacklevel=2,
             )
+            create_bqstorage_client = False
             bqstorage_client = None
 
-        progress_bar = self._get_progress_bar(progress_bar_type)
+        owns_bqstorage_client = False
+        if not bqstorage_client and create_bqstorage_client:
+            owns_bqstorage_client = True
+            bqstorage_client = self.client._create_bqstorage_client()
 
-        frames = []
-        for frame in self._to_dataframe_iterable(
-            bqstorage_client=bqstorage_client, dtypes=dtypes
-        ):
-            frames.append(frame)
+        try:
+            progress_bar = self._get_progress_bar(progress_bar_type)
+
+            frames = []
+            for frame in self._to_dataframe_iterable(
+                bqstorage_client=bqstorage_client, dtypes=dtypes
+            ):
+                frames.append(frame)
+
+                if progress_bar is not None:
+                    # In some cases, the number of total rows is not populated
+                    # until the first page of rows is fetched. Update the
+                    # progress bar's total to keep an accurate count.
+                    progress_bar.total = progress_bar.total or self.total_rows
+                    progress_bar.update(len(frame))
 
             if progress_bar is not None:
-                # In some cases, the number of total rows is not populated
-                # until the first page of rows is fetched. Update the
-                # progress bar's total to keep an accurate count.
-                progress_bar.total = progress_bar.total or self.total_rows
-                progress_bar.update(len(frame))
-
-        if progress_bar is not None:
-            # Indicate that the download has finished.
-            progress_bar.close()
+                # Indicate that the download has finished.
+                progress_bar.close()
+        finally:
+            if owns_bqstorage_client:
+                bqstorage_client.transport.channel.close()
 
         # Avoid concatting an empty list.
         if not frames:
