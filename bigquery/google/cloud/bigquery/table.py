@@ -1503,7 +1503,7 @@ class RowIterator(HTTPIterator):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.22.0
+                ..versionadded:: 1.24.0
 
         Returns:
             pyarrow.Table
@@ -1643,7 +1643,7 @@ class RowIterator(HTTPIterator):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.22.0
+                ..versionadded:: 1.24.0
 
         Returns:
             pandas.DataFrame:
