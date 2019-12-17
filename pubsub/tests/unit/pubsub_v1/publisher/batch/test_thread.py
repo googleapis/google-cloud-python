@@ -45,11 +45,12 @@ def create_batch(
 
     Args:
         topic (str): Topic name.
-        batch_settings (dict): Arguments passed on to the
-            :class:``~.pubsub_v1.types.BatchSettings`` constructor.
+        batch_done_callback (Callable[bool]): A callable that is called when
+            the batch is done, either with a success or a failure flag.
         commit_when_full (bool): Whether to commit the batch when the batch
             has reached byte-size or number-of-messages limits.
-        batch_settings (Mapping[str, str]): Batching-related settings.
+        batch_settings (Mapping[str, str]): Arguments passed on to the
+            :class:``~.pubsub_v1.types.BatchSettings`` constructor.
 
     Returns:
         ~.pubsub_v1.publisher.batch.thread.Batch: A batch object.
