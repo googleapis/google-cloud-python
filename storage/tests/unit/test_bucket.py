@@ -2107,6 +2107,8 @@ class Test_Bucket(unittest.TestCase):
 
         policy = bucket.get_iam_policy(requested_policy_version=3)
 
+        self.assertEqual(policy.version, VERSION)
+
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]["method"], "GET")

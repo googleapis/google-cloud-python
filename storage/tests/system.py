@@ -242,6 +242,61 @@ class TestStorageBuckets(unittest.TestCase):
         bucket.update()
         self.assertEqual(bucket.labels, {})
 
+    def test_get_set_iam_policy(self):
+        import pytest
+        from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
+        from google.api_core.exceptions import BadRequest, PreconditionFailed
+        from google.api_core.iam import InvalidOperationException
+
+        bucket_name = "iam-policy" + unique_resource_id("-")
+        bucket = retry_429_503(Config.CLIENT.create_bucket)(bucket_name)
+        self.case_buckets_to_delete.append(bucket_name)
+        self.assertTrue(bucket.exists())
+
+        policy_no_version = bucket.get_iam_policy()
+        self.assertEqual(policy_no_version.version, 1)
+
+        policy = bucket.get_iam_policy(requested_policy_version=3)
+        self.assertEqual(policy, policy_no_version)
+
+        member = "serviceAccount:{}".format(Config.CLIENT.get_service_account_email())
+
+        BINDING_W_CONDITION = {
+            "role": STORAGE_OBJECT_VIEWER_ROLE,
+            "members": {member},
+            "condition": {
+                "title": "always-true",
+                "description": "test condition always-true",
+                "expression": "true"
+            }
+        }
+        policy.bindings.append(BINDING_W_CONDITION)
+
+        with pytest.raises(PreconditionFailed, match="enable uniform bucket-level access"):
+            bucket.set_iam_policy(policy)
+
+        bucket.iam_configuration.uniform_bucket_level_access_enabled = True
+        bucket.patch()
+
+        policy = bucket.get_iam_policy(requested_policy_version=3)
+        policy.bindings.append(BINDING_W_CONDITION)
+
+        with pytest.raises(BadRequest, match="at least 3"):
+            bucket.set_iam_policy(policy)
+
+        policy.version = 3
+        returned_policy = bucket.set_iam_policy(policy)
+        self.assertEqual(returned_policy.version, 3)
+        self.assertEqual(returned_policy.bindings, policy.bindings)
+
+        with pytest.raises(BadRequest, match="cannot be less than the existing policy version"):
+            bucket.get_iam_policy()
+        with pytest.raises(BadRequest, match="cannot be less than the existing policy version"):
+            bucket.get_iam_policy(requested_policy_version=2)
+
+        fetched_policy = bucket.get_iam_policy(requested_policy_version=3)
+        self.assertEqual(fetched_policy.bindings, returned_policy.bindings)
+
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_crud_bucket_with_requester_pays(self):
         new_bucket_name = "w-requester-pays" + unique_resource_id("-")
