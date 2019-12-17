@@ -1424,7 +1424,7 @@ class TestTablesClient(object):
         _, prediction_client_kwargs = MockPredictionClient.call_args
         assert "credentials" in prediction_client_kwargs
         assert prediction_client_kwargs["credentials"] == credentials_mock
-    
+
     def test_prediction_client_client_info(self):
         client_info_mock = mock.Mock()
         patch_prediction_client = mock.patch(
