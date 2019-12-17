@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
 from django.db.utils import DatabaseError
 from django.utils import timezone
+from django.utils.duration import duration_microseconds
 from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
@@ -173,6 +174,9 @@ class DatabaseOperations(BaseDatabaseOperations):
             # ...then add a day to get from Sunday to Monday.
             sql = 'TIMESTAMP_ADD(' + sql + ', INTERVAL 1 DAY)'
         return sql
+
+    def date_interval_sql(self, timedelta):
+        return 'INTERVAL %s MICROSECOND' % duration_microseconds(timedelta)
 
     def format_for_duration_arithmetic(self, sql):
         return 'INTERVAL %s MICROSECOND' % sql

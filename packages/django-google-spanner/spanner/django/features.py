@@ -61,9 +61,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/issues/155
         'timezones.tests.LegacyDatabaseTests.test_raw_sql',
         'timezones.tests.NewDatabaseTests.test_raw_sql',
-        # implement DatabaseOperations.date_interval_sql()
-        # https://github.com/orijtech/spanner-orm/issues/184
-        'timezones.tests.NewDatabaseTests.test_update_with_timedelta',
         # Unable to infer type for parameter:
         # https://github.com/orijtech/spanner-orm/issues/185
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime',
