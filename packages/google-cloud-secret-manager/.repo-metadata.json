@@ -1,0 +1,12 @@
+{
+  "name": "secretmanager",
+  "name_pretty": "Cloud Secret Manager",
+  "product_documentation": "https://cloud.google.com/secret-manager/",
+  "client_documentation": "https://googleapis.dev/python/secretmanager/latest",
+  "issue_tracker": "",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/python-secret-manager",
+  "distribution_name": "google-cloud-secret-manager",
+  "api_id": "secretmanager.googleapis.com"
+}
