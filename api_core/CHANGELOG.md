@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.15.0
+
+12-16-2019 15:27 PST
+
+### New Features
+- Make the last retry happen at deadline. ([#9873](https://github.com/googleapis/google-cloud-python/pull/9873))
+- Add a repr method for ClientOptions. ([#9849](https://github.com/googleapis/google-cloud-python/pull/9849))
+- Simplify `from_rfc3339` methods. ([#9641](https://github.com/googleapis/google-cloud-python/pull/9641))
+- Provide a `raw_page` field for `page_iterator.Page`. ([#9486](https://github.com/googleapis/google-cloud-python/pull/9486))
+
+### Documentation
+- Add Python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Remove references to the old authentication credentials. ([#9456](https://github.com/googleapis/google-cloud-python/pull/9456))
+
 ## 1.14.3
 
 10-07-2019 10:35 PDT

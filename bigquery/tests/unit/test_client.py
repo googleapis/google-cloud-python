@@ -32,6 +32,10 @@ import pytest
 import pytz
 
 try:
+    import fastparquet
+except (ImportError, AttributeError):  # pragma: NO COVER
+    fastparquet = None
+try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
@@ -45,6 +49,11 @@ from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
 from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
+
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except (ImportError, AttributeError):  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 from tests.unit.helpers import make_connection
 
 
@@ -530,6 +539,26 @@ class TestClient(unittest.TestCase):
             dataset_ref.dataset_id
         )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_create_bqstorage_client(self):
+        mock_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        mock_client_instance = object()
+        mock_client.return_value = mock_client_instance
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", mock_client
+        ):
+            bqstorage_client = client._create_bqstorage_client()
+
+        self.assertIs(bqstorage_client, mock_client_instance)
+        mock_client.assert_called_once_with(credentials=creds)
 
     def test_create_dataset_minimal(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -1398,6 +1427,17 @@ class TestClient(unittest.TestCase):
             ]
         )
 
+    def test_close(self):
+        creds = _make_credentials()
+        http = mock.Mock()
+        http._auth_request.session = mock.Mock()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        client.close()
+
+        http.close.assert_called_once()
+        http._auth_request.session.close.assert_called_once()
+
     def test_get_model(self):
         path = "projects/%s/datasets/%s/models/%s" % (
             self.PROJECT,
@@ -1537,6 +1577,7 @@ class TestClient(unittest.TestCase):
                 "User-Agent": expected_user_agent,
             },
             data=mock.ANY,
+            timeout=None,
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
@@ -6224,6 +6265,7 @@ class TestClientUpload(object):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
         client = self._make_client()
 
@@ -6414,6 +6456,7 @@ class TestClientUpload(object):
         assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job

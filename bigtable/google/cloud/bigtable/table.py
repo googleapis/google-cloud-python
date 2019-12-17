@@ -28,6 +28,7 @@ from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.batcher import MutationsBatcher
 from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_ROW_BYTES
+from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
@@ -137,6 +138,74 @@ class Table(object):
         return table_client.table_path(
             project=project, instance=instance_id, table=self.table_id
         )
+
+    def get_iam_policy(self):
+        """Gets the IAM access control policy for this table.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_get_iam_policy]
+            :end-before: [END bigtable_table_get_iam_policy]
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this table.
+        """
+        table_client = self._instance._client.table_admin_client
+        resp = table_client.get_iam_policy(resource=self.name)
+        return Policy.from_pb(resp)
+
+    def set_iam_policy(self, policy):
+        """Sets the IAM access control policy for this table. Replaces any
+        existing policy.
+
+        For more information about policy, please see documentation of
+        class `google.cloud.bigtable.policy.Policy`
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_set_iam_policy]
+            :end-before: [END bigtable_table_set_iam_policy]
+
+        :type policy: :class:`google.cloud.bigtable.policy.Policy`
+        :param policy: A new IAM policy to replace the current IAM policy
+                       of this table.
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this table.
+        """
+        table_client = self._instance._client.table_admin_client
+        resp = table_client.set_iam_policy(resource=self.name, policy=policy.to_pb())
+        return Policy.from_pb(resp)
+
+    def test_iam_permissions(self, permissions):
+        """Tests whether the caller has the given permissions for this table.
+        Returns the permissions that the caller has.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_table_test_iam_permissions]
+            :end-before: [END bigtable_table_test_iam_permissions]
+
+        :type permissions: list
+        :param permissions: The set of permissions to check for
+               the ``resource``. Permissions with wildcards (such as '*'
+               or 'storage.*') are not allowed. For more information see
+               `IAM Overview
+               <https://cloud.google.com/iam/docs/overview#permissions>`_.
+               `Bigtable Permissions
+               <https://cloud.google.com/bigtable/docs/access-control>`_.
+
+        :rtype: list
+        :returns: A List(string) of permissions allowed on the table.
+        """
+        table_client = self._instance._client.table_admin_client
+        resp = table_client.test_iam_permissions(
+            resource=self.name, permissions=permissions
+        )
+        return list(resp.permissions)
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.

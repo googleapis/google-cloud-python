@@ -90,7 +90,12 @@ class MetricServiceClient(object):
 
     @classmethod
     def metric_descriptor_path(cls, project, metric_descriptor):
-        """Return a fully-qualified metric_descriptor string."""
+        """DEPRECATED. Return a fully-qualified metric_descriptor string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/metricDescriptors/{metric_descriptor=**}",
             project=project,
@@ -99,7 +104,12 @@ class MetricServiceClient(object):
 
     @classmethod
     def monitored_resource_descriptor_path(cls, project, monitored_resource_descriptor):
-        """Return a fully-qualified monitored_resource_descriptor string."""
+        """DEPRECATED. Return a fully-qualified monitored_resource_descriptor string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}",
             project=project,
@@ -108,7 +118,12 @@ class MetricServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )

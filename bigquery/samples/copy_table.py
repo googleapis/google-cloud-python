@@ -28,12 +28,8 @@ def copy_table(client, source_table_id, destination_table_id):
     # TODO(developer): Set destination_table_id to the ID of the destination table.
     # destination_table_id = "your-project.destination_dataset.destination_table"
 
-    job = client.copy_table(
-        source_table_id,
-        destination_table_id,
-        location="US",  # Must match the source and destination tables location.
-    )
-    job.result()  # Waits for job to complete.
+    job = client.copy_table(source_table_id, destination_table_id)
+    job.result()  # Wait for the job to complete.
 
     print("A copy of the table created.")
     # [END bigquery_copy_table]

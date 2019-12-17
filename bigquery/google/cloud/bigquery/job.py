@@ -29,6 +29,7 @@ from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
@@ -1139,6 +1140,33 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("fieldDelimiter", value)
 
     @property
+    def hive_partitioning(self):
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: [Beta] When set, \
+        it configures hive partitioning support.
+
+        .. note::
+            **Experimental**. This feature is experimental and might change or
+            have limited support.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.hive_partitioning_options
+        """
+        prop = self._get_sub_prop("hivePartitioningOptions")
+        if prop is None:
+            return None
+        return HivePartitioningOptions.from_api_repr(prop)
+
+    @hive_partitioning.setter
+    def hive_partitioning(self, value):
+        if value is not None:
+            if isinstance(value, HivePartitioningOptions):
+                value = value.to_api_repr()
+            else:
+                raise TypeError("Expected a HivePartitioningOptions instance or None.")
+
+        self._set_sub_prop("hivePartitioningOptions", value)
+
+    @property
     def ignore_unknown_values(self):
         """bool: Ignore extra values not represented in the table schema.
 
@@ -1317,7 +1345,7 @@ class LoadJobConfig(_JobConfig):
     @property
     def use_avro_logical_types(self):
         """bool: For loads of Avro data, governs whether Avro logical types are
-        converted to their corresponding BigQuery types(e.g. TIMESTAMP) rather than
+        converted to their corresponding BigQuery types (e.g. TIMESTAMP) rather than
         raw types (e.g. INTEGER).
         """
         return self._get_sub_prop("useAvroLogicalTypes")
@@ -1909,6 +1937,18 @@ class ExtractJobConfig(_JobConfig):
     @print_header.setter
     def print_header(self, value):
         self._set_sub_prop("printHeader", value)
+
+    @property
+    def use_avro_logical_types(self):
+        """bool: For loads of Avro data, governs whether Avro logical types are
+        converted to their corresponding BigQuery types (e.g. TIMESTAMP) rather than
+        raw types (e.g. INTEGER).
+        """
+        return self._get_sub_prop("useAvroLogicalTypes")
+
+    @use_avro_logical_types.setter
+    def use_avro_logical_types(self, value):
+        self._set_sub_prop("useAvroLogicalTypes", bool(value))
 
 
 class ExtractJob(_AsyncJob):
@@ -3112,7 +3152,12 @@ class QueryJob(_AsyncJob):
 
     # If changing the signature of this method, make sure to apply the same
     # changes to table.RowIterator.to_arrow()
-    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
+    def to_arrow(
+        self,
+        progress_bar_type=None,
+        bqstorage_client=None,
+        create_bqstorage_client=False,
+    ):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -3145,6 +3190,16 @@ class QueryJob(_AsyncJob):
 
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.24.0
 
         Returns:
             pyarrow.Table
@@ -3159,12 +3214,20 @@ class QueryJob(_AsyncJob):
         ..versionadded:: 1.17.0
         """
         return self.result().to_arrow(
-            progress_bar_type=progress_bar_type, bqstorage_client=bqstorage_client
+            progress_bar_type=progress_bar_type,
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=create_bqstorage_client,
         )
 
     # If changing the signature of this method, make sure to apply the same
     # changes to table.RowIterator.to_dataframe()
-    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
+    def to_dataframe(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        progress_bar_type=None,
+        create_bqstorage_client=False,
+    ):
         """Return a pandas DataFrame from a QueryJob
 
         Args:
@@ -3197,6 +3260,16 @@ class QueryJob(_AsyncJob):
                 for details.
 
                 ..versionadded:: 1.11.0
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.24.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
@@ -3210,6 +3283,7 @@ class QueryJob(_AsyncJob):
             bqstorage_client=bqstorage_client,
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
+            create_bqstorage_client=create_bqstorage_client,
         )
 
     def __iter__(self):

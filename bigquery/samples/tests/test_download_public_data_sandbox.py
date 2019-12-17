@@ -12,16 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 
-from .. import get_routine
+from .. import download_public_data_sandbox
 
 
-def test_get_routine(capsys, client, routine_id):
+def test_download_public_data_sandbox(caplog, capsys, client):
+    # Enable debug-level logging to verify the BigQuery Storage API is used.
+    caplog.set_level(logging.DEBUG)
 
-    get_routine.get_routine(client, routine_id)
+    download_public_data_sandbox.download_public_data_sandbox(client)
     out, err = capsys.readouterr()
-    assert "Routine '{}':".format(routine_id) in out
-    assert "Type: 'SCALAR_FUNCTION'" in out
-    assert "Language: 'SQL'" in out
-    assert "Name: 'x'" in out
-    assert "Type: 'type_kind: INT64\n'" in out
+    assert "year" in out
+    assert "gender" in out
+    assert "name" in out
+
+    assert any(
+        # An anonymous table is used because this sample reads from query results.
+        ("Started reading table" in message and "BQ Storage API session" in message)
+        for message in caplog.messages
+    )

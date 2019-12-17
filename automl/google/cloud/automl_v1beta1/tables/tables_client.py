@@ -435,7 +435,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> ds = client.list_datasets()
@@ -488,7 +488,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_dataset(dataset_display_name='my_dataset')
@@ -550,7 +550,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -602,7 +602,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_dataset(dataset_display_name='my_dataset')
@@ -682,7 +682,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -803,7 +803,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.create_dataset(dataset_display_name='my_dataset')
@@ -889,7 +889,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_table_spec('my_table_spec')
@@ -937,7 +937,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_table_specs(dataset_display_name='my_dataset')
@@ -1001,7 +1001,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_column_spec('my_column_spec')
@@ -1051,7 +1051,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> for s in client.list_column_specs(dataset_display_name='my_dataset')
@@ -1150,7 +1150,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.update_column_specs(dataset_display_name='my_dataset',
@@ -1282,7 +1282,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_target_column(dataset_display_name='my_dataset',
@@ -1399,7 +1399,7 @@ class TablesClient(object):
             >>> from google.cloud import automl_v1beta1
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_time_column(dataset_display_name='my_dataset',
@@ -1512,7 +1512,7 @@ class TablesClient(object):
             >>> from google.cloud import automl_v1beta1
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.clear_time_column(dataset_display_name='my_dataset')
@@ -1597,7 +1597,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_weight_column(dataset_display_name='my_dataset',
@@ -1710,7 +1710,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.clear_weight_column(dataset_display_name='my_dataset')
@@ -1794,7 +1794,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.set_test_train_column(dataset_display_name='my_dataset',
@@ -1908,7 +1908,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.clear_test_train_column(dataset_display_name='my_dataset')
@@ -1979,7 +1979,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> ms = client.list_models()
@@ -2033,7 +2033,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> ms = client.list_model_evaluations(model_display_name='my_model')
@@ -2120,7 +2120,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> m = client.create_model(
@@ -2278,7 +2278,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.delete_model(model_display_name='my_model')
@@ -2348,7 +2348,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_model_evaluation('my_model_evaluation')
@@ -2395,7 +2395,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> d = client.get_model(model_display_name='my_model')
@@ -2462,7 +2462,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.deploy_model(model_display_name='my_model')
@@ -2534,7 +2534,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> op = client.undeploy_model(model_display_name='my_model')
@@ -2610,7 +2610,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.predict(inputs={'Age': 30, 'Income': 12, 'Category': 'A'}
@@ -2718,7 +2718,7 @@ class TablesClient(object):
             >>> from google.oauth2 import service_account
             >>>
             >>> client = automl_v1beta1.TablesClient(
-            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json')
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
             >>> client.batch_predict(

@@ -173,6 +173,58 @@ class TestExternalConfig(unittest.TestCase):
 
         self.assertEqual(got_resource, exp_resource)
 
+    def test_from_api_repr_hive_partitioning(self):
+        resource = _copy_and_update(
+            self.BASE_RESOURCE,
+            {
+                "sourceFormat": "FORMAT_FOO",
+                "hivePartitioningOptions": {
+                    "sourceUriPrefix": "http://foo/bar",
+                    "mode": "STRINGS",
+                },
+            },
+        )
+
+        ec = external_config.ExternalConfig.from_api_repr(resource)
+
+        self._verify_base(ec)
+        self.assertEqual(ec.source_format, "FORMAT_FOO")
+        self.assertIsInstance(
+            ec.hive_partitioning, external_config.HivePartitioningOptions
+        )
+        self.assertEqual(ec.hive_partitioning.source_uri_prefix, "http://foo/bar")
+        self.assertEqual(ec.hive_partitioning.mode, "STRINGS")
+
+        # converting back to API representation should yield the same result
+        got_resource = ec.to_api_repr()
+        self.assertEqual(got_resource, resource)
+
+        del resource["hivePartitioningOptions"]
+        ec = external_config.ExternalConfig.from_api_repr(resource)
+        self.assertIsNone(ec.hive_partitioning)
+
+        got_resource = ec.to_api_repr()
+        self.assertEqual(got_resource, resource)
+
+    def test_to_api_repr_hive_partitioning(self):
+        hive_partitioning = external_config.HivePartitioningOptions()
+        hive_partitioning.source_uri_prefix = "http://foo/bar"
+        hive_partitioning.mode = "STRINGS"
+
+        ec = external_config.ExternalConfig("FORMAT_FOO")
+        ec.hive_partitioning = hive_partitioning
+
+        got_resource = ec.to_api_repr()
+
+        expected_resource = {
+            "sourceFormat": "FORMAT_FOO",
+            "hivePartitioningOptions": {
+                "sourceUriPrefix": "http://foo/bar",
+                "mode": "STRINGS",
+            },
+        }
+        self.assertEqual(got_resource, expected_resource)
+
     def test_from_api_repr_csv(self):
         resource = _copy_and_update(
             self.BASE_RESOURCE,

@@ -80,7 +80,12 @@ class TranslationServiceClient(object):
 
     @classmethod
     def glossary_path(cls, project, location, glossary):
-        """Return a fully-qualified glossary string."""
+        """DEPRECATED. Return a fully-qualified glossary string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/glossaries/{glossary}",
             project=project,
@@ -90,7 +95,12 @@ class TranslationServiceClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """Return a fully-qualified location string."""
+        """DEPRECATED. Return a fully-qualified location string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,

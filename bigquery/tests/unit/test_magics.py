@@ -153,6 +153,7 @@ def test_context_credentials_and_project_can_be_set_explicitly():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_connection_can_be_overriden():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -196,6 +197,7 @@ def test_context_connection_can_be_overriden():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_context_no_connection():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -326,6 +328,10 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     assert "pyarrow" in error_msg
 
 
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -545,6 +551,7 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     bqstorage_instance_mock = mock.create_autospec(
         bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
     )
+    bqstorage_instance_mock.transport = mock.Mock()
     bqstorage_mock.return_value = bqstorage_instance_mock
     bqstorage_client_patch = mock.patch(
         "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", bqstorage_mock
@@ -601,6 +608,7 @@ def test_bigquery_magic_with_bqstorage_from_context(monkeypatch):
     bqstorage_instance_mock = mock.create_autospec(
         bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
     )
+    bqstorage_instance_mock.transport = mock.Mock()
     bqstorage_mock.return_value = bqstorage_instance_mock
     bqstorage_client_patch = mock.patch(
         "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", bqstorage_mock
@@ -728,6 +736,41 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
         query_job_mock.result.assert_called_with(max_results=5)
 
 
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_w_max_results_query_job_results_fails():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+    client_query_patch = mock.patch(
+        "google.cloud.bigquery.client.Client.query", autospec=True
+    )
+    close_transports_patch = mock.patch(
+        "google.cloud.bigquery.magics._close_transports", autospec=True,
+    )
+
+    sql = "SELECT 17 AS num"
+
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.result.side_effect = [[], OSError]
+
+    with pytest.raises(
+        OSError
+    ), client_query_patch as client_query_mock, default_patch, close_transports_patch as close_transports:
+        client_query_mock.return_value = query_job_mock
+        ip.run_cell_magic("bigquery", "--max_results=5", sql)
+
+    assert close_transports.called
+
+
 def test_bigquery_magic_w_table_id_invalid():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -758,6 +801,7 @@ def test_bigquery_magic_w_table_id_invalid():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_destination_var():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -794,6 +838,10 @@ def test_bigquery_magic_w_table_id_and_destination_var():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(
+    bigquery_storage_v1beta1 is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_bqstorage_client():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -820,6 +868,7 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
     bqstorage_instance_mock = mock.create_autospec(
         bigquery_storage_v1beta1.BigQueryStorageClient, instance=True
     )
+    bqstorage_instance_mock.transport = mock.Mock()
     bqstorage_mock.return_value = bqstorage_instance_mock
     bqstorage_client_patch = mock.patch(
         "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", bqstorage_mock
@@ -989,6 +1038,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_invalid():
     "param_value,expected", [("987654321", "987654321"), ("None", "0")]
 )
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, expected):
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1027,6 +1077,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, ex
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1062,6 +1113,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
@@ -1290,3 +1342,32 @@ def test_bigquery_magic_w_destination_table():
         assert job_config_used.write_disposition == "WRITE_TRUNCATE"
         assert job_config_used.destination.dataset_id == "dataset_id"
         assert job_config_used.destination.table_id == "table_id"
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_create_dataset_fails():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    create_dataset_if_necessary_patch = mock.patch(
+        "google.cloud.bigquery.magics._create_dataset_if_necessary",
+        autospec=True,
+        side_effect=OSError,
+    )
+    close_transports_patch = mock.patch(
+        "google.cloud.bigquery.magics._close_transports", autospec=True,
+    )
+
+    with pytest.raises(
+        OSError
+    ), create_dataset_if_necessary_patch, close_transports_patch as close_transports:
+        ip.run_cell_magic(
+            "bigquery",
+            "--destination_table dataset_id.table_id",
+            "SELECT foo FROM WHERE LIMIT bar",
+        )
+
+    assert close_transports.called

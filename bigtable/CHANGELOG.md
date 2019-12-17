@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 1.2.0
+
+12-04-2019 12:21 PST
+
+
+### New Features
+- add table level IAM policy controls ([#9877](https://github.com/googleapis/google-cloud-python/pull/9877))
+- add 'client_options' / 'admin_client_options' to Client ([#9517](https://github.com/googleapis/google-cloud-python/pull/9517))
+
+### Documentation
+- change spacing in docs templates (via synth) ([#9739](https://github.com/googleapis/google-cloud-python/pull/9739))
+- add python 2 sunset banner to documentation ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
+### Internal
+- add trailing commas (via synth) ([#9557](https://github.com/googleapis/google-cloud-python/pull/9557))
+
 ## 1.1.0
 
 10-15-2019 06:40 PDT

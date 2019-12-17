@@ -80,6 +80,14 @@ s.replace(
     _FIXED_ASSET_DOCSTRING,
 )
 
+# Fix docstrings with no summary line
+s.replace(
+    "google/cloud/**/proto/*_pb2.py",
+    r'''__doc__\s*=\s*"""Attributes:''',
+    '''__doc__ = """
+    Attributes:''',
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

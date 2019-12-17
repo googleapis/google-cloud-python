@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.6.0
+
+12-12-2019 10:46 PST
+
+### New Features
+- Add real time feed support to v1 (via synth). ([#9930](https://github.com/googleapis/google-cloud-python/pull/9930))
+- Deprecate resource name helper methods (via synth). ([#9827](https://github.com/googleapis/google-cloud-python/pull/9827))
+
+### Documentation
+- Change spacing in docs templates (via synth). ([#9736](https://github.com/googleapis/google-cloud-python/pull/9736))
+- Add Python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
+### Internal / Testing Changes
+- Normalize VPCSC configuration in systests. ([#9614](https://github.com/googleapis/google-cloud-python/pull/9614))
+
 ## 0.5.0
 
 10-29-2019 14:26 PDT
@@ -137,4 +152,3 @@
 ## 0.1.0
 
 Initial release.
-

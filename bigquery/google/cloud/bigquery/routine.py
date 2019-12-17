@@ -50,6 +50,7 @@ class Routine(object):
         "reference": "routineReference",
         "return_type": "returnType",
         "type_": "routineType",
+        "description": "description",
     }
 
     def __init__(self, routine_ref, **kwargs):
@@ -238,6 +239,17 @@ class Routine(object):
     @body.setter
     def body(self, value):
         self._properties[self._PROPERTY_TO_API_FIELD["body"]] = value
+
+    @property
+    def description(self):
+        """Optional[str]: Description of the routine (defaults to
+        :data:`None`).
+        """
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["description"])
+
+    @description.setter
+    def description(self, value):
+        self._properties[self._PROPERTY_TO_API_FIELD["description"]] = value
 
     @classmethod
     def from_api_repr(cls, resource):

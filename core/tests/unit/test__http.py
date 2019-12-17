@@ -217,7 +217,7 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=None
+            method="GET", url=url, headers=expected_headers, data=None, timeout=None
         )
 
     def test__make_request_w_data_no_extra_headers(self):
@@ -238,7 +238,7 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=data
+            method="GET", url=url, headers=expected_headers, data=data, timeout=None
         )
 
     def test__make_request_w_extra_headers(self):
@@ -258,7 +258,30 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=None
+            method="GET", url=url, headers=expected_headers, data=None, timeout=None
+        )
+
+    def test__make_request_w_timeout(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
+        http = make_requests_session([make_response()])
+        client = mock.Mock(_http=http, spec=["_http"])
+        conn = self._make_one(client)
+
+        url = "http://example.com/test"
+        conn._make_request("GET", url, timeout=(5.5, 2.8))
+
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
+        }
+        http.request.assert_called_once_with(
+            method="GET",
+            url=url,
+            headers=expected_headers,
+            data=None,
+            timeout=(5.5, 2.8),
         )
 
     def test_api_request_defaults(self):
@@ -282,7 +305,11 @@ class TestJSONConnection(unittest.TestCase):
             base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
         )
         http.request.assert_called_once_with(
-            method="GET", url=expected_url, headers=expected_headers, data=None
+            method="GET",
+            url=expected_url,
+            headers=expected_headers,
+            data=None,
+            timeout=None,
         )
 
     def test_api_request_w_non_json_response(self):
@@ -321,7 +348,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, headers=expected_headers, data=None
+            method="GET",
+            url=mock.ANY,
+            headers=expected_headers,
+            data=None,
+            timeout=None,
         )
 
         url = http.request.call_args[1]["url"]
@@ -351,7 +382,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, headers=expected_headers, data=None
+            method="GET",
+            url=mock.ANY,
+            headers=expected_headers,
+            data=None,
+            timeout=None,
         )
 
     def test_api_request_w_extra_headers(self):
@@ -377,7 +412,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, headers=expected_headers, data=None
+            method="GET",
+            url=mock.ANY,
+            headers=expected_headers,
+            data=None,
+            timeout=None,
         )
 
     def test_api_request_w_data(self):
@@ -400,7 +439,39 @@ class TestJSONConnection(unittest.TestCase):
         }
 
         http.request.assert_called_once_with(
-            method="POST", url=mock.ANY, headers=expected_headers, data=expected_data
+            method="POST",
+            url=mock.ANY,
+            headers=expected_headers,
+            data=expected_data,
+            timeout=None,
+        )
+
+    def test_api_request_w_timeout(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
+        http = make_requests_session(
+            [make_response(content=b"{}", headers=self.JSON_HEADERS)]
+        )
+        client = mock.Mock(_http=http, spec=["_http"])
+        conn = self._make_mock_one(client)
+        path = "/path/required"
+
+        self.assertEqual(conn.api_request("GET", path, timeout=(2.2, 3.3)), {})
+
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: conn.user_agent,
+        }
+        expected_url = "{base}/mock/{version}{path}".format(
+            base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
+        )
+        http.request.assert_called_once_with(
+            method="GET",
+            url=expected_url,
+            headers=expected_headers,
+            data=None,
+            timeout=(2.2, 3.3),
         )
 
     def test_api_request_w_404(self):

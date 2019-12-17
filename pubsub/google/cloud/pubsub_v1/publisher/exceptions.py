@@ -22,4 +22,8 @@ class PublishError(GoogleAPICallError):
     pass
 
 
-__all__ = ("PublishError", "TimeoutError")
+class MessageTooLargeError(ValueError):
+    """Attempt to publish a message that would exceed the server max size limit."""
+
+
+__all__ = ("MessageTooLargeError", "PublishError", "TimeoutError")

@@ -20,8 +20,8 @@ docs/storage                @tseaver @crwilcox @frankyn
 firestore/                  @tseaver @crwilcox @frankyn
 docs/firestore/             @tseaver @crwilcox @frankyn
 
-spanner/                    @tseaver @crwilcox @frankyn
-docs/spanner                @tseaver @crwilcox @frankyn
+spanner/                    @tseaver @crwilcox @frankyn @larkee
+docs/spanner                @tseaver @crwilcox @frankyn @larkee
 
 ###############################
 # Analytics and ML (AniML) team

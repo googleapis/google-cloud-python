@@ -90,7 +90,12 @@ class AlertPolicyServiceClient(object):
 
     @classmethod
     def alert_policy_path(cls, project, alert_policy):
-        """Return a fully-qualified alert_policy string."""
+        """DEPRECATED. Return a fully-qualified alert_policy string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/alertPolicies/{alert_policy}",
             project=project,
@@ -99,7 +104,12 @@ class AlertPolicyServiceClient(object):
 
     @classmethod
     def alert_policy_condition_path(cls, project, alert_policy, condition):
-        """Return a fully-qualified alert_policy_condition string."""
+        """DEPRECATED. Return a fully-qualified alert_policy_condition string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/alertPolicies/{alert_policy}/conditions/{condition}",
             project=project,
@@ -109,7 +119,12 @@ class AlertPolicyServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """Return a fully-qualified project string."""
+        """DEPRECATED. Return a fully-qualified project string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )

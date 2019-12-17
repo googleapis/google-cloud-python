@@ -233,13 +233,15 @@ def test__maybe_release_messages_on_overload():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
-    # Ensure load is exactly 1.0 (to verify that >= condition is used)
-    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
-    _leaser.message_count = 10
-    _leaser.bytes = 1000
 
     msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=11)
     manager._messages_on_hold.put(msg)
+    manager._on_hold_bytes = msg.size
+
+    # Ensure load is exactly 1.0 (to verify that >= condition is used)
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 10
+    _leaser.bytes = 1000 + msg.size
 
     manager._maybe_release_messages()
 
@@ -254,18 +256,20 @@ def test__maybe_release_messages_below_overload():
     )
     manager._callback = mock.sentinel.callback
 
-    # init leaser message count to 8 to leave room for 2 more messages
+    # Init leaser message count to 11, so that when subtracting the 3 messages
+    # that are on hold, there is still room for another 2 messages before the
+    # max load is hit.
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
-    fake_leaser_add(_leaser, init_msg_count=8, assumed_msg_size=25)
-    _leaser.add = mock.Mock(wraps=_leaser.add)  # to spy on calls
+    fake_leaser_add(_leaser, init_msg_count=11, assumed_msg_size=10)
 
     messages = [
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo", size=11),
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar", size=22),
-        mock.create_autospec(message.Message, instance=True, ack_id="ack_baz", size=33),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_foo", size=10),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_bar", size=10),
+        mock.create_autospec(message.Message, instance=True, ack_id="ack_baz", size=10),
     ]
     for msg in messages:
         manager._messages_on_hold.put(msg)
+        manager._on_hold_bytes = 3 * 10
 
     # the actual call of MUT
     manager._maybe_release_messages()
@@ -274,19 +278,40 @@ def test__maybe_release_messages_below_overload():
     msg = manager._messages_on_hold.get_nowait()
     assert msg.ack_id == "ack_baz"
 
-    assert len(_leaser.add.mock_calls) == 2
-    expected_calls = [
-        mock.call([requests.LeaseRequest(ack_id="ack_foo", byte_size=11)]),
-        mock.call([requests.LeaseRequest(ack_id="ack_bar", byte_size=22)]),
-    ]
-    _leaser.add.assert_has_calls(expected_calls)
-
     schedule_calls = manager._scheduler.schedule.mock_calls
     assert len(schedule_calls) == 2
     for _, call_args, _ in schedule_calls:
         assert call_args[0] == mock.sentinel.callback
         assert isinstance(call_args[1], message.Message)
         assert call_args[1].ack_id in ("ack_foo", "ack_bar")
+
+
+def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+
+    msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=17)
+    manager._messages_on_hold.put(msg)
+    manager._on_hold_bytes = 5  # too low for some reason
+
+    _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
+    _leaser.message_count = 3
+    _leaser.bytes = 150
+
+    with caplog.at_level(logging.WARNING):
+        manager._maybe_release_messages()
+
+    expected_warnings = [
+        record.message.lower()
+        for record in caplog.records
+        if "unexpectedly negative" in record.message
+    ]
+    assert len(expected_warnings) == 1
+    assert "on hold bytes" in expected_warnings[0]
+    assert "-12" in expected_warnings[0]
+
+    assert manager._on_hold_bytes == 0  # should be auto-corrected
 
 
 def test_send_unary():
@@ -404,8 +429,6 @@ def test_heartbeat_inactive():
     "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
 )
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
-    stream_ack_deadline = streaming_pull_manager._DEFAULT_STREAM_ACK_DEADLINE
-
     manager = make_manager()
 
     manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
@@ -435,7 +458,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     )
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
     assert initial_request_arg.func == manager._get_initial_request
-    assert initial_request_arg.args[0] == stream_ack_deadline
+    assert initial_request_arg.args[0] == 10  # the default stream ACK timeout
     assert not manager._client.api.get_subscription.called
 
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
@@ -668,13 +691,17 @@ def test__on_response_with_leaser_overload():
     # are called in the expected way.
     manager._on_response(response)
 
-    # only the messages that are added to the lease management and dispatched to
-    # callbacks should have their ACK deadline extended
+    # all messages should be added to the lease management and have their ACK
+    # deadline extended, even those not dispatched to callbacks
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest("fack", 10)]
+        [
+            requests.ModAckRequest("fack", 10),
+            requests.ModAckRequest("back", 10),
+            requests.ModAckRequest("zack", 10),
+        ]
     )
 
-    # one message should be scheduled, the leaser capacity allows for it
+    # one message should be scheduled, the flow control limits allow for it
     schedule_calls = scheduler.schedule.mock_calls
     assert len(schedule_calls) == 1
     call_args = schedule_calls[0][1]
@@ -692,6 +719,21 @@ def test__on_response_with_leaser_overload():
         else:
             assert isinstance(msg, message.Message)
             assert msg.message_id in ("2", "3")
+
+
+def test__on_response_none_data(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10)
+
+    manager._on_response(response=None)
+
+    scheduler.schedule.assert_not_called()
+    assert "callback invoked with None" in caplog.text
 
 
 def test_retryable_stream_errors():

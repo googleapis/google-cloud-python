@@ -74,22 +74,50 @@ def cleanup():
 
 
 def test_publish_messages(publisher, topic_path, cleanup):
-    futures = []
     # Make sure the topic gets deleted.
     cleanup.append((publisher.delete_topic, topic_path))
 
     publisher.create_topic(topic_path)
-    for index in six.moves.range(500):
-        futures.append(
-            publisher.publish(
-                topic_path,
-                b"The hail in Wales falls mainly on the snails.",
-                num=str(index),
-            )
+
+    futures = [
+        publisher.publish(
+            topic_path, b"The hail in Wales falls mainly on the snails.", num=str(i)
         )
+        for i in six.moves.range(500)
+    ]
+
     for future in futures:
         result = future.result()
         assert isinstance(result, six.string_types)
+
+
+def test_publish_large_messages(publisher, topic_path, cleanup):
+    # Make sure the topic gets deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+
+    # Each message should be smaller than 10**7 bytes (the server side limit for
+    # PublishRequest), but all messages combined in a PublishRequest should
+    # slightly exceed that threshold to make sure the publish code handles these
+    # cases well.
+    # Mind that the total PublishRequest size must still be smaller than
+    # 10 * 1024 * 1024 bytes in order to not exceed the max request body size limit.
+    msg_data = b"x" * (2 * 10 ** 6)
+
+    publisher.batch_settings = types.BatchSettings(
+        max_bytes=11 * 1000 * 1000,  # more than the server limit of 10 ** 7
+        max_latency=2.0,  # so that autocommit happens after publishing all messages
+        max_messages=100,
+    )
+    publisher.create_topic(topic_path)
+
+    futures = [publisher.publish(topic_path, msg_data, num=str(i)) for i in range(5)]
+
+    # If the publishing logic correctly split all messages into more than a
+    # single batch despite a high BatchSettings.max_bytes limit, there should
+    # be no "InvalidArgument: request_size is too large" error.
+    for future in futures:
+        result = future.result(timeout=10)
+        assert isinstance(result, six.string_types)  # the message ID
 
 
 def test_subscribe_to_messages(
@@ -382,10 +410,6 @@ class TestStreamingPull(object):
         with pytest.raises(CallbackError):
             future.result(timeout=30)
 
-    @pytest.mark.xfail(
-        reason="The default stream ACK deadline is static and received messages "
-        "exceeding FlowControl.max_messages are currently not lease managed."
-    )
     def test_streaming_pull_ack_deadline(
         self, publisher, subscriber, project, topic_path, subscription_path, cleanup
     ):
@@ -400,7 +424,7 @@ class TestStreamingPull(object):
         # Subscribe to the topic. This must happen before the messages
         # are published.
         subscriber.create_subscription(
-            subscription_path, topic_path, ack_deadline_seconds=240
+            subscription_path, topic_path, ack_deadline_seconds=45
         )
 
         # publish some messages and wait for completion
@@ -408,7 +432,7 @@ class TestStreamingPull(object):
 
         # subscribe to the topic
         callback = StreamingPullCallback(
-            processing_time=70,  # more than the default stream ACK deadline (60s)
+            processing_time=13,  # more than the default stream ACK deadline (10s)
             resolve_at_msg_count=3,  # one more than the published messages count
         )
         flow_control = types.FlowControl(max_messages=1)
@@ -416,13 +440,13 @@ class TestStreamingPull(object):
             subscription_path, callback, flow_control=flow_control
         )
 
-        # We expect to process the first two messages in 2 * 70 seconds, and
+        # We expect to process the first two messages in 2 * 13 seconds, and
         # any duplicate message that is re-sent by the backend in additional
-        # 70 seconds, totalling 210 seconds (+ overhead) --> if there have been
-        # no duplicates in 240 seconds, we can reasonably assume that there
+        # 13 seconds, totalling 39 seconds (+ overhead) --> if there have been
+        # no duplicates in 60 seconds, we can reasonably assume that there
         # won't be any.
         try:
-            callback.done_future.result(timeout=240)
+            callback.done_future.result(timeout=60)
         except exceptions.TimeoutError:
             # future timed out, because we received no excessive messages
             assert sorted(callback.seen_message_ids) == [1, 2]

@@ -123,7 +123,7 @@ class AccessEntry(object):
     """
 
     ENTITY_TYPES = frozenset(
-        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view"]
+        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view", "iamMember"]
     )
     """Allowed entity types."""
 
@@ -509,7 +509,7 @@ class Dataset(object):
 
     @property
     def description(self):
-        """Union[str, None]: Description of the dataset as set by the user
+        """Optional[str]: Description of the dataset as set by the user
         (defaults to :data:`None`).
 
         Raises:

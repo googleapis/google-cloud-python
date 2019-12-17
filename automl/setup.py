@@ -19,14 +19,14 @@ import setuptools
 
 name = "google-cloud-automl"
 description = "Cloud AutoML API client library"
-version = "0.8.0"
+version = "0.9.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
 ]
 extras = {
-    "pandas": ["pandas>=0.24.0"],
+    "pandas": ["pandas>=0.17.1"],
     "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
 }
 

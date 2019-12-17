@@ -29,6 +29,8 @@ from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
 from google.cloud.bigtable.client import Client
 from google.cloud.bigtable.column_family import MaxVersionsGCRule
+from google.cloud.bigtable.policy import Policy
+from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 from google.cloud.bigtable.row_filters import ApplyLabelFilter
 from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
 from google.cloud.bigtable.row_filters import RowFilterChain
@@ -687,6 +689,42 @@ class TestTableAdminAPI(unittest.TestCase):
         tables = Config.INSTANCE_DATA.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
+
+    def test_test_iam_permissions(self):
+        temp_table_id = "test-test-iam-policy-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        permissions = ["bigtable.tables.mutateRows", "bigtable.tables.readRows"]
+        permissions_allowed = temp_table.test_iam_permissions(permissions)
+        self.assertEqual(permissions, permissions_allowed)
+
+    def test_get_iam_policy(self):
+        temp_table_id = "test-get-iam-policy-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        policy = temp_table.get_iam_policy().to_api_repr()
+        self.assertEqual(policy["etag"], "ACAB")
+        self.assertEqual(policy["version"], 0)
+
+    def test_set_iam_policy(self):
+        temp_table_id = "test-set-iam-policy-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        new_policy = Policy()
+        service_account_email = Config.CLIENT._credentials.service_account_email
+        new_policy[BIGTABLE_ADMIN_ROLE] = [
+            Policy.service_account(service_account_email)
+        ]
+        policy_latest = temp_table.set_iam_policy(new_policy).to_api_repr()
+
+        self.assertEqual(policy_latest["bindings"][0]["role"], "roles/bigtable.admin")
+        self.assertIn(service_account_email, policy_latest["bindings"][0]["members"][0])
 
     def test_create_table_with_families(self):
         temp_table_id = "test-create-table-with-failies"
