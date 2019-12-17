@@ -1928,7 +1928,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -1973,6 +1973,45 @@ class Test_Blob(unittest.TestCase):
             },
         )
 
+    def test_get_iam_policy_w_requested_policy_version(self):
+        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
+        from google.api_core.iam import Policy
+
+        BLOB_NAME = "blob-name"
+        PATH = "/b/name/o/%s" % (BLOB_NAME,)
+        ETAG = "DEADBEEF"
+        VERSION = 3
+        OWNER1 = "user:phred@example.com"
+        OWNER2 = "group:cloud-logs@google.com"
+        RETURNED = {
+            "resourceId": PATH,
+            "etag": ETAG,
+            "version": VERSION,
+            "bindings": [{"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]}],
+        }
+        after = ({"status": http_client.OK}, RETURNED)
+        EXPECTED = {
+            binding["role"]: set(binding["members"]) for binding in RETURNED["bindings"]
+        }
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        policy = blob.get_iam_policy()
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "GET",
+                "path": "%s/iam" % (PATH,),
+                "query_params": {"optionsRequestedPolicyVersion": 3},
+                "_target_object": None,
+            },
+        )
+
     def test_get_iam_policy_w_user_project(self):
         from google.api_core.iam import Policy
 
@@ -1980,7 +2019,7 @@ class Test_Blob(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         RETURNED = {
             "resourceId": PATH,
             "etag": ETAG,
@@ -2023,7 +2062,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2074,7 +2113,7 @@ class Test_Blob(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         BINDINGS = []
         RETURNED = {"etag": ETAG, "version": VERSION, "bindings": BINDINGS}
         after = ({"status": http_client.OK}, RETURNED)
