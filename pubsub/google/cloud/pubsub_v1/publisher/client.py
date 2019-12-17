@@ -259,13 +259,21 @@ class Client(object):
             if self._is_stopped:
                 raise RuntimeError("Cannot resume publish on a stopped publisher.")
 
+            if not self._enable_message_ordering:
+                raise ValueError(
+                    "Cannot resume publish on a topic/ordering key if ordering "
+                    "is not enabled."
+                )
+
             sequencer_key = (topic, ordering_key)
             sequencer = self._sequencers.get(sequencer_key)
             if sequencer is None:
-                raise ValueError(
-                    "The topic/ordering key combination has not been seen before."
+                _LOGGER.debug(
+                    "Error: The topic/ordering key combination has not "
+                    "been seen before."
                 )
-            sequencer.unpause()
+            else:
+                sequencer.unpause()
 
     def publish(self, topic, data, ordering_key="", **attrs):
         """Publish a single message.

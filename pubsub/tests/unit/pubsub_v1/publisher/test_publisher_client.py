@@ -427,6 +427,16 @@ def test_resume_publish_no_sequencer_found():
     publisher_options = types.PublisherOptions(enable_message_ordering=True)
     client = publisher.Client(publisher_options, credentials=creds)
 
-    # Throw if a sequencer with the (topic, ordering_key) pair does not exist.
+    # Check no exception is thrown if a sequencer with the (topic, ordering_key)
+    # pair does not exist.
+    client.resume_publish("topic", "ord_key")
+
+
+def test_resume_publish_ordering_keys_not_enabled():
+    creds = mock.Mock(spec=credentials.Credentials)
+    publisher_options = types.PublisherOptions(enable_message_ordering=False)
+    client = publisher.Client(publisher_options, credentials=creds)
+
+    # Throw on calling resume_publish() when enable_message_ordering is False.
     with pytest.raises(ValueError):
         client.resume_publish("topic", "ord_key")
