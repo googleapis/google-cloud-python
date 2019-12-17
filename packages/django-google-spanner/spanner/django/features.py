@@ -28,6 +28,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'aggregation.test_filter_argument.FilteredAggregateTests.test_plain_annotate',
         'aggregation.tests.AggregateTestCase.test_annotate_basic',
         'aggregation.tests.AggregateTestCase.test_annotation',
+        'aggregation.tests.AggregateTestCase.test_filtering',
         'aggregation_regress.tests.AggregationTests.test_more_more',
         'aggregation_regress.tests.AggregationTests.test_more_more_more',
         'aggregation_regress.tests.AggregationTests.test_ticket_11293',
@@ -80,15 +81,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/issues/170
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
-        # DecimalField lookups crash:
-        # https://github.com/orijtech/spanner-orm/issues/168
-        'aggregation.tests.AggregateTestCase.test_filtering',
+        # filtering on annotation with Decimal value crashes:
+        # https://github.com/orijtech/spanner-orm/issues/210
         'annotations.tests.NonAggregateAnnotationTestCase.test_filter_decimal_annotation',
-        'lookup.test_decimalfield.DecimalFieldLookupTests.test_gt',
-        'lookup.test_decimalfield.DecimalFieldLookupTests.test_gte',
-        'lookup.test_decimalfield.DecimalFieldLookupTests.test_lt',
-        'lookup.test_decimalfield.DecimalFieldLookupTests.test_lte',
-        'model_fields.test_decimalfield.DecimalFieldTests.test_filter_with_strings',
         # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:

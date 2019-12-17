@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.db.models import DecimalField
 from django.db.models.lookups import (
-    Contains, EndsWith, IContains, IEndsWith, IExact, IRegex, IStartsWith,
-    Regex, StartsWith,
+    Contains, EndsWith, Exact, GreaterThan, GreaterThanOrEqual, IContains,
+    IEndsWith, IExact, IRegex, IStartsWith, LessThan, LessThanOrEqual, Regex,
+    StartsWith,
 )
 
 
@@ -78,6 +80,16 @@ def startswith_endswith(self, compiler, connection):
     return rhs_sql % lhs_sql, params
 
 
+def cast_param_to_float(self, compiler, connection):
+    sql, params = self.as_sql(compiler, connection)
+    # Cast to DecimaField lookup values to float because
+    # google.cloud.spanner_v1._helpers._make_value_pb() doesn't serialize
+    # decimal.Decimal.
+    if params and isinstance(self.lhs.output_field, DecimalField):
+        params[0] = float(params[0])
+    return sql, params
+
+
 def register_lookups():
     Contains.as_spanner = contains
     IContains.as_spanner = contains
@@ -88,3 +100,8 @@ def register_lookups():
     IEndsWith.as_spanner = startswith_endswith
     StartsWith.as_spanner = startswith_endswith
     IStartsWith.as_spanner = startswith_endswith
+    Exact.as_spanner = cast_param_to_float
+    GreaterThan.as_spanner = cast_param_to_float
+    GreaterThanOrEqual.as_spanner = cast_param_to_float
+    LessThan.as_spanner = cast_param_to_float
+    LessThanOrEqual.as_spanner = cast_param_to_float
