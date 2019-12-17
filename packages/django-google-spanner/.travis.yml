@@ -14,6 +14,8 @@ env:
         - DJANGO_TEST_APPS="lookup timezones"
         - DJANGO_TEST_APPS="model_fields"
         - DJANGO_TEST_APPS="queries.tests.SubqueryTests queries.test_qs_combinators"
+        - DJANGO_TEST_APPS="raw_query"
+
 python:
     - "3.7"
 cache: pip

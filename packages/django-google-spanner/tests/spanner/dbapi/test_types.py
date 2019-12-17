@@ -15,6 +15,7 @@
 import datetime
 from unittest import TestCase
 
+from spanner.dbapi.cursor import PeekIterator
 from spanner.dbapi.types import (
     Date, DateFromTicks, Time, TimeFromTicks, Timestamp, TimestampFromTicks,
 )
@@ -76,3 +77,18 @@ class TypesTests(TestCase):
         )
         matches = got in want
         self.assertTrue(matches, '`%s` not present in any of\n`%s`' % (got, want))
+
+    def test_PeekIterator(self):
+        cases = [
+            ('list', [1, 2, 3, 4, 6, 7], [1, 2, 3, 4, 6, 7]),
+            ('iter_from_list', iter([1, 2, 3, 4, 6, 7]), [1, 2, 3, 4, 6, 7]),
+            ('tuple', ('a', 12, 0xff,), ['a', 12, 0xff]),
+            ('iter_from_tuple', iter(('a', 12, 0xff,)), ['a', 12, 0xff]),
+            ('no_args', (), []),
+        ]
+
+        for name, data_in, want in cases:
+            with self.subTest(name=name):
+                pitr = PeekIterator(data_in)
+                got = list(pitr)
+                self.assertEqual(got, want)

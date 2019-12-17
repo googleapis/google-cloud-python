@@ -84,6 +84,8 @@ class Cursor(object):
         # ValueError("Specify 'param_types' when passing 'params'.").
         # See https://github.com/orijtech/spanner-orm/issues/35
         param_types = {} if args else None
+        self.__res = None
+
         # Classify whether this is a read-only SQL statement.
         try:
             classification = classify_stmt(sql)
@@ -196,8 +198,9 @@ class Cursor(object):
                 # many items returns a RuntimeError if .fetchone() is
                 # invoked and vice versa.
                 self.__res = res
-                self.__itr = iter(self.__res)
-
+                # Read the first element so that StreamedResult can
+                # return the metadata after a DQL statement. See issue #155.
+                self.__itr = PeekIterator(self.__res)
                 # Unfortunately, Spanner doesn't seem to send back
                 # information about the number of rows available.
                 self.__row_count = _UNSET_COUNT
@@ -293,6 +296,22 @@ class Column:
     def __repr__(self):
         return self.__str__()
 
+    def __getitem__(self, index):
+        if index == 0:
+            return self.name
+        elif index == 1:
+            return self.type_code
+        elif index == 2:
+            return self.display_size
+        elif index == 3:
+            return self.internal_size
+        elif index == 4:
+            return self.precision
+        elif index == 5:
+            return self.scale
+        elif index == 6:
+            return self.null_ok
+
     def __str__(self):
         rstr = ', '.join([field for field in [
             "name='%s'" % self.name,
@@ -305,3 +324,40 @@ class Column:
         ] if field])
 
         return 'Column(%s)' % rstr
+
+
+class PeekIterator(object):
+    """
+    PeekIterator peeks at the first element out of an iterator
+    for the sake of operations like auto-population of fields on reading
+    the first element.
+    """
+    def __init__(self, source):
+        itr_src = iter(source)
+
+        self.__iters = []
+        self.__index = 0
+
+        try:
+            head = next(itr_src)
+            # Restitch and prepare to read from multiple iterators.
+            self.__iters = [iter(itr) for itr in [[head], itr_src]]
+        except StopIteration:
+            pass
+
+    def __next__(self):
+        if self.__index >= len(self.__iters):
+            raise StopIteration
+
+        iterator = self.__iters[self.__index]
+        try:
+            head = next(iterator)
+        except StopIteration:
+            # That iterator has been exhausted, try with the next one.
+            self.__index += 1
+            return self.__next__()
+        else:
+            return head
+
+    def __iter__(self):
+        return self

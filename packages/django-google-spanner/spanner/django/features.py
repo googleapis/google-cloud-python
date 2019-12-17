@@ -49,6 +49,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.tests.SubqueryTests.test_related_sliced_subquery',
         'queries.tests.Ticket14056Tests.test_ticket_14056',
         'queries.tests.RelatedLookupTypeTests.test_values_queryset_lookup',
+        'raw_query.tests.RawQueryTests.test_annotations',
+        'raw_query.tests.RawQueryTests.test_get_item',
         'syndication_tests.tests.SyndicationFeedTest.test_rss2_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
@@ -59,10 +61,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',
-        # Cursor.description returns None on raw queries:
-        # https://github.com/orijtech/spanner-orm/issues/155
-        'timezones.tests.LegacyDatabaseTests.test_raw_sql',
-        'timezones.tests.NewDatabaseTests.test_raw_sql',
         # Unable to infer type for parameter:
         # https://github.com/orijtech/spanner-orm/issues/185
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime',
