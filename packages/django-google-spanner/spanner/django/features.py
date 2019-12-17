@@ -45,6 +45,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.test_bulk_update.BulkUpdateNoteTests.test_multiple_fields',
         'queries.test_bulk_update.BulkUpdateTests.test_inherited_fields',
         'queries.tests.Queries1Tests.test_ticket9411',
+        'queries.tests.SubqueryTests.test_related_sliced_subquery',
         'queries.tests.Ticket14056Tests.test_ticket_14056',
         'queries.tests.RelatedLookupTypeTests.test_values_queryset_lookup',
         'syndication_tests.tests.SyndicationFeedTest.test_rss2_feed',
@@ -109,4 +110,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Spanner doesn't supoprt the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
+        # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
+        # is unspecified unless these operators are used after ORDER BY."
+        'queries.tests.SubqueryTests.test_slice_subquery_and_query',
     )
