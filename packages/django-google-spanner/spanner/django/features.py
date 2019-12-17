@@ -92,9 +92,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'lookup.test_decimalfield.DecimalFieldLookupTests.test_lt',
         'lookup.test_decimalfield.DecimalFieldLookupTests.test_lte',
         'model_fields.test_decimalfield.DecimalFieldTests.test_filter_with_strings',
-        # annotating DateTimeField + DurationField crashes:
-        # https://github.com/orijtech/spanner-orm/issues/202
-        'annotations.tests.NonAggregateAnnotationTestCase.test_mixed_type_annotation_date_interval',
         # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:

@@ -6,6 +6,7 @@ from uuid import UUID
 
 from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
+from django.db.utils import DatabaseError
 from django.utils import timezone
 from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
@@ -172,6 +173,17 @@ class DatabaseOperations(BaseDatabaseOperations):
             # ...then add a day to get from Sunday to Monday.
             sql = 'TIMESTAMP_ADD(' + sql + ', INTERVAL 1 DAY)'
         return sql
+
+    def format_for_duration_arithmetic(self, sql):
+        return 'INTERVAL %s MICROSECOND' % sql
+
+    def combine_duration_expression(self, connector, sub_expressions):
+        if connector == '+':
+            return 'TIMESTAMP_ADD(' + ', '.join(sub_expressions) + ')'
+        elif connector == '-':
+            return 'TIMESTAMP_SUB(' + ', '.join(sub_expressions) + ')'
+        else:
+            raise DatabaseError('Invalid connector for timedelta: %s.' % connector)
 
     def lookup_cast(self, lookup_type, internal_type=None):
         # Cast text lookups to string to allow things like filter(x__contains=4)
