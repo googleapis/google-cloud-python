@@ -1882,10 +1882,35 @@ class Bucket(_PropertyMixin):
                                          policies containing conditions. This is to prevent
                                          client code that isn't aware of IAM conditions from
                                          interpreting and modifying policies incorrectly.
+                                         The service might return a policy with version lower
+                                         than the one that was requested, based on the
+                                         feature syntax in the policy fetched.
 
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
+
+        Example:
+        .. code-block:: python
+        from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
+
+        policy = bucket.get_iam_policy(requested_policy_version=3)
+
+        policy.version = 3
+
+        # Add a binding to the policy via it's bindings property
+        policy.bindings.append({
+            "role": STORAGE_OBJECT_VIEWER_ROLE,
+            "members": {"serviceAccount:account@project.iam.gserviceaccount.com", ...},
+            # Optional:
+            "condition": {
+                "title": "prefix"
+                "description": "Objects matching prefix"
+                "expression": "resource.name.startsWith(\"projects/project-name/buckets/bucket-name/objects/prefix\")"
+            }
+        })
+
+        bucket.set_iam_policy(policy)
         """
         client = self._require_client(client)
         query_params = {}
