@@ -1980,7 +1980,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 3
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         RETURNED = {
@@ -1998,7 +1998,7 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(client=client)
         blob = self._make_one(BLOB_NAME, bucket=bucket)
 
-        policy = blob.get_iam_policy()
+        policy = blob.get_iam_policy(requested_policy_version=3)
 
         kw = connection._requested
         self.assertEqual(len(kw), 1)
