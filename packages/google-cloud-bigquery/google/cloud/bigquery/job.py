@@ -3152,7 +3152,12 @@ class QueryJob(_AsyncJob):
 
     # If changing the signature of this method, make sure to apply the same
     # changes to table.RowIterator.to_arrow()
-    def to_arrow(self, progress_bar_type=None, bqstorage_client=None):
+    def to_arrow(
+        self,
+        progress_bar_type=None,
+        bqstorage_client=None,
+        create_bqstorage_client=False,
+    ):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -3185,6 +3190,16 @@ class QueryJob(_AsyncJob):
 
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.24.0
 
         Returns:
             pyarrow.Table
@@ -3199,12 +3214,20 @@ class QueryJob(_AsyncJob):
         ..versionadded:: 1.17.0
         """
         return self.result().to_arrow(
-            progress_bar_type=progress_bar_type, bqstorage_client=bqstorage_client
+            progress_bar_type=progress_bar_type,
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=create_bqstorage_client,
         )
 
     # If changing the signature of this method, make sure to apply the same
     # changes to table.RowIterator.to_dataframe()
-    def to_dataframe(self, bqstorage_client=None, dtypes=None, progress_bar_type=None):
+    def to_dataframe(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        progress_bar_type=None,
+        create_bqstorage_client=False,
+    ):
         """Return a pandas DataFrame from a QueryJob
 
         Args:
@@ -3237,6 +3260,16 @@ class QueryJob(_AsyncJob):
                 for details.
 
                 ..versionadded:: 1.11.0
+            create_bqstorage_client (bool):
+                **Beta Feature** Optional. If ``True``, create a BigQuery
+                Storage API client using the default API settings. The
+                BigQuery Storage API is a faster way to fetch rows from
+                BigQuery. See the ``bqstorage_client`` parameter for more
+                information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                ..versionadded:: 1.24.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
@@ -3250,6 +3283,7 @@ class QueryJob(_AsyncJob):
             bqstorage_client=bqstorage_client,
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
+            create_bqstorage_client=create_bqstorage_client,
         )
 
     def __iter__(self):
