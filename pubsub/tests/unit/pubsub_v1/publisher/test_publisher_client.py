@@ -26,9 +26,6 @@ from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
-# from google.cloud.pubsub_v1.publisher._sequencer.ordered_sequencer import (
-#    OrderedSequencer,
-# )
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 
 
