@@ -24,6 +24,7 @@ release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
+    "protobuf >= 3.4.0",
 ]
 extras = {
     "pandas": ["pandas>=0.17.1"],

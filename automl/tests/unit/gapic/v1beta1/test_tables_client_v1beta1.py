@@ -23,7 +23,8 @@ import pytest
 from google.api_core import exceptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud import automl_v1beta1
-from google.cloud.automl_v1beta1.proto import data_types_pb2
+from google.cloud.automl_v1beta1.proto import data_types_pb2, data_items_pb2
+from google.protobuf import struct_pb2
 
 PROJECT = "project"
 REGION = "region"
@@ -1116,9 +1117,10 @@ class TestTablesClient(object):
         model.configure_mock(tables_model_metadata=model_metadata, name="my_model")
         client = self.tables_client({"get_model.return_value": model}, {})
         client.predict(["1"], model_name="my_model")
-        client.prediction_client.predict.assert_called_with(
-            "my_model", {"row": {"values": [{"string_value": "1"}]}}, None
+        payload = data_items_pb2.ExamplePayload(
+            row=data_items_pb2.Row(values=[struct_pb2.Value(string_value="1")])
         )
+        client.prediction_client.predict.assert_called_with("my_model", payload, None)
 
     def test_predict_from_dict(self):
         data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
@@ -1131,11 +1133,15 @@ class TestTablesClient(object):
         model.configure_mock(tables_model_metadata=model_metadata, name="my_model")
         client = self.tables_client({"get_model.return_value": model}, {})
         client.predict({"a": "1", "b": "2"}, model_name="my_model")
-        client.prediction_client.predict.assert_called_with(
-            "my_model",
-            {"row": {"values": [{"string_value": "1"}, {"string_value": "2"}]}},
-            None,
+        payload = data_items_pb2.ExamplePayload(
+            row=data_items_pb2.Row(
+                values=[
+                    struct_pb2.Value(string_value="1"),
+                    struct_pb2.Value(string_value="2"),
+                ]
+            )
         )
+        client.prediction_client.predict.assert_called_with("my_model", payload, None)
 
     def test_predict_from_dict_with_feature_importance(self):
         data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
@@ -1150,10 +1156,16 @@ class TestTablesClient(object):
         client.predict(
             {"a": "1", "b": "2"}, model_name="my_model", feature_importance=True
         )
+        payload = data_items_pb2.ExamplePayload(
+            row=data_items_pb2.Row(
+                values=[
+                    struct_pb2.Value(string_value="1"),
+                    struct_pb2.Value(string_value="2"),
+                ]
+            )
+        )
         client.prediction_client.predict.assert_called_with(
-            "my_model",
-            {"row": {"values": [{"string_value": "1"}, {"string_value": "2"}]}},
-            {"feature_importance": "true"},
+            "my_model", payload, {"feature_importance": "true"}
         )
 
     def test_predict_from_dict_missing(self):
@@ -1167,18 +1179,32 @@ class TestTablesClient(object):
         model.configure_mock(tables_model_metadata=model_metadata, name="my_model")
         client = self.tables_client({"get_model.return_value": model}, {})
         client.predict({"a": "1"}, model_name="my_model")
-        client.prediction_client.predict.assert_called_with(
-            "my_model",
-            {"row": {"values": [{"string_value": "1"}, {"null_value": 0}]}},
-            None,
+        payload = data_items_pb2.ExamplePayload(
+            row=data_items_pb2.Row(
+                values=[
+                    struct_pb2.Value(string_value="1"),
+                    struct_pb2.Value(null_value=struct_pb2.NullValue.NULL_VALUE),
+                ]
+            )
         )
+        client.prediction_client.predict.assert_called_with("my_model", payload, None)
 
     def test_predict_all_types(self):
         float_type = mock.Mock(type_code=data_types_pb2.FLOAT64)
         timestamp_type = mock.Mock(type_code=data_types_pb2.TIMESTAMP)
         string_type = mock.Mock(type_code=data_types_pb2.STRING)
-        array_type = mock.Mock(type_code=data_types_pb2.ARRAY)
-        struct_type = mock.Mock(type_code=data_types_pb2.STRUCT)
+        array_type = mock.Mock(
+            type_code=data_types_pb2.ARRAY,
+            list_element_type=mock.Mock(type_code=data_types_pb2.FLOAT64),
+        )
+        struct = data_types_pb2.StructType()
+        struct.fields["a"].CopyFrom(
+            data_types_pb2.DataType(type_code=data_types_pb2.CATEGORY)
+        )
+        struct.fields["b"].CopyFrom(
+            data_types_pb2.DataType(type_code=data_types_pb2.CATEGORY)
+        )
+        struct_type = mock.Mock(type_code=data_types_pb2.STRUCT, struct_type=struct)
         category_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
         column_spec_float = mock.Mock(display_name="float", data_type=float_type)
         column_spec_timestamp = mock.Mock(
@@ -1211,29 +1237,33 @@ class TestTablesClient(object):
                 "timestamp": "EST",
                 "string": "text",
                 "array": [1],
-                "struct": {"a": "b"},
+                "struct": {"a": "label_a", "b": "label_b"},
                 "category": "a",
                 "null": None,
             },
             model_name="my_model",
         )
-        client.prediction_client.predict.assert_called_with(
-            "my_model",
-            {
-                "row": {
-                    "values": [
-                        {"number_value": 1.0},
-                        {"string_value": "EST"},
-                        {"string_value": "text"},
-                        {"list_value": [1]},
-                        {"struct_value": {"a": "b"}},
-                        {"string_value": "a"},
-                        {"null_value": 0},
-                    ]
-                }
-            },
-            None,
+        struct = struct_pb2.Struct()
+        struct.fields["a"].CopyFrom(struct_pb2.Value(string_value="label_a"))
+        struct.fields["b"].CopyFrom(struct_pb2.Value(string_value="label_b"))
+        payload = data_items_pb2.ExamplePayload(
+            row=data_items_pb2.Row(
+                values=[
+                    struct_pb2.Value(number_value=1.0),
+                    struct_pb2.Value(string_value="EST"),
+                    struct_pb2.Value(string_value="text"),
+                    struct_pb2.Value(
+                        list_value=struct_pb2.ListValue(
+                            values=[struct_pb2.Value(number_value=1.0)]
+                        )
+                    ),
+                    struct_pb2.Value(struct_value=struct),
+                    struct_pb2.Value(string_value="a"),
+                    struct_pb2.Value(null_value=struct_pb2.NullValue.NULL_VALUE),
+                ]
+            )
         )
+        client.prediction_client.predict.assert_called_with("my_model", payload, None)
 
     def test_predict_from_array_missing(self):
         data_type = mock.Mock(type_code=data_types_pb2.CATEGORY)
