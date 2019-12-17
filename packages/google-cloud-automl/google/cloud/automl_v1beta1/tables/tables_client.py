@@ -104,6 +104,7 @@ class TablesClient(object):
         else:
             client_info_.user_agent = user_agent
             client_info_.gapic_version = version
+        kwargs.pop("client_info", None)
 
         if client is None:
             self.auto_ml_client = gapic.auto_ml_client.AutoMlClient(
