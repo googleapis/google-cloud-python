@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.10.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.9.0...v1.10.0) (2019-12-18)
+
+
+### Features
+
+* send quota project id in x-goog-user-project for OAuth2 credentials ([#412](https://www.github.com/googleapis/google-auth-library-python/issues/412)) ([32d71a5](https://www.github.com/googleapis/google-auth-library-python/commit/32d71a5858435af0818a705b754404882bb7bb9e)), closes [#400](https://www.github.com/googleapis/google-auth-library-python/issues/400)
+
 ## [1.9.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.8.2...v1.9.0) (2019-12-12)
 
 
