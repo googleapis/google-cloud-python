@@ -150,7 +150,7 @@ class Batch(Connection):
         self._requests = []
         self._target_objects = []
 
-    def _do_request(self, method, url, headers, data, target_object, timeout):
+    def _do_request(self, method, url, headers, data, target_object, timeout=None):
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -188,7 +188,7 @@ class Batch(Connection):
             raise ValueError(
                 "Too many deferred requests (max %d)" % self._MAX_BATCH_SIZE
             )
-        self._requests.append((method, url, headers, data))
+        self._requests.append((method, url, headers, data, timeout))
         result = _FutureDict()
         self._target_objects.append(target_object)
         if target_object is not None:
@@ -207,7 +207,7 @@ class Batch(Connection):
 
         multi = MIMEMultipart()
 
-        for method, uri, headers, body in self._requests:
+        for method, uri, headers, body, timeout in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)
 
@@ -222,7 +222,7 @@ class Batch(Connection):
 
         # Strip off redundant header text
         _, body = payload.split("\n\n", 1)
-        return dict(multi._headers), body
+        return dict(multi._headers), body, timeout
 
     def _finish_futures(self, responses):
         """Apply all the batch responses to the futures created.
@@ -258,15 +258,16 @@ class Batch(Connection):
         :rtype: list of tuples
         :returns: one ``(headers, payload)`` tuple per deferred request.
         """
-        headers, body = self._prepare_batch_request()
+        headers, body, timeout = self._prepare_batch_request()
 
         url = "%s/batch/storage/v1" % self.API_BASE_URL
 
         # Use the private ``_base_connection`` rather than the property
         # ``_connection``, since the property may be this
         # current batch.
+
         response = self._client._base_connection._make_request(
-            "POST", url, data=body, headers=headers
+            "POST", url, data=body, headers=headers, timeout=timeout
         )
         responses = list(_unpack_batch_response(response))
         self._finish_futures(responses)

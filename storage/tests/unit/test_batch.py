@@ -133,7 +133,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(connection)
         target = _MockObject()
 
-        response = batch._make_request("GET", url, target_object=target)
+        response = batch._make_request("GET", url, target_object=target, timeout=None)
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
@@ -147,10 +147,11 @@ class TestBatch(unittest.TestCase):
         # Check the queued request
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, request_timeout = request
         self.assertEqual(request_method, "GET")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
+        self.assertIsNone(request_timeout)
 
     def test__make_request_POST_normal(self):
         from google.cloud.storage.batch import _FutureDict
@@ -163,7 +164,7 @@ class TestBatch(unittest.TestCase):
         target = _MockObject()
 
         response = batch._make_request(
-            "POST", url, data={"foo": 1}, target_object=target
+            "POST", url, data={"foo": 1}, target_object=target, timeout=None
         )
 
         self.assertEqual(response.status_code, 204)
@@ -174,10 +175,11 @@ class TestBatch(unittest.TestCase):
         http.request.assert_not_called()
 
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, request_timeout = request
         self.assertEqual(request_method, "POST")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
+        self.assertIsNone(request_timeout)
 
     def test__make_request_PATCH_normal(self):
         from google.cloud.storage.batch import _FutureDict
@@ -190,7 +192,7 @@ class TestBatch(unittest.TestCase):
         target = _MockObject()
 
         response = batch._make_request(
-            "PATCH", url, data={"foo": 1}, target_object=target
+            "PATCH", url, data={"foo": 1}, target_object=target, timeout=None
         )
 
         self.assertEqual(response.status_code, 204)
@@ -201,10 +203,11 @@ class TestBatch(unittest.TestCase):
         http.request.assert_not_called()
 
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, request_timeout = request
         self.assertEqual(request_method, "PATCH")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
+        self.assertIsNone(request_timeout)
 
     def test__make_request_DELETE_normal(self):
         from google.cloud.storage.batch import _FutureDict
@@ -214,8 +217,11 @@ class TestBatch(unittest.TestCase):
         connection = _Connection(http=http)
         batch = self._make_one(connection)
         target = _MockObject()
+        timeout = 1
 
-        response = batch._make_request("DELETE", url, target_object=target)
+        response = batch._make_request(
+            "DELETE", url, target_object=target, timeout=timeout
+        )
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
@@ -228,22 +234,22 @@ class TestBatch(unittest.TestCase):
         # Check the queued request
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, request_timeout = request
         self.assertEqual(request_method, "DELETE")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
+        self.assertEqual(request_timeout, timeout)
 
     def test__make_request_POST_too_many_requests(self):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
         batch = self._make_one(connection)
-
         batch._MAX_BATCH_SIZE = 1
-        batch._requests.append(("POST", url, {}, {"bar": 2}))
+        batch._requests.append(("POST", url, {}, {"bar": 2}, 1))
 
         with self.assertRaises(ValueError):
-            batch._make_request("POST", url, data={"foo": 1})
+            batch._make_request("POST", url, data={"foo": 1}, timeout=1)
 
     def test_finish_empty(self):
         http = _make_requests_session([])
@@ -340,7 +346,11 @@ class TestBatch(unittest.TestCase):
 
         expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+            method="POST",
+            url=expected_url,
+            headers=mock.ANY,
+            data=mock.ANY,
+            timeout=mock.ANY,
         )
 
         request_info = self._get_mutlipart_request(http)
@@ -369,7 +379,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(client)
         batch.API_BASE_URL = "http://api.example.com"
 
-        batch._requests.append(("GET", url, {}, None))
+        batch._requests.append(("GET", url, {}, None, 1))
         with self.assertRaises(ValueError):
             batch.finish()
 
@@ -406,7 +416,11 @@ class TestBatch(unittest.TestCase):
 
         expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+            method="POST",
+            url=expected_url,
+            headers=mock.ANY,
+            data=mock.ANY,
+            timeout=mock.ANY,
         )
 
         _, request_body, _, boundary = self._get_mutlipart_request(http)
@@ -422,7 +436,7 @@ class TestBatch(unittest.TestCase):
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._make_one(client)
-        batch._requests.append(("POST", url, {}, {"foo": 1, "bar": 2}))
+        batch._requests.append(("POST", url, {}, {"foo": 1, "bar": 2}, 1))
 
         with self.assertRaises(ValueError):
             batch.finish()
@@ -620,8 +634,10 @@ class _Connection(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-    def _make_request(self, method, url, data=None, headers=None):
-        return self.http.request(url=url, method=method, headers=headers, data=data)
+    def _make_request(self, method, url, data=None, headers=None, timeout=None):
+        return self.http.request(
+            url=url, method=method, headers=headers, data=data, timeout=timeout
+        )
 
 
 class _MockObject(object):
