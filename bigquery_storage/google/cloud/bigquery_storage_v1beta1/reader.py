@@ -43,6 +43,16 @@ from google.cloud.bigquery_storage_v1beta1 import types
 
 _STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
 
+# The Google API endpoint can unexpectedly close long-running HTTP/2 streams.
+# Unfortunately, this condition is surfaced to the caller as an internal error
+# by gRPC. We don't want to resume on all internal errors, so instead we look
+# for error message that we know are caused by problems that are safe to
+# reconnect.
+_STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
+    # See: https://issuetracker.google.com/143292803
+    "unexpected EOS on DATA frame",
+)
+
 _FASTAVRO_REQUIRED = (
     "fastavro is required to parse ReadRowResponse messages with Avro bytes."
 )
@@ -131,6 +141,14 @@ class ReadRowsStream(object):
                     yield message
 
                 return  # Made it through the whole stream.
+            except google.api_core.exceptions.InternalServerError as exc:
+                resumable_error = False
+                for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES:
+                    resumable_error = (
+                        resumable_error or resumable_message in exc.message
+                    )
+                if not resumable_error:
+                    raise
             except _STREAM_RESUMPTION_EXCEPTIONS:
                 # Transient error, so reconnect to the stream.
                 pass
