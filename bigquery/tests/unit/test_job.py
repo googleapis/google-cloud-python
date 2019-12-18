@@ -3923,7 +3923,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         call_args = fake_reload.call_args
         self.assertEqual(call_args.kwargs.get("timeout"), 42)
 
-    def test_done_w_timeout_and_internal_api_timeout(self):
+    def test_done_w_timeout_and_shorter_internal_api_timeout(self):
+        from google.cloud.bigquery.job import _TIMEOUT_BUFFER_SECS
+        from google.cloud.bigquery.job import _SERVER_TIMEOUT_MARGIN_SECS
+
         client = _make_client(project=self.PROJECT)
         resource = self._make_resource(ended=False)
         job = self._get_target_class().from_api_repr(resource, client)
@@ -3935,16 +3938,39 @@ class TestQueryJob(unittest.TestCase, _Base):
             job.done(timeout=42)
 
         # The expected timeout used is the job's own done_timeout minus a
-        # fixed amount (bigquery.job._TIMEOUT_BUFFER_SECS), which is smaller
-        # than the given timeout of 42 seconds.
-        expected_timeout = 8.7
+        # fixed amount (bigquery.job._TIMEOUT_BUFFER_SECS) increased by the
+        # safety margin on top of server-side processing timeout - that's
+        # because that final number is smaller than the given timeout (42 seconds).
+        expected_timeout = 8.8 - _TIMEOUT_BUFFER_SECS + _SERVER_TIMEOUT_MARGIN_SECS
 
         fake_get_results.assert_called_once()
         call_args = fake_get_results.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), expected_timeout)
+        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
 
         call_args = fake_reload.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), expected_timeout)
+        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
+
+    def test_done_w_timeout_and_longer_internal_api_timeout(self):
+        client = _make_client(project=self.PROJECT)
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        job._done_timeout = 8.8
+
+        with mock.patch.object(
+            client, "_get_query_results"
+        ) as fake_get_results, mock.patch.object(job, "reload") as fake_reload:
+            job.done(timeout=5.5)
+
+        # The expected timeout used is simply the given timeout, as the latter
+        # is shorter than the job's internal done timeout.
+        expected_timeout = 5.5
+
+        fake_get_results.assert_called_once()
+        call_args = fake_get_results.call_args
+        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
+
+        call_args = fake_reload.call_args
+        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
 
     def test_query_plan(self):
         from google.cloud._helpers import _RFC3339_MICROS

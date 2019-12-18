@@ -54,6 +54,7 @@ from google.cloud.bigquery.table import TimePartitioning
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
+_SERVER_TIMEOUT_MARGIN_SECS = 1.0
 _CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
@@ -3031,11 +3032,19 @@ class QueryJob(_AsyncJob):
             self._done_timeout = max(0, self._done_timeout)
             timeout_ms = int(api_timeout * 1000)
 
+        # If the server-side processing timeout (timeout_ms) is specified and
+        # would be picked as the total request timeout, we want to add a small
+        # margin to it - we don't want to timeout the connection just as the
+        # server-side processing might have completed, but instead slightly
+        # after the server-side deadline.
+        # However, if `timeout` is specified, and is shorter than the adjusted
+        # server timeout, the former prevails.
         if timeout_ms is not None and timeout_ms > 0:
+            server_timeout_with_margin = timeout_ms / 1000 + _SERVER_TIMEOUT_MARGIN_SECS
             if timeout is not None:
-                timeout = min(timeout_ms / 1000, timeout)
+                timeout = min(server_timeout_with_margin, timeout)
             else:
-                timeout = timeout_ms / 1000
+                timeout = server_timeout_with_margin
 
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
