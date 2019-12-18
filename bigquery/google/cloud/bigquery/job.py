@@ -766,15 +766,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             self.reload(retry=retry)
         return self.state == _DONE_STATE
 
-    def result(self, timeout=None, retry=DEFAULT_RETRY):
+    def result(self, retry=DEFAULT_RETRY, timeout=None):
         """Start the job and wait for it to complete and get the result.
 
         Args:
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
             timeout (float):
                 How long (in seconds) to wait for job to complete before raising
                 a :class:`concurrent.futures.TimeoutError`.
-
-            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
         Returns:
             _AsyncJob: This instance.
@@ -3125,19 +3124,21 @@ class QueryJob(_AsyncJob):
             raise
 
     def result(
-        self, timeout=None, page_size=None, retry=DEFAULT_RETRY, max_results=None
+        self, page_size=None, max_results=None, retry=DEFAULT_RETRY, timeout=None
     ):
         """Start the job and wait for it to complete and get the result.
 
         Args:
-            timeout (float):
-                How long (in seconds) to wait for job to complete before
-                raising a :class:`concurrent.futures.TimeoutError`.
-            page_size (int):
-                (Optional) The maximum number of rows in each page of results
-                from this request. Non-positive values are ignored.
-            retry (google.api_core.retry.Retry):
-                (Optional) How to retry the call that retrieves rows.
+            page_size (Optional[int]):
+                The maximum number of rows in each page of results from this
+                request. Non-positive values are ignored.
+            max_results (Optional[int]):
+                The maximum total number of rows from this request.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the call that retrieves rows.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
