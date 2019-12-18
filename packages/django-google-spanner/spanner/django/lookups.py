@@ -82,11 +82,17 @@ def startswith_endswith(self, compiler, connection):
 
 def cast_param_to_float(self, compiler, connection):
     sql, params = self.as_sql(compiler, connection)
-    # Cast to DecimaField lookup values to float because
-    # google.cloud.spanner_v1._helpers._make_value_pb() doesn't serialize
-    # decimal.Decimal.
-    if params and isinstance(self.lhs.output_field, DecimalField):
-        params[0] = float(params[0])
+    if params:
+        # Cast to DecimaField lookup values to float because
+        # google.cloud.spanner_v1._helpers._make_value_pb() doesn't serialize
+        # decimal.Decimal.
+        if isinstance(self.lhs.output_field, DecimalField):
+            params[0] = float(params[0])
+        # Cast remote field lookups that must be integer but come in as string.
+        elif (hasattr(self.lhs.output_field, 'target_field') and
+                self.lhs.output_field.target_field.rel_db_type(connection) == 'INT64' and
+                isinstance(params[0], str)):
+            params[0] = int(params[0])
     return sql, params
 
 

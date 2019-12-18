@@ -21,6 +21,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
         'model_fields.test_booleanfield.ValidationTest.test_nullbooleanfield_blank',
+        'queries.test_bulk_update.BulkUpdateNoteTests.test_unsaved_models',
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         # Tests that assume a serial pk.
@@ -106,4 +107,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
         # is unspecified unless these operators are used after ORDER BY."
         'queries.tests.SubqueryTests.test_slice_subquery_and_query',
+        # Cloud Spanner limit: "Number of functions exceeds the maximum
+        # allowed limit of 1000."
+        'queries.test_bulk_update.BulkUpdateTests.test_large_batch',
     )

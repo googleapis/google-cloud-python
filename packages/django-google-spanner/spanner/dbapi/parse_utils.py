@@ -436,6 +436,8 @@ def infer_param_types(params, param_types):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.TIMESTAMP)
         elif isinstance(value, DateStr):
             param_types = insert_key_in_param_types(key, param_types, spanner.param_types.DATE)
+        elif isinstance(value, str):
+            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.STRING)
 
     return param_types
 

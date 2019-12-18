@@ -13,7 +13,7 @@ env:
         - DJANGO_TEST_APPS="dates datetimes"
         - DJANGO_TEST_APPS="lookup timezones"
         - DJANGO_TEST_APPS="model_fields"
-        - DJANGO_TEST_APPS="queries.tests.SubqueryTests queries.test_qs_combinators"
+        - DJANGO_TEST_APPS="queries.tests.SubqueryTests queries.test_bulk_update queries.test_qs_combinators"
         - DJANGO_TEST_APPS="raw_query"
 
 python:

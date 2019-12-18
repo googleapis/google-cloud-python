@@ -14,7 +14,7 @@
 
 from unittest import TestCase
 
-from google.cloud import spanner_v1 as spanner
+from google.cloud.spanner_v1 import param_types
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
@@ -328,58 +328,68 @@ class ParseUtilsTests(TestCase):
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': '2019-12-05', 'd1': 10.39},
                 None,
-                {'a1': spanner.param_types.INT64, 'd1': spanner.param_types.FLOAT64},
+                {
+                    'a1': param_types.INT64,
+                    'b1': param_types.STRING,
+                    'c1': param_types.STRING,
+                    'd1': param_types.FLOAT64,
+                },
             ),
             (
                 {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z'), 'c1': '2019-12-05'},
                 None,
-                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+                {'a1': param_types.INT64, 'b1': param_types.TIMESTAMP, 'c1': param_types.STRING},
             ),
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': DateStr('2019-12-05')},
                 None,
-                {'a1': spanner.param_types.INT64, 'c1': spanner.param_types.DATE},
+                {'a1': param_types.INT64, 'b1': param_types.STRING, 'c1': param_types.DATE},
             ),
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z'},
                 {},
-                {'a1': spanner.param_types.INT64},
+                {'a1': param_types.INT64, 'b1': param_types.STRING},
             ),
             (
                 {'a1': 10, 'b1': TimestampStr('2005-08-30T01:01:01.000001Z'), 'c1': DateStr('2005-08-30')},
                 {},
-                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP, 'c1': spanner.param_types.DATE},
+                {'a1': param_types.INT64, 'b1': param_types.TIMESTAMP, 'c1': param_types.DATE},
             ),
-            ({'a1': 10, 'b1': 'aaaaa08-30T01:01:01.000001Z'}, None, {'a1': spanner.param_types.INT64}),
+            (
+                {'a1': 10, 'b1': 'aaaaa08-30T01:01:01.000001Z'},
+                None,
+                {'a1': param_types.INT64, 'b1': param_types.STRING},
+            ),
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001', 't1': True, 't2': False, 'f1': 99e9},
                 None,
                 {
-                    'a1': spanner.param_types.INT64,
-                    't1': spanner.param_types.BOOL,
-                    't2': spanner.param_types.BOOL,
-                    'f1': spanner.param_types.FLOAT64,
+                    'a1': param_types.INT64,
+                    'b1': param_types.STRING,
+                    't1': param_types.BOOL,
+                    't2': param_types.BOOL,
+                    'f1': param_types.FLOAT64,
                 },
             ),
             (
                 {'a1': 10, 'b1': '2019-11-26T02:55:41.000000Z'},
                 None,
-                {'a1': spanner.param_types.INT64},
+                {'a1': param_types.INT64, 'b1': param_types.STRING},
             ),
             (
                 {'a1': 10, 'b1': TimestampStr('2019-11-26T02:55:41.000000Z')},
                 None,
-                {'a1': spanner.param_types.INT64, 'b1': spanner.param_types.TIMESTAMP},
+                {'a1': param_types.INT64, 'b1': param_types.TIMESTAMP},
             ),
-            ({'a1': 10, 'b1': None}, None, {'a1': spanner.param_types.INT64}),
+            ({'a1': 10, 'b1': None}, None, {'a1': param_types.INT64}),
             (None, None, None),
             (None, {}, {}),
             (None, {'a1': str}, {'a1': str}),
         ]
 
-        for i, (params, param_types, want_param_types) in enumerate(cases):
+        for i, (params, param_types_, want_param_types) in enumerate(cases):
             with self.subTest(i=i):
-                got_param_types = infer_param_types(params, param_types)
+                got_param_types = infer_param_types(params, param_types_)
                 self.assertEqual(got_param_types, want_param_types)
 
     def test_ensure_where_clause(self):
