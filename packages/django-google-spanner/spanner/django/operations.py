@@ -201,3 +201,15 @@ class DatabaseOperations(BaseDatabaseOperations):
         return re.escape(str(x))
 
     prep_for_iexact_query = prep_for_like_query
+
+    def no_limit_value(self):
+        """The largest INT64: (2**63) - 1"""
+        return 9223372036854775807
+
+    def _get_limit_offset_params(self, low_mark, high_mark):
+        limit, offset = super()._get_limit_offset_params(low_mark, high_mark)
+        if offset and limit == self.connection.ops.no_limit_value():
+            # Subtract offset from the limit to avoid an INT64 overflow error
+            # from Cloud Spanner.
+            limit -= offset
+        return limit, offset
