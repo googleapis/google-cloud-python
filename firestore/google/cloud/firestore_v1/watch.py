@@ -59,7 +59,6 @@ GRPC_STATUS_CODE = {
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RECOVERABLE_STREAM_EXCEPTIONS = (
     exceptions.Unknown,
-    exceptions.DeadlineExceeded,
     exceptions.ResourceExhausted,
     exceptions.InternalServerError,
     exceptions.ServiceUnavailable,
