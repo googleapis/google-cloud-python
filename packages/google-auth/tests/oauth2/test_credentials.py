@@ -15,6 +15,8 @@
 import datetime
 import json
 import os
+import pickle
+import sys
 
 import mock
 import pytest
@@ -294,6 +296,33 @@ class TestCredentials(object):
         # expired.)
         assert creds.valid
 
+    def test_apply_with_quota_project_id(self):
+        creds = credentials.Credentials(
+            token="token",
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            quota_project_id="quota-project-123",
+        )
+
+        headers = {}
+        creds.apply(headers)
+        assert headers["x-goog-user-project"] == "quota-project-123"
+
+    def test_apply_with_no_quota_project_id(self):
+        creds = credentials.Credentials(
+            token="token",
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+        )
+
+        headers = {}
+        creds.apply(headers)
+        assert "x-goog-user-project" not in headers
+
     def test_from_authorized_user_info(self):
         info = AUTH_USER_INFO.copy()
 
@@ -355,3 +384,40 @@ class TestCredentials(object):
         assert json_asdict.get("client_id") == creds.client_id
         assert json_asdict.get("scopes") == creds.scopes
         assert json_asdict.get("client_secret") is None
+
+    def test_pickle_and_unpickle(self):
+        creds = self.make_credentials()
+        unpickled = pickle.loads(pickle.dumps(creds))
+
+        # make sure attributes aren't lost during pickling
+        assert list(creds.__dict__).sort() == list(unpickled.__dict__).sort()
+
+        for attr in list(creds.__dict__):
+            assert getattr(creds, attr) == getattr(unpickled, attr)
+
+    def test_pickle_with_missing_attribute(self):
+        creds = self.make_credentials()
+
+        # remove an optional attribute before pickling
+        # this mimics a pickle created with a previous class definition with
+        # fewer attributes
+        del creds.__dict__["_quota_project_id"]
+
+        unpickled = pickle.loads(pickle.dumps(creds))
+
+        # Attribute should be initialized by `__setstate__`
+        assert unpickled.quota_project_id is None
+
+    # pickles are not compatible across versions
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason="pickle file can only be loaded with Python >= 3.5",
+    )
+    def test_unpickle_old_credentials_pickle(self):
+        # make sure a credentials file pickled with an older
+        # library version (google-auth==1.5.1) can be unpickled
+        with open(
+            os.path.join(DATA_DIR, "old_oauth_credentials_py3.pickle"), "rb"
+        ) as f:
+            credentials = pickle.load(f)
+            assert credentials.quota_project_id is None

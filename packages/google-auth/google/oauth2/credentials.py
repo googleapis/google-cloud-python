@@ -58,6 +58,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         client_id=None,
         client_secret=None,
         scopes=None,
+        quota_project_id=None,
     ):
         """
         Args:
@@ -81,6 +82,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                 token if refresh information is provided (e.g. The refresh
                 token scopes are a superset of this or contain a wild card
                 scope like 'https://www.googleapis.com/auth/any-api').
+            quota_project_id (Optional[str]): The project ID used for quota and billing.
+                This project may be different from the project used to
+                create the credentials.
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -90,6 +94,27 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         self._token_uri = token_uri
         self._client_id = client_id
         self._client_secret = client_secret
+        self._quota_project_id = quota_project_id
+
+    def __getstate__(self):
+        """A __getstate__ method must exist for the __setstate__ to be called
+        This is identical to the default implementation.
+        See https://docs.python.org/3.7/library/pickle.html#object.__setstate__
+        """
+        return self.__dict__
+
+    def __setstate__(self, d):
+        """Credentials pickled with older versions of the class do not have
+        all the attributes."""
+        self.token = d.get("token")
+        self.expiry = d.get("expiry")
+        self._refresh_token = d.get("_refresh_token")
+        self._id_token = d.get("_id_token")
+        self._scopes = d.get("_scopes")
+        self._token_uri = d.get("_token_uri")
+        self._client_id = d.get("_client_id")
+        self._client_secret = d.get("_client_secret")
+        self._quota_project_id = d.get("_quota_project_id")
 
     @property
     def refresh_token(self):
@@ -122,6 +147,11 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
     def client_secret(self):
         """Optional[str]: The OAuth 2.0 client secret."""
         return self._client_secret
+
+    @property
+    def quota_project_id(self):
+        """Optional[str]: The project to use for quota and billing purposes."""
+        return self._quota_project_id
 
     @property
     def requires_scopes(self):
@@ -169,6 +199,12 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                     )
                 )
 
+    @_helpers.copy_docstring(credentials.Credentials)
+    def apply(self, headers, token=None):
+        super(Credentials, self).apply(headers, token=token)
+        if self.quota_project_id is not None:
+            headers["x-goog-user-project"] = self.quota_project_id
+
     @classmethod
     def from_authorized_user_info(cls, info, scopes=None):
         """Creates a Credentials instance from parsed authorized user info.
@@ -202,6 +238,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
             scopes=scopes,
             client_id=info["client_id"],
             client_secret=info["client_secret"],
+            quota_project_id=info.get(
+                "quota_project_id"
+            ),  # quota project may not exist
         )
 
     @classmethod
