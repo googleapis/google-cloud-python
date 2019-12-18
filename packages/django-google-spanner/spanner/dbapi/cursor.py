@@ -165,7 +165,14 @@ class Cursor(object):
     def __commit_preceding_batch(self, op=None):
         last_op = self.__last_op
         self.__last_op = op
-        self.__db_handle.commit(last_op)
+        if op is OP_DQL:
+            # Unconditionally flush all operations
+            # before any DQL runs to ensure that
+            # any stale batched data that hasn't yet been uploaded
+            # to Cloud Spanner doesn't linger. See issue #213.
+            return self.__db_handle.commit(OP_DQL)
+        else:
+            return self.__db_handle.commit(last_op)
 
     def __handle_DQL(self, sql, params, param_types=None):
         self.__commit_preceding_batch(OP_DQL)
