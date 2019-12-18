@@ -23,6 +23,7 @@ from google.cloud.bigtable.app_profile import AppProfile
 
 from google.protobuf import field_mask_pb2
 
+from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.types import instance_pb2
 
 from google.api_core.exceptions import NotFound
@@ -434,7 +435,7 @@ class Instance(object):
         """
         self._client.instance_admin_client.delete_instance(name=self.name)
 
-    def get_iam_policy(self):
+    def get_iam_policy(self, requested_policy_version=None):
         """Gets the access control policy for an instance resource.
 
         For example:
@@ -443,11 +444,31 @@ class Instance(object):
             :start-after: [START bigtable_get_iam_policy]
             :end-before: [END bigtable_get_iam_policy]
 
+        :type requested_policy_version: int or ``NoneType``
+        :param requested_policy_version: Optional. The version of IAM policies to request.
+                                         If a policy with a condition is requested without
+                                         setting this, the server will return an error.
+                                         This must be set to a value of 3 to retrieve IAM
+                                         policies containing conditions. This is to prevent
+                                         client code that isn't aware of IAM conditions from
+                                         interpreting and modifying policies incorrectly.
+                                         The service might return a policy with version lower
+                                         than the one that was requested, based on the
+                                         feature syntax in the policy fetched.
+
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
         :returns: The current IAM policy of this instance
         """
+        args = {"resource": self.name}
+
+        if requested_policy_version is not None:
+            args["options"] = bigtable_instance_admin_pb2.GetPolicyOptions(
+                requested_policy_version_dummy=requested_policy_version
+            )
+
         instance_admin_client = self._client.instance_admin_client
-        resp = instance_admin_client.get_iam_policy(resource=self.name)
+
+        resp = instance_admin_client.get_iam_policy(**args)
         return Policy.from_pb(resp)
 
     def set_iam_policy(self, policy):
