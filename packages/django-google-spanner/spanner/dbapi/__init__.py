@@ -23,7 +23,6 @@ from .exceptions import (
 )
 from .parse_utils import (
     extract_connection_params, infer_param_types, parse_spanner_url,
-    validate_instance_config,
 )
 from .types import (
     BINARY, DATETIME, NUMBER, ROWID, STRING, Binary, Date, DateFromTicks, Time,
@@ -95,27 +94,11 @@ def connect(spanner_url, credentials_uri=None):
 
     instance = client.instance(instance_name)
     if not instance.exists():
-        # Attempt to create the instance if it doesn't yet exist.
-        instance_config = conn_params.get('instance_config')
-        if not instance_config:
-            raise Error("instance '%s' does not yet exist yet no 'default_zone' was set" % instance_name)
-
-        err_msg = validate_instance_config(instance_config)
-        if err_msg:
-            raise Error(err_msg)
-
-        instance.configuration_name = instance_config
-        lro = instance.create()
-        # Synchronously wait on the operation's completion.
-        # TODO: Report the long-running operation result.
-        _ = lro.result()
+        raise ProgrammingError("instance '%s' does not yet exist" % instance_name)
 
     db = instance.database(db_name)
     if not db.exists():
-        lro = db.create()
-        # Synchronously wait on the operation's completion.
-        # TODO: Report the long-running operation result.
-        _ = lro.result()
+        raise ProgrammingError("database '%s' does not yet exist" % db_name)
 
     return Connection(db)
 
