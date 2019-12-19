@@ -23,8 +23,7 @@ from google.cloud.bigtable.app_profile import AppProfile
 
 from google.protobuf import field_mask_pb2
 
-from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin_pb2
-from google.cloud.bigtable_admin_v2.types import instance_pb2
+from google.cloud.bigtable_admin_v2.types import instance_pb2, options_pb2
 
 from google.api_core.exceptions import NotFound
 
@@ -460,10 +459,9 @@ class Instance(object):
         :returns: The current IAM policy of this instance
         """
         args = {"resource": self.name}
-
         if requested_policy_version is not None:
-            args["options"] = bigtable_instance_admin_pb2.GetPolicyOptions(
-                requested_policy_version_dummy=requested_policy_version
+            args["options_"] = options_pb2.GetPolicyOptions(
+                requested_policy_version=requested_policy_version
             )
 
         instance_admin_client = self._client.instance_admin_client
