@@ -9,7 +9,7 @@ env:
     jobs:
         - DJANGO_TEST_APPS="admin_changelist admin_ordering"
         - DJANGO_TEST_APPS="aggregation annotations"
-        - DJANGO_TEST_APPS="basic bulk_create"
+        - DJANGO_TEST_APPS="basic bulk_create custom_pk"
         - DJANGO_TEST_APPS="dates datetimes"
         - DJANGO_TEST_APPS="lookup timezones"
         - DJANGO_TEST_APPS="model_fields"

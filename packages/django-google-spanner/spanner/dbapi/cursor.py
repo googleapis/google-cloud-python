@@ -92,29 +92,15 @@ class Cursor(object):
             if classification == STMT_DDL:
                 self.__handle_update_ddl(sql)
             elif classification == STMT_NON_UPDATING:
-                self.__handle_DQL(
-                    sql,
-                    args or None,
-                    param_types=param_types,
-                )
+                self.__handle_DQL(sql, args or None, param_types=param_types)
             elif classification == STMT_INSERT:
-                self.__handle_insert(
-                    sql,
-                    args or None,
-                )
+                self.__handle_insert(sql, args or None)
             else:
-                self.__handle_update(
-                    sql,
-                    args or None,
-                    param_types=param_types,
-                )
-
-        except grpc_exceptions.AlreadyExists as e:
+                self.__handle_update(sql, args or None, param_types=param_types)
+        except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
-
         except grpc_exceptions.InvalidArgument as e:
             raise ProgrammingError(e.details if hasattr(e, 'details') else e)
-
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
@@ -143,6 +129,8 @@ class Cursor(object):
         return res
 
     def __handle_insert(self, sql, params):
+        self.__commit_preceding_batch(OP_DDL)
+
         # There are 3 variants of an INSERT statement:
         # a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
         # b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
@@ -154,12 +142,15 @@ class Cursor(object):
             # Case c)
             rows = rows_for_insert_or_update(columns, params, parts.get('values_pyformat'))
 
-        self.__db_handle.append_to_batch_stack(
-            op=OP_INSERT,
-            table=parts.get('table'),
-            columns=columns,
-            values=rows,
+        self.__db_handle.in_transaction(
+            self.__do_execute_insert,
+            parts.get('table'),
+            columns,
+            rows,
         )
+
+    def __do_execute_insert(self, transaction, table, columns, values):
+        return transaction.insert(table, columns, values)
 
     def __execute_insert_no_params(self, transaction, sql):
         return transaction.execute_update(sql)

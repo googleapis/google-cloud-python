@@ -74,9 +74,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'bulk_create.tests.BulkCreateTests.test_bulk_insert_expressions',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
-        # FailedPrecondition and AlreadyExists should be raised as IntegrityError:
-        # https://github.com/orijtech/spanner-orm/issues/154
-        'model_fields.test_booleanfield.BooleanFieldTests.test_null_default',
         # Implement DatabaseOperations.datetime_cast_date_sql():
         # https://github.com/orijtech/spanner-orm/issues/170
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
