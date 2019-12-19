@@ -719,6 +719,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if self.location:
             extra_params["location"] = self.location
 
+        # TODO: call thorugh client._call_api() and allow passing in a retry?
         api_response = client._connection.api_request(
             method="POST", path="%s/cancel" % (self.path,), query_params=extra_params
         )
