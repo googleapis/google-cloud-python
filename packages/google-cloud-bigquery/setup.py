@@ -30,6 +30,8 @@ version = "1.23.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     'enum34; python_version < "3.4"',
+    "google-auth >= 1.9.0, < 2.0dev",
+    "google-api-core >= 1.15.0, < 2.0dev",
     "google-cloud-core >= 1.0.3, < 2.0dev",
     "google-resumable-media >= 0.3.1, != 0.4.0, < 0.6.0dev",
     "protobuf >= 3.6.0",

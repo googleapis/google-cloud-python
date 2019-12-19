@@ -14,10 +14,14 @@
 
 """Define API Jobs."""
 
+from __future__ import division
+
+import concurrent.futures
 import copy
 import re
 import threading
 
+import requests
 import six
 from six.moves import http_client
 
@@ -50,6 +54,7 @@ from google.cloud.bigquery.table import TimePartitioning
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
+_SERVER_TIMEOUT_MARGIN_SECS = 1.0
 _CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
@@ -663,7 +668,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         else:
             return True
 
-    def reload(self, client=None, retry=DEFAULT_RETRY):
+    def reload(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  refresh job properties via a GET request.
 
         See
@@ -675,6 +680,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 ``client`` stored on the current dataset.
 
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before retrying the HTTP request.
         """
         client = self._require_client(client)
 
@@ -683,7 +691,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             extra_params["location"] = self.location
 
         api_response = client._call_api(
-            retry, method="GET", path=self.path, query_params=extra_params
+            retry,
+            method="GET",
+            path=self.path,
+            query_params=extra_params,
+            timeout=timeout,
         )
         self._set_properties(api_response)
 
@@ -2994,8 +3006,15 @@ class QueryJob(_AsyncJob):
             result = int(result)
         return result
 
-    def done(self, retry=DEFAULT_RETRY):
+    def done(self, retry=DEFAULT_RETRY, timeout=None):
         """Refresh the job and checks if it is complete.
+
+        Args:
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the call that retrieves query results.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before retrying the HTTP request.
 
         Returns:
             bool: True if the job is complete, False otherwise.
@@ -3007,11 +3026,25 @@ class QueryJob(_AsyncJob):
         timeout_ms = None
         if self._done_timeout is not None:
             # Subtract a buffer for context switching, network latency, etc.
-            timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
-            timeout = max(min(timeout, 10), 0)
-            self._done_timeout -= timeout
+            api_timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
+            api_timeout = max(min(api_timeout, 10), 0)
+            self._done_timeout -= api_timeout
             self._done_timeout = max(0, self._done_timeout)
-            timeout_ms = int(timeout * 1000)
+            timeout_ms = int(api_timeout * 1000)
+
+        # If the server-side processing timeout (timeout_ms) is specified and
+        # would be picked as the total request timeout, we want to add a small
+        # margin to it - we don't want to timeout the connection just as the
+        # server-side processing might have completed, but instead slightly
+        # after the server-side deadline.
+        # However, if `timeout` is specified, and is shorter than the adjusted
+        # server timeout, the former prevails.
+        if timeout_ms is not None and timeout_ms > 0:
+            server_timeout_with_margin = timeout_ms / 1000 + _SERVER_TIMEOUT_MARGIN_SECS
+            if timeout is not None:
+                timeout = min(server_timeout_with_margin, timeout)
+            else:
+                timeout = server_timeout_with_margin
 
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
@@ -3022,13 +3055,14 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 timeout_ms=timeout_ms,
                 location=self.location,
+                timeout=timeout,
             )
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
             # correctly populated.
             if self._query_results.complete:
-                self.reload(retry=retry)
+                self.reload(retry=retry, timeout=timeout)
 
         return self.state == _DONE_STATE
 
@@ -3132,6 +3166,8 @@ class QueryJob(_AsyncJob):
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
             raise
+        except requests.exceptions.Timeout as exc:
+            six.raise_from(concurrent.futures.TimeoutError, exc)
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to
