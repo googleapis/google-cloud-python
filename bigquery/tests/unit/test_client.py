@@ -290,7 +290,7 @@ class TestClient(unittest.TestCase):
 
         service_account_email = client.get_service_account_email()
 
-        conn.api_request.assert_called_once_with(method="GET", path=path)
+        conn.api_request.assert_called_once_with(method="GET", path=path, timeout=None)
         self.assertEqual(service_account_email, email)
 
     def test_get_service_account_email_w_alternate_project(self):
@@ -305,7 +305,7 @@ class TestClient(unittest.TestCase):
 
         service_account_email = client.get_service_account_email(project=project)
 
-        conn.api_request.assert_called_once_with(method="GET", path=path)
+        conn.api_request.assert_called_once_with(method="GET", path=path, timeout=None)
         self.assertEqual(service_account_email, email)
 
     def test_list_projects_defaults(self):
@@ -351,7 +351,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/projects", query_params={}
+            method="GET", path="/projects", query_params={}, timeout=None
         )
 
     def test_list_projects_explicit_response_missing_projects_key(self):
@@ -373,6 +373,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects",
             query_params={"maxResults": 3, "pageToken": TOKEN},
+            timeout=None,
         )
 
     def test_list_datasets_defaults(self):
@@ -422,7 +423,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_datasets_w_project(self):
@@ -433,7 +434,10 @@ class TestClient(unittest.TestCase):
         list(client.list_datasets(project="other-project"))
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/projects/other-project/datasets", query_params={}
+            method="GET",
+            path="/projects/other-project/datasets",
+            query_params={},
+            timeout=None,
         )
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
@@ -464,6 +468,7 @@ class TestClient(unittest.TestCase):
                 "maxResults": 3,
                 "pageToken": TOKEN,
             },
+            timeout=None,
         )
 
     def test_dataset_with_specified_project(self):
@@ -504,7 +509,9 @@ class TestClient(unittest.TestCase):
 
         dataset = client.get_dataset(dataset_ref)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=None
+        )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
         # Test retry.
@@ -596,6 +603,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_attrs(self):
@@ -670,6 +678,7 @@ class TestClient(unittest.TestCase):
                 ],
                 "labels": LABELS,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_custom_property(self):
@@ -707,6 +716,7 @@ class TestClient(unittest.TestCase):
                 "newAlphaProperty": "unreleased property",
                 "labels": {},
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_client_location_wo_dataset_location(self):
@@ -747,6 +757,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_client_location_w_dataset_location(self):
@@ -789,6 +800,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": OTHER_LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_reference(self):
@@ -824,6 +836,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_fully_qualified_string(self):
@@ -859,6 +872,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_string(self):
@@ -894,6 +908,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_alreadyexists_w_exists_ok_false(self):
@@ -946,8 +961,9 @@ class TestClient(unittest.TestCase):
                         "labels": {},
                         "location": self.LOCATION,
                     },
+                    timeout=None,
                 ),
-                mock.call(method="GET", path=get_path),
+                mock.call(method="GET", path=get_path, timeout=None),
             ]
         )
 
@@ -974,6 +990,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/test-routine-project/datasets/test_routines/routines",
             data=resource,
+            timeout=None,
         )
         self.assertEqual(
             actual_routine.reference, RoutineReference.from_string(full_routine_id)
@@ -1004,6 +1021,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/test-routine-project/datasets/test_routines/routines",
             data=resource,
+            timeout=None,
         )
 
     def test_create_routine_w_conflict_exists_ok(self):
@@ -1035,10 +1053,12 @@ class TestClient(unittest.TestCase):
                     method="POST",
                     path="/projects/test-routine-project/datasets/test_routines/routines",
                     data=resource,
+                    timeout=None,
                 ),
                 mock.call(
                     method="GET",
                     path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                    timeout=None,
                 ),
             ]
         )
@@ -1069,6 +1089,7 @@ class TestClient(unittest.TestCase):
                 "timePartitioning": {"type": "DAY"},
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(table.time_partitioning.type_, "DAY")
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -1101,6 +1122,7 @@ class TestClient(unittest.TestCase):
                 "newAlphaProperty": "unreleased property",
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got._properties["newAlphaProperty"], "unreleased property")
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -1135,6 +1157,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "encryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1164,6 +1187,7 @@ class TestClient(unittest.TestCase):
                 "timePartitioning": {"type": "DAY", "expirationMs": "100"},
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(table.time_partitioning.type_, "DAY")
         self.assertEqual(table.time_partitioning.expiration_ms, 100)
@@ -1237,6 +1261,7 @@ class TestClient(unittest.TestCase):
                 "view": {"query": query, "useLegacySql": False},
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
@@ -1284,6 +1309,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
@@ -1313,6 +1339,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1338,6 +1365,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1361,6 +1389,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1388,6 +1417,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
 
     def test_create_table_alreadyexists_w_exists_ok_true(self):
@@ -1425,8 +1455,9 @@ class TestClient(unittest.TestCase):
                         },
                         "labels": {},
                     },
+                    timeout=None,
                 ),
-                mock.call(method="GET", path=get_path),
+                mock.call(method="GET", path=get_path, timeout=None),
             ]
         )
 
@@ -1462,7 +1493,9 @@ class TestClient(unittest.TestCase):
         model_ref = client.dataset(self.DS_ID).model(self.MODEL_ID)
         got = client.get_model(model_ref)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=None
+        )
         self.assertEqual(got.model_id, self.MODEL_ID)
 
     def test_get_model_w_string(self):
@@ -1486,7 +1519,9 @@ class TestClient(unittest.TestCase):
         model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
         got = client.get_model(model_id)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=None
+        )
         self.assertEqual(got.model_id, self.MODEL_ID)
 
     def test_get_routine(self):
@@ -1518,6 +1553,7 @@ class TestClient(unittest.TestCase):
             conn.api_request.assert_called_once_with(
                 method="GET",
                 path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                timeout=None,
             )
             self.assertEqual(
                 actual_routine.reference,
@@ -1548,7 +1584,9 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(resource)
         table = client.get_table(self.TABLE_REF)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=None
+        )
         self.assertEqual(table.table_id, self.TABLE_ID)
 
     def test_get_table_sets_user_agent(self):
@@ -1636,6 +1674,7 @@ class TestClient(unittest.TestCase):
             },
             path="/" + PATH,
             headers=None,
+            timeout=None,
         )
         self.assertEqual(ds2.description, ds.description)
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
@@ -1671,6 +1710,7 @@ class TestClient(unittest.TestCase):
             data={"newAlphaProperty": "unreleased property"},
             path=path,
             headers=None,
+            timeout=None,
         )
 
         self.assertEqual(dataset.dataset_id, self.DS_ID)
@@ -1723,7 +1763,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None
+            method="PATCH", data=sent, path="/" + path, headers=None, timeout=None
         )
         self.assertEqual(updated_model.model_id, model.model_id)
         self.assertEqual(updated_model.description, model.description)
@@ -1785,6 +1825,7 @@ class TestClient(unittest.TestCase):
             data=sent,
             path="/projects/routines-project/datasets/test_routines/routines/updated_routine",
             headers=None,
+            timeout=None,
         )
         self.assertEqual(actual_routine.arguments, routine.arguments)
         self.assertEqual(actual_routine.body, routine.body)
@@ -1871,7 +1912,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None
+            method="PATCH", data=sent, path="/" + path, headers=None, timeout=None
         )
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
@@ -1907,6 +1948,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"newAlphaProperty": "unreleased property"},
             headers=None,
+            timeout=None,
         )
         self.assertEqual(
             updated_table._properties["newAlphaProperty"], "unreleased property"
@@ -1935,6 +1977,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"view": {"useLegacySql": True}},
             headers=None,
+            timeout=None,
         )
         self.assertEqual(updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
 
@@ -2008,6 +2051,7 @@ class TestClient(unittest.TestCase):
                 "schema": schema_resource,
             },
             headers=None,
+            timeout=None,
         )
 
     def test_update_table_w_schema_None(self):
@@ -2102,7 +2146,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(tables, [])
         self.assertIsNone(token)
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=None
         )
 
     def test_list_models_empty(self):
@@ -2120,7 +2164,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(models, [])
         self.assertIsNone(token)
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=None
         )
 
     def test_list_models_defaults(self):
@@ -2168,7 +2212,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_models_wrong_type(self):
@@ -2193,6 +2237,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/test-routines/datasets/test_routines/routines",
             query_params={},
+            timeout=None,
         )
 
     def test_list_routines_defaults(self):
@@ -2244,7 +2289,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(actual_token, token)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=None
         )
 
     def test_list_routines_wrong_type(self):
@@ -2305,7 +2350,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_tables_explicit(self):
@@ -2367,6 +2412,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/%s" % PATH,
             query_params={"maxResults": 3, "pageToken": TOKEN},
+            timeout=None,
         )
 
     def test_list_tables_wrong_type(self):
@@ -2388,7 +2434,7 @@ class TestClient(unittest.TestCase):
         for arg in datasets:
             client.delete_dataset(arg)
             conn.api_request.assert_called_with(
-                method="DELETE", path="/%s" % PATH, query_params={}
+                method="DELETE", path="/%s" % PATH, query_params={}, timeout=None
             )
 
     def test_delete_dataset_delete_contents(self):
@@ -2405,6 +2451,7 @@ class TestClient(unittest.TestCase):
                 method="DELETE",
                 path="/%s" % PATH,
                 query_params={"deleteContents": "true"},
+                timeout=None,
             )
 
     def test_delete_dataset_wrong_type(self):
@@ -2425,7 +2472,9 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_dataset(self.DS_ID)
 
-        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+        conn.api_request.assert_called_with(
+            method="DELETE", path=path, query_params={}, timeout=None
+        )
 
     def test_delete_dataset_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
@@ -2438,7 +2487,9 @@ class TestClient(unittest.TestCase):
 
         client.delete_dataset(self.DS_ID, not_found_ok=True)
 
-        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+        conn.api_request.assert_called_with(
+            method="DELETE", path=path, query_params={}, timeout=None
+        )
 
     def test_delete_model(self):
         from google.cloud.bigquery.model import Model
@@ -2461,7 +2512,9 @@ class TestClient(unittest.TestCase):
 
         for arg in models:
             client.delete_model(arg)
-            conn.api_request.assert_called_with(method="DELETE", path="/%s" % path)
+            conn.api_request.assert_called_with(
+                method="DELETE", path="/%s" % path, timeout=None
+            )
 
     def test_delete_model_w_wrong_type(self):
         creds = _make_credentials()
@@ -2483,7 +2536,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_model("{}.{}".format(self.DS_ID, self.MODEL_ID))
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_model_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}/models/{}".format(
@@ -2500,7 +2553,7 @@ class TestClient(unittest.TestCase):
             "{}.{}".format(self.DS_ID, self.MODEL_ID), not_found_ok=True
         )
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_routine(self):
         from google.cloud.bigquery.routine import Routine
@@ -2522,6 +2575,7 @@ class TestClient(unittest.TestCase):
             conn.api_request.assert_called_with(
                 method="DELETE",
                 path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                timeout=None,
             )
 
     def test_delete_routine_w_wrong_type(self):
@@ -2544,6 +2598,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_with(
             method="DELETE",
             path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+            timeout=None,
         )
 
     def test_delete_routine_w_not_found_ok_true(self):
@@ -2561,6 +2616,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_with(
             method="DELETE",
             path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+            timeout=None,
         )
 
     def test_delete_table(self):
@@ -2587,7 +2643,9 @@ class TestClient(unittest.TestCase):
 
         for arg in tables:
             client.delete_table(arg)
-            conn.api_request.assert_called_with(method="DELETE", path="/%s" % path)
+            conn.api_request.assert_called_with(
+                method="DELETE", path="/%s" % path, timeout=None
+            )
 
     def test_delete_table_w_wrong_type(self):
         creds = _make_credentials()
@@ -2609,7 +2667,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_table_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}/tables/{}".format(
@@ -2626,7 +2684,7 @@ class TestClient(unittest.TestCase):
             "{}.{}".format(self.DS_ID, self.TABLE_ID), not_found_ok=True
         )
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob
@@ -2653,6 +2711,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_get_job_miss_w_client_location(self):
@@ -2671,6 +2730,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_get_job_hit(self):
@@ -2713,6 +2773,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/PROJECT/jobs/query_job",
             query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_cancel_job_miss_w_explict_project(self):
@@ -2731,6 +2792,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH/cancel",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_cancel_job_miss_w_client_location(self):
@@ -2749,6 +2811,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH/cancel",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_cancel_job_hit(self):
@@ -2777,6 +2840,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/PROJECT/jobs/query_job/cancel",
             query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_defaults(self):
@@ -2890,7 +2954,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={"projection": "full"}
+            method="GET",
+            path="/%s" % PATH,
+            query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_load_job_wo_sourceUris(self):
@@ -2932,7 +2999,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={"projection": "full"}
+            method="GET",
+            path="/%s" % PATH,
+            query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_explicit_missing(self):
@@ -2963,6 +3033,7 @@ class TestClient(unittest.TestCase):
                 "allUsers": True,
                 "stateFilter": "done",
             },
+            timeout=None,
         )
 
     def test_list_jobs_w_project(self):
@@ -2976,6 +3047,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/other-project/jobs",
             query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_w_time_filter(self):
@@ -2999,6 +3071,7 @@ class TestClient(unittest.TestCase):
                 "minCreationTime": "1",
                 "maxCreationTime": str(end_time_millis),
             },
+            timeout=None,
         )
 
     def test_list_jobs_w_parent_job_filter(self):
@@ -3016,6 +3089,7 @@ class TestClient(unittest.TestCase):
                 method="GET",
                 path="/projects/%s/jobs" % self.PROJECT,
                 query_params={"projection": "full", "parentJobId": "parent-job-123"},
+                timeout=None,
             )
             conn.api_request.reset_mock()
 
@@ -3053,7 +3127,10 @@ class TestClient(unittest.TestCase):
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=None,
         )
 
         # the original config object should not have been modified
@@ -3112,7 +3189,10 @@ class TestClient(unittest.TestCase):
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_load_table_from_uri_w_client_location(self):
@@ -3153,7 +3233,10 @@ class TestClient(unittest.TestCase):
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_load_table_from_uri_w_invalid_job_config(self):
@@ -3358,7 +3441,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=None,
         )
 
         self.assertIsInstance(job, CopyJob)
@@ -3421,7 +3507,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_copy_table_w_client_location(self):
@@ -3468,7 +3557,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_copy_table_w_source_strings(self):
@@ -3556,7 +3648,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=None,
         )
         self.assertIsInstance(job._configuration, CopyJobConfig)
 
@@ -3593,7 +3688,7 @@ class TestClient(unittest.TestCase):
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE
+            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE, timeout=None,
         )
 
         # Check the job resource.
@@ -3659,7 +3754,10 @@ class TestClient(unittest.TestCase):
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_extract_table_w_client_location(self):
@@ -3700,7 +3798,10 @@ class TestClient(unittest.TestCase):
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_extract_table_generated_job_id(self):
@@ -3743,6 +3844,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
         self.assertIsInstance(req["data"]["jobReference"]["jobId"], six.string_types)
+        self.assertIsNone(req["timeout"])
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -3787,6 +3889,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -3822,6 +3925,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
         sent_config = sent["configuration"]["query"]
@@ -3850,7 +3954,10 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_query_w_explicit_job_config(self):
@@ -3906,7 +4013,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original config object should not have been modified
@@ -3950,7 +4057,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original config object should not have been modified
@@ -4002,7 +4109,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original default config object should not have been modified
@@ -4087,7 +4194,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
     def test_query_w_client_default_config_no_incoming(self):
@@ -4128,7 +4235,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
     def test_query_w_invalid_default_job_config(self):
@@ -4170,7 +4277,10 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_query_detect_location(self):
@@ -4241,6 +4351,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
         sent_config = sent["configuration"]["query"]
@@ -4296,6 +4407,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertEqual(sent["jobReference"]["jobId"], JOB)
         sent_config = sent["configuration"]["query"]
@@ -4384,6 +4496,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/%s" % PATH)
         self.assertEqual(req["data"], SENT)
+        self.assertIsNone(req["timeout"])
 
     def test_insert_rows_w_list_of_dictionaries(self):
         import datetime
@@ -4448,7 +4561,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_list_of_Rows(self):
@@ -4493,7 +4606,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_skip_invalid_and_ignore_unknown(self):
@@ -4570,7 +4683,7 @@ class TestClient(unittest.TestCase):
             errors[0]["errors"][0], RESPONSE["insertErrors"][0]["errors"][0]
         )
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_repeated_fields(self):
@@ -4664,7 +4777,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None,
         )
 
     def test_insert_rows_w_record_schema(self):
@@ -4733,7 +4846,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_explicit_none_insert_ids(self):
@@ -4767,7 +4880,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/{}".format(PATH), data=SENT
+            method="POST", path="/{}".format(PATH), data=SENT, timeout=None,
         )
 
     def test_insert_rows_errors(self):
@@ -4835,6 +4948,7 @@ class TestClient(unittest.TestCase):
                 project, ds_id, table_id
             ),
             data=sent,
+            timeout=None,
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -4910,7 +5024,9 @@ class TestClient(unittest.TestCase):
         for call, expected_data in six.moves.zip_longest(
             actual_calls, EXPECTED_SENT_DATA
         ):
-            expected_call = mock.call(method="POST", path=API_PATH, data=expected_data)
+            expected_call = mock.call(
+                method="POST", path=API_PATH, data=expected_data, timeout=None
+            )
             assert call == expected_call
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -4955,7 +5071,9 @@ class TestClient(unittest.TestCase):
                 }
             ]
         }
-        expected_call = mock.call(method="POST", path=API_PATH, data=EXPECTED_SENT_DATA)
+        expected_call = mock.call(
+            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA, timeout=None
+        )
 
         actual_calls = conn.api_request.call_args_list
         assert len(actual_calls) == 1
@@ -5007,7 +5125,7 @@ class TestClient(unittest.TestCase):
         actual_calls = conn.api_request.call_args_list
         assert len(actual_calls) == 1
         assert actual_calls[0] == mock.call(
-            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA
+            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA, timeout=None
         )
 
     def test_insert_rows_json(self):
@@ -5054,7 +5172,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None,
         )
 
     def test_insert_rows_json_with_string_id(self):
@@ -5077,6 +5195,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/proj/datasets/dset/tables/tbl/insertAll",
             data=expected,
+            timeout=None,
         )
 
     def test_insert_rows_json_w_explicit_none_insert_ids(self):
@@ -5098,6 +5217,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/proj/datasets/dset/tables/tbl/insertAll",
             data=expected,
+            timeout=None,
         )
 
     def test_list_partitions(self):
@@ -5218,7 +5338,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page_token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_rows_empty_table(self):
@@ -5326,6 +5446,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/%s" % PATH,
             query_params={"selectedFields": "color,struct"},
+            timeout=None,
         )
 
     def test_list_rows_w_record_schema(self):
@@ -5392,7 +5513,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page_token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_rows_with_missing_schema(self):
@@ -5446,13 +5567,15 @@ class TestClient(unittest.TestCase):
 
             row_iter = client.list_rows(table)
 
-            conn.api_request.assert_called_once_with(method="GET", path=table_path)
+            conn.api_request.assert_called_once_with(
+                method="GET", path=table_path, timeout=None
+            )
             conn.api_request.reset_mock()
             self.assertEqual(row_iter.total_rows, 2, msg=repr(table))
 
             rows = list(row_iter)
             conn.api_request.assert_called_once_with(
-                method="GET", path=tabledata_path, query_params={}
+                method="GET", path=tabledata_path, query_params={}, timeout=None
             )
             self.assertEqual(row_iter.total_rows, 3, msg=repr(table))
             self.assertEqual(rows[0].name, "Phred Phlyntstone", msg=repr(table))
