@@ -39,7 +39,7 @@ Example usage:
        },
        {
            "role": "roles/viewer",
-           "members": {"sericeAccount:account@iam.gserviceaccount.com"}
+           "members": {"serviceAccount:account@iam.gserviceaccount.com"}
            "condition": {
                "title": "request_time",
                "description": "Requests made before 2021-01-01T00:00:00Z",
