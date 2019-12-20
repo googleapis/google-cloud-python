@@ -15,6 +15,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -24,12 +26,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.iam.credentials.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n#com.google.cloud.iam.credentials.v1B\031IAMCredentialsCommonProtoP\001ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\370\001\001"
+        "\n#com.google.cloud.iam.credentials.v1B\031IAMCredentialsCommonProtoP\001ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\370\001\001\352AY\n!iam.googleapis.com/ServiceAccount\0224projects/{project}/serviceAccounts/{service_account}"
     ),
     serialized_pb=_b(
-        '\n&google/iam/credentials/v1/common.proto\x12\x19google.iam.credentials.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"y\n\x1aGenerateAccessTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\r\n\x05scope\x18\x04 \x03(\t\x12+\n\x08lifetime\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration"d\n\x1bGenerateAccessTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"C\n\x0fSignBlobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\x0c"7\n\x10SignBlobResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x13\n\x0bsigned_blob\x18\x04 \x01(\x0c"B\n\x0eSignJwtRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x0f\n\x07payload\x18\x05 \x01(\t"5\n\x0fSignJwtResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x12\n\nsigned_jwt\x18\x02 \x01(\t"b\n\x16GenerateIdTokenRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\x10\n\x08\x61udience\x18\x03 \x01(\t\x12\x15\n\rinclude_email\x18\x04 \x01(\x08"(\n\x17GenerateIdTokenResponse\x12\r\n\x05token\x18\x01 \x01(\tB\x8b\x01\n#com.google.cloud.iam.credentials.v1B\x19IAMCredentialsCommonProtoP\x01ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\xf8\x01\x01\x62\x06proto3'
+        '\n&google/iam/credentials/v1/common.proto\x12\x19google.iam.credentials.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xa9\x01\n\x1aGenerateAccessTokenRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!iam.googleapis.com/ServiceAccount\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\x12\n\x05scope\x18\x04 \x03(\tB\x03\xe0\x41\x02\x12+\n\x08lifetime\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration"d\n\x1bGenerateAccessTokenResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"s\n\x0fSignBlobRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!iam.googleapis.com/ServiceAccount\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x14\n\x07payload\x18\x05 \x01(\x0c\x42\x03\xe0\x41\x02"7\n\x10SignBlobResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x13\n\x0bsigned_blob\x18\x04 \x01(\x0c"r\n\x0eSignJwtRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!iam.googleapis.com/ServiceAccount\x12\x11\n\tdelegates\x18\x03 \x03(\t\x12\x14\n\x07payload\x18\x05 \x01(\tB\x03\xe0\x41\x02"5\n\x0fSignJwtResponse\x12\x0e\n\x06key_id\x18\x01 \x01(\t\x12\x12\n\nsigned_jwt\x18\x02 \x01(\t"\x92\x01\n\x16GenerateIdTokenRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!iam.googleapis.com/ServiceAccount\x12\x11\n\tdelegates\x18\x02 \x03(\t\x12\x15\n\x08\x61udience\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\rinclude_email\x18\x04 \x01(\x08"(\n\x17GenerateIdTokenResponse\x12\r\n\x05token\x18\x01 \x01(\tB\xe7\x01\n#com.google.cloud.iam.credentials.v1B\x19IAMCredentialsCommonProtoP\x01ZDgoogle.golang.org/genproto/googleapis/iam/credentials/v1;credentials\xf8\x01\x01\xea\x41Y\n!iam.googleapis.com/ServiceAccount\x12\x34projects/{project}/serviceAccounts/{service_account}b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -58,7 +62,9 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!iam.googleapis.com/ServiceAccount"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -94,7 +100,7 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -124,8 +130,8 @@ _GENERATEACCESSTOKENREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=134,
-    serialized_end=255,
+    serialized_start=195,
+    serialized_end=364,
 )
 
 
@@ -181,8 +187,8 @@ _GENERATEACCESSTOKENRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=257,
-    serialized_end=357,
+    serialized_start=366,
+    serialized_end=466,
 )
 
 
@@ -208,7 +214,9 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!iam.googleapis.com/ServiceAccount"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -244,7 +252,7 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -256,8 +264,8 @@ _SIGNBLOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=359,
-    serialized_end=426,
+    serialized_start=468,
+    serialized_end=583,
 )
 
 
@@ -313,8 +321,8 @@ _SIGNBLOBRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=428,
-    serialized_end=483,
+    serialized_start=585,
+    serialized_end=640,
 )
 
 
@@ -340,7 +348,9 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!iam.googleapis.com/ServiceAccount"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -376,7 +386,7 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -388,8 +398,8 @@ _SIGNJWTREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=485,
-    serialized_end=551,
+    serialized_start=642,
+    serialized_end=756,
 )
 
 
@@ -445,8 +455,8 @@ _SIGNJWTRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=553,
-    serialized_end=606,
+    serialized_start=758,
+    serialized_end=811,
 )
 
 
@@ -472,7 +482,9 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!iam.googleapis.com/ServiceAccount"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -508,7 +520,7 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -538,8 +550,8 @@ _GENERATEIDTOKENREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=608,
-    serialized_end=706,
+    serialized_start=814,
+    serialized_end=960,
 )
 
 
@@ -577,8 +589,8 @@ _GENERATEIDTOKENRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=708,
-    serialized_end=748,
+    serialized_start=962,
+    serialized_end=1002,
 )
 
 _GENERATEACCESSTOKENREQUEST.fields_by_name[
@@ -610,9 +622,11 @@ GenerateAccessTokenRequest = _reflection.GeneratedProtocolMessageType(
         __doc__="""
 Attributes:
       name:
-          The resource name of the service account for which the
-          credentials are requested, in the following format:
+          Required. The resource name of the service account for which
+          the credentials are requested, in the following format:
           ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       delegates:
           The sequence of service accounts in a delegation chain. Each
           service account must be granted the
@@ -622,10 +636,12 @@ Attributes:
           ``roles/iam.serviceAccountTokenCreator`` role on the service
           account that is specified in the ``name`` field of the
           request.  The delegates must have the following format:
-          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       scope:
-          Code to identify the scopes to be included in the OAuth 2.0
-          access token. See
+          Required. Code to identify the scopes to be included in the
+          OAuth 2.0 access token. See
           https://developers.google.com/identity/protocols/googlescopes
           for more information. At least one value required.
       lifetime:
@@ -666,9 +682,11 @@ SignBlobRequest = _reflection.GeneratedProtocolMessageType(
         __doc__="""
 Attributes:
       name:
-          The resource name of the service account for which the
-          credentials are requested, in the following format:
+          Required. The resource name of the service account for which
+          the credentials are requested, in the following format:
           ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       delegates:
           The sequence of service accounts in a delegation chain. Each
           service account must be granted the
@@ -678,9 +696,11 @@ Attributes:
           ``roles/iam.serviceAccountTokenCreator`` role on the service
           account that is specified in the ``name`` field of the
           request.  The delegates must have the following format:
-          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       payload:
-          The bytes to sign.
+          Required. The bytes to sign.
   """,
         # @@protoc_insertion_point(class_scope:google.iam.credentials.v1.SignBlobRequest)
     ),
@@ -714,9 +734,11 @@ SignJwtRequest = _reflection.GeneratedProtocolMessageType(
         __doc__="""
 Attributes:
       name:
-          The resource name of the service account for which the
-          credentials are requested, in the following format:
+          Required. The resource name of the service account for which
+          the credentials are requested, in the following format:
           ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       delegates:
           The sequence of service accounts in a delegation chain. Each
           service account must be granted the
@@ -726,10 +748,12 @@ Attributes:
           ``roles/iam.serviceAccountTokenCreator`` role on the service
           account that is specified in the ``name`` field of the
           request.  The delegates must have the following format:
-          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       payload:
-          The JWT payload to sign: a JSON object that contains a JWT
-          Claims Set.
+          Required. The JWT payload to sign: a JSON object that contains
+          a JWT Claims Set.
   """,
         # @@protoc_insertion_point(class_scope:google.iam.credentials.v1.SignJwtRequest)
     ),
@@ -763,9 +787,11 @@ GenerateIdTokenRequest = _reflection.GeneratedProtocolMessageType(
         __doc__="""
 Attributes:
       name:
-          The resource name of the service account for which the
-          credentials are requested, in the following format:
+          Required. The resource name of the service account for which
+          the credentials are requested, in the following format:
           ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       delegates:
           The sequence of service accounts in a delegation chain. Each
           service account must be granted the
@@ -775,10 +801,12 @@ Attributes:
           ``roles/iam.serviceAccountTokenCreator`` role on the service
           account that is specified in the ``name`` field of the
           request.  The delegates must have the following format:
-          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+          ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
+          The ``-`` wildcard character is required; replacing it with a
+          project ID is invalid.
       audience:
-          The audience for the token, such as the API or account that
-          this token grants access to.
+          Required. The audience for the token, such as the API or
+          account that this token grants access to.
       include_email:
           Include the service account email in the token. If set to
           ``true``, the token will contain ``email`` and
@@ -807,4 +835,12 @@ _sym_db.RegisterMessage(GenerateIdTokenResponse)
 
 
 DESCRIPTOR._options = None
+_GENERATEACCESSTOKENREQUEST.fields_by_name["name"]._options = None
+_GENERATEACCESSTOKENREQUEST.fields_by_name["scope"]._options = None
+_SIGNBLOBREQUEST.fields_by_name["name"]._options = None
+_SIGNBLOBREQUEST.fields_by_name["payload"]._options = None
+_SIGNJWTREQUEST.fields_by_name["name"]._options = None
+_SIGNJWTREQUEST.fields_by_name["payload"]._options = None
+_GENERATEIDTOKENREQUEST.fields_by_name["name"]._options = None
+_GENERATEIDTOKENREQUEST.fields_by_name["audience"]._options = None
 # @@protoc_insertion_point(module_scope)
