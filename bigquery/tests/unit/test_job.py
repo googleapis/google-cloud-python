@@ -18,6 +18,7 @@ import json
 import textwrap
 import unittest
 
+import freezegun
 import mock
 import pytest
 import requests
@@ -955,6 +956,24 @@ class Test_AsyncJob(unittest.TestCase):
 
         begin.assert_not_called()
         result.assert_called_once_with(timeout=timeout)
+
+    @mock.patch("google.api_core.future.polling.PollingFuture.result")
+    def test_result_splitting_timout_between_requests(self, result):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        begin = job._begin = mock.Mock()
+        retry = mock.Mock()
+
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_begin(*args, **kwargs):
+                frozen_time.tick(delta=0.3)
+
+            begin.side_effect = delayed_begin
+            job.result(retry=retry, timeout=1.0)
+
+        begin.assert_called_once_with(retry=retry, timeout=1.0)
+        result.assert_called_once_with(timeout=0.7)
 
     def test_cancelled_wo_error_result(self):
         client = _make_client(project=self.PROJECT)
@@ -4551,7 +4570,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        job.result(timeout=1.0)
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False):
+            job.result(timeout=1.0)
 
         self.assertEqual(len(connection.api_request.call_args_list), 3)
         begin_request = connection.api_request.call_args_list[0]
@@ -4565,6 +4585,49 @@ class TestQueryJob(unittest.TestCase, _Base):
         )
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
         self.assertEqual(reload_request[1]["method"], "GET")
+
+    @mock.patch("google.api_core.future.polling.PollingFuture.result")
+    def test_result_splitting_timout_between_requests(self, polling_result):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "5",
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+
+        connection = _make_connection(begun_resource, query_resource, done_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        client.list_rows = mock.Mock()
+
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_result(*args, **kwargs):
+                frozen_time.tick(delta=0.8)
+
+            polling_result.side_effect = delayed_result
+
+            def delayed_get_results(*args, **kwargs):
+                frozen_time.tick(delta=0.5)
+                return orig_get_results(*args, **kwargs)
+
+            orig_get_results = client._get_query_results
+            client._get_query_results = mock.Mock(side_effect=delayed_get_results)
+            job.result(timeout=2.0)
+
+        polling_result.assert_called_once_with(timeout=2.0)
+
+        client._get_query_results.assert_called_once()
+        _, kwargs = client._get_query_results.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 1.2)
+
+        client.list_rows.assert_called_once()
+        _, kwargs = client.list_rows.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 0.7)
 
     def test_result_w_page_size(self):
         # Arrange

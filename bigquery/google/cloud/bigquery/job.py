@@ -26,6 +26,7 @@ import six
 from six.moves import http_client
 
 import google.api_core.future.polling
+from google.auth.transport.requests import TimeoutGuard
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.dataset import Dataset
@@ -793,6 +794,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             _AsyncJob: This instance.
@@ -803,10 +806,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             concurrent.futures.TimeoutError:
                 if the job did not complete in the given timeout.
         """
-        # TODO: combine _begin timeout with super().result() timeout!
-        # borrow timeout guard from google auth lib
         if self.state is None:
-            self._begin(retry=retry, timeout=timeout)
+            with TimeoutGuard(
+                timeout, timeout_error_type=concurrent.futures.TimeoutError
+            ) as guard:
+                self._begin(retry=retry, timeout=timeout)
+            timeout = guard.remaining_timeout
         # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
@@ -3163,6 +3168,8 @@ class QueryJob(_AsyncJob):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3180,16 +3187,27 @@ class QueryJob(_AsyncJob):
                 If the job did not complete in the given timeout.
         """
         try:
-            # TODO: combine timeout with timeouts passed to super().result()
-            # and _get_query_results (total timeout shared by both)
-            # borrow timeout guard from google auth lib
-            super(QueryJob, self).result(timeout=timeout)
+            guard = TimeoutGuard(
+                timeout, timeout_error_type=concurrent.futures.TimeoutError
+            )
+            with guard:
+                super(QueryJob, self).result(retry=retry, timeout=timeout)
+            timeout = guard.remaining_timeout
 
             # Return an iterator instead of returning the job.
             if not self._query_results:
-                self._query_results = self._client._get_query_results(
-                    self.job_id, retry, project=self.project, location=self.location
+                guard = TimeoutGuard(
+                    timeout, timeout_error_type=concurrent.futures.TimeoutError
                 )
+                with guard:
+                    self._query_results = self._client._get_query_results(
+                        self.job_id,
+                        retry,
+                        project=self.project,
+                        location=self.location,
+                        timeout=timeout,
+                    )
+                timeout = guard.remaining_timeout
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
@@ -3209,7 +3227,11 @@ class QueryJob(_AsyncJob):
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
         rows = self._client.list_rows(
-            dest_table, page_size=page_size, retry=retry, max_results=max_results
+            dest_table,
+            page_size=page_size,
+            max_results=max_results,
+            retry=retry,
+            timeout=timeout,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
