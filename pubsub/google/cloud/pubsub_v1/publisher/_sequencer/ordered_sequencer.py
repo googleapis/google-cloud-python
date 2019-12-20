@@ -28,10 +28,28 @@ class _OrderedSequencerStatus(str, enum.Enum):
     Starting state: ACCEPTING_MESSAGES
     Valid transitions:
       ACCEPTING_MESSAGES -> PAUSED (on permanent error)
-      ACCEPTING_MESSAGES -> STOPPED  (when user stops client and when all batch
-                                      publishes finish)
+      ACCEPTING_MESSAGES -> STOPPED  (when user calls stop() explicitly)
+      ACCEPTING_MESSAGES -> FINISHED  (all batch publishes finish normally)
+
       PAUSED -> ACCEPTING_MESSAGES  (when user unpauses)
-      PAUSED -> STOPPED  (when user stops client)
+      PAUSED -> STOPPED  (when user calls stop() explicitly)
+
+      STOPPED -> FINISHED (user stops client and the one remaining batch finishes
+                           publish)
+      STOPPED -> PAUSED (stop() commits one batch, which fails permanently)
+
+      FINISHED -> ACCEPTING_MESSAGES (publish happens while waiting for cleanup)
+      FINISHED -> STOPPED (when user calls stop() explicitly)
+    Illegal transitions:
+      PAUSED -> FINISHED (since all batches are cancelled on pause, there should
+                          not be any that finish normally. paused sequencers
+                          should not be cleaned up because their presence
+                          indicates that the ordering key needs to be resumed)
+      STOPPED -> ACCEPTING_MESSAGES (no way to make a user-stopped sequencer
+                                     accept messages again. this is okay since
+                                     stop() should only be called on shutdown.)
+      FINISHED -> PAUSED (no messages remain in flight, so they can't cause a
+                          permanent error and pause the sequencer)
     """
 
     # Accepting publishes and/or waiting for result of batch publish
@@ -39,8 +57,12 @@ class _OrderedSequencerStatus(str, enum.Enum):
     # Permanent error occurred. User must unpause this sequencer to resume
     # publishing. This is done to maintain ordering.
     PAUSED = "paused"
-    # Permanent failure. No more publishes allowed.
+    # No more publishes allowed. There may be an outstanding batch that will
+    # call the _batch_done_callback when it's done (success or error.)
     STOPPED = "stopped"
+    # No more work to do. Waiting to be cleaned-up. A publish will transform
+    # this sequencer back into the normal accepting-messages state.
+    FINISHED = "finished"
 
 
 class OrderedSequencer(sequencer_base.Sequencer):
@@ -58,27 +80,29 @@ class OrderedSequencer(sequencer_base.Sequencer):
             topic (str): The topic. The format for this is
                 ``projects/{project}/topics/{topic}``.
             ordering_key (str): The ordering key for this sequencer.
-            publishes_done_callback (Callable[[str,str], None]): Callback called
-                when this sequencer is done publishing all messages. This
-                callback allows the client to remove sequencer state, preventing
-                a memory leak. It is not called on pause, but may be called
-                after stop(). The function is called with the parameters
-                (str topic, str ordering_key).
     """
 
-    def __init__(self, client, topic, ordering_key, publishes_done_callback):
+    def __init__(self, client, topic, ordering_key):
         self._client = client
         self._topic = topic
         self._ordering_key = ordering_key
         # Guards the variables below
         self._state_lock = threading.Lock()
-        self._publishes_done_callback = publishes_done_callback
         # Batches ordered from first (head/left) to last (right/tail).
         # Invariant: always has at least one batch after the first publish,
         # unless paused or stopped.
         self._ordered_batches = collections.deque()
         # See _OrderedSequencerStatus for valid state transitions.
         self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
+
+    def is_finished(self):
+        """ Whether the sequencer is finished and should be cleaned up.
+
+            Returns:
+                bool: Whether the sequencer is finished and should be cleaned up.
+        """
+        with self._state_lock:
+            return self._state == _OrderedSequencerStatus.FINISHED
 
     def stop(self):
         """ Permanently stop this sequencer.
@@ -132,11 +156,15 @@ class OrderedSequencer(sequencer_base.Sequencer):
             or a failure. (Temporary failures are retried infinitely when
             ordering keys are enabled.)
         """
-        ensure_commit_timer_runs = False
+        ensure_cleanup_and_commit_timer_runs = False
         with self._state_lock:
             assert self._state != _OrderedSequencerStatus.PAUSED, (
                 "This method should not be called after pause() because "
                 "pause() should have cancelled all of the batches."
+            )
+            assert self._state != _OrderedSequencerStatus.FINISHED, (
+                "This method should not be called after all batches have been "
+                "finished."
             )
 
             # Message futures for the batch have been completed (either with a
@@ -145,25 +173,29 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
             if success:
                 if len(self._ordered_batches) == 0:
-                    self._publishes_done_callback(self._topic, self._ordering_key)
-                    # Mark this sequencer as stopped b/c it is done.
-                    # If new messages come in for this ordering key, the client
-                    # must create a new OrderedSequencer
-                    self._state = _OrderedSequencerStatus.STOPPED
-                elif len(self._ordered_batches) > 1:
+                    # Mark this sequencer as finished.
+                    # If new messages come in for this ordering key and this
+                    # sequencer hasn't been cleaned up yet, it will go back
+                    # into accepting-messages state. Otherwise, the client
+                    # must create a new OrderedSequencer.
+                    self._state = _OrderedSequencerStatus.FINISHED
+                    # Ensure cleanup thread runs at some point.
+                    ensure_cleanup_and_commit_timer_runs = True
+                elif len(self._ordered_batches) == 1:
+                    # Wait for messages and/or commit timeout
+                    # Ensure there's actually a commit timer thread that'll commit
+                    # after a delay.
+                    ensure_cleanup_and_commit_timer_runs = True
+                else:
                     # If there is more than one batch, we know that the next batch
                     # must be full and, therefore, ready to be committed.
                     self._ordered_batches[0].commit()
-                # if len == 1: wait for messages and/or commit timeout
-                # Ensure there's actually a commit timer thread that'll commit
-                # after a delay.
-                ensure_commit_timer_runs = True
             else:
                 # Unrecoverable error detected
                 self._pause()
 
-        if ensure_commit_timer_runs:
-            self._client.ensure_commit_timer_runs()
+        if ensure_cleanup_and_commit_timer_runs:
+            self._client.ensure_cleanup_and_commit_timer_runs()
 
     def _pause(self):
         """ Pause this sequencer: set state to paused, cancel all batches, and
@@ -171,6 +203,9 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
             _state_lock must be taken before calling this method.
         """
+        assert (
+            self._state != _OrderedSequencerStatus.FINISHED
+        ), "Pause should not be called after all batches have finished."
         self._state = _OrderedSequencerStatus.PAUSED
         for batch in self._ordered_batches:
             batch.cancel(
@@ -228,6 +263,12 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 )
                 future.set_exception(exception)
                 return future
+
+            # If waiting to be cleaned-up, convert to accepting messages to
+            # prevent this sequencer from being cleaned-up only to have another
+            # one with the same ordering key created immediately afterward.
+            if self._state == _OrderedSequencerStatus.FINISHED:
+                self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
             if self._state == _OrderedSequencerStatus.STOPPED:
                 raise RuntimeError("Cannot publish on a stopped sequencer.")

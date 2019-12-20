@@ -211,15 +211,6 @@ class Client(object):
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
-    def _delete_sequencer(self, topic, ordering_key):
-        """ Delete sequencer strate for (topic, ordering_key).
-
-            Called when a sequencer is done publishing all messages.
-        """
-        with self._batch_lock:
-            sequencer_key = (topic, ordering_key)
-            del self._sequencers[sequencer_key]
-
     def _get_or_create_sequencer(self, topic, ordering_key):
         """ Get an existing sequencer or create a new one given the (topic,
             ordering_key) pair.
@@ -228,12 +219,10 @@ class Client(object):
         sequencer = self._sequencers.get(sequencer_key)
         if sequencer is None:
             if ordering_key == "":
-                # TODO: Consider implementing _delete_sequencer for unordered
-                # sequencer.
                 sequencer = unordered_sequencer.UnorderedSequencer(self, topic)
             else:
                 sequencer = ordered_sequencer.OrderedSequencer(
-                    self, topic, ordering_key, self._delete_sequencer
+                    self, topic, ordering_key
                 )
             self._sequencers[sequencer_key] = sequencer
 
@@ -372,10 +361,10 @@ class Client(object):
 
             return future
 
-    def ensure_commit_timer_runs(self):
-        """ Ensure a commit timer thread is running.
+    def ensure_cleanup_and_commit_timer_runs(self):
+        """ Ensure a cleanup/commit timer thread is running.
 
-            If a commit timer thread is already running, this does nothing.
+            If a cleanup/commit timer thread is already running, this does nothing.
         """
         with self._batch_lock:
             self._ensure_commit_timer_runs_no_lock()
@@ -407,6 +396,13 @@ class Client(object):
             self._commit_thread = None
 
     def _commit_sequencers(self):
+        """ Clean up finished sequencers and commit the rest. """
+        finished_sequencer_keys = [
+            k[0] for k in self._sequencers.items() if k[1].is_finished()
+        ]
+        for sequencer_key in finished_sequencer_keys:
+            del self._sequencers[sequencer_key]
+
         for sequencer in self._sequencers.values():
             sequencer.commit()
 

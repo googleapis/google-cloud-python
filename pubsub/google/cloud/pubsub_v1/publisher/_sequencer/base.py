@@ -27,6 +27,27 @@ class Sequencer(object):
 
     @staticmethod
     @abc.abstractmethod
+    def is_finished(self):
+        """ Whether the sequencer is finished and should be cleaned up.
+
+            Returns:
+                bool: Whether the sequencer is finished and should be cleaned up.
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    @abc.abstractmethod
+    def unpause(self, message):
+        """ Unpauses this sequencer.
+
+        Raises:
+            RuntimeError:
+                If called when the sequencer has not been paused.
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    @abc.abstractmethod
     def publish(self, message):
         """ Publish message for this ordering key.
 
@@ -45,16 +66,5 @@ class Sequencer(object):
             RuntimeError:
                 If called after this sequencer has been stopped, either by
                 a call to stop() or after all batches have been published.
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    @abc.abstractmethod
-    def unpause(self, message):
-        """ Unpauses this sequencer.
-
-        Raises:
-            RuntimeError:
-                If called when the sequencer has not been paused.
         """
         raise NotImplementedError

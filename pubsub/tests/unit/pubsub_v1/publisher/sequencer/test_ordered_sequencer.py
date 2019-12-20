@@ -34,9 +34,7 @@ def create_client():
 
 
 def create_ordered_sequencer(client):
-    return ordered_sequencer.OrderedSequencer(
-        client, "topic_name", _ORDERING_KEY, lambda topic, ordering_key: None
-    )
+    return ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
 
 
 def test_stop_makes_sequencer_invalid():
@@ -193,43 +191,21 @@ def test_publish_batch_full():
     assert len(sequencer._get_batches()) == 2
 
 
-class PublishesDoneCallbackTracker(object):
-    def __init__(self):
-        self.called = False
-        self.topic = ""
-        self.ordering_key = ""
-
-    def __call__(self, topic, ordering_key):
-        self.called = True
-        self.topic = topic
-        self.ordering_key = ordering_key
-
-
 def test_batch_done_successfully():
     client = create_client()
     batch = mock.Mock(spec=client._batch_class)
 
-    publishes_done_callback_tracker = PublishesDoneCallbackTracker()
-
-    sequencer = ordered_sequencer.OrderedSequencer(
-        client, "topic_name", _ORDERING_KEY, publishes_done_callback_tracker
-    )
+    sequencer = ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
     sequencer._set_batch(batch)
 
     sequencer._batch_done_callback(success=True)
 
     # One batch is done, so the OrderedSequencer has no more work, and should
-    # call the passed in publishes_done_callback_tracker.
-    assert publishes_done_callback_tracker.called
+    # return true for is_finished().
+    assert sequencer.is_finished()
 
     # No batches remain in the batches list.
     assert len(sequencer._get_batches()) == 0
-
-    # Sequencer should be stopped after publishes_done_callback_tracker is
-    # called. We test this by calling Stop(), which should throw since it has
-    # alread been stopped.
-    with pytest.raises(RuntimeError):
-        sequencer.stop()
 
 
 def test_batch_done_successfully_one_batch_remains():
@@ -237,18 +213,14 @@ def test_batch_done_successfully_one_batch_remains():
     batch1 = mock.Mock(spec=client._batch_class)
     batch2 = mock.Mock(spec=client._batch_class)
 
-    publishes_done_callback_tracker = PublishesDoneCallbackTracker()
-
-    sequencer = ordered_sequencer.OrderedSequencer(
-        client, "topic_name", _ORDERING_KEY, publishes_done_callback_tracker
-    )
+    sequencer = ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
     sequencer._set_batches([batch1, batch2])
 
     sequencer._batch_done_callback(success=True)
 
-    # One batch is done, but the OrderedSequencer has more work, so DO NOT
-    # call the passed in publishes_done_callback_tracker.
-    assert not publishes_done_callback_tracker.called
+    # One batch is done, but the OrderedSequencer has more work, so is_finished()
+    # should return false.
+    assert not sequencer.is_finished()
 
     # Second batch should be not be committed since the it may still be able to
     # accept messages.
@@ -264,18 +236,14 @@ def test_batch_done_successfully_many_batches_remain():
     batch2 = mock.Mock(spec=client._batch_class)
     batch3 = mock.Mock(spec=client._batch_class)
 
-    publishes_done_callback_tracker = PublishesDoneCallbackTracker()
-
-    sequencer = ordered_sequencer.OrderedSequencer(
-        client, "topic_name", _ORDERING_KEY, publishes_done_callback_tracker
-    )
+    sequencer = ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
     sequencer._set_batches([batch1, batch2, batch3])
 
     sequencer._batch_done_callback(success=True)
 
     # One batch is done, but the OrderedSequencer has more work, so DO NOT
-    # call the passed in publishes_done_callback_tracker.
-    assert not publishes_done_callback_tracker.called
+    # return true for is_finished().
+    assert not sequencer.is_finished()
 
     # Second batch should be committed since it is full. We know it's full
     # because there exists a third batch. Batches are created only if the
@@ -293,11 +261,7 @@ def test_batch_done_unsuccessfully():
     batch2 = mock.Mock(spec=client._batch_class)
     batch3 = mock.Mock(spec=client._batch_class)
 
-    publishes_done_callback_tracker = PublishesDoneCallbackTracker()
-
-    sequencer = ordered_sequencer.OrderedSequencer(
-        client, "topic_name", _ORDERING_KEY, publishes_done_callback_tracker
-    )
+    sequencer = ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
     sequencer._set_batches([batch1, batch2, batch3])
 
     # Make the batch fail.
@@ -305,7 +269,7 @@ def test_batch_done_unsuccessfully():
 
     # Sequencer should remain as a sentinel to indicate this ordering key is
     # paused. Therefore, don't call the cleanup callback.
-    assert not publishes_done_callback_tracker.called
+    assert not sequencer.is_finished()
 
     # Cancel the remaining batches.
     assert batch2.cancel.call_count == 1
@@ -318,3 +282,24 @@ def test_batch_done_unsuccessfully():
     # future with an exception.
     future = sequencer.publish(message)
     assert future.exception().ordering_key == _ORDERING_KEY
+
+
+def test_publish_after_finish():
+    client = create_client()
+    batch = mock.Mock(spec=client._batch_class)
+
+    sequencer = ordered_sequencer.OrderedSequencer(client, "topic_name", _ORDERING_KEY)
+    sequencer._set_batch(batch)
+
+    sequencer._batch_done_callback(success=True)
+
+    # One batch is done, so the OrderedSequencer has no more work, and should
+    # return true for is_finished().
+    assert sequencer.is_finished()
+
+    message = create_message()
+    # It's legal to publish after being finished.
+    sequencer.publish(message)
+
+    # Go back to accepting-messages mode.
+    assert not sequencer.is_finished()

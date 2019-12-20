@@ -27,6 +27,18 @@ class UnorderedSequencer(base.Sequencer):
         self._current_batch = None
         self._stopped = False
 
+    def is_finished(self):
+        """ Whether the sequencer is finished and should be cleaned up.
+
+            Returns:
+                bool: Whether the sequencer is finished and should be cleaned up.
+        """
+        # TODO: Implement. Not implementing yet because of possible performance
+        # impact due to extra locking required. This does mean that
+        # UnorderedSequencers don't get cleaned up, but this is the same as
+        # previously existing behavior.
+        return False
+
     def stop(self):
         """ Stop the sequencer.
 

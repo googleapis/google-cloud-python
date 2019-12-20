@@ -385,7 +385,7 @@ def test_publish_with_ordering_key():
     )
 
 
-def test_delete_sequencer_for_ordered_sequencer():
+def test_ordered_sequencer_cleaned_up():
     creds = mock.Mock(spec=credentials.Credentials)
     # Max latency is infinite so a commit thread is not created.
     # We don't want a commit thread to interfere with this test.
@@ -399,12 +399,18 @@ def test_delete_sequencer_for_ordered_sequencer():
 
     topic = "topic"
     ordering_key = "ord_key"
-    assert (
-        client.publish(topic, b"bytestring body", ordering_key=ordering_key) is not None
-    )
+    sequencer = mock.Mock(spec=ordered_sequencer.OrderedSequencer)
+    sequencer.is_finished.return_value = False
+    client._set_sequencer(topic=topic, sequencer=sequencer, ordering_key=ordering_key)
 
     assert len(client._sequencers) == 1
-    client._delete_sequencer(topic, ordering_key)
+    # 'sequencer' is not finished yet so don't remove it.
+    client._commit_sequencers()
+    assert len(client._sequencers) == 1
+
+    sequencer.is_finished.return_value = True
+    # 'sequencer' is finished so remove it.
+    client._commit_sequencers()
     assert len(client._sequencers) == 0
 
 
