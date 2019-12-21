@@ -89,45 +89,20 @@ Time spent  1.6195518970489502
 
 ### Django connection params
 
-Settings should be a dict containing either:
+Django's `DATABASES` setting should point to an existing database:
 
-a) 'SPANNER_URL' as the key and expecting a URL of the form:
-```
-cloudspanner:[//host[:port]]/project/<project_id>/instances/
-<instance-id>/databases/<database-name>?property-name=property-value
-```
-For example:
 ```python
-DATABASE={
+DATABASES = {
     'default': {
-        "SPANNER_URL":  "cloudspanner:/projects/appdev/instances/dev1/databases/db1?"
-                        "instance_config=projects/appdev/instanceConfigs/regional-us-west2"
-    }
-}
-```
-
-b) Otherwise expects parameters whose keys are capitalized and
-are of the form:
-```python
-{
-    "NAME":             "<database_name>",
-    "INSTANCE":         "<instance_name>",
-    "AUTOCOMMIT":       True or False,
-    "READONLY":         True or False,
-    "PROJECT_ID":       "<project_id>",
-    "INSTANCE_CONFIG":  "[instance configuration if using a brand new database]",
-}
-```
-
-for example:
-
-```python
-{
-    "NAME":             "db1",
-    "INSTANCE":         "dev1",
-    "AUTOCOMMIT":       True,
-    "READONLY":         False,
-    "PROJECT_ID":       "appdev",
-    "INSTANCE_CONFIG":  "projects/appdev/instanceConfigs/regional-us-west2",
+        'ENGINE': 'spanner.django',
+        'PROJECT': '<project_id>',
+        'INSTANCE': '<instance_name>',
+        'NAME': '<database_name>',
+        # Only include this if you need to specify where to retrieve the
+        # service account JSON for the credentials to connect to Cloud Spanner.
+        'OPTIONS': {
+            'credentials_uri': '<credentials_uri>',
+        },
+    },
 }
 ```

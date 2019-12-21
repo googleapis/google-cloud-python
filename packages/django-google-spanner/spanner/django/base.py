@@ -14,6 +14,7 @@
 
 import spanner.dbapi as Database
 from django.db.backends.base.base import BaseDatabaseWrapper
+from google.cloud import spanner_v1 as spanner
 
 from .client import DatabaseClient
 from .creation import DatabaseCreation
@@ -97,8 +98,21 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     ops_class = DatabaseOperations
     client_class = DatabaseClient
 
+    @property
+    def instance(self):
+        return spanner.Client().instance(self.settings_dict['INSTANCE'])
+
+    @property
+    def _nodb_connection(self):
+        raise NotImplementedError('Spanner does not have a "no db" connection.')
+
     def get_connection_params(self):
-        return {'spanner_url': self.settings_dict['SPANNER_URL']}
+        return {
+            'project_name': self.settings_dict['PROJECT'],
+            'instance_name': self.settings_dict['INSTANCE'],
+            'db_name': self.settings_dict['NAME'],
+            **self.settings_dict['OPTIONS'],
+        }
 
     def get_new_connection(self, conn_params):
         return Database.connect(**conn_params)

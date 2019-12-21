@@ -39,26 +39,14 @@ paramstyle = 'at-named'
 threadsafety = 2  # Threads may share the module and connections but not cursors.
 
 
-def connect(spanner_url, credentials_uri=None):
-    """Connects to Cloud Spanner.
+def connect(project_name=None, instance_name=None, db_name=None, credentials_uri=None):
+    """
+    Connect to Cloud Spanner.
 
     Args:
-        spanner_url: A string specifying how to connect to Cloud Spanner.
-                     It will be of the format:
-                        cloudspanner:[//host[:port]]/projects/<project-id>/instances/<instance-id>/databases/<database-name>[?property-name=property-value[;]]*
-
-                     For example:
-                        * cloudspanner:/projects/foo/instances/bar/databases/db
-                        * cloudspanner://spanner.googleapis.com/projects/foo/instances/bar/databases/db
-                        * cloudspanner://spanner.googleapis.com:443/projects/foo/instances/bar/databases/db
-
-                    If an instance doesn't yet exist, the property
-                            "instance_config"
-                    must be set and match the format.
-                                ^projects/project-id/instanceConfigs/region$
-                    for example:
-                                projects/odeke-sandbox/instanceConfigs/regional-us-west2
-
+        project_name: A project that already exists.
+        instance_name: An instance that already exists.
+        db_name: A database that already exists.
         credentials_uri: An optional string specifying where to retrieve the service
                          account JSON for the credentials to connect to Cloud Spanner.
 
@@ -68,37 +56,27 @@ def connect(spanner_url, credentials_uri=None):
     Raises:
         Error if it encounters any unexpected inputs.
     """
-
-    conn_params = parse_spanner_url(spanner_url)
-
-    kwargs = dict(
-        project=conn_params.get('project_id'),
-        client_info=google_client_info(),
-    )
-
-    # Pre-requisite are the database and instance names.
-    db_name = conn_params.get('database')
     if not db_name:
-        raise Error("expected 'database'")
-    instance_name = conn_params.get('instance')
+        raise Error("'db_name' is required.")
     if not instance_name:
-        raise Error("expected 'instance'")
+        raise Error("'instance_name' is required.")
 
-    credentials_uri = conn_params.get('credentials_uri')
-    client = None
-
+    client_kwargs = {
+        'project': project_name,
+        'client_info': google_client_info(),
+    }
     if credentials_uri:
-        client = spanner.Client.from_service_account_json(credentials_uri, **kwargs)
+        client = spanner.Client.from_service_account_json(credentials_uri, **client_kwargs)
     else:
-        client = spanner.Client(**kwargs)
+        client = spanner.Client(**client_kwargs)
 
     instance = client.instance(instance_name)
     if not instance.exists():
-        raise ProgrammingError("instance '%s' does not yet exist" % instance_name)
+        raise ProgrammingError("instance '%s' does not exist." % instance_name)
 
     db = instance.database(db_name)
     if not db.exists():
-        raise ProgrammingError("database '%s' does not yet exist" % db_name)
+        raise ProgrammingError("database '%s' does not exist." % db_name)
 
     return Connection(db)
 
