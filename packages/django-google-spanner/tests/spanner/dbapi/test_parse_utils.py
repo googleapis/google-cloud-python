@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import decimal
 from unittest import TestCase
 
 from google.cloud.spanner_v1 import param_types
@@ -304,6 +305,10 @@ class ParseUtilsTests(TestCase):
                 # since it might be useful to pass to the next user.
                 ('SELECT * from t WHERE id=10', {'f1': 'app', 'f2': 'name'}),
                 ('SELECT * from t WHERE id=10', {'f1': 'app', 'f2': 'name'}),
+            ),
+            (
+                ('SELECT (an.p + %s) AS np FROM an WHERE (an.p + %s) = %s', (1, 1.0, decimal.Decimal('31'),)),
+                ('SELECT (an.p + @a0) AS np FROM an WHERE (an.p + @a1) = @a2', {'a0': 1, 'a1': 1.0, 'a2': 31.0}),
             ),
         ]
         for ((sql_in, params), sql_want) in cases:

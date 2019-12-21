@@ -78,9 +78,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/issues/170
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
-        # filtering on annotation with Decimal value crashes:
-        # https://github.com/orijtech/spanner-orm/issues/210
-        'annotations.tests.NonAggregateAnnotationTestCase.test_filter_decimal_annotation',
         # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:

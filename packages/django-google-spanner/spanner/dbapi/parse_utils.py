@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import decimal
 import re
 from urllib.parse import urlparse
 
@@ -412,9 +413,17 @@ def sql_pyformat_args_to_spanner(sql, params):
             resolved_value = pyfmt % params
             named_args[key] = resolved_value
         else:
-            named_args[key] = params[i]
+            named_args[key] = cast_for_spanner(params[i])
 
     return sql, named_args
+
+
+def cast_for_spanner(param):
+    """Convert param to its Cloud Spanner equivalent type."""
+    if isinstance(param, decimal.Decimal):
+        return float(param)
+    else:
+        return param
 
 
 def infer_param_types(params, param_types):
