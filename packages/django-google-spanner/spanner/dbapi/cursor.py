@@ -18,7 +18,7 @@ from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
     ensure_where_clause, get_param_types, parse_insert,
-    rows_for_insert_or_update, sql_pyformat_args_to_spanner,
+    sql_pyformat_args_to_spanner,
 )
 
 _UNSET_COUNT = -1
@@ -121,29 +121,52 @@ class Cursor(object):
     def __handle_insert(self, sql, params):
         self.__commit_preceding_batch(OP_DDL)
 
-        # There are 3 variants of an INSERT statement:
-        # a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
-        # b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
-        # c) INSERT INTO <table> (columns...) VALUES (%s,...):           with params
-        parts = parse_insert(sql)
+        parts = parse_insert(sql, params)
+
+        # The split between the two styles exists because:
+        # in the common case of multiple values being passed
+        # with simple pyformat arguments,
+        #   SQL: INSERT INTO T (f1, f2) VALUES (%s, %s, %s)
+        #   Params:   [(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,)]
+        # we can take advantage of a single RPC with:
+        #       transaction.insert(table, columns, values)
+        # instead of invoking:
+        #   with transaction:
+        #       for sql, params in sql_params_list:
+        #           transaction.execute_sql(sql, params, param_types)
+        # which invokes more RPCs and is more costly.
+
+        if parts.get('homogenous'):
+            # The common case of multiple values being passed in
+            # non-complex pyformat args and need to be uploaded in one RPC.
+            return self.__db_handle.in_transaction(
+                self.__do_execute_insert_homogenous,
+                parts,
+            )
+        else:
+            # All the other cases that are esoteric and need
+            #   transaction.execute_sql
+            sql_params_list = parts.get('sql_params_list')
+            return self.__db_handle.in_transaction(
+                self.__do_execute_insert_heterogenous,
+                sql_params_list,
+            )
+
+    def __do_execute_insert_heterogenous(self, transaction, sql_params_list):
+        for sql, params in sql_params_list:
+            sql, params = sql_pyformat_args_to_spanner(sql, params)
+            param_types = get_param_types(params)
+            res = transaction.execute_sql(sql, params=params, param_types=param_types)
+            # TODO: File a bug with Cloud Spanner and the Python client maintainers
+            # about a lost commit when res isn't read from.
+            _ = list(res)
+
+    def __do_execute_insert_homogenous(self, transaction, parts):
+        # Perform an insert in one shot.
+        table = parts.get('table')
         columns = parts.get('columns')
-        rows = None
-        if params:
-            # Case c)
-            rows = rows_for_insert_or_update(columns, params, parts.get('values_pyformat'))
-
-        self.__db_handle.in_transaction(
-            self.__do_execute_insert,
-            parts.get('table'),
-            columns,
-            rows,
-        )
-
-    def __do_execute_insert(self, transaction, table, columns, values):
+        values = parts.get('values')
         return transaction.insert(table, columns, values)
-
-    def __execute_insert_no_params(self, transaction, sql):
-        return transaction.execute_update(sql)
 
     def __commit_preceding_batch(self, op=None):
         last_op = self.__last_op

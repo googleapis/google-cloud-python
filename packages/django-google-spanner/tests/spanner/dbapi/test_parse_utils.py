@@ -16,7 +16,7 @@ import decimal
 from unittest import TestCase
 
 from google.cloud.spanner_v1 import param_types
-from spanner.dbapi.exceptions import Error
+from spanner.dbapi.exceptions import Error, ProgrammingError
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, escape_name, get_param_types, parse_insert,
@@ -53,43 +53,107 @@ class ParseUtilsTests(TestCase):
         cases = [
             (
                 'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                [1, 2, 3, 4, 5, 6],
                 {
-                    'table': 'django_migrations',
+                    'homogenous': True,
                     'columns': ['app', 'name', 'applied'],
-                    'values_pyformat': ['(%s, %s, %s)'],
+                    'table': 'django_migrations',
+                    'values': [(1, 2, 3,), (4, 5, 6,)],
                 },
             ),
             (
-                'INSERT INTO sales.addresses (street, city, state, zip_code)'
+                'INSERT INTO sales.addresses (street, city, state, zip_code) '
                 'SELECT street, city, state, zip_code FROM sales.customers'
                 'ORDER BY first_name, last_name',
+                None,
                 {
-                    'table': 'sales.addresses',
-                    'columns': ['street', 'city', 'state', 'zip_code'],
-                },
+                    'sql_params_list': [(
+                        'INSERT INTO sales.addresses (street, city, state, zip_code) '
+                        'SELECT street, city, state, zip_code FROM sales.customers'
+                        'ORDER BY first_name, last_name',
+                        None,
+                    )],
+                }
             ),
             (
 
-                'INSERT INTO auth_permission (name, content_type_id, codename) '
+                'INSERT INTO ap (n, ct, cn) '
                 'VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s),(%s,      %s, %s)',
+                (1, 2, 3, 4, 5, 6, 7, 8, 9),
                 {
-                    'table': 'auth_permission',
-                    'columns': ['name', 'content_type_id', 'codename'],
-                    'values_pyformat': ['(%s, %s, %s)', '(%s, %s, %s)', '(%s, %s, %s)', '(%s,      %s, %s)'],
+                    'homogenous': True,
+                    'columns': ['n', 'ct', 'cn'],
+                    'table': 'ap',
+                    'values': [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)],
                 },
             ),
             (
                 'INSERT INTO `no` (`yes`) VALUES (%s)',
+                (1, 4, 5),
                 {
+                    # The results MUST NOT contain any backticks.
+                    'homogenous': True,
                     'table': 'no',
                     'columns': ['yes'],
+                    'values': [(1,), (4,), (5,)],
+                },
+            ),
+            (
+                'INSERT INTO T (f1, f2) VALUES (1, 2)',
+                None,
+                {
+                    'sql_params_list': [
+                        (
+                            'INSERT INTO T (f1, f2) VALUES (1, 2)',
+                            None,
+                        ),
+                    ],
+                },
+            ),
+            (
+                'INSERT INTO `no` (`yes`, tiff) VALUES (%s, LOWER(%s)), (%s, %s), (%s, %s)',
+                (1, 'FOO', 5, 10, 11, 29),
+                {
+                    'sql_params_list': [
+                        ('INSERT INTO `no` (`yes`, tiff)  VALUES(%s, LOWER(%s))', (1, 'FOO',)),
+                        ('INSERT INTO `no` (`yes`, tiff)  VALUES(%s, %s)', (5, 10)),
+                        ('INSERT INTO `no` (`yes`, tiff)  VALUES(%s, %s)', (11, 29)),
+                    ],
                 },
             ),
         ]
-        for sql, want in cases:
+
+        for sql, params, want in cases:
             with self.subTest(sql=sql):
-                got = parse_insert(sql)
+                got = parse_insert(sql, params)
                 self.assertEqual(got, want, 'Mismatch with parse_insert of `%s`' % sql)
+
+    def test_parse_insert_invalid(self):
+        cases = [
+            (
+                'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s), (%s, %s, %s)',
+                [1, 2, 3, 4, 5, 6, 7],
+                'len\\(params\\)=7 MUST be a multiple of len\\(pyformat_args\\)=3',
+            ),
+            (
+                'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s), (%s, %s, LOWER(%s))',
+                [1, 2, 3, 4, 5, 6, 7],
+                'Invalid length: VALUES\\(...\\) len: 6 != len\\(params\\): 7',
+            ),
+            (
+                'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s), (%s, %s, LOWER(%s)))',
+                [1, 2, 3, 4, 5, 6],
+                'VALUES: expected `,` got \\) in \\)',
+            ),
+        ]
+
+        for sql, params, wantException in cases:
+            with self.subTest(sql=sql):
+                self.assertRaisesRegex(
+                    ProgrammingError,
+                    wantException,
+                    lambda: parse_insert(sql, params),
+                )
 
     def test_rows_for_insert_or_update(self):
         cases = [

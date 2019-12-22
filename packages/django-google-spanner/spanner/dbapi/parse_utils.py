@@ -14,11 +14,13 @@
 
 import decimal
 import re
+from functools import reduce
 
 import sqlparse
 from google.cloud import spanner_v1 as spanner
 
-from .exceptions import Error
+from .exceptions import Error, ProgrammingError
+from .parser import parse_values
 from .types import DateStr, TimestampStr
 
 STMT_DDL = 'DDL'
@@ -75,25 +77,138 @@ def strip_backticks(name):
     return name[1:-1] if has_quotes else name
 
 
-def parse_insert(insert_sql):
-    match = re_INSERT.search(insert_sql)
-    if not match:
-        return None
+def parse_insert(insert_sql, params):
+    """
+    Parse an INSERT statement an generate a list of tuples of the form:
+        [
+            (SQL, params_per_row1),
+            (SQL, params_per_row2),
+            (SQL, params_per_row3),
+            ...
+        ]
 
-    parsed = {
-        'table': strip_backticks(match.group('table_name')),
-        'columns': [
+    There are 4 variants of an INSERT statement:
+    a) INSERT INTO <table> (columns...) VALUES (<inlined values>): no params
+    b) INSERT INTO <table> (columns...) SELECT_STMT:               no params
+    c) INSERT INTO <table> (columns...) VALUES (%s,...):           with params
+    d) INSERT INTO <table> (columns...) VALUES (%s,..<EXPR>...)    with params and expressions
+
+    Thus given each of the forms, it will produce a dictionary describing
+    how to upload the contents to Cloud Spanner:
+    Case a)
+            SQL: INSERT INTO T (f1, f2) VALUES (1, 2)
+        it produces:
+            {
+                'sql_params_list': [
+                    ('INSERT INTO T (f1, f2) VALUES (1, 2)', None),
+                ],
+            }
+
+    Case b)
+            SQL: 'INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln',
+        it produces:
+            {
+                'sql_params_list': [
+                    ('INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln', None),
+                ]
+            }
+
+    Case c)
+            SQL: INSERT INTO T (f1, f2) VALUES (%s, %s), (%s, %s)
+            Params: ['a', 'b', 'c', 'd']
+        it produces:
+            {
+                'homogenous': True,
+                'table': 'T',
+                'columns': ['f1', 'f2'],
+                'values': [('a', 'b',), ('c', 'd',)],
+            }
+
+    Case d)
+            SQL: INSERT INTO T (f1, f2) VALUES (%s, LOWER(%s)), (UPPER(%s), %s)
+            Params: ['a', 'b', 'c', 'd']
+        it produces:
+            {
+                'sql_params_list': [
+                    ('INSERT INTO T (f1, f2) VALUES (%s, LOWER(%s))', ('a', 'b',))
+                    ('INSERT INTO T (f1, f2) VALUES (UPPER(%s), %s)', ('c', 'd',))
+                ],
+            }
+    """
+    match = re_INSERT.search(insert_sql)
+
+    if not match:
+        raise ProgrammingError('Could not parse an INSERT statement from %s' % insert_sql)
+
+    after_values_sql = re_VALUES_TILL_END.findall(insert_sql)
+    if not after_values_sql:
+        # Case b)
+        return {
+            'sql_params_list': [(insert_sql, None,)],
+        }
+
+    if not params:
+        # Case a) perhaps?
+        # Check if any %s exists.
+        pyformat_str_count = after_values_sql.count('%s')
+        if pyformat_str_count > 0:
+            raise ProgrammingError('no params yet there are %d "%s" tokens' % pyformat_str_count)
+
+        # Confirmed case of:
+        # SQL: INSERT INTO T (a1, a2) VALUES (1, 2)
+        # Params: None
+        return {
+            'sql_params_list': [(insert_sql, None,)],
+        }
+
+    values_str = after_values_sql[0]
+    _, values = parse_values(values_str)
+
+    if values.homogenous():
+        # Case c)
+
+        # We MUST strip backticks for the table_name and columns,
+        # only in this code path for homogenous statements.
+        table = strip_backticks(match.group('table_name'))
+
+        columns = [
             strip_backticks(mi.strip())
             for mi in match.group('columns').split(',')
-        ],
-    }
-    after_VALUES_sql = re_VALUES_TILL_END.findall(insert_sql)
-    if after_VALUES_sql:
-        values_pyformat = re_VALUES_PYFORMAT.findall(after_VALUES_sql[0])
-        if values_pyformat:
-            parsed['values_pyformat'] = values_pyformat
+        ]
+        values_pyformat = [str(arg) for arg in values.argv]
+        rows_list = rows_for_insert_or_update(columns, params, values_pyformat)
 
-    return parsed
+        return {
+            'homogenous': True,
+            'table': table,
+            'values': rows_list,
+            'columns': columns,
+        }
+
+    # Case d)
+    # insert_sql is of the form:
+    #   INSERT INTO T(c1, c2) VALUES (%s, %s), (%s, LOWER(%s))
+
+    # Sanity check:
+    #  length(all_args) == len(params)
+    args_len = reduce(lambda a, b: a+b, [len(arg) for arg in values.argv])
+    if args_len != len(params):
+        raise ProgrammingError('Invalid length: VALUES(...) len: %d != len(params): %d' % (
+            args_len, len(params)),
+        )
+
+    trim_index = insert_sql.find(values_str)
+    before_values_sql = insert_sql[:trim_index]
+
+    sql_param_tuples = []
+    for token_arg in values.argv:
+        row_sql = before_values_sql + ' VALUES%s' % token_arg
+        row_params, params = tuple(params[0:len(token_arg)]), params[len(token_arg):]
+        sql_param_tuples.append((row_sql, row_params,))
+
+    return {
+        'sql_params_list': sql_param_tuples,
+    }
 
 
 def rows_for_insert_or_update(columns, params, pyformat_args=None):
@@ -146,7 +261,7 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
         # Columns:      (f1, f2, f3)
         # new_params:   [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)]
 
-        # Sanity check: all the pyformat_values should have the exact same length.
+        # Sanity check 1: all the pyformat_values should have the exact same length.
         first, rest = pyformat_args[0], pyformat_args[1:]
         n_stride = first.count('%s')
         for pyfmt_value in rest:
@@ -154,6 +269,19 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
             if n_stride != n:
                 raise Error('\nlen(`%s`)=%d\n!=\nlen(`%s`)=%d' % (
                     first, n_stride, pyfmt_value, n))
+
+        # Sanity check 2: len(params) MUST be a multiple of n_stride aka len(count of %s).
+        # so that we can properly group for example:
+        #  Given pyformat args:
+        #   (%s, %s, %s)
+        #  Params:
+        #   [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # into
+        #   [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+        if (len(params) % n_stride) != 0:
+            raise ProgrammingError('Invalid length: len(params)=%d MUST be a multiple of len(pyformat_args)=%d' % (
+                len(params), n_stride),
+            )
 
     # Now chop up the strides.
     strides = []

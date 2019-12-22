@@ -102,11 +102,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
-        # The current approach for inserting (which doesn't use SQL) doesn't
-        # support expressions: https://github.com/orijtech/spanner-orm/issues/198
-        'bulk_create.tests.BulkCreateTests.test_bulk_insert_expressions',
-        'expressions.tests.BasicExpressionsTests.test_new_object_create',
-        'expressions.tests.BasicExpressionsTests.test_new_object_save',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # Implement DatabaseOperations.datetime_cast_date_sql():
