@@ -5378,7 +5378,7 @@ class TestClient(unittest.TestCase):
 
         data = {
             "totalRows": str(row_count),
-            "rows": [{"f": [{"v": "20180101"}]}, {"f": [{"v": "20180102"}]},],
+            "rows": [{"f": [{"v": "20180101"}]}, {"f": [{"v": "20180102"}]}],
         }
         creds = _make_credentials()
         http = object()
