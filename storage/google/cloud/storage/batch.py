@@ -206,11 +206,12 @@ class Batch(Connection):
 
         multi = MIMEMultipart()
 
+        # Use timeout of last request, default to None (indefinite)
         timeout = None
-        for method, uri, headers, body, timeout in self._requests:
+        for method, uri, headers, body, _timeout in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)
-            timeout = timeout
+            timeout = _timeout
 
         # The `email` package expects to deal with "native" strings
         if six.PY3:  # pragma: NO COVER  Python3
