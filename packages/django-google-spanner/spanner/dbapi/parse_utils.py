@@ -495,6 +495,7 @@ SPANNER_RESERVED_KEYWORDS = {
     'DEFINE',
     'DESC',
     'DISTINCT',
+    'DROP',
     'ELSE',
     'END',
     'ENUM',
