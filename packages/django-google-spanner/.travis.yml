@@ -7,14 +7,14 @@ env:
         - GOOGLE_APPLICATION_CREDENTIALS=~/creds.json
         - RUNNING_SPANNER_BACKEND_TESTS=1
     jobs:
-        - DJANGO_TEST_APPS="admin_changelist admin_ordering"
-        - DJANGO_TEST_APPS="aggregation annotations"
+        - DJANGO_TEST_APPS="admin_changelist admin_custom_urls admin_docs"
+        - DJANGO_TEST_APPS="admin_inlines admin_ordering aggregation annotations"
         - DJANGO_TEST_APPS="basic bulk_create custom_pk"
-        - DJANGO_TEST_APPS="dates datetimes"
-        - DJANGO_TEST_APPS="lookup timezones"
-        - DJANGO_TEST_APPS="model_fields"
+        - DJANGO_TEST_APPS="dates datetimes filtered_relation"
+        - DJANGO_TEST_APPS="lookup many_to_one"
+        - DJANGO_TEST_APPS="model_fields one_to_one"
         - DJANGO_TEST_APPS="queries.tests.SubqueryTests queries.test_bulk_update queries.test_qs_combinators"
-        - DJANGO_TEST_APPS="raw_query"
+        - DJANGO_TEST_APPS="raw_query timezones update view_tests"
 
 python:
     - "3.7"

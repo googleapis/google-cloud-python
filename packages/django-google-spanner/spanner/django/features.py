@@ -18,13 +18,19 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
         # spanner.django monkey patches AutoField to have a default value.
         'basic.tests.ModelTest.test_hash',
+        'many_to_one.tests.ManyToOneTests.test_fk_assignment_and_related_object_cache',
+        'many_to_one.tests.ManyToOneTests.test_relation_unsaved',
         'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
         'model_fields.test_booleanfield.ValidationTest.test_nullbooleanfield_blank',
+        'one_to_one.tests.OneToOneTests.test_get_reverse_on_unsaved_object',
+        'one_to_one.tests.OneToOneTests.test_set_reverse_on_unsaved_object',
+        'one_to_one.tests.OneToOneTests.test_unsaved_object',
         'queries.test_bulk_update.BulkUpdateNoteTests.test_unsaved_models',
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         # Tests that assume a serial pk.
+        'admin_inlines.tests.TestInline.test_inline_hidden_field_no_column',
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',
         'aggregation.test_filter_argument.FilteredAggregateTests.test_plain_annotate',
         'aggregation.tests.AggregateTestCase.test_annotate_basic',
@@ -87,6 +93,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No UNIQUE constraints in Spanner.
         'model_fields.test_filefield.FileFieldTests.test_unique_when_same_filename',
+        'one_to_one.tests.OneToOneTests.test_multiple_o2o',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
         # No matching signature for function REGEXP_CONTAINS for argument
