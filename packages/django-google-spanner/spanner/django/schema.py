@@ -63,7 +63,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         sql = self.sql_create_table % {
             "table": self.quote_name(model._meta.db_table),
             "definition": ", ".join(constraint for constraint in (*column_sqls, *constraints) if constraint),
-            "primary_key": model._meta.pk.column,
+            "primary_key": self.quote_name(model._meta.pk.column),
         }
         if model._meta.db_tablespace:
             tablespace_sql = self.connection.ops.tablespace_sql(model._meta.db_tablespace)
