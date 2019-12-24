@@ -16,9 +16,9 @@
 def client_query_partitioned_table(client, table_id):
 
     # [START bigquery_query_partitioned_table]
-    from google.cloud import bigquery
-
     import datetime
+
+    from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
     # client = bigquery.Client()

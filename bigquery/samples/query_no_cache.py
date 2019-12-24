@@ -27,7 +27,7 @@ def query_no_cache(client):
         FROM `bigquery-public-data.samples.shakespeare`
         GROUP BY corpus;
     """
-    query_job = client.query(sql, job_config=job_config,)  # Make an API request.
+    query_job = client.query(sql, job_config=job_config)  # Make an API request.
 
     for row in query_job:
         print(row)
