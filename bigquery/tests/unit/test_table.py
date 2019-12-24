@@ -2015,6 +2015,55 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_arrow()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_iterable(self):
+        from google.cloud.bigquery.schema import SchemaField
+        import types
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+
+        row_iterator = self._make_one(
+            _mock_client(), api_request, path, schema, page_size=1, max_results=5
+        )
+        df = row_iterator.to_dataframe_iterable()
+
+        self.assertIsInstance(df, types.GeneratorType)
+
+        a = next(df)
+        self.assertEqual(a.name.dtype.name, "object")
+        self.assertEqual(a.age.dtype.name, "int64")
+        self.assertEqual(len(a), 4)
+
+    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    def test_to_dataframe_iterable_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe_iterable()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
         from google.cloud.bigquery.schema import SchemaField
 

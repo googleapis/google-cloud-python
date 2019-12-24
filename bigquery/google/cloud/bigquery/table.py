@@ -1554,11 +1554,44 @@ class RowIterator(HTTPIterator):
             arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
             return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
-    def _to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
+    def to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
-        See ``to_dataframe`` for argument descriptions.
+        Args:
+            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
+                **Beta Feature** Optional. A BigQuery Storage API client. If
+                supplied, use the faster BigQuery Storage API to fetch rows
+                from BigQuery.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
+
+                **Caution**: There is a known issue reading small anonymous
+                query result tables with the BQ Storage API. When a problem
+                is encountered reading a table, the tabledata.list method
+                from the BigQuery API is used, instead.
+            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
+                Optional. A dictionary of column names pandas ``dtype``s. The
+                provided ``dtype`` is used when constructing the series for
+                the column specified. Otherwise, the default pandas behavior
+                is used.
+
+        Returns:
+            pandas.DataFrame:
+                A generator of :class:`~pandas.DataFrame`.
+
+        Raises:
+            ValueError:
+                If the :mod:`pandas` library cannot be imported.
         """
+        if pandas is None:
+            raise ValueError(_NO_PANDAS_ERROR)
+        if dtypes is None:
+            dtypes = {}
+
         column_names = [field.name for field in self._schema]
         bqstorage_download = functools.partial(
             _pandas_helpers.download_dataframe_bqstorage,
@@ -1683,7 +1716,7 @@ class RowIterator(HTTPIterator):
             progress_bar = self._get_progress_bar(progress_bar_type)
 
             frames = []
-            for frame in self._to_dataframe_iterable(
+            for frame in self.to_dataframe_iterable(
                 bqstorage_client=bqstorage_client, dtypes=dtypes
             ):
                 frames.append(frame)
