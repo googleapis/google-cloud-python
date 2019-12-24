@@ -191,13 +191,19 @@ GcsFilesetSpec = _reflection.GeneratedProtocolMessageType(
   Attributes:
       file_patterns:
           Required. Patterns to identify a set of files in Google Cloud
-          Storage.  Examples of valid file\_patterns:  -
-          ``gs://bucket_name/*``: matches all files in ``bucket_name`` -
-          ``gs://bucket_name/file*``: matches files prefixed by ``file``
-          in    ``bucket_name`` -  ``gs://bucket_name/a/*/b``: matches
-          all files in ``bucket_name`` that    match ``a/*/b`` pattern,
-          such as ``a/c/b``, ``a/d/b`` -  ``gs://another_bucket/a.txt``:
-          matches ``gs://another_bucket/a.txt``
+          Storage. See `Cloud Storage documentation
+          <storage/docs/gsutil/addlhelp/WildcardNames>`__ for more
+          information. Note that bucket wildcards are currently not
+          supported.  Examples of valid file\_patterns:  -
+          ``gs://bucket_name/dir/*``: matches all files within
+          ``bucket_name/dir`` directory. -  ``gs://bucket_name/dir/**``:
+          matches all files in ``bucket_name/dir``    spanning all
+          subdirectories. -  ``gs://bucket_name/file*``: matches files
+          prefixed by ``file`` in    ``bucket_name`` -
+          ``gs://bucket_name/a/*/b``: matches all files in
+          ``bucket_name`` that    match ``a/*/b`` pattern, such as
+          ``a/c/b``, ``a/d/b`` -  ``gs://another_bucket/a.txt``: matches
+          ``gs://another_bucket/a.txt``
       sample_gcs_file_specs:
           Output only. Sample files contained in this fileset, not all
           files contained in this fileset are represented here.

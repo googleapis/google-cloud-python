@@ -113,7 +113,7 @@ class PolicyTagManagerGrpcTransport(object):
     def create_taxonomy(self):
         """Return the gRPC stub for :meth:`PolicyTagManagerClient.create_taxonomy`.
 
-        Creates a new taxonomy in a given project.
+        Creates a taxonomy in the specified project.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -127,7 +127,7 @@ class PolicyTagManagerGrpcTransport(object):
         """Return the gRPC stub for :meth:`PolicyTagManagerClient.delete_taxonomy`.
 
         Deletes a taxonomy. This operation will also delete all
-        policy tags in this taxonomy.
+        policy tags in this taxonomy along with their associated policies.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -153,7 +153,8 @@ class PolicyTagManagerGrpcTransport(object):
     def list_taxonomies(self):
         """Return the gRPC stub for :meth:`PolicyTagManagerClient.list_taxonomies`.
 
-        Lists all taxonomies in a project in a particular location.
+        Lists all taxonomies in a project in a particular location that the caller
+        has permission to view.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -179,7 +180,7 @@ class PolicyTagManagerGrpcTransport(object):
     def create_policy_tag(self):
         """Return the gRPC stub for :meth:`PolicyTagManagerClient.create_policy_tag`.
 
-        Creates a policy tag in a taxonomy.
+        Creates a policy tag in the specified taxonomy.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -270,7 +271,8 @@ class PolicyTagManagerGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for :meth:`PolicyTagManagerClient.test_iam_permissions`.
 
-        Returns permissions that a caller has on specified resources.
+        Returns the permissions that a caller has on the specified taxonomy or
+        policy tag.
 
         Returns:
             Callable: A callable which accepts the appropriate
