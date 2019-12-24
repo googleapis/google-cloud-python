@@ -239,7 +239,7 @@ class Batch(Connection):
         # until all futures have been populated.
         exception_args = None
 
-        if len(self._target_objects) != len(responses):
+        if len(self._target_objects) != len(responses):  # pragma: NO COVER
             raise ValueError("Expected a response for every request.")
 
         for target_object, subresponse in zip(self._target_objects, responses):
@@ -322,7 +322,7 @@ def _unpack_batch_response(response):
     parser = Parser()
     message = _generate_faux_mime_message(parser, response)
 
-    if not isinstance(message._payload, list):
+    if not isinstance(message._payload, list):  # pragma: NO COVER
         raise ValueError("Bad response:  not multi-part")
 
     for subrequest in message._payload:
