@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-10-29T12:13:17.119821Z",
+  "updateTime": "2019-12-24T13:13:40.990717Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.40.3",
-        "dockerImage": "googleapis/artman@sha256:c805f50525f5f557886c94ab76f56eaa09cb1da58c3ee95111fd34259376621a"
+        "version": "0.42.3",
+        "dockerImage": "googleapis/artman@sha256:feed210b5723c6f524b52ef6d7740a030f2d1a8f7c29a71c5e5b4481ceaad7f5"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "532773acbed8d09451dafb3d403ab1823e6a6e1e",
-        "internalRef": "277177415"
+        "sha": "46e52fd64973e815cae61e78b14608fe7aa7b1df",
+        "internalRef": "286958627"
       }
     }
   ],
@@ -27,6 +27,704 @@
         "generator": "gapic",
         "config": "google/cloud/bigquery/artman_bigquery_v2.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "noxfile.py"
+    },
+    {
+      "path": "synth.py"
+    },
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".gitignore"
+    },
+    {
+      "path": ".repo-metadata.json"
+    },
+    {
+      "path": "synth.metadata"
+    },
+    {
+      "path": "pylint.config.py"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": "CHANGELOG.md"
+    },
+    {
+      "path": "README.rst"
+    },
+    {
+      "path": "setup.py"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "samples/list_tables.py"
+    },
+    {
+      "path": "samples/update_dataset_access.py"
+    },
+    {
+      "path": "samples/query_external_sheets_temporary_table.py"
+    },
+    {
+      "path": "samples/list_models.py"
+    },
+    {
+      "path": "samples/query_pagination.py"
+    },
+    {
+      "path": "samples/client_query_destination_table.py"
+    },
+    {
+      "path": "samples/dataset_exists.py"
+    },
+    {
+      "path": "samples/get_table.py"
+    },
+    {
+      "path": "samples/client_query_batch.py"
+    },
+    {
+      "path": "samples/client_query.py"
+    },
+    {
+      "path": "samples/create_table_range_partitioned.py"
+    },
+    {
+      "path": "samples/list_datasets.py"
+    },
+    {
+      "path": "samples/create_routine.py"
+    },
+    {
+      "path": "samples/__init__.py"
+    },
+    {
+      "path": "samples/query_to_arrow.py"
+    },
+    {
+      "path": "samples/table_insert_rows.py"
+    },
+    {
+      "path": "samples/update_dataset_default_partition_expiration.py"
+    },
+    {
+      "path": "samples/get_dataset.py"
+    },
+    {
+      "path": "samples/browse_table_data.py"
+    },
+    {
+      "path": "samples/copy_table_multiple_source.py"
+    },
+    {
+      "path": "samples/client_list_jobs.py"
+    },
+    {
+      "path": "samples/undelete_table.py"
+    },
+    {
+      "path": "samples/get_model.py"
+    },
+    {
+      "path": "samples/query_external_sheets_permanent_table.py"
+    },
+    {
+      "path": "samples/get_routine.py"
+    },
+    {
+      "path": "samples/get_dataset_labels.py"
+    },
+    {
+      "path": "samples/create_table.py"
+    },
+    {
+      "path": "samples/update_table_require_partition_filter.py"
+    },
+    {
+      "path": "samples/query_script.py"
+    },
+    {
+      "path": "samples/create_routine_ddl.py"
+    },
+    {
+      "path": "samples/download_public_data.py"
+    },
+    {
+      "path": "samples/client_query_destination_table_cmek.py"
+    },
+    {
+      "path": "samples/list_datasets_by_label.py"
+    },
+    {
+      "path": "samples/delete_routine.py"
+    },
+    {
+      "path": "samples/update_model.py"
+    },
+    {
+      "path": "samples/delete_dataset.py"
+    },
+    {
+      "path": "samples/create_job.py"
+    },
+    {
+      "path": "samples/update_dataset_description.py"
+    },
+    {
+      "path": "samples/delete_model.py"
+    },
+    {
+      "path": "samples/copy_table.py"
+    },
+    {
+      "path": "samples/label_dataset.py"
+    },
+    {
+      "path": "samples/client_query_legacy_sql.py"
+    },
+    {
+      "path": "samples/update_dataset_default_table_expiration.py"
+    },
+    {
+      "path": "samples/client_query_destination_table_legacy.py"
+    },
+    {
+      "path": "samples/update_routine.py"
+    },
+    {
+      "path": "samples/table_exists.py"
+    },
+    {
+      "path": "samples/client_query_add_column.py"
+    },
+    {
+      "path": "samples/copy_table_cmek.py"
+    },
+    {
+      "path": "samples/client_query_relax_column.py"
+    },
+    {
+      "path": "samples/download_public_data_sandbox.py"
+    },
+    {
+      "path": "samples/list_routines.py"
+    },
+    {
+      "path": "samples/delete_dataset_labels.py"
+    },
+    {
+      "path": "samples/table_insert_rows_explicit_none_insert_ids.py"
+    },
+    {
+      "path": "samples/add_empty_column.py"
+    },
+    {
+      "path": "samples/delete_table.py"
+    },
+    {
+      "path": "samples/load_table_dataframe.py"
+    },
+    {
+      "path": "samples/client_query_dry_run.py"
+    },
+    {
+      "path": "samples/create_dataset.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_destination_table_legacy.py"
+    },
+    {
+      "path": "samples/tests/test_update_dataset_default_table_expiration.py"
+    },
+    {
+      "path": "samples/tests/test_client_query.py"
+    },
+    {
+      "path": "samples/tests/test_delete_dataset.py"
+    },
+    {
+      "path": "samples/tests/test_update_dataset_description.py"
+    },
+    {
+      "path": "samples/tests/test_copy_table.py"
+    },
+    {
+      "path": "samples/tests/test_get_table.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_destination_table.py"
+    },
+    {
+      "path": "samples/tests/test_query_external_sheets_permanent_table.py"
+    },
+    {
+      "path": "samples/tests/conftest.py"
+    },
+    {
+      "path": "samples/tests/test_copy_table_cmek.py"
+    },
+    {
+      "path": "samples/tests/test_browse_table_data.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_relax_column.py"
+    },
+    {
+      "path": "samples/tests/test_list_datasets_by_label.py"
+    },
+    {
+      "path": "samples/tests/test_add_empty_column.py"
+    },
+    {
+      "path": "samples/tests/__init__.py"
+    },
+    {
+      "path": "samples/tests/test_create_job.py"
+    },
+    {
+      "path": "samples/tests/test_create_table.py"
+    },
+    {
+      "path": "samples/tests/test_query_external_sheets_temporary_table.py"
+    },
+    {
+      "path": "samples/tests/test_update_dataset_access.py"
+    },
+    {
+      "path": "samples/tests/test_client_list_jobs.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_dry_run.py"
+    },
+    {
+      "path": "samples/tests/test_query_pagination.py"
+    },
+    {
+      "path": "samples/tests/test_create_table_range_partitioned.py"
+    },
+    {
+      "path": "samples/tests/test_dataset_label_samples.py"
+    },
+    {
+      "path": "samples/tests/test_list_datasets.py"
+    },
+    {
+      "path": "samples/tests/test_dataset_exists.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_add_column.py"
+    },
+    {
+      "path": "samples/tests/test_query_to_arrow.py"
+    },
+    {
+      "path": "samples/tests/test_delete_table.py"
+    },
+    {
+      "path": "samples/tests/test_table_insert_rows_explicit_none_insert_ids.py"
+    },
+    {
+      "path": "samples/tests/test_update_dataset_default_partition_expiration.py"
+    },
+    {
+      "path": "samples/tests/test_create_dataset.py"
+    },
+    {
+      "path": "samples/tests/test_list_tables.py"
+    },
+    {
+      "path": "samples/tests/test_table_exists.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_destination_table_cmek.py"
+    },
+    {
+      "path": "samples/tests/test_download_public_data_sandbox.py"
+    },
+    {
+      "path": "samples/tests/test_load_table_dataframe.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_batch.py"
+    },
+    {
+      "path": "samples/tests/test_download_public_data.py"
+    },
+    {
+      "path": "samples/tests/test_table_insert_rows.py"
+    },
+    {
+      "path": "samples/tests/test_get_dataset.py"
+    },
+    {
+      "path": "samples/tests/test_routine_samples.py"
+    },
+    {
+      "path": "samples/tests/test_model_samples.py"
+    },
+    {
+      "path": "samples/tests/test_undelete_table.py"
+    },
+    {
+      "path": "samples/tests/test_client_query_legacy_sql.py"
+    },
+    {
+      "path": "samples/tests/test_update_table_require_partition_filter.py"
+    },
+    {
+      "path": "samples/tests/test_copy_table_multiple_source.py"
+    },
+    {
+      "path": "samples/tests/test_query_script.py"
+    },
+    {
+      "path": "tests/system.py"
+    },
+    {
+      "path": "tests/__init__.py"
+    },
+    {
+      "path": "tests/scrub_datasets.py"
+    },
+    {
+      "path": "tests/data/characters.jsonl"
+    },
+    {
+      "path": "tests/data/colors.avro"
+    },
+    {
+      "path": "tests/data/schema.json"
+    },
+    {
+      "path": "tests/data/characters.json"
+    },
+    {
+      "path": "tests/data/people.csv"
+    },
+    {
+      "path": "tests/unit/test_external_config.py"
+    },
+    {
+      "path": "tests/unit/test_dbapi_cursor.py"
+    },
+    {
+      "path": "tests/unit/__init__.py"
+    },
+    {
+      "path": "tests/unit/test_signature_compatibility.py"
+    },
+    {
+      "path": "tests/unit/test_magics.py"
+    },
+    {
+      "path": "tests/unit/test_dbapi_connection.py"
+    },
+    {
+      "path": "tests/unit/test_query.py"
+    },
+    {
+      "path": "tests/unit/helpers.py"
+    },
+    {
+      "path": "tests/unit/test_dataset.py"
+    },
+    {
+      "path": "tests/unit/test_schema.py"
+    },
+    {
+      "path": "tests/unit/test_job.py"
+    },
+    {
+      "path": "tests/unit/test_encryption_configuration.py"
+    },
+    {
+      "path": "tests/unit/test_table.py"
+    },
+    {
+      "path": "tests/unit/test__http.py"
+    },
+    {
+      "path": "tests/unit/test__pandas_helpers.py"
+    },
+    {
+      "path": "tests/unit/test__helpers.py"
+    },
+    {
+      "path": "tests/unit/test_retry.py"
+    },
+    {
+      "path": "tests/unit/test_dbapi__helpers.py"
+    },
+    {
+      "path": "tests/unit/test_dbapi_types.py"
+    },
+    {
+      "path": "tests/unit/test_client.py"
+    },
+    {
+      "path": "tests/unit/model/test_model.py"
+    },
+    {
+      "path": "tests/unit/model/__init__.py"
+    },
+    {
+      "path": "tests/unit/model/test_model_reference.py"
+    },
+    {
+      "path": "tests/unit/routine/test_routine_reference.py"
+    },
+    {
+      "path": "tests/unit/routine/test_routine_argument.py"
+    },
+    {
+      "path": "tests/unit/routine/__init__.py"
+    },
+    {
+      "path": "tests/unit/routine/test_routine.py"
+    },
+    {
+      "path": "tests/unit/enums/test_standard_sql_data_types.py"
+    },
+    {
+      "path": "tests/unit/enums/__init__.py"
+    },
+    {
+      "path": "__pycache__/noxfile.cpython-36.pyc"
+    },
+    {
+      "path": "__pycache__/synth.cpython-36.pyc"
+    },
+    {
+      "path": "benchmark/queries.json"
+    },
+    {
+      "path": "benchmark/benchmark.py"
+    },
+    {
+      "path": "benchmark/README.md"
+    },
+    {
+      "path": "docs/usage.html"
+    },
+    {
+      "path": "docs/magics.rst"
+    },
+    {
+      "path": "docs/.gitignore"
+    },
+    {
+      "path": "docs/dbapi.rst"
+    },
+    {
+      "path": "docs/changelog.md"
+    },
+    {
+      "path": "docs/snippets.py"
+    },
+    {
+      "path": "docs/index.rst"
+    },
+    {
+      "path": "docs/README.rst"
+    },
+    {
+      "path": "docs/reference.rst"
+    },
+    {
+      "path": "docs/conf.py"
+    },
+    {
+      "path": "docs/usage/jobs.rst"
+    },
+    {
+      "path": "docs/usage/client.rst"
+    },
+    {
+      "path": "docs/usage/queries.rst"
+    },
+    {
+      "path": "docs/usage/datasets.rst"
+    },
+    {
+      "path": "docs/usage/index.rst"
+    },
+    {
+      "path": "docs/usage/encryption.rst"
+    },
+    {
+      "path": "docs/usage/tables.rst"
+    },
+    {
+      "path": "docs/usage/pandas.rst"
+    },
+    {
+      "path": "docs/gapic/v2/enums.rst"
+    },
+    {
+      "path": "docs/gapic/v2/types.rst"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "docs/generated/google.cloud.bigquery.magics.html"
+    },
+    {
+      "path": "google/__init__.py"
+    },
+    {
+      "path": "google/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": "google/cloud/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery/_pandas_helpers.py"
+    },
+    {
+      "path": "google/cloud/bigquery/client.py"
+    },
+    {
+      "path": "google/cloud/bigquery/model.py"
+    },
+    {
+      "path": "google/cloud/bigquery/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery/routine.py"
+    },
+    {
+      "path": "google/cloud/bigquery/job.py"
+    },
+    {
+      "path": "google/cloud/bigquery/magics.py"
+    },
+    {
+      "path": "google/cloud/bigquery/_helpers.py"
+    },
+    {
+      "path": "google/cloud/bigquery/external_config.py"
+    },
+    {
+      "path": "google/cloud/bigquery/enums.py"
+    },
+    {
+      "path": "google/cloud/bigquery/query.py"
+    },
+    {
+      "path": "google/cloud/bigquery/encryption_configuration.py"
+    },
+    {
+      "path": "google/cloud/bigquery/table.py"
+    },
+    {
+      "path": "google/cloud/bigquery/_http.py"
+    },
+    {
+      "path": "google/cloud/bigquery/schema.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dataset.py"
+    },
+    {
+      "path": "google/cloud/bigquery/retry.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/cursor.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/_helpers.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/types.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/exceptions.py"
+    },
+    {
+      "path": "google/cloud/bigquery/dbapi/connection.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/types.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model_reference.proto"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/standard_sql_pb2.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/encryption_config_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model.proto"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/location_metadata.proto"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/location_metadata_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/standard_sql_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model_pb2.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/encryption_config.proto"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/encryption_config_pb2.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model_reference_pb2.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/standard_sql.proto"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/location_metadata_pb2.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model_reference_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/proto/model_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/bigquery_v2/gapic/enums.py"
     }
   ]
 }
