@@ -149,7 +149,7 @@ class Batch(_BatchBase):
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         response = api.commit(
             self._session.name,
-            self._mutations,
+            mutations=self._mutations,
             single_use_transaction=txn_options,
             metadata=metadata,
         )

@@ -122,7 +122,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         metadata = _metadata_with_prefix(database.name)
         response = api.commit(
             self._session.name,
-            self._mutations,
+            mutations=self._mutations,
             transaction_id=self._transaction_id,
             metadata=metadata,
         )

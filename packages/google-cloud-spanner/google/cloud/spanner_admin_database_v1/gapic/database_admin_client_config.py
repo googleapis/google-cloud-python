@@ -17,11 +17,6 @@ config = {
                 }
             },
             "methods": {
-                "ListDatabases": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "CreateDatabase": {
                     "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
@@ -60,6 +55,11 @@ config = {
                 "TestIamPermissions": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListDatabases": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
             },

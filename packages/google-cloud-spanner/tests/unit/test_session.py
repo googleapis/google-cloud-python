@@ -628,7 +628,7 @@ class TestSession(unittest.TestCase):
         )
         gax_api.commit.assert_called_once_with(
             self.SESSION_NAME,
-            txn._mutations,
+            mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
@@ -675,7 +675,7 @@ class TestSession(unittest.TestCase):
         gax_api.begin_transaction.assert_not_called()
         gax_api.commit.assert_called_once_with(
             self.SESSION_NAME,
-            txn._mutations,
+            mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
@@ -745,7 +745,7 @@ class TestSession(unittest.TestCase):
             [
                 mock.call(
                     self.SESSION_NAME,
-                    txn._mutations,
+                    mutations=txn._mutations,
                     transaction_id=TRANSACTION_ID,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
@@ -833,7 +833,7 @@ class TestSession(unittest.TestCase):
             [
                 mock.call(
                     self.SESSION_NAME,
-                    txn._mutations,
+                    mutations=txn._mutations,
                     transaction_id=TRANSACTION_ID,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
@@ -918,7 +918,7 @@ class TestSession(unittest.TestCase):
         )
         gax_api.commit.assert_called_once_with(
             self.SESSION_NAME,
-            txn._mutations,
+            mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
@@ -997,7 +997,7 @@ class TestSession(unittest.TestCase):
         )
         gax_api.commit.assert_called_once_with(
             self.SESSION_NAME,
-            txn._mutations,
+            mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
@@ -1072,7 +1072,7 @@ class TestSession(unittest.TestCase):
             [
                 mock.call(
                     self.SESSION_NAME,
-                    txn._mutations,
+                    mutations=txn._mutations,
                     transaction_id=TRANSACTION_ID,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )

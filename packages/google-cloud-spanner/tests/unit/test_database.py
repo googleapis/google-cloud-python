@@ -967,7 +967,7 @@ class TestBatchCheckout(_BaseTest):
 
         api.commit.assert_called_once_with(
             self.SESSION_NAME,
-            [],
+            mutations=[],
             single_use_transaction=expected_txn_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
