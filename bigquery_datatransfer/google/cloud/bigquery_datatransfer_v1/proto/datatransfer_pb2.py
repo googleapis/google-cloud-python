@@ -37,7 +37,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n)com.google.cloud.bigquery.datatransfer.v1B\021DataTransferProtoP\001ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\252\002%Google.Cloud.BigQuery.DataTransfer.V1\312\002%Google\\Cloud\\BigQuery\\DataTransfer\\V1"
     ),
     serialized_pb=_b(
-        '\n>google/cloud/bigquery/datatransfer_v1/proto/datatransfer.proto\x12%google.cloud.bigquery.datatransfer.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a:google/cloud/bigquery/datatransfer_v1/proto/transfer.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto"\x85\x05\n\x13\x44\x61taSourceParameter\x12\x10\n\x08param_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12M\n\x04type\x18\x04 \x01(\x0e\x32?.google.cloud.bigquery.datatransfer.v1.DataSourceParameter.Type\x12\x10\n\x08required\x18\x05 \x01(\x08\x12\x10\n\x08repeated\x18\x06 \x01(\x08\x12\x18\n\x10validation_regex\x18\x07 \x01(\t\x12\x16\n\x0e\x61llowed_values\x18\x08 \x03(\t\x12/\n\tmin_value\x18\t \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tmax_value\x18\n \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12J\n\x06\x66ields\x18\x0b \x03(\x0b\x32:.google.cloud.bigquery.datatransfer.v1.DataSourceParameter\x12\x1e\n\x16validation_description\x18\x0c \x01(\t\x12\x1b\n\x13validation_help_url\x18\r \x01(\t\x12\x11\n\timmutable\x18\x0e \x01(\x08\x12\x0f\n\x07recurse\x18\x0f \x01(\x08\x12\x12\n\ndeprecated\x18\x14 \x01(\x08"i\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06STRING\x10\x01\x12\x0b\n\x07INTEGER\x10\x02\x12\n\n\x06\x44OUBLE\x10\x03\x12\x0b\n\x07\x42OOLEAN\x10\x04\x12\n\n\x06RECORD\x10\x05\x12\r\n\tPLUS_PAGE\x10\x06"\xbf\x08\n\nDataSource\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x16\n\x0e\x64\x61ta_source_id\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x11\n\tclient_id\x18\x05 \x01(\t\x12\x0e\n\x06scopes\x18\x06 \x03(\t\x12N\n\rtransfer_type\x18\x07 \x01(\x0e\x32\x33.google.cloud.bigquery.datatransfer.v1.TransferTypeB\x02\x18\x01\x12\'\n\x1bsupports_multiple_transfers\x18\x08 \x01(\x08\x42\x02\x18\x01\x12\x1f\n\x17update_deadline_seconds\x18\t \x01(\x05\x12\x18\n\x10\x64\x65\x66\x61ult_schedule\x18\n \x01(\t\x12 \n\x18supports_custom_schedule\x18\x0b \x01(\x08\x12N\n\nparameters\x18\x0c \x03(\x0b\x32:.google.cloud.bigquery.datatransfer.v1.DataSourceParameter\x12\x10\n\x08help_url\x18\r \x01(\t\x12_\n\x12\x61uthorization_type\x18\x0e \x01(\x0e\x32\x43.google.cloud.bigquery.datatransfer.v1.DataSource.AuthorizationType\x12\\\n\x11\x64\x61ta_refresh_type\x18\x0f \x01(\x0e\x32\x41.google.cloud.bigquery.datatransfer.v1.DataSource.DataRefreshType\x12(\n default_data_refresh_window_days\x18\x10 \x01(\x05\x12\x1c\n\x14manual_runs_disabled\x18\x11 \x01(\x08\x12<\n\x19minimum_schedule_interval\x18\x12 \x01(\x0b\x32\x19.google.protobuf.Duration"s\n\x11\x41uthorizationType\x12"\n\x1e\x41UTHORIZATION_TYPE_UNSPECIFIED\x10\x00\x12\x16\n\x12\x41UTHORIZATION_CODE\x10\x01\x12"\n\x1eGOOGLE_PLUS_AUTHORIZATION_CODE\x10\x02"c\n\x0f\x44\x61taRefreshType\x12!\n\x1d\x44\x41TA_REFRESH_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSLIDING_WINDOW\x10\x01\x12\x19\n\x15\x43USTOM_SLIDING_WINDOW\x10\x02:a\xea\x41^\n.bigquerydatatransfer.googleapis.com/DataSource\x12,projects/{project}/dataSources/{data_source}"\\\n\x14GetDataSourceRequest\x12\x44\n\x04name\x18\x01 \x01(\tB6\xe0\x41\x02\xfa\x41\x30\n.bigquerydatatransfer.googleapis.com/DataSource"\x84\x01\n\x16ListDataSourcesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"\x80\x01\n\x17ListDataSourcesResponse\x12G\n\x0c\x64\x61ta_sources\x18\x01 \x03(\x0b\x32\x31.google.cloud.bigquery.datatransfer.v1.DataSource\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xdf\x01\n\x1b\x43reateTransferConfigRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12S\n\x0ftransfer_config\x18\x02 \x01(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x02\x12\x1a\n\x12\x61uthorization_code\x18\x03 \x01(\t\x12\x14\n\x0cversion_info\x18\x05 \x01(\t"\xda\x01\n\x1bUpdateTransferConfigRequest\x12S\n\x0ftransfer_config\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x02\x12\x1a\n\x12\x61uthorization_code\x18\x03 \x01(\t\x12\x34\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02\x12\x14\n\x0cversion_info\x18\x05 \x01(\t"d\n\x18GetTransferConfigRequest\x12H\n\x04name\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig"g\n\x1b\x44\x65leteTransferConfigRequest\x12H\n\x04name\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig"^\n\x15GetTransferRunRequest\x12\x45\n\x04name\x18\x01 \x01(\tB7\xe0\x41\x02\xfa\x41\x31\n/bigquerydatatransfer.googleapis.com/TransferRun"a\n\x18\x44\x65leteTransferRunRequest\x12\x45\n\x04name\x18\x01 \x01(\tB7\xe0\x41\x02\xfa\x41\x31\n/bigquerydatatransfer.googleapis.com/TransferRun"\xa1\x01\n\x1aListTransferConfigsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x17\n\x0f\x64\x61ta_source_ids\x18\x02 \x03(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"\x91\x01\n\x1bListTransferConfigsResponse\x12T\n\x10transfer_configs\x18\x01 \x03(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xe9\x02\n\x17ListTransferRunsRequest\x12J\n\x06parent\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig\x12\x44\n\x06states\x18\x02 \x03(\x0e\x32\x34.google.cloud.bigquery.datatransfer.v1.TransferState\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12^\n\x0brun_attempt\x18\x05 \x01(\x0e\x32I.google.cloud.bigquery.datatransfer.v1.ListTransferRunsRequest.RunAttempt"5\n\nRunAttempt\x12\x1b\n\x17RUN_ATTEMPT_UNSPECIFIED\x10\x00\x12\n\n\x06LATEST\x10\x01"\x88\x01\n\x18ListTransferRunsResponse\x12N\n\rtransfer_runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRunB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xe8\x01\n\x17ListTransferLogsRequest\x12G\n\x06parent\x18\x01 \x01(\tB7\xe0\x41\x02\xfa\x41\x31\n/bigquerydatatransfer.googleapis.com/TransferRun\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12]\n\rmessage_types\x18\x06 \x03(\x0e\x32\x46.google.cloud.bigquery.datatransfer.v1.TransferMessage.MessageSeverity"\x90\x01\n\x18ListTransferLogsResponse\x12V\n\x11transfer_messages\x18\x01 \x03(\x0b\x32\x36.google.cloud.bigquery.datatransfer.v1.TransferMessageB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"^\n\x16\x43heckValidCredsRequest\x12\x44\n\x04name\x18\x01 \x01(\tB6\xe0\x41\x02\xfa\x41\x30\n.bigquerydatatransfer.googleapis.com/DataSource"2\n\x17\x43heckValidCredsResponse\x12\x17\n\x0fhas_valid_creds\x18\x01 \x01(\x08"\xd1\x01\n\x1bScheduleTransferRunsRequest\x12J\n\x06parent\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig\x12\x33\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x31\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02"`\n\x1cScheduleTransferRunsResponse\x12@\n\x04runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRun"\x87\x03\n\x1eStartManualTransferRunsRequest\x12G\n\x06parent\x18\x01 \x01(\tB7\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig\x12o\n\x14requested_time_range\x18\x03 \x01(\x0b\x32O.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.TimeRangeH\x00\x12\x38\n\x12requested_run_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x1ai\n\tTimeRange\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x06\n\x04time"c\n\x1fStartManualTransferRunsResponse\x12@\n\x04runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRun2\xc3\x1f\n\x13\x44\x61taTransferService\x12\xe6\x01\n\rGetDataSource\x12;.google.cloud.bigquery.datatransfer.v1.GetDataSourceRequest\x1a\x31.google.cloud.bigquery.datatransfer.v1.DataSource"e\x82\xd3\xe4\x93\x02X\x12//v1/{name=projects/*/locations/*/dataSources/*}Z%\x12#/v1/{name=projects/*/dataSources/*}\xda\x41\x04name\x12\xf9\x01\n\x0fListDataSources\x12=.google.cloud.bigquery.datatransfer.v1.ListDataSourcesRequest\x1a>.google.cloud.bigquery.datatransfer.v1.ListDataSourcesResponse"g\x82\xd3\xe4\x93\x02X\x12//v1/{parent=projects/*/locations/*}/dataSourcesZ%\x12#/v1/{parent=projects/*}/dataSources\xda\x41\x06parent\x12\xb6\x02\n\x14\x43reateTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"\xa2\x01\x82\xd3\xe4\x93\x02\x82\x01"3/v1/{parent=projects/*/locations/*}/transferConfigs:\x0ftransfer_configZ:"\'/v1/{parent=projects/*}/transferConfigs:\x0ftransfer_config\xda\x41\x16parent,transfer_config\x12\xdb\x02\n\x14UpdateTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"\xc7\x01\x82\xd3\xe4\x93\x02\xa2\x01\x32\x43/v1/{transfer_config.name=projects/*/locations/*/transferConfigs/*}:\x0ftransfer_configZJ27/v1/{transfer_config.name=projects/*/transferConfigs/*}:\x0ftransfer_config\xda\x41\x1btransfer_config,update_mask\x12\xe1\x01\n\x14\x44\x65leteTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.DeleteTransferConfigRequest\x1a\x16.google.protobuf.Empty"m\x82\xd3\xe4\x93\x02`*3/v1/{name=projects/*/locations/*/transferConfigs/*}Z)*\'/v1/{name=projects/*/transferConfigs/*}\xda\x41\x04name\x12\xfa\x01\n\x11GetTransferConfig\x12?.google.cloud.bigquery.datatransfer.v1.GetTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"m\x82\xd3\xe4\x93\x02`\x12\x33/v1/{name=projects/*/locations/*/transferConfigs/*}Z)\x12\'/v1/{name=projects/*/transferConfigs/*}\xda\x41\x04name\x12\x8d\x02\n\x13ListTransferConfigs\x12\x41.google.cloud.bigquery.datatransfer.v1.ListTransferConfigsRequest\x1a\x42.google.cloud.bigquery.datatransfer.v1.ListTransferConfigsResponse"o\x82\xd3\xe4\x93\x02`\x12\x33/v1/{parent=projects/*/locations/*}/transferConfigsZ)\x12\'/v1/{parent=projects/*}/transferConfigs\xda\x41\x06parent\x12\xcd\x02\n\x14ScheduleTransferRuns\x12\x42.google.cloud.bigquery.datatransfer.v1.ScheduleTransferRunsRequest\x1a\x43.google.cloud.bigquery.datatransfer.v1.ScheduleTransferRunsResponse"\xab\x01\x88\x02\x01\x82\xd3\xe4\x93\x02\x84\x01"B/v1/{parent=projects/*/locations/*/transferConfigs/*}:scheduleRuns:\x01*Z;"6/v1/{parent=projects/*/transferConfigs/*}:scheduleRuns:\x01*\xda\x41\x1aparent,start_time,end_time\x12\xbc\x02\n\x17StartManualTransferRuns\x12\x45.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest\x1a\x46.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsResponse"\x91\x01\x82\xd3\xe4\x93\x02\x8a\x01"E/v1/{parent=projects/*/locations/*/transferConfigs/*}:startManualRuns:\x01*Z>"9/v1/{parent=projects/*/transferConfigs/*}:startManualRuns:\x01*\x12\xff\x01\n\x0eGetTransferRun\x12<.google.cloud.bigquery.datatransfer.v1.GetTransferRunRequest\x1a\x32.google.cloud.bigquery.datatransfer.v1.TransferRun"{\x82\xd3\xe4\x93\x02n\x12:/v1/{name=projects/*/locations/*/transferConfigs/*/runs/*}Z0\x12./v1/{name=projects/*/transferConfigs/*/runs/*}\xda\x41\x04name\x12\xe9\x01\n\x11\x44\x65leteTransferRun\x12?.google.cloud.bigquery.datatransfer.v1.DeleteTransferRunRequest\x1a\x16.google.protobuf.Empty"{\x82\xd3\xe4\x93\x02n*:/v1/{name=projects/*/locations/*/transferConfigs/*/runs/*}Z0*./v1/{name=projects/*/transferConfigs/*/runs/*}\xda\x41\x04name\x12\x92\x02\n\x10ListTransferRuns\x12>.google.cloud.bigquery.datatransfer.v1.ListTransferRunsRequest\x1a?.google.cloud.bigquery.datatransfer.v1.ListTransferRunsResponse"}\x82\xd3\xe4\x93\x02n\x12:/v1/{parent=projects/*/locations/*/transferConfigs/*}/runsZ0\x12./v1/{parent=projects/*/transferConfigs/*}/runs\xda\x41\x06parent\x12\xb2\x02\n\x10ListTransferLogs\x12>.google.cloud.bigquery.datatransfer.v1.ListTransferLogsRequest\x1a?.google.cloud.bigquery.datatransfer.v1.ListTransferLogsResponse"\x9c\x01\x82\xd3\xe4\x93\x02\x8c\x01\x12I/v1/{parent=projects/*/locations/*/transferConfigs/*/runs/*}/transferLogsZ?\x12=/v1/{parent=projects/*/transferConfigs/*/runs/*}/transferLogs\xda\x41\x06parent\x12\x9e\x02\n\x0f\x43heckValidCreds\x12=.google.cloud.bigquery.datatransfer.v1.CheckValidCredsRequest\x1a>.google.cloud.bigquery.datatransfer.v1.CheckValidCredsResponse"\x8b\x01\x82\xd3\xe4\x93\x02~"?/v1/{name=projects/*/locations/*/dataSources/*}:checkValidCreds:\x01*Z8"3/v1/{name=projects/*/dataSources/*}:checkValidCreds:\x01*\xda\x41\x04name\x1aW\xca\x41#bigquerydatatransfer.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xe3\x01\n)com.google.cloud.bigquery.datatransfer.v1B\x11\x44\x61taTransferProtoP\x01ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\xaa\x02%Google.Cloud.BigQuery.DataTransfer.V1\xca\x02%Google\\Cloud\\BigQuery\\DataTransfer\\V1b\x06proto3'
+        '\n>google/cloud/bigquery/datatransfer_v1/proto/datatransfer.proto\x12%google.cloud.bigquery.datatransfer.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a:google/cloud/bigquery/datatransfer_v1/proto/transfer.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto"\x85\x05\n\x13\x44\x61taSourceParameter\x12\x10\n\x08param_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12M\n\x04type\x18\x04 \x01(\x0e\x32?.google.cloud.bigquery.datatransfer.v1.DataSourceParameter.Type\x12\x10\n\x08required\x18\x05 \x01(\x08\x12\x10\n\x08repeated\x18\x06 \x01(\x08\x12\x18\n\x10validation_regex\x18\x07 \x01(\t\x12\x16\n\x0e\x61llowed_values\x18\x08 \x03(\t\x12/\n\tmin_value\x18\t \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tmax_value\x18\n \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12J\n\x06\x66ields\x18\x0b \x03(\x0b\x32:.google.cloud.bigquery.datatransfer.v1.DataSourceParameter\x12\x1e\n\x16validation_description\x18\x0c \x01(\t\x12\x1b\n\x13validation_help_url\x18\r \x01(\t\x12\x11\n\timmutable\x18\x0e \x01(\x08\x12\x0f\n\x07recurse\x18\x0f \x01(\x08\x12\x12\n\ndeprecated\x18\x14 \x01(\x08"i\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06STRING\x10\x01\x12\x0b\n\x07INTEGER\x10\x02\x12\n\n\x06\x44OUBLE\x10\x03\x12\x0b\n\x07\x42OOLEAN\x10\x04\x12\n\n\x06RECORD\x10\x05\x12\r\n\tPLUS_PAGE\x10\x06"\x84\t\n\nDataSource\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x16\n\x0e\x64\x61ta_source_id\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x11\n\tclient_id\x18\x05 \x01(\t\x12\x0e\n\x06scopes\x18\x06 \x03(\t\x12N\n\rtransfer_type\x18\x07 \x01(\x0e\x32\x33.google.cloud.bigquery.datatransfer.v1.TransferTypeB\x02\x18\x01\x12\'\n\x1bsupports_multiple_transfers\x18\x08 \x01(\x08\x42\x02\x18\x01\x12\x1f\n\x17update_deadline_seconds\x18\t \x01(\x05\x12\x18\n\x10\x64\x65\x66\x61ult_schedule\x18\n \x01(\t\x12 \n\x18supports_custom_schedule\x18\x0b \x01(\x08\x12N\n\nparameters\x18\x0c \x03(\x0b\x32:.google.cloud.bigquery.datatransfer.v1.DataSourceParameter\x12\x10\n\x08help_url\x18\r \x01(\t\x12_\n\x12\x61uthorization_type\x18\x0e \x01(\x0e\x32\x43.google.cloud.bigquery.datatransfer.v1.DataSource.AuthorizationType\x12\\\n\x11\x64\x61ta_refresh_type\x18\x0f \x01(\x0e\x32\x41.google.cloud.bigquery.datatransfer.v1.DataSource.DataRefreshType\x12(\n default_data_refresh_window_days\x18\x10 \x01(\x05\x12\x1c\n\x14manual_runs_disabled\x18\x11 \x01(\x08\x12<\n\x19minimum_schedule_interval\x18\x12 \x01(\x0b\x32\x19.google.protobuf.Duration"s\n\x11\x41uthorizationType\x12"\n\x1e\x41UTHORIZATION_TYPE_UNSPECIFIED\x10\x00\x12\x16\n\x12\x41UTHORIZATION_CODE\x10\x01\x12"\n\x1eGOOGLE_PLUS_AUTHORIZATION_CODE\x10\x02"c\n\x0f\x44\x61taRefreshType\x12!\n\x1d\x44\x41TA_REFRESH_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSLIDING_WINDOW\x10\x01\x12\x19\n\x15\x43USTOM_SLIDING_WINDOW\x10\x02:\xa5\x01\xea\x41\xa1\x01\n.bigquerydatatransfer.googleapis.com/DataSource\x12,projects/{project}/dataSources/{data_source}\x12\x41projects/{project}/locations/{location}/dataSources/{data_source}"\\\n\x14GetDataSourceRequest\x12\x44\n\x04name\x18\x01 \x01(\tB6\xe0\x41\x02\xfa\x41\x30\n.bigquerydatatransfer.googleapis.com/DataSource"\x87\x01\n\x16ListDataSourcesRequest\x12\x46\n\x06parent\x18\x01 \x01(\tB6\xe0\x41\x02\xfa\x41\x30\x12.bigquerydatatransfer.googleapis.com/DataSource\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"\x80\x01\n\x17ListDataSourcesResponse\x12G\n\x0c\x64\x61ta_sources\x18\x01 \x03(\x0b\x32\x31.google.cloud.bigquery.datatransfer.v1.DataSource\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\x8e\x02\n\x1b\x43reateTransferConfigRequest\x12J\n\x06parent\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\x12\x32\x62igquerydatatransfer.googleapis.com/TransferConfig\x12S\n\x0ftransfer_config\x18\x02 \x01(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x02\x12\x1a\n\x12\x61uthorization_code\x18\x03 \x01(\t\x12\x14\n\x0cversion_info\x18\x05 \x01(\t\x12\x1c\n\x14service_account_name\x18\x06 \x01(\t"\xf8\x01\n\x1bUpdateTransferConfigRequest\x12S\n\x0ftransfer_config\x18\x01 \x01(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x02\x12\x1a\n\x12\x61uthorization_code\x18\x03 \x01(\t\x12\x34\n\x0bupdate_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02\x12\x14\n\x0cversion_info\x18\x05 \x01(\t\x12\x1c\n\x14service_account_name\x18\x06 \x01(\t"d\n\x18GetTransferConfigRequest\x12H\n\x04name\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig"g\n\x1b\x44\x65leteTransferConfigRequest\x12H\n\x04name\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig"V\n\x15GetTransferRunRequest\x12=\n\x04name\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\n\'bigquerydatatransfer.googleapis.com/Run"Y\n\x18\x44\x65leteTransferRunRequest\x12=\n\x04name\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\n\'bigquerydatatransfer.googleapis.com/Run"\xa8\x01\n\x1aListTransferConfigsRequest\x12J\n\x06parent\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\x12\x32\x62igquerydatatransfer.googleapis.com/TransferConfig\x12\x17\n\x0f\x64\x61ta_source_ids\x18\x02 \x03(\t\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05"\x91\x01\n\x1bListTransferConfigsResponse\x12T\n\x10transfer_configs\x18\x01 \x03(\x0b\x32\x35.google.cloud.bigquery.datatransfer.v1.TransferConfigB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xde\x02\n\x17ListTransferRunsRequest\x12?\n\x06parent\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\x12\'bigquerydatatransfer.googleapis.com/Run\x12\x44\n\x06states\x18\x02 \x03(\x0e\x32\x34.google.cloud.bigquery.datatransfer.v1.TransferState\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12^\n\x0brun_attempt\x18\x05 \x01(\x0e\x32I.google.cloud.bigquery.datatransfer.v1.ListTransferRunsRequest.RunAttempt"5\n\nRunAttempt\x12\x1b\n\x17RUN_ATTEMPT_UNSPECIFIED\x10\x00\x12\n\n\x06LATEST\x10\x01"\x88\x01\n\x18ListTransferRunsResponse\x12N\n\rtransfer_runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRunB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"\xe0\x01\n\x17ListTransferLogsRequest\x12?\n\x06parent\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\n\'bigquerydatatransfer.googleapis.com/Run\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12]\n\rmessage_types\x18\x06 \x03(\x0e\x32\x46.google.cloud.bigquery.datatransfer.v1.TransferMessage.MessageSeverity"\x90\x01\n\x18ListTransferLogsResponse\x12V\n\x11transfer_messages\x18\x01 \x03(\x0b\x32\x36.google.cloud.bigquery.datatransfer.v1.TransferMessageB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"^\n\x16\x43heckValidCredsRequest\x12\x44\n\x04name\x18\x01 \x01(\tB6\xe0\x41\x02\xfa\x41\x30\n.bigquerydatatransfer.googleapis.com/DataSource"2\n\x17\x43heckValidCredsResponse\x12\x17\n\x0fhas_valid_creds\x18\x01 \x01(\x08"\xd1\x01\n\x1bScheduleTransferRunsRequest\x12J\n\x06parent\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig\x12\x33\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x31\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02"`\n\x1cScheduleTransferRunsResponse\x12@\n\x04runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRun"\x87\x03\n\x1eStartManualTransferRunsRequest\x12G\n\x06parent\x18\x01 \x01(\tB7\xfa\x41\x34\n2bigquerydatatransfer.googleapis.com/TransferConfig\x12o\n\x14requested_time_range\x18\x03 \x01(\x0b\x32O.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest.TimeRangeH\x00\x12\x38\n\x12requested_run_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x1ai\n\tTimeRange\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x06\n\x04time"c\n\x1fStartManualTransferRunsResponse\x12@\n\x04runs\x18\x01 \x03(\x0b\x32\x32.google.cloud.bigquery.datatransfer.v1.TransferRun2\xc3\x1f\n\x13\x44\x61taTransferService\x12\xe6\x01\n\rGetDataSource\x12;.google.cloud.bigquery.datatransfer.v1.GetDataSourceRequest\x1a\x31.google.cloud.bigquery.datatransfer.v1.DataSource"e\x82\xd3\xe4\x93\x02X\x12//v1/{name=projects/*/locations/*/dataSources/*}Z%\x12#/v1/{name=projects/*/dataSources/*}\xda\x41\x04name\x12\xf9\x01\n\x0fListDataSources\x12=.google.cloud.bigquery.datatransfer.v1.ListDataSourcesRequest\x1a>.google.cloud.bigquery.datatransfer.v1.ListDataSourcesResponse"g\x82\xd3\xe4\x93\x02X\x12//v1/{parent=projects/*/locations/*}/dataSourcesZ%\x12#/v1/{parent=projects/*}/dataSources\xda\x41\x06parent\x12\xb6\x02\n\x14\x43reateTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"\xa2\x01\x82\xd3\xe4\x93\x02\x82\x01"3/v1/{parent=projects/*/locations/*}/transferConfigs:\x0ftransfer_configZ:"\'/v1/{parent=projects/*}/transferConfigs:\x0ftransfer_config\xda\x41\x16parent,transfer_config\x12\xdb\x02\n\x14UpdateTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"\xc7\x01\x82\xd3\xe4\x93\x02\xa2\x01\x32\x43/v1/{transfer_config.name=projects/*/locations/*/transferConfigs/*}:\x0ftransfer_configZJ27/v1/{transfer_config.name=projects/*/transferConfigs/*}:\x0ftransfer_config\xda\x41\x1btransfer_config,update_mask\x12\xe1\x01\n\x14\x44\x65leteTransferConfig\x12\x42.google.cloud.bigquery.datatransfer.v1.DeleteTransferConfigRequest\x1a\x16.google.protobuf.Empty"m\x82\xd3\xe4\x93\x02`*3/v1/{name=projects/*/locations/*/transferConfigs/*}Z)*\'/v1/{name=projects/*/transferConfigs/*}\xda\x41\x04name\x12\xfa\x01\n\x11GetTransferConfig\x12?.google.cloud.bigquery.datatransfer.v1.GetTransferConfigRequest\x1a\x35.google.cloud.bigquery.datatransfer.v1.TransferConfig"m\x82\xd3\xe4\x93\x02`\x12\x33/v1/{name=projects/*/locations/*/transferConfigs/*}Z)\x12\'/v1/{name=projects/*/transferConfigs/*}\xda\x41\x04name\x12\x8d\x02\n\x13ListTransferConfigs\x12\x41.google.cloud.bigquery.datatransfer.v1.ListTransferConfigsRequest\x1a\x42.google.cloud.bigquery.datatransfer.v1.ListTransferConfigsResponse"o\x82\xd3\xe4\x93\x02`\x12\x33/v1/{parent=projects/*/locations/*}/transferConfigsZ)\x12\'/v1/{parent=projects/*}/transferConfigs\xda\x41\x06parent\x12\xcd\x02\n\x14ScheduleTransferRuns\x12\x42.google.cloud.bigquery.datatransfer.v1.ScheduleTransferRunsRequest\x1a\x43.google.cloud.bigquery.datatransfer.v1.ScheduleTransferRunsResponse"\xab\x01\x88\x02\x01\x82\xd3\xe4\x93\x02\x84\x01"B/v1/{parent=projects/*/locations/*/transferConfigs/*}:scheduleRuns:\x01*Z;"6/v1/{parent=projects/*/transferConfigs/*}:scheduleRuns:\x01*\xda\x41\x1aparent,start_time,end_time\x12\xbc\x02\n\x17StartManualTransferRuns\x12\x45.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsRequest\x1a\x46.google.cloud.bigquery.datatransfer.v1.StartManualTransferRunsResponse"\x91\x01\x82\xd3\xe4\x93\x02\x8a\x01"E/v1/{parent=projects/*/locations/*/transferConfigs/*}:startManualRuns:\x01*Z>"9/v1/{parent=projects/*/transferConfigs/*}:startManualRuns:\x01*\x12\xff\x01\n\x0eGetTransferRun\x12<.google.cloud.bigquery.datatransfer.v1.GetTransferRunRequest\x1a\x32.google.cloud.bigquery.datatransfer.v1.TransferRun"{\x82\xd3\xe4\x93\x02n\x12:/v1/{name=projects/*/locations/*/transferConfigs/*/runs/*}Z0\x12./v1/{name=projects/*/transferConfigs/*/runs/*}\xda\x41\x04name\x12\xe9\x01\n\x11\x44\x65leteTransferRun\x12?.google.cloud.bigquery.datatransfer.v1.DeleteTransferRunRequest\x1a\x16.google.protobuf.Empty"{\x82\xd3\xe4\x93\x02n*:/v1/{name=projects/*/locations/*/transferConfigs/*/runs/*}Z0*./v1/{name=projects/*/transferConfigs/*/runs/*}\xda\x41\x04name\x12\x92\x02\n\x10ListTransferRuns\x12>.google.cloud.bigquery.datatransfer.v1.ListTransferRunsRequest\x1a?.google.cloud.bigquery.datatransfer.v1.ListTransferRunsResponse"}\x82\xd3\xe4\x93\x02n\x12:/v1/{parent=projects/*/locations/*/transferConfigs/*}/runsZ0\x12./v1/{parent=projects/*/transferConfigs/*}/runs\xda\x41\x06parent\x12\xb2\x02\n\x10ListTransferLogs\x12>.google.cloud.bigquery.datatransfer.v1.ListTransferLogsRequest\x1a?.google.cloud.bigquery.datatransfer.v1.ListTransferLogsResponse"\x9c\x01\x82\xd3\xe4\x93\x02\x8c\x01\x12I/v1/{parent=projects/*/locations/*/transferConfigs/*/runs/*}/transferLogsZ?\x12=/v1/{parent=projects/*/transferConfigs/*/runs/*}/transferLogs\xda\x41\x06parent\x12\x9e\x02\n\x0f\x43heckValidCreds\x12=.google.cloud.bigquery.datatransfer.v1.CheckValidCredsRequest\x1a>.google.cloud.bigquery.datatransfer.v1.CheckValidCredsResponse"\x8b\x01\x82\xd3\xe4\x93\x02~"?/v1/{name=projects/*/locations/*/dataSources/*}:checkValidCreds:\x01*Z8"3/v1/{name=projects/*/dataSources/*}:checkValidCreds:\x01*\xda\x41\x04name\x1aW\xca\x41#bigquerydatatransfer.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xe3\x01\n)com.google.cloud.bigquery.datatransfer.v1B\x11\x44\x61taTransferProtoP\x01ZQgoogle.golang.org/genproto/googleapis/cloud/bigquery/datatransfer/v1;datatransfer\xaa\x02%Google.Cloud.BigQuery.DataTransfer.V1\xca\x02%Google\\Cloud\\BigQuery\\DataTransfer\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -178,8 +178,8 @@ _LISTTRANSFERRUNSREQUEST_RUNATTEMPT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4008,
-    serialized_end=4061,
+    serialized_start=4137,
+    serialized_end=4190,
 )
 _sym_db.RegisterEnumDescriptor(_LISTTRANSFERRUNSREQUEST_RUNATTEMPT)
 
@@ -829,14 +829,14 @@ _DATASOURCE = _descriptor.Descriptor(
     nested_types=[],
     enum_types=[_DATASOURCE_AUTHORIZATIONTYPE, _DATASOURCE_DATAREFRESHTYPE],
     serialized_options=_b(
-        "\352A^\n.bigquerydatatransfer.googleapis.com/DataSource\022,projects/{project}/dataSources/{data_source}"
+        "\352A\241\001\n.bigquerydatatransfer.googleapis.com/DataSource\022,projects/{project}/dataSources/{data_source}\022Aprojects/{project}/locations/{location}/dataSources/{data_source}"
     ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
     serialized_start=1089,
-    serialized_end=2176,
+    serialized_end=2245,
 )
 
 
@@ -876,8 +876,8 @@ _GETDATASOURCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2178,
-    serialized_end=2270,
+    serialized_start=2247,
+    serialized_end=2339,
 )
 
 
@@ -904,7 +904,7 @@ _LISTDATASOURCESREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+                "\340A\002\372A0\022.bigquerydatatransfer.googleapis.com/DataSource"
             ),
             file=DESCRIPTOR,
         ),
@@ -953,8 +953,8 @@ _LISTDATASOURCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2273,
-    serialized_end=2405,
+    serialized_start=2342,
+    serialized_end=2477,
 )
 
 
@@ -1010,8 +1010,8 @@ _LISTDATASOURCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2408,
-    serialized_end=2536,
+    serialized_start=2480,
+    serialized_end=2608,
 )
 
 
@@ -1038,7 +1038,7 @@ _CREATETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A#\n!locations.googleapis.com/Location"
+                "\340A\002\372A4\0222bigquerydatatransfer.googleapis.com/TransferConfig"
             ),
             file=DESCRIPTOR,
         ),
@@ -1096,6 +1096,24 @@ _CREATETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="service_account_name",
+            full_name="google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest.service_account_name",
+            index=4,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1105,8 +1123,8 @@ _CREATETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2539,
-    serialized_end=2762,
+    serialized_start=2611,
+    serialized_end=2881,
 )
 
 
@@ -1189,6 +1207,24 @@ _UPDATETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="service_account_name",
+            full_name="google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest.service_account_name",
+            index=4,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1198,8 +1234,8 @@ _UPDATETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2765,
-    serialized_end=2983,
+    serialized_start=2884,
+    serialized_end=3132,
 )
 
 
@@ -1239,8 +1275,8 @@ _GETTRANSFERCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2985,
-    serialized_end=3085,
+    serialized_start=3134,
+    serialized_end=3234,
 )
 
 
@@ -1280,8 +1316,8 @@ _DELETETRANSFERCONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3087,
-    serialized_end=3190,
+    serialized_start=3236,
+    serialized_end=3339,
 )
 
 
@@ -1308,7 +1344,7 @@ _GETTRANSFERRUNREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A1\n/bigquerydatatransfer.googleapis.com/TransferRun"
+                "\340A\002\372A)\n'bigquerydatatransfer.googleapis.com/Run"
             ),
             file=DESCRIPTOR,
         )
@@ -1321,8 +1357,8 @@ _GETTRANSFERRUNREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3192,
-    serialized_end=3286,
+    serialized_start=3341,
+    serialized_end=3427,
 )
 
 
@@ -1349,7 +1385,7 @@ _DELETETRANSFERRUNREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A1\n/bigquerydatatransfer.googleapis.com/TransferRun"
+                "\340A\002\372A)\n'bigquerydatatransfer.googleapis.com/Run"
             ),
             file=DESCRIPTOR,
         )
@@ -1362,8 +1398,8 @@ _DELETETRANSFERRUNREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3288,
-    serialized_end=3385,
+    serialized_start=3429,
+    serialized_end=3518,
 )
 
 
@@ -1390,7 +1426,7 @@ _LISTTRANSFERCONFIGSREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+                "\340A\002\372A4\0222bigquerydatatransfer.googleapis.com/TransferConfig"
             ),
             file=DESCRIPTOR,
         ),
@@ -1457,8 +1493,8 @@ _LISTTRANSFERCONFIGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3388,
-    serialized_end=3549,
+    serialized_start=3521,
+    serialized_end=3689,
 )
 
 
@@ -1514,8 +1550,8 @@ _LISTTRANSFERCONFIGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3552,
-    serialized_end=3697,
+    serialized_start=3692,
+    serialized_end=3837,
 )
 
 
@@ -1542,7 +1578,7 @@ _LISTTRANSFERRUNSREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A4\n2bigquerydatatransfer.googleapis.com/TransferConfig"
+                "\340A\002\372A)\022'bigquerydatatransfer.googleapis.com/Run"
             ),
             file=DESCRIPTOR,
         ),
@@ -1627,8 +1663,8 @@ _LISTTRANSFERRUNSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3700,
-    serialized_end=4061,
+    serialized_start=3840,
+    serialized_end=4190,
 )
 
 
@@ -1684,8 +1720,8 @@ _LISTTRANSFERRUNSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4064,
-    serialized_end=4200,
+    serialized_start=4193,
+    serialized_end=4329,
 )
 
 
@@ -1712,7 +1748,7 @@ _LISTTRANSFERLOGSREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A1\n/bigquerydatatransfer.googleapis.com/TransferRun"
+                "\340A\002\372A)\n'bigquerydatatransfer.googleapis.com/Run"
             ),
             file=DESCRIPTOR,
         ),
@@ -1779,8 +1815,8 @@ _LISTTRANSFERLOGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4203,
-    serialized_end=4435,
+    serialized_start=4332,
+    serialized_end=4556,
 )
 
 
@@ -1836,8 +1872,8 @@ _LISTTRANSFERLOGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4438,
-    serialized_end=4582,
+    serialized_start=4559,
+    serialized_end=4703,
 )
 
 
@@ -1877,8 +1913,8 @@ _CHECKVALIDCREDSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4584,
-    serialized_end=4678,
+    serialized_start=4705,
+    serialized_end=4799,
 )
 
 
@@ -1916,8 +1952,8 @@ _CHECKVALIDCREDSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4680,
-    serialized_end=4730,
+    serialized_start=4801,
+    serialized_end=4851,
 )
 
 
@@ -1993,8 +2029,8 @@ _SCHEDULETRANSFERRUNSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4733,
-    serialized_end=4942,
+    serialized_start=4854,
+    serialized_end=5063,
 )
 
 
@@ -2032,8 +2068,8 @@ _SCHEDULETRANSFERRUNSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4944,
-    serialized_end=5040,
+    serialized_start=5065,
+    serialized_end=5161,
 )
 
 
@@ -2089,8 +2125,8 @@ _STARTMANUALTRANSFERRUNSREQUEST_TIMERANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5321,
-    serialized_end=5426,
+    serialized_start=5442,
+    serialized_end=5547,
 )
 
 _STARTMANUALTRANSFERRUNSREQUEST = _descriptor.Descriptor(
@@ -2173,8 +2209,8 @@ _STARTMANUALTRANSFERRUNSREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=5043,
-    serialized_end=5434,
+    serialized_start=5164,
+    serialized_end=5555,
 )
 
 
@@ -2212,8 +2248,8 @@ _STARTMANUALTRANSFERRUNSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5436,
-    serialized_end=5535,
+    serialized_start=5557,
+    serialized_end=5656,
 )
 
 _DATASOURCEPARAMETER.fields_by_name["type"].enum_type = _DATASOURCEPARAMETER_TYPE
@@ -2507,7 +2543,9 @@ GetDataSourceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The field will contain name of the resource
           requested, for example:
-          ``projects/{project_id}/dataSources/{data_source_id}``
+          ``projects/{project_id}/dataSources/{data_source_id}`` or ``pr
+          ojects/{project_id}/locations/{location_id}/dataSources/{data_
+          source_id}``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.GetDataSourceRequest)
     ),
@@ -2527,7 +2565,8 @@ ListDataSourcesRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The BigQuery project id for which data sources
           should be returned. Must be in the form:
-          ``projects/{project_id}``
+          ``projects/{project_id}`` or
+          \`projects/{project\_id}/locations/{location\_id}
       page_token:
           Pagination token, which can be used to request a specific page
           of ``ListDataSourcesRequest`` list results. For multiple-page
@@ -2584,9 +2623,10 @@ CreateTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           Required. The BigQuery project id where the transfer
           configuration should be created. Must be in the format
-          projects/{project\_id}/locations/{location\_id} If specified
-          location and location of the destination bigquery dataset do
-          not match - the request will fail.
+          projects/{project\_id}/locations/{location\_id} or
+          projects/{project\_id}. If specified location and location of
+          the destination bigquery dataset do not match - the request
+          will fail.
       transfer_config:
           Required. Data transfer configuration to create.
       authorization_code:
@@ -2614,6 +2654,11 @@ CreateTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
           "none+gsession" response type. which be return a version\_info
           back in the authorization response which be be put in a JWT
           claim in the token request.
+      service_account_name:
+          Optional service account name. If this field is set, transfer
+          config will be created with this service account credentials.
+          It requires that requesting user calling this API has
+          permissions to act as this service account.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.CreateTransferConfigRequest)
     ),
@@ -2661,6 +2706,12 @@ UpdateTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
           "none+gsession" response type. which be return a version\_info
           back in the authorization response which be be put in a JWT
           claim in the token request.
+      service_account_name:
+          Optional service account name. If this field is set and
+          "service\_account\_name" is set in update\_mask, transfer
+          config will be updated to use this service account
+          credentials. It requires that requesting user calling this API
+          has permissions to act as this service account.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.UpdateTransferConfigRequest)
     ),
@@ -2680,7 +2731,9 @@ GetTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The field will contain name of the resource
           requested, for example:
-          ``projects/{project_id}/transferConfigs/{config_id}``
+          ``projects/{project_id}/transferConfigs/{config_id}`` or ``pro
+          jects/{project_id}/locations/{location_id}/transferConfigs/{co
+          nfig_id}``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.GetTransferConfigRequest)
     ),
@@ -2701,7 +2754,9 @@ DeleteTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The field will contain name of the resource
           requested, for example:
-          ``projects/{project_id}/transferConfigs/{config_id}``
+          ``projects/{project_id}/transferConfigs/{config_id}`` or ``pro
+          jects/{project_id}/locations/{location_id}/transferConfigs/{co
+          nfig_id}``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.DeleteTransferConfigRequest)
     ),
@@ -2721,7 +2776,8 @@ GetTransferRunRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The field will contain name of the resource
           requested, for example: ``projects/{project_id}/transferConfig
-          s/{config_id}/runs/{run_id}``
+          s/{config_id}/runs/{run_id}`` or ``projects/{project_id}/locat
+          ions/{location_id}/transferConfigs/{config_id}/runs/{run_id}``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.GetTransferRunRequest)
     ),
@@ -2741,7 +2797,8 @@ DeleteTransferRunRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The field will contain name of the resource
           requested, for example: ``projects/{project_id}/transferConfig
-          s/{config_id}/runs/{run_id}``
+          s/{config_id}/runs/{run_id}`` or ``projects/{project_id}/locat
+          ions/{location_id}/transferConfigs/{config_id}/runs/{run_id}``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.DeleteTransferRunRequest)
     ),
@@ -2760,7 +2817,8 @@ ListTransferConfigsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. The BigQuery project id for which data sources
-          should be returned: ``projects/{project_id}``.
+          should be returned: ``projects/{project_id}`` or
+          ``projects/{project_id}/locations/{location_id}``
       data_source_ids:
           When specified, only configurations of requested data sources
           are returned.
@@ -2818,7 +2876,9 @@ ListTransferRunsRequest = _reflection.GeneratedProtocolMessageType(
           Required. Name of transfer configuration for which transfer
           runs should be retrieved. Format of transfer configuration
           resource name is:
-          ``projects/{project_id}/transferConfigs/{config_id}``.
+          ``projects/{project_id}/transferConfigs/{config_id}`` or ``pro
+          jects/{project_id}/locations/{location_id}/transferConfigs/{co
+          nfig_id}``.
       states:
           When specified, only transfer runs with requested states are
           returned.
@@ -2875,7 +2935,9 @@ ListTransferLogsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. Transfer run name in the form: ``projects/{project_i
-          d}/transferConfigs/{config_Id}/runs/{run_id}``.
+          d}/transferConfigs/{config_id}/runs/{run_id}`` or ``projects/{
+          project_id}/locations/{location_id}/transferConfigs/{config_id
+          }/runs/{run_id}``
       page_token:
           Pagination token, which can be used to request a specific page
           of ``ListTransferLogsRequest`` list results. For multiple-page
@@ -2934,7 +2996,9 @@ CheckValidCredsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required. The data source in the form:
-          ``projects/{project_id}/dataSources/{data_source_id}``
+          ``projects/{project_id}/dataSources/{data_source_id}`` or ``pr
+          ojects/{project_id}/locations/{location_id}/dataSources/{data_
+          source_id}``.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.bigquery.datatransfer.v1.CheckValidCredsRequest)
     ),
@@ -2971,7 +3035,9 @@ ScheduleTransferRunsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. Transfer configuration name in the form:
-          ``projects/{project_id}/transferConfigs/{config_id}``.
+          ``projects/{project_id}/transferConfigs/{config_id}`` or ``pro
+          jects/{project_id}/locations/{location_id}/transferConfigs/{co
+          nfig_id}``.
       start_time:
           Required. Start time of the range of transfer runs. For
           example, ``"2017-05-25T00:00:00+00:00"``.
@@ -3040,7 +3106,9 @@ StartManualTransferRunsRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Transfer configuration name in the form:
-          ``projects/{project_id}/transferConfigs/{config_id}``.
+          ``projects/{project_id}/transferConfigs/{config_id}`` or ``pro
+          jects/{project_id}/locations/{location_id}/transferConfigs/{co
+          nfig_id}``.
       time:
           The requested time specification - this can be a time range or
           a specific run\_time.
@@ -3114,8 +3182,8 @@ _DATATRANSFERSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A#bigquerydatatransfer.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=5538,
-    serialized_end=9573,
+    serialized_start=5659,
+    serialized_end=9694,
     methods=[
         _descriptor.MethodDescriptor(
             name="GetDataSource",
