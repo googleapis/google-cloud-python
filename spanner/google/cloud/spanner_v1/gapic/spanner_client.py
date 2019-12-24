@@ -85,7 +85,12 @@ class SpannerClient(object):
 
     @classmethod
     def database_path(cls, project, instance, database):
-        """Return a fully-qualified database string."""
+        """DEPRECATED. Return a fully-qualified database string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}",
             project=project,
@@ -95,7 +100,12 @@ class SpannerClient(object):
 
     @classmethod
     def session_path(cls, project, instance, database, session):
-        """Return a fully-qualified session string."""
+        """DEPRECATED. Return a fully-qualified session string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}/sessions/{session}",
             project=project,
@@ -1028,9 +1038,9 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Statement`
-            seqno (long): Required. A per-transaction sequence number used to identify this request. This field
-                makes each request idempotent such that if the request is received multiple
-                times, at most one will succeed.
+            seqno (long): Required. A per-transaction sequence number used to identify this request.
+                This field makes each request idempotent such that if the request is
+                received multiple times, at most one will succeed.
 
                 The sequence number must be monotonically increasing within the
                 transaction. If a request arrives for the first time with an out-of-order
@@ -1449,9 +1459,9 @@ class SpannerClient(object):
     def commit(
         self,
         session,
-        mutations,
         transaction_id=None,
         single_use_transaction=None,
+        mutations=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1473,19 +1483,10 @@ class SpannerClient(object):
             >>>
             >>> session = client.session_path('[PROJECT]', '[INSTANCE]', '[DATABASE]', '[SESSION]')
             >>>
-            >>> # TODO: Initialize `mutations`:
-            >>> mutations = []
-            >>>
-            >>> response = client.commit(session, mutations)
+            >>> response = client.commit(session)
 
         Args:
             session (str): Required. The session in which the transaction to be committed is running.
-            mutations (list[Union[dict, ~google.cloud.spanner_v1.types.Mutation]]): The mutations to be executed when this transaction commits. All
-                mutations are applied atomically, in the order they appear in
-                this list.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.types.Mutation`
             transaction_id (bytes): Commit a previously-started transaction.
             single_use_transaction (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Execute mutations in a temporary transaction. Note that unlike commit of
                 a previously-started transaction, commit with a temporary transaction is
@@ -1497,6 +1498,12 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
+            mutations (list[Union[dict, ~google.cloud.spanner_v1.types.Mutation]]): The mutations to be executed when this transaction commits. All
+                mutations are applied atomically, in the order they appear in
+                this list.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.Mutation`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1535,9 +1542,9 @@ class SpannerClient(object):
 
         request = spanner_pb2.CommitRequest(
             session=session,
-            mutations=mutations,
             transaction_id=transaction_id,
             single_use_transaction=single_use_transaction,
+            mutations=mutations,
         )
         if metadata is None:
             metadata = []
