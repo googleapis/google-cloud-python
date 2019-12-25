@@ -80,10 +80,6 @@ class Cursor(object):
         if not self.__db_handle:
             raise ProgrammingError('Cursor is not connected to the database')
 
-        # param_types doesn't seem required except as an empty dict to avoid
-        # ValueError("Specify 'param_types' when passing 'params'.").
-        # See https://github.com/orijtech/spanner-orm/issues/35
-        param_types = {} if args else None
         self.__res = None
 
         # Classify whether this is a read-only SQL statement.
@@ -92,11 +88,11 @@ class Cursor(object):
             if classification == STMT_DDL:
                 self.__handle_update_ddl(sql)
             elif classification == STMT_NON_UPDATING:
-                self.__handle_DQL(sql, args or None, param_types=param_types)
+                self.__handle_DQL(sql, args or None)
             elif classification == STMT_INSERT:
                 self.__handle_insert(sql, args or None)
             else:
-                self.__handle_update(sql, args or None, param_types=param_types)
+                self.__handle_update(sql, args or None)
         except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
         except grpc_exceptions.InvalidArgument as e:
@@ -104,24 +100,18 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
-    def __handle_update(self, sql, params, param_types):
+    def __handle_update(self, sql, params):
         self.__commit_preceding_batch(OP_UPDATE)
         self.__db_handle.in_transaction(
             self.__do_execute_update,
-            sql, params, param_types,
+            sql, params,
         )
 
     def __do_execute_update(self, transaction, sql, params, param_types=None):
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
-        # Given that we now format datetime as a Spanner TimeStamp,
-        # i.e. in ISO 8601 format, we need to give Cloud Spanner a
-        # hint that the parameter is of Spanner.TimeStamp.
-        # See https://cloud.google.com/spanner/docs/data-types#canonical-format_1
-        param_types = infer_param_types(params, param_types)
-
-        res = transaction.execute_update(sql, params=params, param_types=param_types)
+        res = transaction.execute_update(sql, params=params, param_types=infer_param_types(params))
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
@@ -167,15 +157,14 @@ class Cursor(object):
         else:
             return self.__db_handle.commit(last_op)
 
-    def __handle_DQL(self, sql, params, param_types=None):
+    def __handle_DQL(self, sql, params):
         self.__commit_preceding_batch(OP_DQL)
 
         with self.__db_handle.read_snapshot() as snapshot:
             # Reference
             #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
             sql, params = sql_pyformat_args_to_spanner(sql, params)
-            param_types = infer_param_types(params, param_types)
-            res = snapshot.execute_sql(sql, params=params, param_types=param_types)
+            res = snapshot.execute_sql(sql, params=params, param_types=infer_param_types(params))
             if type(res) == int:
                 self.__row_count = res
                 self.__itr = None

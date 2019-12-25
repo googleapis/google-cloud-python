@@ -426,28 +426,26 @@ def cast_for_spanner(param):
         return param
 
 
-def infer_param_types(params, param_types):
-    # Given that we now format datetime as a Spanner TimeStamp,
-    # i.e. in ISO 8601 format, we need to give Cloud Spanner a
-    # hint that the parameter is of Spanner.TimeStamp.
-    # See https://cloud.google.com/spanner/docs/data-types#canonical-format_1
-    if not params:
-        return param_types
-
+def infer_param_types(params):
+    """
+    Return a dictionary of spanner.param_types for a dictionary of parameters.
+    """
+    if params is None:
+        return None
+    param_types = {}
     for key, value in params.items():
         if isinstance(value, bool):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.BOOL)
+            param_types[key] = spanner.param_types.BOOL
         elif isinstance(value, float):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.FLOAT64)
+            param_types[key] = spanner.param_types.FLOAT64
         elif isinstance(value, int):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.INT64)
+            param_types[key] = spanner.param_types.INT64
         elif isinstance(value, TimestampStr):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.TIMESTAMP)
+            param_types[key] = spanner.param_types.TIMESTAMP
         elif isinstance(value, DateStr):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.DATE)
+            param_types[key] = spanner.param_types.DATE
         elif isinstance(value, str):
-            param_types = insert_key_in_param_types(key, param_types, spanner.param_types.STRING)
-
+            param_types[key] = spanner.param_types.STRING
     return param_types
 
 
@@ -459,17 +457,6 @@ def ensure_where_clause(sql):
     if any(isinstance(token, sqlparse.sql.Where) for token in sqlparse.parse(sql)[0]):
         return sql
     return sql + ' WHERE 1=1'
-
-
-def insert_key_in_param_types(key, param_types, spanner_type):
-    if param_types is None:
-        param_types = {}
-
-    typ = param_types.get(key)
-    if typ is None:
-        param_types[key] = spanner_type
-
-    return param_types
 
 
 SPANNER_RESERVED_KEYWORDS = {
