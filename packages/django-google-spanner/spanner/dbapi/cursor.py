@@ -17,7 +17,7 @@ import google.api_core.exceptions as grpc_exceptions
 from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
-    ensure_where_clause, infer_param_types, parse_insert,
+    ensure_where_clause, get_param_types, parse_insert,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner,
 )
 
@@ -111,7 +111,7 @@ class Cursor(object):
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
-        res = transaction.execute_update(sql, params=params, param_types=infer_param_types(params))
+        res = transaction.execute_update(sql, params=params, param_types=get_param_types(params))
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
@@ -164,7 +164,7 @@ class Cursor(object):
             # Reference
             #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
             sql, params = sql_pyformat_args_to_spanner(sql, params)
-            res = snapshot.execute_sql(sql, params=params, param_types=infer_param_types(params))
+            res = snapshot.execute_sql(sql, params=params, param_types=get_param_types(params))
             if type(res) == int:
                 self.__row_count = res
                 self.__itr = None

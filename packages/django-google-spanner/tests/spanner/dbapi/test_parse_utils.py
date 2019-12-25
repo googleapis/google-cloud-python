@@ -20,7 +20,7 @@ from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, escape_name, extract_connection_params,
-    infer_param_types, parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    get_param_types, parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
     validate_instance_config,
 )
@@ -328,7 +328,7 @@ class ParseUtilsTests(TestCase):
                                        lambda: sql_pyformat_args_to_spanner(sql, params),
                                        )
 
-    def test_infer_param_types(self):
+    def test_get_param_types(self):
         cases = [
             (
                 {'a1': 10, 'b1': '2005-08-30T01:01:01.000001Z', 'c1': '2019-12-05', 'd1': 10.39},
@@ -383,7 +383,7 @@ class ParseUtilsTests(TestCase):
 
         for i, (params, want_param_types) in enumerate(cases):
             with self.subTest(i=i):
-                got_param_types = infer_param_types(params)
+                got_param_types = get_param_types(params)
                 self.assertEqual(got_param_types, want_param_types)
 
     def test_ensure_where_clause(self):

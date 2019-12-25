@@ -426,7 +426,7 @@ def cast_for_spanner(param):
         return param
 
 
-def infer_param_types(params):
+def get_param_types(params):
     """
     Return a dictionary of spanner.param_types for a dictionary of parameters.
     """

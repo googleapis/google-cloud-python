@@ -22,7 +22,7 @@ from .exceptions import (
     Warning,
 )
 from .parse_utils import (
-    extract_connection_params, infer_param_types, parse_spanner_url,
+    extract_connection_params, get_param_types, parse_spanner_url,
 )
 from .types import (
     BINARY, DATETIME, NUMBER, ROWID, STRING, Binary, Date, DateFromTicks, Time,
@@ -85,7 +85,7 @@ __all__ = [
     'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
     'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
     'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
-    'extract_connection_params', 'infer_param_types', 'parse_spanner_url',
+    'extract_connection_params', 'get_param_types', 'parse_spanner_url',
     'Binary', 'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp',
     'TimestampFromTicks',
     'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID', 'TimestampStr',
