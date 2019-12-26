@@ -18,6 +18,7 @@ import json
 import textwrap
 import unittest
 
+import freezegun
 import mock
 import pytest
 import requests
@@ -626,6 +627,7 @@ class Test_AsyncJob(unittest.TestCase):
             method="POST",
             path="/projects/{}/jobs".format(self.PROJECT),
             data=resource,
+            timeout=None,
         )
         self.assertEqual(job._properties, resource)
 
@@ -649,13 +651,14 @@ class Test_AsyncJob(unittest.TestCase):
         call_api.return_value = resource
         retry = DEFAULT_RETRY.with_deadline(1)
 
-        job._begin(client=client, retry=retry)
+        job._begin(client=client, retry=retry, timeout=7.5)
 
         call_api.assert_called_once_with(
             retry,
             method="POST",
             path="/projects/{}/jobs".format(self.PROJECT),
             data=resource,
+            timeout=7.5,
         )
         self.assertEqual(job._properties, resource)
 
@@ -675,6 +678,7 @@ class Test_AsyncJob(unittest.TestCase):
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"fields": "id", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_exists_explicit_hit(self):
@@ -702,6 +706,24 @@ class Test_AsyncJob(unittest.TestCase):
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"fields": "id"},
+            timeout=None,
+        )
+
+    def test_exists_w_timeout(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        PATH = "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+        job = self._set_properties_job()
+        call_api = job._client._call_api = mock.Mock()
+
+        job.exists(timeout=7.5)
+
+        call_api.assert_called_once_with(
+            DEFAULT_RETRY,
+            method="GET",
+            path=PATH,
+            query_params={"fields": "id"},
+            timeout=7.5,
         )
 
     def test_reload_defaults(self):
@@ -780,6 +802,7 @@ class Test_AsyncJob(unittest.TestCase):
             method="POST",
             path="/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID),
             query_params={"location": self.LOCATION},
+            timeout=None,
         )
         self.assertEqual(job._properties, resource)
 
@@ -798,12 +821,13 @@ class Test_AsyncJob(unittest.TestCase):
         client = _make_client(project=other_project)
         connection = client._connection = _make_connection(response)
 
-        self.assertTrue(job.cancel(client=client))
+        self.assertTrue(job.cancel(client=client, timeout=7.5))
 
         connection.api_request.assert_called_once_with(
             method="POST",
             path="/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID),
             query_params={},
+            timeout=7.5,
         )
         self.assertEqual(job._properties, resource)
 
@@ -874,7 +898,7 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertFalse(job.done())
 
-        reload_.assert_called_once_with(retry=DEFAULT_RETRY)
+        reload_.assert_called_once_with(retry=DEFAULT_RETRY, timeout=None)
 
     def test_done_explicit_wo_state(self):
         from google.cloud.bigquery.retry import DEFAULT_RETRY
@@ -884,9 +908,9 @@ class Test_AsyncJob(unittest.TestCase):
         reload_ = job.reload = mock.Mock()
         retry = DEFAULT_RETRY.with_deadline(1)
 
-        self.assertFalse(job.done(retry=retry))
+        self.assertFalse(job.done(retry=retry, timeout=7.5))
 
-        reload_.assert_called_once_with(retry=retry)
+        reload_.assert_called_once_with(retry=retry, timeout=7.5)
 
     def test_done_already(self):
         client = _make_client(project=self.PROJECT)
@@ -905,7 +929,7 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertIs(job.result(), result.return_value)
 
-        begin.assert_called_once_with(retry=DEFAULT_RETRY)
+        begin.assert_called_once_with(retry=DEFAULT_RETRY, timeout=None)
         result.assert_called_once_with(timeout=None)
 
     @mock.patch("google.api_core.future.polling.PollingFuture.result")
@@ -917,7 +941,7 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertIs(job.result(retry=retry), result.return_value)
 
-        begin.assert_called_once_with(retry=retry)
+        begin.assert_called_once_with(retry=retry, timeout=None)
         result.assert_called_once_with(timeout=None)
 
     @mock.patch("google.api_core.future.polling.PollingFuture.result")
@@ -932,6 +956,24 @@ class Test_AsyncJob(unittest.TestCase):
 
         begin.assert_not_called()
         result.assert_called_once_with(timeout=timeout)
+
+    @mock.patch("google.api_core.future.polling.PollingFuture.result")
+    def test_result_splitting_timout_between_requests(self, result):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        begin = job._begin = mock.Mock()
+        retry = mock.Mock()
+
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_begin(*args, **kwargs):
+                frozen_time.tick(delta=0.3)
+
+            begin.side_effect = delayed_begin
+            job.result(retry=retry, timeout=1.0)
+
+        begin.assert_called_once_with(retry=retry, timeout=1.0)
+        result.assert_called_once_with(timeout=0.7)
 
     def test_cancelled_wo_error_result(self):
         client = _make_client(project=self.PROJECT)
@@ -2288,6 +2330,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2325,7 +2368,9 @@ class TestLoadJob(unittest.TestCase, _Base):
                 }
             },
         }
-        conn.api_request.assert_called_once_with(method="POST", path=path, data=sent)
+        conn.api_request.assert_called_once_with(
+            method="POST", path=path, data=sent, timeout=None
+        )
         self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
@@ -2449,7 +2494,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertFalse(job.exists())
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -2464,7 +2509,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_exists_miss_w_job_reference(self):
@@ -2481,6 +2526,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             method="GET",
             path="/projects/other-project/jobs/my-job-id",
             query_params={"fields": "id", "location": "US"},
+            timeout=None,
         )
 
     def test_reload_w_bound_client(self):
@@ -2545,7 +2591,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         job.cancel()
 
         conn.api_request.assert_called_once_with(
-            method="POST", path=PATH, query_params={}
+            method="POST", path=PATH, query_params={}, timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2563,7 +2609,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="POST", path=PATH, query_params={}
+            method="POST", path=PATH, query_params={}, timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2584,6 +2630,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             method="POST",
             path="/projects/alternative-project/jobs/{}/cancel".format(self.JOB_ID),
             query_params={"location": "US"},
+            timeout=None,
         )
 
 
@@ -2898,6 +2945,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2946,6 +2994,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
                 "configuration": {"copy": COPY_CONFIGURATION},
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2961,7 +3010,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertFalse(job.exists())
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -2978,7 +3027,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_reload_w_bound_client(self):
@@ -3259,6 +3308,7 @@ class TestExtractJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3308,6 +3358,7 @@ class TestExtractJob(unittest.TestCase, _Base):
                 "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
                 "configuration": {"extract": EXTRACT_CONFIGURATION},
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3322,7 +3373,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         self.assertFalse(job.exists())
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -3339,7 +3390,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_reload_w_bound_client(self):
@@ -4519,7 +4570,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        job.result(timeout=1.0)
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False):
+            job.result(timeout=1.0)
 
         self.assertEqual(len(connection.api_request.call_args_list), 3)
         begin_request = connection.api_request.call_args_list[0]
@@ -4533,6 +4585,49 @@ class TestQueryJob(unittest.TestCase, _Base):
         )
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
         self.assertEqual(reload_request[1]["method"], "GET")
+
+    @mock.patch("google.api_core.future.polling.PollingFuture.result")
+    def test_result_splitting_timout_between_requests(self, polling_result):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "5",
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+
+        connection = _make_connection(begun_resource, query_resource, done_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        client.list_rows = mock.Mock()
+
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_result(*args, **kwargs):
+                frozen_time.tick(delta=0.8)
+
+            polling_result.side_effect = delayed_result
+
+            def delayed_get_results(*args, **kwargs):
+                frozen_time.tick(delta=0.5)
+                return orig_get_results(*args, **kwargs)
+
+            orig_get_results = client._get_query_results
+            client._get_query_results = mock.Mock(side_effect=delayed_get_results)
+            job.result(timeout=2.0)
+
+        polling_result.assert_called_once_with(timeout=2.0)
+
+        client._get_query_results.assert_called_once()
+        _, kwargs = client._get_query_results.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 1.2)
+
+        client.list_rows.assert_called_once()
+        _, kwargs = client.list_rows.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 0.7)
 
     def test_result_w_page_size(self):
         # Arrange
@@ -4580,12 +4675,16 @@ class TestQueryJob(unittest.TestCase, _Base):
         conn.api_request.assert_has_calls(
             [
                 mock.call(
-                    method="GET", path=tabledata_path, query_params={"maxResults": 3}
+                    method="GET",
+                    path=tabledata_path,
+                    query_params={"maxResults": 3},
+                    timeout=None,
                 ),
                 mock.call(
                     method="GET",
                     path=tabledata_path,
                     query_params={"pageToken": "some-page-token", "maxResults": 3},
+                    timeout=None,
                 ),
             ]
         )
@@ -4687,6 +4786,28 @@ class TestQueryJob(unittest.TestCase, _Base):
             expected_line = "{}:{}".format(i, line)
             assert expected_line in full_text
 
+    def test__begin_w_timeout(self):
+        PATH = "/projects/%s/jobs" % (self.PROJECT,)
+        RESOURCE = self._make_resource()
+
+        conn = _make_connection(RESOURCE)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        job._begin(timeout=7.5)
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path=PATH,
+            data={
+                "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+                "configuration": {
+                    "query": {"query": self.QUERY, "useLegacySql": False}
+                },
+            },
+            timeout=7.5,
+        )
+
     def test_begin_w_bound_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.job import QueryJobConfig
@@ -4726,6 +4847,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -4795,6 +4917,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
                 "configuration": {"dryRun": True, "query": QUERY_CONFIGURATION},
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -4845,6 +4968,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -4892,6 +5016,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -4935,6 +5060,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -5011,6 +5137,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     }
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, want_resource)
 
@@ -5043,6 +5170,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     "dryRun": True,
                 },
             },
+            timeout=None,
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -5055,7 +5183,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertFalse(job.exists())
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -5070,7 +5198,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_reload_w_bound_client(self):

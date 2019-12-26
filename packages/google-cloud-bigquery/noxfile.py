@@ -34,7 +34,7 @@ def default(session):
     run the tests.
     """
     # Install all test dependencies, then install local packages in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    session.install("mock", "pytest", "pytest-cov", "freezegun")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
 

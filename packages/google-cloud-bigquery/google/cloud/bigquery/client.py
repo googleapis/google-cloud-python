@@ -22,6 +22,7 @@ try:
 except ImportError:  # Python 2.7
     import collections as collections_abc
 
+import concurrent.futures
 import copy
 import functools
 import gzip
@@ -47,6 +48,7 @@ from google.resumable_media.requests import ResumableUpload
 import google.api_core.client_options
 import google.api_core.exceptions
 from google.api_core import page_iterator
+from google.auth.transport.requests import TimeoutGuard
 import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
@@ -206,7 +208,7 @@ class Client(ClientWithProject):
         self._http._auth_request.session.close()
         self._http.close()
 
-    def get_service_account_email(self, project=None):
+    def get_service_account_email(self, project=None, timeout=None):
         """Get the email address of the project's BigQuery service account
 
         Note:
@@ -217,6 +219,8 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving service account email.
                 Defaults to the client's project.
+            timeout (Optional[float]):
+                The number of seconds to wait for the API response.
 
         Returns:
             str: service account email address
@@ -232,10 +236,16 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
-        api_response = self._connection.api_request(method="GET", path=path)
+
+        # TODO: call thorugh self._call_api() and allow passing in a retry?
+        api_response = self._connection.api_request(
+            method="GET", path=path, timeout=timeout
+        )
         return api_response["email"]
 
-    def list_projects(self, max_results=None, page_token=None, retry=DEFAULT_RETRY):
+    def list_projects(
+        self, max_results=None, page_token=None, retry=DEFAULT_RETRY, timeout=None
+    ):
         """List projects for the project associated with this client.
 
         See
@@ -256,6 +266,10 @@ class Client(ClientWithProject):
 
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+
         Returns:
             google.api_core.page_iterator.Iterator:
                 Iterator of :class:`~google.cloud.bigquery.client.Project`
@@ -263,7 +277,7 @@ class Client(ClientWithProject):
         """
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path="/projects",
             item_to_value=_item_to_project,
             items_key="projects",
@@ -279,6 +293,7 @@ class Client(ClientWithProject):
         max_results=None,
         page_token=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """List datasets for the project associated with this client.
 
@@ -307,6 +322,9 @@ class Client(ClientWithProject):
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
             retry (google.api_core.retry.Retry):
                 Optional. How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -325,7 +343,7 @@ class Client(ClientWithProject):
         path = "/projects/%s/datasets" % (project,)
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path=path,
             item_to_value=_item_to_dataset,
             items_key="datasets",
@@ -366,7 +384,9 @@ class Client(ClientWithProject):
             credentials=self._credentials
         )
 
-    def create_dataset(self, dataset, exists_ok=False, retry=DEFAULT_RETRY):
+    def create_dataset(
+        self, dataset, exists_ok=False, retry=DEFAULT_RETRY, timeout=None
+    ):
         """API call: create the dataset via a POST request.
 
         See
@@ -386,6 +406,9 @@ class Client(ClientWithProject):
                 errors when creating the dataset.
             retry (google.api_core.retry.Retry):
                 Optional. How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
@@ -413,14 +436,18 @@ class Client(ClientWithProject):
             data["location"] = self.location
 
         try:
-            api_response = self._call_api(retry, method="POST", path=path, data=data)
+            api_response = self._call_api(
+                retry, method="POST", path=path, data=data, timeout=timeout
+            )
             return Dataset.from_api_repr(api_response)
         except google.api_core.exceptions.Conflict:
             if not exists_ok:
                 raise
             return self.get_dataset(dataset.reference, retry=retry)
 
-    def create_routine(self, routine, exists_ok=False, retry=DEFAULT_RETRY):
+    def create_routine(
+        self, routine, exists_ok=False, retry=DEFAULT_RETRY, timeout=None
+    ):
         """[Beta] Create a routine via a POST request.
 
         See
@@ -435,6 +462,9 @@ class Client(ClientWithProject):
                 errors when creating the routine.
             retry (google.api_core.retry.Retry):
                 Optional. How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.routine.Routine:
@@ -447,7 +477,7 @@ class Client(ClientWithProject):
         resource = routine.to_api_repr()
         try:
             api_response = self._call_api(
-                retry, method="POST", path=path, data=resource
+                retry, method="POST", path=path, data=resource, timeout=timeout
             )
             return Routine.from_api_repr(api_response)
         except google.api_core.exceptions.Conflict:
@@ -455,7 +485,7 @@ class Client(ClientWithProject):
                 raise
             return self.get_routine(routine.reference, retry=retry)
 
-    def create_table(self, table, exists_ok=False, retry=DEFAULT_RETRY):
+    def create_table(self, table, exists_ok=False, retry=DEFAULT_RETRY, timeout=None):
         """API call:  create a table via a PUT request
 
         See
@@ -476,6 +506,9 @@ class Client(ClientWithProject):
                 errors when creating the table.
             retry (google.api_core.retry.Retry):
                 Optional. How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.table.Table:
@@ -486,7 +519,9 @@ class Client(ClientWithProject):
         path = "/projects/%s/datasets/%s/tables" % (table.project, table.dataset_id)
         data = table.to_api_repr()
         try:
-            api_response = self._call_api(retry, method="POST", path=path, data=data)
+            api_response = self._call_api(
+                retry, method="POST", path=path, data=data, timeout=timeout
+            )
             return Table.from_api_repr(api_response)
         except google.api_core.exceptions.Conflict:
             if not exists_ok:
@@ -499,7 +534,7 @@ class Client(ClientWithProject):
             call = retry(call)
         return call()
 
-    def get_dataset(self, dataset_ref, retry=DEFAULT_RETRY):
+    def get_dataset(self, dataset_ref, retry=DEFAULT_RETRY, timeout=None):
         """Fetch the dataset referenced by ``dataset_ref``
 
         Args:
@@ -513,6 +548,9 @@ class Client(ClientWithProject):
                 :func:`~google.cloud.bigquery.dataset.DatasetReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
@@ -523,10 +561,12 @@ class Client(ClientWithProject):
                 dataset_ref, default_project=self.project
             )
 
-        api_response = self._call_api(retry, method="GET", path=dataset_ref.path)
+        api_response = self._call_api(
+            retry, method="GET", path=dataset_ref.path, timeout=timeout
+        )
         return Dataset.from_api_repr(api_response)
 
-    def get_model(self, model_ref, retry=DEFAULT_RETRY):
+    def get_model(self, model_ref, retry=DEFAULT_RETRY, timeout=None):
         """[Beta] Fetch the model referenced by ``model_ref``.
 
          Args:
@@ -540,6 +580,9 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.model.ModelReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
          Returns:
             google.cloud.bigquery.model.Model: A ``Model`` instance.
@@ -549,10 +592,12 @@ class Client(ClientWithProject):
                 model_ref, default_project=self.project
             )
 
-        api_response = self._call_api(retry, method="GET", path=model_ref.path)
+        api_response = self._call_api(
+            retry, method="GET", path=model_ref.path, timeout=timeout
+        )
         return Model.from_api_repr(api_response)
 
-    def get_routine(self, routine_ref, retry=DEFAULT_RETRY):
+    def get_routine(self, routine_ref, retry=DEFAULT_RETRY, timeout=None):
         """[Beta] Get the routine referenced by ``routine_ref``.
 
          Args:
@@ -567,6 +612,9 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the API call.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
          Returns:
             google.cloud.bigquery.routine.Routine:
@@ -577,10 +625,12 @@ class Client(ClientWithProject):
                 routine_ref, default_project=self.project
             )
 
-        api_response = self._call_api(retry, method="GET", path=routine_ref.path)
+        api_response = self._call_api(
+            retry, method="GET", path=routine_ref.path, timeout=timeout
+        )
         return Routine.from_api_repr(api_response)
 
-    def get_table(self, table, retry=DEFAULT_RETRY):
+    def get_table(self, table, retry=DEFAULT_RETRY, timeout=None):
         """Fetch the table referenced by ``table``.
 
         Args:
@@ -595,16 +645,21 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.table.Table:
                 A ``Table`` instance.
         """
         table_ref = _table_arg_to_table_ref(table, default_project=self.project)
-        api_response = self._call_api(retry, method="GET", path=table_ref.path)
+        api_response = self._call_api(
+            retry, method="GET", path=table_ref.path, timeout=timeout
+        )
         return Table.from_api_repr(api_response)
 
-    def update_dataset(self, dataset, fields, retry=DEFAULT_RETRY):
+    def update_dataset(self, dataset, fields, retry=DEFAULT_RETRY, timeout=None):
         """Change some fields of a dataset.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -625,6 +680,9 @@ class Client(ClientWithProject):
                 The properties of ``dataset`` to change (e.g. "friendly_name").
             retry (google.api_core.retry.Retry, optional):
                 How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.dataset.Dataset:
@@ -636,11 +694,16 @@ class Client(ClientWithProject):
         else:
             headers = None
         api_response = self._call_api(
-            retry, method="PATCH", path=dataset.path, data=partial, headers=headers
+            retry,
+            method="PATCH",
+            path=dataset.path,
+            data=partial,
+            headers=headers,
+            timeout=timeout,
         )
         return Dataset.from_api_repr(api_response)
 
-    def update_model(self, model, fields, retry=DEFAULT_RETRY):
+    def update_model(self, model, fields, retry=DEFAULT_RETRY, timeout=None):
         """[Beta] Change some fields of a model.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -660,6 +723,9 @@ class Client(ClientWithProject):
                 properties (e.g. "friendly_name").
             retry (google.api_core.retry.Retry):
                 (Optional) A description of how to retry the API call.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.model.Model:
@@ -671,11 +737,16 @@ class Client(ClientWithProject):
         else:
             headers = None
         api_response = self._call_api(
-            retry, method="PATCH", path=model.path, data=partial, headers=headers
+            retry,
+            method="PATCH",
+            path=model.path,
+            data=partial,
+            headers=headers,
+            timeout=timeout,
         )
         return Model.from_api_repr(api_response)
 
-    def update_routine(self, routine, fields, retry=DEFAULT_RETRY):
+    def update_routine(self, routine, fields, retry=DEFAULT_RETRY, timeout=None):
         """[Beta] Change some fields of a routine.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -702,6 +773,9 @@ class Client(ClientWithProject):
                 (e.g. ``type_``).
             retry (google.api_core.retry.Retry):
                 (Optional) A description of how to retry the API call.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.routine.Routine:
@@ -717,11 +791,16 @@ class Client(ClientWithProject):
         partial["routineReference"] = routine.reference.to_api_repr()
 
         api_response = self._call_api(
-            retry, method="PUT", path=routine.path, data=partial, headers=headers
+            retry,
+            method="PUT",
+            path=routine.path,
+            data=partial,
+            headers=headers,
+            timeout=timeout,
         )
         return Routine.from_api_repr(api_response)
 
-    def update_table(self, table, fields, retry=DEFAULT_RETRY):
+    def update_table(self, table, fields, retry=DEFAULT_RETRY, timeout=None):
         """Change some fields of a table.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -741,6 +820,9 @@ class Client(ClientWithProject):
                 properties (e.g. "friendly_name").
             retry (google.api_core.retry.Retry):
                 (Optional) A description of how to retry the API call.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.table.Table:
@@ -752,12 +834,22 @@ class Client(ClientWithProject):
         else:
             headers = None
         api_response = self._call_api(
-            retry, method="PATCH", path=table.path, data=partial, headers=headers
+            retry,
+            method="PATCH",
+            path=table.path,
+            data=partial,
+            headers=headers,
+            timeout=timeout,
         )
         return Table.from_api_repr(api_response)
 
     def list_models(
-        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+        self,
+        dataset,
+        max_results=None,
+        page_token=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """[Beta] List models in the dataset.
 
@@ -786,6 +878,9 @@ class Client(ClientWithProject):
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
          Returns:
             google.api_core.page_iterator.Iterator:
@@ -804,7 +899,7 @@ class Client(ClientWithProject):
         path = "%s/models" % dataset.path
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path=path,
             item_to_value=_item_to_model,
             items_key="models",
@@ -815,7 +910,12 @@ class Client(ClientWithProject):
         return result
 
     def list_routines(
-        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+        self,
+        dataset,
+        max_results=None,
+        page_token=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """[Beta] List routines in the dataset.
 
@@ -844,6 +944,9 @@ class Client(ClientWithProject):
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
          Returns:
             google.api_core.page_iterator.Iterator:
@@ -862,7 +965,7 @@ class Client(ClientWithProject):
         path = "{}/routines".format(dataset.path)
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path=path,
             item_to_value=_item_to_routine,
             items_key="routines",
@@ -873,7 +976,12 @@ class Client(ClientWithProject):
         return result
 
     def list_tables(
-        self, dataset, max_results=None, page_token=None, retry=DEFAULT_RETRY
+        self,
+        dataset,
+        max_results=None,
+        page_token=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """List tables in the dataset.
 
@@ -902,6 +1010,9 @@ class Client(ClientWithProject):
                 :class:`~google.api_core.page_iterator.HTTPIterator`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -920,7 +1031,7 @@ class Client(ClientWithProject):
         path = "%s/tables" % dataset.path
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path=path,
             item_to_value=_item_to_table,
             items_key="tables",
@@ -931,7 +1042,12 @@ class Client(ClientWithProject):
         return result
 
     def delete_dataset(
-        self, dataset, delete_contents=False, retry=DEFAULT_RETRY, not_found_ok=False
+        self,
+        dataset,
+        delete_contents=False,
+        retry=DEFAULT_RETRY,
+        timeout=None,
+        not_found_ok=False,
     ):
         """Delete a dataset.
 
@@ -954,6 +1070,9 @@ class Client(ClientWithProject):
                 Default is False.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
             not_found_ok (bool):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the dataset.
@@ -972,13 +1091,19 @@ class Client(ClientWithProject):
 
         try:
             self._call_api(
-                retry, method="DELETE", path=dataset.path, query_params=params
+                retry,
+                method="DELETE",
+                path=dataset.path,
+                query_params=params,
+                timeout=timeout,
             )
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
 
-    def delete_model(self, model, retry=DEFAULT_RETRY, not_found_ok=False):
+    def delete_model(
+        self, model, retry=DEFAULT_RETRY, timeout=None, not_found_ok=False
+    ):
         """[Beta] Delete a model
 
         See
@@ -996,6 +1121,9 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.model.ModelReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
             not_found_ok (bool):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the model.
@@ -1007,12 +1135,14 @@ class Client(ClientWithProject):
             raise TypeError("model must be a Model or a ModelReference")
 
         try:
-            self._call_api(retry, method="DELETE", path=model.path)
+            self._call_api(retry, method="DELETE", path=model.path, timeout=timeout)
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
 
-    def delete_routine(self, routine, retry=DEFAULT_RETRY, not_found_ok=False):
+    def delete_routine(
+        self, routine, retry=DEFAULT_RETRY, timeout=None, not_found_ok=False
+    ):
         """[Beta] Delete a routine.
 
         See
@@ -1030,6 +1160,9 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.routine.RoutineReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
             not_found_ok (bool):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the routine.
@@ -1043,12 +1176,14 @@ class Client(ClientWithProject):
             raise TypeError("routine must be a Routine or a RoutineReference")
 
         try:
-            self._call_api(retry, method="DELETE", path=routine.path)
+            self._call_api(retry, method="DELETE", path=routine.path, timeout=timeout)
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
 
-    def delete_table(self, table, retry=DEFAULT_RETRY, not_found_ok=False):
+    def delete_table(
+        self, table, retry=DEFAULT_RETRY, timeout=None, not_found_ok=False
+    ):
         """Delete a table
 
         See
@@ -1066,6 +1201,9 @@ class Client(ClientWithProject):
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
             not_found_ok (bool):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the table.
@@ -1075,7 +1213,7 @@ class Client(ClientWithProject):
             raise TypeError("Unable to get TableReference for table '{}'".format(table))
 
         try:
-            self._call_api(retry, method="DELETE", path=table.path)
+            self._call_api(retry, method="DELETE", path=table.path, timeout=timeout)
         except google.api_core.exceptions.NotFound:
             if not not_found_ok:
                 raise
@@ -1098,7 +1236,7 @@ class Client(ClientWithProject):
             location (str): Location of the query job.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
-                before retrying the HTTP request.
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.query._QueryResults:
@@ -1155,7 +1293,9 @@ class Client(ClientWithProject):
             return job.QueryJob.from_api_repr(resource, self)
         return job.UnknownJob.from_api_repr(resource, self)
 
-    def get_job(self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
+    def get_job(
+        self, job_id, project=None, location=None, retry=DEFAULT_RETRY, timeout=None
+    ):
         """Fetch a job for the project associated with this client.
 
         See
@@ -1171,6 +1311,9 @@ class Client(ClientWithProject):
             location (str): Location where the job was run.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             Union[ \
@@ -1195,12 +1338,14 @@ class Client(ClientWithProject):
         path = "/projects/{}/jobs/{}".format(project, job_id)
 
         resource = self._call_api(
-            retry, method="GET", path=path, query_params=extra_params
+            retry, method="GET", path=path, query_params=extra_params, timeout=timeout
         )
 
         return self.job_from_resource(resource)
 
-    def cancel_job(self, job_id, project=None, location=None, retry=DEFAULT_RETRY):
+    def cancel_job(
+        self, job_id, project=None, location=None, retry=DEFAULT_RETRY, timeout=None
+    ):
         """Attempt to cancel a job from a job ID.
 
         See
@@ -1216,6 +1361,9 @@ class Client(ClientWithProject):
             location (str): Location where the job was run.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             Union[ \
@@ -1240,7 +1388,7 @@ class Client(ClientWithProject):
         path = "/projects/{}/jobs/{}/cancel".format(project, job_id)
 
         resource = self._call_api(
-            retry, method="POST", path=path, query_params=extra_params
+            retry, method="POST", path=path, query_params=extra_params, timeout=timeout
         )
 
         return self.job_from_resource(resource["job"])
@@ -1254,6 +1402,7 @@ class Client(ClientWithProject):
         all_users=None,
         state_filter=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
         min_creation_time=None,
         max_creation_time=None,
     ):
@@ -1290,6 +1439,9 @@ class Client(ClientWithProject):
                     * ``"running"``
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
             min_creation_time (Optional[datetime.datetime]):
                 Min value for job creation time. If set, only jobs created
                 after or at this timestamp are returned. If the datetime has
@@ -1329,7 +1481,7 @@ class Client(ClientWithProject):
         path = "/projects/%s/jobs" % (project,)
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path=path,
             item_to_value=_item_to_job,
             items_key="jobs",
@@ -1348,6 +1500,7 @@ class Client(ClientWithProject):
         project=None,
         job_config=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """Starts a job for loading data into a table from CloudStorage.
 
@@ -1384,6 +1537,9 @@ class Client(ClientWithProject):
                 (Optional) Extra configuration options for the job.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.job.LoadJob: A new load job.
@@ -1413,7 +1569,7 @@ class Client(ClientWithProject):
             _verify_job_config_type(job_config, google.cloud.bigquery.job.LoadJobConfig)
 
         load_job = job.LoadJob(job_ref, source_uris, destination, self, job_config)
-        load_job._begin(retry=retry)
+        load_job._begin(retry=retry, timeout=timeout)
 
         return load_job
 
@@ -1918,6 +2074,7 @@ class Client(ClientWithProject):
         project=None,
         job_config=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """Copy one or more tables to another table.
 
@@ -1961,6 +2118,9 @@ class Client(ClientWithProject):
                 (Optional) Extra configuration options for the job.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.job.CopyJob: A new copy job instance.
@@ -2004,7 +2164,7 @@ class Client(ClientWithProject):
         copy_job = job.CopyJob(
             job_ref, sources, destination, client=self, job_config=job_config
         )
-        copy_job._begin(retry=retry)
+        copy_job._begin(retry=retry, timeout=timeout)
 
         return copy_job
 
@@ -2018,6 +2178,7 @@ class Client(ClientWithProject):
         project=None,
         job_config=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """Start a job to extract a table into Cloud Storage files.
 
@@ -2052,6 +2213,9 @@ class Client(ClientWithProject):
                 (Optional) Extra configuration options for the job.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
         Args:
             source (google.cloud.bigquery.table.TableReference): table to be extracted.
 
@@ -2086,7 +2250,7 @@ class Client(ClientWithProject):
         extract_job = job.ExtractJob(
             job_ref, source, destination_uris, client=self, job_config=job_config
         )
-        extract_job._begin(retry=retry)
+        extract_job._begin(retry=retry, timeout=timeout)
 
         return extract_job
 
@@ -2099,6 +2263,7 @@ class Client(ClientWithProject):
         location=None,
         project=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """Run a SQL query.
 
@@ -2129,6 +2294,9 @@ class Client(ClientWithProject):
                 to the client's project.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
@@ -2169,7 +2337,7 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
-        query_job._begin(retry=retry)
+        query_job._begin(retry=retry, timeout=timeout)
 
         return query_job
 
@@ -2290,6 +2458,7 @@ class Client(ClientWithProject):
         ignore_unknown_values=None,
         template_suffix=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """Insert rows into a table without applying local type conversions.
 
@@ -2326,6 +2495,9 @@ class Client(ClientWithProject):
                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             Sequence[Mappings]:
@@ -2359,7 +2531,11 @@ class Client(ClientWithProject):
 
         # We can always retry, because every row has an insert ID.
         response = self._call_api(
-            retry, method="POST", path="%s/insertAll" % table.path, data=data
+            retry,
+            method="POST",
+            path="%s/insertAll" % table.path,
+            data=data,
+            timeout=timeout,
         )
         errors = []
 
@@ -2368,7 +2544,7 @@ class Client(ClientWithProject):
 
         return errors
 
-    def list_partitions(self, table, retry=DEFAULT_RETRY):
+    def list_partitions(self, table, retry=DEFAULT_RETRY, timeout=None):
         """List the partitions in a table.
 
         Args:
@@ -2380,23 +2556,37 @@ class Client(ClientWithProject):
                 The table or reference from which to get partition info
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             List[str]:
                 A list of the partition ids present in the partitioned table
         """
         table = _table_arg_to_table_ref(table, default_project=self.project)
-        meta_table = self.get_table(
-            TableReference(
-                self.dataset(table.dataset_id, project=table.project),
-                "%s$__PARTITIONS_SUMMARY__" % table.table_id,
+
+        with TimeoutGuard(
+            timeout, timeout_error_type=concurrent.futures.TimeoutError
+        ) as guard:
+            meta_table = self.get_table(
+                TableReference(
+                    self.dataset(table.dataset_id, project=table.project),
+                    "%s$__PARTITIONS_SUMMARY__" % table.table_id,
+                ),
+                retry=retry,
+                timeout=timeout,
             )
-        )
+        timeout = guard.remaining_timeout
 
         subset = [col for col in meta_table.schema if col.name == "partition_id"]
         return [
             row[0]
-            for row in self.list_rows(meta_table, selected_fields=subset, retry=retry)
+            for row in self.list_rows(
+                meta_table, selected_fields=subset, retry=retry, timeout=timeout
+            )
         ]
 
     def list_rows(
@@ -2408,6 +2598,7 @@ class Client(ClientWithProject):
         start_index=None,
         page_size=None,
         retry=DEFAULT_RETRY,
+        timeout=None,
     ):
         """List the rows of the table.
 
@@ -2452,6 +2643,11 @@ class Client(ClientWithProject):
                 to a sensible value set by the API.
             retry (google.api_core.retry.Retry):
                 (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -2476,7 +2672,11 @@ class Client(ClientWithProject):
         # No schema, but no selected_fields. Assume the developer wants all
         # columns, so get the table resource for them rather than failing.
         elif len(schema) == 0:
-            table = self.get_table(table.reference, retry=retry)
+            with TimeoutGuard(
+                timeout, timeout_error_type=concurrent.futures.TimeoutError
+            ) as guard:
+                table = self.get_table(table.reference, retry=retry, timeout=timeout)
+            timeout = guard.remaining_timeout
             schema = table.schema
 
         params = {}
@@ -2487,7 +2687,7 @@ class Client(ClientWithProject):
 
         row_iterator = RowIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry),
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
             path="%s/data" % (table.path,),
             schema=schema,
             page_token=page_token,

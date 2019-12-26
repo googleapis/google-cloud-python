@@ -26,6 +26,7 @@ import six
 from six.moves import http_client
 
 import google.api_core.future.polling
+from google.auth.transport.requests import TimeoutGuard
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.dataset import Dataset
@@ -607,7 +608,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
     _build_resource = to_api_repr  # backward-compatibility alias
 
-    def _begin(self, client=None, retry=DEFAULT_RETRY):
+    def _begin(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  begin the job via a POST request
 
         See
@@ -619,6 +620,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 associated with the job object or``NoneType``
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Raises:
             ValueError:
@@ -633,11 +637,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         # jobs.insert is idempotent because we ensure that every new
         # job has an ID.
         api_response = client._call_api(
-            retry, method="POST", path=path, data=self.to_api_repr()
+            retry, method="POST", path=path, data=self.to_api_repr(), timeout=timeout
         )
         self._set_properties(api_response)
 
-    def exists(self, client=None, retry=DEFAULT_RETRY):
+    def exists(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  test for the existence of the job via a GET request
 
         See
@@ -649,6 +653,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 ``client`` stored on the current dataset.
 
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             bool: Boolean indicating existence of the job.
@@ -661,7 +668,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         try:
             client._call_api(
-                retry, method="GET", path=self.path, query_params=extra_params
+                retry,
+                method="GET",
+                path=self.path,
+                query_params=extra_params,
+                timeout=timeout,
             )
         except NotFound:
             return False
@@ -682,7 +693,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
-                before retrying the HTTP request.
+                before using ``retry``.
         """
         client = self._require_client(client)
 
@@ -699,7 +710,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         )
         self._set_properties(api_response)
 
-    def cancel(self, client=None):
+    def cancel(self, client=None, timeout=None):
         """API call:  cancel job via a POST request
 
         See
@@ -709,6 +720,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             client (Optional[google.cloud.bigquery.client.Client]):
                 the client to use.  If not passed, falls back to the
                 ``client`` stored on the current dataset.
+            timeout (Optional[float]):
+                The number of seconds to wait for the API response.
 
         Returns:
             bool: Boolean indicating that the cancel request was sent.
@@ -719,8 +732,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if self.location:
             extra_params["location"] = self.location
 
+        # TODO: call thorugh client._call_api() and allow passing in a retry?
         api_response = client._connection.api_request(
-            method="POST", path="%s/cancel" % (self.path,), query_params=extra_params
+            method="POST",
+            path="%s/cancel" % (self.path,),
+            query_params=extra_params,
+            timeout=timeout,
         )
         self._set_properties(api_response["job"])
         # The Future interface requires that we return True if the *attempt*
@@ -751,11 +768,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             else:
                 self.set_result(self)
 
-    def done(self, retry=DEFAULT_RETRY):
+    def done(self, retry=DEFAULT_RETRY, timeout=None):
         """Refresh the job and checks if it is complete.
 
         Args:
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             bool: True if the job is complete, False otherwise.
@@ -763,18 +783,19 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
-            self.reload(retry=retry)
+            self.reload(retry=retry, timeout=timeout)
         return self.state == _DONE_STATE
 
-    def result(self, timeout=None, retry=DEFAULT_RETRY):
+    def result(self, retry=DEFAULT_RETRY, timeout=None):
         """Start the job and wait for it to complete and get the result.
 
         Args:
-            timeout (float):
-                How long (in seconds) to wait for job to complete before raising
-                a :class:`concurrent.futures.TimeoutError`.
-
             retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             _AsyncJob: This instance.
@@ -786,7 +807,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 if the job did not complete in the given timeout.
         """
         if self.state is None:
-            self._begin(retry=retry)
+            with TimeoutGuard(
+                timeout, timeout_error_type=concurrent.futures.TimeoutError
+            ) as guard:
+                self._begin(retry=retry, timeout=timeout)
+            timeout = guard.remaining_timeout
         # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
@@ -3014,7 +3039,7 @@ class QueryJob(_AsyncJob):
                 How to retry the call that retrieves query results.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
-                before retrying the HTTP request.
+                before using ``retry``.
 
         Returns:
             bool: True if the job is complete, False otherwise.
@@ -3100,7 +3125,7 @@ class QueryJob(_AsyncJob):
 
         return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
 
-    def _begin(self, client=None, retry=DEFAULT_RETRY):
+    def _begin(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  begin the job via a POST request
 
         See
@@ -3112,32 +3137,39 @@ class QueryJob(_AsyncJob):
                 associated with the job object or``NoneType``.
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Raises:
             ValueError: If the job has already begun.
         """
 
         try:
-            super(QueryJob, self)._begin(client=client, retry=retry)
+            super(QueryJob, self)._begin(client=client, retry=retry, timeout=timeout)
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
             raise
 
     def result(
-        self, timeout=None, page_size=None, retry=DEFAULT_RETRY, max_results=None
+        self, page_size=None, max_results=None, retry=DEFAULT_RETRY, timeout=None
     ):
         """Start the job and wait for it to complete and get the result.
 
         Args:
-            timeout (float):
-                How long (in seconds) to wait for job to complete before
-                raising a :class:`concurrent.futures.TimeoutError`.
-            page_size (int):
-                (Optional) The maximum number of rows in each page of results
-                from this request. Non-positive values are ignored.
-            retry (google.api_core.retry.Retry):
-                (Optional) How to retry the call that retrieves rows.
+            page_size (Optional[int]):
+                The maximum number of rows in each page of results from this
+                request. Non-positive values are ignored.
+            max_results (Optional[int]):
+                The maximum total number of rows from this request.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the call that retrieves rows.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+                If multiple requests are made under the hood, ``timeout`` is
+                interpreted as the approximate total time of **all** requests.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3155,13 +3187,27 @@ class QueryJob(_AsyncJob):
                 If the job did not complete in the given timeout.
         """
         try:
-            super(QueryJob, self).result(timeout=timeout)
+            guard = TimeoutGuard(
+                timeout, timeout_error_type=concurrent.futures.TimeoutError
+            )
+            with guard:
+                super(QueryJob, self).result(retry=retry, timeout=timeout)
+            timeout = guard.remaining_timeout
 
             # Return an iterator instead of returning the job.
             if not self._query_results:
-                self._query_results = self._client._get_query_results(
-                    self.job_id, retry, project=self.project, location=self.location
+                guard = TimeoutGuard(
+                    timeout, timeout_error_type=concurrent.futures.TimeoutError
                 )
+                with guard:
+                    self._query_results = self._client._get_query_results(
+                        self.job_id,
+                        retry,
+                        project=self.project,
+                        location=self.location,
+                        timeout=timeout,
+                    )
+                timeout = guard.remaining_timeout
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
@@ -3181,7 +3227,11 @@ class QueryJob(_AsyncJob):
         dest_table = Table(dest_table_ref, schema=schema)
         dest_table._properties["numRows"] = self._query_results.total_rows
         rows = self._client.list_rows(
-            dest_table, page_size=page_size, retry=retry, max_results=max_results
+            dest_table,
+            page_size=page_size,
+            max_results=max_results,
+            retry=retry,
+            timeout=timeout,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
