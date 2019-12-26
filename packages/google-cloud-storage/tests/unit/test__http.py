@@ -51,7 +51,11 @@ class TestConnection(unittest.TestCase):
         }
         expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
-            data=req_data, headers=expected_headers, method="GET", url=expected_uri
+            data=req_data,
+            headers=expected_headers,
+            method="GET",
+            url=expected_uri,
+            timeout=None,
         )
 
     def test_build_api_url_no_extra_query_params(self):

@@ -147,7 +147,7 @@ class TestBatch(unittest.TestCase):
         # Check the queued request
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, _ = request
         self.assertEqual(request_method, "GET")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
@@ -174,7 +174,7 @@ class TestBatch(unittest.TestCase):
         http.request.assert_not_called()
 
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, _ = request
         self.assertEqual(request_method, "POST")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
@@ -201,7 +201,7 @@ class TestBatch(unittest.TestCase):
         http.request.assert_not_called()
 
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, _ = request
         self.assertEqual(request_method, "PATCH")
         self.assertEqual(request_url, url)
         self.assertEqual(request_data, data)
@@ -228,7 +228,7 @@ class TestBatch(unittest.TestCase):
         # Check the queued request
         self.assertEqual(len(batch._requests), 1)
         request = batch._requests[0]
-        request_method, request_url, _, request_data = request
+        request_method, request_url, _, request_data, _ = request
         self.assertEqual(request_method, "DELETE")
         self.assertEqual(request_url, url)
         self.assertIsNone(request_data)
@@ -340,7 +340,11 @@ class TestBatch(unittest.TestCase):
 
         expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+            method="POST",
+            url=expected_url,
+            headers=mock.ANY,
+            data=mock.ANY,
+            timeout=mock.ANY,
         )
 
         request_info = self._get_mutlipart_request(http)
@@ -406,7 +410,11 @@ class TestBatch(unittest.TestCase):
 
         expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
-            method="POST", url=expected_url, headers=mock.ANY, data=mock.ANY
+            method="POST",
+            url=expected_url,
+            headers=mock.ANY,
+            data=mock.ANY,
+            timeout=mock.ANY,
         )
 
         _, request_body, _, boundary = self._get_mutlipart_request(http)
@@ -620,8 +628,10 @@ class _Connection(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-    def _make_request(self, method, url, data=None, headers=None):
-        return self.http.request(url=url, method=method, headers=headers, data=data)
+    def _make_request(self, method, url, data=None, headers=None, timeout=None):
+        return self.http.request(
+            url=url, method=method, headers=headers, data=data, timeout=timeout
+        )
 
 
 class _MockObject(object):
