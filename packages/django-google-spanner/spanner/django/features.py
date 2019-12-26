@@ -48,7 +48,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.tests.GetChoicesOrderingTests.test_get_choices_reverse_related_field',
         'model_formsets_regress.tests.FormfieldShouldDeleteFormTests.test_custom_delete',
         'multiple_database.tests.RouterTestCase.test_generic_key_cross_database_protection',
+        'ordering.tests.OrderingTests.test_default_ordering_by_f_expression',
         'ordering.tests.OrderingTests.test_order_by_fk_attname',
+        'ordering.tests.OrderingTests.test_order_by_override',
         'ordering.tests.OrderingTests.test_order_by_pk',
         'queries.test_bulk_update.BulkUpdateNoteTests.test_multiple_fields',
         'queries.test_bulk_update.BulkUpdateTests.test_inherited_fields',
@@ -111,4 +113,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Cloud Spanner limit: "Number of functions exceeds the maximum
         # allowed limit of 1000."
         'queries.test_bulk_update.BulkUpdateTests.test_large_batch',
+        # Spanner doesn't support random ordering.
+        'ordering.tests.OrderingTests.test_random_ordering',
     )
