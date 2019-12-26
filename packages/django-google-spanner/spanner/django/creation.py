@@ -22,7 +22,7 @@ class DatabaseCreation(BaseDatabaseCreation):
     def create_test_db(self, *args, **kwargs):
         # This environment variable is set by the Travis build script or
         # by a developer running the tests locally.
-        if os.environ.get('RUNNING_SPANNER_BACKEND_TESTS'):
+        if os.environ.get('RUNNING_SPANNER_BACKEND_TESTS') == '1':
             self.mark_skips()
         super().create_test_db(*args, **kwargs)
 
