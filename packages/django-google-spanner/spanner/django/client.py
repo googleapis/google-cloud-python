@@ -12,37 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import subprocess
-
 from django.db.backends.base.client import BaseDatabaseClient
-from spanner.dbapi.parse_utils import extract_connection_params
 
 
 class DatabaseClient(BaseDatabaseClient):
-    executable_name = 'spanner'
-
-    @classmethod
-    def settings_to_cmd_args(cls, settings_dict):
-        args = [cls.executable_name]
-        settings = extract_connection_params(cls.settings_dict)
-        project_id = settings['project_id']
-        if project_id:
-            args += ['--project_id=%s' % project_id]
-        instance = settings['instance']
-        if instance:
-            args += ['--instance=%s' % instance]
-        db_name = settings['db_name']
-        if db_name:
-            args += ['--db_name=%s' % db_name]
-        auto_commit = settings['auto_commit']
-        if auto_commit:
-            args += ['--auto_commit=%s' % auto_commit]
-        read_only = settings['read_only']
-        if read_only:
-            args += ['--read_only=%s' % read_only]
-
-        return args
-
     def runshell(self):
-        args = DatabaseClient.settings_to_cmd_args(self.connection.settings_dict)
-        subprocess.run(args, check=True)
+        raise NotImplementedError('dbshell is not implemented.')
