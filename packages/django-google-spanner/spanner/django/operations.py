@@ -1,3 +1,4 @@
+import os
 import re
 from base64 import b64decode
 from datetime import datetime, time
@@ -24,6 +25,13 @@ class DatabaseOperations(BaseDatabaseOperations):
     }
 
     def quote_name(self, name):
+        # Spanner says "column name not valid" if spaces are present (although
+        # according the docs, they should be allowed). Replace spaces when
+        # running the Django tests to prevent crashes. (Don't modify names in
+        # normal operation to prevent the possibility of colliding with another
+        # column.) https://github.com/orijtech/spanner-orm/issues/204
+        if os.environ.get('RUNNING_SPANNER_BACKEND_TESTS') == '1':
+            name = name.replace(' ', '_')
         return escape_name(name)
 
     def bulk_insert_sql(self, fields, placeholder_rows):
