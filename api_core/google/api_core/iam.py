@@ -229,6 +229,25 @@ class Policy(collections_abc.MutableMapping):
         """
         return "allAuthenticatedUsers"
 
+    @staticmethod
+    def conditional_binding(member, expression, title = "", description = ""):
+        """Factory method for a binding with a condition.
+
+        Args:
+            member (str): A member string.
+            expression (str): Textual representation of an expression in
+                Common Expression Language syntax.
+            title (str): An optional title for the expression, i.e. a short
+                string describing its purpose.
+            description (str): An optional description of the expression.
+            
+        Returns:
+            Tuple[str, str, str, str]: A tuple with internal representation, 
+            that can be used in ``add`` method on a :class:`Policy`.
+        """
+        return "group:%s" % (email,)
+
+      
     @classmethod
     def from_api_repr(cls, resource):
         """Factory: create a policy from a JSON resource.
@@ -266,7 +285,28 @@ class Policy(collections_abc.MutableMapping):
             bindings = resource["bindings"] = []
             for role, members in sorted(self._bindings.items()):
                 if members:
-                    bindings.append({"role": role, "members": sorted(set(members))})
+                    non_conditional_members = []
+                    conditional_members = collections.defaultdict(set)
+                    for member in members:
+                        if isinstance(member, str):
+                            non_conditional_members.append(member)
+                        else:
+                            actual_member, expression, title, description = member
+                            conditional_members[(expression, title, description)].add(actual_member)
+
+                    bindings.append({"role": role, "members": sorted(set(non_conditional_members))})
+
+                    for condition, members in sorted(conditional_members.items()):
+                        expression, title, description = condition
+                        bindings.append({
+                            "role": role, 
+                            "members": sorted(members),
+                            "condition": {
+                                "expression": expression,
+                                "title": title,
+                                "description": description
+                            }
+                        })
 
             if not bindings:
                 del resource["bindings"]
