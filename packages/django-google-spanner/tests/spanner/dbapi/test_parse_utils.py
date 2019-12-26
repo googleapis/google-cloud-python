@@ -19,127 +19,12 @@ from google.cloud.spanner_v1 import param_types
 from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
-    ensure_where_clause, escape_name, extract_connection_params,
-    get_param_types, parse_insert, parse_spanner_url,
+    ensure_where_clause, escape_name, get_param_types, parse_insert,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
 )
 
 
 class ParseUtilsTests(TestCase):
-    def test_no_args(self):
-        with self.assertRaises(Error) as exc:
-            url = None
-            got = parse_spanner_url(url)
-            self.assertEqual(got, None)
-        self.assertEqual(exc.exception.args, ('expecting a non-blank spanner_url',))
-
-    def test_no_host(self):
-        # No host present in the URL.
-        with self.assertRaises(Error) as exc:
-            url = '://spanner.googleapis.com/projects/test-project-012345/instances/test-instance/databases/dev-db'
-            got = parse_spanner_url(url)
-            self.assertEqual(got, None)
-        self.assertEqual(exc.exception.args, ('expecting cloudspanner as the scheme',))
-
-    def test_invalid_scheme(self):
-        # Doesn't contain "cloudspanner" as the scheme.
-        with self.assertRaises(Error) as exc:
-            url = 'foo://spanner.googleapis.com/projects/test-project-012345/instances/test-instance/databases/dev-db'
-            got = parse_spanner_url(url)
-            self.assertEqual(got, None)
-        self.assertEqual(exc.exception.args, ('invalid scheme foo, expected cloudspanner',))
-
-    def test_with_host(self):
-        url = (
-            'cloudspanner://spanner.googleapis.com/projects/test-project-012345/'
-            'instances/test-instance/databases/dev-db'
-        )
-        got = parse_spanner_url(url)
-        want = dict(
-            host='spanner.googleapis.com',
-            project_id='test-project-012345',
-            instance='test-instance',
-            database='dev-db',
-        )
-        self.assertEqual(got, want)
-
-    def test_with_host_and_port(self):
-        url = (
-            'cloudspanner://spanner.googleapis.com:443/projects/test-project-012345/'
-            'instances/test-instance/databases/dev-db'
-        )
-        got = parse_spanner_url(url)
-        want = dict(
-            host='spanner.googleapis.com:443',
-            project_id='test-project-012345',
-            instance='test-instance',
-            database='dev-db',
-        )
-        self.assertEqual(got, want)
-
-    def test_with_host_with_properties(self):
-        url = (
-            'cloudspanner://spanner.googleapis.com/projects/test-project-012345/'
-            'instances/test-instance/databases/dev-db?autocommit=true;readonly=true'
-        )
-        got = parse_spanner_url(url)
-        want = dict(
-            host='spanner.googleapis.com',
-            project_id='test-project-012345',
-            instance='test-instance',
-            database='dev-db',
-            autocommit=True,
-            readonly=True,
-        )
-        self.assertEqual(got, want)
-
-    def test_extract_connection_params(self):
-        cases = [
-                (
-                    dict(
-                        INSTANCE='instance',
-                        INSTANCE_CONFIG='projects/proj/instanceConfigs/regional-us-west2',
-                        NAME='db',
-                        PROJECT_ID='project',
-                        AUTOCOMMIT=True,
-                        READONLY=True,
-                    ),
-                    dict(
-                        database='db',
-                        instance='instance',
-                        instance_config='projects/proj/instanceConfigs/regional-us-west2',
-                        project_id='project',
-                        autocommit=True,
-                        readonly=True,
-                    ),
-                ),
-        ]
-
-        for case in cases:
-            din, want = case
-            got = extract_connection_params(din)
-            self.assertEqual(got, want, 'unequal dicts')
-
-    def test_SPANNER_URL_vs_dictParity(self):
-        by_spanner_url = dict(
-                SPANNER_URL='cloudspanner:/projects/proj/instances/django-dev1/databases/db1?'
-                            'instance_config=projects/proj/instanceConfigs/regional-us-west2;'
-                            'autocommit=true;readonly=true'
-        )
-        by_dict = dict(
-                INSTANCE='django-dev1',
-                NAME='db1',
-                INSTANCE_CONFIG='projects/proj/instanceConfigs/regional-us-west2',
-                PROJECT_ID='proj',
-                AUTOCOMMIT=True,
-                READONLY=True,
-        )
-
-        got_by_spanner_url = extract_connection_params(by_spanner_url)
-        got_by_dict = extract_connection_params(by_dict)
-
-        self.assertEqual(got_by_spanner_url, got_by_dict, 'No parity between equivalent configs')
-
     def test_classify_stmt(self):
         cases = [
                 ('SELECT 1', STMT_NON_UPDATING,),

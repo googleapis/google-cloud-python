@@ -21,9 +21,7 @@ from .exceptions import (
     InternalError, NotSupportedError, OperationalError, ProgrammingError,
     Warning,
 )
-from .parse_utils import (
-    extract_connection_params, get_param_types, parse_spanner_url,
-)
+from .parse_utils import get_param_types
 from .types import (
     BINARY, DATETIME, NUMBER, ROWID, STRING, Binary, Date, DateFromTicks, Time,
     TimeFromTicks, Timestamp, TimestampFromTicks,
@@ -85,7 +83,7 @@ __all__ = [
     'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
     'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
     'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
-    'extract_connection_params', 'get_param_types', 'parse_spanner_url',
+    'get_param_types',
     'Binary', 'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp',
     'TimestampFromTicks',
     'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID', 'TimestampStr',
