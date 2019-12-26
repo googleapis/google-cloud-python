@@ -213,6 +213,28 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._default_query_job_config, QueryJobConfig)
         self.assertTrue(client._default_query_job_config.dry_run)
 
+    def test__call_api_applying_custom_retry_on_timeout(self):
+        from concurrent.futures import TimeoutError
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        client = self._make_one()
+
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[TimeoutError, "result"],
+        )
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, TimeoutError)
+        )
+
+        with api_request_patcher as fake_api_request:
+            result = client._call_api(retry, foo="bar")
+
+        self.assertEqual(result, "result")
+        self.assertEqual(
+            fake_api_request.call_args_list,
+            [mock.call(foo="bar"), mock.call(foo="bar")],  # was retried once
+        )
+
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 
