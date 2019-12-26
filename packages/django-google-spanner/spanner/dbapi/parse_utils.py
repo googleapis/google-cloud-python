@@ -188,34 +188,6 @@ def filter_out_unset_keys(unfiltered):
     return {key: value for key, value in unfiltered.items() if value}
 
 
-reINSTANCE_CONFIG = re.compile('^projects/([^/]+)/instanceConfigs/([^/]+)$')
-
-
-def validate_instance_config(instance_config):
-    """
-    Validates that instance_config matches the pattern
-        ^projects/([^/]+)/instanceConfigs/([^/]+)$
-    and for an example, looks like:
-        projects/odeke-sandbox/instanceConfigs/regional-us-west2
-
-    Args:
-        instance_config: a non-empty string
-
-    Returns:
-        A non-empty string on validation failure or None if properly validated.
-    """
-    match = reINSTANCE_CONFIG.match(instance_config or '')
-    if not match:
-        return "'%s' does not match pattern %s" % (instance_config, reINSTANCE_CONFIG.pattern)
-
-    matches = match.groups()
-    if len(matches) != reINSTANCE_CONFIG.groups:
-        return "'%s' does not match pattern %s\ngot %s:: %s" % (
-                        instance_config, reINSTANCE_CONFIG.pattern, matches, reINSTANCE_CONFIG.groups)
-
-    return None
-
-
 STMT_DDL = 'DDL'
 STMT_NON_UPDATING = 'NON_UPDATING'
 STMT_UPDATING = 'UPDATING'

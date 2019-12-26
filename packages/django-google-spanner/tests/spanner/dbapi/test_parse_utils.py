@@ -20,9 +20,8 @@ from spanner.dbapi.exceptions import Error
 from spanner.dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, escape_name, extract_connection_params,
-    get_param_types, parse_insert, parse_spanner_url, reINSTANCE_CONFIG,
+    get_param_types, parse_insert, parse_spanner_url,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
-    validate_instance_config,
 )
 
 
@@ -140,31 +139,6 @@ class ParseUtilsTests(TestCase):
         got_by_dict = extract_connection_params(by_dict)
 
         self.assertEqual(got_by_spanner_url, got_by_dict, 'No parity between equivalent configs')
-
-    def test_validate_instance_config(self):
-        configs = [
-                'projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2',
-                'projects/odeke-sandbox/instanceConfigs/regional-us-west2',
-        ]
-
-        for config in configs:
-            got = validate_instance_config(config)
-            self.assertEqual(got, None, "expected '%s' to pass" % config)
-
-    def test_validate_instance_config_bad(self):
-        cases = [
-                ('', "'' does not match pattern " + reINSTANCE_CONFIG.pattern,),
-                (
-                    '    projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2',
-                    "'    projects/appdev-soda-spanner-staging/instanceConfigs/regional-us-west2'"
-                    " does not match pattern " + reINSTANCE_CONFIG.pattern,),
-                ('projects/odeke-sandbox/instanceConfigs/regional-us-west2', None,),
-        ]
-
-        for tt in cases:
-            config, want_err = tt
-            got = validate_instance_config(config)
-            self.assertEqual(got, want_err, "expected '%s' to error" % config)
 
     def test_classify_stmt(self):
         cases = [
