@@ -245,7 +245,7 @@ class Policy(collections_abc.MutableMapping):
             Tuple[str, str, str, str]: A tuple with internal representation, 
             that can be used in ``add`` method on a :class:`Policy`.
         """
-        return "group:%s" % (email,)
+        return (member, expression, title, description)
 
       
     @classmethod
