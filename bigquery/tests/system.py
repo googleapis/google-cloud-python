@@ -26,6 +26,7 @@ import unittest
 import uuid
 import re
 
+import requests
 import six
 import psutil
 import pytest
@@ -1892,6 +1893,29 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsInstance(iter(query_job), types.GeneratorType)
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
+
+    def test_querying_data_w_timeout(self):
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
+        query_job = Config.CLIENT.query(
+            """
+            SELECT name, SUM(number) AS total_people
+            FROM `bigquery-public-data.usa_names.usa_1910_current`
+            GROUP BY name
+            """,
+            location="US",
+            job_config=job_config,
+        )
+
+        # Specify a very tight deadline to demonstrate that the timeout
+        # actually has effect.
+        with self.assertRaises(requests.exceptions.Timeout):
+            query_job.done(timeout=0.1)
+
+        # Now wait for the result using a more realistic deadline.
+        query_job.result(timeout=30)
+        self.assertTrue(query_job.done(timeout=30))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_query_results_to_dataframe(self):
