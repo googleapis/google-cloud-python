@@ -96,7 +96,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'spanner.django',
         'PROJECT': '<project_id>',
-        'INSTANCE': '<instance_name>',
+        'INSTANCE': '<instance_id>',
         'NAME': '<database_name>',
         # Only include this if you need to specify where to retrieve the
         # service account JSON for the credentials to connect to Cloud Spanner.
