@@ -115,4 +115,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.test_bulk_update.BulkUpdateTests.test_large_batch',
         # Spanner doesn't support random ordering.
         'ordering.tests.OrderingTests.test_random_ordering',
+        # No matching signature for function MOD for argument types: FLOAT64,
+        # FLOAT64. Supported signatures: MOD(INT64, INT64)
+        'db_functions.math.test_mod.ModTests.test_decimal',
+        'db_functions.math.test_mod.ModTests.test_float',
     )
