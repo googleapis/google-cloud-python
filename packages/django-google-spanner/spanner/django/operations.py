@@ -34,6 +34,9 @@ class DatabaseOperations(BaseDatabaseOperations):
             name = name.replace(' ', '_')
         return escape_name(name)
 
+    def bulk_batch_size(self, fields, objs):
+        return self.connection.features.max_query_params
+
     def bulk_insert_sql(self, fields, placeholder_rows):
         placeholder_rows_sql = (", ".join(row) for row in placeholder_rows)
         values_sql = ", ".join("(%s)" % sql for sql in placeholder_rows_sql)
