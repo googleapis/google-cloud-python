@@ -107,8 +107,14 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Spanner doesn't supoprt the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
+        'aggregation_regress.tests.AggregationTests.test_stddev',
+        # SELECT list expression references <column> which is neither grouped
+        # nor aggregated: https://github.com/orijtech/spanner-orm/issues/245
+        'aggregation_regress.tests.AggregationTests.test_annotated_conditional_aggregate',
+        'aggregation_regress.tests.AggregationTests.test_annotation_with_value',
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
         # is unspecified unless these operators are used after ORDER BY."
+        'aggregation_regress.tests.AggregationTests.test_sliced_conditional_aggregate',
         'queries.tests.SubqueryTests.test_slice_subquery_and_query',
         # Cloud Spanner limit: "Number of functions exceeds the maximum
         # allowed limit of 1000."
