@@ -11,6 +11,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_transactions = False
     supports_column_check_constraints = False
     supports_table_check_constraints = False
+    uses_savepoints = False
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
