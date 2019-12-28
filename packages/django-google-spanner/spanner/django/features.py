@@ -16,6 +16,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
+        # No foreign key constraints in Spanner.
+        'fixtures_regress.tests.TestFixtures.test_loaddata_raises_error_when_fixture_has_invalid_foreign_key',
         # No Django transaction management in Spanner.
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
         # spanner.django monkey patches AutoField to have a default value.
@@ -46,6 +48,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'defer_regress.tests.DeferRegressionTest.test_ticket_23270',
         'distinct_on_fields.tests.DistinctOnTests.test_basic_distinct_on',
         'generic_relations_regress.tests.GenericRelationTests.test_annotate',
+        'known_related_objects.tests.ExistingRelatedInstancesTests.test_reverse_one_to_one_multi_prefetch_related',
+        'known_related_objects.tests.ExistingRelatedInstancesTests.test_reverse_one_to_one_multi_select_related',
         'lookup.tests.LookupTests.test_get_next_previous_by',
         'lookup.tests.LookupTests.test_values_list',
         'migrations.test_operations.OperationTests.test_alter_order_with_respect_to',
@@ -59,11 +63,13 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.test_bulk_update.BulkUpdateNoteTests.test_multiple_fields',
         'queries.test_bulk_update.BulkUpdateTests.test_inherited_fields',
         'queries.tests.Queries1Tests.test_ticket9411',
+        'queries.tests.Queries5Tests.test_ticket7256',
         'queries.tests.SubqueryTests.test_related_sliced_subquery',
         'queries.tests.Ticket14056Tests.test_ticket_14056',
         'queries.tests.RelatedLookupTypeTests.test_values_queryset_lookup',
         'raw_query.tests.RawQueryTests.test_annotations',
         'raw_query.tests.RawQueryTests.test_get_item',
+        'select_related.tests.SelectRelatedTests.test_field_traversal',
         'syndication_tests.tests.SyndicationFeedTest.test_rss2_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
@@ -85,6 +91,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # The current approach for inserting (which doesn't use SQL) doesn't
         # support expressions: https://github.com/orijtech/spanner-orm/issues/198
         'bulk_create.tests.BulkCreateTests.test_bulk_insert_expressions',
+        'expressions.tests.BasicExpressionsTests.test_new_object_create',
+        'expressions.tests.BasicExpressionsTests.test_new_object_save',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # Implement DatabaseOperations.datetime_cast_date_sql():
@@ -131,6 +139,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'lookup.tests.LookupTests.test_lookup_int_as_str',
         # 'DatabaseWrapper' object has no attribute 'pattern_ops'
         # https://github.com/orijtech/spanner-orm/issues/178
+        'expressions.tests.BasicExpressionsTests.test_ticket_16731_startswith_lookup',
+        'expressions.tests.ExpressionsTests.test_insensitive_patterns_escape',
+        'expressions.tests.ExpressionsTests.test_patterns_escape',
         'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
         # Spanner doesn't supoprt the variance the standard deviation database
         # functions:
@@ -143,10 +154,17 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
         # is unspecified unless these operators are used after ORDER BY."
         'aggregation_regress.tests.AggregationTests.test_sliced_conditional_aggregate',
+        'queries.tests.QuerySetBitwiseOperationTests.test_or_with_both_slice',
+        'queries.tests.QuerySetBitwiseOperationTests.test_or_with_both_slice_and_ordering',
+        'queries.tests.QuerySetBitwiseOperationTests.test_or_with_lhs_slice',
+        'queries.tests.QuerySetBitwiseOperationTests.test_or_with_rhs_slice',
         'queries.tests.SubqueryTests.test_slice_subquery_and_query',
         # Cloud Spanner limit: "Number of functions exceeds the maximum
         # allowed limit of 1000."
         'queries.test_bulk_update.BulkUpdateTests.test_large_batch',
+        # QuerySet.extra() with select literal percent doesn't work:
+        # https://github.com/orijtech/spanner-orm/issues/252
+        'queries.tests.Queries5Tests.test_extra_select_literal_percent_s',
         # Spanner doesn't support random ordering.
         'ordering.tests.OrderingTests.test_random_ordering',
         # No matching signature for function MOD for argument types: FLOAT64,
