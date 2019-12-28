@@ -108,9 +108,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     def get_connection_params(self):
         return {
-            'project_name': self.settings_dict['PROJECT'],
-            'instance_name': self.settings_dict['INSTANCE'],
-            'db_name': self.settings_dict['NAME'],
+            'project': self.settings_dict['PROJECT'],
+            'instance': self.settings_dict['INSTANCE'],
+            'database': self.settings_dict['NAME'],
             **self.settings_dict['OPTIONS'],
         }
 

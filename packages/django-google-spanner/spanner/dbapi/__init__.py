@@ -37,14 +37,14 @@ paramstyle = 'at-named'
 threadsafety = 2  # Threads may share the module and connections but not cursors.
 
 
-def connect(project_name=None, instance_name=None, db_name=None, credentials_uri=None):
+def connect(project=None, instance=None, database=None, credentials_uri=None):
     """
     Connect to Cloud Spanner.
 
     Args:
-        project_name: A project that already exists.
-        instance_name: An instance that already exists.
-        db_name: A database that already exists.
+        project: The id of a project that already exists.
+        instance: The id of an instance that already exists.
+        database: The name of a database that already exists.
         credentials_uri: An optional string specifying where to retrieve the service
                          account JSON for the credentials to connect to Cloud Spanner.
 
@@ -54,13 +54,15 @@ def connect(project_name=None, instance_name=None, db_name=None, credentials_uri
     Raises:
         Error if it encounters any unexpected inputs.
     """
-    if not db_name:
-        raise Error("'db_name' is required.")
-    if not instance_name:
-        raise Error("'instance_name' is required.")
+    if not project:
+        raise Error("'project' is required.")
+    if not instance:
+        raise Error("'instance' is required.")
+    if not database:
+        raise Error("'database' is required.")
 
     client_kwargs = {
-        'project': project_name,
+        'project': project,
         'client_info': google_client_info(),
     }
     if credentials_uri:
@@ -68,13 +70,13 @@ def connect(project_name=None, instance_name=None, db_name=None, credentials_uri
     else:
         client = spanner.Client(**client_kwargs)
 
-    instance = client.instance(instance_name)
-    if not instance.exists():
-        raise ProgrammingError("instance '%s' does not exist." % instance_name)
+    client_instance = client.instance(instance)
+    if not client_instance.exists():
+        raise ProgrammingError("instance '%s' does not exist." % instance)
 
-    db = instance.database(db_name)
+    db = client_instance.database(database)
     if not db.exists():
-        raise ProgrammingError("database '%s' does not exist." % db_name)
+        raise ProgrammingError("database '%s' does not exist." % database)
 
     return Connection(db)
 
