@@ -19,6 +19,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
         # spanner.django monkey patches AutoField to have a default value.
         'basic.tests.ModelTest.test_hash',
+        'm2m_through_regress.tests.ToFieldThroughTests.test_m2m_relations_unusable_on_null_pk_obj',
+        'many_to_many.tests.ManyToManyTests.test_add',
         'many_to_one.tests.ManyToOneTests.test_fk_assignment_and_related_object_cache',
         'many_to_one.tests.ManyToOneTests.test_relation_unsaved',
         'model_fields.test_durationfield.TestSerialization.test_dumping',
