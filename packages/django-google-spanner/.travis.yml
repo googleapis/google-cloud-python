@@ -10,7 +10,7 @@ env:
         - DJANGO_TEST_APPS="admin_changelist admin_custom_urls admin_docs admin_inlines admin_ordering"
         - DJANGO_TEST_APPS="aggregation aggregation_regress annotations basic"
         - DJANGO_TEST_APPS="bulk_create custom_pk dates datetimes delete delete_regress"
-        - DJANGO_TEST_APPS="db_functions.math db_functions.text filtered_relation lookup m2m_and_m2o m2m_intermediary m2m_multiple"
+        - DJANGO_TEST_APPS="db_functions.math db_functions.text filtered_relation indexes lookup m2m_and_m2o m2m_intermediary m2m_multiple"
         - DJANGO_TEST_APPS="m2m_recursive m2m_regress m2m_signals m2m_through m2m_through_regress m2o_recursive managers_regress many_to_many"
         - DJANGO_TEST_APPS="many_to_one many_to_one_null model_fields"
         - DJANGO_TEST_APPS="one_to_one ordering queries.tests.SubqueryTests queries.test_bulk_update queries.test_qs_combinators"

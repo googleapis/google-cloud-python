@@ -6,6 +6,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     max_query_params = 950
     supports_foreign_keys = False
     supports_ignore_conflicts = False
+    supports_partial_indexes = False
     supports_regex_backreferencing = False
     supports_timezones = False
     supports_transactions = False
@@ -139,4 +140,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # null: https://github.com/orijtech/spanner-orm/issues/242
         'db_functions.text.test_concat.ConcatTests.test_basic',
         'db_functions.text.test_concat.ConcatTests.test_many',
+        # implement SchemaEditor.quote_value():
+        # https://github.com/orijtech/spanner-orm/issues/227
+        'indexes.tests.PartialIndexConditionIgnoredTests.test_condition_ignored',
     )
