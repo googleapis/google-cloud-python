@@ -208,7 +208,9 @@ class Client(ClientWithProject):
         self._http._auth_request.session.close()
         self._http.close()
 
-    def get_service_account_email(self, project=None, timeout=None):
+    def get_service_account_email(
+        self, project=None, retry=DEFAULT_RETRY, timeout=None
+    ):
         """Get the email address of the project's BigQuery service account
 
         Note:
@@ -219,8 +221,10 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving service account email.
                 Defaults to the client's project.
+            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
             timeout (Optional[float]):
-                The number of seconds to wait for the API response.
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             str: service account email address
@@ -237,10 +241,7 @@ class Client(ClientWithProject):
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
 
-        # TODO: call thorugh self._call_api() and allow passing in a retry?
-        api_response = self._connection.api_request(
-            method="GET", path=path, timeout=timeout
-        )
+        api_response = self._call_api(retry, method="GET", path=path, timeout=timeout)
         return api_response["email"]
 
     def list_projects(
