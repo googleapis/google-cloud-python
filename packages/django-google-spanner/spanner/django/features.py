@@ -95,6 +95,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Spanner loses DecimalField precision due to conversion to float:
         # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
         'aggregation.tests.AggregateTestCase.test_decimal_max_digits_has_no_effect',
+        'aggregation.tests.AggregateTestCase.test_related_aggregate',
         'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No UNIQUE constraints in Spanner.
