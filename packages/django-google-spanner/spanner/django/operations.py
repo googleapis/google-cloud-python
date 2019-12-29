@@ -14,6 +14,11 @@ from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):
+    cast_data_types = {
+        'CharField': 'STRING',
+        'TextField': 'STRING',
+    }
+    cast_char_field_without_max_length = 'STRING'
     compiler_module = 'spanner.django.compiler'
     # Django's lookup names that require a different name in Spanner's
     # EXTRACT() function.

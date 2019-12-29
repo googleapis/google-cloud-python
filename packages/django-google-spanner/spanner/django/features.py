@@ -96,6 +96,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
         'aggregation.tests.AggregateTestCase.test_decimal_max_digits_has_no_effect',
         'aggregation.tests.AggregateTestCase.test_related_aggregate',
+        'db_functions.comparison.test_cast.CastTests.test_cast_to_decimal_field',
         'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No UNIQUE constraints in Spanner.
@@ -144,4 +145,18 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # implement SchemaEditor.quote_value():
         # https://github.com/orijtech/spanner-orm/issues/227
         'indexes.tests.PartialIndexConditionIgnoredTests.test_condition_ignored',
+        # Cast from Python date or datetime crashes:
+        # https://github.com/orijtech/spanner-orm/issues/257
+        'db_functions.comparison.test_cast.CastTests.test_cast_from_python_to_date',
+        'db_functions.comparison.test_cast.CastTests.test_cast_from_python_to_datetime',
+        # Greatest/Least Coalesce workaround crashes:
+        # https://github.com/orijtech/spanner-orm/issues/259
+        'db_functions.comparison.test_greatest.GreatestTests.test_coalesce_workaround',
+        'db_functions.comparison.test_least.LeastTests.test_coalesce_workaround',
+        # Cast to CharField with max_length doesn't work:
+        # https://github.com/orijtech/spanner-orm/issues/258
+        'db_functions.comparison.test_cast.CastTests.test_cast_to_char_field_with_max_length',
+        # casting DateField to DateTimeField adds an unexpected hour:
+        # https://github.com/orijtech/spanner-orm/issues/260
+        'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
     )
