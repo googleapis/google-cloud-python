@@ -2048,16 +2048,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df_1.age.dtype.name, "int64")
         self.assertEqual(len(df_1), 1)  # verify the number of rows
         self.assertEqual(
-            df_1.name._get_value(0), "Bengt"
+            df_1["name"][0], "Bengt"
         )  # verify the first value of 'name' column
-        self.assertEqual(
-            df_1.age._get_value(0), 32
-        )  # verify the first value of 'age' column
+        self.assertEqual(df_1["age"][0], 32)  # verify the first value of 'age' column
 
         df_2 = next(dfs)
         self.assertEqual(len(df_2), 1)  # verify the number of rows
-        self.assertEqual(df_2.name._get_value(0), "Sven")
-        self.assertEqual(df_2.age._get_value(0), 33)
+        self.assertEqual(df_2["name"][0], "Sven")
+        self.assertEqual(df_2["age"][0], 33)
 
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_iterable_error_if_pandas_is_none(self):
