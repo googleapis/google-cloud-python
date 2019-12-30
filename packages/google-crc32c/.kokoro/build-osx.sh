@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e -x
-echo "BUILDING ON LINUX"
+set -eo pipefail
 
-MANYLINUX_DIR=$(echo $(cd $(dirname ${0}); pwd))
-SCRIPTS_DIR=$(dirname ${MANYLINUX_DIR})
-REPO_ROOT=$(dirname ${SCRIPTS_DIR})
+# Disable buffering, so that the logs stream through.
+export PYTHONUNBUFFERED=1
 
-docker pull quay.io/pypa/manylinux2010_x86_64	
+# Debug: show build environment
+env | grep KOKORO
 
-cd $REPO_ROOT
-git submodule update --init --recursive 
+cd github/python-crc32c
 
-docker run \
-    --rm \
-    --interactive \
-    --volume ${REPO_ROOT}:/var/code/py-crc32c/ \
-    quay.io/pypa/manylinux2010_x86_64 \
-    /var/code/py-crc32c/scripts/manylinux/build_on_centos.sh
+# Before running nox and such, build the extension.
+./scripts/osx/build.sh
+./scripts/osx/check.sh

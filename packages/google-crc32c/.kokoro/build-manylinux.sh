@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# NOTE: This assumes the host is running Linux.
+# Need enchant for spell check
+sudo apt-get update
+sudo apt-get -y install dictionaries-common aspell aspell-en \
+	                hunspell-en-us libenchant1c2a enchant
 
-set -e -x
+set -eo pipefail
 
-WHEEL_FILE="wheels/google_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl"
-PYTHON="python3.7"
+# Disable buffering, so that the logs stream through.
+export PYTHONUNBUFFERED=1
 
-# Make sure we can create a virtual environment.
-${PYTHON} -m pip install --upgrade pip
-${PYTHON} -m pip install --upgrade virtualenv wheel
+# Debug: show build environment
+env | grep KOKORO
 
-# Create a virtual environment.
-${PYTHON} -m virtualenv venv
+cd github/python-crc32c
 
-# Install the wheel.
-venv/bin/pip install ${WHEEL_FILE}
-
-# Verify that the module is installed and peek at contents.
-venv/bin/python scripts/check_cffi_crc32c.py
-unzip -l ${WHEEL_FILE}
-
-# Clean up.
-rm -fr venv/
+# Before running nox and such, build the extension.
+./scripts/manylinux/build.sh
+./scripts/manylinux/check.sh
