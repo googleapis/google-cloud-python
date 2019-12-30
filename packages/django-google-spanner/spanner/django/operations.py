@@ -30,13 +30,14 @@ class DatabaseOperations(BaseDatabaseOperations):
     }
 
     def quote_name(self, name):
-        # Spanner says "column name not valid" if spaces are present (although
-        # according the docs, they should be allowed). Replace spaces when
-        # running the Django tests to prevent crashes. (Don't modify names in
-        # normal operation to prevent the possibility of colliding with another
+        # Spanner says "column name not valid" if spaces or hyphens are present
+        # (although according the docs, any character should be allowed in
+        # quoted identifiers). Replace problematic characters when running the
+        # Django tests to prevent crashes. (Don't modify names in normal
+        # operation to prevent the possibility of colliding with another
         # column.) https://github.com/orijtech/spanner-orm/issues/204
         if os.environ.get('RUNNING_SPANNER_BACKEND_TESTS') == '1':
-            name = name.replace(' ', '_')
+            name = name.replace(' ', '_').replace('-', '_')
         return escape_name(name)
 
     def bulk_batch_size(self, fields, objs):
