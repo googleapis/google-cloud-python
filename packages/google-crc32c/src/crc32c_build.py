@@ -16,7 +16,6 @@ import os
 
 import cffi
 
-
 def get_kwargs():
     install_prefix = os.environ.get("CRC32C_INSTALL_PREFIX")
     if install_prefix is None:
@@ -26,10 +25,18 @@ def get_kwargs():
     if os.name == "nt":
         library_dirs.append(os.path.join(install_prefix, "bin"))
     rpath = os.pathsep.join(library_dirs)
+
+    if os.name == "nt":
+        extra_link_args = ["-Wl,-rpath={}".format(rpath)]
+    elif os.name == "posix" or os.name == "darwin": # darwin reports this.
+        extra_link_args = ["-Wl,-rpath,{}".format(rpath)]
+    else:
+        extra_link_args = ["-Wl,-rpath={}".format(rpath)]
+
     return {
         "library_dirs": library_dirs,
         "include_dirs": [os.path.join(install_prefix, "include")],
-        "extra_link_args": ["-Wl,-rpath={}".format(rpath)],
+        "extra_link_args": extra_link_args,
     }
 
 

@@ -39,25 +39,34 @@ if [[ -z "${PY_BIN}" ]]; then
     exit 1
 fi
 
+# Precreate install directories for crc32 lib.
+mkdir -p ${CRC32C_INSTALL_PREFIX}
+mkdir -p ${CRC32C_INSTALL_PREFIX}/lib
+
 # Make sure we have an updated `pip`.
-${PY_BIN} -m pip install --upgrade pip
+${PY_BIN} -m pip install --upgrade pip --user
 # Create a virtualenv where we can install `cmake`.
-${PY_BIN} -m pip install --upgrade virtualenv
-VENV=${REPO_ROOT}/venv
-${PY_BIN} -m virtualenv ${VENV}
+VENV=${REPO_ROOT}/venv_build_libcrc32c
+${PY_BIN} -m venv ${VENV}
+${VENV}/bin/python -m pip install --upgrade pip
 ${VENV}/bin/python -m pip install "cmake >= 3.12.0"
+
 # Build `libcrc32c`
 cd ${REPO_ROOT}/crc32c
-mkdir build
-cd build/
+mkdir -p build
+ls
+
+# We don't build i386 anymore as XCode no longer supports.
 ${VENV}/bin/cmake \
-    -DCMAKE_OSX_ARCHITECTURES="x86_64;i386" \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
+    -DCMAKE_OSX_ARCHITECTURES="x86_64" \
     -DCRC32C_BUILD_TESTS=no \
     -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
     -DCMAKE_INSTALL_PREFIX:PATH=${CRC32C_INSTALL_PREFIX} \
     -DCMAKE_INSTALL_NAME_DIR:PATH=${CRC32C_INSTALL_PREFIX}/lib \
-    ..
+    .
+
 # Install `libcrc32c` into CRC32C_INSTALL_PREFIX.
 make all install
 

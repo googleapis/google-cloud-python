@@ -33,25 +33,23 @@ if [[ -z "${PY_TAG}" ]]; then
     exit 1
 fi
 
-# Make sure we have an updated `pip`.
-${PY_BIN} -m pip install --upgrade pip
 # Create a virtualenv where we can install Python build dependencies.
-${PY_BIN} -m pip install --upgrade virtualenv
-VENV=${REPO_ROOT}/venv
-${PY_BIN} -m virtualenv ${VENV}
+VENV=${REPO_ROOT}/venv${PY_BIN}
+${PY_BIN} -m venv ${VENV}
+curl https://bootstrap.pypa.io/get-pip.py | ${VENV}/bin/python
 ${VENV}/bin/python -m pip install \
     --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
 
 # Create the wheel.
 DIST_WHEELS="${REPO_ROOT}/dist_wheels"
-mkdir ${DIST_WHEELS}
+mkdir -p ${DIST_WHEELS}
+cd ${REPO_ROOT}
 ${VENV}/bin/python -m pip wheel ${REPO_ROOT} --wheel-dir ${DIST_WHEELS}
 
-# Delocate the wheel.
+# Delocate the wheel. removed --check-archs. We don't build i386.
 FIXED_WHEELS="${REPO_ROOT}/wheels"
 mkdir -p ${FIXED_WHEELS}
 ${VENV}/bin/delocate-wheel \
-    --check-archs \
     --wheel-dir ${FIXED_WHEELS} \
     --verbose \
     ${DIST_WHEELS}/google_crc32c*${PY_TAG}*.whl
