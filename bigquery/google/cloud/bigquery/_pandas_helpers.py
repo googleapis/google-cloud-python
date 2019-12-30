@@ -52,7 +52,11 @@ _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seco
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
     "datetime64[ns, UTC]": "TIMESTAMP",
-    "datetime64[ns]": "DATETIME",
+    # Due to internal bug 147108331, BigQuery always interprets DATETIME
+    # columns as having the wrong precision. In the meantime, workaround this
+    # by writing the values as TIMESTAMP. See:
+    # https://github.com/googleapis/google-cloud-python/issues/9996
+    "datetime64[ns]": "TIMESTAMP",
     "float32": "FLOAT",
     "float64": "FLOAT",
     "int8": "INTEGER",
@@ -218,7 +222,7 @@ def bq_to_arrow_array(series, bq_field):
         return pyarrow.ListArray.from_pandas(series, type=arrow_type)
     if field_type_upper in schema._STRUCT_TYPES:
         return pyarrow.StructArray.from_pandas(series, type=arrow_type)
-    return pyarrow.array(series, type=arrow_type)
+    return pyarrow.Array.from_pandas(series, type=arrow_type)
 
 
 def get_column_or_index(dataframe, name):
