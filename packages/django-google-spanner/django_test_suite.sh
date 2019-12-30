@@ -14,14 +14,14 @@ INSTANCE=${SPANNER_TEST_INSTANCE:-django-tests}
 PROJECT=${SPANNER_TEST_PROJECT:-appdev-soda-spanner-staging}
 SETTINGS_FILE="$TEST_DBNAME-settings"
 
-function checkout_django() {
+checkout_django() {
     mkdir -p django_tests && cd django_tests
     git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git
     cd django && pip3 install -e .
     pip3 install -r tests/requirements/py3.txt
 }
 
-function create_settings() {
+create_settings() {
     cat << ! > "$SETTINGS_FILE.py"
 DATABASES = {
    'default': {
@@ -44,14 +44,14 @@ PASSWORD_HASHERS = [
 !
 }
 
-function run_django_tests() {
+run_django_tests() {
     cd tests
     create_settings
     echo -e "\033[32mRunning Django tests $TEST_APPS\033[00m"
     python3 runtests.py $TEST_APPS --verbosity=2 --noinput --settings $SETTINGS_FILE
 }
 
-function install_spanner_django() {
+install_spanner_django() {
     pip3 install .
 }
 

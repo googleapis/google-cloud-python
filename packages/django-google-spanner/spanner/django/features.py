@@ -63,6 +63,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.test_bulk_update.BulkUpdateNoteTests.test_multiple_fields',
         'queries.test_bulk_update.BulkUpdateTests.test_inherited_fields',
         'queries.tests.Queries1Tests.test_ticket9411',
+        'queries.tests.Queries4Tests.test_ticket15316_exclude_true',
         'queries.tests.Queries5Tests.test_ticket7256',
         'queries.tests.SubqueryTests.test_related_sliced_subquery',
         'queries.tests.Ticket14056Tests.test_ticket_14056',
