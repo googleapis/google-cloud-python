@@ -30,7 +30,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     # Mapping of Field objects to their column types.
     # https://cloud.google.com/spanner/docs/data-types#date-type
-    # TODO: audit max lengths of all STRING fields.
     data_types = {
         'AutoField': 'INT64',
         'BigAutoField': 'INT64',
@@ -47,8 +46,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'FloatField': 'FLOAT64',
         'IntegerField': 'INT64',
         'BigIntegerField': 'INT64',
-        'IPAddressField': 'STRING(40)',
-        'GenericIPAddressField': 'STRING(80)',
+        'IPAddressField': 'STRING(15)',
+        'GenericIPAddressField': 'STRING(39)',
         'NullBooleanField': 'BOOL',
         'OneToOneField': 'INT64',
         'PositiveIntegerField': 'INT64',
@@ -58,8 +57,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'SmallIntegerField': 'INT64',
         'TextField': 'STRING(MAX)',
         'TimeField': 'TIMESTAMP',
-        # A UUID4 like 'd9c388b1-184d-4511-a818-3d598cc2f847', 16 bytes, with 4 dashes.
-        'UUIDField': 'STRING(36)',
+        'UUIDField': 'STRING(32)',
     }
 
     # TODO: (@odeke-em) examine Spanner's data type constraints.
