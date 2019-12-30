@@ -2364,11 +2364,21 @@ class Query(object):
         from google.cloud.ndb import _datastore_query
 
         _options = kwargs["_options"]
-        if _options.filters and _options.filters._multiquery:
-            raise TypeError(
-                "Can't use 'fetch_page' or 'fetch_page_async' with query that "
-                "uses 'OR', '!=', or 'IN'."
-            )
+        if _options.filters:
+            if _options.filters._multiquery:
+                raise TypeError(
+                    "Can't use 'fetch_page' or 'fetch_page_async' with query "
+                    "that uses 'OR', '!=', or 'IN'."
+                )
+
+            post_filters = _options.filters._post_filters()
+            if post_filters:
+                raise TypeError(
+                    "Can't use 'fetch_page' or 'fetch_page_async' with a "
+                    "post-filter. (An in-memory filter.) This probably means "
+                    "you're querying a repeated structured property which "
+                    "requires post-filtering."
+                )
 
         iterator = _datastore_query.iterate(_options, raw=True)
         results = []

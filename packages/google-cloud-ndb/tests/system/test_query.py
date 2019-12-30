@@ -1360,6 +1360,71 @@ def test_query_legacy_repeated_structured_property(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_fetch_page_with_repeated_structured_property(dispose_of):
+    """Regression test for Issue #254.
+
+    https://github.com/googleapis/python-ndb/issues/254
+    """
+
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    @ndb.synctasklet
+    def make_entities():
+        entity1 = SomeKind(
+            foo=1,
+            bar=[
+                OtherKind(one="pish", two="posh", three="pash"),
+                OtherKind(one="bish", two="bosh", three="bash"),
+            ],
+        )
+        entity2 = SomeKind(
+            foo=2,
+            bar=[
+                OtherKind(one="bish", two="bosh", three="bass"),
+                OtherKind(one="pish", two="posh", three="pass"),
+            ],
+        )
+        entity3 = SomeKind(
+            foo=3,
+            bar=[
+                OtherKind(one="pish", two="fosh", three="fash"),
+                OtherKind(one="bish", two="posh", three="bash"),
+            ],
+        )
+
+        keys = yield (
+            entity1.put_async(),
+            entity2.put_async(),
+            entity3.put_async(),
+        )
+        raise ndb.Return(keys)
+
+    keys = make_entities()
+    for key in keys:
+        dispose_of(key._key)
+
+    eventually(SomeKind.query().fetch, _length_equals(3))
+    query = (
+        SomeKind.query()
+        .filter(
+            SomeKind.bar == OtherKind(one="pish", two="posh"),
+            SomeKind.bar == OtherKind(two="posh", three="pash"),
+        )
+        .order(SomeKind.foo)
+    )
+
+    with pytest.raises(TypeError):
+        query.fetch_page(page_size=10)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_map(dispose_of):
     class SomeKind(ndb.Model):
         foo = ndb.StringProperty()

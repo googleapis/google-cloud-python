@@ -2076,6 +2076,16 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_fetch_page_post_filter():
+        query = query_module.Query()
+        query.filters = mock.Mock(
+            _multiquery=False, _post_filters=mock.Mock(return_value=True)
+        )
+        with pytest.raises(TypeError):
+            query.fetch_page(5)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query")
     def test_fetch_page_first_page(_datastore_query):
         class DummyQueryIterator:
@@ -2096,13 +2106,19 @@ class TestQuery:
 
         _datastore_query.iterate.return_value = DummyQueryIterator()
         query = query_module.Query()
+        query.filters = mock.Mock(
+            _multiquery=False, _post_filters=mock.Mock(return_value=False),
+        )
         results, cursor, more = query.fetch_page(5)
         assert results == [0, 1, 2, 3, 4]
         assert cursor == "cursor4"
         assert more
 
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(project="testing", limit=5), raw=True
+            query_module.QueryOptions(
+                filters=query.filters, project="testing", limit=5
+            ),
+            raw=True,
         )
 
     @staticmethod
