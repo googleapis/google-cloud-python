@@ -422,7 +422,10 @@ class Node(object):
 
     def __ne__(self, other):
         # Python 2.7 requires this method to be implemented.
-        raise NotImplementedError
+        eq = self.__eq__(other)
+        if eq is not NotImplemented:
+            eq = not eq
+        return eq
 
     def __le__(self, unused_other):
         raise TypeError("Nodes cannot be ordered")
@@ -702,9 +705,6 @@ class FilterNode(Node):
             and self._opsymbol == other._opsymbol
             and self._value == other._value
         )
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
     def _to_filter(self, post=False):
         """Helper to convert to low-level filter.

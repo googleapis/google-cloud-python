@@ -380,6 +380,12 @@ class Key(object):
 
         return self._tuple() == other._tuple()
 
+    def __ne__(self, other):
+        """The opposite of __eq__."""
+        if not isinstance(other, Key):
+            return NotImplemented
+        return not self.__eq__(other)
+
     def __lt__(self, other):
         """Less than ordering."""
         if not isinstance(other, Key):

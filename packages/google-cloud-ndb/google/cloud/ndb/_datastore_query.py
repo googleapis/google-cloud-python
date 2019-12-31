@@ -649,10 +649,6 @@ class _Result(object):
 
         return self._compare(other) == 0
 
-    def __ne__(self, other):
-        """For total ordering. Python 2.7 only."""
-        return self._compare(other) != 0
-
     def _compare(self, other):
         """Compare this result to another result for sorting.
 

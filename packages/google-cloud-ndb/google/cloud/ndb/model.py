@@ -374,7 +374,18 @@ class UserNotFoundError(exceptions.Error):
     """No email argument was specified, and no user is logged in."""
 
 
-class IndexProperty(object):
+class _NotEqualMixin(object):
+    """Mix-in class that implements __ne__ in terms of __eq__."""
+
+    def __ne__(self, other):
+        """Implement self != other as not(self == other)."""
+        eq = self.__eq__(other)
+        if eq is NotImplemented:
+            return NotImplemented
+        return not eq
+
+
+class IndexProperty(_NotEqualMixin):
     """Immutable object representing a single property in an index."""
 
     __slots__ = ("_name", "_direction")
@@ -412,7 +423,7 @@ class IndexProperty(object):
         return hash((self.name, self.direction))
 
 
-class Index(object):
+class Index(_NotEqualMixin):
     """Immutable object representing an index."""
 
     __slots__ = ("_kind", "_properties", "_ancestor")
@@ -461,7 +472,7 @@ class Index(object):
         return hash((self.kind, self.properties, self.ancestor))
 
 
-class IndexState(object):
+class IndexState(_NotEqualMixin):
     """Immutable object representing an index and its state."""
 
     __slots__ = ("_definition", "_state", "_id")
@@ -795,7 +806,7 @@ class ModelAttribute(object):
         """
 
 
-class _BaseValue(object):
+class _BaseValue(_NotEqualMixin):
     """A marker object wrapping a "base type" value.
 
     This is used to be able to tell whether ``entity._values[name]`` is a
@@ -4295,7 +4306,7 @@ class MetaModel(type):
 
 
 @six.add_metaclass(MetaModel)
-class Model(object):
+class Model(_NotEqualMixin):
     """A class describing Cloud Datastore entities.
 
     Model instances are usually called entities. All model classes

@@ -111,9 +111,11 @@ class TestIndexProperty:
         index_prop1 = model.IndexProperty(name="d", direction="asc")
         index_prop2 = model.IndexProperty(name="d", direction="desc")
         index_prop3 = mock.sentinel.index_prop
+        index_prop4 = model.IndexProperty(name="d", direction="asc")
         assert not index_prop1 != index_prop1
         assert index_prop1 != index_prop2
         assert index_prop1 != index_prop3
+        assert not index_prop1 != index_prop4
 
     @staticmethod
     def test___hash__():
@@ -186,11 +188,13 @@ class TestIndex:
         index3 = model.Index(kind="d", properties=index_props, ancestor=True)
         index4 = model.Index(kind="e", properties=index_props, ancestor=False)
         index5 = mock.sentinel.index
+        index6 = model.Index(kind="d", properties=index_props, ancestor=False)
         assert not index1 != index1
         assert index1 != index2
         assert index1 != index3
         assert index1 != index4
         assert index1 != index5
+        assert not index1 != index6
 
     @staticmethod
     def test___hash__():
@@ -280,11 +284,15 @@ class TestIndexState:
             definition=self.INDEX, state="error", id=80
         )
         index_state5 = mock.sentinel.index_state
+        index_state6 = model.IndexState(
+            definition=self.INDEX, state="error", id=20
+        )
         assert not index_state1 != index_state1
         assert index_state1 != index_state2
         assert index_state1 != index_state3
         assert index_state1 != index_state4
         assert index_state1 != index_state5
+        assert not index_state1 != index_state6
 
     def test___hash__(self):
         index_state1 = model.IndexState(
@@ -354,9 +362,11 @@ class Test_BaseValue:
         wrapped1 = model._BaseValue("one val")
         wrapped2 = model._BaseValue(25.5)
         wrapped3 = mock.sentinel.base_value
+        wrapped4 = model._BaseValue("one val")
         assert not wrapped1 != wrapped1
         assert wrapped1 != wrapped2
         assert wrapped1 != wrapped3
+        assert not wrapped1 != wrapped4
 
     @staticmethod
     def test___hash__():
@@ -1621,9 +1631,11 @@ class Test_CompressedValue:
         z_val2 = zlib.compress(b"12345678901234567890abcde\x00")
         compressed_value2 = model._CompressedValue(z_val2)
         compressed_value3 = mock.sentinel.compressed_value
+        compressed_value4 = model._CompressedValue(z_val1)
         assert not compressed_value1 != compressed_value1
         assert compressed_value1 != compressed_value2
         assert compressed_value1 != compressed_value3
+        assert not compressed_value1 != compressed_value4
 
     @staticmethod
     def test___hash__():
@@ -4032,11 +4044,10 @@ class TestModel:
             foo = model.StructuredProperty(OtherKind)
             hi = model.StringProperty()
 
-        # entity1 = SomeKind(hi="mom", foo=OtherKind(bar=42))
-        # entity2 = SomeKind(hi="mom", foo=OtherKind(bar=42))
+        entity1 = SomeKind(hi="mom", foo=OtherKind(bar=42))
+        entity2 = SomeKind(hi="mom", foo=OtherKind(bar=42))
 
-        # TODO: can't figure out why this one fails
-        # assert entity1 == entity2
+        assert entity1 == entity2
 
     @staticmethod
     def test__eq__structured_property_differs():
@@ -4093,11 +4104,13 @@ class TestModel:
         entity3 = ManyFields(self=-9, id="bye")
         entity4 = ManyFields(self=-9, id="bye", projection=("self", "id"))
         entity5 = None
+        entity6 = ManyFields(self=-9, id="hi")
         assert not entity1 != entity1
         assert entity1 != entity2
         assert entity1 != entity3
         assert entity1 != entity4
         assert entity1 != entity5
+        assert not entity1 != entity6
 
     @staticmethod
     def test___lt__():

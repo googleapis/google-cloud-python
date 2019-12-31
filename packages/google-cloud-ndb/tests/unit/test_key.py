@@ -318,11 +318,13 @@ class TestKey:
         key3 = key_module.Key("X", 11, app="bar", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="m")
         key5 = mock.sentinel.key
+        key6 = key_module.Key("X", 11, app="foo", namespace="n")
         assert not key1 != key1
         assert key1 != key2
         assert key1 != key3
         assert key1 != key4
         assert key1 != key5
+        assert not key1 != key6
 
     @staticmethod
     def test___lt__():

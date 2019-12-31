@@ -40,6 +40,7 @@ nitpick_ignore = [
     ("py:meth", "_datastore_query.Cursor.urlsafe"),
     ("py:class", "google.cloud.ndb.context._Context"),
     ("py:class", "google.cloud.ndb.metadata._BaseMetadata"),
+    ("py:class", "google.cloud.ndb.model._NotEqualMixin"),
     ("py:class", "google.cloud.ndb._options.ReadOptions"),
     ("py:class", "QueryIterator"),
     ("py:class", ".."),

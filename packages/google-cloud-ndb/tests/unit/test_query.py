@@ -445,6 +445,15 @@ class TestFalseNode:
         assert not false_node1 == false_node3
 
     @staticmethod
+    def test___ne__():
+        false_node1 = query_module.FalseNode()
+        false_node2 = query_module.FalseNode()
+        false_node3 = mock.sentinel.false_node
+        assert not false_node1 != false_node1
+        assert not false_node1 != false_node2
+        assert false_node1 != false_node3
+
+    @staticmethod
     def test__to_filter():
         false_node = query_module.FalseNode()
         with pytest.raises(exceptions.BadQueryError):
@@ -521,6 +530,24 @@ class TestParameterNode:
         assert not parameter_node1 == parameter_node3
         assert not parameter_node1 == parameter_node4
         assert not parameter_node1 == parameter_node5
+
+    @staticmethod
+    def test___ne__():
+        prop1 = model.Property(name="val")
+        param1 = query_module.Parameter("abc")
+        parameter_node1 = query_module.ParameterNode(prop1, "=", param1)
+        prop2 = model.Property(name="ue")
+        parameter_node2 = query_module.ParameterNode(prop2, "=", param1)
+        parameter_node3 = query_module.ParameterNode(prop1, "<", param1)
+        param2 = query_module.Parameter(900)
+        parameter_node4 = query_module.ParameterNode(prop1, "=", param2)
+        parameter_node5 = mock.sentinel.parameter_node
+
+        assert not parameter_node1 != parameter_node1
+        assert parameter_node1 != parameter_node2
+        assert parameter_node1 != parameter_node3
+        assert parameter_node1 != parameter_node4
+        assert parameter_node1 != parameter_node5
 
     @staticmethod
     def test__to_filter():
@@ -711,6 +738,17 @@ class TestPostFilterNode:
         assert post_filter_node1 == post_filter_node1
         assert not post_filter_node1 == post_filter_node2
         assert not post_filter_node1 == post_filter_node3
+
+    @staticmethod
+    def test___ne__():
+        predicate1 = mock.sentinel.predicate1
+        post_filter_node1 = query_module.PostFilterNode(predicate1)
+        predicate2 = mock.sentinel.predicate2
+        post_filter_node2 = query_module.PostFilterNode(predicate2)
+        post_filter_node3 = mock.sentinel.post_filter_node
+        assert not post_filter_node1 != post_filter_node1
+        assert post_filter_node1 != post_filter_node2
+        assert post_filter_node1 != post_filter_node3
 
     @staticmethod
     def test__to_filter_post():
@@ -912,6 +950,22 @@ class TestConjunctionNode:
         assert not and_node1 == and_node4
 
     @staticmethod
+    def test___ne__():
+        filter_node1 = query_module.FilterNode("a", "=", 7)
+        filter_node2 = query_module.FilterNode("b", ">", 7.5)
+        filter_node3 = query_module.FilterNode("c", "<", "now")
+
+        and_node1 = query_module.ConjunctionNode(filter_node1, filter_node2)
+        and_node2 = query_module.ConjunctionNode(filter_node2, filter_node1)
+        and_node3 = query_module.ConjunctionNode(filter_node1, filter_node3)
+        and_node4 = mock.sentinel.and_node
+
+        assert not and_node1 != and_node1
+        assert and_node1 != and_node2
+        assert and_node1 != and_node3
+        assert and_node1 != and_node4
+
+    @staticmethod
     def test__to_filter_empty():
         node1 = query_module.FilterNode("a", "=", 7)
         node2 = query_module.FilterNode("b", "<", 6)
@@ -1099,6 +1153,22 @@ class TestDisjunctionNode:
         assert not or_node1 == or_node2
         assert not or_node1 == or_node3
         assert not or_node1 == or_node4
+
+    @staticmethod
+    def test___ne__():
+        filter_node1 = query_module.FilterNode("a", "=", 7)
+        filter_node2 = query_module.FilterNode("b", ">", 7.5)
+        filter_node3 = query_module.FilterNode("c", "<", "now")
+
+        or_node1 = query_module.DisjunctionNode(filter_node1, filter_node2)
+        or_node2 = query_module.DisjunctionNode(filter_node2, filter_node1)
+        or_node3 = query_module.DisjunctionNode(filter_node1, filter_node3)
+        or_node4 = mock.sentinel.or_node
+
+        assert not or_node1 != or_node1
+        assert or_node1 != or_node2
+        assert or_node1 != or_node3
+        assert or_node1 != or_node4
 
     @staticmethod
     def test_resolve():
