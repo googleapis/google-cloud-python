@@ -4099,7 +4099,7 @@ class LocalStructuredProperty(BlobProperty):
         """
         if isinstance(value, dict):
             # A dict is assumed to be the result of a _to_dict() call.
-            value = self._model_class(**value)
+            return self._model_class(**value)
 
         if not isinstance(value, self._model_class):
             raise exceptions.BadValueError(
