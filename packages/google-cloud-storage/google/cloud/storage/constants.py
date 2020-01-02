@@ -16,13 +16,28 @@
 # Storage classes
 
 STANDARD_STORAGE_CLASS = "STANDARD"
-"""Storage class for objects accessed more than once per month."""
+"""Storage class for objects accessed more than once per month.
+
+See: https://cloud.google.com/storage/docs/storage-classes
+"""
 
 NEARLINE_STORAGE_CLASS = "NEARLINE"
-"""Storage class for objects accessed at most once per month."""
+"""Storage class for objects accessed at most once per month.
+
+See: https://cloud.google.com/storage/docs/storage-classes
+"""
 
 COLDLINE_STORAGE_CLASS = "COLDLINE"
-"""Storage class for objects accessed at most once per year."""
+"""Storage class for objects accessed at most once per year.
+
+See: https://cloud.google.com/storage/docs/storage-classes
+"""
+
+ARCHIVE_STORAGE_CLASS = "ARCHIVE"
+"""Storage class for objects accessed less frequently than once per year.
+
+See: https://cloud.google.com/storage/docs/storage-classes
+"""
 
 MULTI_REGIONAL_LEGACY_STORAGE_CLASS = "MULTI_REGIONAL"
 """Legacy storage class.
@@ -32,6 +47,8 @@ Alias for :attr:`STANDARD_STORAGE_CLASS`.
 Can only be used for objects in buckets whose
 :attr:`~google.cloud.storage.bucket.Bucket.location_type` is
 :attr:`~google.cloud.storage.bucket.Bucket.MULTI_REGION_LOCATION_TYPE`.
+
+See: https://cloud.google.com/storage/docs/storage-classes
 """
 
 REGIONAL_LEGACY_STORAGE_CLASS = "REGIONAL"
@@ -42,6 +59,8 @@ Alias for :attr:`STANDARD_STORAGE_CLASS`.
 Can only be used for objects in buckets whose
 :attr:`~google.cloud.storage.bucket.Bucket.location_type` is
 :attr:`~google.cloud.storage.bucket.Bucket.REGION_LOCATION_TYPE`.
+
+See: https://cloud.google.com/storage/docs/storage-classes
 """
 
 DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS = "DURABLE_REDUCED_AVAILABILITY"

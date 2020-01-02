@@ -39,6 +39,7 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
 from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
 from google.cloud.storage.constants import DUAL_REGION_LOCATION_TYPE
 from google.cloud.storage.constants import (
@@ -480,6 +481,7 @@ class Bucket(_PropertyMixin):
         STANDARD_STORAGE_CLASS,
         NEARLINE_STORAGE_CLASS,
         COLDLINE_STORAGE_CLASS,
+        ARCHIVE_STORAGE_CLASS,
         MULTI_REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
         REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
         DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,  # legacy
@@ -1713,6 +1715,7 @@ class Bucket(_PropertyMixin):
             If set, one of
             :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
@@ -1733,6 +1736,7 @@ class Bucket(_PropertyMixin):
             One of
             :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
