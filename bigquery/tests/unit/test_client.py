@@ -6389,7 +6389,11 @@ class TestClientUpload(object):
             SchemaField("int_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            # Due to internal bug 147108331, BigQuery always interprets DATETIME
+            # columns as having the wrong precision. In the meantime, workaround this
+            # by writing the values as TIMESTAMP. See:
+            # https://github.com/googleapis/google-cloud-python/issues/9996
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
         )
 
@@ -6635,7 +6639,11 @@ class TestClientUpload(object):
             SchemaField("int_as_float_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            # Due to internal bug 147108331, BigQuery always interprets DATETIME
+            # columns as having the wrong precision. In the meantime, workaround this
+            # by writing the values as TIMESTAMP. See:
+            # https://github.com/googleapis/google-cloud-python/issues/9996
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
             SchemaField("string_col", "STRING"),
             SchemaField("bytes_col", "BYTES"),
