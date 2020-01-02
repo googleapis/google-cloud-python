@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.24.1
+
+01-02-2020 13:20 PST
+
+
+### Implementation Changes
+- Add 'ARCHIVE' storage class ([#9533](https://github.com/googleapis/google-cloud-python/pull/9533))
+
 ## 1.24.0
 
 01-02-2020 10:39 PST
