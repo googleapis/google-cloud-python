@@ -15,6 +15,7 @@
 import datetime
 import uuid
 
+import google.auth
 import mock
 import pytest
 
@@ -24,7 +25,13 @@ from google.cloud import bigquery_v2
 
 @pytest.fixture(scope="session", autouse=True)
 def client():
-    real_client = bigquery.Client()
+    credentials, project = google.auth.default(
+        scopes=[
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/bigquery",
+        ]
+    )
+    real_client = bigquery.Client(credentials=credentials, project=project)
     mock_client = mock.create_autospec(bigquery.Client)
     mock_client.return_value = real_client
     bigquery.Client = mock_client
