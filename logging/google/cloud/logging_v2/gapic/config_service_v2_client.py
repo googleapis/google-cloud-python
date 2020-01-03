@@ -75,24 +75,14 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def billing_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def billing_exclusion_path(cls, billing_account, exclusion):
-        """DEPRECATED. Return a fully-qualified billing_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_exclusion string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/exclusions/{exclusion}",
             billing_account=billing_account,
@@ -101,12 +91,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def billing_sink_path(cls, billing_account, sink):
-        """DEPRECATED. Return a fully-qualified billing_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_sink string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/sinks/{sink}",
             billing_account=billing_account,
@@ -115,12 +100,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def exclusion_path(cls, project, exclusion):
-        """DEPRECATED. Return a fully-qualified exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified exclusion string."""
         return google.api_core.path_template.expand(
             "projects/{project}/exclusions/{exclusion}",
             project=project,
@@ -129,22 +109,12 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def folder_path(cls, folder):
-        """DEPRECATED. Return a fully-qualified folder string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder string."""
         return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_exclusion_path(cls, folder, exclusion):
-        """DEPRECATED. Return a fully-qualified folder_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_exclusion string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/exclusions/{exclusion}",
             folder=folder,
@@ -153,36 +123,21 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def folder_sink_path(cls, folder, sink):
-        """DEPRECATED. Return a fully-qualified folder_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_sink string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/sinks/{sink}", folder=folder, sink=sink,
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def organization_exclusion_path(cls, organization, exclusion):
-        """DEPRECATED. Return a fully-qualified organization_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_exclusion string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/exclusions/{exclusion}",
             organization=organization,
@@ -191,12 +146,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def organization_sink_path(cls, organization, sink):
-        """DEPRECATED. Return a fully-qualified organization_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_sink string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/sinks/{sink}",
             organization=organization,
@@ -205,24 +155,14 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
 
     @classmethod
     def sink_path(cls, project, sink):
-        """DEPRECATED. Return a fully-qualified sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified sink string."""
         return google.api_core.path_template.expand(
             "projects/{project}/sinks/{sink}", project=project, sink=sink,
         )

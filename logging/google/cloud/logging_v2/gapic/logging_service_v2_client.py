@@ -79,24 +79,14 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def billing_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def billing_log_path(cls, billing_account, log):
-        """DEPRECATED. Return a fully-qualified billing_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_log string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/logs/{log}",
             billing_account=billing_account,
@@ -105,58 +95,33 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def folder_path(cls, folder):
-        """DEPRECATED. Return a fully-qualified folder string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder string."""
         return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_log_path(cls, folder, log):
-        """DEPRECATED. Return a fully-qualified folder_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_log string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/logs/{log}", folder=folder, log=log,
         )
 
     @classmethod
     def log_path(cls, project, log):
-        """DEPRECATED. Return a fully-qualified log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified log string."""
         return google.api_core.path_template.expand(
             "projects/{project}/logs/{log}", project=project, log=log,
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def organization_log_path(cls, organization, log):
-        """DEPRECATED. Return a fully-qualified organization_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_log string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/logs/{log}",
             organization=organization,
@@ -165,12 +130,7 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
