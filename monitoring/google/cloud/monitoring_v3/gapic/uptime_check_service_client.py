@@ -108,24 +108,14 @@ class UptimeCheckServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
 
     @classmethod
     def uptime_check_config_path(cls, project, uptime_check_config):
-        """DEPRECATED. Return a fully-qualified uptime_check_config string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified uptime_check_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/uptimeCheckConfigs/{uptime_check_config}",
             project=project,

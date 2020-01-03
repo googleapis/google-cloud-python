@@ -96,12 +96,7 @@ class NotificationChannelServiceClient(object):
 
     @classmethod
     def notification_channel_path(cls, project, notification_channel):
-        """DEPRECATED. Return a fully-qualified notification_channel string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified notification_channel string."""
         return google.api_core.path_template.expand(
             "projects/{project}/notificationChannels/{notification_channel}",
             project=project,
@@ -110,12 +105,7 @@ class NotificationChannelServiceClient(object):
 
     @classmethod
     def notification_channel_descriptor_path(cls, project, channel_descriptor):
-        """DEPRECATED. Return a fully-qualified notification_channel_descriptor string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified notification_channel_descriptor string."""
         return google.api_core.path_template.expand(
             "projects/{project}/notificationChannelDescriptors/{channel_descriptor}",
             project=project,
@@ -124,12 +114,7 @@ class NotificationChannelServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )

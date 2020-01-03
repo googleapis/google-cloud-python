@@ -95,24 +95,14 @@ class GroupServiceClient(object):
 
     @classmethod
     def group_path(cls, project, group):
-        """DEPRECATED. Return a fully-qualified group string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified group string."""
         return google.api_core.path_template.expand(
             "projects/{project}/groups/{group}", project=project, group=group,
         )
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
