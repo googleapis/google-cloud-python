@@ -18,7 +18,7 @@ def client_query_destination_table_cmek(table_id, kms_key_name):
     # [START bigquery_query_destination_table_cmek]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the destination table.

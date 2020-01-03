@@ -18,7 +18,7 @@ def client_query_batch():
     # [START bigquery_query_batch]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     job_config = bigquery.QueryJobConfig(

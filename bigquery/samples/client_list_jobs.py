@@ -16,12 +16,12 @@
 def client_list_jobs():
 
     # [START bigquery_list_jobs]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
     import datetime
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # List the 10 most recent jobs in reverse chronological order.

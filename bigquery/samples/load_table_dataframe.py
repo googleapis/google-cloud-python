@@ -20,7 +20,7 @@ def load_table_dataframe(table_id):
 
     import pandas
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the table to create.

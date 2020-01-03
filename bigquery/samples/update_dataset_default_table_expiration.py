@@ -16,10 +16,10 @@
 def update_dataset_default_table_expiration(dataset_id):
 
     # [START bigquery_update_dataset_expiration]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.

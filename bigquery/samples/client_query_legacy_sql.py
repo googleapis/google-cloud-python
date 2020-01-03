@@ -18,7 +18,7 @@ def client_query_legacy_sql():
     # [START bigquery_query_legacy]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     query = (

@@ -18,7 +18,7 @@ def client_query_relax_column(table_id):
     # [START bigquery_relax_column_query_append]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the destination table.

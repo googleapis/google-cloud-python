@@ -18,7 +18,7 @@ def update_dataset_access(dataset_id):
     # [START bigquery_update_dataset_access]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set dataset_id to the ID of the dataset to fetch.

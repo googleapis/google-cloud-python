@@ -18,7 +18,7 @@ def create_dataset(dataset_id):
     # [START bigquery_create_dataset]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set dataset_id to the ID of the dataset to create.

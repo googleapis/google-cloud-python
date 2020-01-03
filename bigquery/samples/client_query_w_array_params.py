@@ -18,7 +18,7 @@ def client_query_w_array_params():
     # [START bigquery_query_params_arrays]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     query = """

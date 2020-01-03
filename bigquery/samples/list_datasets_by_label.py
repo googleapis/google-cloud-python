@@ -16,10 +16,10 @@
 def list_datasets_by_label():
 
     # [START bigquery_list_datasets_by_label]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     label_filter = "labels.color:green"

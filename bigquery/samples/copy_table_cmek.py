@@ -18,7 +18,7 @@ def copy_table_cmek(dest_table_id, orig_table_id, kms_key_name):
     # [START bigquery_copy_table_cmek]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set dest_table_id to the ID of the destination table.

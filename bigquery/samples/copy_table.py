@@ -16,10 +16,10 @@
 def copy_table(source_table_id, destination_table_id):
 
     # [START bigquery_copy_table]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set source_table_id to the ID of the original table.

@@ -18,7 +18,7 @@ def create_job():
     # [START bigquery_create_job]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     query_job = client.query(

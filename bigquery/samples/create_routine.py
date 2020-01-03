@@ -19,7 +19,7 @@ def create_routine(routine_id):
     from google.cloud import bigquery
     from google.cloud import bigquery_v2
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Choose a fully-qualified ID for the routine.

@@ -16,10 +16,10 @@
 def delete_dataset(dataset_id):
 
     # [START bigquery_delete_dataset]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set model_id to the ID of the model to fetch.

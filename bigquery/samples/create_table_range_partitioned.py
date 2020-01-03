@@ -18,7 +18,7 @@ def create_table_range_partitioned(table_id):
     # [START bigquery_create_table_range_partitioned]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the table to create.

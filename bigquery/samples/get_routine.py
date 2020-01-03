@@ -16,10 +16,10 @@
 def get_routine(routine_id):
 
     # [START bigquery_get_routine]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set the fully-qualified ID for the routine.

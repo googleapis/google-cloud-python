@@ -16,10 +16,10 @@
 def download_public_data_sandbox():
 
     # [START bigquery_pandas_public_data_sandbox]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # `SELECT *` is an anti-pattern in BigQuery because it is cheaper and

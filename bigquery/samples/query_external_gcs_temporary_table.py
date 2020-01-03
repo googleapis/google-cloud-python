@@ -18,7 +18,7 @@ def query_external_gcs_temporary_table():
     # [START bigquery_query_external_gcs_temp]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # Configure the external data source and query job.

@@ -15,10 +15,10 @@
 
 def query_script():
     # [START bigquery_query_script]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # Run a SQL script.

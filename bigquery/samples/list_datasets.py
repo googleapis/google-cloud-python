@@ -16,10 +16,10 @@
 def list_datasets():
 
     # [START bigquery_list_datasets]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     datasets = list(client.list_datasets())  # Make an API request.

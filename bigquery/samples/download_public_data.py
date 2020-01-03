@@ -16,10 +16,10 @@
 def download_public_data():
 
     # [START bigquery_pandas_public_data]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the fully-qualified table ID in standard

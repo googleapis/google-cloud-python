@@ -16,10 +16,10 @@
 def update_table_require_partition_filter(table_id):
 
     # [START bigquery_update_table_require_partition_filter]
-    # TODO(developer): Import the client library.
+
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the model to fetch.

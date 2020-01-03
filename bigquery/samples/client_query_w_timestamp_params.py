@@ -21,7 +21,7 @@ def client_query_w_timestamp_params():
     import pytz
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     query = "SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);"

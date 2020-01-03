@@ -18,7 +18,7 @@ def client_query_w_struct_params():
     # [START bigquery_query_params_structs]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
+    # Construct a BigQuery client object.
     client = bigquery.Client()
 
     query = "SELECT @struct_value AS s;"
