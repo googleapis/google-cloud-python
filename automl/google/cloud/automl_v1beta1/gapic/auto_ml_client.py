@@ -103,12 +103,7 @@ class AutoMlClient(object):
 
     @classmethod
     def annotation_spec_path(cls, project, location, dataset, annotation_spec):
-        """DEPRECATED. Return a fully-qualified annotation_spec string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotation_spec string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}",
             project=project,
@@ -119,12 +114,7 @@ class AutoMlClient(object):
 
     @classmethod
     def column_spec_path(cls, project, location, dataset, table_spec, column_spec):
-        """DEPRECATED. Return a fully-qualified column_spec string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified column_spec string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}",
             project=project,
@@ -136,12 +126,7 @@ class AutoMlClient(object):
 
     @classmethod
     def dataset_path(cls, project, location, dataset):
-        """DEPRECATED. Return a fully-qualified dataset string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/datasets/{dataset}",
             project=project,
@@ -151,12 +136,7 @@ class AutoMlClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """DEPRECATED. Return a fully-qualified location string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
@@ -165,12 +145,7 @@ class AutoMlClient(object):
 
     @classmethod
     def model_path(cls, project, location, model):
-        """DEPRECATED. Return a fully-qualified model string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified model string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/models/{model}",
             project=project,
@@ -180,12 +155,7 @@ class AutoMlClient(object):
 
     @classmethod
     def model_evaluation_path(cls, project, location, model, model_evaluation):
-        """DEPRECATED. Return a fully-qualified model_evaluation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified model_evaluation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}",
             project=project,
@@ -196,12 +166,7 @@ class AutoMlClient(object):
 
     @classmethod
     def table_spec_path(cls, project, location, dataset, table_spec):
-        """DEPRECATED. Return a fully-qualified table_spec string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified table_spec string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}",
             project=project,
