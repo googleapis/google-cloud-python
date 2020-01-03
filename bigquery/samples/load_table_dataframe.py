@@ -33,36 +33,36 @@ def load_table_dataframe(client, table_id):
             "title": u"The Meaning of Life",
             "release_year": 1983,
             "length_minutes": 112.5,
-            "release_date": datetime.datetime(
-                1983, 5, 9, 13, 0, 0, tzinfo=pytz.timezone("Europe/Paris")
-            ),
+            "release_date": pytz.timezone("Europe/Paris")
+            .localize(datetime.datetime(1983, 5, 9, 13, 0, 0))
+            .astimezone(pytz.utc),
             "dvd_release": datetime.datetime(2002, 1, 22, 7, 0, 0),
         },
         {
             "title": u"Monty Python and the Holy Grail",
             "release_year": 1975,
             "length_minutes": 91.5,
-            "release_date": datetime.datetime(
-                1975, 4, 9, 23, 59, 2, tzinfo=pytz.timezone("Europe/London")
-            ),
+            "release_date": pytz.timezone("Europe/London")
+            .localize(datetime.datetime(1975, 4, 9, 23, 59, 2))
+            .astimezone(pytz.utc),
             "dvd_release": datetime.datetime(2002, 7, 16, 9, 0, 0),
         },
         {
             "title": u"Life of Brian",
             "release_year": 1979,
             "length_minutes": 94.25,
-            "release_date": datetime.datetime(
-                1979, 8, 17, 23, 59, 5, tzinfo=pytz.timezone("America/New_York")
-            ),
+            "release_date": pytz.timezone("America/New_York")
+            .localize(datetime.datetime(1979, 8, 17, 23, 59, 5))
+            .astimezone(pytz.utc),
             "dvd_release": datetime.datetime(2008, 1, 14, 8, 0, 0),
         },
         {
             "title": u"And Now for Something Completely Different",
             "release_year": 1971,
             "length_minutes": 88.0,
-            "release_date": datetime.datetime(
-                1971, 9, 28, 23, 59, 7, tzinfo=pytz.timezone("Europe/London")
-            ),
+            "release_date": pytz.timezone("Europe/London")
+            .localize(datetime.datetime(1971, 9, 28, 23, 59, 7))
+            .astimezone(pytz.utc),
             "dvd_release": datetime.datetime(2003, 10, 22, 10, 0, 0),
         },
     ]
