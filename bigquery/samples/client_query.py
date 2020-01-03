@@ -13,14 +13,14 @@
 # limitations under the License.
 
 
-def client_query(client):
+def client_query():
 
     # [START bigquery_query]
     # TODO(developer): Import the client library.
-    # from google.cloud import bigquery
+    from google.cloud import bigquery
 
     # TODO(developer): Construct a BigQuery client object.
-    # client = bigquery.Client()
+    client = bigquery.Client()
 
     query = """
         SELECT name, SUM(number) as total_people
