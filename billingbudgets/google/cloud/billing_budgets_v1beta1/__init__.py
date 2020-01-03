@@ -16,10 +16,21 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
 from google.cloud.billing_budgets_v1beta1 import types
 from google.cloud.billing_budgets_v1beta1.gapic import budget_service_client
 from google.cloud.billing_budgets_v1beta1.gapic import enums
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 class BudgetServiceClient(budget_service_client.BudgetServiceClient):
