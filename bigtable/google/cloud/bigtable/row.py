@@ -912,7 +912,7 @@ class AppendRow(Row):
             table_name=self._table.name,
             row_key=self._row_key,
             rules=self._rule_pb_list,
-            app_profile_id=self._table._app_profile_id
+            app_profile_id=self._table._app_profile_id,
         )
 
         # Reset modifications after commit-ing request.
