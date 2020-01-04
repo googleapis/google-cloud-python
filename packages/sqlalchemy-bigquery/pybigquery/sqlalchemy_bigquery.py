@@ -197,6 +197,9 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_BINARY(self, type_, **kw):
         return 'BYTES'
 
+    def visit_NUMERIC(self, type_, **kw):
+        return 'NUMERIC'
+
     def visit_DECIMAL(self, type_, **kw):
         return 'NUMERIC'
 
