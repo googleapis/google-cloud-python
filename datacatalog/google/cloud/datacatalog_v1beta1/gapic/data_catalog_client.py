@@ -345,10 +345,10 @@ class DataCatalogClient(object):
             ...         pass
 
         Args:
-            scope (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Scope]): Required. The scope of this search request.
+            scope (Union[dict, ~google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope]): Required. The scope of this search request.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.datacatalog_v1beta1.types.Scope`
+                message :class:`~google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope`
             query (str): Required. The query string in search query syntax. The query must be
                 non-empty.
 
