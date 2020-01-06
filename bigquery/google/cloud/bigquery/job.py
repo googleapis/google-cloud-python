@@ -710,7 +710,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         )
         self._set_properties(api_response)
 
-    def cancel(self, client=None, timeout=None):
+    def cancel(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  cancel job via a POST request
 
         See
@@ -720,8 +720,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             client (Optional[google.cloud.bigquery.client.Client]):
                 the client to use.  If not passed, falls back to the
                 ``client`` stored on the current dataset.
+            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
             timeout (Optional[float]):
-                The number of seconds to wait for the API response.
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``
 
         Returns:
             bool: Boolean indicating that the cancel request was sent.
@@ -732,10 +734,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if self.location:
             extra_params["location"] = self.location
 
-        # TODO: call thorugh client._call_api() and allow passing in a retry?
-        api_response = client._connection.api_request(
+        api_response = client._call_api(
+            retry,
             method="POST",
-            path="%s/cancel" % (self.path,),
+            path="{}/cancel".format(self.path),
             query_params=extra_params,
             timeout=timeout,
         )
