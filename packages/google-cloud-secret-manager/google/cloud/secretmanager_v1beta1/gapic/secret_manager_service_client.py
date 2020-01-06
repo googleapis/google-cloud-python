@@ -93,36 +93,21 @@ class SecretManagerServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def secret_path(cls, project, secret):
-        """DEPRECATED. Return a fully-qualified secret string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified secret string."""
         return google.api_core.path_template.expand(
             "projects/{project}/secrets/{secret}", project=project, secret=secret
         )
 
     @classmethod
     def secret_version_path(cls, project, secret, secret_version):
-        """DEPRECATED. Return a fully-qualified secret_version string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified secret_version string."""
         return google.api_core.path_template.expand(
             "projects/{project}/secrets/{secret}/versions/{secret_version}",
             project=project,
