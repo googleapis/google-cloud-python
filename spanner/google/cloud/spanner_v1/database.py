@@ -18,7 +18,6 @@ import copy
 import functools
 import re
 import threading
-import os
 import grpc
 
 import google.auth.credentials
@@ -176,7 +175,7 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            if self._instance.emulator_host == None:
+            if self._instance.emulator_host is None:
                 credentials = self._instance._client.credentials
                 if isinstance(credentials, google.auth.credentials.Scoped):
                     credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
@@ -188,10 +187,10 @@ class Database(object):
                     client_options=client_options,
                 )
             else:
-                transport=spanner_grpc_transport.SpannerGrpcTransport(channel=grpc.insecure_channel(self._instance.emulator_host))
-                self._spanner_api = SpannerClient(
-                    transport=transport,
+                transport = spanner_grpc_transport.SpannerGrpcTransport(
+                    channel=grpc.insecure_channel(self._instance.emulator_host)
                 )
+                self._spanner_api = SpannerClient(transport=transport)
         return self._spanner_api
 
     def __eq__(self, other):

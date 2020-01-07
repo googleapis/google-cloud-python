@@ -98,8 +98,12 @@ def system(session):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
     # Sanity check: Only run tests if either credentials or emulator host is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get("SPANNER_EMULATOR_HOST", ""):
-        session.skip("Credentials or emulator host must be set via environment variable")
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)

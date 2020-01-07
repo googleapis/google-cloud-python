@@ -127,7 +127,7 @@ class TestClient(unittest.TestCase):
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
-    @mock.patch('google.cloud.spanner_v1.client.os.getenv')
+    @mock.patch("google.cloud.spanner_v1.client.os.getenv")
     def test_instance_admin_api(self, mock_getenv):
         from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
@@ -161,7 +161,7 @@ class TestClient(unittest.TestCase):
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
-    @mock.patch('google.cloud.spanner_v1.client.os.getenv')
+    @mock.patch("google.cloud.spanner_v1.client.os.getenv")
     def test_database_admin_api(self, mock_getenv):
         from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
