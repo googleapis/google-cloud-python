@@ -127,7 +127,8 @@ class TestClient(unittest.TestCase):
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
-    def test_instance_admin_api(self):
+    @mock.patch('google.cloud.spanner_v1.client.os.getenv')
+    def test_instance_admin_api(self, mock_getenv):
         from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
@@ -141,6 +142,7 @@ class TestClient(unittest.TestCase):
         )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
+        mock_getenv.return_value = None
         inst_module = "google.cloud.spanner_v1.client.InstanceAdminClient"
         with mock.patch(inst_module) as instance_admin_client:
             api = client.instance_admin_api
@@ -159,7 +161,8 @@ class TestClient(unittest.TestCase):
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
-    def test_database_admin_api(self):
+    @mock.patch('google.cloud.spanner_v1.client.os.getenv')
+    def test_database_admin_api(self, mock_getenv):
         from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
@@ -173,6 +176,7 @@ class TestClient(unittest.TestCase):
         )
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
+        mock_getenv.return_value = None
         db_module = "google.cloud.spanner_v1.client.DatabaseAdminClient"
         with mock.patch(db_module) as database_admin_client:
             api = client.database_admin_api

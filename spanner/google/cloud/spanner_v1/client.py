@@ -54,17 +54,19 @@ from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
+EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
 SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
 _USER_AGENT_DEPRECATED = (
     "The 'user_agent' argument to 'Client' is deprecated / unused. "
     "Please pass an appropriate 'client_info' instead."
 )
 
+def _get_spanner_emulator_host():
+    return os.getenv(EMULATOR_ENV_VAR)
 
-if os.getenv('SPANNER_EMULATOR_HOST') != None and \
-    ('http://' in os.getenv('SPANNER_EMULATOR_HOST') or 'https://' in os.getenv('SPANNER_EMULATOR_HOST')):
-    warnings.warn("SPANNER_EMULATOR_HOST contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. SPANNER_EMULATOR_HOST is intended to be used without a scheme: ex SPANNER_EMULATOR_HOST=localhost:8080.")
-
+if _get_spanner_emulator_host() != None and \
+('http://' in _get_spanner_emulator_host() or 'https://' in _get_spanner_emulator_host()):
+    warnings.warn("%s contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. %s is intended to be used without a scheme: ex %s=localhost:8080."%((EMULATOR_ENV_VAR,)*3))
 
 class InstanceConfig(object):
     """Named configurations for Spanner instances.
@@ -197,32 +199,40 @@ class Client(ClientWithProject):
     def instance_admin_api(self):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
-            transport=None
-            if os.environ.get('SPANNER_EMULATOR_HOST') != None:
-                transport=instance_admin_grpc_transport.InstanceAdminGrpcTransport(channel=grpc.insecure_channel(os.environ.get('SPANNER_EMULATOR_HOST')))
+            if _get_spanner_emulator_host() != None:
+                transport=instance_admin_grpc_transport.InstanceAdminGrpcTransport(channel=grpc.insecure_channel(_get_spanner_emulator_host()))
 
-            self._instance_admin_api = InstanceAdminClient(
-                credentials=self.credentials,
-                client_info=self._client_info,
-                client_options=self._client_options,
-                transport=transport,
-            )
+                self._instance_admin_api = InstanceAdminClient(
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                    transport=transport,
+                )
+            else:
+                self._instance_admin_api = InstanceAdminClient(
+                    credentials=self.credentials,
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                )
         return self._instance_admin_api
 
     @property
     def database_admin_api(self):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
-            transport=None
-            if os.environ.get('SPANNER_EMULATOR_HOST') != None:
-                transport=database_admin_grpc_transport.DatabaseAdminGrpcTransport(channel=grpc.insecure_channel(os.environ.get('SPANNER_EMULATOR_HOST')))
+            if _get_spanner_emulator_host() != None:
+                transport=database_admin_grpc_transport.DatabaseAdminGrpcTransport(channel=grpc.insecure_channel(_get_spanner_emulator_host()))
 
-            self._database_admin_api = DatabaseAdminClient(
-                credentials=self.credentials,
-                client_info=self._client_info,
-                client_options=self._client_options,
-                transport=transport,
-            )
+                self._database_admin_api = DatabaseAdminClient(
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                    transport=transport,
+                )
+            else:
+                self._database_admin_api = DatabaseAdminClient(
+                    credentials=self.credentials,
+                    client_info=self._client_info,
+                    client_options=self._client_options,
+                )
         return self._database_admin_api
 
     def copy(self):
@@ -306,7 +316,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, configuration_name, node_count, display_name)
+        return Instance(instance_id, self, configuration_name, node_count, display_name, _get_spanner_emulator_host())
 
     def list_instances(self, filter_="", page_size=None, page_token=None):
         """List instances for the client's project.
