@@ -381,16 +381,19 @@ class TestPolicy:
         EDITOR2 = "user:phred@example.com"
         VIEWER1 = "serviceAccount:1234-abcdef@service.example.com"
         VIEWER2 = "user:phred@example.com"
+        CONDITION = {
+            "title": "title",
+            "description": "description",
+            "expression": "true"
+        }
         BINDINGS = [
             {"role": OWNER_ROLE, "members": [OWNER1, OWNER2]},
             {"role": EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
             {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
+            {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2], "condition": CONDITION},
         ]
         policy = self._make_one("DEADBEEF", 1)
-        with warnings.catch_warnings(record=True):
-            policy.owners = [OWNER1, OWNER2]
-            policy.editors = [EDITOR1, EDITOR2]
-            policy.viewers = [VIEWER1, VIEWER2]
+        policy.bindings = BINDINGS
         resource = policy.to_api_repr()
         assert resource["etag"] == "DEADBEEF"
         assert resource["version"] == 1
