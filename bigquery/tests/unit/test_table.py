@@ -1809,7 +1809,10 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(child_field.type.value_type[0].name, "name")
         self.assertEqual(child_field.type.value_type[1].name, "age")
 
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_to_arrow_max_results_w_create_bqstorage_warning(self):
         from google.cloud.bigquery.schema import SchemaField
 
