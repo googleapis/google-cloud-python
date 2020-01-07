@@ -176,9 +176,9 @@ class Policy(collections_abc.MutableMapping):
             role (str): Role that is assigned to `members`.
             members (:obj:`set` of str): Specifies the identities associated to this binding.
             condition (dict of str:str): Specifies a condition under which this binding will apply.
-                title (str): Title for the condition.
-                description (:obj:str, optional): Description of the condition.
-                expression: A CEL expression.
+            - title (str): Title for the condition.
+            - description (:obj:str, optional): Description of the condition.
+            - expression: A CEL expression.
 
         See:
             Policy versions https://cloud.google.com/iam/docs/policies#versions
