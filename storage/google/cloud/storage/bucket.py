@@ -885,7 +885,8 @@ class Bucket(_PropertyMixin):
 
         :type max_results: int
         :param max_results:
-            (Optional) The maximum number of blobs to return.
+            (Optional) The maximum total number of blobs in results from this request.
+            Non-positive values are ignored.
 
         :type page_token: str
         :param page_token:
