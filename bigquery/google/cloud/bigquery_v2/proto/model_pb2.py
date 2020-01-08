@@ -3,11 +3,13 @@
 # source: google/cloud/bigquery_v2/proto/model.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode("latin1"))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -15,9 +17,15 @@ _sym_db = _symbol_database.Default()
 
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
-from google.cloud.bigquery_v2.proto import encryption_config_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2
-from google.cloud.bigquery_v2.proto import model_reference_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2
-from google.cloud.bigquery_v2.proto import standard_sql_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2
+from google.cloud.bigquery_v2.proto import (
+    encryption_config_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2,
+)
+from google.cloud.bigquery_v2.proto import (
+    model_reference_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2,
+)
+from google.cloud.bigquery_v2.proto import (
+    standard_sql_pb2 as google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
@@ -25,1820 +33,3284 @@ from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='google/cloud/bigquery_v2/proto/model.proto',
-  package='google.cloud.bigquery.v2',
-  syntax='proto3',
-  serialized_options=_b('\n\034com.google.cloud.bigquery.v2B\nModelProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigquery'),
-  serialized_pb=_b('\n*google/cloud/bigquery_v2/proto/model.proto\x12\x18google.cloud.bigquery.v2\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x36google/cloud/bigquery_v2/proto/encryption_config.proto\x1a\x34google/cloud/bigquery_v2/proto/model_reference.proto\x1a\x31google/cloud/bigquery_v2/proto/standard_sql.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/api/annotations.proto\"\x9b\x35\n\x05Model\x12\x11\n\x04\x65tag\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x46\n\x0fmodel_reference\x18\x02 \x01(\x0b\x32(.google.cloud.bigquery.v2.ModelReferenceB\x03\xe0\x41\x02\x12\x1a\n\rcreation_time\x18\x05 \x01(\x03\x42\x03\xe0\x41\x03\x12\x1f\n\x12last_modified_time\x18\x06 \x01(\x03\x42\x03\xe0\x41\x03\x12\x18\n\x0b\x64\x65scription\x18\x0c \x01(\tB\x03\xe0\x41\x01\x12\x1a\n\rfriendly_name\x18\x0e \x01(\tB\x03\xe0\x41\x01\x12;\n\x06labels\x18\x0f \x03(\x0b\x32+.google.cloud.bigquery.v2.Model.LabelsEntry\x12\x1c\n\x0f\x65xpiration_time\x18\x10 \x01(\x03\x42\x03\xe0\x41\x01\x12\x15\n\x08location\x18\r \x01(\tB\x03\xe0\x41\x03\x12S\n\x18\x65ncryption_configuration\x18\x11 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.EncryptionConfiguration\x12\x42\n\nmodel_type\x18\x07 \x01(\x0e\x32).google.cloud.bigquery.v2.Model.ModelTypeB\x03\xe0\x41\x03\x12G\n\rtraining_runs\x18\t \x03(\x0b\x32+.google.cloud.bigquery.v2.Model.TrainingRunB\x03\xe0\x41\x03\x12H\n\x0f\x66\x65\x61ture_columns\x18\n \x03(\x0b\x32*.google.cloud.bigquery.v2.StandardSqlFieldB\x03\xe0\x41\x03\x12\x46\n\rlabel_columns\x18\x0b \x03(\x0b\x32*.google.cloud.bigquery.v2.StandardSqlFieldB\x03\xe0\x41\x03\x1aq\n\x0bKmeansEnums\"b\n\x1aKmeansInitializationMethod\x12,\n(KMEANS_INITIALIZATION_METHOD_UNSPECIFIED\x10\x00\x12\n\n\x06RANDOM\x10\x01\x12\n\n\x06\x43USTOM\x10\x02\x1a\xb4\x02\n\x11RegressionMetrics\x12\x39\n\x13mean_absolute_error\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x38\n\x12mean_squared_error\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12<\n\x16mean_squared_log_error\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15median_absolute_error\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tr_squared\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\xef\x02\n\x1e\x41ggregateClassificationMetrics\x12/\n\tprecision\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12,\n\x06recall\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x61\x63\x63uracy\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tthreshold\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x66\x31_score\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08log_loss\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12-\n\x07roc_auc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\x9f\x06\n\x1b\x42inaryClassificationMetrics\x12h\n aggregate_classification_metrics\x18\x01 \x01(\x0b\x32>.google.cloud.bigquery.v2.Model.AggregateClassificationMetrics\x12w\n\x1c\x62inary_confusion_matrix_list\x18\x02 \x03(\x0b\x32Q.google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix\x12\x16\n\x0epositive_label\x18\x03 \x01(\t\x12\x16\n\x0enegative_label\x18\x04 \x01(\t\x1a\xec\x03\n\x15\x42inaryConfusionMatrix\x12>\n\x18positive_class_threshold\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x33\n\x0etrue_positives\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x34\n\x0f\x66\x61lse_positives\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x33\n\x0etrue_negatives\x18\x04 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x34\n\x0f\x66\x61lse_negatives\x18\x05 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12/\n\tprecision\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12,\n\x06recall\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x66\x31_score\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x61\x63\x63uracy\x18\t \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\x87\x05\n\x1fMultiClassClassificationMetrics\x12h\n aggregate_classification_metrics\x18\x01 \x01(\x0b\x32>.google.cloud.bigquery.v2.Model.AggregateClassificationMetrics\x12n\n\x15\x63onfusion_matrix_list\x18\x02 \x03(\x0b\x32O.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix\x1a\x89\x03\n\x0f\x43onfusionMatrix\x12:\n\x14\x63onfidence_threshold\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x61\n\x04rows\x18\x02 \x03(\x0b\x32S.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row\x1aQ\n\x05\x45ntry\x12\x17\n\x0fpredicted_label\x18\x01 \x01(\t\x12/\n\nitem_count\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x83\x01\n\x03Row\x12\x14\n\x0c\x61\x63tual_label\x18\x01 \x01(\t\x12\x66\n\x07\x65ntries\x18\x02 \x03(\x0b\x32U.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry\x1a\xcb\x06\n\x11\x43lusteringMetrics\x12:\n\x14\x64\x61vies_bouldin_index\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15mean_squared_distance\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12K\n\x08\x63lusters\x18\x03 \x03(\x0b\x32\x39.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster\x1a\xef\x04\n\x07\x43luster\x12\x13\n\x0b\x63\x65ntroid_id\x18\x01 \x01(\x03\x12^\n\x0e\x66\x65\x61ture_values\x18\x02 \x03(\x0b\x32\x46.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue\x12*\n\x05\x63ount\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\xc2\x03\n\x0c\x46\x65\x61tureValue\x12\x16\n\x0e\x66\x65\x61ture_column\x18\x01 \x01(\t\x12\x37\n\x0fnumerical_value\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValueH\x00\x12t\n\x11\x63\x61tegorical_value\x18\x03 \x01(\x0b\x32W.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValueH\x00\x1a\xe1\x01\n\x10\x43\x61tegoricalValue\x12~\n\x0f\x63\x61tegory_counts\x18\x01 \x03(\x0b\x32\x65.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount\x1aM\n\rCategoryCount\x12\x10\n\x08\x63\x61tegory\x18\x01 \x01(\t\x12*\n\x05\x63ount\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64ValueB\x07\n\x05value\x1a\x95\x03\n\x11\x45valuationMetrics\x12O\n\x12regression_metrics\x18\x01 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.RegressionMetricsH\x00\x12\x64\n\x1d\x62inary_classification_metrics\x18\x02 \x01(\x0b\x32;.google.cloud.bigquery.v2.Model.BinaryClassificationMetricsH\x00\x12m\n\"multi_class_classification_metrics\x18\x03 \x01(\x0b\x32?.google.cloud.bigquery.v2.Model.MultiClassClassificationMetricsH\x00\x12O\n\x12\x63lustering_metrics\x18\x04 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.ClusteringMetricsH\x00\x42\t\n\x07metrics\x1a\xab\x0f\n\x0bTrainingRun\x12U\n\x10training_options\x18\x01 \x01(\x0b\x32;.google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions\x12.\n\nstart_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12L\n\x07results\x18\x06 \x03(\x0b\x32;.google.cloud.bigquery.v2.Model.TrainingRun.IterationResult\x12M\n\x12\x65valuation_metrics\x18\x07 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.EvaluationMetrics\x1a\x9d\t\n\x0fTrainingOptions\x12\x16\n\x0emax_iterations\x18\x01 \x01(\x03\x12;\n\tloss_type\x18\x02 \x01(\x0e\x32(.google.cloud.bigquery.v2.Model.LossType\x12\x12\n\nlearn_rate\x18\x03 \x01(\x01\x12\x37\n\x11l1_regularization\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x37\n\x11l2_regularization\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15min_relative_progress\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\nwarm_start\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12.\n\nearly_stop\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1b\n\x13input_label_columns\x18\t \x03(\t\x12J\n\x11\x64\x61ta_split_method\x18\n \x01(\x0e\x32/.google.cloud.bigquery.v2.Model.DataSplitMethod\x12 \n\x18\x64\x61ta_split_eval_fraction\x18\x0b \x01(\x01\x12\x19\n\x11\x64\x61ta_split_column\x18\x0c \x01(\t\x12N\n\x13learn_rate_strategy\x18\r \x01(\x0e\x32\x31.google.cloud.bigquery.v2.Model.LearnRateStrategy\x12\x1a\n\x12initial_learn_rate\x18\x10 \x01(\x01\x12o\n\x13label_class_weights\x18\x11 \x03(\x0b\x32R.google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry\x12\x43\n\rdistance_type\x18\x14 \x01(\x0e\x32,.google.cloud.bigquery.v2.Model.DistanceType\x12\x14\n\x0cnum_clusters\x18\x15 \x01(\x03\x12\x11\n\tmodel_uri\x18\x16 \x01(\t\x12S\n\x15optimization_strategy\x18\x17 \x01(\x0e\x32\x34.google.cloud.bigquery.v2.Model.OptimizationStrategy\x12l\n\x1ckmeans_initialization_method\x18! \x01(\x0e\x32\x46.google.cloud.bigquery.v2.Model.KmeansEnums.KmeansInitializationMethod\x12$\n\x1ckmeans_initialization_column\x18\" \x01(\t\x1a\x38\n\x16LabelClassWeightsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\xd7\x03\n\x0fIterationResult\x12*\n\x05index\x18\x01 \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x12\x30\n\x0b\x64uration_ms\x18\x04 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x33\n\rtraining_loss\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\teval_loss\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x12\n\nlearn_rate\x18\x07 \x01(\x01\x12^\n\rcluster_infos\x18\x08 \x03(\x0b\x32G.google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo\x1a\x8b\x01\n\x0b\x43lusterInfo\x12\x13\n\x0b\x63\x65ntroid_id\x18\x01 \x01(\x03\x12\x34\n\x0e\x63luster_radius\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x31\n\x0c\x63luster_size\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"s\n\tModelType\x12\x1a\n\x16MODEL_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11LINEAR_REGRESSION\x10\x01\x12\x17\n\x13LOGISTIC_REGRESSION\x10\x02\x12\n\n\x06KMEANS\x10\x03\x12\x0e\n\nTENSORFLOW\x10\x06\"O\n\x08LossType\x12\x19\n\x15LOSS_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11MEAN_SQUARED_LOSS\x10\x01\x12\x11\n\rMEAN_LOG_LOSS\x10\x02\"H\n\x0c\x44istanceType\x12\x1d\n\x19\x44ISTANCE_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tEUCLIDEAN\x10\x01\x12\n\n\x06\x43OSINE\x10\x02\"z\n\x0f\x44\x61taSplitMethod\x12!\n\x1d\x44\x41TA_SPLIT_METHOD_UNSPECIFIED\x10\x00\x12\n\n\x06RANDOM\x10\x01\x12\n\n\x06\x43USTOM\x10\x02\x12\x0e\n\nSEQUENTIAL\x10\x03\x12\x0c\n\x08NO_SPLIT\x10\x04\x12\x0e\n\nAUTO_SPLIT\x10\x05\"W\n\x11LearnRateStrategy\x12#\n\x1fLEARN_RATE_STRATEGY_UNSPECIFIED\x10\x00\x12\x0f\n\x0bLINE_SEARCH\x10\x01\x12\x0c\n\x08\x43ONSTANT\x10\x02\"n\n\x14OptimizationStrategy\x12%\n!OPTIMIZATION_STRATEGY_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x42\x41TCH_GRADIENT_DESCENT\x10\x01\x12\x13\n\x0fNORMAL_EQUATION\x10\x02\"Z\n\x0fGetModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\"\x91\x01\n\x11PatchModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x33\n\x05model\x18\x04 \x01(\x0b\x32\x1f.google.cloud.bigquery.v2.ModelB\x03\xe0\x41\x02\"]\n\x12\x44\x65leteModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\"\x8c\x01\n\x11ListModelsRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x31\n\x0bmax_results\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.UInt32Value\x12\x12\n\npage_token\x18\x04 \x01(\t\"^\n\x12ListModelsResponse\x12/\n\x06models\x18\x01 \x03(\x0b\x32\x1f.google.cloud.bigquery.v2.Model\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfa\x05\n\x0cModelService\x12y\n\x08GetModel\x12).google.cloud.bigquery.v2.GetModelRequest\x1a\x1f.google.cloud.bigquery.v2.Model\"!\xda\x41\x1eproject_id,dataset_id,model_id\x12\x8d\x01\n\nListModels\x12+.google.cloud.bigquery.v2.ListModelsRequest\x1a,.google.cloud.bigquery.v2.ListModelsResponse\"$\xda\x41!project_id,dataset_id,max_results\x12\x83\x01\n\nPatchModel\x12+.google.cloud.bigquery.v2.PatchModelRequest\x1a\x1f.google.cloud.bigquery.v2.Model\"\'\xda\x41$project_id,dataset_id,model_id,model\x12v\n\x0b\x44\x65leteModel\x12,.google.cloud.bigquery.v2.DeleteModelRequest\x1a\x16.google.protobuf.Empty\"!\xda\x41\x1eproject_id,dataset_id,model_id\x1a\xe0\x01\xca\x41\x17\x62igquery.googleapis.com\xd2\x41\xc2\x01https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-onlyBl\n\x1c\x63om.google.cloud.bigquery.v2B\nModelProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigqueryb\x06proto3')
-  ,
-  dependencies=[google_dot_api_dot_client__pb2.DESCRIPTOR,google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2.DESCRIPTOR,google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2.DESCRIPTOR,google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
-
+    name="google/cloud/bigquery_v2/proto/model.proto",
+    package="google.cloud.bigquery.v2",
+    syntax="proto3",
+    serialized_options=_b(
+        "\n\034com.google.cloud.bigquery.v2B\nModelProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigquery"
+    ),
+    serialized_pb=_b(
+        '\n*google/cloud/bigquery_v2/proto/model.proto\x12\x18google.cloud.bigquery.v2\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x36google/cloud/bigquery_v2/proto/encryption_config.proto\x1a\x34google/cloud/bigquery_v2/proto/model_reference.proto\x1a\x31google/cloud/bigquery_v2/proto/standard_sql.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/api/annotations.proto"\x9b\x35\n\x05Model\x12\x11\n\x04\x65tag\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x46\n\x0fmodel_reference\x18\x02 \x01(\x0b\x32(.google.cloud.bigquery.v2.ModelReferenceB\x03\xe0\x41\x02\x12\x1a\n\rcreation_time\x18\x05 \x01(\x03\x42\x03\xe0\x41\x03\x12\x1f\n\x12last_modified_time\x18\x06 \x01(\x03\x42\x03\xe0\x41\x03\x12\x18\n\x0b\x64\x65scription\x18\x0c \x01(\tB\x03\xe0\x41\x01\x12\x1a\n\rfriendly_name\x18\x0e \x01(\tB\x03\xe0\x41\x01\x12;\n\x06labels\x18\x0f \x03(\x0b\x32+.google.cloud.bigquery.v2.Model.LabelsEntry\x12\x1c\n\x0f\x65xpiration_time\x18\x10 \x01(\x03\x42\x03\xe0\x41\x01\x12\x15\n\x08location\x18\r \x01(\tB\x03\xe0\x41\x03\x12S\n\x18\x65ncryption_configuration\x18\x11 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.EncryptionConfiguration\x12\x42\n\nmodel_type\x18\x07 \x01(\x0e\x32).google.cloud.bigquery.v2.Model.ModelTypeB\x03\xe0\x41\x03\x12G\n\rtraining_runs\x18\t \x03(\x0b\x32+.google.cloud.bigquery.v2.Model.TrainingRunB\x03\xe0\x41\x03\x12H\n\x0f\x66\x65\x61ture_columns\x18\n \x03(\x0b\x32*.google.cloud.bigquery.v2.StandardSqlFieldB\x03\xe0\x41\x03\x12\x46\n\rlabel_columns\x18\x0b \x03(\x0b\x32*.google.cloud.bigquery.v2.StandardSqlFieldB\x03\xe0\x41\x03\x1aq\n\x0bKmeansEnums"b\n\x1aKmeansInitializationMethod\x12,\n(KMEANS_INITIALIZATION_METHOD_UNSPECIFIED\x10\x00\x12\n\n\x06RANDOM\x10\x01\x12\n\n\x06\x43USTOM\x10\x02\x1a\xb4\x02\n\x11RegressionMetrics\x12\x39\n\x13mean_absolute_error\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x38\n\x12mean_squared_error\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12<\n\x16mean_squared_log_error\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15median_absolute_error\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tr_squared\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\xef\x02\n\x1e\x41ggregateClassificationMetrics\x12/\n\tprecision\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12,\n\x06recall\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x61\x63\x63uracy\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\tthreshold\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x66\x31_score\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08log_loss\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12-\n\x07roc_auc\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\x9f\x06\n\x1b\x42inaryClassificationMetrics\x12h\n aggregate_classification_metrics\x18\x01 \x01(\x0b\x32>.google.cloud.bigquery.v2.Model.AggregateClassificationMetrics\x12w\n\x1c\x62inary_confusion_matrix_list\x18\x02 \x03(\x0b\x32Q.google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix\x12\x16\n\x0epositive_label\x18\x03 \x01(\t\x12\x16\n\x0enegative_label\x18\x04 \x01(\t\x1a\xec\x03\n\x15\x42inaryConfusionMatrix\x12>\n\x18positive_class_threshold\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x33\n\x0etrue_positives\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x34\n\x0f\x66\x61lse_positives\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x33\n\x0etrue_negatives\x18\x04 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x34\n\x0f\x66\x61lse_negatives\x18\x05 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12/\n\tprecision\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12,\n\x06recall\x18\x07 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x66\x31_score\x18\x08 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\x08\x61\x63\x63uracy\x18\t \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x1a\x87\x05\n\x1fMultiClassClassificationMetrics\x12h\n aggregate_classification_metrics\x18\x01 \x01(\x0b\x32>.google.cloud.bigquery.v2.Model.AggregateClassificationMetrics\x12n\n\x15\x63onfusion_matrix_list\x18\x02 \x03(\x0b\x32O.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix\x1a\x89\x03\n\x0f\x43onfusionMatrix\x12:\n\x14\x63onfidence_threshold\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x61\n\x04rows\x18\x02 \x03(\x0b\x32S.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row\x1aQ\n\x05\x45ntry\x12\x17\n\x0fpredicted_label\x18\x01 \x01(\t\x12/\n\nitem_count\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\x83\x01\n\x03Row\x12\x14\n\x0c\x61\x63tual_label\x18\x01 \x01(\t\x12\x66\n\x07\x65ntries\x18\x02 \x03(\x0b\x32U.google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry\x1a\xcb\x06\n\x11\x43lusteringMetrics\x12:\n\x14\x64\x61vies_bouldin_index\x18\x01 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15mean_squared_distance\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12K\n\x08\x63lusters\x18\x03 \x03(\x0b\x32\x39.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster\x1a\xef\x04\n\x07\x43luster\x12\x13\n\x0b\x63\x65ntroid_id\x18\x01 \x01(\x03\x12^\n\x0e\x66\x65\x61ture_values\x18\x02 \x03(\x0b\x32\x46.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue\x12*\n\x05\x63ount\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a\xc2\x03\n\x0c\x46\x65\x61tureValue\x12\x16\n\x0e\x66\x65\x61ture_column\x18\x01 \x01(\t\x12\x37\n\x0fnumerical_value\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValueH\x00\x12t\n\x11\x63\x61tegorical_value\x18\x03 \x01(\x0b\x32W.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValueH\x00\x1a\xe1\x01\n\x10\x43\x61tegoricalValue\x12~\n\x0f\x63\x61tegory_counts\x18\x01 \x03(\x0b\x32\x65.google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount\x1aM\n\rCategoryCount\x12\x10\n\x08\x63\x61tegory\x18\x01 \x01(\t\x12*\n\x05\x63ount\x18\x02 \x01(\x0b\x32\x1b.google.protobuf.Int64ValueB\x07\n\x05value\x1a\x95\x03\n\x11\x45valuationMetrics\x12O\n\x12regression_metrics\x18\x01 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.RegressionMetricsH\x00\x12\x64\n\x1d\x62inary_classification_metrics\x18\x02 \x01(\x0b\x32;.google.cloud.bigquery.v2.Model.BinaryClassificationMetricsH\x00\x12m\n"multi_class_classification_metrics\x18\x03 \x01(\x0b\x32?.google.cloud.bigquery.v2.Model.MultiClassClassificationMetricsH\x00\x12O\n\x12\x63lustering_metrics\x18\x04 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.ClusteringMetricsH\x00\x42\t\n\x07metrics\x1a\xab\x0f\n\x0bTrainingRun\x12U\n\x10training_options\x18\x01 \x01(\x0b\x32;.google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions\x12.\n\nstart_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12L\n\x07results\x18\x06 \x03(\x0b\x32;.google.cloud.bigquery.v2.Model.TrainingRun.IterationResult\x12M\n\x12\x65valuation_metrics\x18\x07 \x01(\x0b\x32\x31.google.cloud.bigquery.v2.Model.EvaluationMetrics\x1a\x9d\t\n\x0fTrainingOptions\x12\x16\n\x0emax_iterations\x18\x01 \x01(\x03\x12;\n\tloss_type\x18\x02 \x01(\x0e\x32(.google.cloud.bigquery.v2.Model.LossType\x12\x12\n\nlearn_rate\x18\x03 \x01(\x01\x12\x37\n\x11l1_regularization\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x37\n\x11l2_regularization\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12;\n\x15min_relative_progress\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12.\n\nwarm_start\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12.\n\nearly_stop\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x1b\n\x13input_label_columns\x18\t \x03(\t\x12J\n\x11\x64\x61ta_split_method\x18\n \x01(\x0e\x32/.google.cloud.bigquery.v2.Model.DataSplitMethod\x12 \n\x18\x64\x61ta_split_eval_fraction\x18\x0b \x01(\x01\x12\x19\n\x11\x64\x61ta_split_column\x18\x0c \x01(\t\x12N\n\x13learn_rate_strategy\x18\r \x01(\x0e\x32\x31.google.cloud.bigquery.v2.Model.LearnRateStrategy\x12\x1a\n\x12initial_learn_rate\x18\x10 \x01(\x01\x12o\n\x13label_class_weights\x18\x11 \x03(\x0b\x32R.google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry\x12\x43\n\rdistance_type\x18\x14 \x01(\x0e\x32,.google.cloud.bigquery.v2.Model.DistanceType\x12\x14\n\x0cnum_clusters\x18\x15 \x01(\x03\x12\x11\n\tmodel_uri\x18\x16 \x01(\t\x12S\n\x15optimization_strategy\x18\x17 \x01(\x0e\x32\x34.google.cloud.bigquery.v2.Model.OptimizationStrategy\x12l\n\x1ckmeans_initialization_method\x18! \x01(\x0e\x32\x46.google.cloud.bigquery.v2.Model.KmeansEnums.KmeansInitializationMethod\x12$\n\x1ckmeans_initialization_column\x18" \x01(\t\x1a\x38\n\x16LabelClassWeightsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\xd7\x03\n\x0fIterationResult\x12*\n\x05index\x18\x01 \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x12\x30\n\x0b\x64uration_ms\x18\x04 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x12\x33\n\rtraining_loss\x18\x05 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12/\n\teval_loss\x18\x06 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x12\n\nlearn_rate\x18\x07 \x01(\x01\x12^\n\rcluster_infos\x18\x08 \x03(\x0b\x32G.google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo\x1a\x8b\x01\n\x0b\x43lusterInfo\x12\x13\n\x0b\x63\x65ntroid_id\x18\x01 \x01(\x03\x12\x34\n\x0e\x63luster_radius\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.DoubleValue\x12\x31\n\x0c\x63luster_size\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.Int64Value\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"s\n\tModelType\x12\x1a\n\x16MODEL_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11LINEAR_REGRESSION\x10\x01\x12\x17\n\x13LOGISTIC_REGRESSION\x10\x02\x12\n\n\x06KMEANS\x10\x03\x12\x0e\n\nTENSORFLOW\x10\x06"O\n\x08LossType\x12\x19\n\x15LOSS_TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11MEAN_SQUARED_LOSS\x10\x01\x12\x11\n\rMEAN_LOG_LOSS\x10\x02"H\n\x0c\x44istanceType\x12\x1d\n\x19\x44ISTANCE_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tEUCLIDEAN\x10\x01\x12\n\n\x06\x43OSINE\x10\x02"z\n\x0f\x44\x61taSplitMethod\x12!\n\x1d\x44\x41TA_SPLIT_METHOD_UNSPECIFIED\x10\x00\x12\n\n\x06RANDOM\x10\x01\x12\n\n\x06\x43USTOM\x10\x02\x12\x0e\n\nSEQUENTIAL\x10\x03\x12\x0c\n\x08NO_SPLIT\x10\x04\x12\x0e\n\nAUTO_SPLIT\x10\x05"W\n\x11LearnRateStrategy\x12#\n\x1fLEARN_RATE_STRATEGY_UNSPECIFIED\x10\x00\x12\x0f\n\x0bLINE_SEARCH\x10\x01\x12\x0c\n\x08\x43ONSTANT\x10\x02"n\n\x14OptimizationStrategy\x12%\n!OPTIMIZATION_STRATEGY_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x42\x41TCH_GRADIENT_DESCENT\x10\x01\x12\x13\n\x0fNORMAL_EQUATION\x10\x02"Z\n\x0fGetModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02"\x91\x01\n\x11PatchModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x33\n\x05model\x18\x04 \x01(\x0b\x32\x1f.google.cloud.bigquery.v2.ModelB\x03\xe0\x41\x02"]\n\x12\x44\x65leteModelRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08model_id\x18\x03 \x01(\tB\x03\xe0\x41\x02"\x8c\x01\n\x11ListModelsRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ndataset_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x31\n\x0bmax_results\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.UInt32Value\x12\x12\n\npage_token\x18\x04 \x01(\t"^\n\x12ListModelsResponse\x12/\n\x06models\x18\x01 \x03(\x0b\x32\x1f.google.cloud.bigquery.v2.Model\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfa\x05\n\x0cModelService\x12y\n\x08GetModel\x12).google.cloud.bigquery.v2.GetModelRequest\x1a\x1f.google.cloud.bigquery.v2.Model"!\xda\x41\x1eproject_id,dataset_id,model_id\x12\x8d\x01\n\nListModels\x12+.google.cloud.bigquery.v2.ListModelsRequest\x1a,.google.cloud.bigquery.v2.ListModelsResponse"$\xda\x41!project_id,dataset_id,max_results\x12\x83\x01\n\nPatchModel\x12+.google.cloud.bigquery.v2.PatchModelRequest\x1a\x1f.google.cloud.bigquery.v2.Model"\'\xda\x41$project_id,dataset_id,model_id,model\x12v\n\x0b\x44\x65leteModel\x12,.google.cloud.bigquery.v2.DeleteModelRequest\x1a\x16.google.protobuf.Empty"!\xda\x41\x1eproject_id,dataset_id,model_id\x1a\xe0\x01\xca\x41\x17\x62igquery.googleapis.com\xd2\x41\xc2\x01https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-onlyBl\n\x1c\x63om.google.cloud.bigquery.v2B\nModelProtoZ@google.golang.org/genproto/googleapis/cloud/bigquery/v2;bigqueryb\x06proto3'
+    ),
+    dependencies=[
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+    ],
+)
 
 
 _MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD = _descriptor.EnumDescriptor(
-  name='KmeansInitializationMethod',
-  full_name='google.cloud.bigquery.v2.Model.KmeansEnums.KmeansInitializationMethod',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='KMEANS_INITIALIZATION_METHOD_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RANDOM', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CUSTOM', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1132,
-  serialized_end=1230,
+    name="KmeansInitializationMethod",
+    full_name="google.cloud.bigquery.v2.Model.KmeansEnums.KmeansInitializationMethod",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="KMEANS_INITIALIZATION_METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RANDOM", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CUSTOM", index=2, number=2, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1132,
+    serialized_end=1230,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD)
 
 _MODEL_MODELTYPE = _descriptor.EnumDescriptor(
-  name='ModelType',
-  full_name='google.cloud.bigquery.v2.Model.ModelType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='MODEL_TYPE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LINEAR_REGRESSION', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LOGISTIC_REGRESSION', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='KMEANS', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TENSORFLOW', index=4, number=6,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=6632,
-  serialized_end=6747,
+    name="ModelType",
+    full_name="google.cloud.bigquery.v2.Model.ModelType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="MODEL_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LINEAR_REGRESSION",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LOGISTIC_REGRESSION",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="KMEANS", index=3, number=3, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TENSORFLOW", index=4, number=6, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=6632,
+    serialized_end=6747,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_MODELTYPE)
 
 _MODEL_LOSSTYPE = _descriptor.EnumDescriptor(
-  name='LossType',
-  full_name='google.cloud.bigquery.v2.Model.LossType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='LOSS_TYPE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MEAN_SQUARED_LOSS', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MEAN_LOG_LOSS', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=6749,
-  serialized_end=6828,
+    name="LossType",
+    full_name="google.cloud.bigquery.v2.Model.LossType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="LOSS_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MEAN_SQUARED_LOSS",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MEAN_LOG_LOSS", index=2, number=2, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=6749,
+    serialized_end=6828,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_LOSSTYPE)
 
 _MODEL_DISTANCETYPE = _descriptor.EnumDescriptor(
-  name='DistanceType',
-  full_name='google.cloud.bigquery.v2.Model.DistanceType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='DISTANCE_TYPE_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='EUCLIDEAN', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COSINE', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=6830,
-  serialized_end=6902,
+    name="DistanceType",
+    full_name="google.cloud.bigquery.v2.Model.DistanceType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="DISTANCE_TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="EUCLIDEAN", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="COSINE", index=2, number=2, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=6830,
+    serialized_end=6902,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_DISTANCETYPE)
 
 _MODEL_DATASPLITMETHOD = _descriptor.EnumDescriptor(
-  name='DataSplitMethod',
-  full_name='google.cloud.bigquery.v2.Model.DataSplitMethod',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='DATA_SPLIT_METHOD_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RANDOM', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CUSTOM', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SEQUENTIAL', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NO_SPLIT', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUTO_SPLIT', index=5, number=5,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=6904,
-  serialized_end=7026,
+    name="DataSplitMethod",
+    full_name="google.cloud.bigquery.v2.Model.DataSplitMethod",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="DATA_SPLIT_METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="RANDOM", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CUSTOM", index=2, number=2, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SEQUENTIAL", index=3, number=3, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NO_SPLIT", index=4, number=4, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="AUTO_SPLIT", index=5, number=5, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=6904,
+    serialized_end=7026,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_DATASPLITMETHOD)
 
 _MODEL_LEARNRATESTRATEGY = _descriptor.EnumDescriptor(
-  name='LearnRateStrategy',
-  full_name='google.cloud.bigquery.v2.Model.LearnRateStrategy',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='LEARN_RATE_STRATEGY_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LINE_SEARCH', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='CONSTANT', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=7028,
-  serialized_end=7115,
+    name="LearnRateStrategy",
+    full_name="google.cloud.bigquery.v2.Model.LearnRateStrategy",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="LEARN_RATE_STRATEGY_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="LINE_SEARCH", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="CONSTANT", index=2, number=2, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=7028,
+    serialized_end=7115,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_LEARNRATESTRATEGY)
 
 _MODEL_OPTIMIZATIONSTRATEGY = _descriptor.EnumDescriptor(
-  name='OptimizationStrategy',
-  full_name='google.cloud.bigquery.v2.Model.OptimizationStrategy',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='OPTIMIZATION_STRATEGY_UNSPECIFIED', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BATCH_GRADIENT_DESCENT', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='NORMAL_EQUATION', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=7117,
-  serialized_end=7227,
+    name="OptimizationStrategy",
+    full_name="google.cloud.bigquery.v2.Model.OptimizationStrategy",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="OPTIMIZATION_STRATEGY_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="BATCH_GRADIENT_DESCENT",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="NORMAL_EQUATION",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=7117,
+    serialized_end=7227,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_OPTIMIZATIONSTRATEGY)
 
 
 _MODEL_KMEANSENUMS = _descriptor.Descriptor(
-  name='KmeansEnums',
-  full_name='google.cloud.bigquery.v2.Model.KmeansEnums',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1117,
-  serialized_end=1230,
+    name="KmeansEnums",
+    full_name="google.cloud.bigquery.v2.Model.KmeansEnums",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD,],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1117,
+    serialized_end=1230,
 )
 
 _MODEL_REGRESSIONMETRICS = _descriptor.Descriptor(
-  name='RegressionMetrics',
-  full_name='google.cloud.bigquery.v2.Model.RegressionMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='mean_absolute_error', full_name='google.cloud.bigquery.v2.Model.RegressionMetrics.mean_absolute_error', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mean_squared_error', full_name='google.cloud.bigquery.v2.Model.RegressionMetrics.mean_squared_error', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mean_squared_log_error', full_name='google.cloud.bigquery.v2.Model.RegressionMetrics.mean_squared_log_error', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='median_absolute_error', full_name='google.cloud.bigquery.v2.Model.RegressionMetrics.median_absolute_error', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='r_squared', full_name='google.cloud.bigquery.v2.Model.RegressionMetrics.r_squared', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1233,
-  serialized_end=1541,
+    name="RegressionMetrics",
+    full_name="google.cloud.bigquery.v2.Model.RegressionMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="mean_absolute_error",
+            full_name="google.cloud.bigquery.v2.Model.RegressionMetrics.mean_absolute_error",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mean_squared_error",
+            full_name="google.cloud.bigquery.v2.Model.RegressionMetrics.mean_squared_error",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mean_squared_log_error",
+            full_name="google.cloud.bigquery.v2.Model.RegressionMetrics.mean_squared_log_error",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="median_absolute_error",
+            full_name="google.cloud.bigquery.v2.Model.RegressionMetrics.median_absolute_error",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="r_squared",
+            full_name="google.cloud.bigquery.v2.Model.RegressionMetrics.r_squared",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1233,
+    serialized_end=1541,
 )
 
 _MODEL_AGGREGATECLASSIFICATIONMETRICS = _descriptor.Descriptor(
-  name='AggregateClassificationMetrics',
-  full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='precision', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.precision', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='recall', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.recall', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='accuracy', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.accuracy', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='threshold', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.threshold', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='f1_score', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.f1_score', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='log_loss', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.log_loss', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='roc_auc', full_name='google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.roc_auc', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1544,
-  serialized_end=1911,
+    name="AggregateClassificationMetrics",
+    full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="precision",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.precision",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="recall",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.recall",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="accuracy",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.accuracy",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="threshold",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.threshold",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="f1_score",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.f1_score",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="log_loss",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.log_loss",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="roc_auc",
+            full_name="google.cloud.bigquery.v2.Model.AggregateClassificationMetrics.roc_auc",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1544,
+    serialized_end=1911,
 )
 
 _MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX = _descriptor.Descriptor(
-  name='BinaryConfusionMatrix',
-  full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='positive_class_threshold', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.positive_class_threshold', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='true_positives', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.true_positives', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='false_positives', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.false_positives', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='true_negatives', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.true_negatives', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='false_negatives', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.false_negatives', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='precision', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.precision', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='recall', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.recall', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='f1_score', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.f1_score', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='accuracy', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.accuracy', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2221,
-  serialized_end=2713,
+    name="BinaryConfusionMatrix",
+    full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="positive_class_threshold",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.positive_class_threshold",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="true_positives",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.true_positives",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="false_positives",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.false_positives",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="true_negatives",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.true_negatives",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="false_negatives",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.false_negatives",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="precision",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.precision",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="recall",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.recall",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="f1_score",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.f1_score",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="accuracy",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix.accuracy",
+            index=8,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2221,
+    serialized_end=2713,
 )
 
 _MODEL_BINARYCLASSIFICATIONMETRICS = _descriptor.Descriptor(
-  name='BinaryClassificationMetrics',
-  full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='aggregate_classification_metrics', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.aggregate_classification_metrics', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='binary_confusion_matrix_list', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.binary_confusion_matrix_list', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='positive_label', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.positive_label', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='negative_label', full_name='google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.negative_label', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1914,
-  serialized_end=2713,
+    name="BinaryClassificationMetrics",
+    full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="aggregate_classification_metrics",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.aggregate_classification_metrics",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="binary_confusion_matrix_list",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.binary_confusion_matrix_list",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="positive_label",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.positive_label",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="negative_label",
+            full_name="google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.negative_label",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1914,
+    serialized_end=2713,
 )
 
 _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY = _descriptor.Descriptor(
-  name='Entry',
-  full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='predicted_label', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry.predicted_label', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='item_count', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry.item_count', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3148,
-  serialized_end=3229,
+    name="Entry",
+    full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="predicted_label",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry.predicted_label",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="item_count",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry.item_count",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3148,
+    serialized_end=3229,
 )
 
 _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW = _descriptor.Descriptor(
-  name='Row',
-  full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='actual_label', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row.actual_label', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='entries', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row.entries', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3232,
-  serialized_end=3363,
+    name="Row",
+    full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="actual_label",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row.actual_label",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="entries",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row.entries",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3232,
+    serialized_end=3363,
 )
 
 _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX = _descriptor.Descriptor(
-  name='ConfusionMatrix',
-  full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='confidence_threshold', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.confidence_threshold', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rows', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.rows', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY, _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2970,
-  serialized_end=3363,
+    name="ConfusionMatrix",
+    full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="confidence_threshold",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.confidence_threshold",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rows",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.rows",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY,
+        _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW,
+    ],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2970,
+    serialized_end=3363,
 )
 
 _MODEL_MULTICLASSCLASSIFICATIONMETRICS = _descriptor.Descriptor(
-  name='MultiClassClassificationMetrics',
-  full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='aggregate_classification_metrics', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.aggregate_classification_metrics', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='confusion_matrix_list', full_name='google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.confusion_matrix_list', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2716,
-  serialized_end=3363,
+    name="MultiClassClassificationMetrics",
+    full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="aggregate_classification_metrics",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.aggregate_classification_metrics",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="confusion_matrix_list",
+            full_name="google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.confusion_matrix_list",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2716,
+    serialized_end=3363,
 )
 
 _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT = _descriptor.Descriptor(
-  name='CategoryCount',
-  full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='category', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.category', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='count', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.count', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4123,
-  serialized_end=4200,
+    name="CategoryCount",
+    full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="category",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.category",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="count",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount.count",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4123,
+    serialized_end=4200,
 )
 
 _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE = _descriptor.Descriptor(
-  name='CategoricalValue',
-  full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='category_counts', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.category_counts', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3975,
-  serialized_end=4200,
+    name="CategoricalValue",
+    full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="category_counts",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.category_counts",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT,
+    ],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3975,
+    serialized_end=4200,
 )
 
 _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE = _descriptor.Descriptor(
-  name='FeatureValue',
-  full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='feature_column', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.feature_column', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='numerical_value', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.numerical_value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='categorical_value', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.categorical_value', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='value', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.value',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=3759,
-  serialized_end=4209,
+    name="FeatureValue",
+    full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="feature_column",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.feature_column",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="numerical_value",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.numerical_value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="categorical_value",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.categorical_value",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="value",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.value",
+            index=0,
+            containing_type=None,
+            fields=[],
+        ),
+    ],
+    serialized_start=3759,
+    serialized_end=4209,
 )
 
 _MODEL_CLUSTERINGMETRICS_CLUSTER = _descriptor.Descriptor(
-  name='Cluster',
-  full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='centroid_id', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.centroid_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='feature_values', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.feature_values', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='count', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.count', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3586,
-  serialized_end=4209,
+    name="Cluster",
+    full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="centroid_id",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.centroid_id",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="feature_values",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.feature_values",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="count",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.count",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3586,
+    serialized_end=4209,
 )
 
 _MODEL_CLUSTERINGMETRICS = _descriptor.Descriptor(
-  name='ClusteringMetrics',
-  full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='davies_bouldin_index', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.davies_bouldin_index', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mean_squared_distance', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.mean_squared_distance', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='clusters', full_name='google.cloud.bigquery.v2.Model.ClusteringMetrics.clusters', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=3366,
-  serialized_end=4209,
+    name="ClusteringMetrics",
+    full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="davies_bouldin_index",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.davies_bouldin_index",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mean_squared_distance",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.mean_squared_distance",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="clusters",
+            full_name="google.cloud.bigquery.v2.Model.ClusteringMetrics.clusters",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_CLUSTERINGMETRICS_CLUSTER,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=3366,
+    serialized_end=4209,
 )
 
 _MODEL_EVALUATIONMETRICS = _descriptor.Descriptor(
-  name='EvaluationMetrics',
-  full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='regression_metrics', full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics.regression_metrics', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='binary_classification_metrics', full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics.binary_classification_metrics', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='multi_class_classification_metrics', full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics.multi_class_classification_metrics', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='clustering_metrics', full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics.clustering_metrics', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='metrics', full_name='google.cloud.bigquery.v2.Model.EvaluationMetrics.metrics',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=4212,
-  serialized_end=4617,
+    name="EvaluationMetrics",
+    full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="regression_metrics",
+            full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics.regression_metrics",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="binary_classification_metrics",
+            full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics.binary_classification_metrics",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="multi_class_classification_metrics",
+            full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics.multi_class_classification_metrics",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="clustering_metrics",
+            full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics.clustering_metrics",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="metrics",
+            full_name="google.cloud.bigquery.v2.Model.EvaluationMetrics.metrics",
+            index=0,
+            containing_type=None,
+            fields=[],
+        ),
+    ],
+    serialized_start=4212,
+    serialized_end=4617,
 )
 
 _MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY = _descriptor.Descriptor(
-  name='LabelClassWeightsEntry',
-  full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry.value', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=_b('8\001'),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6053,
-  serialized_end=6109,
+    name="LabelClassWeightsEntry",
+    full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry.value",
+            index=1,
+            number=2,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6053,
+    serialized_end=6109,
 )
 
 _MODEL_TRAININGRUN_TRAININGOPTIONS = _descriptor.Descriptor(
-  name='TrainingOptions',
-  full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='max_iterations', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.max_iterations', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='loss_type', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.loss_type', index=1,
-      number=2, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='learn_rate', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.learn_rate', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='l1_regularization', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.l1_regularization', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='l2_regularization', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.l2_regularization', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='min_relative_progress', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.min_relative_progress', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='warm_start', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.warm_start', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='early_stop', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.early_stop', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='input_label_columns', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.input_label_columns', index=8,
-      number=9, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data_split_method', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_method', index=9,
-      number=10, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data_split_eval_fraction', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_eval_fraction', index=10,
-      number=11, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data_split_column', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_column', index=11,
-      number=12, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='learn_rate_strategy', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.learn_rate_strategy', index=12,
-      number=13, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='initial_learn_rate', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.initial_learn_rate', index=13,
-      number=16, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='label_class_weights', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.label_class_weights', index=14,
-      number=17, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='distance_type', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.distance_type', index=15,
-      number=20, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='num_clusters', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.num_clusters', index=16,
-      number=21, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_uri', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.model_uri', index=17,
-      number=22, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='optimization_strategy', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.optimization_strategy', index=18,
-      number=23, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='kmeans_initialization_method', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_method', index=19,
-      number=33, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='kmeans_initialization_column', full_name='google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_column', index=20,
-      number=34, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4928,
-  serialized_end=6109,
+    name="TrainingOptions",
+    full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="max_iterations",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.max_iterations",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="loss_type",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.loss_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="learn_rate",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.learn_rate",
+            index=2,
+            number=3,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="l1_regularization",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.l1_regularization",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="l2_regularization",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.l2_regularization",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="min_relative_progress",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.min_relative_progress",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="warm_start",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.warm_start",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="early_stop",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.early_stop",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="input_label_columns",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.input_label_columns",
+            index=8,
+            number=9,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="data_split_method",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_method",
+            index=9,
+            number=10,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="data_split_eval_fraction",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_eval_fraction",
+            index=10,
+            number=11,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="data_split_column",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.data_split_column",
+            index=11,
+            number=12,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="learn_rate_strategy",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.learn_rate_strategy",
+            index=12,
+            number=13,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="initial_learn_rate",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.initial_learn_rate",
+            index=13,
+            number=16,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="label_class_weights",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.label_class_weights",
+            index=14,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="distance_type",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.distance_type",
+            index=15,
+            number=20,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="num_clusters",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.num_clusters",
+            index=16,
+            number=21,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_uri",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.model_uri",
+            index=17,
+            number=22,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="optimization_strategy",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.optimization_strategy",
+            index=18,
+            number=23,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="kmeans_initialization_method",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_method",
+            index=19,
+            number=33,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="kmeans_initialization_column",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.kmeans_initialization_column",
+            index=20,
+            number=34,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4928,
+    serialized_end=6109,
 )
 
 _MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO = _descriptor.Descriptor(
-  name='ClusterInfo',
-  full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='centroid_id', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.centroid_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='cluster_radius', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.cluster_radius', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='cluster_size', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.cluster_size', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6444,
-  serialized_end=6583,
+    name="ClusterInfo",
+    full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="centroid_id",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.centroid_id",
+            index=0,
+            number=1,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="cluster_radius",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.cluster_radius",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="cluster_size",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo.cluster_size",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6444,
+    serialized_end=6583,
 )
 
 _MODEL_TRAININGRUN_ITERATIONRESULT = _descriptor.Descriptor(
-  name='IterationResult',
-  full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='index', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.index', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='duration_ms', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.duration_ms', index=1,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='training_loss', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.training_loss', index=2,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='eval_loss', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.eval_loss', index=3,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='learn_rate', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.learn_rate', index=4,
-      number=7, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='cluster_infos', full_name='google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.cluster_infos', index=5,
-      number=8, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6112,
-  serialized_end=6583,
+    name="IterationResult",
+    full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="index",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.index",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="duration_ms",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.duration_ms",
+            index=1,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="training_loss",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.training_loss",
+            index=2,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="eval_loss",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.eval_loss",
+            index=3,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="learn_rate",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.learn_rate",
+            index=4,
+            number=7,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="cluster_infos",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.cluster_infos",
+            index=5,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO,],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6112,
+    serialized_end=6583,
 )
 
 _MODEL_TRAININGRUN = _descriptor.Descriptor(
-  name='TrainingRun',
-  full_name='google.cloud.bigquery.v2.Model.TrainingRun',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='training_options', full_name='google.cloud.bigquery.v2.Model.TrainingRun.training_options', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='start_time', full_name='google.cloud.bigquery.v2.Model.TrainingRun.start_time', index=1,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='results', full_name='google.cloud.bigquery.v2.Model.TrainingRun.results', index=2,
-      number=6, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='evaluation_metrics', full_name='google.cloud.bigquery.v2.Model.TrainingRun.evaluation_metrics', index=3,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_TRAININGRUN_TRAININGOPTIONS, _MODEL_TRAININGRUN_ITERATIONRESULT, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=4620,
-  serialized_end=6583,
+    name="TrainingRun",
+    full_name="google.cloud.bigquery.v2.Model.TrainingRun",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="training_options",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.training_options",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="start_time",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.start_time",
+            index=1,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="results",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.results",
+            index=2,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="evaluation_metrics",
+            full_name="google.cloud.bigquery.v2.Model.TrainingRun.evaluation_metrics",
+            index=3,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _MODEL_TRAININGRUN_TRAININGOPTIONS,
+        _MODEL_TRAININGRUN_ITERATIONRESULT,
+    ],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4620,
+    serialized_end=6583,
 )
 
 _MODEL_LABELSENTRY = _descriptor.Descriptor(
-  name='LabelsEntry',
-  full_name='google.cloud.bigquery.v2.Model.LabelsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.cloud.bigquery.v2.Model.LabelsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.cloud.bigquery.v2.Model.LabelsEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=_b('8\001'),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=6585,
-  serialized_end=6630,
+    name="LabelsEntry",
+    full_name="google.cloud.bigquery.v2.Model.LabelsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.bigquery.v2.Model.LabelsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.bigquery.v2.Model.LabelsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=6585,
+    serialized_end=6630,
 )
 
 _MODEL = _descriptor.Descriptor(
-  name='Model',
-  full_name='google.cloud.bigquery.v2.Model',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='etag', full_name='google.cloud.bigquery.v2.Model.etag', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_reference', full_name='google.cloud.bigquery.v2.Model.model_reference', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='creation_time', full_name='google.cloud.bigquery.v2.Model.creation_time', index=2,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='last_modified_time', full_name='google.cloud.bigquery.v2.Model.last_modified_time', index=3,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='google.cloud.bigquery.v2.Model.description', index=4,
-      number=12, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\001'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='friendly_name', full_name='google.cloud.bigquery.v2.Model.friendly_name', index=5,
-      number=14, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\001'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='labels', full_name='google.cloud.bigquery.v2.Model.labels', index=6,
-      number=15, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='expiration_time', full_name='google.cloud.bigquery.v2.Model.expiration_time', index=7,
-      number=16, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\001'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='location', full_name='google.cloud.bigquery.v2.Model.location', index=8,
-      number=13, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='encryption_configuration', full_name='google.cloud.bigquery.v2.Model.encryption_configuration', index=9,
-      number=17, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_type', full_name='google.cloud.bigquery.v2.Model.model_type', index=10,
-      number=7, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='training_runs', full_name='google.cloud.bigquery.v2.Model.training_runs', index=11,
-      number=9, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='feature_columns', full_name='google.cloud.bigquery.v2.Model.feature_columns', index=12,
-      number=10, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='label_columns', full_name='google.cloud.bigquery.v2.Model.label_columns', index=13,
-      number=11, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\003'), file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_MODEL_KMEANSENUMS, _MODEL_REGRESSIONMETRICS, _MODEL_AGGREGATECLASSIFICATIONMETRICS, _MODEL_BINARYCLASSIFICATIONMETRICS, _MODEL_MULTICLASSCLASSIFICATIONMETRICS, _MODEL_CLUSTERINGMETRICS, _MODEL_EVALUATIONMETRICS, _MODEL_TRAININGRUN, _MODEL_LABELSENTRY, ],
-  enum_types=[
-    _MODEL_MODELTYPE,
-    _MODEL_LOSSTYPE,
-    _MODEL_DISTANCETYPE,
-    _MODEL_DATASPLITMETHOD,
-    _MODEL_LEARNRATESTRATEGY,
-    _MODEL_OPTIMIZATIONSTRATEGY,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=416,
-  serialized_end=7227,
+    name="Model",
+    full_name="google.cloud.bigquery.v2.Model",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="etag",
+            full_name="google.cloud.bigquery.v2.Model.etag",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_reference",
+            full_name="google.cloud.bigquery.v2.Model.model_reference",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="creation_time",
+            full_name="google.cloud.bigquery.v2.Model.creation_time",
+            index=2,
+            number=5,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="last_modified_time",
+            full_name="google.cloud.bigquery.v2.Model.last_modified_time",
+            index=3,
+            number=6,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.bigquery.v2.Model.description",
+            index=4,
+            number=12,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="friendly_name",
+            full_name="google.cloud.bigquery.v2.Model.friendly_name",
+            index=5,
+            number=14,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="labels",
+            full_name="google.cloud.bigquery.v2.Model.labels",
+            index=6,
+            number=15,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="expiration_time",
+            full_name="google.cloud.bigquery.v2.Model.expiration_time",
+            index=7,
+            number=16,
+            type=3,
+            cpp_type=2,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="location",
+            full_name="google.cloud.bigquery.v2.Model.location",
+            index=8,
+            number=13,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="encryption_configuration",
+            full_name="google.cloud.bigquery.v2.Model.encryption_configuration",
+            index=9,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_type",
+            full_name="google.cloud.bigquery.v2.Model.model_type",
+            index=10,
+            number=7,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="training_runs",
+            full_name="google.cloud.bigquery.v2.Model.training_runs",
+            index=11,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="feature_columns",
+            full_name="google.cloud.bigquery.v2.Model.feature_columns",
+            index=12,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="label_columns",
+            full_name="google.cloud.bigquery.v2.Model.label_columns",
+            index=13,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\003"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _MODEL_KMEANSENUMS,
+        _MODEL_REGRESSIONMETRICS,
+        _MODEL_AGGREGATECLASSIFICATIONMETRICS,
+        _MODEL_BINARYCLASSIFICATIONMETRICS,
+        _MODEL_MULTICLASSCLASSIFICATIONMETRICS,
+        _MODEL_CLUSTERINGMETRICS,
+        _MODEL_EVALUATIONMETRICS,
+        _MODEL_TRAININGRUN,
+        _MODEL_LABELSENTRY,
+    ],
+    enum_types=[
+        _MODEL_MODELTYPE,
+        _MODEL_LOSSTYPE,
+        _MODEL_DISTANCETYPE,
+        _MODEL_DATASPLITMETHOD,
+        _MODEL_LEARNRATESTRATEGY,
+        _MODEL_OPTIMIZATIONSTRATEGY,
+    ],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=416,
+    serialized_end=7227,
 )
 
 
 _GETMODELREQUEST = _descriptor.Descriptor(
-  name='GetModelRequest',
-  full_name='google.cloud.bigquery.v2.GetModelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='project_id', full_name='google.cloud.bigquery.v2.GetModelRequest.project_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='google.cloud.bigquery.v2.GetModelRequest.dataset_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_id', full_name='google.cloud.bigquery.v2.GetModelRequest.model_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=7229,
-  serialized_end=7319,
+    name="GetModelRequest",
+    full_name="google.cloud.bigquery.v2.GetModelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="project_id",
+            full_name="google.cloud.bigquery.v2.GetModelRequest.project_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="dataset_id",
+            full_name="google.cloud.bigquery.v2.GetModelRequest.dataset_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_id",
+            full_name="google.cloud.bigquery.v2.GetModelRequest.model_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=7229,
+    serialized_end=7319,
 )
 
 
 _PATCHMODELREQUEST = _descriptor.Descriptor(
-  name='PatchModelRequest',
-  full_name='google.cloud.bigquery.v2.PatchModelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='project_id', full_name='google.cloud.bigquery.v2.PatchModelRequest.project_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='google.cloud.bigquery.v2.PatchModelRequest.dataset_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_id', full_name='google.cloud.bigquery.v2.PatchModelRequest.model_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model', full_name='google.cloud.bigquery.v2.PatchModelRequest.model', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=7322,
-  serialized_end=7467,
+    name="PatchModelRequest",
+    full_name="google.cloud.bigquery.v2.PatchModelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="project_id",
+            full_name="google.cloud.bigquery.v2.PatchModelRequest.project_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="dataset_id",
+            full_name="google.cloud.bigquery.v2.PatchModelRequest.dataset_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_id",
+            full_name="google.cloud.bigquery.v2.PatchModelRequest.model_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model",
+            full_name="google.cloud.bigquery.v2.PatchModelRequest.model",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=7322,
+    serialized_end=7467,
 )
 
 
 _DELETEMODELREQUEST = _descriptor.Descriptor(
-  name='DeleteModelRequest',
-  full_name='google.cloud.bigquery.v2.DeleteModelRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='project_id', full_name='google.cloud.bigquery.v2.DeleteModelRequest.project_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='google.cloud.bigquery.v2.DeleteModelRequest.dataset_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model_id', full_name='google.cloud.bigquery.v2.DeleteModelRequest.model_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=7469,
-  serialized_end=7562,
+    name="DeleteModelRequest",
+    full_name="google.cloud.bigquery.v2.DeleteModelRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="project_id",
+            full_name="google.cloud.bigquery.v2.DeleteModelRequest.project_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="dataset_id",
+            full_name="google.cloud.bigquery.v2.DeleteModelRequest.dataset_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model_id",
+            full_name="google.cloud.bigquery.v2.DeleteModelRequest.model_id",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=7469,
+    serialized_end=7562,
 )
 
 
 _LISTMODELSREQUEST = _descriptor.Descriptor(
-  name='ListModelsRequest',
-  full_name='google.cloud.bigquery.v2.ListModelsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='project_id', full_name='google.cloud.bigquery.v2.ListModelsRequest.project_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='dataset_id', full_name='google.cloud.bigquery.v2.ListModelsRequest.dataset_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=_b('\340A\002'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='max_results', full_name='google.cloud.bigquery.v2.ListModelsRequest.max_results', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='page_token', full_name='google.cloud.bigquery.v2.ListModelsRequest.page_token', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=7565,
-  serialized_end=7705,
+    name="ListModelsRequest",
+    full_name="google.cloud.bigquery.v2.ListModelsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="project_id",
+            full_name="google.cloud.bigquery.v2.ListModelsRequest.project_id",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="dataset_id",
+            full_name="google.cloud.bigquery.v2.ListModelsRequest.dataset_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="max_results",
+            full_name="google.cloud.bigquery.v2.ListModelsRequest.max_results",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.bigquery.v2.ListModelsRequest.page_token",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=7565,
+    serialized_end=7705,
 )
 
 
 _LISTMODELSRESPONSE = _descriptor.Descriptor(
-  name='ListModelsResponse',
-  full_name='google.cloud.bigquery.v2.ListModelsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='models', full_name='google.cloud.bigquery.v2.ListModelsResponse.models', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='next_page_token', full_name='google.cloud.bigquery.v2.ListModelsResponse.next_page_token', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=7707,
-  serialized_end=7801,
+    name="ListModelsResponse",
+    full_name="google.cloud.bigquery.v2.ListModelsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="models",
+            full_name="google.cloud.bigquery.v2.ListModelsResponse.models",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.bigquery.v2.ListModelsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=7707,
+    serialized_end=7801,
 )
 
 _MODEL_KMEANSENUMS.containing_type = _MODEL
 _MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD.containing_type = _MODEL_KMEANSENUMS
-_MODEL_REGRESSIONMETRICS.fields_by_name['mean_absolute_error'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_REGRESSIONMETRICS.fields_by_name['mean_squared_error'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_REGRESSIONMETRICS.fields_by_name['mean_squared_log_error'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_REGRESSIONMETRICS.fields_by_name['median_absolute_error'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_REGRESSIONMETRICS.fields_by_name['r_squared'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_REGRESSIONMETRICS.fields_by_name[
+    "mean_absolute_error"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_REGRESSIONMETRICS.fields_by_name[
+    "mean_squared_error"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_REGRESSIONMETRICS.fields_by_name[
+    "mean_squared_log_error"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_REGRESSIONMETRICS.fields_by_name[
+    "median_absolute_error"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_REGRESSIONMETRICS.fields_by_name[
+    "r_squared"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
 _MODEL_REGRESSIONMETRICS.containing_type = _MODEL
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['precision'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['recall'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['accuracy'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['threshold'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['f1_score'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['log_loss'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name['roc_auc'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "precision"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "recall"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "accuracy"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "threshold"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "f1_score"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "log_loss"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_AGGREGATECLASSIFICATIONMETRICS.fields_by_name[
+    "roc_auc"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
 _MODEL_AGGREGATECLASSIFICATIONMETRICS.containing_type = _MODEL
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['positive_class_threshold'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['true_positives'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['false_positives'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['true_negatives'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['false_negatives'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['precision'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['recall'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['f1_score'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name['accuracy'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.containing_type = _MODEL_BINARYCLASSIFICATIONMETRICS
-_MODEL_BINARYCLASSIFICATIONMETRICS.fields_by_name['aggregate_classification_metrics'].message_type = _MODEL_AGGREGATECLASSIFICATIONMETRICS
-_MODEL_BINARYCLASSIFICATIONMETRICS.fields_by_name['binary_confusion_matrix_list'].message_type = _MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "positive_class_threshold"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "true_positives"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "false_positives"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "true_negatives"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "false_negatives"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "precision"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "recall"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "f1_score"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.fields_by_name[
+    "accuracy"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX.containing_type = (
+    _MODEL_BINARYCLASSIFICATIONMETRICS
+)
+_MODEL_BINARYCLASSIFICATIONMETRICS.fields_by_name[
+    "aggregate_classification_metrics"
+].message_type = _MODEL_AGGREGATECLASSIFICATIONMETRICS
+_MODEL_BINARYCLASSIFICATIONMETRICS.fields_by_name[
+    "binary_confusion_matrix_list"
+].message_type = _MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX
 _MODEL_BINARYCLASSIFICATIONMETRICS.containing_type = _MODEL
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY.fields_by_name['item_count'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY.containing_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW.fields_by_name['entries'].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW.containing_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.fields_by_name['confidence_threshold'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.fields_by_name['rows'].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.containing_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS.fields_by_name['aggregate_classification_metrics'].message_type = _MODEL_AGGREGATECLASSIFICATIONMETRICS
-_MODEL_MULTICLASSCLASSIFICATIONMETRICS.fields_by_name['confusion_matrix_list'].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY.fields_by_name[
+    "item_count"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY.containing_type = (
+    _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
+)
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW.fields_by_name[
+    "entries"
+].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW.containing_type = (
+    _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
+)
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.fields_by_name[
+    "confidence_threshold"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.fields_by_name[
+    "rows"
+].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX.containing_type = (
+    _MODEL_MULTICLASSCLASSIFICATIONMETRICS
+)
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS.fields_by_name[
+    "aggregate_classification_metrics"
+].message_type = _MODEL_AGGREGATECLASSIFICATIONMETRICS
+_MODEL_MULTICLASSCLASSIFICATIONMETRICS.fields_by_name[
+    "confusion_matrix_list"
+].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX
 _MODEL_MULTICLASSCLASSIFICATIONMETRICS.containing_type = _MODEL
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT.fields_by_name['count'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT.containing_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE.fields_by_name['category_counts'].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE.containing_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['numerical_value'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['categorical_value'].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.containing_type = _MODEL_CLUSTERINGMETRICS_CLUSTER
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name['value'].fields.append(
-  _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['numerical_value'])
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['numerical_value'].containing_oneof = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name['value']
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name['value'].fields.append(
-  _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['categorical_value'])
-_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name['categorical_value'].containing_oneof = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name['value']
-_MODEL_CLUSTERINGMETRICS_CLUSTER.fields_by_name['feature_values'].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE
-_MODEL_CLUSTERINGMETRICS_CLUSTER.fields_by_name['count'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT.fields_by_name[
+    "count"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT.containing_type = (
+    _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE.fields_by_name[
+    "category_counts"
+].message_type = (
+    _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE.containing_type = (
+    _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name[
+    "numerical_value"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name[
+    "categorical_value"
+].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.containing_type = (
+    _MODEL_CLUSTERINGMETRICS_CLUSTER
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name["value"].fields.append(
+    _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name["numerical_value"]
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name[
+    "numerical_value"
+].containing_oneof = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name[
+    "value"
+]
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name["value"].fields.append(
+    _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name["categorical_value"]
+)
+_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.fields_by_name[
+    "categorical_value"
+].containing_oneof = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE.oneofs_by_name[
+    "value"
+]
+_MODEL_CLUSTERINGMETRICS_CLUSTER.fields_by_name[
+    "feature_values"
+].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE
+_MODEL_CLUSTERINGMETRICS_CLUSTER.fields_by_name[
+    "count"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
 _MODEL_CLUSTERINGMETRICS_CLUSTER.containing_type = _MODEL_CLUSTERINGMETRICS
-_MODEL_CLUSTERINGMETRICS.fields_by_name['davies_bouldin_index'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_CLUSTERINGMETRICS.fields_by_name['mean_squared_distance'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_CLUSTERINGMETRICS.fields_by_name['clusters'].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER
+_MODEL_CLUSTERINGMETRICS.fields_by_name[
+    "davies_bouldin_index"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_CLUSTERINGMETRICS.fields_by_name[
+    "mean_squared_distance"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_CLUSTERINGMETRICS.fields_by_name[
+    "clusters"
+].message_type = _MODEL_CLUSTERINGMETRICS_CLUSTER
 _MODEL_CLUSTERINGMETRICS.containing_type = _MODEL
-_MODEL_EVALUATIONMETRICS.fields_by_name['regression_metrics'].message_type = _MODEL_REGRESSIONMETRICS
-_MODEL_EVALUATIONMETRICS.fields_by_name['binary_classification_metrics'].message_type = _MODEL_BINARYCLASSIFICATIONMETRICS
-_MODEL_EVALUATIONMETRICS.fields_by_name['multi_class_classification_metrics'].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS
-_MODEL_EVALUATIONMETRICS.fields_by_name['clustering_metrics'].message_type = _MODEL_CLUSTERINGMETRICS
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "regression_metrics"
+].message_type = _MODEL_REGRESSIONMETRICS
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "binary_classification_metrics"
+].message_type = _MODEL_BINARYCLASSIFICATIONMETRICS
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "multi_class_classification_metrics"
+].message_type = _MODEL_MULTICLASSCLASSIFICATIONMETRICS
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "clustering_metrics"
+].message_type = _MODEL_CLUSTERINGMETRICS
 _MODEL_EVALUATIONMETRICS.containing_type = _MODEL
-_MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics'].fields.append(
-  _MODEL_EVALUATIONMETRICS.fields_by_name['regression_metrics'])
-_MODEL_EVALUATIONMETRICS.fields_by_name['regression_metrics'].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics']
-_MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics'].fields.append(
-  _MODEL_EVALUATIONMETRICS.fields_by_name['binary_classification_metrics'])
-_MODEL_EVALUATIONMETRICS.fields_by_name['binary_classification_metrics'].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics']
-_MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics'].fields.append(
-  _MODEL_EVALUATIONMETRICS.fields_by_name['multi_class_classification_metrics'])
-_MODEL_EVALUATIONMETRICS.fields_by_name['multi_class_classification_metrics'].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics']
-_MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics'].fields.append(
-  _MODEL_EVALUATIONMETRICS.fields_by_name['clustering_metrics'])
-_MODEL_EVALUATIONMETRICS.fields_by_name['clustering_metrics'].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name['metrics']
-_MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY.containing_type = _MODEL_TRAININGRUN_TRAININGOPTIONS
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['loss_type'].enum_type = _MODEL_LOSSTYPE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['l1_regularization'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['l2_regularization'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['min_relative_progress'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['warm_start'].message_type = google_dot_protobuf_dot_wrappers__pb2._BOOLVALUE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['early_stop'].message_type = google_dot_protobuf_dot_wrappers__pb2._BOOLVALUE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['data_split_method'].enum_type = _MODEL_DATASPLITMETHOD
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['learn_rate_strategy'].enum_type = _MODEL_LEARNRATESTRATEGY
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['label_class_weights'].message_type = _MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['distance_type'].enum_type = _MODEL_DISTANCETYPE
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['optimization_strategy'].enum_type = _MODEL_OPTIMIZATIONSTRATEGY
-_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name['kmeans_initialization_method'].enum_type = _MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD
+_MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"].fields.append(
+    _MODEL_EVALUATIONMETRICS.fields_by_name["regression_metrics"]
+)
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "regression_metrics"
+].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"]
+_MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"].fields.append(
+    _MODEL_EVALUATIONMETRICS.fields_by_name["binary_classification_metrics"]
+)
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "binary_classification_metrics"
+].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"]
+_MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"].fields.append(
+    _MODEL_EVALUATIONMETRICS.fields_by_name["multi_class_classification_metrics"]
+)
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "multi_class_classification_metrics"
+].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"]
+_MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"].fields.append(
+    _MODEL_EVALUATIONMETRICS.fields_by_name["clustering_metrics"]
+)
+_MODEL_EVALUATIONMETRICS.fields_by_name[
+    "clustering_metrics"
+].containing_oneof = _MODEL_EVALUATIONMETRICS.oneofs_by_name["metrics"]
+_MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY.containing_type = (
+    _MODEL_TRAININGRUN_TRAININGOPTIONS
+)
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "loss_type"
+].enum_type = _MODEL_LOSSTYPE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "l1_regularization"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "l2_regularization"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "min_relative_progress"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "warm_start"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._BOOLVALUE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "early_stop"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._BOOLVALUE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "data_split_method"
+].enum_type = _MODEL_DATASPLITMETHOD
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "learn_rate_strategy"
+].enum_type = _MODEL_LEARNRATESTRATEGY
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "label_class_weights"
+].message_type = _MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "distance_type"
+].enum_type = _MODEL_DISTANCETYPE
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "optimization_strategy"
+].enum_type = _MODEL_OPTIMIZATIONSTRATEGY
+_MODEL_TRAININGRUN_TRAININGOPTIONS.fields_by_name[
+    "kmeans_initialization_method"
+].enum_type = _MODEL_KMEANSENUMS_KMEANSINITIALIZATIONMETHOD
 _MODEL_TRAININGRUN_TRAININGOPTIONS.containing_type = _MODEL_TRAININGRUN
-_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.fields_by_name['cluster_radius'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.fields_by_name['cluster_size'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.containing_type = _MODEL_TRAININGRUN_ITERATIONRESULT
-_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name['index'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT32VALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name['duration_ms'].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name['training_loss'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name['eval_loss'].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
-_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name['cluster_infos'].message_type = _MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO
+_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.fields_by_name[
+    "cluster_radius"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.fields_by_name[
+    "cluster_size"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO.containing_type = (
+    _MODEL_TRAININGRUN_ITERATIONRESULT
+)
+_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name[
+    "index"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT32VALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name[
+    "duration_ms"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._INT64VALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name[
+    "training_loss"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name[
+    "eval_loss"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._DOUBLEVALUE
+_MODEL_TRAININGRUN_ITERATIONRESULT.fields_by_name[
+    "cluster_infos"
+].message_type = _MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO
 _MODEL_TRAININGRUN_ITERATIONRESULT.containing_type = _MODEL_TRAININGRUN
-_MODEL_TRAININGRUN.fields_by_name['training_options'].message_type = _MODEL_TRAININGRUN_TRAININGOPTIONS
-_MODEL_TRAININGRUN.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_MODEL_TRAININGRUN.fields_by_name['results'].message_type = _MODEL_TRAININGRUN_ITERATIONRESULT
-_MODEL_TRAININGRUN.fields_by_name['evaluation_metrics'].message_type = _MODEL_EVALUATIONMETRICS
+_MODEL_TRAININGRUN.fields_by_name[
+    "training_options"
+].message_type = _MODEL_TRAININGRUN_TRAININGOPTIONS
+_MODEL_TRAININGRUN.fields_by_name[
+    "start_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_MODEL_TRAININGRUN.fields_by_name[
+    "results"
+].message_type = _MODEL_TRAININGRUN_ITERATIONRESULT
+_MODEL_TRAININGRUN.fields_by_name[
+    "evaluation_metrics"
+].message_type = _MODEL_EVALUATIONMETRICS
 _MODEL_TRAININGRUN.containing_type = _MODEL
 _MODEL_LABELSENTRY.containing_type = _MODEL
-_MODEL.fields_by_name['model_reference'].message_type = google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2._MODELREFERENCE
-_MODEL.fields_by_name['labels'].message_type = _MODEL_LABELSENTRY
-_MODEL.fields_by_name['encryption_configuration'].message_type = google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2._ENCRYPTIONCONFIGURATION
-_MODEL.fields_by_name['model_type'].enum_type = _MODEL_MODELTYPE
-_MODEL.fields_by_name['training_runs'].message_type = _MODEL_TRAININGRUN
-_MODEL.fields_by_name['feature_columns'].message_type = google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2._STANDARDSQLFIELD
-_MODEL.fields_by_name['label_columns'].message_type = google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2._STANDARDSQLFIELD
+_MODEL.fields_by_name[
+    "model_reference"
+].message_type = (
+    google_dot_cloud_dot_bigquery__v2_dot_proto_dot_model__reference__pb2._MODELREFERENCE
+)
+_MODEL.fields_by_name["labels"].message_type = _MODEL_LABELSENTRY
+_MODEL.fields_by_name[
+    "encryption_configuration"
+].message_type = (
+    google_dot_cloud_dot_bigquery__v2_dot_proto_dot_encryption__config__pb2._ENCRYPTIONCONFIGURATION
+)
+_MODEL.fields_by_name["model_type"].enum_type = _MODEL_MODELTYPE
+_MODEL.fields_by_name["training_runs"].message_type = _MODEL_TRAININGRUN
+_MODEL.fields_by_name[
+    "feature_columns"
+].message_type = (
+    google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2._STANDARDSQLFIELD
+)
+_MODEL.fields_by_name[
+    "label_columns"
+].message_type = (
+    google_dot_cloud_dot_bigquery__v2_dot_proto_dot_standard__sql__pb2._STANDARDSQLFIELD
+)
 _MODEL_MODELTYPE.containing_type = _MODEL
 _MODEL_LOSSTYPE.containing_type = _MODEL
 _MODEL_DISTANCETYPE.containing_type = _MODEL
 _MODEL_DATASPLITMETHOD.containing_type = _MODEL
 _MODEL_LEARNRATESTRATEGY.containing_type = _MODEL
 _MODEL_OPTIMIZATIONSTRATEGY.containing_type = _MODEL
-_PATCHMODELREQUEST.fields_by_name['model'].message_type = _MODEL
-_LISTMODELSREQUEST.fields_by_name['max_results'].message_type = google_dot_protobuf_dot_wrappers__pb2._UINT32VALUE
-_LISTMODELSRESPONSE.fields_by_name['models'].message_type = _MODEL
-DESCRIPTOR.message_types_by_name['Model'] = _MODEL
-DESCRIPTOR.message_types_by_name['GetModelRequest'] = _GETMODELREQUEST
-DESCRIPTOR.message_types_by_name['PatchModelRequest'] = _PATCHMODELREQUEST
-DESCRIPTOR.message_types_by_name['DeleteModelRequest'] = _DELETEMODELREQUEST
-DESCRIPTOR.message_types_by_name['ListModelsRequest'] = _LISTMODELSREQUEST
-DESCRIPTOR.message_types_by_name['ListModelsResponse'] = _LISTMODELSRESPONSE
+_PATCHMODELREQUEST.fields_by_name["model"].message_type = _MODEL
+_LISTMODELSREQUEST.fields_by_name[
+    "max_results"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._UINT32VALUE
+_LISTMODELSRESPONSE.fields_by_name["models"].message_type = _MODEL
+DESCRIPTOR.message_types_by_name["Model"] = _MODEL
+DESCRIPTOR.message_types_by_name["GetModelRequest"] = _GETMODELREQUEST
+DESCRIPTOR.message_types_by_name["PatchModelRequest"] = _PATCHMODELREQUEST
+DESCRIPTOR.message_types_by_name["DeleteModelRequest"] = _DELETEMODELREQUEST
+DESCRIPTOR.message_types_by_name["ListModelsRequest"] = _LISTMODELSREQUEST
+DESCRIPTOR.message_types_by_name["ListModelsResponse"] = _LISTMODELSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), dict(
-
-  KmeansEnums = _reflection.GeneratedProtocolMessageType('KmeansEnums', (_message.Message,), dict(
-    DESCRIPTOR = _MODEL_KMEANSENUMS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.KmeansEnums)
-    ))
-  ,
-
-  RegressionMetrics = _reflection.GeneratedProtocolMessageType('RegressionMetrics', (_message.Message,), dict(
-    DESCRIPTOR = _MODEL_REGRESSIONMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Evaluation metrics for regression and explicit feedback type matrix
+Model = _reflection.GeneratedProtocolMessageType(
+    "Model",
+    (_message.Message,),
+    dict(
+        KmeansEnums=_reflection.GeneratedProtocolMessageType(
+            "KmeansEnums",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODEL_KMEANSENUMS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.KmeansEnums)
+            ),
+        ),
+        RegressionMetrics=_reflection.GeneratedProtocolMessageType(
+            "RegressionMetrics",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODEL_REGRESSIONMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Evaluation metrics for regression and explicit feedback type matrix
     factorization models.
     
     
@@ -1854,15 +3326,16 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
         r_squared:
             R^2 score.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.RegressionMetrics)
-    ))
-  ,
-
-  AggregateClassificationMetrics = _reflection.GeneratedProtocolMessageType('AggregateClassificationMetrics', (_message.Message,), dict(
-    DESCRIPTOR = _MODEL_AGGREGATECLASSIFICATIONMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Aggregate metrics for classification/classifier models. For multi-class
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.RegressionMetrics)
+            ),
+        ),
+        AggregateClassificationMetrics=_reflection.GeneratedProtocolMessageType(
+            "AggregateClassificationMetrics",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODEL_AGGREGATECLASSIFICATIONMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Aggregate metrics for classification/classifier models. For multi-class
     models, the metrics are either macro-averaged or micro-averaged. When
     macro-averaged, the metrics are calculated for each label and then an
     unweighted average is taken of those values. When micro-averaged, the
@@ -1897,17 +3370,20 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
             Area Under a ROC Curve. For multiclass this is a macro-
             averaged metric.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.AggregateClassificationMetrics)
-    ))
-  ,
-
-  BinaryClassificationMetrics = _reflection.GeneratedProtocolMessageType('BinaryClassificationMetrics', (_message.Message,), dict(
-
-    BinaryConfusionMatrix = _reflection.GeneratedProtocolMessageType('BinaryConfusionMatrix', (_message.Message,), dict(
-      DESCRIPTOR = _MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX,
-      __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-      ,
-      __doc__ = """Confusion matrix for binary classification models.
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.AggregateClassificationMetrics)
+            ),
+        ),
+        BinaryClassificationMetrics=_reflection.GeneratedProtocolMessageType(
+            "BinaryClassificationMetrics",
+            (_message.Message,),
+            dict(
+                BinaryConfusionMatrix=_reflection.GeneratedProtocolMessageType(
+                    "BinaryConfusionMatrix",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_MODEL_BINARYCLASSIFICATIONMETRICS_BINARYCONFUSIONMATRIX,
+                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                        __doc__="""Confusion matrix for binary classification models.
       
       
       Attributes:
@@ -1933,13 +3409,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
           accuracy:
               The fraction of predictions given the correct label.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix)
-      ))
-    ,
-    DESCRIPTOR = _MODEL_BINARYCLASSIFICATIONMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Evaluation metrics for binary classification/classifier models.
+                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.BinaryClassificationMetrics.BinaryConfusionMatrix)
+                    ),
+                ),
+                DESCRIPTOR=_MODEL_BINARYCLASSIFICATIONMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Evaluation metrics for binary classification/classifier models.
     
     
     Attributes:
@@ -1952,19 +3427,24 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
         negative_label:
             Label representing the negative class.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.BinaryClassificationMetrics)
-    ))
-  ,
-
-  MultiClassClassificationMetrics = _reflection.GeneratedProtocolMessageType('MultiClassClassificationMetrics', (_message.Message,), dict(
-
-    ConfusionMatrix = _reflection.GeneratedProtocolMessageType('ConfusionMatrix', (_message.Message,), dict(
-
-      Entry = _reflection.GeneratedProtocolMessageType('Entry', (_message.Message,), dict(
-        DESCRIPTOR = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY,
-        __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-        ,
-        __doc__ = """A single entry in the confusion matrix.
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.BinaryClassificationMetrics)
+            ),
+        ),
+        MultiClassClassificationMetrics=_reflection.GeneratedProtocolMessageType(
+            "MultiClassClassificationMetrics",
+            (_message.Message,),
+            dict(
+                ConfusionMatrix=_reflection.GeneratedProtocolMessageType(
+                    "ConfusionMatrix",
+                    (_message.Message,),
+                    dict(
+                        Entry=_reflection.GeneratedProtocolMessageType(
+                            "Entry",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ENTRY,
+                                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                __doc__="""A single entry in the confusion matrix.
         
         
         Attributes:
@@ -1975,15 +3455,16 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
             item_count:
                 Number of items being predicted as this label.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry)
-        ))
-      ,
-
-      Row = _reflection.GeneratedProtocolMessageType('Row', (_message.Message,), dict(
-        DESCRIPTOR = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW,
-        __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-        ,
-        __doc__ = """A single row in the confusion matrix.
+                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry)
+                            ),
+                        ),
+                        Row=_reflection.GeneratedProtocolMessageType(
+                            "Row",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX_ROW,
+                                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                __doc__="""A single row in the confusion matrix.
         
         
         Attributes:
@@ -1992,13 +3473,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
             entries:
                 Info describing predicted label distribution.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row)
-        ))
-      ,
-      DESCRIPTOR = _MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX,
-      __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-      ,
-      __doc__ = """Confusion matrix for multi-class classification models.
+                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row)
+                            ),
+                        ),
+                        DESCRIPTOR=_MODEL_MULTICLASSCLASSIFICATIONMETRICS_CONFUSIONMATRIX,
+                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                        __doc__="""Confusion matrix for multi-class classification models.
       
       
       Attributes:
@@ -2008,13 +3488,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
           rows:
               One row per actual label.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix)
-      ))
-    ,
-    DESCRIPTOR = _MODEL_MULTICLASSCLASSIFICATIONMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Evaluation metrics for multi-class classification/classifier models.
+                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics.ConfusionMatrix)
+                    ),
+                ),
+                DESCRIPTOR=_MODEL_MULTICLASSCLASSIFICATIONMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Evaluation metrics for multi-class classification/classifier models.
     
     
     Attributes:
@@ -2023,23 +3502,32 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
         confusion_matrix_list:
             Confusion matrix at different thresholds.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics)
-    ))
-  ,
-
-  ClusteringMetrics = _reflection.GeneratedProtocolMessageType('ClusteringMetrics', (_message.Message,), dict(
-
-    Cluster = _reflection.GeneratedProtocolMessageType('Cluster', (_message.Message,), dict(
-
-      FeatureValue = _reflection.GeneratedProtocolMessageType('FeatureValue', (_message.Message,), dict(
-
-        CategoricalValue = _reflection.GeneratedProtocolMessageType('CategoricalValue', (_message.Message,), dict(
-
-          CategoryCount = _reflection.GeneratedProtocolMessageType('CategoryCount', (_message.Message,), dict(
-            DESCRIPTOR = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT,
-            __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-            ,
-            __doc__ = """Represents the count of a single category within the cluster.
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.MultiClassClassificationMetrics)
+            ),
+        ),
+        ClusteringMetrics=_reflection.GeneratedProtocolMessageType(
+            "ClusteringMetrics",
+            (_message.Message,),
+            dict(
+                Cluster=_reflection.GeneratedProtocolMessageType(
+                    "Cluster",
+                    (_message.Message,),
+                    dict(
+                        FeatureValue=_reflection.GeneratedProtocolMessageType(
+                            "FeatureValue",
+                            (_message.Message,),
+                            dict(
+                                CategoricalValue=_reflection.GeneratedProtocolMessageType(
+                                    "CategoricalValue",
+                                    (_message.Message,),
+                                    dict(
+                                        CategoryCount=_reflection.GeneratedProtocolMessageType(
+                                            "CategoryCount",
+                                            (_message.Message,),
+                                            dict(
+                                                DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT,
+                                                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                                __doc__="""Represents the count of a single category within the cluster.
             
             
             Attributes:
@@ -2049,13 +3537,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
                     The count of training samples matching the category within the
                     cluster.
             """,
-            # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount)
-            ))
-          ,
-          DESCRIPTOR = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE,
-          __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-          ,
-          __doc__ = """Representative value of a categorical feature.
+                                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount)
+                                            ),
+                                        ),
+                                        DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE,
+                                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                        __doc__="""Representative value of a categorical feature.
           
           
           Attributes:
@@ -2065,13 +3552,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
                   return one more CategoryCount with category "*OTHER*" and
                   count as aggregate counts of remaining categories.
           """,
-          # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue)
-          ))
-        ,
-        DESCRIPTOR = _MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE,
-        __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-        ,
-        __doc__ = """Representative value of a single feature within the cluster.
+                                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue)
+                                    ),
+                                ),
+                                DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE,
+                                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                __doc__="""Representative value of a single feature within the cluster.
         
         
         Attributes:
@@ -2083,13 +3569,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
             categorical_value:
                 The categorical feature value.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue)
-        ))
-      ,
-      DESCRIPTOR = _MODEL_CLUSTERINGMETRICS_CLUSTER,
-      __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-      ,
-      __doc__ = """Message containing the information about one cluster.
+                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster.FeatureValue)
+                            ),
+                        ),
+                        DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER,
+                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                        __doc__="""Message containing the information about one cluster.
       
       
       Attributes:
@@ -2101,13 +3586,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
               Count of training data rows that were assigned to this
               cluster.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster)
-      ))
-    ,
-    DESCRIPTOR = _MODEL_CLUSTERINGMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Evaluation metrics for clustering models.
+                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics.Cluster)
+                    ),
+                ),
+                DESCRIPTOR=_MODEL_CLUSTERINGMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Evaluation metrics for clustering models.
     
     
     Attributes:
@@ -2119,15 +3603,16 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
         clusters:
             [Beta] Information for all clusters.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics)
-    ))
-  ,
-
-  EvaluationMetrics = _reflection.GeneratedProtocolMessageType('EvaluationMetrics', (_message.Message,), dict(
-    DESCRIPTOR = _MODEL_EVALUATIONMETRICS,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Evaluation metrics of a model. These are either computed on all training
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.ClusteringMetrics)
+            ),
+        ),
+        EvaluationMetrics=_reflection.GeneratedProtocolMessageType(
+            "EvaluationMetrics",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODEL_EVALUATIONMETRICS,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Evaluation metrics of a model. These are either computed on all training
     data or just the eval data based on whether eval data was used during
     training. These are not present for imported models.
     
@@ -2143,24 +3628,29 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
         clustering_metrics:
             Populated for clustering models.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.EvaluationMetrics)
-    ))
-  ,
-
-  TrainingRun = _reflection.GeneratedProtocolMessageType('TrainingRun', (_message.Message,), dict(
-
-    TrainingOptions = _reflection.GeneratedProtocolMessageType('TrainingOptions', (_message.Message,), dict(
-
-      LabelClassWeightsEntry = _reflection.GeneratedProtocolMessageType('LabelClassWeightsEntry', (_message.Message,), dict(
-        DESCRIPTOR = _MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY,
-        __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry)
-        ))
-      ,
-      DESCRIPTOR = _MODEL_TRAININGRUN_TRAININGOPTIONS,
-      __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-      ,
-      __doc__ = """Protocol buffer.
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.EvaluationMetrics)
+            ),
+        ),
+        TrainingRun=_reflection.GeneratedProtocolMessageType(
+            "TrainingRun",
+            (_message.Message,),
+            dict(
+                TrainingOptions=_reflection.GeneratedProtocolMessageType(
+                    "TrainingOptions",
+                    (_message.Message,),
+                    dict(
+                        LabelClassWeightsEntry=_reflection.GeneratedProtocolMessageType(
+                            "LabelClassWeightsEntry",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY,
+                                __module__="google.cloud.bigquery_v2.proto.model_pb2"
+                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry)
+                            ),
+                        ),
+                        DESCRIPTOR=_MODEL_TRAININGRUN_TRAININGOPTIONS,
+                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                        __doc__="""Protocol buffer.
 
   Attributes:
           max_iterations:
@@ -2231,17 +3721,20 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
               The column used to provide the initial centroids for kmeans
               algorithm when kmeans\_initialization\_method is CUSTOM.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions)
-      ))
-    ,
-
-    IterationResult = _reflection.GeneratedProtocolMessageType('IterationResult', (_message.Message,), dict(
-
-      ClusterInfo = _reflection.GeneratedProtocolMessageType('ClusterInfo', (_message.Message,), dict(
-        DESCRIPTOR = _MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO,
-        __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-        ,
-        __doc__ = """Information about a single cluster for clustering model.
+                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.TrainingOptions)
+                    ),
+                ),
+                IterationResult=_reflection.GeneratedProtocolMessageType(
+                    "IterationResult",
+                    (_message.Message,),
+                    dict(
+                        ClusterInfo=_reflection.GeneratedProtocolMessageType(
+                            "ClusterInfo",
+                            (_message.Message,),
+                            dict(
+                                DESCRIPTOR=_MODEL_TRAININGRUN_ITERATIONRESULT_CLUSTERINFO,
+                                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                                __doc__="""Information about a single cluster for clustering model.
         
         
         Attributes:
@@ -2254,13 +3747,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
                 Cluster size, the total number of points assigned to the
                 cluster.
         """,
-        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo)
-        ))
-      ,
-      DESCRIPTOR = _MODEL_TRAININGRUN_ITERATIONRESULT,
-      __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-      ,
-      __doc__ = """Information about a single iteration of the training run.
+                                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.IterationResult.ClusterInfo)
+                            ),
+                        ),
+                        DESCRIPTOR=_MODEL_TRAININGRUN_ITERATIONRESULT,
+                        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                        __doc__="""Information about a single iteration of the training run.
       
       
       Attributes:
@@ -2277,13 +3769,12 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
           cluster_infos:
               Information about top clusters for clustering models.
       """,
-      # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.IterationResult)
-      ))
-    ,
-    DESCRIPTOR = _MODEL_TRAININGRUN,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    ,
-    __doc__ = """Information about a single training query run for the model.
+                        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun.IterationResult)
+                    ),
+                ),
+                DESCRIPTOR=_MODEL_TRAININGRUN,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2",
+                __doc__="""Information about a single training query run for the model.
     
     
     Attributes:
@@ -2299,20 +3790,21 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
             The evaluation metrics over training/eval data that were
             computed at the end of training.
     """,
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun)
-    ))
-  ,
-
-  LabelsEntry = _reflection.GeneratedProtocolMessageType('LabelsEntry', (_message.Message,), dict(
-    DESCRIPTOR = _MODEL_LABELSENTRY,
-    __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-    # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.LabelsEntry)
-    ))
-  ,
-  DESCRIPTOR = _MODEL,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.TrainingRun)
+            ),
+        ),
+        LabelsEntry=_reflection.GeneratedProtocolMessageType(
+            "LabelsEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_MODEL_LABELSENTRY,
+                __module__="google.cloud.bigquery_v2.proto.model_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model.LabelsEntry)
+            ),
+        ),
+        DESCRIPTOR=_MODEL,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       etag:
@@ -2364,8 +3856,9 @@ Model = _reflection.GeneratedProtocolMessageType('Model', (_message.Message,), d
           The output of the model will have a "predicted\_" prefix to
           these columns.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.Model)
+    ),
+)
 _sym_db.RegisterMessage(Model)
 _sym_db.RegisterMessage(Model.KmeansEnums)
 _sym_db.RegisterMessage(Model.RegressionMetrics)
@@ -2380,7 +3873,9 @@ _sym_db.RegisterMessage(Model.ClusteringMetrics)
 _sym_db.RegisterMessage(Model.ClusteringMetrics.Cluster)
 _sym_db.RegisterMessage(Model.ClusteringMetrics.Cluster.FeatureValue)
 _sym_db.RegisterMessage(Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue)
-_sym_db.RegisterMessage(Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount)
+_sym_db.RegisterMessage(
+    Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount
+)
 _sym_db.RegisterMessage(Model.EvaluationMetrics)
 _sym_db.RegisterMessage(Model.TrainingRun)
 _sym_db.RegisterMessage(Model.TrainingRun.TrainingOptions)
@@ -2389,11 +3884,13 @@ _sym_db.RegisterMessage(Model.TrainingRun.IterationResult)
 _sym_db.RegisterMessage(Model.TrainingRun.IterationResult.ClusterInfo)
 _sym_db.RegisterMessage(Model.LabelsEntry)
 
-GetModelRequest = _reflection.GeneratedProtocolMessageType('GetModelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _GETMODELREQUEST,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+GetModelRequest = _reflection.GeneratedProtocolMessageType(
+    "GetModelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETMODELREQUEST,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       project_id:
@@ -2403,15 +3900,18 @@ GetModelRequest = _reflection.GeneratedProtocolMessageType('GetModelRequest', (_
       model_id:
           Required. Model ID of the requested model.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.GetModelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.GetModelRequest)
+    ),
+)
 _sym_db.RegisterMessage(GetModelRequest)
 
-PatchModelRequest = _reflection.GeneratedProtocolMessageType('PatchModelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _PATCHMODELREQUEST,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+PatchModelRequest = _reflection.GeneratedProtocolMessageType(
+    "PatchModelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PATCHMODELREQUEST,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       project_id:
@@ -2425,15 +3925,18 @@ PatchModelRequest = _reflection.GeneratedProtocolMessageType('PatchModelRequest'
           Missing fields are not updated. To clear a field, explicitly
           set to default value.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.PatchModelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.PatchModelRequest)
+    ),
+)
 _sym_db.RegisterMessage(PatchModelRequest)
 
-DeleteModelRequest = _reflection.GeneratedProtocolMessageType('DeleteModelRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETEMODELREQUEST,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+DeleteModelRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteModelRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEMODELREQUEST,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       project_id:
@@ -2443,15 +3946,18 @@ DeleteModelRequest = _reflection.GeneratedProtocolMessageType('DeleteModelReques
       model_id:
           Required. Model ID of the model to delete.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.DeleteModelRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.DeleteModelRequest)
+    ),
+)
 _sym_db.RegisterMessage(DeleteModelRequest)
 
-ListModelsRequest = _reflection.GeneratedProtocolMessageType('ListModelsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LISTMODELSREQUEST,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+ListModelsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListModelsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTMODELSREQUEST,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       project_id:
@@ -2466,15 +3972,18 @@ ListModelsRequest = _reflection.GeneratedProtocolMessageType('ListModelsRequest'
           Page token, returned by a previous call to request the next
           page of results
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.ListModelsRequest)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.ListModelsRequest)
+    ),
+)
 _sym_db.RegisterMessage(ListModelsRequest)
 
-ListModelsResponse = _reflection.GeneratedProtocolMessageType('ListModelsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTMODELSRESPONSE,
-  __module__ = 'google.cloud.bigquery_v2.proto.model_pb2'
-  ,
-  __doc__ = """Protocol buffer.
+ListModelsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListModelsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTMODELSRESPONSE,
+        __module__="google.cloud.bigquery_v2.proto.model_pb2",
+        __doc__="""Protocol buffer.
 
   Attributes:
       models:
@@ -2484,87 +3993,91 @@ ListModelsResponse = _reflection.GeneratedProtocolMessageType('ListModelsRespons
       next_page_token:
           A token to request the next page of results.
   """,
-  # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.ListModelsResponse)
-  ))
+        # @@protoc_insertion_point(class_scope:google.cloud.bigquery.v2.ListModelsResponse)
+    ),
+)
 _sym_db.RegisterMessage(ListModelsResponse)
 
 
 DESCRIPTOR._options = None
 _MODEL_TRAININGRUN_TRAININGOPTIONS_LABELCLASSWEIGHTSENTRY._options = None
 _MODEL_LABELSENTRY._options = None
-_MODEL.fields_by_name['etag']._options = None
-_MODEL.fields_by_name['model_reference']._options = None
-_MODEL.fields_by_name['creation_time']._options = None
-_MODEL.fields_by_name['last_modified_time']._options = None
-_MODEL.fields_by_name['description']._options = None
-_MODEL.fields_by_name['friendly_name']._options = None
-_MODEL.fields_by_name['expiration_time']._options = None
-_MODEL.fields_by_name['location']._options = None
-_MODEL.fields_by_name['model_type']._options = None
-_MODEL.fields_by_name['training_runs']._options = None
-_MODEL.fields_by_name['feature_columns']._options = None
-_MODEL.fields_by_name['label_columns']._options = None
-_GETMODELREQUEST.fields_by_name['project_id']._options = None
-_GETMODELREQUEST.fields_by_name['dataset_id']._options = None
-_GETMODELREQUEST.fields_by_name['model_id']._options = None
-_PATCHMODELREQUEST.fields_by_name['project_id']._options = None
-_PATCHMODELREQUEST.fields_by_name['dataset_id']._options = None
-_PATCHMODELREQUEST.fields_by_name['model_id']._options = None
-_PATCHMODELREQUEST.fields_by_name['model']._options = None
-_DELETEMODELREQUEST.fields_by_name['project_id']._options = None
-_DELETEMODELREQUEST.fields_by_name['dataset_id']._options = None
-_DELETEMODELREQUEST.fields_by_name['model_id']._options = None
-_LISTMODELSREQUEST.fields_by_name['project_id']._options = None
-_LISTMODELSREQUEST.fields_by_name['dataset_id']._options = None
+_MODEL.fields_by_name["etag"]._options = None
+_MODEL.fields_by_name["model_reference"]._options = None
+_MODEL.fields_by_name["creation_time"]._options = None
+_MODEL.fields_by_name["last_modified_time"]._options = None
+_MODEL.fields_by_name["description"]._options = None
+_MODEL.fields_by_name["friendly_name"]._options = None
+_MODEL.fields_by_name["expiration_time"]._options = None
+_MODEL.fields_by_name["location"]._options = None
+_MODEL.fields_by_name["model_type"]._options = None
+_MODEL.fields_by_name["training_runs"]._options = None
+_MODEL.fields_by_name["feature_columns"]._options = None
+_MODEL.fields_by_name["label_columns"]._options = None
+_GETMODELREQUEST.fields_by_name["project_id"]._options = None
+_GETMODELREQUEST.fields_by_name["dataset_id"]._options = None
+_GETMODELREQUEST.fields_by_name["model_id"]._options = None
+_PATCHMODELREQUEST.fields_by_name["project_id"]._options = None
+_PATCHMODELREQUEST.fields_by_name["dataset_id"]._options = None
+_PATCHMODELREQUEST.fields_by_name["model_id"]._options = None
+_PATCHMODELREQUEST.fields_by_name["model"]._options = None
+_DELETEMODELREQUEST.fields_by_name["project_id"]._options = None
+_DELETEMODELREQUEST.fields_by_name["dataset_id"]._options = None
+_DELETEMODELREQUEST.fields_by_name["model_id"]._options = None
+_LISTMODELSREQUEST.fields_by_name["project_id"]._options = None
+_LISTMODELSREQUEST.fields_by_name["dataset_id"]._options = None
 
 _MODELSERVICE = _descriptor.ServiceDescriptor(
-  name='ModelService',
-  full_name='google.cloud.bigquery.v2.ModelService',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=_b('\312A\027bigquery.googleapis.com\322A\302\001https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only'),
-  serialized_start=7804,
-  serialized_end=8566,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='GetModel',
-    full_name='google.cloud.bigquery.v2.ModelService.GetModel',
+    name="ModelService",
+    full_name="google.cloud.bigquery.v2.ModelService",
+    file=DESCRIPTOR,
     index=0,
-    containing_service=None,
-    input_type=_GETMODELREQUEST,
-    output_type=_MODEL,
-    serialized_options=_b('\332A\036project_id,dataset_id,model_id'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListModels',
-    full_name='google.cloud.bigquery.v2.ModelService.ListModels',
-    index=1,
-    containing_service=None,
-    input_type=_LISTMODELSREQUEST,
-    output_type=_LISTMODELSRESPONSE,
-    serialized_options=_b('\332A!project_id,dataset_id,max_results'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='PatchModel',
-    full_name='google.cloud.bigquery.v2.ModelService.PatchModel',
-    index=2,
-    containing_service=None,
-    input_type=_PATCHMODELREQUEST,
-    output_type=_MODEL,
-    serialized_options=_b('\332A$project_id,dataset_id,model_id,model'),
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteModel',
-    full_name='google.cloud.bigquery.v2.ModelService.DeleteModel',
-    index=3,
-    containing_service=None,
-    input_type=_DELETEMODELREQUEST,
-    output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    serialized_options=_b('\332A\036project_id,dataset_id,model_id'),
-  ),
-])
+    serialized_options=_b(
+        "\312A\027bigquery.googleapis.com\322A\302\001https://www.googleapis.com/auth/bigquery,https://www.googleapis.com/auth/bigquery.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only"
+    ),
+    serialized_start=7804,
+    serialized_end=8566,
+    methods=[
+        _descriptor.MethodDescriptor(
+            name="GetModel",
+            full_name="google.cloud.bigquery.v2.ModelService.GetModel",
+            index=0,
+            containing_service=None,
+            input_type=_GETMODELREQUEST,
+            output_type=_MODEL,
+            serialized_options=_b("\332A\036project_id,dataset_id,model_id"),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListModels",
+            full_name="google.cloud.bigquery.v2.ModelService.ListModels",
+            index=1,
+            containing_service=None,
+            input_type=_LISTMODELSREQUEST,
+            output_type=_LISTMODELSRESPONSE,
+            serialized_options=_b("\332A!project_id,dataset_id,max_results"),
+        ),
+        _descriptor.MethodDescriptor(
+            name="PatchModel",
+            full_name="google.cloud.bigquery.v2.ModelService.PatchModel",
+            index=2,
+            containing_service=None,
+            input_type=_PATCHMODELREQUEST,
+            output_type=_MODEL,
+            serialized_options=_b("\332A$project_id,dataset_id,model_id,model"),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteModel",
+            full_name="google.cloud.bigquery.v2.ModelService.DeleteModel",
+            index=3,
+            containing_service=None,
+            input_type=_DELETEMODELREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            serialized_options=_b("\332A\036project_id,dataset_id,model_id"),
+        ),
+    ],
+)
 _sym_db.RegisterServiceDescriptor(_MODELSERVICE)
 
-DESCRIPTOR.services_by_name['ModelService'] = _MODELSERVICE
+DESCRIPTOR.services_by_name["ModelService"] = _MODELSERVICE
 
 # @@protoc_insertion_point(module_scope)

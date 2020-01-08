@@ -33,13 +33,13 @@ class Model(object):
           AUTO_SPLIT (int): Splits data automatically: Uses NO\_SPLIT if the data size is small.
           Otherwise uses RANDOM.
         """
+
         DATA_SPLIT_METHOD_UNSPECIFIED = 0
         RANDOM = 1
         CUSTOM = 2
         SEQUENTIAL = 3
         NO_SPLIT = 4
         AUTO_SPLIT = 5
-
 
     class DistanceType(enum.IntEnum):
         """
@@ -50,10 +50,10 @@ class Model(object):
           EUCLIDEAN (int): Eculidean distance.
           COSINE (int): Cosine distance.
         """
+
         DISTANCE_TYPE_UNSPECIFIED = 0
         EUCLIDEAN = 1
         COSINE = 2
-
 
     class LearnRateStrategy(enum.IntEnum):
         """
@@ -64,10 +64,10 @@ class Model(object):
           LINE_SEARCH (int): Use line search to determine learning rate.
           CONSTANT (int): Use a constant learning rate.
         """
+
         LEARN_RATE_STRATEGY_UNSPECIFIED = 0
         LINE_SEARCH = 1
         CONSTANT = 2
-
 
     class LossType(enum.IntEnum):
         """
@@ -78,10 +78,10 @@ class Model(object):
           MEAN_SQUARED_LOSS (int): Mean squared loss, used for linear regression.
           MEAN_LOG_LOSS (int): Mean log loss, used for logistic regression.
         """
+
         LOSS_TYPE_UNSPECIFIED = 0
         MEAN_SQUARED_LOSS = 1
         MEAN_LOG_LOSS = 2
-
 
     class ModelType(enum.IntEnum):
         """
@@ -94,12 +94,12 @@ class Model(object):
           KMEANS (int): K-means clustering model.
           TENSORFLOW (int): [Beta] An imported TensorFlow model.
         """
+
         MODEL_TYPE_UNSPECIFIED = 0
         LINEAR_REGRESSION = 1
         LOGISTIC_REGRESSION = 2
         KMEANS = 3
         TENSORFLOW = 6
-
 
     class OptimizationStrategy(enum.IntEnum):
         """
@@ -110,10 +110,10 @@ class Model(object):
           BATCH_GRADIENT_DESCENT (int): Uses an iterative batch gradient descent algorithm.
           NORMAL_EQUATION (int): Uses a normal equation to solve linear regression problem.
         """
+
         OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
         BATCH_GRADIENT_DESCENT = 1
         NORMAL_EQUATION = 2
-
 
     class KmeansEnums(object):
         class KmeansInitializationMethod(enum.IntEnum):
@@ -127,6 +127,7 @@ class Model(object):
               CUSTOM (int): Initializes the centroids using data specified in
               kmeans\_initialization\_column.
             """
+
             KMEANS_INITIALIZATION_METHOD_UNSPECIFIED = 0
             RANDOM = 1
             CUSTOM = 2
@@ -153,6 +154,7 @@ class StandardSqlDataType(object):
           STRUCT (int): Encoded as a list with fields of type Type.struct\_type[i]. List is used
           because a JSON object cannot have duplicate field names.
         """
+
         TYPE_KIND_UNSPECIFIED = 0
         INT64 = 2
         BOOL = 5
@@ -167,4 +169,3 @@ class StandardSqlDataType(object):
         NUMERIC = 23
         ARRAY = 16
         STRUCT = 17
-    
