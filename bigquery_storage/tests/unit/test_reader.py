@@ -185,7 +185,7 @@ def _avro_blocks_w_resumable_internal_error(avro_blocks):
     for block in avro_blocks:
         yield block
     raise google.api_core.exceptions.InternalServerError(
-        "INTERNAL: Received unexpected EOS on DATA frame from server."
+        "INTERNAL: Received RST_STREAM with error code 2."
     )
 
 

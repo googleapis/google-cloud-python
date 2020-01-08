@@ -49,8 +49,8 @@ _STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
 # for error message that we know are caused by problems that are safe to
 # reconnect.
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
-    # See: https://issuetracker.google.com/143292803
-    "unexpected EOS on DATA frame",
+    # See: https://github.com/googleapis/google-cloud-python/pull/9994
+    "RST_STREAM",
 )
 
 _FASTAVRO_REQUIRED = (
