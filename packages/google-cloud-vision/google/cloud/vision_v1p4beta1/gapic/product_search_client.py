@@ -94,12 +94,7 @@ class ProductSearchClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """DEPRECATED. Return a fully-qualified location string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
@@ -108,12 +103,7 @@ class ProductSearchClient(object):
 
     @classmethod
     def product_path(cls, project, location, product):
-        """DEPRECATED. Return a fully-qualified product string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified product string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/products/{product}",
             project=project,
@@ -123,12 +113,7 @@ class ProductSearchClient(object):
 
     @classmethod
     def product_set_path(cls, project, location, product_set):
-        """DEPRECATED. Return a fully-qualified product_set string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified product_set string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/productSets/{product_set}",
             project=project,
@@ -138,12 +123,7 @@ class ProductSearchClient(object):
 
     @classmethod
     def reference_image_path(cls, project, location, product, reference_image):
-        """DEPRECATED. Return a fully-qualified reference_image string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified reference_image string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}",
             project=project,
