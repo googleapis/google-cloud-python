@@ -97,12 +97,7 @@ class ProfileServiceClient(object):
 
     @classmethod
     def profile_path(cls, project, tenant, profile):
-        """DEPRECATED. Return a fully-qualified profile string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/profiles/{profile}",
             project=project,
@@ -112,12 +107,7 @@ class ProfileServiceClient(object):
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """DEPRECATED. Return a fully-qualified tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )

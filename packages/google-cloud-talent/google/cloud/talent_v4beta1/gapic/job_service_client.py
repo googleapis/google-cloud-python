@@ -93,12 +93,7 @@ class JobServiceClient(object):
 
     @classmethod
     def company_path(cls, project, tenant, company):
-        """DEPRECATED. Return a fully-qualified company string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/companies/{company}",
             project=project,
@@ -108,24 +103,14 @@ class JobServiceClient(object):
 
     @classmethod
     def company_without_tenant_path(cls, project, company):
-        """DEPRECATED. Return a fully-qualified company_without_tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company_without_tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/companies/{company}", project=project, company=company
         )
 
     @classmethod
     def job_path(cls, project, tenant, jobs):
-        """DEPRECATED. Return a fully-qualified job string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/jobs/{jobs}",
             project=project,
@@ -135,36 +120,21 @@ class JobServiceClient(object):
 
     @classmethod
     def job_without_tenant_path(cls, project, jobs):
-        """DEPRECATED. Return a fully-qualified job_without_tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified job_without_tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/jobs/{jobs}", project=project, jobs=jobs
         )
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """DEPRECATED. Return a fully-qualified tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
