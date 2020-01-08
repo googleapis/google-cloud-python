@@ -112,21 +112,17 @@ class TraceServiceGrpcTransport(object):
         return self._channel
 
     @property
-    def patch_traces(self):
-        """Return the gRPC stub for :meth:`TraceServiceClient.patch_traces`.
+    def list_traces(self):
+        """Return the gRPC stub for :meth:`TraceServiceClient.list_traces`.
 
-        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
-        of a trace that you send matches that of an existing trace, any fields
-        in the existing trace and its spans are overwritten by the provided values,
-        and any new fields provided are merged with the existing trace data. If the
-        ID does not match, a new trace is created.
+        Returns of a list of traces that match the specified filter conditions.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["trace_service_stub"].PatchTraces
+        return self._stubs["trace_service_stub"].ListTraces
 
     @property
     def get_trace(self):
@@ -142,14 +138,18 @@ class TraceServiceGrpcTransport(object):
         return self._stubs["trace_service_stub"].GetTrace
 
     @property
-    def list_traces(self):
-        """Return the gRPC stub for :meth:`TraceServiceClient.list_traces`.
+    def patch_traces(self):
+        """Return the gRPC stub for :meth:`TraceServiceClient.patch_traces`.
 
-        Returns of a list of traces that match the specified filter conditions.
+        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
+        of a trace that you send matches that of an existing trace, any fields
+        in the existing trace and its spans are overwritten by the provided values,
+        and any new fields provided are merged with the existing trace data. If the
+        ID does not match, a new trace is created.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["trace_service_stub"].ListTraces
+        return self._stubs["trace_service_stub"].PatchTraces
