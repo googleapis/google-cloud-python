@@ -224,8 +224,8 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): The unique name of the table from which to read. Values are of the form
-                ``projects/<project>/instances/<instance>/tables/<table>``.
+            table_name (str): Required. The unique name of the table from which to read. Values are of
+                the form ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
             rows (Union[dict, ~google.cloud.bigtable_v2.types.RowSet]): The row keys and/or ranges to read. If not specified, reads from all rows.
@@ -319,8 +319,9 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): The unique name of the table from which to sample row keys. Values are
-                of the form ``projects/<project>/instances/<instance>/tables/<table>``.
+            table_name (str): Required. The unique name of the table from which to sample row keys.
+                Values are of the form
+                ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -403,11 +404,14 @@ class BigtableClient(object):
             >>> response = client.mutate_row(table_name, row_key, mutations)
 
         Args:
-            table_name (str): The unique name of the table to which the mutation should be applied.
-                Values are of the form
+            table_name (str): Required. The unique name of the table to which the mutation should be
+                applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            row_key (bytes): The key of the row to which the mutation should be applied.
-            mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Changes to be atomically applied to the specified row. Entries are applied
+            row_key (bytes): Required. The key of the row to which the mutation should be applied.
+
+                Classified as IDENTIFYING\_ID to provide context around data accesses
+                for auditing systems.
+            mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Required. Changes to be atomically applied to the specified row. Entries are applied
                 in order, meaning that earlier mutations can be masked by later ones.
                 Must contain at least one entry and at most 100000.
 
@@ -497,8 +501,8 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): The unique name of the table to which the mutations should be applied.
-            entries (list[Union[dict, ~google.cloud.bigtable_v2.types.Entry]]): The row keys and corresponding mutations to be applied in bulk.
+            table_name (str): Required. The unique name of the table to which the mutations should be applied.
+            entries (list[Union[dict, ~google.cloud.bigtable_v2.types.Entry]]): Required. The row keys and corresponding mutations to be applied in bulk.
                 Each entry is applied as an atomic mutation, but the entries may be
                 applied in arbitrary order (even between entries for the same row).
                 At least one entry must be specified, and in total the entries can
@@ -586,10 +590,14 @@ class BigtableClient(object):
             >>> response = client.check_and_mutate_row(table_name, row_key)
 
         Args:
-            table_name (str): The unique name of the table to which the conditional mutation should be
-                applied. Values are of the form
+            table_name (str): Required. The unique name of the table to which the conditional mutation
+                should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            row_key (bytes): The key of the row to which the conditional mutation should be applied.
+            row_key (bytes): Required. The key of the row to which the conditional mutation should be
+                applied.
+
+                Classified as IDENTIFYING\_ID to provide context around data accesses
+                for auditing systems.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
             predicate_filter (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to be applied to the contents of the specified row. Depending
@@ -703,11 +711,15 @@ class BigtableClient(object):
             >>> response = client.read_modify_write_row(table_name, row_key, rules)
 
         Args:
-            table_name (str): The unique name of the table to which the read/modify/write rules should
-                be applied. Values are of the form
+            table_name (str): Required. The unique name of the table to which the read/modify/write
+                rules should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            row_key (bytes): The key of the row to which the read/modify/write rules should be applied.
-            rules (list[Union[dict, ~google.cloud.bigtable_v2.types.ReadModifyWriteRule]]): Rules specifying how the specified row's contents are to be transformed
+            row_key (bytes): Required. The key of the row to which the read/modify/write rules should
+                be applied.
+
+                Classified as IDENTIFYING\_ID to provide context around data accesses
+                for auditing systems.
+            rules (list[Union[dict, ~google.cloud.bigtable_v2.types.ReadModifyWriteRule]]): Required. Rules specifying how the specified row's contents are to be transformed
                 into writes. Entries are applied in order, meaning that earlier rules will
                 affect the results of later ones.
 
