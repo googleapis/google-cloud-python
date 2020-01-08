@@ -175,7 +175,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.6")
 def blacken(session):
     """Run black.
     Format code to uniform standard.
