@@ -16,9 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import (
-    monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
-)
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -27,14 +25,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\013CommonProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\013CommonProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\370\001\001\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x81\x01\n\nErrorGroup\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x01(\t\x12S\n\x0ftracking_issues\x18\x03 \x03(\x0b\x32:.google.devtools.clouderrorreporting.v1beta1.TrackingIssue"\x1c\n\rTrackingIssue\x12\x0b\n\x03url\x18\x01 \x01(\t"\xef\x01\n\nErrorEvent\x12.\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12T\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x0f\n\x07message\x18\x03 \x01(\t\x12J\n\x07\x63ontext\x18\x05 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContext"I\n\x0eServiceContext\x12\x0f\n\x07service\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x15\n\rresource_type\x18\x04 \x01(\t"\xc9\x01\n\x0c\x45rrorContext\x12U\n\x0chttp_request\x18\x01 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.HttpRequestContext\x12\x0c\n\x04user\x18\x02 \x01(\t\x12T\n\x0freport_location\x18\x03 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.SourceLocation"\x88\x01\n\x12HttpRequestContext\x12\x0e\n\x06method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\x12\x10\n\x08referrer\x18\x04 \x01(\t\x12\x1c\n\x14response_status_code\x18\x05 \x01(\x05\x12\x11\n\tremote_ip\x18\x06 \x01(\t"O\n\x0eSourceLocation\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bline_number\x18\x02 \x01(\x05\x12\x15\n\rfunction_name\x18\x04 \x01(\tB\xec\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x0b\x43ommonProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
+        '\n>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xd8\x01\n\nErrorGroup\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x01(\t\x12S\n\x0ftracking_issues\x18\x03 \x03(\x0b\x32:.google.devtools.clouderrorreporting.v1beta1.TrackingIssue:U\xea\x41R\n-clouderrorreporting.googleapis.com/ErrorGroup\x12!projects/{project}/groups/{group}"\x1c\n\rTrackingIssue\x12\x0b\n\x03url\x18\x01 \x01(\t"\xef\x01\n\nErrorEvent\x12.\n\nevent_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12T\n\x0fservice_context\x18\x02 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x0f\n\x07message\x18\x03 \x01(\t\x12J\n\x07\x63ontext\x18\x05 \x01(\x0b\x32\x39.google.devtools.clouderrorreporting.v1beta1.ErrorContext"I\n\x0eServiceContext\x12\x0f\n\x07service\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x15\n\rresource_type\x18\x04 \x01(\t"\xc9\x01\n\x0c\x45rrorContext\x12U\n\x0chttp_request\x18\x01 \x01(\x0b\x32?.google.devtools.clouderrorreporting.v1beta1.HttpRequestContext\x12\x0c\n\x04user\x18\x02 \x01(\t\x12T\n\x0freport_location\x18\x03 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.SourceLocation"\x88\x01\n\x12HttpRequestContext\x12\x0e\n\x06method\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x12\n\nuser_agent\x18\x03 \x01(\t\x12\x10\n\x08referrer\x18\x04 \x01(\t\x12\x1c\n\x14response_status_code\x18\x05 \x01(\x05\x12\x11\n\tremote_ip\x18\x06 \x01(\t"O\n\x0eSourceLocation\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x13\n\x0bline_number\x18\x02 \x01(\x05\x12\x15\n\rfunction_name\x18\x04 \x01(\tB\xef\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x0b\x43ommonProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xf8\x01\x01\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -105,13 +103,15 @@ _ERRORGROUP = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AR\n-clouderrorreporting.googleapis.com/ErrorGroup\022!projects/{project}/groups/{group}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=212,
-    serialized_end=341,
+    serialized_start=202,
+    serialized_end=418,
 )
 
 
@@ -149,8 +149,8 @@ _TRACKINGISSUE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=343,
-    serialized_end=371,
+    serialized_start=420,
+    serialized_end=448,
 )
 
 
@@ -242,8 +242,8 @@ _ERROREVENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=374,
-    serialized_end=613,
+    serialized_start=451,
+    serialized_end=690,
 )
 
 
@@ -317,8 +317,8 @@ _SERVICECONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=615,
-    serialized_end=688,
+    serialized_start=692,
+    serialized_end=765,
 )
 
 
@@ -392,8 +392,8 @@ _ERRORCONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=691,
-    serialized_end=892,
+    serialized_start=768,
+    serialized_end=969,
 )
 
 
@@ -521,8 +521,8 @@ _HTTPREQUESTCONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=895,
-    serialized_end=1031,
+    serialized_start=972,
+    serialized_end=1108,
 )
 
 
@@ -596,8 +596,8 @@ _SOURCELOCATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1033,
-    serialized_end=1112,
+    serialized_start=1110,
+    serialized_end=1189,
 )
 
 _ERRORGROUP.fields_by_name["tracking_issues"].message_type = _TRACKINGISSUE
@@ -709,7 +709,8 @@ ServiceContext = _reflection.GeneratedProtocolMessageType(
       version:
           Represents the source code version that the developer
           provided, which could represent a version label or a Git SHA-1
-          hash, for example.
+          hash, for example. For App Engine standard environment, the
+          version is set to the version of the app.
       resource_type:
           Type of the MonitoredResource. List of possible values:
           https://cloud.google.com/monitoring/api/resources  Value is
@@ -750,9 +751,7 @@ ErrorContext = _reflection.GeneratedProtocolMessageType(
           report the error, usually the place where it was logged. For a
           logged exception this would be the source line where the
           exception is logged, usually close to the place where it was
-          caught. This value is in contrast to
-          ``Exception.cause_location``, which describes the source line
-          where the exception was thrown.
+          caught.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.ErrorContext)
     ),
@@ -799,9 +798,10 @@ SourceLocation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SOURCELOCATION,
         __module__="google.devtools.clouderrorreporting_v1beta1.proto.common_pb2",
         __doc__="""Indicates a location in the source code of the service for which errors
-  are reported. This data should be provided by the application when
-  reporting an error, unless the error report has been generated
-  automatically from Google App Engine logs. All fields are optional.
+  are reported. ``functionName`` must be provided by the application when
+  reporting an error, unless the error report contains a ``message`` with
+  a supported exception stack trace. All fields are optional for the later
+  case.
   
   
   Attributes:
@@ -822,4 +822,5 @@ _sym_db.RegisterMessage(SourceLocation)
 
 
 DESCRIPTOR._options = None
+_ERRORGROUP._options = None
 # @@protoc_insertion_point(module_scope)

@@ -17,6 +17,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.errorreporting_v1beta1.proto import (
     common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2,
 )
@@ -29,13 +32,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorStatsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorStatsServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\370\001\001\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
     ),
     serialized_pb=_b(
-        '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_stats_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xa1\x04\n\x15ListGroupStatsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x03(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x05 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x37\n\x14timed_count_duration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12S\n\talignment\x18\x07 \x01(\x0e\x32@.google.devtools.clouderrorreporting.v1beta1.TimedCountAlignment\x12\x32\n\x0e\x61lignment_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12K\n\x05order\x18\t \x01(\x0e\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupOrder\x12\x11\n\tpage_size\x18\x0b \x01(\x05\x12\x12\n\npage_token\x18\x0c \x01(\t"\xc0\x01\n\x16ListGroupStatsResponse\x12W\n\x11\x65rror_group_stats\x18\x01 \x03(\x0b\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x86\x04\n\x0f\x45rrorGroupStats\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x12\x1c\n\x14\x61\x66\x66\x65\x63ted_users_count\x18\x03 \x01(\x03\x12M\n\x0ctimed_counts\x18\x04 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.TimedCount\x12\x33\n\x0f\x66irst_seen_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12V\n\x11\x61\x66\x66\x65\x63ted_services\x18\x07 \x03(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x1d\n\x15num_affected_services\x18\x08 \x01(\x05\x12O\n\x0erepresentative\x18\t \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent"y\n\nTimedCount\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8e\x02\n\x11ListEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t\x12\x10\n\x08group_id\x18\x02 \x01(\t\x12Y\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilter\x12O\n\ntime_range\x18\x04 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange\x12\x11\n\tpage_size\x18\x06 \x01(\x05\x12\x12\n\npage_token\x18\x07 \x01(\t"\xb2\x01\n\x12ListEventsResponse\x12M\n\x0c\x65rror_events\x18\x01 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xe7\x01\n\x0eQueryTimeRange\x12R\n\x06period\x18\x01 \x01(\x0e\x32\x42.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange.Period"\x80\x01\n\x06Period\x12\x16\n\x12PERIOD_UNSPECIFIED\x10\x00\x12\x11\n\rPERIOD_1_HOUR\x10\x01\x12\x12\n\x0ePERIOD_6_HOURS\x10\x02\x12\x10\n\x0cPERIOD_1_DAY\x10\x03\x12\x11\n\rPERIOD_1_WEEK\x10\x04\x12\x12\n\x0ePERIOD_30_DAYS\x10\x05"O\n\x14ServiceContextFilter\x12\x0f\n\x07service\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x15\n\rresource_type\x18\x04 \x01(\t"+\n\x13\x44\x65leteEventsRequest\x12\x14\n\x0cproject_name\x18\x01 \x01(\t"\x16\n\x14\x44\x65leteEventsResponse*u\n\x13TimedCountAlignment\x12%\n!ERROR_COUNT_ALIGNMENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x41LIGNMENT_EQUAL_ROUNDED\x10\x01\x12\x1a\n\x16\x41LIGNMENT_EQUAL_AT_END\x10\x02*}\n\x0f\x45rrorGroupOrder\x12\x1b\n\x17GROUP_ORDER_UNSPECIFIED\x10\x00\x12\x0e\n\nCOUNT_DESC\x10\x01\x12\x12\n\x0eLAST_SEEN_DESC\x10\x02\x12\x10\n\x0c\x43REATED_DESC\x10\x03\x12\x17\n\x13\x41\x46\x46\x45\x43TED_USERS_DESC\x10\x04\x32\xf2\x04\n\x11\x45rrorStatsService\x12\xd0\x01\n\x0eListGroupStats\x12\x42.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest\x1a\x43.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse"5\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{project_name=projects/*}/groupStats\x12\xc0\x01\n\nListEvents\x12>.google.devtools.clouderrorreporting.v1beta1.ListEventsRequest\x1a?.google.devtools.clouderrorreporting.v1beta1.ListEventsResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{project_name=projects/*}/events\x12\xc6\x01\n\x0c\x44\x65leteEvents\x12@.google.devtools.clouderrorreporting.v1beta1.DeleteEventsRequest\x1a\x41.google.devtools.clouderrorreporting.v1beta1.DeleteEventsResponse"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{project_name=projects/*}/eventsB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorStatsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
+        '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_stats_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x83\x05\n\x15ListGroupStatsRequest\x12I\n\x0cproject_name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x15\n\x08group_id\x18\x02 \x03(\tB\x03\xe0\x41\x01\x12^\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilterB\x03\xe0\x41\x01\x12T\n\ntime_range\x18\x05 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRangeB\x03\xe0\x41\x01\x12<\n\x14timed_count_duration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01\x12X\n\talignment\x18\x07 \x01(\x0e\x32@.google.devtools.clouderrorreporting.v1beta1.TimedCountAlignmentB\x03\xe0\x41\x01\x12\x37\n\x0e\x61lignment_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x01\x12P\n\x05order\x18\t \x01(\x0e\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupOrderB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x0b \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x0c \x01(\tB\x03\xe0\x41\x01"\xc0\x01\n\x16ListGroupStatsResponse\x12W\n\x11\x65rror_group_stats\x18\x01 \x03(\x0b\x32<.google.devtools.clouderrorreporting.v1beta1.ErrorGroupStats\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x86\x04\n\x0f\x45rrorGroupStats\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x12\x1c\n\x14\x61\x66\x66\x65\x63ted_users_count\x18\x03 \x01(\x03\x12M\n\x0ctimed_counts\x18\x04 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.TimedCount\x12\x33\n\x0f\x66irst_seen_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0elast_seen_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12V\n\x11\x61\x66\x66\x65\x63ted_services\x18\x07 \x03(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.ServiceContext\x12\x1d\n\x15num_affected_services\x18\x08 \x01(\x05\x12O\n\x0erepresentative\x18\t \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent"y\n\nTimedCount\x12\r\n\x05\x63ount\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xdc\x02\n\x11ListEventsRequest\x12I\n\x0cproject_name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x15\n\x08group_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12^\n\x0eservice_filter\x18\x03 \x01(\x0b\x32\x41.google.devtools.clouderrorreporting.v1beta1.ServiceContextFilterB\x03\xe0\x41\x01\x12T\n\ntime_range\x18\x04 \x01(\x0b\x32;.google.devtools.clouderrorreporting.v1beta1.QueryTimeRangeB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x06 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x07 \x01(\tB\x03\xe0\x41\x01"\xb2\x01\n\x12ListEventsResponse\x12M\n\x0c\x65rror_events\x18\x01 \x03(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorEvent\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x34\n\x10time_range_begin\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xe7\x01\n\x0eQueryTimeRange\x12R\n\x06period\x18\x01 \x01(\x0e\x32\x42.google.devtools.clouderrorreporting.v1beta1.QueryTimeRange.Period"\x80\x01\n\x06Period\x12\x16\n\x12PERIOD_UNSPECIFIED\x10\x00\x12\x11\n\rPERIOD_1_HOUR\x10\x01\x12\x12\n\x0ePERIOD_6_HOURS\x10\x02\x12\x10\n\x0cPERIOD_1_DAY\x10\x03\x12\x11\n\rPERIOD_1_WEEK\x10\x04\x12\x12\n\x0ePERIOD_30_DAYS\x10\x05"^\n\x14ServiceContextFilter\x12\x14\n\x07service\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x14\n\x07version\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x1a\n\rresource_type\x18\x04 \x01(\tB\x03\xe0\x41\x01"`\n\x13\x44\x65leteEventsRequest\x12I\n\x0cproject_name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project"\x16\n\x14\x44\x65leteEventsResponse*u\n\x13TimedCountAlignment\x12%\n!ERROR_COUNT_ALIGNMENT_UNSPECIFIED\x10\x00\x12\x1b\n\x17\x41LIGNMENT_EQUAL_ROUNDED\x10\x01\x12\x1a\n\x16\x41LIGNMENT_EQUAL_AT_END\x10\x02*}\n\x0f\x45rrorGroupOrder\x12\x1b\n\x17GROUP_ORDER_UNSPECIFIED\x10\x00\x12\x0e\n\nCOUNT_DESC\x10\x01\x12\x12\n\x0eLAST_SEEN_DESC\x10\x02\x12\x10\n\x0c\x43REATED_DESC\x10\x03\x12\x17\n\x13\x41\x46\x46\x45\x43TED_USERS_DESC\x10\x04\x32\x8b\x06\n\x11\x45rrorStatsService\x12\xea\x01\n\x0eListGroupStats\x12\x42.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsRequest\x1a\x43.google.devtools.clouderrorreporting.v1beta1.ListGroupStatsResponse"O\x82\xd3\xe4\x93\x02/\x12-/v1beta1/{project_name=projects/*}/groupStats\xda\x41\x17project_name,time_range\x12\xd8\x01\n\nListEvents\x12>.google.devtools.clouderrorreporting.v1beta1.ListEventsRequest\x1a?.google.devtools.clouderrorreporting.v1beta1.ListEventsResponse"I\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{project_name=projects/*}/events\xda\x41\x15project_name,group_id\x12\xd5\x01\n\x0c\x44\x65leteEvents\x12@.google.devtools.clouderrorreporting.v1beta1.DeleteEventsRequest\x1a\x41.google.devtools.clouderrorreporting.v1beta1.DeleteEventsResponse"@\x82\xd3\xe4\x93\x02+*)/v1beta1/{project_name=projects/*}/events\xda\x41\x0cproject_name\x1aV\xca\x41"clouderrorreporting.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xfa\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorStatsServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xf8\x01\x01\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -72,8 +78,8 @@ _TIMEDCOUNTALIGNMENT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2508,
-    serialized_end=2625,
+    serialized_start=2837,
+    serialized_end=2954,
 )
 _sym_db.RegisterEnumDescriptor(_TIMEDCOUNTALIGNMENT)
 
@@ -110,8 +116,8 @@ _ERRORGROUPORDER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2627,
-    serialized_end=2752,
+    serialized_start=2956,
+    serialized_end=3081,
 )
 _sym_db.RegisterEnumDescriptor(_ERRORGROUPORDER)
 
@@ -157,8 +163,8 @@ _QUERYTIMERANGE_PERIOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2228,
-    serialized_end=2356,
+    serialized_start=2489,
+    serialized_end=2617,
 )
 _sym_db.RegisterEnumDescriptor(_QUERYTIMERANGE_PERIOD)
 
@@ -185,7 +191,9 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -203,7 +211,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -221,7 +229,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -239,7 +247,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -257,7 +265,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -275,7 +283,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -293,7 +301,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -311,7 +319,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -329,7 +337,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -347,7 +355,7 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -359,8 +367,8 @@ _LISTGROUPSTATSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=284,
-    serialized_end=829,
+    serialized_start=369,
+    serialized_end=1012,
 )
 
 
@@ -434,8 +442,8 @@ _LISTGROUPSTATSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=832,
-    serialized_end=1024,
+    serialized_start=1015,
+    serialized_end=1207,
 )
 
 
@@ -617,8 +625,8 @@ _ERRORGROUPSTATS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1027,
-    serialized_end=1545,
+    serialized_start=1210,
+    serialized_end=1728,
 )
 
 
@@ -692,8 +700,8 @@ _TIMEDCOUNT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1547,
-    serialized_end=1668,
+    serialized_start=1730,
+    serialized_end=1851,
 )
 
 
@@ -719,7 +727,9 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -737,7 +747,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -755,7 +765,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -773,7 +783,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -791,7 +801,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -809,7 +819,7 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -821,8 +831,8 @@ _LISTEVENTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1671,
-    serialized_end=1941,
+    serialized_start=1854,
+    serialized_end=2202,
 )
 
 
@@ -896,8 +906,8 @@ _LISTEVENTSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1944,
-    serialized_end=2122,
+    serialized_start=2205,
+    serialized_end=2383,
 )
 
 
@@ -935,8 +945,8 @@ _QUERYTIMERANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2125,
-    serialized_end=2356,
+    serialized_start=2386,
+    serialized_end=2617,
 )
 
 
@@ -962,7 +972,7 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -980,7 +990,7 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -998,7 +1008,7 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1010,8 +1020,8 @@ _SERVICECONTEXTFILTER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2358,
-    serialized_end=2437,
+    serialized_start=2619,
+    serialized_end=2713,
 )
 
 
@@ -1037,7 +1047,9 @@ _DELETEEVENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -1049,8 +1061,8 @@ _DELETEEVENTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2439,
-    serialized_end=2482,
+    serialized_start=2715,
+    serialized_end=2811,
 )
 
 
@@ -1069,8 +1081,8 @@ _DELETEEVENTSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2484,
-    serialized_end=2506,
+    serialized_start=2813,
+    serialized_end=2835,
 )
 
 _LISTGROUPSTATSREQUEST.fields_by_name[
@@ -1156,17 +1168,17 @@ ListGroupStatsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_name:
-          [Required] The resource name of the Google Cloud Platform
+          Required. The resource name of the Google Cloud Platform
           project. Written as projects/ plus the Google Cloud Platform
           project ID.  Example: projects/my-project-123.
       group_id:
-          [Optional] List all ErrorGroupStats with these IDs.
+          Optional. List all ErrorGroupStats with these IDs.
       service_filter:
-          [Optional] List only ErrorGroupStats which belong to a service
+          Optional. List only ErrorGroupStats which belong to a service
           context that matches the filter. Data for all service contexts
           is returned if this field is not specified.
       time_range:
-          [Optional] List data for the given time range. If not set a
+          Optional. List data for the given time range. If not set, a
           default time range is used. The field time\_range\_begin in
           the response will specify the beginning of this time range.
           Only ErrorGroupStats with a non-zero count in the given time
@@ -1174,22 +1186,22 @@ ListGroupStatsRequest = _reflection.GeneratedProtocolMessageType(
           group\_id list. If a group\_id list is given, also
           ErrorGroupStats with zero occurrences are returned.
       timed_count_duration:
-          [Optional] The preferred duration for a single returned
+          Optional. The preferred duration for a single returned
           ``TimedCount``. If not set, no timed counts are returned.
       alignment:
-          [Optional] The alignment of the timed counts to be returned.
+          Optional. The alignment of the timed counts to be returned.
           Default is ``ALIGNMENT_EQUAL_AT_END``.
       alignment_time:
-          [Optional] Time where the timed counts shall be aligned if
+          Optional. Time where the timed counts shall be aligned if
           rounded alignment is chosen. Default is 00:00 UTC.
       order:
-          [Optional] The sort order in which the results are returned.
+          Optional. The sort order in which the results are returned.
           Default is ``COUNT_DESC``.
       page_size:
-          [Optional] The maximum number of results to return per
+          Optional. The maximum number of results to return per
           response. Default is 20.
       page_token:
-          [Optional] A ``next_page_token`` provided by a previous
+          Optional. A ``next_page_token`` provided by a previous
           response. To view additional results, pass this token along
           with the identical query parameters as the first request.
   """,
@@ -1322,26 +1334,26 @@ ListEventsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_name:
-          [Required] The resource name of the Google Cloud Platform
+          Required. The resource name of the Google Cloud Platform
           project. Written as ``projects/`` plus the `Google Cloud
           Platform project ID
           <https://support.google.com/cloud/answer/6158840>`__. Example:
           ``projects/my-project-123``.
       group_id:
-          [Required] The group for which events shall be returned.
+          Required. The group for which events shall be returned.
       service_filter:
-          [Optional] List only ErrorGroups which belong to a service
+          Optional. List only ErrorGroups which belong to a service
           context that matches the filter. Data for all service contexts
           is returned if this field is not specified.
       time_range:
-          [Optional] List only data for the given time range. If not set
+          Optional. List only data for the given time range. If not set
           a default time range is used. The field time\_range\_begin in
           the response will specify the beginning of this time range.
       page_size:
-          [Optional] The maximum number of results to return per
+          Optional. The maximum number of results to return per
           response.
       page_token:
-          [Optional] A ``next_page_token`` provided by a previous
+          Optional. A ``next_page_token`` provided by a previous
           response.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.ListEventsRequest)
@@ -1407,15 +1419,15 @@ ServiceContextFilter = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service:
-          [Optional] The exact value to match against
+          Optional. The exact value to match against
           ```ServiceContext.service`` </error-reporting/reference/rest/v
           1beta1/ServiceContext#FIELDS.service>`__.
       version:
-          [Optional] The exact value to match against
+          Optional. The exact value to match against
           ```ServiceContext.version`` </error-reporting/reference/rest/v
           1beta1/ServiceContext#FIELDS.version>`__.
       resource_type:
-          [Optional] The exact value to match against
+          Optional. The exact value to match against
           ```ServiceContext.resource_type`` </error-reporting/reference/
           rest/v1beta1/ServiceContext#FIELDS.resource_type>`__.
   """,
@@ -1435,7 +1447,7 @@ DeleteEventsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_name:
-          [Required] The resource name of the Google Cloud Platform
+          Required. The resource name of the Google Cloud Platform
           project. Written as ``projects/`` plus the `Google Cloud
           Platform project ID
           <https://support.google.com/cloud/answer/6158840>`__. Example:
@@ -1461,15 +1473,37 @@ _sym_db.RegisterMessage(DeleteEventsResponse)
 
 
 DESCRIPTOR._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["project_name"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["group_id"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["service_filter"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["time_range"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["timed_count_duration"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["alignment"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["alignment_time"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["order"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["page_size"]._options = None
+_LISTGROUPSTATSREQUEST.fields_by_name["page_token"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["project_name"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["group_id"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["service_filter"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["time_range"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["page_size"]._options = None
+_LISTEVENTSREQUEST.fields_by_name["page_token"]._options = None
+_SERVICECONTEXTFILTER.fields_by_name["service"]._options = None
+_SERVICECONTEXTFILTER.fields_by_name["version"]._options = None
+_SERVICECONTEXTFILTER.fields_by_name["resource_type"]._options = None
+_DELETEEVENTSREQUEST.fields_by_name["project_name"]._options = None
 
 _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
     name="ErrorStatsService",
     full_name="google.devtools.clouderrorreporting.v1beta1.ErrorStatsService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2755,
-    serialized_end=3381,
+    serialized_options=_b(
+        '\312A"clouderrorreporting.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform'
+    ),
+    serialized_start=3084,
+    serialized_end=3863,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListGroupStats",
@@ -1479,7 +1513,7 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTGROUPSTATSREQUEST,
             output_type=_LISTGROUPSTATSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002/\022-/v1beta1/{project_name=projects/*}/groupStats"
+                "\202\323\344\223\002/\022-/v1beta1/{project_name=projects/*}/groupStats\332A\027project_name,time_range"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1490,7 +1524,7 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTEVENTSREQUEST,
             output_type=_LISTEVENTSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{project_name=projects/*}/events"
+                "\202\323\344\223\002+\022)/v1beta1/{project_name=projects/*}/events\332A\025project_name,group_id"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1501,7 +1535,7 @@ _ERRORSTATSSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEEVENTSREQUEST,
             output_type=_DELETEEVENTSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002+*)/v1beta1/{project_name=projects/*}/events"
+                "\202\323\344\223\002+*)/v1beta1/{project_name=projects/*}/events\332A\014project_name"
             ),
         ),
     ],

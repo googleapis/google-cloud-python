@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.errorreporting_v1beta1.proto import (
     common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2,
 )
@@ -26,13 +29,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.devtools.clouderrorreporting.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorGroupServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
+        "\n/com.google.devtools.clouderrorreporting.v1beta1B\026ErrorGroupServiceProtoP\001Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\370\001\001\252\002#Google.Cloud.ErrorReporting.V1Beta1\312\002#Google\\Cloud\\ErrorReporting\\V1beta1"
     ),
     serialized_pb=_b(
-        '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto"%\n\x0fGetGroupRequest\x12\x12\n\ngroup_name\x18\x01 \x01(\t"\\\n\x12UpdateGroupRequest\x12\x46\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup2\x8e\x03\n\x11\x45rrorGroupService\x12\xb4\x01\n\x08GetGroup\x12<.google.devtools.clouderrorreporting.v1beta1.GetGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{group_name=projects/*/groups/*}\x12\xc1\x01\n\x0bUpdateGroup\x12?.google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup"8\x82\xd3\xe4\x93\x02\x32\x1a)/v1beta1/{group.name=projects/*/groups/*}:\x05groupB\xf7\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorGroupServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
+        '\nKgoogle/devtools/clouderrorreporting_v1beta1/proto/error_group_service.proto\x12+google.devtools.clouderrorreporting.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a>google/devtools/clouderrorreporting_v1beta1/proto/common.proto"\\\n\x0fGetGroupRequest\x12I\n\ngroup_name\x18\x01 \x01(\tB5\xe0\x41\x02\xfa\x41/\n-clouderrorreporting.googleapis.com/ErrorGroup"a\n\x12UpdateGroupRequest\x12K\n\x05group\x18\x01 \x01(\x0b\x32\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroupB\x03\xe0\x41\x02\x32\xfb\x03\n\x11\x45rrorGroupService\x12\xc1\x01\n\x08GetGroup\x12<.google.devtools.clouderrorreporting.v1beta1.GetGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup">\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{group_name=projects/*/groups/*}\xda\x41\ngroup_name\x12\xc9\x01\n\x0bUpdateGroup\x12?.google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest\x1a\x37.google.devtools.clouderrorreporting.v1beta1.ErrorGroup"@\x82\xd3\xe4\x93\x02\x32\x1a)/v1beta1/{group.name=projects/*/groups/*}:\x05group\xda\x41\x05group\x1aV\xca\x41"clouderrorreporting.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xfa\x01\n/com.google.devtools.clouderrorreporting.v1beta1B\x16\x45rrorGroupServiceProtoP\x01Z^google.golang.org/genproto/googleapis/devtools/clouderrorreporting/v1beta1;clouderrorreporting\xf8\x01\x01\xaa\x02#Google.Cloud.ErrorReporting.V1Beta1\xca\x02#Google\\Cloud\\ErrorReporting\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
     ],
 )
@@ -60,7 +66,9 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A/\n-clouderrorreporting.googleapis.com/ErrorGroup"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -72,8 +80,8 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=218,
-    serialized_end=255,
+    serialized_start=303,
+    serialized_end=395,
 )
 
 
@@ -99,7 +107,7 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -111,8 +119,8 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=257,
-    serialized_end=349,
+    serialized_start=397,
+    serialized_end=494,
 )
 
 _UPDATEGROUPREQUEST.fields_by_name[
@@ -135,7 +143,7 @@ GetGroupRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       group_name:
-          [Required] The group resource name. Written as
+          Required. The group resource name. Written as
           projects/projectID/groups/group\_name. Call groupStats.list to
           return a list of groups belonging to this project.  Example:
           projects/my-project-123/groups/my-group
@@ -156,8 +164,7 @@ UpdateGroupRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       group:
-          [Required] The group which replaces the resource on the
-          server.
+          Required. The group which replaces the resource on the server.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.clouderrorreporting.v1beta1.UpdateGroupRequest)
     ),
@@ -166,15 +173,19 @@ _sym_db.RegisterMessage(UpdateGroupRequest)
 
 
 DESCRIPTOR._options = None
+_GETGROUPREQUEST.fields_by_name["group_name"]._options = None
+_UPDATEGROUPREQUEST.fields_by_name["group"]._options = None
 
 _ERRORGROUPSERVICE = _descriptor.ServiceDescriptor(
     name="ErrorGroupService",
     full_name="google.devtools.clouderrorreporting.v1beta1.ErrorGroupService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=352,
-    serialized_end=750,
+    serialized_options=_b(
+        '\312A"clouderrorreporting.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform'
+    ),
+    serialized_start=497,
+    serialized_end=1004,
     methods=[
         _descriptor.MethodDescriptor(
             name="GetGroup",
@@ -184,7 +195,7 @@ _ERRORGROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETGROUPREQUEST,
             output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{group_name=projects/*/groups/*}"
+                "\202\323\344\223\002+\022)/v1beta1/{group_name=projects/*/groups/*}\332A\ngroup_name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -195,7 +206,7 @@ _ERRORGROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEGROUPREQUEST,
             output_type=google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2._ERRORGROUP,
             serialized_options=_b(
-                "\202\323\344\223\0022\032)/v1beta1/{group.name=projects/*/groups/*}:\005group"
+                "\202\323\344\223\0022\032)/v1beta1/{group.name=projects/*/groups/*}:\005group\332A\005group"
             ),
         ),
     ],

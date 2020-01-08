@@ -37,6 +37,10 @@ from google.cloud.errorreporting_v1beta1.gapic.transports import (
 from google.cloud.errorreporting_v1beta1.proto import common_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2
 from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2_grpc
+from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2
+from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2_grpc
+from google.protobuf import duration_pb2
+from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -75,8 +79,8 @@ class ErrorGroupServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def group_path(cls, project, group):
-        """Return a fully-qualified group string."""
+    def error_group_path(cls, project, group):
+        """Return a fully-qualified error_group string."""
         return google.api_core.path_template.expand(
             "projects/{project}/groups/{group}", project=project, group=group
         )
@@ -209,12 +213,12 @@ class ErrorGroupServiceClient(object):
             >>>
             >>> client = errorreporting_v1beta1.ErrorGroupServiceClient()
             >>>
-            >>> group_name = client.group_path('[PROJECT]', '[GROUP]')
+            >>> group_name = client.error_group_path('[PROJECT]', '[GROUP]')
             >>>
             >>> response = client.get_group(group_name)
 
         Args:
-            group_name (str): [Required] The group resource name. Written as
+            group_name (str): Required. The group resource name. Written as
                 projects/projectID/groups/group\_name. Call groupStats.list to return a
                 list of groups belonging to this project.
 
@@ -289,7 +293,7 @@ class ErrorGroupServiceClient(object):
             >>> response = client.update_group(group)
 
         Args:
-            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): [Required] The group which replaces the resource on the server.
+            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): Required. The group which replaces the resource on the server.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup`

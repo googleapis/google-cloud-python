@@ -213,6 +213,13 @@ class ReportErrorsServiceClient(object):
         """
         Report an individual error event.
 
+        This endpoint accepts **either** an OAuth token, **or** an `API
+        key <https://support.google.com/cloud/answer/6158862>`__ for
+        authentication. To use an API key, append it to the URL as the value of
+        a ``key`` parameter. For example:
+
+        ``POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456``
+
         Example:
             >>> from google.cloud import errorreporting_v1beta1
             >>>
@@ -226,11 +233,11 @@ class ReportErrorsServiceClient(object):
             >>> response = client.report_error_event(project_name, event)
 
         Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project.
+            project_name (str): Required. The resource name of the Google Cloud Platform project.
                 Written as ``projects/`` plus the `Google Cloud Platform project
                 ID <https://support.google.com/cloud/answer/6158840>`__. Example:
                 ``projects/my-project-123``.
-            event (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent]): [Required] The error event to be reported.
+            event (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent]): Required. The error event to be reported.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent`
