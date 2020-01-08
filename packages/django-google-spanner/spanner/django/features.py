@@ -36,6 +36,18 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         # Tests that assume a serial pk.
+        'admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_nullbooleanfield',
+        'admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_tuple',
+        'admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter',
+        'admin_filters.tests.ListFiltersTests.test_datefieldlistfilter_with_time_zone_support',
+        'admin_filters.tests.ListFiltersTests.test_datefieldlistfilter',
+        'admin_filters.tests.ListFiltersTests.test_fieldlistfilter_underscorelookup_tuple',
+        'admin_filters.tests.ListFiltersTests.test_fk_with_to_field',
+        'admin_filters.tests.ListFiltersTests.test_listfilter_genericrelation',
+        'admin_filters.tests.ListFiltersTests.test_lookup_with_non_string_value_underscored',
+        'admin_filters.tests.ListFiltersTests.test_lookup_with_non_string_value',
+        'admin_filters.tests.ListFiltersTests.test_relatedfieldlistfilter_manytomany',
+        'admin_filters.tests.ListFiltersTests.test_simplelistfilter',
         'admin_inlines.tests.TestInline.test_inline_hidden_field_no_column',
         'admin_views.tests.AdminViewPermissionsTest.test_history_view',
         'aggregation.test_filter_argument.FilteredAggregateTests.test_plain_annotate',
@@ -48,6 +60,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'defer_regress.tests.DeferRegressionTest.test_ticket_23270',
         'distinct_on_fields.tests.DistinctOnTests.test_basic_distinct_on',
         'generic_relations_regress.tests.GenericRelationTests.test_annotate',
+        'get_earliest_or_latest.tests.TestFirstLast',
         'known_related_objects.tests.ExistingRelatedInstancesTests.test_reverse_one_to_one_multi_prefetch_related',
         'known_related_objects.tests.ExistingRelatedInstancesTests.test_reverse_one_to_one_multi_select_related',
         'lookup.tests.LookupTests.test_get_next_previous_by',
@@ -200,4 +213,26 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # casting DateField to DateTimeField adds an unexpected hour:
         # https://github.com/orijtech/spanner-orm/issues/260
         'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
+        # Did not expect to issue a SQL statement:
+        # https://github.com/orijtech/spanner-orm/issues/266
+        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_adding_and_pk_not_specified',  # noqa
+        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_not_adding',
+        # Database queries are issued to 'default' but shouldn't be:
+        # https://github.com/orijtech/spanner-orm/issues/267
+        'validation.test_custom_messages.CustomMessagesTests.test_custom_null_message',
+        'validation.test_custom_messages.CustomMessagesTests.test_custom_simple_validator_message',
+        'validation.test_validators.TestModelsWithValidators.test_custom_validator_passes_for_correct_value',
+        'validation.test_validators.TestModelsWithValidators.test_custom_validator_raises_error_for_incorrect_value',
+        'validation.test_validators.TestModelsWithValidators.test_field_validators_can_be_any_iterable',
+        # Invalid table names aren't supported:
+        # https://github.com/orijtech/spanner-orm/issues/268
+        'backends',
+        # Cloud Spanner supports Unicode as the native encoding yet Django
+        # doesn't expect the backend to support it, so skip this test.
+        'auth_tests.test_basic.BasicTestCase.test_unicode_username',
+        # Obscure error with auth_tests:
+        # https://github.com/orijtech/spanner-orm/issues/271
+        'auth_tests.test_admin_multidb.MultiDatabaseTests.test_add_view',
+        # We can't run GIS tests on a non-GIS database.
+        'gis_tests',
     )

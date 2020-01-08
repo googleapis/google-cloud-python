@@ -7,8 +7,8 @@ set -e
 # so that we can have multiple tests running without
 # conflicting which changes and constraints. We'll always
 # cleanup the created database.
-TEST_DBNAME=${SPANNER_TEST_DB:-testdb-$(python3 -c 'import random; print(random.randint(1e3, 0x7fffffff))')}
-TEST_DBNAME_OTHER="$TEST_DBNAME-other"
+TEST_DBNAME=${SPANNER_TEST_DB:-$(python3 -c 'import os; print("a"+os.urandom(10).hex())')}
+TEST_DBNAME_OTHER="$TEST_DBNAME-ot"
 TEST_APPS=${DJANGO_TEST_APPS:-basic}
 INSTANCE=${SPANNER_TEST_INSTANCE:-django-tests}
 PROJECT=${SPANNER_TEST_PROJECT:-appdev-soda-spanner-staging}
