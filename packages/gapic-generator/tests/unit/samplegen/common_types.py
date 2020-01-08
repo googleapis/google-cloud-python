@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
 import itertools
 
 from collections import namedtuple
-from typing import(Iterable, Optional)
+from typing import(Any, Dict, Iterable, Optional)
 
 from google.protobuf import descriptor_pb2
 
@@ -23,19 +24,17 @@ from gapic.schema import wrappers
 
 # Injected dummy test types
 
-DummyMethod = namedtuple(
-    "DummyMethod",
-    [
-        "input",
-        "output",
-        "lro",
-        "paged_result_field",
-        "client_streaming",
-        "server_streaming",
-    ],
-)
 
-DummyMethod.__new__.__defaults__ = (False,) * len(DummyMethod._fields)
+@dataclasses.dataclass(frozen=True)
+class DummyMethod:
+    input: bool = False
+    output: bool = False
+    lro: bool = False
+    paged_result_field: bool = False
+    client_streaming: bool = False
+    server_streaming: bool = False
+    flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
+
 
 DummyMessage = namedtuple("DummyMessage", ["fields", "type", "options"])
 DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
@@ -43,6 +42,7 @@ DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
 DummyField = namedtuple("DummyField",
                         ["message",
                          "enum",
+                         "name",
                          "repeated",
                          "field_pb",
                          "meta",

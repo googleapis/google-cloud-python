@@ -42,7 +42,8 @@ def check_template(template_fragment, expected_output, **kwargs):
 
         undefined=jinja2.StrictUndefined,
         extensions=["jinja2.ext.do"],
-        trim_blocks=True, lstrip_blocks=True
+        trim_blocks=True,
+        lstrip_blocks=True
     )
 
     env.filters['snake_case'] = utils.to_snake_case
@@ -132,44 +133,128 @@ def test_render_request_basic():
             gastropod["movie"] = f.read()
 
         ''',
-        request=[samplegen.TransformedRequest(base="cephalopod",
-                                              body=[
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="cephalopod",
+                                             body=[
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="mantle_mass",
+                                                     value="'10 kg'",
+                                                     input_parameter="cephalopod_mass"
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="photo",
+                                                     value="'path/to/cephalopod/photo.jpg'",
+                                                     input_parameter="photo_path",
+                                                     value_is_file=True
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="order",
+                                                     value="Molluscs.Cephalopoda.Coleoidea"),
+                                             ],
+                                             single=None),
+                samplegen.TransformedRequest(base="gastropod",
+                                             body=[
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="mantle_mass",
+                                                     value="'1 kg'",
+                                                     input_parameter="gastropod_mass"
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="order",
+                                                     value="Molluscs.Gastropoda.Pulmonata"
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="movie",
+                                                     value="'path/to/gastropod/movie.mkv'",
+                                                     input_parameter="movie_path",
+                                                     value_is_file=True
+                                                 )
+                                             ],
+                                             single=None),
+            ],
+            flattenable=True,
+        )
+    )
+
+
+def test_render_request_unflattened():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_request_setup(request) }}
+        ''',
+        '''
+        cephalopod = {}
+        # cephalopod_mass = '10 kg'
+        cephalopod["mantle_mass"] = cephalopod_mass
+
+        # photo_path = 'path/to/cephalopod/photo.jpg'
+        with open(photo_path, "rb") as f:
+            cephalopod["photo"] = f.read()
+
+        cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
+
+        gastropod = {}
+        # gastropod_mass = '1 kg'
+        gastropod["mantle_mass"] = gastropod_mass
+
+        gastropod["order"] = Molluscs.Gastropoda.Pulmonata
+
+        # movie_path = 'path/to/gastropod/movie.mkv'
+        with open(movie_path, "rb") as f:
+            gastropod["movie"] = f.read()
+
+        request = {
+            'cephalopod': cephalopod,
+            'gastropod': gastropod,
+            'bivalve': "humboldt",
+        }
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="cephalopod",
+                                             body=[
                                                   samplegen.AttributeRequestSetup(
                                                       field="mantle_mass",
                                                       value="'10 kg'",
                                                       input_parameter="cephalopod_mass"
                                                   ),
-                                                  samplegen.AttributeRequestSetup(
+                                                 samplegen.AttributeRequestSetup(
                                                       field="photo",
                                                       value="'path/to/cephalopod/photo.jpg'",
                                                       input_parameter="photo_path",
                                                       value_is_file=True
                                                   ),
-                                                  samplegen.AttributeRequestSetup(
+                                                 samplegen.AttributeRequestSetup(
                                                       field="order",
                                                       value="Molluscs.Cephalopoda.Coleoidea"),
-                                              ],
-                                              single=None),
-                 samplegen.TransformedRequest(base="gastropod",
-                                              body=[
+                                             ],
+                                             single=None),
+                samplegen.TransformedRequest(base="gastropod",
+                                             body=[
                                                   samplegen.AttributeRequestSetup(
                                                       field="mantle_mass",
                                                       value="'1 kg'",
                                                       input_parameter="gastropod_mass"
                                                   ),
-                                                  samplegen.AttributeRequestSetup(
+                                                 samplegen.AttributeRequestSetup(
                                                       field="order",
                                                       value="Molluscs.Gastropoda.Pulmonata"
                                                   ),
-                                                  samplegen.AttributeRequestSetup(
+                                                 samplegen.AttributeRequestSetup(
                                                       field="movie",
                                                       value="'path/to/gastropod/movie.mkv'",
                                                       input_parameter="movie_path",
                                                       value_is_file=True
                                                   )
-                                              ],
-                                              single=None),
-                 ]
+                                             ],
+                                             single=None),
+                samplegen.TransformedRequest(base="bivalve",
+                                             body=None,
+                                             single='"humboldt"'),
+            ]
+        )
     )
 
 
@@ -182,24 +267,27 @@ def test_render_request_resource_name():
         '''
         taxon = "kingdom/{kingdom}/phylum/{phylum}".format(kingdom="animalia", phylum=mollusca)
         ''',
-        request=[
-            samplegen.TransformedRequest(
-                base="taxon",
-                single=None,
-                body=[
-                    samplegen.AttributeRequestSetup(
-                        field="kingdom",
-                        value='"animalia"',
-                    ),
-                    samplegen.AttributeRequestSetup(
-                        field="phylum",
-                        value="mollusca",
-                        input_parameter="mollusca",
-                    )
-                ],
-                pattern="kingdom/{kingdom}/phylum/{phylum}"
-            ),
-        ]
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(
+                    base="taxon",
+                    single=None,
+                    body=[
+                        samplegen.AttributeRequestSetup(
+                            field="kingdom",
+                            value='"animalia"',
+                        ),
+                        samplegen.AttributeRequestSetup(
+                            field="phylum",
+                            value="mollusca",
+                            input_parameter="mollusca",
+                        )
+                    ],
+                    pattern="kingdom/{kingdom}/phylum/{phylum}"
+                ),
+            ],
+            flattenable=True
+        )
     )
 
 
@@ -355,8 +443,8 @@ def test_collection_loop():
         '''
         for m in response.molluscs:
             print("Mollusc: {}".format(m))
-        
-        
+
+
         ''',
         collection={"collection": "$resp.molluscs",
                     "variable": "m",
@@ -571,32 +659,35 @@ def test_print_input_params():
         '''
         mass, length, color
         ''',
-        request=[samplegen.TransformedRequest(base="squid",
-                                              body=[
-                                                  samplegen.AttributeRequestSetup(
-                                                      field="mass",
-                                                      value="10 kg",
-                                                      input_parameter="mass"
-                                                  ),
-                                                  samplegen.AttributeRequestSetup(
-                                                      field="length",
-                                                      value="20 m",
-                                                      input_parameter="length"
-                                                  )
-                                              ],
-                                              single=None),
-                 samplegen.TransformedRequest(base="diameter",
-                                              single=samplegen.AttributeRequestSetup(
-                                                  value="10 cm"
-                                              ),
-                                              body=None),
-                 samplegen.TransformedRequest(base="color",
-                                              single=samplegen.AttributeRequestSetup(
-                                                  value="red",
-                                                  input_parameter="color"
-                                              ),
-                                              body=None),
-                 ]
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="squid",
+                                             body=[
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="mass",
+                                                     value="10 kg",
+                                                     input_parameter="mass"
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="length",
+                                                     value="20 m",
+                                                     input_parameter="length"
+                                                 )
+                                             ],
+                                             single=None),
+                samplegen.TransformedRequest(base="diameter",
+                                             single=samplegen.AttributeRequestSetup(
+                                                 value="10 cm"
+                                             ),
+                                             body=None),
+                samplegen.TransformedRequest(base="color",
+                                             single=samplegen.AttributeRequestSetup(
+                                                 value="red",
+                                                 input_parameter="color"
+                                             ),
+                                             body=None),
+            ]
+        )
     )
 
 
@@ -685,17 +776,50 @@ def test_render_method_call_basic():
                                   calling_form, calling_form_enum) }}
         ''',
         '''
-        client.categorize_mollusc(video, audio, guess)
+        client.categorize_mollusc(request=request)
         ''',
-        request=[samplegen.TransformedRequest(base="video",
-                                              body=True,
-                                              single=None),
-                 samplegen.TransformedRequest(base="audio",
-                                              body=True,
-                                              single=None),
-                 samplegen.TransformedRequest(base="guess",
-                                              body=True,
-                                              single=None)],
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="audio",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="guess",
+                                             body=True,
+                                             single=None)
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request
+    )
+
+
+def test_render_method_call_basic_flattenable():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+                                  calling_form, calling_form_enum) }}
+        ''',
+        '''
+        client.categorize_mollusc(video=video, audio=audio, guess=guess)
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="audio",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="guess",
+                                             body=True,
+                                             single=None)
+            ],
+            flattenable=True,
+        ),
         calling_form_enum=CallingForm,
         calling_form=CallingForm.Request
     )
@@ -711,9 +835,15 @@ def test_render_method_call_bidi():
         '''
         client.categorize_mollusc([video])
         ''',
-        request=[samplegen.TransformedRequest(base="video",
-                                              body=True,
-                                              single=None)],
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(
+                    base="video",
+                    body=True,
+                    single=None
+                )
+            ]
+        ),
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingBidi
     )
@@ -729,9 +859,15 @@ def test_render_method_call_client():
         '''
         client.categorize_mollusc([video])
         ''',
-        request=[samplegen.TransformedRequest(base="video",
-                                              body=True,
-                                              single=None)],
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(
+                    base="video",
+                    body=True,
+                    single=None
+                )
+            ]
+        ),
         calling_form_enum=CallingForm,
         calling_form=CallingForm.RequestStreamingClient
     )
@@ -803,27 +939,29 @@ def test_main_block():
         if __name__ == "__main__":
             main()
         ''',
-        request=[
-            samplegen.TransformedRequest(base="input_params",
-                                         body=[
-                                             samplegen.AttributeRequestSetup(
-                                                 field="list_molluscs.order",
-                                                 value="'coleoidea'",
-                                                 input_parameter="order"
-                                             ),
-                                             samplegen.AttributeRequestSetup(
-                                                 field="list_molluscs.mass",
-                                                 value="'60kg'",
-                                                 input_parameter="mass")
-                                         ],
-                                         single=None),
-            samplegen.TransformedRequest(base="enum_param",
-                                         body=[
-                                             samplegen.AttributeRequestSetup(
-                                                 field="list_molluscs.zone",
-                                                 value="MESOPELAGIC"
-                                             )
-                                         ],
-                                         single=None)
-        ]
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="input_params",
+                                             body=[
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="list_molluscs.order",
+                                                     value="'coleoidea'",
+                                                     input_parameter="order"
+                                                 ),
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="list_molluscs.mass",
+                                                     value="'60kg'",
+                                                     input_parameter="mass")
+                                             ],
+                                             single=None),
+                samplegen.TransformedRequest(base="enum_param",
+                                             body=[
+                                                 samplegen.AttributeRequestSetup(
+                                                     field="list_molluscs.zone",
+                                                     value="MESOPELAGIC"
+                                                 )
+                                             ],
+                                             single=None)
+            ]
+        )
     )

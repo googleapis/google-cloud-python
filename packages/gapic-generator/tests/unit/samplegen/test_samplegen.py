@@ -899,18 +899,22 @@ def test_validate_request_basic():
             {"field": "squid.num_tentacles", "value": 10},
         ],
     )
-    expected = [samplegen.TransformedRequest(
-        base="squid",
-        body=[
-            samplegen.AttributeRequestSetup(field="mantle_length",
-                                            value='"100 \\"cm"'),
-            samplegen.AttributeRequestSetup(field="mantle_mass",
-                                            value='"10 kg"'),
-            samplegen.AttributeRequestSetup(field="num_tentacles",
-                                            value=10)
-        ],
-        single=None
-    )]
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                base="squid",
+                body=[
+                    samplegen.AttributeRequestSetup(field="mantle_length",
+                                                    value='"100 \\"cm"'),
+                    samplegen.AttributeRequestSetup(field="mantle_mass",
+                                                    value='"10 kg"'),
+                    samplegen.AttributeRequestSetup(field="num_tentacles",
+                                                    value=10)
+                ],
+                single=None
+            )
+        ]
+    )
 
     assert actual == expected
 
@@ -943,13 +947,15 @@ def test_validate_request_top_level_field():
         [{"field": "squid", "value": "humboldt"}]
     )
 
-    expected = [
-        samplegen.TransformedRequest(base="squid",
-                                     body=None,
-                                     single=samplegen.AttributeRequestSetup(
-                                         value='"humboldt"'
-                                     ))
-    ]
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(base="squid",
+                                         body=None,
+                                         single=samplegen.AttributeRequestSetup(
+                                             value='"humboldt"'
+                                         ))
+        ]
+    )
 
     assert actual == expected
 
@@ -1035,24 +1041,26 @@ def test_validate_request_multiple_arguments():
             },
         ],
     )
-    expected = [
-        samplegen.TransformedRequest(
-            base="squid",
-            body=[samplegen.AttributeRequestSetup(
-                field="mantle_length",
-                value='"100 cm"',
-                value_is_file=True)],
-            single=None
-        ),
-        samplegen.TransformedRequest(
-            base="clam",
-            body=[samplegen.AttributeRequestSetup(
-                field="shell_mass",
-                value='"100 kg"',
-                comment="Clams can be large")],
-            single=None
-        ),
-    ]
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                base="squid",
+                body=[samplegen.AttributeRequestSetup(
+                    field="mantle_length",
+                    value='"100 cm"',
+                    value_is_file=True)],
+                single=None
+            ),
+            samplegen.TransformedRequest(
+                base="clam",
+                body=[samplegen.AttributeRequestSetup(
+                    field="shell_mass",
+                    value='"100 kg"',
+                    comment="Clams can be large")],
+                single=None
+            ),
+        ]
+    )
 
     assert actual == expected
 
@@ -1524,11 +1532,16 @@ def test_validate_request_enum():
         types.CallingForm.Request,
         [{"field": "cephalopod.subclass", "value": "COLEOIDEA"}]
     )
-    expected = [samplegen.TransformedRequest(
-        "cephalopod",
-        body=[samplegen.AttributeRequestSetup(field="subclass",
-                                              value='"COLEOIDEA"')],
-        single=None)]
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                "cephalopod",
+                body=[samplegen.AttributeRequestSetup(field="subclass",
+                                                      value='"COLEOIDEA"')],
+                single=None
+            )
+        ]
+    )
     assert actual == expected
 
 
@@ -1541,10 +1554,10 @@ def test_validate_request_enum_top_level():
         types.CallingForm.Request,
         [{"field": "subclass", "value": "COLEOIDEA"}]
     )
-    expected = [samplegen.TransformedRequest(
+    expected = samplegen.FullRequest(request_list=[samplegen.TransformedRequest(
         "subclass",
         single=samplegen.AttributeRequestSetup(value='"COLEOIDEA"'),
-        body=None)]
+        body=None)])
     assert actual == expected
 
 
@@ -1627,24 +1640,26 @@ def test_validate_request_resource_name():
         request
     )
 
-    expected = [
-        samplegen.TransformedRequest(
-            base="taxon",
-            pattern="kingdom/{kingdom}/phylum/{phylum}",
-            single=None,
-            body=[
-                samplegen.AttributeRequestSetup(
-                    field="kingdom",
-                    value="animalia",
-                ),
-                samplegen.AttributeRequestSetup(
-                    field="phylum",
-                    value="mollusca",
-                    input_parameter="phylum",
-                ),
-            ]
-        )
-    ]
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                base="taxon",
+                pattern="kingdom/{kingdom}/phylum/{phylum}",
+                single=None,
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="kingdom",
+                        value="animalia",
+                    ),
+                    samplegen.AttributeRequestSetup(
+                        field="phylum",
+                        value="mollusca",
+                        input_parameter="phylum",
+                    ),
+                ]
+            )
+        ]
+    )
 
     assert actual == expected
 
@@ -1663,15 +1678,17 @@ def test_validate_request_primitive_field():
 
     actual = v.validate_and_transform_request(types.CallingForm.Request,
                                               request)
-    expected = [
-        samplegen.TransformedRequest(
-            base="species",
-            body=None,
-            single=samplegen.AttributeRequestSetup(
-                value='"Architeuthis dux"'
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                base="species",
+                body=None,
+                single=samplegen.AttributeRequestSetup(
+                    value='"Architeuthis dux"'
+                )
             )
-        )
-    ]
+        ]
+    )
 
     assert actual == expected
 

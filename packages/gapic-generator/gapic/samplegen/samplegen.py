@@ -21,11 +21,13 @@ import os
 import re
 import time
 
+from gapic import utils
+
 from gapic.samplegen_utils import types
 from gapic.schema import wrappers
 
 from collections import (defaultdict, namedtuple, ChainMap as chainmap)
-from typing import (ChainMap, Dict, List, Mapping, Optional, Tuple)
+from typing import (ChainMap, Dict, FrozenSet, List, Mapping, Optional, Tuple)
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -193,6 +195,12 @@ class RequestEntry:
         default_factory=list)
 
 
+@dataclasses.dataclass(frozen=True)
+class FullRequest:
+    request_list: List[TransformedRequest]
+    flattenable: bool = False
+
+
 class Validator:
     """Class that validates a sample.
 
@@ -222,6 +230,7 @@ class Validator:
     # TODO(dovs): make the schema a required param.
     def __init__(self, method: wrappers.Method, api_schema=None):
             # The response ($resp) variable is special and guaranteed to exist.
+        self.method = method
         self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
@@ -258,6 +267,12 @@ class Validator:
         """
         sample["package_name"] = api_schema.naming.warehouse_package_name
         sample.setdefault("response", [{"print": ["%s", "$resp"]}])
+
+    @utils.cached_property
+    def flattenable_fields(self) -> FrozenSet[str]:
+        return frozenset(
+            field.name for field in self.method.flattened_fields.values()
+        )
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
@@ -338,7 +353,7 @@ class Validator:
 
     def validate_and_transform_request(self,
                                        calling_form: types.CallingForm,
-                                       request: List[Mapping[str, str]]) -> List[TransformedRequest]:
+                                       request: List[Mapping[str, str]]) -> FullRequest:
         """Validates and transforms the "request" block from a sample config.
 
            In the initial request, each dict has a "field" key that maps to a dotted
@@ -477,16 +492,22 @@ class Validator:
             raise types.InvalidRequestSetup(
                 "Too many base parameters for client side streaming form")
 
-        return [
-            TransformedRequest.build(
-                self.request_type_,
-                self.api_schema_,
-                key,
-                val.attrs,
-                val.is_resource_request
-            )
-            for key, val in base_param_to_attrs.items()
-        ]
+        # We can only flatten a collection of request parameters if they're a
+        # subset of the flattened fields of the method.
+        flattenable = self.flattenable_fields >= set(base_param_to_attrs)
+        return FullRequest(
+            request_list=[
+                TransformedRequest.build(
+                    self.request_type_,
+                    self.api_schema_,
+                    key,
+                    val.attrs,
+                    val.is_resource_request
+                )
+                for key, val in base_param_to_attrs.items()
+            ],
+            flattenable=flattenable
+        )
 
     def validate_response(self, response):
         """Validates a "response" block from a sample config.

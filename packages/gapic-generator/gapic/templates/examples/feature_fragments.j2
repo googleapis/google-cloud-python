@@ -41,9 +41,9 @@ There is a little, but not enough for it to be important because
 {% endif %}
 {% endmacro %}
 
-{% macro print_input_params(requests) %}
+{% macro print_input_params(full_request) %}
 {% with input_parameters = [] %}
-  {% for request in requests %}
+  {% for request in full_request.request_list %}
     {% if request.body %}
       {% for element in request.body if element.input_parameter %}
         {% do input_parameters.append(element.input_parameter) %}
@@ -148,8 +148,8 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endif %}
 {% endmacro %}
 
-{% macro render_request_setup(request) %}
-{% for parameter_block in request if parameter_block.body %}
+{% macro render_request_setup(full_request) %}
+{% for parameter_block in full_request.request_list if parameter_block.body %}
 {% if parameter_block.pattern -%}
 {# This is a resource-name patterned lookup parameter #}
 {% with formals = [] -%} 
@@ -158,13 +158,20 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% endfor -%} 
 {{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
 {% endwith -%}  
-{% else -%}
+{% else -%} {# End resource name construction #}
 {{ parameter_block.base }} = {}
 {% for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) }}
 {% endfor %}
 {% endif -%}
 {% endfor %}
+{% if not full_request.flattenable -%}
+request = {
+{% for parameter in full_request.request_list %}
+    '{{ parameter.base  }}': {{ parameter.base if parameter.body else parameter.single }},
+{% endfor -%}
+}
+{% endif -%}
 {% endmacro %}
 
 {% macro render_request_params(request) %}
@@ -180,14 +187,29 @@ with open({{ attr.input_parameter }}, "rb") as f:
   {% endwith -%}
 {% endmacro %}
 
+{% macro render_request_params_unary(request) %}
+  {# Provide the top level parameters last and as keyword params #}
+  {% if request.flattenable -%}
+  {% with params = [] -%}
+    {% for r in request.request_list -%}
+      {% do params.append("%s=%s"|format(r.base, r.single.value if r.single else r.base)) -%}
+    {% endfor -%}
+{{ params|join(", ") -}}
+  {% endwith -%}
+  {% else -%}
+request=request
+  {% endif -%}
+{% endmacro %}
+
+
 {% macro render_method_call(sample, calling_form, calling_form_enum) %}
   {# Note: this doesn't deal with enums or unions #}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
                        calling_form_enum.RequestStreamingClient] -%}
-client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request)|trim -}}])
-{% else -%}
+client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request.request_list)|trim -}}])
+{% else -%} {# TODO: deal with flattening #}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc|snake_case }}({{ render_request_params(sample.request)|trim -}})
+client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request)|trim -}})
 {% endif -%}
 {% endmacro %}
 
@@ -235,13 +257,13 @@ response = operation.result()
 {{ method_name|snake_case }}
 {% endmacro %}
 
-{% macro render_main_block(method_name, request_block) %}
+{% macro render_main_block(method_name, full_request) %}
 def main():
     import argparse
 
     parser = argparse.ArgumentParser()
 {% with arg_list = [] -%}
-{% for request in request_block if request.body -%}
+{% for request in full_request.request_list if request.body -%}
 {% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
@@ -249,7 +271,7 @@ def main():
 {% do arg_list.append("args." + attr.input_parameter) -%}
 {% endfor -%}
 {% endfor -%}
-{% for request in request_block if request.single and request.single.input_parameter %}
+{% for request in full_request.request_list if request.single and request.single.input_parameter %}
     parser.add_argument("--{{ request.single.input_parameter }}",
                         type=str,
                         default={{ request.single.value }})
