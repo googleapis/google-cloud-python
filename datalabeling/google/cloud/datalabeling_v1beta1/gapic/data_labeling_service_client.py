@@ -90,12 +90,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def annotated_dataset_path(cls, project, dataset, annotated_dataset):
-        """DEPRECATED. Return a fully-qualified annotated_dataset string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotated_dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
             project=project,
@@ -105,12 +100,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def annotation_spec_set_path(cls, project, annotation_spec_set):
-        """DEPRECATED. Return a fully-qualified annotation_spec_set string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotation_spec_set string."""
         return google.api_core.path_template.expand(
             "projects/{project}/annotationSpecSets/{annotation_spec_set}",
             project=project,
@@ -119,12 +109,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def data_item_path(cls, project, dataset, data_item):
-        """DEPRECATED. Return a fully-qualified data_item string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified data_item string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
             project=project,
@@ -134,24 +119,14 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def dataset_path(cls, project, dataset):
-        """DEPRECATED. Return a fully-qualified dataset string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}", project=project, dataset=dataset
         )
 
     @classmethod
     def evaluation_path(cls, project, dataset, evaluation):
-        """DEPRECATED. Return a fully-qualified evaluation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified evaluation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/evaluations/{evaluation}",
             project=project,
@@ -161,12 +136,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def evaluation_job_path(cls, project, evaluation_job):
-        """DEPRECATED. Return a fully-qualified evaluation_job string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified evaluation_job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/evaluationJobs/{evaluation_job}",
             project=project,
@@ -175,12 +145,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def example_path(cls, project, dataset, annotated_dataset, example):
-        """DEPRECATED. Return a fully-qualified example string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified example string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}/examples/{example}",
             project=project,
@@ -191,12 +156,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def instruction_path(cls, project, instruction):
-        """DEPRECATED. Return a fully-qualified instruction string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instruction string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instructions/{instruction}",
             project=project,
@@ -205,12 +165,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
