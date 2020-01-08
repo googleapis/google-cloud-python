@@ -54,21 +54,12 @@ class FirestoreClient(object):
     """
     The Cloud Firestore service.
 
-    This service exposes several types of comparable timestamps:
-
-    -  ``create_time`` - The time at which a document was created. Changes
-       only when a document is deleted, then re-created. Increases in a
-       strict monotonic fashion.
-    -  ``update_time`` - The time at which a document was last updated.
-       Changes every time a document is modified. Does not change when a
-       write results in no modifications. Increases in a strict monotonic
-       fashion.
-    -  ``read_time`` - The time at which a particular state was observed.
-       Used to denote a consistent snapshot of the database or the time at
-       which a Document was observed to not exist.
-    -  ``commit_time`` - The time at which the writes in a transaction were
-       committed. Any read with an equal or greater ``read_time`` is
-       guaranteed to see the effects of the transaction.
+    Cloud Firestore is a fast, fully managed, serverless, cloud-native NoSQL
+    document database that simplifies storing, syncing, and querying data for
+    your mobile, web, and IoT apps at global scale. Its client libraries provide
+    live synchronization and offline support, while its security features and
+    integrations with Firebase and Google Cloud Platform (GCP) accelerate
+    building truly serverless apps.
     """
 
     SERVICE_ADDRESS = "firestore.googleapis.com:443"
@@ -273,7 +264,7 @@ class FirestoreClient(object):
             >>> response = client.get_document(name)
 
         Args:
-            name (str): The resource name of the Document to get. In the format:
+            name (str): Required. The resource name of the Document to get. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
             mask (Union[dict, ~google.cloud.firestore_v1.types.DocumentMask]): The fields to return. If not set, returns all fields.
 
@@ -386,13 +377,13 @@ class FirestoreClient(object):
             ...         pass
 
         Args:
-            parent (str): The parent resource name. In the format:
+            parent (str): Required. The parent resource name. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
                 For example: ``projects/my-project/databases/my-database/documents`` or
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
-            collection_id (str): The collection ID, relative to ``parent``, to list. For example:
-                ``chatrooms`` or ``messages``.
+            collection_id (str): Required. The collection ID, relative to ``parent``, to list. For
+                example: ``chatrooms`` or ``messages``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -516,15 +507,15 @@ class FirestoreClient(object):
             >>> response = client.create_document(parent, collection_id, document_id, document)
 
         Args:
-            parent (str): The parent resource. For example:
+            parent (str): Required. The parent resource. For example:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/chatrooms/{chatroom_id}``
-            collection_id (str): The collection ID, relative to ``parent``, to list. For example:
-                ``chatrooms``.
+            collection_id (str): Required. The collection ID, relative to ``parent``, to list. For
+                example: ``chatrooms``.
             document_id (str): The client-assigned document ID to use for this document.
 
                 Optional. If not specified, an ID will be assigned by the service.
-            document (Union[dict, ~google.cloud.firestore_v1.types.Document]): The document to create. ``name`` must not be set.
+            document (Union[dict, ~google.cloud.firestore_v1.types.Document]): Required. The document to create. ``name`` must not be set.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_v1.types.Document`
@@ -603,7 +594,7 @@ class FirestoreClient(object):
             >>> response = client.update_document(document, update_mask)
 
         Args:
-            document (Union[dict, ~google.cloud.firestore_v1.types.Document]): The updated document.
+            document (Union[dict, ~google.cloud.firestore_v1.types.Document]): Required. The updated document.
                 Creates the document if it does not already exist.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -704,7 +695,7 @@ class FirestoreClient(object):
             >>> client.delete_document(name)
 
         Args:
-            name (str): The resource name of the Document to delete. In the format:
+            name (str): Required. The resource name of the Document to delete. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
             current_document (Union[dict, ~google.cloud.firestore_v1.types.Precondition]): An optional precondition on the document.
                 The request will fail if this is set and not met by the target document.
@@ -791,7 +782,7 @@ class FirestoreClient(object):
             ...     pass
 
         Args:
-            database (str): The database name. In the format:
+            database (str): Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
             documents (list[str]): The names of the documents to retrieve. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
@@ -901,7 +892,7 @@ class FirestoreClient(object):
             >>> response = client.begin_transaction(database)
 
         Args:
-            database (str): The database name. In the format:
+            database (str): Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
             options_ (Union[dict, ~google.cloud.firestore_v1.types.TransactionOptions]): The options for the transaction.
                 Defaults to a read-write transaction.
@@ -983,7 +974,7 @@ class FirestoreClient(object):
             >>> response = client.commit(database, writes)
 
         Args:
-            database (str): The database name. In the format:
+            database (str): Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
             writes (list[Union[dict, ~google.cloud.firestore_v1.types.Write]]): The writes to apply.
 
@@ -1066,9 +1057,9 @@ class FirestoreClient(object):
             >>> client.rollback(database, transaction)
 
         Args:
-            database (str): The database name. In the format:
+            database (str): Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
-            transaction (bytes): The transaction to roll back.
+            transaction (bytes): Required. The transaction to roll back.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1142,7 +1133,7 @@ class FirestoreClient(object):
             ...     pass
 
         Args:
-            parent (str): The parent resource name. In the format:
+            parent (str): Required. The parent resource name. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents`` or
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
                 For example: ``projects/my-project/databases/my-database/documents`` or
@@ -1387,7 +1378,7 @@ class FirestoreClient(object):
             ...         pass
 
         Args:
-            parent (str): The parent document. In the format:
+            parent (str): Required. The parent document. In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
                 For example:
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
