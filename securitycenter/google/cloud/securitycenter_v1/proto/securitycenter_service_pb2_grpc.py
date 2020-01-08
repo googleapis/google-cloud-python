@@ -178,7 +178,7 @@ class SecurityCenterServicer(object):
     specified properties.
 
     To group across all sources provide a `-` as the source id.
-    Example: /v1/organizations/123/sources/-/findings
+    Example: /v1/organizations/{organization_id}/sources/-/findings
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -195,7 +195,7 @@ class SecurityCenterServicer(object):
         """Lists an organization or source's findings.
 
     To list across all sources provide a `-` as the source id.
-    Example: /v1/organizations/123/sources/-/findings
+    Example: /v1/organizations/{organization_id}/sources/-/findings
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

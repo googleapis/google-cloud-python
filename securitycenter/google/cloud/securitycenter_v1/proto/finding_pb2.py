@@ -15,12 +15,14 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.securitycenter_v1.proto import (
     security_marks_pb2 as google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_security__marks__pb2,
 )
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,13 +33,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1\312\002\036Google\\Cloud\\SecurityCenter\\V1\352\002!Google::Cloud::SecurityCenter::V1'
     ),
     serialized_pb=_b(
-        '\n2google/cloud/securitycenter_v1/proto/finding.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x39google/cloud/securitycenter_v1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb1\x04\n\x07\x46inding\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06parent\x18\x02 \x01(\t\x12\x15\n\rresource_name\x18\x03 \x01(\t\x12<\n\x05state\x18\x04 \x01(\x0e\x32-.google.cloud.securitycenter.v1.Finding.State\x12\x10\n\x08\x63\x61tegory\x18\x05 \x01(\t\x12\x14\n\x0c\x65xternal_uri\x18\x06 \x01(\t\x12X\n\x11source_properties\x18\x07 \x03(\x0b\x32=.google.cloud.securitycenter.v1.Finding.SourcePropertiesEntry\x12\x45\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32-.google.cloud.securitycenter.v1.SecurityMarks\x12.\n\nevent_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1aO\n\x15SourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"8\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0c\n\x08INACTIVE\x10\x02\x42\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
+        '\n2google/cloud/securitycenter_v1/proto/finding.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x39google/cloud/securitycenter_v1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xa4\x05\n\x07\x46inding\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06parent\x18\x02 \x01(\t\x12\x15\n\rresource_name\x18\x03 \x01(\t\x12<\n\x05state\x18\x04 \x01(\x0e\x32-.google.cloud.securitycenter.v1.Finding.State\x12\x10\n\x08\x63\x61tegory\x18\x05 \x01(\t\x12\x14\n\x0c\x65xternal_uri\x18\x06 \x01(\t\x12X\n\x11source_properties\x18\x07 \x03(\x0b\x32=.google.cloud.securitycenter.v1.Finding.SourcePropertiesEntry\x12J\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32-.google.cloud.securitycenter.v1.SecurityMarksB\x03\xe0\x41\x03\x12.\n\nevent_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1aO\n\x15SourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"8\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0c\n\x08INACTIVE\x10\x02:l\xea\x41i\n%securitycenter.googleapis.com/Finding\x12@organizations/{organization}/sources/{source}/findings/{finding}B\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_security__marks__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -64,8 +68,8 @@ _FINDING_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=744,
-    serialized_end=800,
+    serialized_start=809,
+    serialized_end=865,
 )
 _sym_db.RegisterEnumDescriptor(_FINDING_STATE)
 
@@ -122,8 +126,8 @@ _FINDING_SOURCEPROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=663,
-    serialized_end=742,
+    serialized_start=728,
+    serialized_end=807,
 )
 
 _FINDING = _descriptor.Descriptor(
@@ -274,7 +278,7 @@ _FINDING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -317,13 +321,15 @@ _FINDING = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_FINDING_SOURCEPROPERTIESENTRY,],
     enum_types=[_FINDING_STATE,],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ai\n%securitycenter.googleapis.com/Finding\022@organizations/{organization}/sources/{source}/findings/{finding}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=239,
-    serialized_end=800,
+    serialized_start=299,
+    serialized_end=975,
 )
 
 _FINDING_SOURCEPROPERTIESENTRY.fields_by_name[
@@ -366,27 +372,31 @@ Finding = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.securitycenter_v1.proto.finding_pb2",
         __doc__="""Cloud Security Command Center (Cloud SCC) finding.
   
-  A finding is a record of assessment data (security, risk, health or
-  privacy) ingested into Cloud SCC for presentation, notification,
-  analysis, policy testing, and enforcement. For example, an XSS
-  vulnerability in an App Engine application is a finding.
+  A finding is a record of assessment data like security, risk, health, or
+  privacy, that is ingested into Cloud SCC for presentation, notification,
+  analysis, policy testing, and enforcement. For example, a cross-site
+  scripting (XSS) vulnerability in an App Engine application is a finding.
   
   
   Attributes:
       name:
           The relative resource name of this finding. See: https://cloud
           .google.com/apis/design/resource\_names#relative\_resource\_na
-          me Example: "organizations/123/sources/456/findings/789"
+          me Example: "organizations/{organization\_id}/sources/{source\
+          _id}/findings/{finding\_id}"
       parent:
           The relative resource name of the source the finding belongs
           to. See: https://cloud.google.com/apis/design/resource\_names#
           relative\_resource\_name This field is immutable after
-          creation time. For example: "organizations/123/sources/456"
+          creation time. For example:
+          "organizations/{organization\_id}/sources/{source\_id}"
       resource_name:
-          The full resource name of the Google Cloud Platform (GCP)
-          resource this finding is for. See: https://cloud.google.com/ap
-          is/design/resource\_names#full\_resource\_name This field is
-          immutable after creation time.
+          For findings on Google Cloud Platform (GCP) resources, the
+          full resource name of the GCP resource this finding is for.
+          See: https://cloud.google.com/apis/design/resource\_names#full
+          \_resource\_name When the finding is for a non-GCP resource,
+          the resourceName can be a customer or partner defined string.
+          This field is immutable after creation time.
       state:
           The state of the finding.
       category:
@@ -411,7 +421,8 @@ Finding = _reflection.GeneratedProtocolMessageType(
       event_time:
           The time at which the event took place. For example, if the
           finding represents an open firewall it would capture the time
-          the open firewall was detected.
+          the detector believes the firewall became open. The accuracy
+          is determined by the detector.
       create_time:
           The time at which the finding was created in Cloud SCC.
   """,
@@ -424,4 +435,6 @@ _sym_db.RegisterMessage(Finding.SourcePropertiesEntry)
 
 DESCRIPTOR._options = None
 _FINDING_SOURCEPROPERTIESENTRY._options = None
+_FINDING.fields_by_name["security_marks"]._options = None
+_FINDING._options = None
 # @@protoc_insertion_point(module_scope)
