@@ -1895,26 +1895,28 @@ class Bucket(_PropertyMixin):
                   the ``getIamPolicy`` API request.
 
         Example:
+
         .. code-block:: python
-        from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
 
-        policy = bucket.get_iam_policy(requested_policy_version=3)
+           from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
 
-        policy.version = 3
+           policy = bucket.get_iam_policy(requested_policy_version=3)
 
-        # Add a binding to the policy via it's bindings property
-        policy.bindings.append({
-            "role": STORAGE_OBJECT_VIEWER_ROLE,
-            "members": {"serviceAccount:account@project.iam.gserviceaccount.com", ...},
-            # Optional:
-            "condition": {
-                "title": "prefix"
-                "description": "Objects matching prefix"
-                "expression": "resource.name.startsWith(\"projects/project-name/buckets/bucket-name/objects/prefix\")"
-            }
-        })
+           policy.version = 3
 
-        bucket.set_iam_policy(policy)
+           # Add a binding to the policy via it's bindings property
+           policy.bindings.append({
+               "role": STORAGE_OBJECT_VIEWER_ROLE,
+               "members": {"serviceAccount:account@project.iam.gserviceaccount.com", ...},
+               # Optional:
+               "condition": {
+                   "title": "prefix"
+                   "description": "Objects matching prefix"
+                   "expression": "resource.name.startsWith(\"projects/project-name/buckets/bucket-name/objects/prefix\")"
+               }
+           })
+
+           bucket.set_iam_policy(policy)
         """
         client = self._require_client(client)
         query_params = {}
