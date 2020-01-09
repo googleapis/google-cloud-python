@@ -19,10 +19,21 @@ from __future__ import absolute_import
 
 from google.cloud.vision_helpers.decorators import add_single_feature_methods
 from google.cloud.vision_helpers import VisionHelpers
+import sys
+import warnings
 
 from google.cloud.vision_v1p1beta1 import types
 from google.cloud.vision_v1p1beta1.gapic import enums
 from google.cloud.vision_v1p1beta1.gapic import image_annotator_client as iac
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 @add_single_feature_methods

@@ -16,6 +16,8 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
 from google.cloud.automl_v1beta1 import types
 from google.cloud.automl_v1beta1.gapic import auto_ml_client
@@ -31,6 +33,15 @@ class TablesClient(tables_client.TablesClient):
 
 class GcsClient(gcs_client.GcsClient):
     __doc__ = gcs_client.GcsClient.__doc__
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 class AutoMlClient(auto_ml_client.AutoMlClient):

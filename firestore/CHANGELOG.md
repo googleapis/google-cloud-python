@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## 1.6.1
+
+01-02-2020 10:35 PST
+
+
+### Implementation Changes
+- Recover watch streams on more error types ([#9995](https://github.com/googleapis/google-cloud-python/pull/9995))
+- Simplify 'Collection.add' and avoid a spurious API call ([#9634](https://github.com/googleapis/google-cloud-python/pull/9634))
+
+### Documentation
+- Add new where operators to docstring ([#9789](https://github.com/googleapis/google-cloud-python/pull/9789))
+- Change spacing in docs templates (via synth) ([#9750](https://github.com/googleapis/google-cloud-python/pull/9750))
+- Add python 2 sunset banner to documentation ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+
 ## 1.6.0
 
 11-06-2019 13:49 PST

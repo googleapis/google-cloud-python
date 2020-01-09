@@ -83,12 +83,7 @@ class IAMCredentialsClient(object):
 
     @classmethod
     def service_account_path(cls, project, service_account):
-        """DEPRECATED. Return a fully-qualified service_account string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified service_account string."""
         return google.api_core.path_template.expand(
             "projects/{project}/serviceAccounts/{service_account}",
             project=project,
@@ -234,10 +229,12 @@ class IAMCredentialsClient(object):
             >>> response = client.generate_access_token(name, scope)
 
         Args:
-            name (str): The resource name of the service account for which the credentials are
-                requested, in the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            scope (list[str]): Code to identify the scopes to be included in the OAuth 2.0 access token.
+            name (str): Required. The resource name of the service account for which the
+                credentials are requested, in the following format:
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
+            scope (list[str]): Required. Code to identify the scopes to be included in the OAuth 2.0 access token.
                 See https://developers.google.com/identity/protocols/googlescopes for more
                 information.
                 At least one value required.
@@ -249,7 +246,9 @@ class IAMCredentialsClient(object):
                 that is specified in the ``name`` field of the request.
 
                 The delegates must have the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
             lifetime (Union[dict, ~google.cloud.iam_credentials_v1.types.Duration]): The desired lifetime duration of the access token in seconds.
                 Must be set to a value less than or equal to 3600 (1 hour). If a value is
                 not specified, the token's lifetime will be set to a default value of one
@@ -333,10 +332,12 @@ class IAMCredentialsClient(object):
             >>> response = client.generate_id_token(name, audience)
 
         Args:
-            name (str): The resource name of the service account for which the credentials are
-                requested, in the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            audience (str): The audience for the token, such as the API or account that this token
+            name (str): Required. The resource name of the service account for which the
+                credentials are requested, in the following format:
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
+            audience (str): Required. The audience for the token, such as the API or account that this token
                 grants access to.
             delegates (list[str]): The sequence of service accounts in a delegation chain. Each service
                 account must be granted the ``roles/iam.serviceAccountTokenCreator``
@@ -346,7 +347,9 @@ class IAMCredentialsClient(object):
                 that is specified in the ``name`` field of the request.
 
                 The delegates must have the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
             include_email (bool): Include the service account email in the token. If set to ``true``, the
                 token will contain ``email`` and ``email_verified`` claims.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -427,10 +430,12 @@ class IAMCredentialsClient(object):
             >>> response = client.sign_blob(name, payload)
 
         Args:
-            name (str): The resource name of the service account for which the credentials are
-                requested, in the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            payload (bytes): The bytes to sign.
+            name (str): Required. The resource name of the service account for which the
+                credentials are requested, in the following format:
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
+            payload (bytes): Required. The bytes to sign.
             delegates (list[str]): The sequence of service accounts in a delegation chain. Each service
                 account must be granted the ``roles/iam.serviceAccountTokenCreator``
                 role on its next service account in the chain. The last service account
@@ -439,7 +444,9 @@ class IAMCredentialsClient(object):
                 that is specified in the ``name`` field of the request.
 
                 The delegates must have the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -515,10 +522,12 @@ class IAMCredentialsClient(object):
             >>> response = client.sign_jwt(name, payload)
 
         Args:
-            name (str): The resource name of the service account for which the credentials are
-                requested, in the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            payload (str): The JWT payload to sign: a JSON object that contains a JWT Claims Set.
+            name (str): Required. The resource name of the service account for which the
+                credentials are requested, in the following format:
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
+            payload (str): Required. The JWT payload to sign: a JSON object that contains a JWT Claims Set.
             delegates (list[str]): The sequence of service accounts in a delegation chain. Each service
                 account must be granted the ``roles/iam.serviceAccountTokenCreator``
                 role on its next service account in the chain. The last service account
@@ -527,7 +536,9 @@ class IAMCredentialsClient(object):
                 that is specified in the ``name`` field of the request.
 
                 The delegates must have the following format:
-                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``
+                ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
+                wildcard character is required; replacing it with a project ID is
+                invalid.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
