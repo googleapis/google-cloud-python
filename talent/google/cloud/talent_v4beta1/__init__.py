@@ -16,6 +16,8 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
 from google.cloud.talent_v4beta1 import types
 from google.cloud.talent_v4beta1.gapic import application_service_client
@@ -26,6 +28,15 @@ from google.cloud.talent_v4beta1.gapic import event_service_client
 from google.cloud.talent_v4beta1.gapic import job_service_client
 from google.cloud.talent_v4beta1.gapic import profile_service_client
 from google.cloud.talent_v4beta1.gapic import tenant_service_client
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 class ApplicationServiceClient(application_service_client.ApplicationServiceClient):

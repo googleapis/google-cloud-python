@@ -417,7 +417,7 @@ class TimePartConfig(object):
           MONTH (int): [1-12]
           DAY_OF_MONTH (int): [1-31]
           DAY_OF_WEEK (int): [1-7]
-          WEEK_OF_YEAR (int): [1-52]
+          WEEK_OF_YEAR (int): [1-53]
           HOUR_OF_DAY (int): [0-23]
         """
 

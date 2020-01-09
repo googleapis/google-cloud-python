@@ -409,6 +409,7 @@ class TestConditionalRow(unittest.TestCase):
         project_id = "project-id"
         row_key = b"row_key"
         table_name = "projects/more-stuff"
+        app_profile_id = "app_profile_id"
         column_family_id1 = u"column_family_id1"
         column_family_id2 = u"column_family_id2"
         column_family_id3 = u"column_family_id3"
@@ -420,7 +421,7 @@ class TestConditionalRow(unittest.TestCase):
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
         )
-        table = _Table(table_name, client=client)
+        table = _Table(table_name, client=client, app_profile_id=app_profile_id)
         row_filter = RowSampleFilter(0.33)
         row = self._make_one(row_key, table, filter_=row_filter)
 
@@ -444,6 +445,8 @@ class TestConditionalRow(unittest.TestCase):
         row.delete_cell(column_family_id2, column2, state=True)
         row.delete_cells(column_family_id3, row.ALL_COLUMNS, state=True)
         result = row.commit()
+        call_args = api.transport.check_and_mutate_row.call_args.args[0]
+        self.assertEqual(app_profile_id, call_args.app_profile_id)
         self.assertEqual(result, expected_result)
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
@@ -564,6 +567,7 @@ class TestAppendRow(unittest.TestCase):
         project_id = "project-id"
         row_key = b"row_key"
         table_name = "projects/more-stuff"
+        app_profile_id = "app_profile_id"
         column_family_id = u"column_family_id"
         column = b"column"
 
@@ -572,7 +576,7 @@ class TestAppendRow(unittest.TestCase):
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
         )
-        table = _Table(table_name, client=client)
+        table = _Table(table_name, client=client, app_profile_id=app_profile_id)
         row = self._make_one(row_key, table)
 
         # Create request_pb
@@ -593,7 +597,8 @@ class TestAppendRow(unittest.TestCase):
         with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
             row.append_cell_value(column_family_id, column, value)
             result = row.commit()
-
+        call_args = api.transport.read_modify_write_row.call_args.args[0]
+        self.assertEqual(app_profile_id, call_args.app_profile_id)
         self.assertEqual(result, expected_result)
         self.assertEqual(row._rule_pb_list, [])
 
@@ -819,9 +824,10 @@ class _Instance(object):
 
 
 class _Table(object):
-    def __init__(self, name, client=None):
+    def __init__(self, name, client=None, app_profile_id=None):
         self.name = name
         self._instance = _Instance(client)
+        self._app_profile_id = app_profile_id
         self.client = client
         self.mutated_rows = []
 

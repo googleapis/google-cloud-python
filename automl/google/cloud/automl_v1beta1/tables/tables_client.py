@@ -50,7 +50,7 @@ class TablesClient(object):
     ):
         """Constructor.
 
-        Example:
+        Example for US region:
             >>> from google.cloud import automl_v1beta1
             >>>
             >>> from google.oauth2 import service_account
@@ -58,6 +58,17 @@ class TablesClient(object):
             >>> client = automl_v1beta1.TablesClient(
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
+            ...
+
+        Example for EU region:
+            >>> from google.cloud import automl_v1beta1
+            >>>
+            >>> from google.oauth2 import service_account
+            >>>
+            >>> client_options = {'api_endpoint': 'eu-automl.googleapis.com:443'}
+            >>> client = automl_v1beta1.TablesClient(
+            ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
+            ...     project='my-project', region='eu', client_options=client_options)
             ...
 
         Args:
@@ -104,6 +115,7 @@ class TablesClient(object):
         else:
             client_info_.user_agent = user_agent
             client_info_.gapic_version = version
+        kwargs.pop("client_info", None)
 
         if client is None:
             self.auto_ml_client = gapic.auto_ml_client.AutoMlClient(

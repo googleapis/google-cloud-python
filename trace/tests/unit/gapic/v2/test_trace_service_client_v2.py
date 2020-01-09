@@ -116,7 +116,7 @@ class TestTraceServiceClient(object):
             client = trace_v2.TraceServiceClient()
 
         # Setup Request
-        name = client.span_path("[PROJECT]", "[TRACE]", "[SPAN]")
+        name = "name3373707"
         span_id = "spanId-2011840976"
         display_name = {}
         start_time = {}
@@ -145,7 +145,7 @@ class TestTraceServiceClient(object):
             client = trace_v2.TraceServiceClient()
 
         # Setup request
-        name = client.span_path("[PROJECT]", "[TRACE]", "[SPAN]")
+        name = "name3373707"
         span_id = "spanId-2011840976"
         display_name = {}
         start_time = {}

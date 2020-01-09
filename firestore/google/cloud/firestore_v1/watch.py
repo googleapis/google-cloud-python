@@ -57,7 +57,16 @@ GRPC_STATUS_CODE = {
     "DO_NOT_USE": -1,
 }
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
-_RECOVERABLE_STREAM_EXCEPTIONS = (exceptions.ServiceUnavailable,)
+_RECOVERABLE_STREAM_EXCEPTIONS = (
+    exceptions.Aborted,
+    exceptions.Cancelled,
+    exceptions.Unknown,
+    exceptions.DeadlineExceeded,
+    exceptions.ResourceExhausted,
+    exceptions.InternalServerError,
+    exceptions.ServiceUnavailable,
+    exceptions.Unauthenticated,
+)
 _TERMINATING_STREAM_EXCEPTIONS = (exceptions.Cancelled,)
 
 DocTreeEntry = collections.namedtuple("DocTreeEntry", ["value", "index"])

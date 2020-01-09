@@ -61,11 +61,12 @@ from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
-from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
-from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
+from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
 from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
 from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
+from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
 from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
+from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
 
 _STORAGE_HOST = _get_storage_host()
 
@@ -145,6 +146,7 @@ class Blob(_PropertyMixin):
         STANDARD_STORAGE_CLASS,
         NEARLINE_STORAGE_CLASS,
         COLDLINE_STORAGE_CLASS,
+        ARCHIVE_STORAGE_CLASS,
         MULTI_REGIONAL_LEGACY_STORAGE_CLASS,
         REGIONAL_LEGACY_STORAGE_CLASS,
     )
@@ -1711,6 +1713,7 @@ class Blob(_PropertyMixin):
             new storage class for the object.   One of:
             :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
             or
@@ -2007,6 +2010,7 @@ class Blob(_PropertyMixin):
         :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
         :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
         :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+        :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
         :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
         :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
         :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_STORAGE_CLASS`,

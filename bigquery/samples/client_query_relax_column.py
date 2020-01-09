@@ -13,13 +13,13 @@
 # limitations under the License.
 
 
-def client_query_relax_column(client, table_id):
+def client_query_relax_column(table_id):
 
     # [START bigquery_relax_column_query_append]
     from google.cloud import bigquery
 
-    # TODO(developer): Construct a BigQuery client object.
-    # client = bigquery.Client()
+    # Construct a BigQuery client object.
+    client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the destination table.
     # table_id = "your-project.your_dataset.your_table_name"
@@ -33,11 +33,11 @@ def client_query_relax_column(client, table_id):
 
     # Configures the query to append the results to a destination table,
     # allowing field relaxation.
-    job_config = bigquery.QueryJobConfig(destination=table_id)
-    job_config.schema_update_options = [
-        bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION
-    ]
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
+    job_config = bigquery.QueryJobConfig(
+        destination=table_id,
+        schema_update_options=[bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION],
+        write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
+    )
 
     # Start the query, passing in the extra configuration.
     query_job = client.query(

@@ -148,3 +148,69 @@ class AssetServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["asset_service_stub"].BatchGetAssetsHistory
+
+    @property
+    def create_feed(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.create_feed`.
+
+        Creates a feed in a parent project/folder/organization to listen to its
+        asset updates.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].CreateFeed
+
+    @property
+    def get_feed(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.get_feed`.
+
+        Gets details about an asset feed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].GetFeed
+
+    @property
+    def list_feeds(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.list_feeds`.
+
+        Lists all asset feeds in a parent project/folder/organization.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].ListFeeds
+
+    @property
+    def update_feed(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.update_feed`.
+
+        Updates an asset feed configuration.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].UpdateFeed
+
+    @property
+    def delete_feed(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.delete_feed`.
+
+        Deletes an asset feed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].DeleteFeed
