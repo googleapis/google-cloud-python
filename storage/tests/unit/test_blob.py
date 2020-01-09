@@ -1975,7 +1975,6 @@ class Test_Blob(unittest.TestCase):
 
     def test_get_iam_policy_w_requested_policy_version(self):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
-        from google.api_core.iam import Policy
 
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
@@ -1990,15 +1989,12 @@ class Test_Blob(unittest.TestCase):
             "bindings": [{"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]}],
         }
         after = ({"status": http_client.OK}, RETURNED)
-        EXPECTED = {
-            binding["role"]: set(binding["members"]) for binding in RETURNED["bindings"]
-        }
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
         blob = self._make_one(BLOB_NAME, bucket=bucket)
 
-        policy = blob.get_iam_policy(requested_policy_version=3)
+        blob.get_iam_policy(requested_policy_version=3)
 
         kw = connection._requested
         self.assertEqual(len(kw), 1)

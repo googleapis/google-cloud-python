@@ -266,7 +266,6 @@ class TestStorageBuckets(unittest.TestCase):
         import pytest
         from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
         from google.api_core.exceptions import BadRequest, PreconditionFailed
-        from google.api_core.iam import InvalidOperationException
 
         bucket_name = "iam-policy" + unique_resource_id("-")
         bucket = retry_429_503(Config.CLIENT.create_bucket)(bucket_name)

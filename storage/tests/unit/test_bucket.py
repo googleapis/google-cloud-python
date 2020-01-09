@@ -2094,7 +2094,6 @@ class Test_Bucket(unittest.TestCase):
 
     def test_get_iam_policy_w_requested_policy_version(self):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
-        from google.api_core.iam import Policy
 
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
