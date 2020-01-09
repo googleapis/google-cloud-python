@@ -582,6 +582,7 @@ class ConditionalRow(_SetDeleteRow):
             table_name=self._table.name,
             row_key=self._row_key,
             predicate_filter=self._filter.to_pb(),
+            app_profile_id=self._table._app_profile_id,
             true_mutations=true_mutations,
             false_mutations=false_mutations,
         )
@@ -908,7 +909,10 @@ class AppendRow(Row):
 
         data_client = self._table._instance._client.table_data_client
         row_response = data_client.read_modify_write_row(
-            table_name=self._table.name, row_key=self._row_key, rules=self._rule_pb_list
+            table_name=self._table.name,
+            row_key=self._row_key,
+            rules=self._rule_pb_list,
+            app_profile_id=self._table._app_profile_id,
         )
 
         # Reset modifications after commit-ing request.

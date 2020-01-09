@@ -331,6 +331,42 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(method="GET", path=path, timeout=None)
         self.assertEqual(service_account_email, email)
 
+    def test_get_service_account_email_w_custom_retry(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        api_path = "/projects/{}/serviceAccount".format(self.PROJECT)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        resource = {
+            "kind": "bigquery#getServiceAccountResponse",
+            "email": "bq-123@bigquery-encryption.iam.gserviceaccount.com",
+        }
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[ValueError, resource],
+        )
+
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, ValueError)
+        )
+
+        with api_request_patcher as fake_api_request:
+            service_account_email = client.get_service_account_email(
+                retry=retry, timeout=7.5
+            )
+
+        self.assertEqual(
+            service_account_email, "bq-123@bigquery-encryption.iam.gserviceaccount.com"
+        )
+        self.assertEqual(
+            fake_api_request.call_args_list,
+            [
+                mock.call(method="GET", path=api_path, timeout=7.5),
+                mock.call(method="GET", path=api_path, timeout=7.5),  # was retried once
+            ],
+        )
+
     def test_list_projects_defaults(self):
         from google.cloud.bigquery.client import Project
 

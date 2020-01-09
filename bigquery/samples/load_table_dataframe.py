@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-def load_table_dataframe(client, table_id):
+def load_table_dataframe(table_id):
 
     # [START bigquery_load_table_dataframe]
     import datetime
@@ -22,8 +22,8 @@ def load_table_dataframe(client, table_id):
     import pandas
     import pytz
 
-    # TODO(developer): Construct a BigQuery client object.
-    # client = bigquery.Client()
+    # Construct a BigQuery client object.
+    client = bigquery.Client()
 
     # TODO(developer): Set table_id to the ID of the table to create.
     # table_id = "your-project.your_dataset.your_table_name"
