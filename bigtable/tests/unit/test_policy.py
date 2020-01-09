@@ -136,7 +136,6 @@ class TestPolicy(unittest.TestCase):
         ETAG = b"ETAG"
         VERSION = 3
         members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
-        empty = frozenset()
         BINDINGS = [
             {
                 "role": BIGTABLE_ADMIN_ROLE,

@@ -88,7 +88,12 @@ class DatabaseAdminClient(object):
 
     @classmethod
     def database_path(cls, project, instance, database):
-        """Return a fully-qualified database string."""
+        """DEPRECATED. Return a fully-qualified database string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}",
             project=project,
@@ -98,7 +103,12 @@ class DatabaseAdminClient(object):
 
     @classmethod
     def instance_path(cls, project, instance):
-        """Return a fully-qualified instance string."""
+        """DEPRECATED. Return a fully-qualified instance string."""
+        warnings.warn(
+            "Resource name helper functions are deprecated.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}",
             project=project,
@@ -218,110 +228,6 @@ class DatabaseAdminClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_databases(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Lists Cloud Spanner databases.
-
-        Example:
-            >>> from google.cloud import spanner_admin_database_v1
-            >>>
-            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
-            >>>
-            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_databases(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_databases(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            parent (str): Required. The instance whose databases should be listed. Values are of
-                the form ``projects/<project>/instances/<instance>``.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_databases" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_databases"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_databases,
-                default_retry=self._method_configs["ListDatabases"].retry,
-                default_timeout=self._method_configs["ListDatabases"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = spanner_database_admin_pb2.ListDatabasesRequest(
-            parent=parent, page_size=page_size
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_databases"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="databases",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
     def create_database(
         self,
         parent,
@@ -769,7 +675,8 @@ class DatabaseAdminClient(object):
             >>>
             >>> client = spanner_admin_database_v1.DatabaseAdminClient()
             >>>
-            >>> resource = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -854,7 +761,8 @@ class DatabaseAdminClient(object):
             >>>
             >>> client = spanner_admin_database_v1.DatabaseAdminClient()
             >>>
-            >>> resource = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -938,7 +846,8 @@ class DatabaseAdminClient(object):
             >>>
             >>> client = spanner_admin_database_v1.DatabaseAdminClient()
             >>>
-            >>> resource = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []
@@ -1001,3 +910,107 @@ class DatabaseAdminClient(object):
         return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
+
+    def list_databases(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists Cloud Spanner databases.
+
+        Example:
+            >>> from google.cloud import spanner_admin_database_v1
+            >>>
+            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
+            >>>
+            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_databases(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_databases(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The instance whose databases should be listed. Values are of
+                the form ``projects/<project>/instances/<instance>``.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_databases" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_databases"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_databases,
+                default_retry=self._method_configs["ListDatabases"].retry,
+                default_timeout=self._method_configs["ListDatabases"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_database_admin_pb2.ListDatabasesRequest(
+            parent=parent, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_databases"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="databases",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator

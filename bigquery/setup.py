@@ -32,8 +32,8 @@ dependencies = [
     'enum34; python_version < "3.4"',
     "google-auth >= 1.9.0, < 2.0dev",
     "google-api-core >= 1.15.0, < 2.0dev",
-    "google-cloud-core >= 1.0.3, < 2.0dev",
-    "google-resumable-media >= 0.3.1, != 0.4.0, < 0.6.0dev",
+    "google-cloud-core >= 1.1.0, < 2.0dev",
+    "google-resumable-media >= 0.5.0, < 0.6dev",
     "protobuf >= 3.6.0",
     "six >=1.13.0,< 2.0.0dev",
 ]

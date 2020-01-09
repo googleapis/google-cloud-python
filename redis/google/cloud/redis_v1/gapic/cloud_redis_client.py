@@ -100,12 +100,7 @@ class CloudRedisClient(object):
 
     @classmethod
     def instance_path(cls, project, location, instance):
-        """DEPRECATED. Return a fully-qualified instance string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/instances/{instance}",
             project=project,
@@ -115,12 +110,7 @@ class CloudRedisClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """DEPRECATED. Return a fully-qualified location string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,

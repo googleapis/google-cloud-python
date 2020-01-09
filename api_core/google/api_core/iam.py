@@ -170,42 +170,53 @@ class Policy(collections_abc.MutableMapping):
 
     @property
     def bindings(self):
-        """:obj:`list` of :obj:`dict`: The policy's bindings list.
-        :obj:`dict` Binding:
-            role (str): Role that is assigned to `members`.
-            members (:obj:`set` of str): Specifies the identities associated to this binding.
-            condition (dict of str:str): Specifies a condition under which this binding will apply.
+        """The policy's list of bindings.
 
-        :obj:`dict` Condition:
-            title (str): Title for the condition.
-            description (:obj:str, optional): Description of the condition.
-            expression: A CEL expression.
+        A binding is specified by a dictionary with keys:
+
+        * role (str): Role that is assigned to `members`.
+
+        * members (:obj:`set` of str): Specifies the identities associated to this binding.
+
+        * condition (:obj:`dict` of str:str): Specifies a condition under which this binding will apply.
+
+          * title (str): Title for the condition.
+
+          * description (:obj:str, optional): Description of the condition.
+
+          * expression: A CEL expression.
+
+        Type:
+           :obj:`list` of :obj:`dict`
 
         See:
-            Policy versions https://cloud.google.com/iam/docs/policies#versions
-            Conditions overview https://cloud.google.com/iam/docs/conditions-overview.
+           Policy versions https://cloud.google.com/iam/docs/policies#versions
+           Conditions overview https://cloud.google.com/iam/docs/conditions-overview.
 
         Example:
+
         .. code-block:: python
-        USER = "user:phred@example.com"
-        ADMIN_GROUP = "group:admins@groups.example.com"
-        SERVICE_ACCOUNT = "serviceAccount:account-1234@accounts.example.com"
 
-        # Set policy's version to 3 before setting bindings containing conditions.
-        policy.version = 3
+           USER = "user:phred@example.com"
+           ADMIN_GROUP = "group:admins@groups.example.com"
+           SERVICE_ACCOUNT = "serviceAccount:account-1234@accounts.example.com"
+           CONDITION = {
+               "title": "request_time",
+               "description": "Requests made before 2021-01-01T00:00:00Z", # Optional
+               "expression": "request.time < timestamp(\"2021-01-01T00:00:00Z\")"
+           }
 
-        policy.bindings = [
-            {
-                "role": "roles/viewer",
-                "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
-                "condition": {
-                    "title": "request_time",
-                    "description": "Requests made before 2021-01-01T00:00:00Z", # Optional
-                    "expression": "request.time < timestamp(\"2021-01-01T00:00:00Z\")"
-                }
-            },
-            ...
-        ]
+           # Set policy's version to 3 before setting bindings containing conditions.
+           policy.version = 3
+
+           policy.bindings = [
+           {
+               "role": "roles/viewer",
+               "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
+               "condition": CONDITION
+               },
+               ...
+           ]
         """
         return self._bindings
 
@@ -430,13 +441,15 @@ class Policy(collections_abc.MutableMapping):
         if self._bindings and len(self._bindings) > 0:
             bindings = []
             for binding in self._bindings:
-                if binding["members"]:
+                members = binding.get("members")
+                if members:
                     new_binding = {
                         "role": binding["role"],
-                        "members": sorted(binding["members"])
+                        "members": sorted(members)
                     }
-                    if binding.get("condition"):
-                        new_binding["condition"] = binding["condition"]
+                    condition = binding.get("condition")
+                    if condition:
+                        new_binding["condition"] = condition
                     bindings.append(new_binding)
 
             if bindings:

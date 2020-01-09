@@ -80,15 +80,18 @@ class TestPolicy:
         assert dict(policy) == {"rolename": PRINCIPALS}
 
     def test__set_item__overwrite(self):
+        GROUP = "group:test@group.com"
         USER = "user:phred@example.com"
         ALL_USERS = "allUsers"
         MEMBERS = set([ALL_USERS])
+        GROUPS = set([GROUP])
         policy = self._make_one()
-        policy["rolename"] = [USER]
-        policy["rolename"] = [ALL_USERS]
-        assert policy["rolename"] == MEMBERS
-        assert len(policy) == 1
-        assert dict(policy) == {"rolename": MEMBERS}
+        policy["first"] = [GROUP]
+        policy["second"] = [USER]
+        policy["second"] = [ALL_USERS]
+        assert policy["second"] == MEMBERS
+        assert len(policy) == 2
+        assert dict(policy) == {"first": GROUPS, "second": MEMBERS}
 
     def test___setitem___version3(self):
         policy = self._make_one("DEADBEEF", 3)
@@ -372,7 +375,6 @@ class TestPolicy:
 
     def test_to_api_repr_full(self):
         import operator
-        import warnings
         from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
@@ -381,16 +383,19 @@ class TestPolicy:
         EDITOR2 = "user:phred@example.com"
         VIEWER1 = "serviceAccount:1234-abcdef@service.example.com"
         VIEWER2 = "user:phred@example.com"
+        CONDITION = {
+            "title": "title",
+            "description": "description",
+            "expression": "true"
+        }
         BINDINGS = [
             {"role": OWNER_ROLE, "members": [OWNER1, OWNER2]},
             {"role": EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
             {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
+            {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2], "condition": CONDITION},
         ]
         policy = self._make_one("DEADBEEF", 1)
-        with warnings.catch_warnings(record=True):
-            policy.owners = [OWNER1, OWNER2]
-            policy.editors = [EDITOR1, EDITOR2]
-            policy.viewers = [VIEWER1, VIEWER2]
+        policy.bindings = BINDINGS
         resource = policy.to_api_repr()
         assert resource["etag"] == "DEADBEEF"
         assert resource["version"] == 1
