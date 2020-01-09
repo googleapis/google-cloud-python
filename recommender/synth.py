@@ -29,7 +29,8 @@ common = gcp.CommonTemplates()
 for version in versions:
     library = gapic.py_library(
         "recommender", version,
-        include_protos=True
+        include_protos=True,
+        config_path="/google/cloud/recommender/v1beta1/artman_recommender_v1beta1.yaml"
     )
     s.move(library, excludes=['nox.py', 'docs/index.rst', 'README.rst', 'setup.py'])
 
