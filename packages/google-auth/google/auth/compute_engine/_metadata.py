@@ -99,7 +99,7 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     return False
 
 
-def get(request, path, root=_METADATA_ROOT, recursive=False):
+def get(request, path, root=_METADATA_ROOT, recursive=False, retry_count=5):
     """Fetch a resource from the metadata server.
 
     Args:
@@ -111,6 +111,8 @@ def get(request, path, root=_METADATA_ROOT, recursive=False):
         recursive (bool): Whether to do a recursive query of metadata. See
             https://cloud.google.com/compute/docs/metadata#aggcontents for more
             details.
+        retry_count (int): How many times to attempt connecting to metadata
+            server using above timeout.
 
     Returns:
         Union[Mapping, str]: If the metadata server returns JSON, a mapping of
@@ -129,7 +131,24 @@ def get(request, path, root=_METADATA_ROOT, recursive=False):
 
     url = _helpers.update_query(base_url, query_params)
 
-    response = request(url=url, method="GET", headers=_METADATA_HEADERS)
+    retries = 0
+    while retries < retry_count:
+        try:
+            response = request(url=url, method="GET", headers=_METADATA_HEADERS)
+            break
+
+        except exceptions.TransportError:
+            _LOGGER.info(
+                "Compute Engine Metadata server unavailable on" "attempt %s of %s",
+                retries + 1,
+                retry_count,
+            )
+            retries += 1
+    else:
+        raise exceptions.TransportError(
+            "Failed to retrieve {} from the Google Compute Engine"
+            "metadata service. Compute Engine Metadata server unavailable".format(url)
+        )
 
     if response.status == http_client.OK:
         content = _helpers.from_bytes(response.data)
