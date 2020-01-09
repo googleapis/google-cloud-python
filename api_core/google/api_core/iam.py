@@ -170,22 +170,33 @@ class Policy(collections_abc.MutableMapping):
 
     @property
     def bindings(self):
-        """:obj:`list` of :obj:`dict`: The policy's bindings list.
+        """The policy's list of bindings.
 
         A binding is specified by a dictionary with keys:
-           role (str): Role that is assigned to `members`.
-           members (:obj:`set` of str): Specifies the identities associated to this binding.
-           condition (dict of str:str): Specifies a condition under which this binding will apply.
-           - title (str): Title for the condition.
-           - description (:obj:str, optional): Description of the condition.
-           - expression: A CEL expression.
+
+        * role (str): Role that is assigned to `members`.
+
+        * members (:obj:`set` of str): Specifies the identities associated to this binding.
+
+        * condition (:obj:`dict` of str:str): Specifies a condition under which this binding will apply.
+
+          * title (str): Title for the condition.
+
+          * description (:obj:str, optional): Description of the condition.
+
+          * expression: A CEL expression.
+
+        Type:
+           :obj:`list` of :obj:`dict`
 
         See:
            Policy versions https://cloud.google.com/iam/docs/policies#versions
            Conditions overview https://cloud.google.com/iam/docs/conditions-overview.
 
         Example:
+
         .. code-block:: python
+
            USER = "user:phred@example.com"
            ADMIN_GROUP = "group:admins@groups.example.com"
            SERVICE_ACCOUNT = "serviceAccount:account-1234@accounts.example.com"
@@ -199,10 +210,10 @@ class Policy(collections_abc.MutableMapping):
            policy.version = 3
 
            policy.bindings = [
-               {
-                   "role": "roles/viewer",
-                   "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
-                   "condition": CONDITION
+           {
+               "role": "roles/viewer",
+               "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
+               "condition": CONDITION
                },
                ...
            ]
