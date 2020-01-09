@@ -300,6 +300,27 @@ class TestDatabase(_BaseTest):
         self.assertEqual(scoped._scopes, expected_scopes)
         self.assertIs(scoped._source, credentials)
 
+    def test_spanner_api_w_emulator_host(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client, emulator_host="host")
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        with patch as spanner_client:
+            api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertIsNotNone(called_kw["transport"])
+
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool1, pool2 = _Pool(), _Pool()
