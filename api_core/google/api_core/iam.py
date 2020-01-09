@@ -186,26 +186,26 @@ class Policy(collections_abc.MutableMapping):
 
         Example:
         .. code-block:: python
-        USER = "user:phred@example.com"
-        ADMIN_GROUP = "group:admins@groups.example.com"
-        SERVICE_ACCOUNT = "serviceAccount:account-1234@accounts.example.com"
-        condition = {
-            "title": "request_time",
-            "description": "Requests made before 2021-01-01T00:00:00Z", # Optional
-            "expression": "request.time < timestamp(\"2021-01-01T00:00:00Z\")"
-        }
+           USER = "user:phred@example.com"
+           ADMIN_GROUP = "group:admins@groups.example.com"
+           SERVICE_ACCOUNT = "serviceAccount:account-1234@accounts.example.com"
+           CONDITION = {
+               "title": "request_time",
+               "description": "Requests made before 2021-01-01T00:00:00Z", # Optional
+               "expression": "request.time < timestamp(\"2021-01-01T00:00:00Z\")"
+           }
 
-        # Set policy's version to 3 before setting bindings containing conditions.
-        policy.version = 3
+           # Set policy's version to 3 before setting bindings containing conditions.
+           policy.version = 3
 
-        policy.bindings = [
-            {
-                "role": "roles/viewer",
-                "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
-                "condition": CONDITION
-            },
-            ...
-        ]
+           policy.bindings = [
+               {
+                   "role": "roles/viewer",
+                   "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
+                   "condition": CONDITION
+               },
+               ...
+           ]
         """
         return self._bindings
 
