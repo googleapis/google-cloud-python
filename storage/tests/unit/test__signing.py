@@ -70,7 +70,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
 
     def test_w_expiration_long(self):
         if not six.PY2:
-            raise unittest.SkipTest("No long on Python 3")
+            raise unittest.SkipTest("No long on Python 3+")
 
         self.assertEqual(self._call_fut(long(123)), 123)  # noqa: F821
 
