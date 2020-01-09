@@ -3601,7 +3601,10 @@ class DateTimeProperty(Property):
         """Convert a value from the "base" value type for this property.
 
         Args:
-            value (datetime.datetime): The value to be converted.
+            value (Union[int, datetime.datetime]): The value to be converted.
+                The value will be `int` for entities retrieved by a projection
+                query and is a timestamp as the number of nanoseconds since the
+                epoch.
 
         Returns:
             Optional[datetime.datetime]: If ``tzinfo`` is set on this property,
@@ -3609,6 +3612,11 @@ class DateTimeProperty(Property):
                 returns the value without ``tzinfo`` or ``None`` if value did
                 not have ``tzinfo`` set.
         """
+        if isinstance(value, six.integer_types):
+            # Projection query, value is integer nanoseconds
+            seconds = value / 1e6
+            value = datetime.datetime.fromtimestamp(seconds, pytz.utc)
+
         if self._tzinfo is not None:
             return value.astimezone(self._tzinfo)
 

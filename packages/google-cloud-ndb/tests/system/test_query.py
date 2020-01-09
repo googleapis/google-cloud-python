@@ -16,11 +16,13 @@
 System tests for queries.
 """
 
+import datetime
 import functools
 import operator
 
 import grpc
 import pytest
+import pytz
 
 import test_utils.system
 
@@ -192,6 +194,38 @@ def test_projection(ds_entity):
     assert results[1].foo == 21
     with pytest.raises(ndb.UnprojectedPropertyError):
         results[1].bar
+
+
+@pytest.mark.usefixtures("client_context")
+def test_projection_datetime(ds_entity):
+    """Regression test for Issue #261
+
+    https://github.com/googleapis/python-ndb/issues/261
+    """
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        foo=datetime.datetime(2010, 5, 12, 2, 42, tzinfo=pytz.UTC),
+    )
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        foo=datetime.datetime(2010, 5, 12, 2, 43, tzinfo=pytz.UTC),
+    )
+
+    class SomeKind(ndb.Model):
+        foo = ndb.DateTimeProperty()
+        bar = ndb.StringProperty()
+
+    query = SomeKind.query(projection=("foo",))
+    results = eventually(query.fetch, _length_equals(2))
+
+    results = sorted(results, key=operator.attrgetter("foo"))
+
+    assert results[0].foo == datetime.datetime(2010, 5, 12, 2, 42)
+    assert results[1].foo == datetime.datetime(2010, 5, 12, 2, 43)
 
 
 @pytest.mark.usefixtures("client_context")

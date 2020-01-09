@@ -2708,6 +2708,14 @@ class TestDateTimeProperty:
         )
 
     @staticmethod
+    def test__from_base_type_int():
+        prop = model.DateTimeProperty(name="dt_val")
+        value = 1273632120000000
+        assert prop._from_base_type(value) == datetime.datetime(
+            2010, 5, 12, 2, 42
+        )
+
+    @staticmethod
     def test__to_base_type_noop():
         prop = model.DateTimeProperty(name="dt_val", tzinfo=timezone(-4))
         value = datetime.datetime(2010, 5, 12)
