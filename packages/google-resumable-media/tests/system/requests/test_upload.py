@@ -76,7 +76,7 @@ def get_upload_id(upload_url):
     parse_result = urllib_parse.urlparse(upload_url)
     parsed_query = urllib_parse.parse_qs(parse_result.query)
     # NOTE: We are unpacking here, so asserting exactly one match.
-    upload_id, = parsed_query[u"upload_id"]
+    (upload_id,) = parsed_query[u"upload_id"]
     return upload_id
 
 

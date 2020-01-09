@@ -10,7 +10,7 @@ See the `docs`_ for examples and usage.
 
 Supported Python Versions
 -------------------------
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 --------------------------
