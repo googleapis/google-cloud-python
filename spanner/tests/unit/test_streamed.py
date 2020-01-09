@@ -411,6 +411,23 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
+    def test__merge_chunk_array_of_struct_with_empty(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        struct_type = self._make_struct_type([("name", "STRING"), ("age", "INT64")])
+        FIELDS = [self._make_array_field("test", element_type=struct_type)]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        partial = self._make_list_value([u"Phred "])
+        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
+        rest = self._make_list_value([])
+        chunk = self._make_list_value(value_pbs=[rest])
+
+        merged = streamed._merge_chunk(chunk)
+
+        expected = self._make_list_value(value_pbs=[partial])
+        self.assertEqual(merged, expected)
+        self.assertIsNone(streamed._pending_chunk)
+
     def test__merge_chunk_array_of_struct_unmergeable(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
