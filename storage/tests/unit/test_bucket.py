@@ -2106,9 +2106,7 @@ class Test_Bucket(unittest.TestCase):
             "resourceId": PATH,
             "etag": ETAG,
             "version": VERSION,
-            "bindings": [
-                {"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]},
-            ],
+            "bindings": [{"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]}],
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, None)

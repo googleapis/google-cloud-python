@@ -287,12 +287,14 @@ class TestStorageBuckets(unittest.TestCase):
             "condition": {
                 "title": "always-true",
                 "description": "test condition always-true",
-                "expression": "true"
-            }
+                "expression": "true",
+            },
         }
         policy.bindings.append(BINDING_W_CONDITION)
 
-        with pytest.raises(PreconditionFailed, match="enable uniform bucket-level access"):
+        with pytest.raises(
+            PreconditionFailed, match="enable uniform bucket-level access"
+        ):
             bucket.set_iam_policy(policy)
 
         bucket.iam_configuration.uniform_bucket_level_access_enabled = True
@@ -309,9 +311,13 @@ class TestStorageBuckets(unittest.TestCase):
         self.assertEqual(returned_policy.version, 3)
         self.assertEqual(returned_policy.bindings, policy.bindings)
 
-        with pytest.raises(BadRequest, match="cannot be less than the existing policy version"):
+        with pytest.raises(
+            BadRequest, match="cannot be less than the existing policy version"
+        ):
             bucket.get_iam_policy()
-        with pytest.raises(BadRequest, match="cannot be less than the existing policy version"):
+        with pytest.raises(
+            BadRequest, match="cannot be less than the existing policy version"
+        ):
             bucket.get_iam_policy(requested_policy_version=2)
 
         fetched_policy = bucket.get_iam_policy(requested_policy_version=3)
