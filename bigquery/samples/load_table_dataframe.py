@@ -36,6 +36,7 @@ def load_table_dataframe(table_id):
             "release_date": pytz.timezone("Europe/Paris")
             .localize(datetime.datetime(1983, 5, 9, 13, 0, 0))
             .astimezone(pytz.utc),
+            # Assume UTC timezone when a datetime object contains no timezone.
             "dvd_release": datetime.datetime(2002, 1, 22, 7, 0, 0),
         },
         {

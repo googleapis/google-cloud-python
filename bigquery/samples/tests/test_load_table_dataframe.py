@@ -44,10 +44,6 @@ def test_load_table_dataframe(capsys, random_table_id):
         "INTEGER",
         "FLOAT",
         "TIMESTAMP",
-        # Due to internal bug 147108331, BigQuery always interprets DATETIME
-        # columns as having the wrong precision. In the meantime, workaround this
-        # by writing the values as TIMESTAMP. See:
-        # https://github.com/googleapis/google-cloud-python/issues/9996
         "TIMESTAMP",
     ]
 

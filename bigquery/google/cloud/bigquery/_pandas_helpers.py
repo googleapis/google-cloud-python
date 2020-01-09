@@ -52,10 +52,8 @@ _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seco
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
     "datetime64[ns, UTC]": "TIMESTAMP",
-    # Due to internal bug 147108331, BigQuery always interprets DATETIME
-    # columns as having the wrong precision. In the meantime, workaround this
-    # by writing the values as TIMESTAMP. See:
-    # https://github.com/googleapis/google-cloud-python/issues/9996
+    # BigQuery does not support uploading DATETIME values from Parquet files.
+    # See: https://github.com/googleapis/google-cloud-python/issues/9996
     "datetime64[ns]": "TIMESTAMP",
     "float32": "FLOAT",
     "float64": "FLOAT",
