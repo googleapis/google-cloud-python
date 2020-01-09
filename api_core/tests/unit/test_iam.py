@@ -80,15 +80,18 @@ class TestPolicy:
         assert dict(policy) == {"rolename": PRINCIPALS}
 
     def test__set_item__overwrite(self):
+        GROUP = "group:test@group.com"
         USER = "user:phred@example.com"
         ALL_USERS = "allUsers"
         MEMBERS = set([ALL_USERS])
+        GROUPS = set([GROUP])
         policy = self._make_one()
-        policy["rolename"] = [USER]
-        policy["rolename"] = [ALL_USERS]
-        assert policy["rolename"] == MEMBERS
-        assert len(policy) == 1
-        assert dict(policy) == {"rolename": MEMBERS}
+        policy["first"] = [GROUP]
+        policy["second"] = [USER]
+        policy["second"] = [ALL_USERS]
+        assert policy["second"] == MEMBERS
+        assert len(policy) == 2
+        assert dict(policy) == {"first": GROUPS, "second": MEMBERS}
 
     def test___setitem___version3(self):
         policy = self._make_one("DEADBEEF", 3)
