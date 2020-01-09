@@ -21,14 +21,12 @@ import os
 import shutil
 
 import nox
-import sys
 
 LOCAL_DEPS = ("google-cloud-core", "google-api-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.7"
-PYPY = "pypy3"
-ALL_INTERPRETERS = ("2.7", "3.6", "3.7", PYPY)
-PY3_INTERPRETERS = ("3.6", "3.7", PYPY)
+ALL_INTERPRETERS = ("2.7", "3.6", "3.7")
+PY3_INTERPRETERS = ("3.6", "3.7")
 MAJOR_INTERPRETERS = ("2.7", "3.7")
 
 
