@@ -375,7 +375,6 @@ class TestPolicy:
 
     def test_to_api_repr_full(self):
         import operator
-        import warnings
         from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
