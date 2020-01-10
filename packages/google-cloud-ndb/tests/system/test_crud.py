@@ -1004,3 +1004,36 @@ def test_crud_without_datastore(ds_entity, client_context):
 
         key.delete()
         assert key.get() is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_computed_key_property(dispose_of):
+    """Regression test for #284.
+
+    https://github.com/googleapis/python-ndb/issues/284
+    """
+
+    class AModel(ndb.Model):
+        s_foo = ndb.StringProperty()
+
+    class BModel(ndb.Model):
+        s_bar = ndb.StringProperty()
+        key_a = ndb.KeyProperty(kind="AModel", indexed=True)
+
+    class CModel(ndb.Model):
+        s_foobar = ndb.StringProperty()
+        key_b = ndb.KeyProperty(kind="BModel", indexed=True)
+        key_a = ndb.ComputedProperty(  # Issue here
+            lambda self: self.key_b.get().key_a if self.key_b else None,
+        )
+
+    key_a = AModel(s_foo="test").put()
+    dispose_of(key_a._key)
+    key_b = BModel(s_bar="test", key_a=key_a).put()
+    dispose_of(key_b._key)
+    key_c = CModel(s_foobar="test", key_b=key_b).put()
+    dispose_of(key_c._key)
+
+    entity = key_c.get()
+    assert entity.key_a == key_a
+    assert entity.key_b == key_b

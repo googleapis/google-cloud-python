@@ -1687,7 +1687,23 @@ class Property(ModelAttribute):
         """
         methods = self._find_methods("_validate", "_to_base_type")
         call = self._apply_list(methods)
-        return call(value)
+        value = call(value)
+
+        # Legacy NDB, because it didn't delegate to Datastore for serializing
+        # entities, would directly write a Key protocol buffer for a key. We,
+        # however, need to transform NDB keys to Datastore keys before
+        # delegating to Datastore to generate protocol buffers. You might be
+        # tempted to do this in KeyProperty._to_base_type, and that works great
+        # for properties of KeyProperty type. If, however, you're computing a
+        # key in a ComputedProperty, ComputedProperty doesn't know to call
+        # KeyProperty's base type. (Probably ComputedProperty should take
+        # another property type as a constructor argument for this purpose,
+        # but that wasn't part of the original design and adding it introduces
+        # backwards compatibility issues.) See: Issue #184
+        if isinstance(value, key_module.Key):
+            value = value._key  # Datastore key
+
+        return value
 
     def _call_shallow_validation(self, value):
         """Call the "initial" set of ``_validate()`` methods.
