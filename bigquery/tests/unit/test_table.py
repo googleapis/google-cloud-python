@@ -2225,6 +2225,24 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_w_empty_results_wo_pyarrow(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
+            schema = [
+                SchemaField("name", "STRING", mode="REQUIRED"),
+                SchemaField("age", "INTEGER", mode="REQUIRED"),
+            ]
+            api_request = mock.Mock(return_value={"rows": []})
+            row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
+
+            df = row_iterator.to_dataframe()
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(len(df), 0)  # verify the number of rows
+            self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_logs_tabledata_list(self):
         from google.cloud.bigquery.table import Table
 
