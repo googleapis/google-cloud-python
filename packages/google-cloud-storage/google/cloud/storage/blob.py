@@ -546,15 +546,11 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-        :rtype: :class:`Blob`
-        :returns: The blob that was just deleted.
         :raises: :class:`google.cloud.exceptions.NotFound`
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(
-            self.name, client=client, generation=self.generation
-        )
+        self.bucket.delete_blob(self.name, client=client, generation=self.generation)
 
     def _get_transport(self, client):
         """Return the client's transport.
