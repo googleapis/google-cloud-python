@@ -2023,7 +2023,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2067,7 +2067,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         RETURNED = {
             "resourceId": PATH,
             "etag": ETAG,
@@ -2102,7 +2102,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2155,7 +2155,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"

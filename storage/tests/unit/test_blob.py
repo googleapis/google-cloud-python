@@ -1928,7 +1928,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -1980,7 +1980,7 @@ class Test_Blob(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         RETURNED = {
             "resourceId": PATH,
             "etag": ETAG,
@@ -2023,7 +2023,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = "blob-name"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2074,7 +2074,7 @@ class Test_Blob(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/name/o/%s" % (BLOB_NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         BINDINGS = []
         RETURNED = {"etag": ETAG, "version": VERSION, "bindings": BINDINGS}
         after = ({"status": http_client.OK}, RETURNED)
