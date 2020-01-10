@@ -179,7 +179,8 @@ class TestLogging(unittest.TestCase):
         logger = Config.CLIENT.logger(self._logger_name("log_text_res"))
         now = datetime.datetime.utcnow()
         resource = Resource(
-            type="gae_app", labels={"module_id": "default", "version_id": "test"}
+            type="gae_app",
+            labels={"module_id": "default", "version_id": "test", "zone": ""},
         )
 
         self.to_delete.append(logger)
