@@ -40,7 +40,7 @@ packages = [
 
 namespaces = ["grafeas"]
 
-setuptools.setup(
+setuptools.setup(  # foobar
     name=name,
     version=version,
     description=description,

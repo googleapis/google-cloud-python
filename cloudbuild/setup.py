@@ -49,7 +49,7 @@ if "google.cloud" in packages:
 if "google.cloud.devtools" in packages:
     namespaces.append("google.cloud.devtools")
 
-setuptools.setup(
+setuptools.setup(  # foobar
     name=name,
     version=version,
     description=description,

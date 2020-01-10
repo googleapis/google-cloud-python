@@ -43,7 +43,7 @@ namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 
-setuptools.setup(
+setuptools.setup(  # foobar
     name=name,
     version=version,
     description=description,
