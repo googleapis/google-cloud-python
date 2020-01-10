@@ -2015,6 +2015,68 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_arrow()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_iterable(self):
+        from google.cloud.bigquery.schema import SchemaField
+        import types
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        path = "/foo"
+        api_request = mock.Mock(
+            side_effect=[
+                {
+                    "rows": [{"f": [{"v": "Bengt"}, {"v": "32"}]}],
+                    "pageToken": "NEXTPAGE",
+                },
+                {"rows": [{"f": [{"v": "Sven"}, {"v": "33"}]}]},
+            ]
+        )
+
+        row_iterator = self._make_one(
+            _mock_client(), api_request, path, schema, page_size=1, max_results=5
+        )
+        dfs = row_iterator.to_dataframe_iterable()
+
+        self.assertIsInstance(dfs, types.GeneratorType)
+
+        df_1 = next(dfs)
+        self.assertIsInstance(df_1, pandas.DataFrame)
+        self.assertEqual(df_1.name.dtype.name, "object")
+        self.assertEqual(df_1.age.dtype.name, "int64")
+        self.assertEqual(len(df_1), 1)  # verify the number of rows
+        self.assertEqual(
+            df_1["name"][0], "Bengt"
+        )  # verify the first value of 'name' column
+        self.assertEqual(df_1["age"][0], 32)  # verify the first value of 'age' column
+
+        df_2 = next(dfs)
+        self.assertEqual(len(df_2), 1)  # verify the number of rows
+        self.assertEqual(df_2["name"][0], "Sven")
+        self.assertEqual(df_2["age"][0], 33)
+
+    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    def test_to_dataframe_iterable_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        with pytest.raises(ValueError, match="pandas"):
+            row_iterator.to_dataframe_iterable()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe(self):
         from google.cloud.bigquery.schema import SchemaField
 
