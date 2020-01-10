@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import decimal
 import re
 from functools import reduce
@@ -373,9 +374,9 @@ def get_param_types(params):
             param_types[key] = spanner.param_types.FLOAT64
         elif isinstance(value, int):
             param_types[key] = spanner.param_types.INT64
-        elif isinstance(value, TimestampStr):
+        elif isinstance(value, (TimestampStr, datetime.datetime,)):
             param_types[key] = spanner.param_types.TIMESTAMP
-        elif isinstance(value, DateStr):
+        elif isinstance(value, (DateStr, datetime.date,)):
             param_types[key] = spanner.param_types.DATE
         elif isinstance(value, str):
             param_types[key] = spanner.param_types.STRING
