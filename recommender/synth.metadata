@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-11-20T13:28:29.755927Z",
+  "updateTime": "2020-01-10T13:20:47.398441Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.42.1",
-        "dockerImage": "googleapis/artman@sha256:c773192618c608a7a0415dd95282f841f8e6bcdef7dd760a988c93b77a64bd57"
+        "version": "0.43.0",
+        "dockerImage": "googleapis/artman@sha256:264654a37596a44b0668b8ce6ac41082d713f6ee150b3fc6425fa78cc64e4f20"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "16543773103e2619d2b5f52456264de5bb9be104",
-        "internalRef": "281423227"
+        "sha": "360a8792ed62f944109d7e22d613a04a010665b4",
+        "internalRef": "289011995"
       }
     },
     {
@@ -32,7 +32,7 @@
         "apiVersion": "v1beta1",
         "language": "python",
         "generator": "gapic",
-        "config": "google/cloud/recommender/artman_recommender_v1beta1.yaml"
+        "config": "google/cloud/recommender/v1beta1/artman_recommender_v1beta1.yaml"
       }
     }
   ]

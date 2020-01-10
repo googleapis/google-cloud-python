@@ -16,13 +16,12 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.recommender_v1beta1.proto import (
     recommendation_pb2 as google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2,
 )
-from google.longrunning import (
-    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
-)
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -33,13 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n$com.google.cloud.recommender.v1beta1B\020RecommenderProtoP\001ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\242\002\004CREC\252\002!Google.Cloud.Recommmender.V1Beta1"
     ),
     serialized_pb=_b(
-        '\n@google/cloud/recommender_v1beta1/proto/recommender_service.proto\x12 google.cloud.recommender.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a;google/cloud/recommender_v1beta1/proto/recommendation.proto\x1a#google/longrunning/operations.proto\x1a\x17google/api/client.proto"c\n\x1aListRecommendationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"\x81\x01\n\x1bListRecommendationsResponse\x12I\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x30.google.cloud.recommender.v1beta1.Recommendation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"(\n\x18GetRecommendationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xe3\x01\n MarkRecommendationClaimedRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12m\n\x0estate_metadata\x18\x02 \x03(\x0b\x32U.google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest.StateMetadataEntry\x12\x0c\n\x04\x65tag\x18\x03 \x01(\t\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xe7\x01\n"MarkRecommendationSucceededRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12o\n\x0estate_metadata\x18\x02 \x03(\x0b\x32W.google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest.StateMetadataEntry\x12\x0c\n\x04\x65tag\x18\x03 \x01(\t\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xe1\x01\n\x1fMarkRecommendationFailedRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12l\n\x0estate_metadata\x18\x02 \x03(\x0b\x32T.google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest.StateMetadataEntry\x12\x0c\n\x04\x65tag\x18\x03 \x01(\t\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xf7\t\n\x0bRecommender\x12\xe3\x01\n\x13ListRecommendations\x12<.google.cloud.recommender.v1beta1.ListRecommendationsRequest\x1a=.google.cloud.recommender.v1beta1.ListRecommendationsResponse"O\x82\xd3\xe4\x93\x02I\x12G/v1beta1/{parent=projects/*/locations/*/recommenders/*}/recommendations\x12\xd2\x01\n\x11GetRecommendation\x12:.google.cloud.recommender.v1beta1.GetRecommendationRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"O\x82\xd3\xe4\x93\x02I\x12G/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}\x12\xf1\x01\n\x19MarkRecommendationClaimed\x12\x42.google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"^\x82\xd3\xe4\x93\x02X"S/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\x01*\x12\xf7\x01\n\x1bMarkRecommendationSucceeded\x12\x44.google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"`\x82\xd3\xe4\x93\x02Z"U/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\x01*\x12\xee\x01\n\x18MarkRecommendationFailed\x12\x41.google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"]\x82\xd3\xe4\x93\x02W"R/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\x01*\x1aN\xca\x41\x1arecommender.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb2\x01\n$com.google.cloud.recommender.v1beta1B\x10RecommenderProtoP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\xa2\x02\x04\x43REC\xaa\x02!Google.Cloud.Recommmender.V1Beta1b\x06proto3'
+        '\n@google/cloud/recommender_v1beta1/proto/recommender_service.proto\x12 google.cloud.recommender.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a;google/cloud/recommender_v1beta1/proto/recommendation.proto"\x9d\x01\n\x1aListRecommendationsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&recommender.googleapis.com/Recommender\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"\x81\x01\n\x1bListRecommendationsResponse\x12I\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x30.google.cloud.recommender.v1beta1.Recommendation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"[\n\x18GetRecommendationRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation"\x9b\x02\n MarkRecommendationClaimedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12m\n\x0estate_metadata\x18\x02 \x03(\x0b\x32U.google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x9f\x02\n"MarkRecommendationSucceededRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12o\n\x0estate_metadata\x18\x02 \x03(\x0b\x32W.google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x99\x02\n\x1fMarkRecommendationFailedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12l\n\x0estate_metadata\x18\x02 \x03(\x0b\x32T.google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xdf\n\n\x0bRecommender\x12\xf3\x01\n\x13ListRecommendations\x12<.google.cloud.recommender.v1beta1.ListRecommendationsRequest\x1a=.google.cloud.recommender.v1beta1.ListRecommendationsResponse"_\x82\xd3\xe4\x93\x02I\x12G/v1beta1/{parent=projects/*/locations/*/recommenders/*}/recommendations\xda\x41\rparent,filter\x12\xd9\x01\n\x11GetRecommendation\x12:.google.cloud.recommender.v1beta1.GetRecommendationRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"V\x82\xd3\xe4\x93\x02I\x12G/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}\xda\x41\x04name\x12\x8c\x02\n\x19MarkRecommendationClaimed\x12\x42.google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"y\x82\xd3\xe4\x93\x02X"S/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\x01*\xda\x41\x18name,state_metadata,etag\x12\x92\x02\n\x1bMarkRecommendationSucceeded\x12\x44.google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"{\x82\xd3\xe4\x93\x02Z"U/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\x01*\xda\x41\x18name,state_metadata,etag\x12\x89\x02\n\x18MarkRecommendationFailed\x12\x41.google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest\x1a\x30.google.cloud.recommender.v1beta1.Recommendation"x\x82\xd3\xe4\x93\x02W"R/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\x01*\xda\x41\x18name,state_metadata,etag\x1aN\xca\x41\x1arecommender.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb2\x01\n$com.google.cloud.recommender.v1beta1B\x10RecommenderProtoP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\xa2\x02\x04\x43REC\xaa\x02!Google.Cloud.Recommmender.V1Beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2.DESCRIPTOR,
-        google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2.DESCRIPTOR,
     ],
 )
 
@@ -66,7 +66,9 @@ _LISTRECOMMENDATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A(\n&recommender.googleapis.com/Recommender"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -84,7 +86,7 @@ _LISTRECOMMENDATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -102,7 +104,7 @@ _LISTRECOMMENDATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -132,8 +134,8 @@ _LISTRECOMMENDATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=255,
-    serialized_end=354,
+    serialized_start=279,
+    serialized_end=436,
 )
 
 
@@ -189,8 +191,8 @@ _LISTRECOMMENDATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=357,
-    serialized_end=486,
+    serialized_start=439,
+    serialized_end=568,
 )
 
 
@@ -216,7 +218,9 @@ _GETRECOMMENDATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)recommender.googleapis.com/Recommendation"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -228,8 +232,8 @@ _GETRECOMMENDATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=488,
-    serialized_end=528,
+    serialized_start=570,
+    serialized_end=661,
 )
 
 
@@ -285,8 +289,8 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=706,
-    serialized_end=758,
+    serialized_start=895,
+    serialized_end=947,
 )
 
 _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
@@ -311,7 +315,9 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)recommender.googleapis.com/Recommendation"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -347,7 +353,7 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -359,8 +365,8 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=531,
-    serialized_end=758,
+    serialized_start=664,
+    serialized_end=947,
 )
 
 
@@ -416,8 +422,8 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=706,
-    serialized_end=758,
+    serialized_start=895,
+    serialized_end=947,
 )
 
 _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
@@ -442,7 +448,9 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)recommender.googleapis.com/Recommendation"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -478,7 +486,7 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -490,8 +498,8 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=761,
-    serialized_end=992,
+    serialized_start=950,
+    serialized_end=1237,
 )
 
 
@@ -547,8 +555,8 @@ _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=706,
-    serialized_end=758,
+    serialized_start=895,
+    serialized_end=947,
 )
 
 _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
@@ -573,7 +581,9 @@ _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)recommender.googleapis.com/Recommendation"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -609,7 +619,7 @@ _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -621,8 +631,8 @@ _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=995,
-    serialized_end=1220,
+    serialized_start=1240,
+    serialized_end=1521,
 )
 
 _LISTRECOMMENDATIONSRESPONSE.fields_by_name[
@@ -734,7 +744,7 @@ GetRecommendationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the recommendation.
+          Required. Name of the recommendation.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.GetRecommendationRequest)
     ),
@@ -761,13 +771,15 @@ MarkRecommendationClaimedRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the recommendation.
+          Required. Name of the recommendation.
       state_metadata:
           State properties to include with this state. Overwrites any
-          existing ``state_metadata``.
+          existing ``state_metadata``. Keys must match the regex /
+          [1]_[a-z0-9\_.-]{0,62}:math:`/. Values must match the regex
+          /^[a-zA-Z0-9_./-]{0,255}`/.  .. [1]    a-z0-9
       etag:
-          Fingerprint of the Recommendation. Provides optimistic
-          locking.
+          Required. Fingerprint of the Recommendation. Provides
+          optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest)
     ),
@@ -795,13 +807,15 @@ MarkRecommendationSucceededRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the recommendation.
+          Required. Name of the recommendation.
       state_metadata:
           State properties to include with this state. Overwrites any
-          existing ``state_metadata``.
+          existing ``state_metadata``. Keys must match the regex /
+          [1]_[a-z0-9\_.-]{0,62}:math:`/. Values must match the regex
+          /^[a-zA-Z0-9_./-]{0,255}`/.  .. [1]    a-z0-9
       etag:
-          Fingerprint of the Recommendation. Provides optimistic
-          locking.
+          Required. Fingerprint of the Recommendation. Provides
+          optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest)
     ),
@@ -829,13 +843,15 @@ MarkRecommendationFailedRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the recommendation.
+          Required. Name of the recommendation.
       state_metadata:
           State properties to include with this state. Overwrites any
-          existing ``state_metadata``.
+          existing ``state_metadata``. Keys must match the regex /
+          [1]_[a-z0-9\_.-]{0,62}:math:`/. Values must match the regex
+          /^[a-zA-Z0-9_./-]{0,255}`/.  .. [1]    a-z0-9
       etag:
-          Fingerprint of the Recommendation. Provides optimistic
-          locking.
+          Required. Fingerprint of the Recommendation. Provides
+          optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest)
     ),
@@ -845,9 +861,19 @@ _sym_db.RegisterMessage(MarkRecommendationFailedRequest.StateMetadataEntry)
 
 
 DESCRIPTOR._options = None
+_LISTRECOMMENDATIONSREQUEST.fields_by_name["parent"]._options = None
+_LISTRECOMMENDATIONSREQUEST.fields_by_name["page_size"]._options = None
+_LISTRECOMMENDATIONSREQUEST.fields_by_name["page_token"]._options = None
+_GETRECOMMENDATIONREQUEST.fields_by_name["name"]._options = None
 _MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY._options = None
+_MARKRECOMMENDATIONCLAIMEDREQUEST.fields_by_name["name"]._options = None
+_MARKRECOMMENDATIONCLAIMEDREQUEST.fields_by_name["etag"]._options = None
 _MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY._options = None
+_MARKRECOMMENDATIONSUCCEEDEDREQUEST.fields_by_name["name"]._options = None
+_MARKRECOMMENDATIONSUCCEEDEDREQUEST.fields_by_name["etag"]._options = None
 _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY._options = None
+_MARKRECOMMENDATIONFAILEDREQUEST.fields_by_name["name"]._options = None
+_MARKRECOMMENDATIONFAILEDREQUEST.fields_by_name["etag"]._options = None
 
 _RECOMMENDER = _descriptor.ServiceDescriptor(
     name="Recommender",
@@ -857,8 +883,8 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\032recommender.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=1223,
-    serialized_end=2494,
+    serialized_start=1524,
+    serialized_end=2899,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListRecommendations",
@@ -868,7 +894,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
             input_type=_LISTRECOMMENDATIONSREQUEST,
             output_type=_LISTRECOMMENDATIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002I\022G/v1beta1/{parent=projects/*/locations/*/recommenders/*}/recommendations"
+                "\202\323\344\223\002I\022G/v1beta1/{parent=projects/*/locations/*/recommenders/*}/recommendations\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -879,7 +905,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
             input_type=_GETRECOMMENDATIONREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
             serialized_options=_b(
-                "\202\323\344\223\002I\022G/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}"
+                "\202\323\344\223\002I\022G/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -890,7 +916,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
             input_type=_MARKRECOMMENDATIONCLAIMEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
             serialized_options=_b(
-                '\202\323\344\223\002X"S/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\001*'
+                '\202\323\344\223\002X"S/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\001*\332A\030name,state_metadata,etag'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -901,7 +927,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
             input_type=_MARKRECOMMENDATIONSUCCEEDEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
             serialized_options=_b(
-                '\202\323\344\223\002Z"U/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\001*'
+                '\202\323\344\223\002Z"U/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\001*\332A\030name,state_metadata,etag'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -912,7 +938,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
             input_type=_MARKRECOMMENDATIONFAILEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
             serialized_options=_b(
-                '\202\323\344\223\002W"R/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\001*'
+                '\202\323\344\223\002W"R/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\001*\332A\030name,state_metadata,etag'
             ),
         ),
     ],

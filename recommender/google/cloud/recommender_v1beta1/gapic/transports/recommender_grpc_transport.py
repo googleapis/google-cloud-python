@@ -139,13 +139,14 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_claimed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_claimed`.
 
-        Mark the Recommendation State as Claimed. Users can use this method to
+        Marks the Recommendation State as Claimed. Users can use this method to
         indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated.
+        being updated. Associated insights are frozen and placed in the ACCEPTED
+        state.
 
-        MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
-        SUCCEEDED, FAILED, or ACTIVE state.
+        MarkRecommendationClaimed can be applied to recommendations in CLAIMED
+        or ACTIVE state.
 
         Requires the recommender.\*.update IAM permission for the specified
         recommender.
@@ -161,10 +162,11 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_succeeded(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_succeeded`.
 
-        Mark the Recommendation State as Succeeded. Users can use this method to
-        indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Succeeded. Users can use this method
+        to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated.
+        the recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -183,10 +185,11 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_failed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_failed`.
 
-        Mark the Recommendation State as Failed. Users can use this method to
+        Marks the Recommendation State as Failed. Users can use this method to
         indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated.
+        recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.

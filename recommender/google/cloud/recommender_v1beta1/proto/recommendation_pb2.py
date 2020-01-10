@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -26,12 +27,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.recommender.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n$com.google.cloud.recommender.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\242\002\004CREC\252\002 Google.Cloud.Recommender.V1Beta1"
+        "\n$com.google.cloud.recommender.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\242\002\004CREC\252\002 Google.Cloud.Recommender.V1Beta1\352Al\n&recommender.googleapis.com/Recommender\022Bprojects/{project}/locations/{location}/recommenders/{recommender}"
     ),
     serialized_pb=_b(
-        '\n;google/cloud/recommender_v1beta1/proto/recommendation.proto\x12 google.cloud.recommender.v1beta1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto"\xb5\x03\n\x0eRecommendation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1b\n\x13recommender_subtype\x18\x0c \x01(\t\x12\x35\n\x11last_refresh_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12@\n\x0eprimary_impact\x18\x05 \x01(\x0b\x32(.google.cloud.recommender.v1beta1.Impact\x12\x43\n\x11\x61\x64\x64itional_impact\x18\x06 \x03(\x0b\x32(.google.cloud.recommender.v1beta1.Impact\x12H\n\x07\x63ontent\x18\x07 \x01(\x0b\x32\x37.google.cloud.recommender.v1beta1.RecommendationContent\x12M\n\nstate_info\x18\n \x01(\x0b\x32\x39.google.cloud.recommender.v1beta1.RecommendationStateInfo\x12\x0c\n\x04\x65tag\x18\x0b \x01(\t"c\n\x15RecommendationContent\x12J\n\x10operation_groups\x18\x02 \x03(\x0b\x32\x30.google.cloud.recommender.v1beta1.OperationGroup"Q\n\x0eOperationGroup\x12?\n\noperations\x18\x01 \x03(\x0b\x32+.google.cloud.recommender.v1beta1.Operation"\xc7\x02\n\tOperation\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x10\n\x08resource\x18\x03 \x01(\t\x12\x0c\n\x04path\x18\x04 \x01(\t\x12\x17\n\x0fsource_resource\x18\x05 \x01(\t\x12\x13\n\x0bsource_path\x18\x06 \x01(\t\x12%\n\x05value\x18\x07 \x01(\x0b\x32\x16.google.protobuf.Value\x12R\n\x0cpath_filters\x18\x08 \x03(\x0b\x32<.google.cloud.recommender.v1beta1.Operation.PathFiltersEntry\x1aJ\n\x10PathFiltersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"_\n\x0e\x43ostProjection\x12 \n\x04\x63ost\x18\x01 \x01(\x0b\x32\x12.google.type.Money\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\xf7\x01\n\x06Impact\x12\x43\n\x08\x63\x61tegory\x18\x01 \x01(\x0e\x32\x31.google.cloud.recommender.v1beta1.Impact.Category\x12K\n\x0f\x63ost_projection\x18\x64 \x01(\x0b\x32\x30.google.cloud.recommender.v1beta1.CostProjectionH\x00"M\n\x08\x43\x61tegory\x12\x18\n\x14\x43\x41TEGORY_UNSPECIFIED\x10\x00\x12\x08\n\x04\x43OST\x10\x01\x12\x0c\n\x08SECURITY\x10\x02\x12\x0f\n\x0bPERFORMANCE\x10\x03\x42\x0c\n\nprojection"\xe8\x02\n\x17RecommendationStateInfo\x12N\n\x05state\x18\x01 \x01(\x0e\x32?.google.cloud.recommender.v1beta1.RecommendationStateInfo.State\x12\x64\n\x0estate_metadata\x18\x02 \x03(\x0b\x32L.google.cloud.recommender.v1beta1.RecommendationStateInfo.StateMetadataEntry\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07\x43LAIMED\x10\x06\x12\r\n\tSUCCEEDED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\r\n\tDISMISSED\x10\x05\x42\x9f\x01\n$com.google.cloud.recommender.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\xa2\x02\x04\x43REC\xaa\x02 Google.Cloud.Recommender.V1Beta1b\x06proto3'
+        '\n;google/cloud/recommender_v1beta1/proto/recommendation.proto\x12 google.cloud.recommender.v1beta1\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/type/money.proto"\xcc\x04\n\x0eRecommendation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1b\n\x13recommender_subtype\x18\x0c \x01(\t\x12\x35\n\x11last_refresh_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12@\n\x0eprimary_impact\x18\x05 \x01(\x0b\x32(.google.cloud.recommender.v1beta1.Impact\x12\x43\n\x11\x61\x64\x64itional_impact\x18\x06 \x03(\x0b\x32(.google.cloud.recommender.v1beta1.Impact\x12H\n\x07\x63ontent\x18\x07 \x01(\x0b\x32\x37.google.cloud.recommender.v1beta1.RecommendationContent\x12M\n\nstate_info\x18\n \x01(\x0b\x32\x39.google.cloud.recommender.v1beta1.RecommendationStateInfo\x12\x0c\n\x04\x65tag\x18\x0b \x01(\t:\x94\x01\xea\x41\x90\x01\n)recommender.googleapis.com/Recommendation\x12\x63projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}"c\n\x15RecommendationContent\x12J\n\x10operation_groups\x18\x02 \x03(\x0b\x32\x30.google.cloud.recommender.v1beta1.OperationGroup"Q\n\x0eOperationGroup\x12?\n\noperations\x18\x01 \x03(\x0b\x32+.google.cloud.recommender.v1beta1.Operation"\xeb\x04\n\tOperation\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x10\n\x08resource\x18\x03 \x01(\t\x12\x0c\n\x04path\x18\x04 \x01(\t\x12\x17\n\x0fsource_resource\x18\x05 \x01(\t\x12\x13\n\x0bsource_path\x18\x06 \x01(\t\x12\'\n\x05value\x18\x07 \x01(\x0b\x32\x16.google.protobuf.ValueH\x00\x12G\n\rvalue_matcher\x18\n \x01(\x0b\x32..google.cloud.recommender.v1beta1.ValueMatcherH\x00\x12R\n\x0cpath_filters\x18\x08 \x03(\x0b\x32<.google.cloud.recommender.v1beta1.Operation.PathFiltersEntry\x12_\n\x13path_value_matchers\x18\x0b \x03(\x0b\x32\x42.google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry\x1aJ\n\x10PathFiltersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01\x1ah\n\x16PathValueMatchersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..google.cloud.recommender.v1beta1.ValueMatcher:\x02\x38\x01\x42\x0c\n\npath_value":\n\x0cValueMatcher\x12\x19\n\x0fmatches_pattern\x18\x01 \x01(\tH\x00\x42\x0f\n\rmatch_variant"_\n\x0e\x43ostProjection\x12 \n\x04\x63ost\x18\x01 \x01(\x0b\x32\x12.google.type.Money\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\x8a\x02\n\x06Impact\x12\x43\n\x08\x63\x61tegory\x18\x01 \x01(\x0e\x32\x31.google.cloud.recommender.v1beta1.Impact.Category\x12K\n\x0f\x63ost_projection\x18\x64 \x01(\x0b\x32\x30.google.cloud.recommender.v1beta1.CostProjectionH\x00"`\n\x08\x43\x61tegory\x12\x18\n\x14\x43\x41TEGORY_UNSPECIFIED\x10\x00\x12\x08\n\x04\x43OST\x10\x01\x12\x0c\n\x08SECURITY\x10\x02\x12\x0f\n\x0bPERFORMANCE\x10\x03\x12\x11\n\rMANAGEABILITY\x10\x04\x42\x0c\n\nprojection"\xe8\x02\n\x17RecommendationStateInfo\x12N\n\x05state\x18\x01 \x01(\x0e\x32?.google.cloud.recommender.v1beta1.RecommendationStateInfo.State\x12\x64\n\x0estate_metadata\x18\x02 \x03(\x0b\x32L.google.cloud.recommender.v1beta1.RecommendationStateInfo.StateMetadataEntry\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07\x43LAIMED\x10\x06\x12\r\n\tSUCCEEDED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\r\n\tDISMISSED\x10\x05\x42\x8e\x02\n$com.google.cloud.recommender.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/recommender/v1beta1;recommender\xa2\x02\x04\x43REC\xaa\x02 Google.Cloud.Recommender.V1Beta1\xea\x41l\n&recommender.googleapis.com/Recommender\x12\x42projects/{project}/locations/{location}/recommenders/{recommender}b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -62,11 +64,14 @@ _IMPACT_CATEGORY = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="PERFORMANCE", index=3, number=3, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="MANAGEABILITY", index=4, number=4, serialized_options=None, type=None
+        ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1425,
-    serialized_end=1502,
+    serialized_start=1955,
+    serialized_end=2051,
 )
 _sym_db.RegisterEnumDescriptor(_IMPACT_CATEGORY)
 
@@ -101,8 +106,8 @@ _RECOMMENDATIONSTATEINFO_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1782,
-    serialized_end=1879,
+    serialized_start=2331,
+    serialized_end=2428,
 )
 _sym_db.RegisterEnumDescriptor(_RECOMMENDATIONSTATEINFO_STATE)
 
@@ -280,13 +285,15 @@ _RECOMMENDATION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\220\001\n)recommender.googleapis.com/Recommendation\022cprojects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=218,
-    serialized_end=655,
+    serialized_start=245,
+    serialized_end=833,
 )
 
 
@@ -324,8 +331,8 @@ _RECOMMENDATIONCONTENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=657,
-    serialized_end=756,
+    serialized_start=835,
+    serialized_end=934,
 )
 
 
@@ -363,8 +370,8 @@ _OPERATIONGROUP = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=758,
-    serialized_end=839,
+    serialized_start=936,
+    serialized_end=1017,
 )
 
 
@@ -420,8 +427,64 @@ _OPERATION_PATHFILTERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1095,
-    serialized_end=1169,
+    serialized_start=1445,
+    serialized_end=1519,
+)
+
+_OPERATION_PATHVALUEMATCHERSENTRY = _descriptor.Descriptor(
+    name="PathValueMatchersEntry",
+    full_name="google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b("8\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1521,
+    serialized_end=1625,
 )
 
 _OPERATION = _descriptor.Descriptor(
@@ -558,10 +621,46 @@ _OPERATION = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="value_matcher",
+            full_name="google.cloud.recommender.v1beta1.Operation.value_matcher",
+            index=7,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="path_filters",
             full_name="google.cloud.recommender.v1beta1.Operation.path_filters",
-            index=7,
+            index=8,
             number=8,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="path_value_matchers",
+            full_name="google.cloud.recommender.v1beta1.Operation.path_value_matchers",
+            index=9,
+            number=11,
             type=11,
             cpp_type=10,
             label=3,
@@ -577,15 +676,70 @@ _OPERATION = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_OPERATION_PATHFILTERSENTRY],
+    nested_types=[_OPERATION_PATHFILTERSENTRY, _OPERATION_PATHVALUEMATCHERSENTRY],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
-    oneofs=[],
-    serialized_start=842,
-    serialized_end=1169,
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="path_value",
+            full_name="google.cloud.recommender.v1beta1.Operation.path_value",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1020,
+    serialized_end=1639,
+)
+
+
+_VALUEMATCHER = _descriptor.Descriptor(
+    name="ValueMatcher",
+    full_name="google.cloud.recommender.v1beta1.ValueMatcher",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="matches_pattern",
+            full_name="google.cloud.recommender.v1beta1.ValueMatcher.matches_pattern",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="match_variant",
+            full_name="google.cloud.recommender.v1beta1.ValueMatcher.match_variant",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1641,
+    serialized_end=1699,
 )
 
 
@@ -641,8 +795,8 @@ _COSTPROJECTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1171,
-    serialized_end=1266,
+    serialized_start=1701,
+    serialized_end=1796,
 )
 
 
@@ -706,8 +860,8 @@ _IMPACT = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1269,
-    serialized_end=1516,
+    serialized_start=1799,
+    serialized_end=2065,
 )
 
 
@@ -763,8 +917,8 @@ _RECOMMENDATIONSTATEINFO_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1728,
-    serialized_end=1780,
+    serialized_start=2277,
+    serialized_end=2329,
 )
 
 _RECOMMENDATIONSTATEINFO = _descriptor.Descriptor(
@@ -819,8 +973,8 @@ _RECOMMENDATIONSTATEINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1519,
-    serialized_end=1879,
+    serialized_start=2068,
+    serialized_end=2428,
 )
 
 _RECOMMENDATION.fields_by_name[
@@ -836,10 +990,34 @@ _OPERATION_PATHFILTERSENTRY.fields_by_name[
     "value"
 ].message_type = google_dot_protobuf_dot_struct__pb2._VALUE
 _OPERATION_PATHFILTERSENTRY.containing_type = _OPERATION
+_OPERATION_PATHVALUEMATCHERSENTRY.fields_by_name["value"].message_type = _VALUEMATCHER
+_OPERATION_PATHVALUEMATCHERSENTRY.containing_type = _OPERATION
 _OPERATION.fields_by_name[
     "value"
 ].message_type = google_dot_protobuf_dot_struct__pb2._VALUE
+_OPERATION.fields_by_name["value_matcher"].message_type = _VALUEMATCHER
 _OPERATION.fields_by_name["path_filters"].message_type = _OPERATION_PATHFILTERSENTRY
+_OPERATION.fields_by_name[
+    "path_value_matchers"
+].message_type = _OPERATION_PATHVALUEMATCHERSENTRY
+_OPERATION.oneofs_by_name["path_value"].fields.append(
+    _OPERATION.fields_by_name["value"]
+)
+_OPERATION.fields_by_name["value"].containing_oneof = _OPERATION.oneofs_by_name[
+    "path_value"
+]
+_OPERATION.oneofs_by_name["path_value"].fields.append(
+    _OPERATION.fields_by_name["value_matcher"]
+)
+_OPERATION.fields_by_name["value_matcher"].containing_oneof = _OPERATION.oneofs_by_name[
+    "path_value"
+]
+_VALUEMATCHER.oneofs_by_name["match_variant"].fields.append(
+    _VALUEMATCHER.fields_by_name["matches_pattern"]
+)
+_VALUEMATCHER.fields_by_name[
+    "matches_pattern"
+].containing_oneof = _VALUEMATCHER.oneofs_by_name["match_variant"]
 _COSTPROJECTION.fields_by_name[
     "cost"
 ].message_type = google_dot_type_dot_money__pb2._MONEY
@@ -867,6 +1045,7 @@ DESCRIPTOR.message_types_by_name["Recommendation"] = _RECOMMENDATION
 DESCRIPTOR.message_types_by_name["RecommendationContent"] = _RECOMMENDATIONCONTENT
 DESCRIPTOR.message_types_by_name["OperationGroup"] = _OPERATIONGROUP
 DESCRIPTOR.message_types_by_name["Operation"] = _OPERATION
+DESCRIPTOR.message_types_by_name["ValueMatcher"] = _VALUEMATCHER
 DESCRIPTOR.message_types_by_name["CostProjection"] = _COSTPROJECTION
 DESCRIPTOR.message_types_by_name["Impact"] = _IMPACT
 DESCRIPTOR.message_types_by_name["RecommendationStateInfo"] = _RECOMMENDATIONSTATEINFO
@@ -884,21 +1063,20 @@ Recommendation = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of recommendation.  A project recommendation is
-          represented as projects/[PROJECT\_NUMBER]/locations/[LOCATION]
-          /recommenders/[RECOMMENDER\_ID]/recommendations/[RECOMMENDATIO
-          N\_ID]
+          Name of recommendation.
       description:
           Free-form human readable summary in English. The maximum
           length is 500 characters.
       recommender_subtype:
           Contains an identifier for a subtype of recommendations
           produced for the same recommender. Subtype is a function of
-          content and impact, meaning a new subtype will be added when
-          either content or primary impact category changes.  Examples:
-          For recommender = "google.iam.policy.RoleRecommender",
-          recommender\_subtype can be one of
-          "REMOVE\_ROLE"/"REPLACE\_ROLE"
+          content and impact, meaning a new subtype might be added when
+          significant changes to ``content`` or
+          ``primary_impact.category`` are introduced. See the
+          Recommenders section to see a list of subtypes for a given
+          Recommender.  Examples: For recommender =
+          "google.iam.policy.Recommender", recommender\_subtype can be
+          one of "REMOVE\_ROLE"/"REPLACE\_ROLE"
       last_refresh_time:
           Last time this recommendation was refreshed by the system that
           created it in the first place.
@@ -976,22 +1154,34 @@ Operation = _reflection.GeneratedProtocolMessageType(
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation.PathFiltersEntry)
             ),
         ),
+        PathValueMatchersEntry=_reflection.GeneratedProtocolMessageType(
+            "PathValueMatchersEntry",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_OPERATION_PATHVALUEMATCHERSENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry)
+            ),
+        ),
         DESCRIPTOR=_OPERATION,
         __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        __doc__="""Contains an operation for a resource inspired by the JSON-PATCH format
-  with support for: \* Custom filters for describing partial array patch.
-  \* Extended path values for describing nested arrays. \* Custom fields
-  for describing the resource for which the operation is being described.
-  \* Allows extension to custom operations not natively supported by
-  RFC6902. See https://tools.ietf.org/html/rfc6902 for details on the
-  original RFC.
+        __doc__="""Contains an operation for a resource loosely based on the JSON-PATCH
+  format with support for:
+  
+  -  Custom filters for describing partial array patch.
+  -  Extended path values for describing nested arrays.
+  -  Custom fields for describing the resource for which the operation is
+     being described.
+  -  Allows extension to custom operations not natively supported by
+     RFC6902. See https://tools.ietf.org/html/rfc6902 for details on the
+     original RFC.
   
   
   Attributes:
       action:
           Type of this operation. Contains one of 'and', 'remove',
-          'replace', 'move', 'copy', 'test' and custom operations. This
-          field is case-insensitive and always populated.
+          'replace', 'move', 'copy', 'test' and 'custom' operations.
+          This field is case-insensitive and always populated.
       resource_type:
           Type of GCP resource being modified/tested. This field is
           always populated. Example:
@@ -1015,25 +1205,65 @@ Operation = _reflection.GeneratedProtocolMessageType(
           Can be set with action 'copy' or 'move' to indicate the source
           field within resource or source\_resource, ignored if provided
           for other operation types.
+      path_value:
+          One of the fields in the following block will be set and
+          intend to describe a value for 'path' field.
       value:
-          Value for the ``path`` field. Set if action is
-          'add'/'replace'/'test'.
+          Value for the ``path`` field. Will be set for
+          actions:'add'/'replace'. Maybe set for action: 'test'. Either
+          this or ``value_matcher`` will be set for 'test' operation. An
+          exact match must be performed.
+      value_matcher:
+          Can be set for action 'test' for advanced matching for the
+          value of 'path' field. Either this or ``value`` will be set
+          for 'test' operation.
       path_filters:
           Set of filters to apply if ``path`` refers to array elements
           or nested array elements in order to narrow down to a single
-          unique element that is being tested/modified. Note that this
-          is intended to be an exact match per filter. Example: {
-          "/versions/*/name" : "it-123"
-          "/versions/*/targetSize/percent": 20 } Example: {
-          "/bindings/*/role": "roles/admin" "/bindings/*/condition" :
-          null } Example: { "/bindings/*/role": "roles/admin"
-          "/bindings/*/members/\*" : ["x@google.com", "y@google.com"] }
+          unique element that is being tested/modified. This is intended
+          to be an exact match per filter. To perform advanced matching,
+          use path\_value\_matchers.  -  Example: { "/versions/*/name" :
+          "it-123"    "/versions/*/targetSize/percent": 20 } -  Example:
+          { "/bindings/*/role": "roles/admin" "/bindings/*/condition"
+          : null } -  Example: { "/bindings/*/role": "roles/admin"
+          "/bindings/*/members/\*"    : ["x@google.com", "y@google.com"]
+          } When both path\_filters and    path\_value\_matchers are
+          set, an implicit AND must be performed.
+      path_value_matchers:
+          Similar to path\_filters, this contains set of filters to
+          apply if ``path`` field referes to array elements. This is
+          meant to support value matching beyond exact match. To perform
+          exact match, use path\_filters. When both path\_filters and
+          path\_value\_matchers are set, an implicit AND must be
+          performed.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation)
     ),
 )
 _sym_db.RegisterMessage(Operation)
 _sym_db.RegisterMessage(Operation.PathFiltersEntry)
+_sym_db.RegisterMessage(Operation.PathValueMatchersEntry)
+
+ValueMatcher = _reflection.GeneratedProtocolMessageType(
+    "ValueMatcher",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_VALUEMATCHER,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains various matching options for values for a GCP resource field.
+  
+  
+  Attributes:
+      matches_pattern:
+          To be used for full regex matching. The regular expression is
+          using the Google RE2 syntax
+          (https://github.com/google/re2/wiki/Syntax), so to be used
+          with RE2::FullMatch
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.ValueMatcher)
+    ),
+)
+_sym_db.RegisterMessage(ValueMatcher)
 
 CostProjection = _reflection.GeneratedProtocolMessageType(
     "CostProjection",
@@ -1114,6 +1344,8 @@ _sym_db.RegisterMessage(RecommendationStateInfo.StateMetadataEntry)
 
 
 DESCRIPTOR._options = None
+_RECOMMENDATION._options = None
 _OPERATION_PATHFILTERSENTRY._options = None
+_OPERATION_PATHVALUEMATCHERSENTRY._options = None
 _RECOMMENDATIONSTATEINFO_STATEMETADATAENTRY._options = None
 # @@protoc_insertion_point(module_scope)

@@ -10,10 +10,10 @@ from google.cloud.recommender_v1beta1.proto import (
 
 
 class RecommenderStub(object):
-    """Provides recommendations for cloud customers for various categories like
-  performance optimization, cost savings, reliability, feature discovery, etc.
-  These recommendations are generated automatically based on analysis of user
-  resources, configuration and monitoring metrics.
+    """Provides insights and recommendations for cloud customers for various
+  categories like performance optimization, cost savings, reliability, feature
+  discovery, etc. Insights and recommendations are generated automatically
+  based on analysis of user resources, configuration and monitoring metrics.
   """
 
     def __init__(self, channel):
@@ -50,10 +50,10 @@ class RecommenderStub(object):
 
 
 class RecommenderServicer(object):
-    """Provides recommendations for cloud customers for various categories like
-  performance optimization, cost savings, reliability, feature discovery, etc.
-  These recommendations are generated automatically based on analysis of user
-  resources, configuration and monitoring metrics.
+    """Provides insights and recommendations for cloud customers for various
+  categories like performance optimization, cost savings, reliability, feature
+  discovery, etc. Insights and recommendations are generated automatically
+  based on analysis of user resources, configuration and monitoring metrics.
   """
 
     def ListRecommendations(self, request, context):
@@ -73,13 +73,13 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationClaimed(self, request, context):
-        """Mark the Recommendation State as Claimed. Users can use this method to
+        """Marks the Recommendation State as Claimed. Users can use this method to
     indicate to the Recommender API that they are starting to apply the
     recommendation themselves. This stops the recommendation content from being
-    updated.
+    updated. Associated insights are frozen and placed in the ACCEPTED state.
 
-    MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
-    SUCCEEDED, FAILED, or ACTIVE state.
+    MarkRecommendationClaimed can be applied to recommendations in CLAIMED or
+    ACTIVE state.
 
     Requires the recommender.*.update IAM permission for the specified
     recommender.
@@ -89,10 +89,11 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationSucceeded(self, request, context):
-        """Mark the Recommendation State as Succeeded. Users can use this method to
+        """Marks the Recommendation State as Succeeded. Users can use this method to
     indicate to the Recommender API that they have applied the recommendation
     themselves, and the operation was successful. This stops the recommendation
-    content from being updated.
+    content from being updated. Associated insights are frozen and placed in
+    the ACCEPTED state.
 
     MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
     CLAIMED, SUCCEEDED, or FAILED state.
@@ -105,10 +106,11 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationFailed(self, request, context):
-        """Mark the Recommendation State as Failed. Users can use this method to
+        """Marks the Recommendation State as Failed. Users can use this method to
     indicate to the Recommender API that they have applied the recommendation
     themselves, and the operation failed. This stops the recommendation content
-    from being updated.
+    from being updated. Associated insights are frozen and placed in the
+    ACCEPTED state.
 
     MarkRecommendationFailed can be applied to recommendations in ACTIVE,
     CLAIMED, SUCCEEDED, or FAILED state.

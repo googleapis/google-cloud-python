@@ -46,10 +46,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class RecommenderClient(object):
     """
-    Provides recommendations for cloud customers for various categories like
-    performance optimization, cost savings, reliability, feature discovery, etc.
-    These recommendations are generated automatically based on analysis of user
-    resources, configuration and monitoring metrics.
+    Provides insights and recommendations for cloud customers for various
+    categories like performance optimization, cost savings, reliability, feature
+    discovery, etc. Insights and recommendations are generated automatically
+    based on analysis of user resources, configuration and monitoring metrics.
     """
 
     SERVICE_ADDRESS = "recommender.googleapis.com:443"
@@ -81,12 +81,7 @@ class RecommenderClient(object):
 
     @classmethod
     def recommendation_path(cls, project, location, recommender, recommendation):
-        """DEPRECATED. Return a fully-qualified recommendation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified recommendation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}",
             project=project,
@@ -97,12 +92,7 @@ class RecommenderClient(object):
 
     @classmethod
     def recommender_path(cls, project, location, recommender):
-        """DEPRECATED. Return a fully-qualified recommender string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified recommender string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}",
             project=project,
@@ -360,7 +350,7 @@ class RecommenderClient(object):
             >>> response = client.get_recommendation(name)
 
         Args:
-            name (str): Name of the recommendation.
+            name (str): Required. Name of the recommendation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -419,13 +409,14 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Claimed. Users can use this method to
+        Marks the Recommendation State as Claimed. Users can use this method to
         indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated.
+        being updated. Associated insights are frozen and placed in the ACCEPTED
+        state.
 
-        MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
-        SUCCEEDED, FAILED, or ACTIVE state.
+        MarkRecommendationClaimed can be applied to recommendations in CLAIMED
+        or ACTIVE state.
 
         Requires the recommender.\*.update IAM permission for the specified
         recommender.
@@ -443,10 +434,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_claimed(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                /^[a-z0-9][a-z0-9\_.-]{0,62}$/. Values must match the regex
+                /^[a-zA-Z0-9\_./-]{0,255}$/.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -509,10 +502,11 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Succeeded. Users can use this method to
-        indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Succeeded. Users can use this method
+        to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated.
+        the recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -533,10 +527,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_succeeded(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                /^[a-z0-9][a-z0-9\_.-]{0,62}$/. Values must match the regex
+                /^[a-zA-Z0-9\_./-]{0,255}$/.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -599,10 +595,11 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Failed. Users can use this method to
+        Marks the Recommendation State as Failed. Users can use this method to
         indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated.
+        recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -623,10 +620,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_failed(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                /^[a-z0-9][a-z0-9\_.-]{0,62}$/. Values must match the regex
+                /^[a-zA-Z0-9\_./-]{0,255}$/.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
