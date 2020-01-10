@@ -96,7 +96,7 @@ def test__token_endpoint_request():
         method="POST",
         url="http://example.com",
         headers={"content-type": "application/x-www-form-urlencoded"},
-        body="test=params",
+        body="test=params".encode("utf-8"),
     )
 
     # Check result
@@ -131,7 +131,7 @@ def test__token_endpoint_request_internal_failure_error():
 
 
 def verify_request_params(request, params):
-    request_body = request.call_args[1]["body"]
+    request_body = request.call_args[1]["body"].decode("utf-8")
     request_params = urllib.parse.parse_qs(request_body)
 
     for key, value in six.iteritems(params):

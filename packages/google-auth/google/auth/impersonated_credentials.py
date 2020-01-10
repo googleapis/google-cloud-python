@@ -84,7 +84,7 @@ def _make_iam_token_request(request, principal, headers, body):
     """
     iam_endpoint = _IAM_ENDPOINT.format(principal)
 
-    body = json.dumps(body)
+    body = json.dumps(body).encode("utf-8")
 
     response = request(url=iam_endpoint, method="POST", headers=headers, body=body)
 

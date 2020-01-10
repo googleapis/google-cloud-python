@@ -95,7 +95,7 @@ def _token_endpoint_request(request, token_uri, body):
         google.auth.exceptions.RefreshError: If the token endpoint returned
             an error.
     """
-    body = urllib.parse.urlencode(body)
+    body = urllib.parse.urlencode(body).encode("utf-8")
     headers = {"content-type": _URLENCODED_CONTENT_TYPE}
 
     retry = 0
