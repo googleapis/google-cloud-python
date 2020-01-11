@@ -6425,7 +6425,7 @@ class TestClientUpload(object):
             SchemaField("int_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
         )
 
@@ -6671,7 +6671,7 @@ class TestClientUpload(object):
             SchemaField("int_as_float_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
             SchemaField("string_col", "STRING"),
             SchemaField("bytes_col", "BYTES"),
