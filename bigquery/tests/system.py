@@ -719,7 +719,10 @@ class TestBigQuery(unittest.TestCase):
             (
                 bigquery.SchemaField("bool_col", "BOOLEAN"),
                 bigquery.SchemaField("ts_col", "TIMESTAMP"),
-                bigquery.SchemaField("dt_col", "DATETIME"),
+                # BigQuery does not support uploading DATETIME values from
+                # Parquet files. See:
+                # https://github.com/googleapis/google-cloud-python/issues/9996
+                bigquery.SchemaField("dt_col", "TIMESTAMP"),
                 bigquery.SchemaField("float32_col", "FLOAT"),
                 bigquery.SchemaField("float64_col", "FLOAT"),
                 bigquery.SchemaField("int8_col", "INTEGER"),
