@@ -323,11 +323,11 @@ class DlpServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
-            inspect_template_name (str): Optional template to use. Any configuration directly specified in
-                inspect\_config will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in
-                the template. Repeated fields are appended. Singular sub-messages and
-                groups are recursively merged.
+            inspect_template_name (str): Template to use. Any configuration directly specified in inspect\_config
+                will override those set in the template. Singular fields that are set in
+                this request will replace their corresponding fields in the template.
+                Repeated fields are appended. Singular sub-messages and groups are
+                recursively merged.
             location_id (str): The geographic location to process content inspection. Reserved for future
                 extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -537,12 +537,12 @@ class DlpServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
-            inspect_template_name (str): Optional template to use. Any configuration directly specified in
-                inspect\_config will override those set in the template. Singular fields
-                that are set in this request will replace their corresponding fields in
-                the template. Repeated fields are appended. Singular sub-messages and
-                groups are recursively merged.
-            deidentify_template_name (str): Optional template to use. Any configuration directly specified in
+            inspect_template_name (str): Template to use. Any configuration directly specified in inspect\_config
+                will override those set in the template. Singular fields that are set in
+                this request will replace their corresponding fields in the template.
+                Repeated fields are appended. Singular sub-messages and groups are
+                recursively merged.
+            deidentify_template_name (str): Template to use. Any configuration directly specified in
                 deidentify\_config will override those set in the template. Singular
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
@@ -655,17 +655,17 @@ class DlpServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
-            inspect_template_name (str): Optional template to use. Any configuration directly specified in
+            inspect_template_name (str): Template to use. Any configuration directly specified in
                 ``inspect_config`` will override those set in the template. Singular
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
                 sub-messages and groups are recursively merged.
-            reidentify_template_name (str): Optional template to use. References an instance of
-                ``DeidentifyTemplate``. Any configuration directly specified in
-                ``reidentify_config`` or ``inspect_config`` will override those set in
-                the template. Singular fields that are set in this request will replace
-                their corresponding fields in the template. Repeated fields are
-                appended. Singular sub-messages and groups are recursively merged.
+            reidentify_template_name (str): Template to use. References an instance of ``DeidentifyTemplate``. Any
+                configuration directly specified in ``reidentify_config`` or
+                ``inspect_config`` will override those set in the template. Singular
+                fields that are set in this request will replace their corresponding
+                fields in the template. Repeated fields are appended. Singular
+                sub-messages and groups are recursively merged.
             location_id (str): The geographic location to process content reidentification.  Reserved for
                 future extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -746,11 +746,11 @@ class DlpServiceClient(object):
             >>> response = client.list_info_types()
 
         Args:
-            language_code (str): Optional BCP-47 language code for localized infoType friendly
+            language_code (str): BCP-47 language code for localized infoType friendly
                 names. If omitted, or if localized strings are not available,
                 en-US strings will be returned.
-            filter_ (str): Optional filter to only return infoTypes supported by certain parts of
-                the API. Defaults to supported\_by=INSPECT.
+            filter_ (str): filter to only return infoTypes supported by certain parts of the API.
+                Defaults to supported\_by=INSPECT.
             location_id (str): The geographic location to list info types. Reserved for future
                 extensions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -830,7 +830,7 @@ class DlpServiceClient(object):
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
-            inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): The InspectTemplate to create.
+            inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): Required. The InspectTemplate to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectTemplate`
@@ -1091,9 +1091,9 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
-                or ``desc`` postfix. This list is case-insensitive, default sorting
-                order is ascending, redundant space characters are insignificant.
+            order_by (str): Comma separated list of fields to order by, followed by ``asc`` or
+                ``desc`` postfix. This list is case-insensitive, default sorting order
+                is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc,update_time, create_time desc``
 
@@ -1270,7 +1270,7 @@ class DlpServiceClient(object):
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
-            deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): The DeidentifyTemplate to create.
+            deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): Required. The DeidentifyTemplate to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`
@@ -1541,9 +1541,9 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
-                or ``desc`` postfix. This list is case-insensitive, default sorting
-                order is ascending, redundant space characters are insignificant.
+            order_by (str): Comma separated list of fields to order by, followed by ``asc`` or
+                ``desc`` postfix. This list is case-insensitive, default sorting order
+                is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc,update_time, create_time desc``
 
@@ -1727,10 +1727,12 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id.
-            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]):
+            inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]): Set to control what and how to inspect.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectJobConfig`
-            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]):
+            risk_job (Union[dict, ~google.cloud.dlp_v2.types.RiskAnalysisJobConfig]): Set to choose what metric to calculate.
+
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.RiskAnalysisJobConfig`
             job_id (str): The job id can contain uppercase and lowercase letters, numbers, and
@@ -1839,14 +1841,14 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id.
-            filter_ (str): Optional. Allows filtering.
+            filter_ (str): Allows filtering.
 
                 Supported syntax:
 
                 -  Filter expressions are made up of one or more restrictions.
                 -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.
                    A sequence of restrictions implicitly uses ``AND``.
-                -  A restriction has the form of ``<field> <operator> <value>``.
+                -  A restriction has the form of ``{field} {operator} {value}``.
                 -  Supported fields/values for inspect jobs:
 
                    -  ``state`` - PENDING\|RUNNING\|CANCELED\|FINISHED\|FAILED
@@ -1879,9 +1881,9 @@ class DlpServiceClient(object):
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
             type_ (~google.cloud.dlp_v2.types.DlpJobType): The type of job. Defaults to ``DlpJobType.INSPECT``
-            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
-                or ``desc`` postfix. This list is case-insensitive, default sorting
-                order is ascending, redundant space characters are insignificant.
+            order_by (str): Comma separated list of fields to order by, followed by ``asc`` or
+                ``desc`` postfix. This list is case-insensitive, default sorting order
+                is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc, end_time asc, create_time desc``
 
@@ -2217,9 +2219,9 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of triggeredJob fields to order by,
-                followed by ``asc`` or ``desc`` postfix. This list is case-insensitive,
-                default sorting order is ascending, redundant space characters are
+            order_by (str): Comma separated list of triggeredJob fields to order by, followed by
+                ``asc`` or ``desc`` postfix. This list is case-insensitive, default
+                sorting order is ascending, redundant space characters are
                 insignificant.
 
                 Example: ``name asc,update_time, create_time desc``
@@ -2232,14 +2234,14 @@ class DlpServiceClient(object):
                 -  ``name``: corresponds to JobTrigger's name.
                 -  ``display_name``: corresponds to JobTrigger's display name.
                 -  ``status``: corresponds to JobTrigger's status.
-            filter_ (str): Optional. Allows filtering.
+            filter_ (str): Allows filtering.
 
                 Supported syntax:
 
                 -  Filter expressions are made up of one or more restrictions.
                 -  Restrictions can be combined by ``AND`` or ``OR`` logical operators.
                    A sequence of restrictions implicitly uses ``AND``.
-                -  A restriction has the form of ``<field> <operator> <value>``.
+                -  A restriction has the form of ``{field} {operator} {value}``.
                 -  Supported fields/values for inspect jobs:
 
                    -  ``status`` - HEALTHY\|PAUSED\|CANCELLED
@@ -2580,7 +2582,7 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id.
-            job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): The JobTrigger to create.
+            job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): Required. The JobTrigger to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.JobTrigger`
@@ -2670,7 +2672,7 @@ class DlpServiceClient(object):
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id or
                 organizations/my-org-id.
-            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Configuration of the storedInfoType to create.
+            config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Required. Configuration of the storedInfoType to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.StoredInfoTypeConfig`
@@ -2939,9 +2941,9 @@ class DlpServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            order_by (str): Optional comma separated list of fields to order by, followed by ``asc``
-                or ``desc`` postfix. This list is case-insensitive, default sorting
-                order is ascending, redundant space characters are insignificant.
+            order_by (str): Comma separated list of fields to order by, followed by ``asc`` or
+                ``desc`` postfix. This list is case-insensitive, default sorting order
+                is ascending, redundant space characters are insignificant.
 
                 Example: ``name asc, display_name, create_time desc``
 
