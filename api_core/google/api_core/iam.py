@@ -210,10 +210,10 @@ class Policy(collections_abc.MutableMapping):
            policy.version = 3
 
            policy.bindings = [
-           {
-               "role": "roles/viewer",
-               "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
-               "condition": CONDITION
+               {
+                   "role": "roles/viewer",
+                   "members": {USER, ADMIN_GROUP, SERVICE_ACCOUNT},
+                   "condition": CONDITION
                },
                ...
            ]
