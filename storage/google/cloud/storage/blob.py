@@ -1910,7 +1910,8 @@ class Blob(_PropertyMixin):
         :type value: dict
         :param value: (Optional) The blob metadata to set.
         """
-        value = {k: str(v) for k, v in value.items()}
+        if value is not None:
+            value = {k: str(v) for k, v in value.items()}
         self._patch_property("metadata", value)
 
     @property

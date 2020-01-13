@@ -1198,6 +1198,16 @@ class Test_Blob(unittest.TestCase):
         expected = {"name": name}
         self.assertEqual(object_metadata, expected)
 
+    def test__set_metadata_to_none(self):
+        name = u"blob-name"
+        blob = self._make_one(name, bucket=None)
+        blob.storage_class = "NEARLINE"
+        blob.cache_control = "max-age=3600"
+
+        with mock.patch("google.cloud.storage.blob.Blob._patch_property") as patch_prop:
+            blob.metadata = None
+            patch_prop.assert_called_once_with("metadata", None)
+
     def test__get_upload_arguments(self):
         name = u"blob-name"
         key = b"[pXw@,p@@AfBfrR3x-2b2SCHR,.?YwRO"
