@@ -2138,7 +2138,7 @@ class TestRowIterator(unittest.TestCase):
         mock_rows = mock.create_autospec(reader.ReadRowsIterable)
         mock_rowstream.rows.return_value = mock_rows
         page_dataframe = pandas.DataFrame(
-            {"colA": [1, -1], "colC": [2.0, 4.0], "colB": ["abc", "def"],},
+            {"colA": [1, -1], "colC": [2.0, 4.0], "colB": ["abc", "def"]},
         )
         mock_page = mock.create_autospec(reader.ReadRowsPage)
         mock_page.to_dataframe.return_value = page_dataframe
