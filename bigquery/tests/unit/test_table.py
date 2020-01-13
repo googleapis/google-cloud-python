@@ -2097,6 +2097,80 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df_2["name"][0], "Sven")
         self.assertEqual(df_2["age"][0], 33)
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_dataframe_iterable_w_bqstorage(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1beta1 import reader
+
+        arrow_fields = [
+            pyarrow.field("colA", pyarrow.int64()),
+            # Not alphabetical to test column order.
+            pyarrow.field("colC", pyarrow.float64()),
+            pyarrow.field("colB", pyarrow.utf8()),
+        ]
+        arrow_schema = pyarrow.schema(arrow_fields)
+
+        bqstorage_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        bqstorage_client.transport = mock.create_autospec(
+            big_query_storage_grpc_transport.BigQueryStorageGrpcTransport
+        )
+        streams = [
+            # Use two streams we want to check frames are read from each stream.
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage_v1beta1.types.ReadSession(
+            streams=streams,
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+        )
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+        page_dataframe = pandas.DataFrame(
+            {"colA": [1, -1], "colC": [2.0, 4.0], "colB": ["abc", "def"],},
+        )
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        mock_page.to_dataframe.return_value = page_dataframe
+        mock_pages = (mock_page, mock_page, mock_page)
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        schema = [
+            schema.SchemaField("colA", "IGNORED"),
+            schema.SchemaField("colC", "IGNORED"),
+            schema.SchemaField("colB", "IGNORED"),
+        ]
+
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            None,  # api_request: ignored
+            None,  # path: ignored
+            schema,
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+            selected_fields=schema,
+        )
+
+        got = list(
+            row_iterator.to_dataframe_iterable(bqstorage_client=bqstorage_client)
+        )
+
+        # Have expected number of rows?
+        total_pages = len(streams) * len(mock_pages)
+        self.assertEqual(len(got), total_pages)
+
+        # Don't close the client if it was passed in.
+        bqstorage_client.transport.channel.close.assert_not_called()
+
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_iterable_error_if_pandas_is_none(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -2174,6 +2248,45 @@ class TestRowIterator(unittest.TestCase):
         for progress_bar_type, progress_bar_mock in progress_bars:
             row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
+
+            progress_bar_mock.assert_called()
+            progress_bar_mock().update.assert_called()
+            progress_bar_mock().close.assert_called_once()
+            self.assertEqual(len(df), 4)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
+    @mock.patch("tqdm.tqdm_gui")
+    @mock.patch("tqdm.tqdm_notebook")
+    @mock.patch("tqdm.tqdm")
+    def test_to_dataframe_progress_bar_wo_pyarrow(
+        self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
+    ):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
+            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+
+        progress_bars = (
+            ("tqdm", tqdm_mock),
+            ("tqdm_notebook", tqdm_notebook_mock),
+            ("tqdm_gui", tqdm_gui_mock),
+        )
+
+        for progress_bar_type, progress_bar_mock in progress_bars:
+            row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+            with mock.patch("google.cloud.bigquery.table.pyarrow", None):
+                df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
 
             progress_bar_mock.assert_called()
             progress_bar_mock().update.assert_called()
@@ -2297,6 +2410,29 @@ class TestRowIterator(unittest.TestCase):
             ]
             api_request = mock.Mock(return_value={"rows": []})
             row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
+
+            df = row_iterator.to_dataframe()
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            self.assertEqual(len(df), 0)  # verify the number of rows
+            self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_w_no_results_wo_pyarrow(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
+            schema = [
+                SchemaField("name", "STRING", mode="REQUIRED"),
+                SchemaField("age", "INTEGER", mode="REQUIRED"),
+            ]
+            api_request = mock.Mock(return_value={"rows": []})
+            row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
+
+            def empty_iterable(dtypes=None):
+                return []
+
+            row_iterator.to_dataframe_iterable = empty_iterable
 
             df = row_iterator.to_dataframe()
 
