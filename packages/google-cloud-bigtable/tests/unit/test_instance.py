@@ -633,6 +633,44 @@ class TestInstance(unittest.TestCase):
         for found, expected in zip(sorted(admins), sorted(members)):
             self.assertEqual(found, expected)
 
+    def test_get_iam_policy_w_requested_policy_version(self):
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client
+        from google.iam.v1 import policy_pb2, options_pb2
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        credentials = _make_credentials()
+        client = self._make_client(
+            project=self.PROJECT, credentials=credentials, admin=True
+        )
+        instance = self._make_one(self.INSTANCE_ID, client)
+
+        version = 1
+        etag = b"etag_v1"
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
+        iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+
+        # Patch the stub used by the API method.
+        instance_api = mock.create_autospec(
+            bigtable_instance_admin_client.BigtableInstanceAdminClient
+        )
+        client._instance_admin_client = instance_api
+        instance_api.get_iam_policy.return_value = iam_policy
+
+        # Perform the method and check the result.
+        result = instance.get_iam_policy(requested_policy_version=3)
+
+        instance_api.get_iam_policy.assert_called_once_with(
+            resource=instance.name,
+            options_=options_pb2.GetPolicyOptions(requested_policy_version=3),
+        )
+        self.assertEqual(result.version, version)
+        self.assertEqual(result.etag, etag)
+        admins = result.bigtable_admins
+        self.assertEqual(len(admins), len(members))
+        for found, expected in zip(sorted(admins), sorted(members)):
+            self.assertEqual(found, expected)
+
     def test_set_iam_policy(self):
         from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client
         from google.iam.v1 import policy_pb2
