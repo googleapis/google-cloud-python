@@ -1454,7 +1454,7 @@ class Blob(_PropertyMixin):
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def get_iam_policy(self, client=None):
+    def get_iam_policy(self, client=None, requested_policy_version=None):
         """Retrieve the IAM policy for the object.
 
         .. note:
@@ -1473,6 +1473,18 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current object's bucket.
 
+        :type requested_policy_version: int or ``NoneType``
+        :param requested_policy_version: Optional. The version of IAM policies to request.
+                                         If a policy with a condition is requested without
+                                         setting this, the server will return an error.
+                                         This must be set to a value of 3 to retrieve IAM
+                                         policies containing conditions. This is to prevent
+                                         client code that isn't aware of IAM conditions from
+                                         interpreting and modifying policies incorrectly.
+                                         The service might return a policy with version lower
+                                         than the one that was requested, based on the
+                                         feature syntax in the policy fetched.
+
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
@@ -1483,6 +1495,9 @@ class Blob(_PropertyMixin):
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
+
+        if requested_policy_version is not None:
+            query_params["optionsRequestedPolicyVersion"] = requested_policy_version
 
         info = client._connection.api_request(
             method="GET",

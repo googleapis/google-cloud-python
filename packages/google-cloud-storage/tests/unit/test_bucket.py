@@ -2023,7 +2023,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2067,7 +2067,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         RETURNED = {
             "resourceId": PATH,
             "etag": ETAG,
@@ -2092,6 +2092,35 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
 
+    def test_get_iam_policy_w_requested_policy_version(self):
+        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
+
+        NAME = "name"
+        PATH = "/b/%s" % (NAME,)
+        ETAG = "DEADBEEF"
+        VERSION = 1
+        OWNER1 = "user:phred@example.com"
+        OWNER2 = "group:cloud-logs@google.com"
+        RETURNED = {
+            "resourceId": PATH,
+            "etag": ETAG,
+            "version": VERSION,
+            "bindings": [{"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]}],
+        }
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(client=client, name=NAME)
+
+        policy = bucket.get_iam_policy(requested_policy_version=3)
+
+        self.assertEqual(policy.version, VERSION)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]["method"], "GET")
+        self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
+        self.assertEqual(kw[0]["query_params"], {"optionsRequestedPolicyVersion": 3})
+
     def test_set_iam_policy(self):
         import operator
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
@@ -2102,7 +2131,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = "name"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
@@ -2155,7 +2184,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = "user-project-123"
         PATH = "/b/%s" % (NAME,)
         ETAG = "DEADBEEF"
-        VERSION = 17
+        VERSION = 1
         OWNER1 = "user:phred@example.com"
         OWNER2 = "group:cloud-logs@google.com"
         EDITOR1 = "domain:google.com"
