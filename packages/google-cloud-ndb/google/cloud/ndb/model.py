@@ -1699,7 +1699,7 @@ class Property(ModelAttribute):
         # KeyProperty's base type. (Probably ComputedProperty should take
         # another property type as a constructor argument for this purpose,
         # but that wasn't part of the original design and adding it introduces
-        # backwards compatibility issues.) See: Issue #184
+        # backwards compatibility issues.) See: Issue #284
         if isinstance(value, key_module.Key):
             value = value._key  # Datastore key
 
