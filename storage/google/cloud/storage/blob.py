@@ -1908,7 +1908,7 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :type value: dict
-        :param value: (Optional) The blob metadata to set.
+        :param value: The blob metadata to set.
         """
         if value is not None:
             value = {k: str(v) for k, v in value.items()}
