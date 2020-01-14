@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.10.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.0...v1.10.1) (2020-01-10)
+
+
+### Bug Fixes
+
+* **google.auth.compute_engine.metadata:** add retry to google.auth.compute_engine._metadata.get() ([#398](https://www.github.com/googleapis/google-auth-library-python/issues/398)) ([af29c1a](https://www.github.com/googleapis/google-auth-library-python/commit/af29c1a9fd9282b38867961e4053f74f018a3815)), closes [#211](https://www.github.com/googleapis/google-auth-library-python/issues/211) [#323](https://www.github.com/googleapis/google-auth-library-python/issues/323) [#323](https://www.github.com/googleapis/google-auth-library-python/issues/323) [#211](https://www.github.com/googleapis/google-auth-library-python/issues/211)
+* always pass body of type bytes to `google.auth.transport.Request` ([#421](https://www.github.com/googleapis/google-auth-library-python/issues/421)) ([a57a770](https://www.github.com/googleapis/google-auth-library-python/commit/a57a7708cfea635b5030f8c7ba10c967715f9a87)), closes [#318](https://www.github.com/googleapis/google-auth-library-python/issues/318)
+
 ## [1.10.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.9.0...v1.10.0) (2019-12-18)
 
 
