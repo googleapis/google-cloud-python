@@ -362,6 +362,25 @@ def test_compressed_blob_property(dispose_of, ds_client):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_compressed_repeated_local_structured_property(dispose_of, ds_client):
+    class Dog(ndb.Model):
+        name = ndb.StringProperty()
+
+    class House(ndb.Model):
+        dogs = ndb.LocalStructuredProperty(Dog, repeated=True, compressed=True)
+
+    entity = House()
+    dogs = [Dog(name="Mika"), Dog(name="Mocha")]
+    entity.dogs = dogs
+
+    key = entity.put()
+    dispose_of(key._key)
+
+    retrieved = key.get()
+    assert retrieved.dogs == dogs
+
+
+@pytest.mark.usefixtures("client_context")
 def test_retrieve_entity_with_legacy_compressed_property(
     ds_entity_with_meanings,
 ):
