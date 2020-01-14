@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 1.16.0
+
+01-13-2020 14:19 PST
+
+### New Features
+
+- feat(storage): support optionsRequestedPolicyVersion ([#9989](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9989))
+- feat(api_core): support version 3 policy bindings ([#9869](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9869))
+
 ## 1.15.0
 
 12-16-2019 15:27 PST
