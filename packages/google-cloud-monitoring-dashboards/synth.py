@@ -27,13 +27,16 @@ library = gapic.py_library(
     "monitoring-dashboard", "v1", proto_path="/google/monitoring/dashboard/v1"
 )
 
-s.move(library, excludes=[
-    "google/cloud/monitoring/dashboard_v1/proto",  # Protos (pb2s) are copied to the incorrect location
-    "nox.py",
-    "README.rst",
-    "setup.py",
-    "docs/index.rst",
-])
+s.move(
+    library,
+    excludes=[
+        "google/cloud/monitoring/dashboard_v1/proto",  # Protos (pb2s) are copied to the incorrect location
+        "nox.py",
+        "README.rst",
+        "setup.py",
+        "docs/index.rst",
+    ],
+)
 
 s.move(
     library / "google/cloud/monitoring/dashboard_v1/proto",
@@ -57,11 +60,13 @@ s.replace(
     """          Required\. The resource name of the Dashboard\. The format is ``
           "projects/\{project\_id\_or\_number\}/dashboards/\{dashboard\_id\}"``""",
     """          Required. The resource name of the Dashboard. The format is
-          ``"projects/{project_id_or_number}/dashboards/{dashboard_id}"``"""
+          ``"projects/{project_id_or_number}/dashboards/{dashboard_id}"``""",
 )
 
 # Keep cloud in package names for consistency
-
+s.replace(
+    "google/**/*.py", "google-monitoring-dashboard", "google-cloud-monitoring-dashboards"
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

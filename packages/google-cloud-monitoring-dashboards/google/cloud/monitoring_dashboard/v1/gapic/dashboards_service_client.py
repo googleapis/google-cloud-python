@@ -42,7 +42,7 @@ from google.protobuf import empty_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-monitoring-dashboard"
+    "google-cloud-monitoring-dashboards"
 ).version
 
 
