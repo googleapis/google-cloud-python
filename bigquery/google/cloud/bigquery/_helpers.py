@@ -15,7 +15,6 @@
 """Shared helper functions for BigQuery API classes."""
 
 import base64
-import copy
 import datetime
 import decimal
 import re
