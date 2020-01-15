@@ -2372,7 +2372,12 @@ class TestBigQuery(unittest.TestCase):
         row = df.iloc[0]
         # verify the row content
         self.assertEqual(row["string_col"], "Some value")
-        self.assertEqual(row["record_col"], record)
+        expected_keys = tuple(sorted(record.keys()))
+        row_keys = tuple(sorted(row["record_col"].keys()))
+        self.assertEqual(row_keys, expected_keys)
+        # Can't compare numpy arrays, which pyarrow encodes the embedded
+        # repeated column to, so convert to list.
+        self.assertEqual(list(row["record_col"]["nested_repeated"]), [0, 1, 2])
         # verify that nested data can be accessed with indices/keys
         self.assertEqual(row["record_col"]["nested_repeated"][0], 0)
         self.assertEqual(
