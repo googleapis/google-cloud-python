@@ -311,6 +311,21 @@ class ReadRowsIterable(object):
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
 
+        if dtypes is None:
+            dtypes = {}
+
+        # If it's an Arrow stream, calling to_arrow, then converting to a
+        # pandas dataframe is about 2x faster. This is because pandas.concat is
+        # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
+        # usually no-copy.
+        schema_type = self._read_session.WhichOneof("schema")
+        if schema_type == "arrow_schema":
+            record_batch = self.to_arrow()
+            df = record_batch.to_pandas()
+            for column in dtypes:
+                df[column] = pandas.Series(df[column], dtype=dtypes[column])
+            return df
+
         frames = []
         for page in self.pages:
             frames.append(page.to_dataframe(dtypes=dtypes))
@@ -403,6 +418,7 @@ class ReadRowsPage(object):
         """
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
+
         return self._stream_parser.to_dataframe(self._message, dtypes=dtypes)
 
 
