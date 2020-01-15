@@ -5384,6 +5384,31 @@ class TestClient(unittest.TestCase):
             timeout=None,
         )
 
+    def test_insert_rows_w_wrong_arg(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROW = {"full_name": "Bhettye Rhubble", "age": "27", "joined": None}
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        client._connection = make_connection({})
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+            SchemaField("joined", "TIMESTAMP", mode="NULLABLE"),
+        ]
+        table = Table(table_ref, schema=schema)
+
+        with self.assertRaises(TypeError):
+            client.insert_rows_json(table, ROW)
+
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
 
