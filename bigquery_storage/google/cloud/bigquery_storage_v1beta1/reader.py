@@ -142,11 +142,10 @@ class ReadRowsStream(object):
 
                 return  # Made it through the whole stream.
             except google.api_core.exceptions.InternalServerError as exc:
-                resumable_error = False
-                for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES:
-                    resumable_error = (
-                        resumable_error or resumable_message in exc.message
-                    )
+                resumable_error = any(
+                    resumable_message in exc.message
+                    for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+                )
                 if not resumable_error:
                     raise
             except _STREAM_RESUMPTION_EXCEPTIONS:
