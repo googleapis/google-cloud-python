@@ -3724,6 +3724,19 @@ class TestComputedProperty:
         assert prop._func == lower_name
 
     @staticmethod
+    def test_repr():
+        """Regression test for #256
+
+        https://github.com/googleapis/python-ndb/issues/256
+        """
+
+        def lower_name(self):
+            return self.lower()  # pragma: NO COVER
+
+        prop = model.ComputedProperty(lower_name)
+        assert "lower_name" in repr(prop)
+
+    @staticmethod
     def test__set_value():
         prop = model.ComputedProperty(lambda self: self)  # pragma: NO COVER
         with pytest.raises(model.ComputedPropertyError):
