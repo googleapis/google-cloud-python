@@ -18,12 +18,7 @@ from google.cloud import bigquery
 from .. import copy_table_multiple_source
 
 
-def test_copy_table_multiple_source(capsys, client, random_table_id, random_dataset_id):
-
-    schema = [
-        bigquery.SchemaField("name", "STRING"),
-        bigquery.SchemaField("post_abbr", "STRING"),
-    ]
+def test_copy_table_multiple_source(capsys, random_table_id, random_dataset_id, client):
 
     dataset = bigquery.Dataset(random_dataset_id)
     dataset.location = "US"
@@ -31,8 +26,12 @@ def test_copy_table_multiple_source(capsys, client, random_table_id, random_data
     table_data = {"table1": b"Washington,WA", "table2": b"California,CA"}
     for table_id, data in table_data.items():
         table_ref = dataset.table(table_id)
-        job_config = bigquery.LoadJobConfig()
-        job_config.schema = schema
+        job_config = bigquery.LoadJobConfig(
+            schema=[
+                bigquery.SchemaField("name", "STRING"),
+                bigquery.SchemaField("post_abbr", "STRING"),
+            ]
+        )
         body = six.BytesIO(data)
         client.load_table_from_file(
             body, table_ref, location="US", job_config=job_config
@@ -43,9 +42,7 @@ def test_copy_table_multiple_source(capsys, client, random_table_id, random_data
         "{}.table2".format(random_dataset_id),
     ]
 
-    copy_table_multiple_source.copy_table_multiple_source(
-        client, random_table_id, table_ids
-    )
+    copy_table_multiple_source.copy_table_multiple_source(random_table_id, table_ids)
     dest_table = client.get_table(random_table_id)
     out, err = capsys.readouterr()
     assert (

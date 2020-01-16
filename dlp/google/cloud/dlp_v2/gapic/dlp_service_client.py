@@ -86,36 +86,21 @@ class DlpServiceClient(object):
 
     @classmethod
     def dlp_job_path(cls, project, dlp_job):
-        """DEPRECATED. Return a fully-qualified dlp_job string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified dlp_job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization
         )
 
     @classmethod
     def organization_deidentify_template_path(cls, organization, deidentify_template):
-        """DEPRECATED. Return a fully-qualified organization_deidentify_template string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_deidentify_template string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/deidentifyTemplates/{deidentify_template}",
             organization=organization,
@@ -124,12 +109,7 @@ class DlpServiceClient(object):
 
     @classmethod
     def organization_inspect_template_path(cls, organization, inspect_template):
-        """DEPRECATED. Return a fully-qualified organization_inspect_template string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_inspect_template string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
@@ -138,12 +118,7 @@ class DlpServiceClient(object):
 
     @classmethod
     def organization_stored_info_type_path(cls, organization, stored_info_type):
-        """DEPRECATED. Return a fully-qualified organization_stored_info_type string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_stored_info_type string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/storedInfoTypes/{stored_info_type}",
             organization=organization,
@@ -152,24 +127,14 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def project_deidentify_template_path(cls, project, deidentify_template):
-        """DEPRECATED. Return a fully-qualified project_deidentify_template string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_deidentify_template string."""
         return google.api_core.path_template.expand(
             "projects/{project}/deidentifyTemplates/{deidentify_template}",
             project=project,
@@ -178,12 +143,7 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_inspect_template_path(cls, project, inspect_template):
-        """DEPRECATED. Return a fully-qualified project_inspect_template string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_inspect_template string."""
         return google.api_core.path_template.expand(
             "projects/{project}/inspectTemplates/{inspect_template}",
             project=project,
@@ -192,12 +152,7 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_job_trigger_path(cls, project, job_trigger):
-        """DEPRECATED. Return a fully-qualified project_job_trigger string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_job_trigger string."""
         return google.api_core.path_template.expand(
             "projects/{project}/jobTriggers/{job_trigger}",
             project=project,
@@ -206,12 +161,7 @@ class DlpServiceClient(object):
 
     @classmethod
     def project_stored_info_type_path(cls, project, stored_info_type):
-        """DEPRECATED. Return a fully-qualified project_stored_info_type string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_stored_info_type string."""
         return google.api_core.path_template.expand(
             "projects/{project}/storedInfoTypes/{stored_info_type}",
             project=project,

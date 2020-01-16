@@ -88,12 +88,7 @@ class WebSecurityScannerClient(object):
 
     @classmethod
     def finding_path(cls, project, scan_config, scan_run, finding):
-        """DEPRECATED. Return a fully-qualified finding string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified finding string."""
         return google.api_core.path_template.expand(
             "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}",
             project=project,
@@ -104,24 +99,14 @@ class WebSecurityScannerClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def scan_config_path(cls, project, scan_config):
-        """DEPRECATED. Return a fully-qualified scan_config string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified scan_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/scanConfigs/{scan_config}",
             project=project,
@@ -130,12 +115,7 @@ class WebSecurityScannerClient(object):
 
     @classmethod
     def scan_run_path(cls, project, scan_config, scan_run):
-        """DEPRECATED. Return a fully-qualified scan_run string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified scan_run string."""
         return google.api_core.path_template.expand(
             "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}",
             project=project,

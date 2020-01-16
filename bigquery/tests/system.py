@@ -26,6 +26,7 @@ import unittest
 import uuid
 import re
 
+import requests
 import six
 import psutil
 import pytest
@@ -718,7 +719,10 @@ class TestBigQuery(unittest.TestCase):
             (
                 bigquery.SchemaField("bool_col", "BOOLEAN"),
                 bigquery.SchemaField("ts_col", "TIMESTAMP"),
-                bigquery.SchemaField("dt_col", "DATETIME"),
+                # BigQuery does not support uploading DATETIME values from
+                # Parquet files. See:
+                # https://github.com/googleapis/google-cloud-python/issues/9996
+                bigquery.SchemaField("dt_col", "TIMESTAMP"),
                 bigquery.SchemaField("float32_col", "FLOAT"),
                 bigquery.SchemaField("float64_col", "FLOAT"),
                 bigquery.SchemaField("int8_col", "INTEGER"),
@@ -1893,6 +1897,29 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
 
+    def test_querying_data_w_timeout(self):
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
+        query_job = Config.CLIENT.query(
+            """
+            SELECT name, SUM(number) AS total_people
+            FROM `bigquery-public-data.usa_names.usa_1910_current`
+            GROUP BY name
+            """,
+            location="US",
+            job_config=job_config,
+        )
+
+        # Specify a very tight deadline to demonstrate that the timeout
+        # actually has effect.
+        with self.assertRaises(requests.exceptions.Timeout):
+            query_job.done(timeout=0.1)
+
+        # Now wait for the result using a more realistic deadline.
+        query_job.result(timeout=30)
+        self.assertTrue(query_job.done(timeout=30))
+
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_query_results_to_dataframe(self):
         QUERY = """
@@ -2345,7 +2372,12 @@ class TestBigQuery(unittest.TestCase):
         row = df.iloc[0]
         # verify the row content
         self.assertEqual(row["string_col"], "Some value")
-        self.assertEqual(row["record_col"], record)
+        expected_keys = tuple(sorted(record.keys()))
+        row_keys = tuple(sorted(row["record_col"].keys()))
+        self.assertEqual(row_keys, expected_keys)
+        # Can't compare numpy arrays, which pyarrow encodes the embedded
+        # repeated column to, so convert to list.
+        self.assertEqual(list(row["record_col"]["nested_repeated"]), [0, 1, 2])
         # verify that nested data can be accessed with indices/keys
         self.assertEqual(row["record_col"]["nested_repeated"][0], 0)
         self.assertEqual(

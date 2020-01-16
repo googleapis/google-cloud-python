@@ -16,9 +16,20 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
 from google.cloud.iam_credentials_v1 import types
 from google.cloud.iam_credentials_v1.gapic import iam_credentials_client
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 class IAMCredentialsClient(iam_credentials_client.IAMCredentialsClient):

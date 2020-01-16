@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 1.2.1
+
+01-03-2020 10:05 PST
+
+
+### Implementation Changes
+- Add ability to use single-row transactions ([#10021](https://github.com/googleapis/google-cloud-python/pull/10021))
+
 ## 1.2.0
 
 12-04-2019 12:21 PST

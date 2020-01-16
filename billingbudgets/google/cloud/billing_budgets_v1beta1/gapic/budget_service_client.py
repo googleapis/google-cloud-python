@@ -83,24 +83,14 @@ class BudgetServiceClient(object):
 
     @classmethod
     def billing_account_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing_account string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_account string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account
         )
 
     @classmethod
     def budget_path(cls, billing_account, budget):
-        """DEPRECATED. Return a fully-qualified budget string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified budget string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/budgets/{budget}",
             billing_account=billing_account,

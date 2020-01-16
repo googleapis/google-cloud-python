@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/data-catalog",
   "client_documentation": "https://googleapis.dev/python/datacatalog/latest",
   "issue_tracker": "",
-  "release_level": "alpha",
+  "release_level": "beta",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-datacatalog",

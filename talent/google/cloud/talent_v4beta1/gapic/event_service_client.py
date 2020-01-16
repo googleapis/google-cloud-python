@@ -82,24 +82,14 @@ class EventServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """DEPRECATED. Return a fully-qualified tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )

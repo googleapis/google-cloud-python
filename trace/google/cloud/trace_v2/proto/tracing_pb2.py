@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.trace_v2.proto import (
     trace_pb2 as google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2,
 )
@@ -31,10 +34,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.devtools.cloudtrace.v2B\014TracingProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
     ),
     serialized_pb=_b(
-        '\n1google/devtools/cloudtrace_v2/proto/tracing.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/devtools/cloudtrace_v2/proto/trace.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"Z\n\x16\x42\x61tchWriteSpansRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x05spans\x18\x02 \x03(\x0b\x32#.google.devtools.cloudtrace.v2.Span2\xaf\x02\n\x0cTraceService\x12\x94\x01\n\x0f\x42\x61tchWriteSpans\x12\x35.google.devtools.cloudtrace.v2.BatchWriteSpansRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02,"\'/v2/{name=projects/*}/traces:batchWrite:\x01*\x12\x87\x01\n\nCreateSpan\x12#.google.devtools.cloudtrace.v2.Span\x1a#.google.devtools.cloudtrace.v2.Span"/\x82\xd3\xe4\x93\x02)"$/v2/{name=projects/*/traces/*}/spans:\x01*B\xac\x01\n!com.google.devtools.cloudtrace.v2B\x0cTracingProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
+        '\n1google/devtools/cloudtrace_v2/proto/tracing.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a/google/devtools/cloudtrace_v2/proto/trace.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x94\x01\n\x16\x42\x61tchWriteSpansRequest\x12\x41\n\x04name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x37\n\x05spans\x18\x02 \x03(\x0b\x32#.google.devtools.cloudtrace.v2.SpanB\x03\xe0\x41\x02\x32\xba\x03\n\x0cTraceService\x12\xa1\x01\n\x0f\x42\x61tchWriteSpans\x12\x35.google.devtools.cloudtrace.v2.BatchWriteSpansRequest\x1a\x16.google.protobuf.Empty"?\x82\xd3\xe4\x93\x02,"\'/v2/{name=projects/*}/traces:batchWrite:\x01*\xda\x41\nname,spans\x12\x89\x01\n\nCreateSpan\x12#.google.devtools.cloudtrace.v2.Span\x1a#.google.devtools.cloudtrace.v2.Span"1\x82\xd3\xe4\x93\x02+"&/v2/{name=projects/*/traces/*/spans/*}:\x01*\x1az\xca\x41\x19\x63loudtrace.googleapis.com\xd2\x41[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/trace.appendB\xac\x01\n!com.google.devtools.cloudtrace.v2B\x0cTracingProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -64,7 +70,9 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -82,7 +90,7 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -94,8 +102,8 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=225,
-    serialized_end=315,
+    serialized_start=311,
+    serialized_end=459,
 )
 
 _BATCHWRITESPANSREQUEST.fields_by_name[
@@ -118,8 +126,8 @@ BatchWriteSpansRequest = _reflection.GeneratedProtocolMessageType(
           Required. The name of the project where the spans belong. The
           format is ``projects/[PROJECT_ID]``.
       spans:
-          A list of new spans. The span names must not match existing
-          spans, or the results are undefined.
+          Required. A list of new spans. The span names must not match
+          existing spans, or the results are undefined.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudtrace.v2.BatchWriteSpansRequest)
     ),
@@ -128,15 +136,19 @@ _sym_db.RegisterMessage(BatchWriteSpansRequest)
 
 
 DESCRIPTOR._options = None
+_BATCHWRITESPANSREQUEST.fields_by_name["name"]._options = None
+_BATCHWRITESPANSREQUEST.fields_by_name["spans"]._options = None
 
 _TRACESERVICE = _descriptor.ServiceDescriptor(
     name="TraceService",
     full_name="google.devtools.cloudtrace.v2.TraceService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=318,
-    serialized_end=621,
+    serialized_options=_b(
+        "\312A\031cloudtrace.googleapis.com\322A[https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/trace.append"
+    ),
+    serialized_start=462,
+    serialized_end=904,
     methods=[
         _descriptor.MethodDescriptor(
             name="BatchWriteSpans",
@@ -146,7 +158,7 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             input_type=_BATCHWRITESPANSREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002,\"'/v2/{name=projects/*}/traces:batchWrite:\001*"
+                "\202\323\344\223\002,\"'/v2/{name=projects/*}/traces:batchWrite:\001*\332A\nname,spans"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -157,7 +169,7 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             input_type=google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2._SPAN,
             output_type=google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2._SPAN,
             serialized_options=_b(
-                '\202\323\344\223\002)"$/v2/{name=projects/*/traces/*}/spans:\001*'
+                '\202\323\344\223\002+"&/v2/{name=projects/*/traces/*/spans/*}:\001*'
             ),
         ),
     ],

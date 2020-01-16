@@ -39,6 +39,7 @@ from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
+from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
 from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
 from google.cloud.storage.constants import DUAL_REGION_LOCATION_TYPE
 from google.cloud.storage.constants import (
@@ -480,6 +481,7 @@ class Bucket(_PropertyMixin):
         STANDARD_STORAGE_CLASS,
         NEARLINE_STORAGE_CLASS,
         COLDLINE_STORAGE_CLASS,
+        ARCHIVE_STORAGE_CLASS,
         MULTI_REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
         REGIONAL_LEGACY_STORAGE_CLASS,  # legacy
         DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS,  # legacy
@@ -1713,6 +1715,7 @@ class Bucket(_PropertyMixin):
             If set, one of
             :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
@@ -1733,6 +1736,7 @@ class Bucket(_PropertyMixin):
             One of
             :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
@@ -1861,7 +1865,7 @@ class Bucket(_PropertyMixin):
         """
         return self.configure_website(None, None)
 
-    def get_iam_policy(self, client=None):
+    def get_iam_policy(self, client=None, requested_policy_version=None):
         """Retrieve the IAM policy for the bucket.
 
         See
@@ -1874,15 +1878,54 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type requested_policy_version: int or ``NoneType``
+        :param requested_policy_version: Optional. The version of IAM policies to request.
+                                         If a policy with a condition is requested without
+                                         setting this, the server will return an error.
+                                         This must be set to a value of 3 to retrieve IAM
+                                         policies containing conditions. This is to prevent
+                                         client code that isn't aware of IAM conditions from
+                                         interpreting and modifying policies incorrectly.
+                                         The service might return a policy with version lower
+                                         than the one that was requested, based on the
+                                         feature syntax in the policy fetched.
+
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
+
+        Example:
+
+        .. code-block:: python
+
+           from google.cloud.storage.iam import STORAGE_OBJECT_VIEWER_ROLE
+
+           policy = bucket.get_iam_policy(requested_policy_version=3)
+
+           policy.version = 3
+
+           # Add a binding to the policy via it's bindings property
+           policy.bindings.append({
+               "role": STORAGE_OBJECT_VIEWER_ROLE,
+               "members": {"serviceAccount:account@project.iam.gserviceaccount.com", ...},
+               # Optional:
+               "condition": {
+                   "title": "prefix"
+                   "description": "Objects matching prefix"
+                   "expression": "resource.name.startsWith(\"projects/project-name/buckets/bucket-name/objects/prefix\")"
+               }
+           })
+
+           bucket.set_iam_policy(policy)
         """
         client = self._require_client(client)
         query_params = {}
 
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
+
+        if requested_policy_version is not None:
+            query_params["optionsRequestedPolicyVersion"] = requested_policy_version
 
         info = client._connection.api_request(
             method="GET",
