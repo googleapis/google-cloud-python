@@ -40,7 +40,10 @@ You can also skip verification::
 
 """
 
-import collections
+try:
+    from collections.abc import Mapping
+except ImportError: # Python 2.7 compatibility
+    from collections import Mapping
 import copy
 import datetime
 import json
@@ -215,7 +218,7 @@ def decode(token, certs=None, verify=True, audience=None):
 
     # If certs is specified as a dictionary of key IDs to certificates, then
     # use the certificate identified by the key ID in the token header.
-    if isinstance(certs, collections.Mapping):
+    if isinstance(certs, Mapping):
         key_id = header.get("kid")
         if key_id:
             if key_id not in certs:
