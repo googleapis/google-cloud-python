@@ -14,7 +14,7 @@
 
 config = {
     "interfaces": {
-        "google.cloud.recommender.v1beta1.Recommender": {
+        "google.cloud.recommender.v1.Recommender": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "non_idempotent": [],

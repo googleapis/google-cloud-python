@@ -19,9 +19,9 @@ from __future__ import absolute_import
 import sys
 import warnings
 
-from google.cloud.recommender_v1beta1 import types
-from google.cloud.recommender_v1beta1.gapic import enums
-from google.cloud.recommender_v1beta1.gapic import recommender_client
+from google.cloud.recommender_v1 import types
+from google.cloud.recommender_v1.gapic import enums
+from google.cloud.recommender_v1.gapic import recommender_client
 
 
 if sys.version_info[:2] == (2, 7):

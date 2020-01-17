@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Accesses the google.cloud.recommender.v1beta1 Recommender API."""
+"""Accesses the google.cloud.recommender.v1 Recommender API."""
 
 import functools
 import pkg_resources
@@ -31,12 +31,12 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.recommender_v1beta1.gapic import enums
-from google.cloud.recommender_v1beta1.gapic import recommender_client_config
-from google.cloud.recommender_v1beta1.gapic.transports import recommender_grpc_transport
-from google.cloud.recommender_v1beta1.proto import recommendation_pb2
-from google.cloud.recommender_v1beta1.proto import recommender_service_pb2
-from google.cloud.recommender_v1beta1.proto import recommender_service_pb2_grpc
+from google.cloud.recommender_v1.gapic import enums
+from google.cloud.recommender_v1.gapic import recommender_client_config
+from google.cloud.recommender_v1.gapic.transports import recommender_grpc_transport
+from google.cloud.recommender_v1.proto import recommendation_pb2
+from google.cloud.recommender_v1.proto import recommender_service_pb2
+from google.cloud.recommender_v1.proto import recommender_service_pb2_grpc
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
@@ -46,10 +46,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class RecommenderClient(object):
     """
-    Provides insights and recommendations for cloud customers for various
-    categories like performance optimization, cost savings, reliability, feature
-    discovery, etc. Insights and recommendations are generated automatically
-    based on analysis of user resources, configuration and monitoring metrics.
+    Provides recommendations for cloud customers for various categories like
+    performance optimization, cost savings, reliability, feature discovery, etc.
+    These recommendations are generated automatically based on analysis of user
+    resources, configuration and monitoring metrics.
     """
 
     SERVICE_ADDRESS = "recommender.googleapis.com:443"
@@ -57,7 +57,7 @@ class RecommenderClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.recommender.v1beta1.Recommender"
+    _INTERFACE_NAME = "google.cloud.recommender.v1.Recommender"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -237,9 +237,9 @@ class RecommenderClient(object):
         recommender.*.list IAM permission for the specified recommender.
 
         Example:
-            >>> from google.cloud import recommender_v1beta1
+            >>> from google.cloud import recommender_v1
             >>>
-            >>> client = recommender_v1beta1.RecommenderClient()
+            >>> client = recommender_v1.RecommenderClient()
             >>>
             >>> parent = client.recommender_path('[PROJECT]', '[LOCATION]', '[RECOMMENDER]')
             >>>
@@ -286,7 +286,7 @@ class RecommenderClient(object):
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.recommender_v1beta1.types.Recommendation` instances.
+            An iterable of :class:`~google.cloud.recommender_v1.types.Recommendation` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
 
@@ -351,9 +351,9 @@ class RecommenderClient(object):
         IAM permission for the specified recommender.
 
         Example:
-            >>> from google.cloud import recommender_v1beta1
+            >>> from google.cloud import recommender_v1
             >>>
-            >>> client = recommender_v1beta1.RecommenderClient()
+            >>> client = recommender_v1.RecommenderClient()
             >>>
             >>> name = client.recommendation_path('[PROJECT]', '[LOCATION]', '[RECOMMENDER]', '[RECOMMENDATION]')
             >>>
@@ -371,7 +371,7 @@ class RecommenderClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.recommender_v1beta1.types.Recommendation` instance.
+            A :class:`~google.cloud.recommender_v1.types.Recommendation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -419,22 +419,21 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Marks the Recommendation State as Claimed. Users can use this method
+        Mark the Recommendation State as Claimed. Users can use this method
         to indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated. Associated insights are frozen and placed in the ACCEPTED
-        state.
+        being updated.
 
-        MarkRecommendationClaimed can be applied to recommendations in CLAIMED
-        or ACTIVE state.
+        MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
+        SUCCEEDED, FAILED, or ACTIVE state.
 
         Requires the recommender.*.update IAM permission for the specified
         recommender.
 
         Example:
-            >>> from google.cloud import recommender_v1beta1
+            >>> from google.cloud import recommender_v1
             >>>
-            >>> client = recommender_v1beta1.RecommenderClient()
+            >>> client = recommender_v1.RecommenderClient()
             >>>
             >>> name = client.recommendation_path('[PROJECT]', '[LOCATION]', '[RECOMMENDER]', '[RECOMMENDATION]')
             >>>
@@ -460,7 +459,7 @@ class RecommenderClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.recommender_v1beta1.types.Recommendation` instance.
+            A :class:`~google.cloud.recommender_v1.types.Recommendation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -512,11 +511,10 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Marks the Recommendation State as Succeeded. Users can use this
+        Mark the Recommendation State as Succeeded. Users can use this
         method to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated. Associated insights are
-        frozen and placed in the ACCEPTED state.
+        the recommendation content from being updated.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -525,9 +523,9 @@ class RecommenderClient(object):
         recommender.
 
         Example:
-            >>> from google.cloud import recommender_v1beta1
+            >>> from google.cloud import recommender_v1
             >>>
-            >>> client = recommender_v1beta1.RecommenderClient()
+            >>> client = recommender_v1.RecommenderClient()
             >>>
             >>> name = client.recommendation_path('[PROJECT]', '[LOCATION]', '[RECOMMENDER]', '[RECOMMENDATION]')
             >>>
@@ -553,7 +551,7 @@ class RecommenderClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.recommender_v1beta1.types.Recommendation` instance.
+            A :class:`~google.cloud.recommender_v1.types.Recommendation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -605,11 +603,10 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Marks the Recommendation State as Failed. Users can use this method
+        Mark the Recommendation State as Failed. Users can use this method
         to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated. Associated insights are
-        frozen and placed in the ACCEPTED state.
+        recommendation content from being updated.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -618,9 +615,9 @@ class RecommenderClient(object):
         recommender.
 
         Example:
-            >>> from google.cloud import recommender_v1beta1
+            >>> from google.cloud import recommender_v1
             >>>
-            >>> client = recommender_v1beta1.RecommenderClient()
+            >>> client = recommender_v1.RecommenderClient()
             >>>
             >>> name = client.recommendation_path('[PROJECT]', '[LOCATION]', '[RECOMMENDER]', '[RECOMMENDATION]')
             >>>
@@ -646,7 +643,7 @@ class RecommenderClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.recommender_v1beta1.types.Recommendation` instance.
+            A :class:`~google.cloud.recommender_v1.types.Recommendation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
