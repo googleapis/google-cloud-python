@@ -49,7 +49,6 @@ s.replace(
 
 python.fix_pb2_headers()
 python.fix_pb2_grpc_headers()
-python.fix_client_config_headers()
 
 # ----------------------------------------------------------------------------
 # Add templated files
