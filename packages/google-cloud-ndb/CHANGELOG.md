@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [0.2.2](https://www.github.com/googleapis/python-ndb/compare/v0.2.1...v0.2.2) (2020-01-15)
+
+
+### Bug Fixes
+
+* Convert NDB keys to Datastore keys for serialization. ([#287](https://www.github.com/googleapis/python-ndb/issues/287)) ([779411b](https://www.github.com/googleapis/python-ndb/commit/779411b562575bd2d6f0627ce1903c2996f3c529)), closes [#284](https://www.github.com/googleapis/python-ndb/issues/284)
+* fix missing __ne__ methods ([#279](https://www.github.com/googleapis/python-ndb/issues/279)) ([03dd5e1](https://www.github.com/googleapis/python-ndb/commit/03dd5e1c78b8e8354379d743e2f810ef1bece4d2))
+* Fix repr() for ComputedProperty ([#291](https://www.github.com/googleapis/python-ndb/issues/291)) ([2d8857b](https://www.github.com/googleapis/python-ndb/commit/2d8857b8e9a7119a47fd72ae76401af4e42bb5b5)), closes [#256](https://www.github.com/googleapis/python-ndb/issues/256)
+* Handle `int` for DateTimeProperty ([#285](https://www.github.com/googleapis/python-ndb/issues/285)) ([2fe5be3](https://www.github.com/googleapis/python-ndb/commit/2fe5be31784a036062180f9c0f2c7b5eda978123)), closes [#261](https://www.github.com/googleapis/python-ndb/issues/261)
+* More friendly error message when using `fetch_page` with post-filters. ([#269](https://www.github.com/googleapis/python-ndb/issues/269)) ([a40ae74](https://www.github.com/googleapis/python-ndb/commit/a40ae74d74fa83119349de4b3a91f90df40d7ea5)), closes [#254](https://www.github.com/googleapis/python-ndb/issues/254)
+
 ### [0.2.1](https://www.github.com/googleapis/python-ndb/compare/v0.2.0...v0.2.1) (2019-12-10)
 
 
