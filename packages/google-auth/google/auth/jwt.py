@@ -42,7 +42,8 @@ You can also skip verification::
 
 try:
     from collections.abc import Mapping
-except ImportError: # Python 2.7 compatibility
+# Python 2.7 compatibility
+except ImportError:  # pragma: NO COVER
     from collections import Mapping
 import copy
 import datetime
