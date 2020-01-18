@@ -2,7 +2,9 @@
 
 set -eo pipefail
 
-# Build for OSX
-../scripts/osx/build.sh
+cd github/python-crc32c
 
-./release.sh
+# Build for OSX
+./scripts/osx/build.sh
+
+./.kokoro/release.sh

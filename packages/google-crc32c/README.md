@@ -56,7 +56,7 @@ On Linux (i.e. a host OS, not a `docker` container):
 $ ./scripts/manylinux/check-37.sh
 ...
 + venv/bin/python check_cffi_crc32c.py
-_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
+_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../python-crc32c/venv/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
 _crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
 + unzip -l wheels/google_crc32c-0.0.1-cp37-cp37m-manylinux1_x86_64.whl
@@ -81,11 +81,11 @@ On OS X:
 ```
 $ ./scripts/osx/check.sh
 ...
-+ venv37/bin/python .../py-crc32c/check_cffi_crc32c.py
-_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../py-crc32c/venv37/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
++ venv37/bin/python .../python-crc32c/check_cffi_crc32c.py
+_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../python-crc32c/venv37/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
 _crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
-+ /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../py-crc32c/wheels/google_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
++ /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../python-crc32c/wheels/google_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
 /usr/lib/libSystem.B.dylib:
     crc32c/_crc32c_cffi.abi3.so
     crc32c/.dylibs/libcrc32c.dylib
@@ -107,7 +107,7 @@ Initialize the submodules and build the main `libcrc32c.so` shared
 library using `cmake` / `make`:
 
 ```bash
-$ cd py-crc32c
+$ cd python-crc32c
 $ git submodule update --init --recursive
 $ python -m virtualenv venv
 $ venv/bin/pip install --upgrade setuptools pip wheel

@@ -21,19 +21,19 @@ cd ..
 call scripts\windows\build.bat || goto :error
 
 @echo "Start the releasetool reporter"
-call python3 -m pip install gcp-releasetool || goto :error
-call python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script || goto :error
+call py -3 -m pip install gcp-releasetool || goto :error
+call py -3 -m releasetool publish-reporter-script > /tmp/publisher-script || goto :error
 
 @echo "Ensure that we have the latest versions of Twine, Wheel, and Setuptools."
-call python3 -m pip install --upgrade twine wheel setuptools || goto :error
+call py -3 -m pip install --upgrade twine wheel setuptools || goto :error
 
 @echo "Disable buffering, so that the logs stream through."
 set PYTHONUNBUFFERED=1
 
 @echo "Move into the package, build the distribution and upload."
 set /p TWINE_PASSWORD=<%KOKORO_KEYSTORE_DIR%/73713_google_cloud_pypi_password
-call python3 setup.py sdist || goto :error
-call twine upload --username gcloudpypi --password "%TWINE_PASSWORD%" dist/* wheels/* || goto :error
+call py -3 setup.py sdist || goto :error
+call py -3 -m twine upload --skip-existing --username gcloudpypi --password "%TWINE_PASSWORD%" dist/* wheels/google_crc32c* || goto :error
 
 goto :EOF
 

@@ -28,6 +28,6 @@ git submodule update --init --recursive
 docker run \
     --rm \
     --interactive \
-    --volume ${REPO_ROOT}:/var/code/py-crc32c/ \
+    --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
     quay.io/pypa/manylinux2010_x86_64 \
-    /var/code/py-crc32c/scripts/manylinux/build_on_centos.sh
+    /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
