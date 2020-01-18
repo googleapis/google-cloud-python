@@ -35,7 +35,7 @@ def build_libcrc32c(session):
 
 @nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def check(session):
-    session.install("--no-index", "--find-links=.", "google-crc32c")
+    session.install("--no-index", "--find-links=wheels", "google-crc32c")
 
     # Run py.test against the unit tests.
     session.run("python", "scripts/check_cffi_crc32c.py", *session.posargs)

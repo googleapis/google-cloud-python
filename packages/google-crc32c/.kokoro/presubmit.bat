@@ -27,24 +27,6 @@ call scripts\windows\build.bat || goto :error
 call scripts\windows\test.bat || goto :error
 
 
-
-REM test_script:
-REM     # Install the wheel with pip
-REM     - "%PYTHON35%\\python -m pip install --no-index --find-links=. google-crc32c"
-REM     - "%PYTHON36%\\python -m pip install --no-index --find-links=. google-crc32c"
-REM     - "%PYTHON37%\\python -m pip install --no-index --find-links=. google-crc32c"
-REM     # Install pytest with pip
-REM     - "%PYTHON35%\\python -m pip install pytest"
-REM     - "%PYTHON36%\\python -m pip install pytest"
-REM     - "%PYTHON37%\\python -m pip install pytest"
-REM     # Run the tests
-REM     - "%PYTHON35%/python -m pytest tests"
-REM     - "%PYTHON36%/python -m pytest tests"
-REM     - "%PYTHON37%/python -m pytest tests"
-
-REM artifacts:
-REM     - path: 'google_crc32c*win*.whl'
-
 for /r %%a in (*.whl) do xcopy "%%a" %KOKORO_ARTIFACTS_DIR% /i
  
 goto :EOF

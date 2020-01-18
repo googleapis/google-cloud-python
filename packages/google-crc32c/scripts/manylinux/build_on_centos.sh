@@ -23,10 +23,10 @@ ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
 ${MAIN_PYTHON_BIN}/python -m pip install "cmake >= 3.12.0"
 # Install Python build dependencies.
 ${MAIN_PYTHON_BIN}/python -m pip install \
-    --requirement /var/code/py-crc32c/scripts/dev-requirements.txt
+    --requirement /var/code/python-crc32c/scripts/dev-requirements.txt
 
 # Build and install `crc32c`
-cd /var/code/py-crc32c/crc32c/
+cd /var/code/python-crc32c/crc32c/
 mkdir build
 cd build/
 ${MAIN_PYTHON_BIN}/cmake \
@@ -59,11 +59,11 @@ for PYTHON_BIN in /opt/python/*/bin; do
 done
 
 # Build the wheels.
-cd /var/code/py-crc32c/
+cd /var/code/python-crc32c/
 for PYTHON_BIN in ${VERSION_WHITELIST}; do
     ${PYTHON_BIN}/python -m pip install --upgrade pip
     ${PYTHON_BIN}/python -m pip install \
-        --requirement /var/code/py-crc32c/scripts/dev-requirements.txt
+        --requirement /var/code/python-crc32c/scripts/dev-requirements.txt
     ${PYTHON_BIN}/python -m pip wheel . --wheel-dir dist_wheels/
 done
 
@@ -73,5 +73,5 @@ for whl in dist_wheels/google_crc32c*.whl; do
 done
 
 # Clean up.
-rm -fr /var/code/py-crc32c/crc32c/build/
-rm -fr /var/code/py-crc32c/dist_wheels/
+rm -fr /var/code/python-crc32c/crc32c/build/
+rm -fr /var/code/python-crc32c/dist_wheels/
