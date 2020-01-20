@@ -2376,7 +2376,7 @@ class Client(ClientWithProject):
                 the mappings describing one or more problems with the row.
 
         Raises:
-            ValueError: if table's schema is not set or `rows` is not a Sequence.
+            ValueError: if table's schema is not set or `rows` is not a `Sequence`.
         """
         if not isinstance(rows, collections_abc.Sequence):
             raise TypeError("rows argument should be a sequence of dicts or tuples")
@@ -2510,7 +2510,7 @@ class Client(ClientWithProject):
                 the mappings describing one or more problems with the row.
 
         Raises:
-            TypeError: if `json_rows` is not a Sequence.
+            TypeError: if `json_rows` is not a `Sequence`.
         """
         if not isinstance(json_rows, collections_abc.Sequence):
             raise TypeError("json_rows argument should be a sequence of dicts")
