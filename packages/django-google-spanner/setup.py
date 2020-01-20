@@ -1,3 +1,7 @@
+# Copyright (c) 2020 Google LLC. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 from setuptools import find_packages, setup
 
 install_requires = [
@@ -12,14 +16,14 @@ setup(
         author='Google LLC',
         author_email='cloud-spanner-developers@googlegroups.com',
         description=('Bridge to enable using Django with Spanner.'),
-        license='Apache 2.0',
+        license='BSD',
         packages=find_packages(exclude=['tests']),
         install_requires=install_requires,
         classifiers=[
             'Development Status :: 4 - Beta',
             'Environment :: Web Environment',
             'Intended Audience :: Developers',
-            'License :: OSI Approved :: Apache 2 License',
+            'License :: OSI Approved :: BSD',
             'Operating System :: OS Independent',
             'Programming Language :: Python :: 3',
             'Programming Language :: Python :: 3.5',
