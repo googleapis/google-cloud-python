@@ -2378,7 +2378,7 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set or `rows` is not a `Sequence`.
         """
-        if not isinstance(rows, collections_abc.Sequence):
+        if not isinstance(rows, (collections_abc.Sequence, collections_abc.Iterator)):
             raise TypeError("rows argument should be a sequence of dicts or tuples")
 
         table = _table_arg_to_table(table, default_project=self.project)
