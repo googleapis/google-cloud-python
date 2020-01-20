@@ -2512,7 +2512,7 @@ class Client(ClientWithProject):
         Raises:
             TypeError: if `json_rows` is not a `Sequence`.
         """
-        if not isinstance(json_rows, collections_abc.Sequence):
+        if not isinstance(json_rows, (collections_abc.Sequence, collections_abc.Iterator)):
             raise TypeError("json_rows argument should be a sequence of dicts")
         # Convert table to just a reference because unlike insert_rows,
         # insert_rows_json doesn't need the table schema. It's not doing any
