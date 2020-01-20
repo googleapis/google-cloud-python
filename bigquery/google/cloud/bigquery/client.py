@@ -2355,7 +2355,7 @@ class Client(ClientWithProject):
                 str, \
             ]):
                 The destination table for the row data, or a reference to it.
-            rows (Union[Sequence[Tuple], Sequence[dict]]):
+            rows (Union[Sequence[Tuple], Sequence[Dict]]):
                 Row data to be inserted. If a list of tuples is given, each
                 tuple should contain data for each schema field on the
                 current table and in the same order as the schema fields. If
@@ -2376,8 +2376,11 @@ class Client(ClientWithProject):
                 the mappings describing one or more problems with the row.
 
         Raises:
-            ValueError: if table's schema is not set
+            ValueError: if table's schema is not set or `rows` is not a Sequence.
         """
+        if not isinstance(rows, collections_abc.Sequence):
+            raise TypeError("rows argument should be a sequence of dicts or tuples")
+
         table = _table_arg_to_table(table, default_project=self.project)
 
         if not isinstance(table, Table):
@@ -2505,6 +2508,9 @@ class Client(ClientWithProject):
                 One mapping per row with insert errors: the "index" key
                 identifies the row, and the "errors" key contains a list of
                 the mappings describing one or more problems with the row.
+
+        Raises:
+            TypeError: if `json_rows` is not a Sequence.
         """
         if not isinstance(json_rows, collections_abc.Sequence):
             raise TypeError("json_rows argument should be a sequence of dicts")
