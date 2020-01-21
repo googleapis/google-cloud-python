@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## 0.13.0
+
+12-06-2019 14:29 PST
+
+
+### Implementation Changes
+- Remove send/recv msg size limit (via synth). ([#8953](https://github.com/googleapis/google-cloud-python/pull/8953))
+
+### New Features
+- Add `location_id` in preparation for regionalization; deprecate resource name helper functions (via synth). ([#9856](https://github.com/googleapis/google-cloud-python/pull/9856))
+
+### Documentation
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Change requests intersphinx ref (via synth). ([#9403](https://github.com/googleapis/google-cloud-python/pull/9403))
+- Fix intersphinx reference to requests. ([#9294](https://github.com/googleapis/google-cloud-python/pull/9294))
+- Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://github.com/googleapis/google-cloud-python/pull/9085))
+- Remove compatability badges from READMEs. ([#9035](https://github.com/googleapis/google-cloud-python/pull/9035))
+- Update intersphinx mapping for requests. ([#8805](https://github.com/googleapis/google-cloud-python/pull/8805))
+
+### Internal / Testing Changes
+- Normalize VPCSC configuration in systests. ([#9608](https://github.com/googleapis/google-cloud-python/pull/9608))
+- Ensure env is always set; fix typo in `test_deidentify_content`. ([#9479](https://github.com/googleapis/google-cloud-python/pull/9479))
+- Exclude 'noxfile.py' from synth. ([#9284](https://github.com/googleapis/google-cloud-python/pull/9284))
+- Ensure `GOOGLE_CLOUD_TESTS_IN_VPCSC` is down cast for env variables. ([#9274](https://github.com/googleapis/google-cloud-python/pull/9274))
+- Add VPCSC tests. ([#9249](https://github.com/googleapis/google-cloud-python/pull/9249))
+
 ## 0.12.1
 
 07-24-2019 16:16 PDT

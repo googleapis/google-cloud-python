@@ -353,6 +353,19 @@ class Client(ClientWithProject):
 
         return DatasetReference(project, dataset_id)
 
+    def _create_bqstorage_client(self):
+        """Create a BigQuery Storage API client using this client's credentials.
+
+        Returns:
+            google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient:
+                A BigQuery Storage API client.
+        """
+        from google.cloud import bigquery_storage_v1beta1
+
+        return bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=self._credentials
+        )
+
     def create_dataset(self, dataset, exists_ok=False, retry=DEFAULT_RETRY):
         """API call: create the dataset via a POST request.
 
@@ -1068,7 +1081,7 @@ class Client(ClientWithProject):
                 raise
 
     def _get_query_results(
-        self, job_id, retry, project=None, timeout_ms=None, location=None
+        self, job_id, retry, project=None, timeout_ms=None, location=None, timeout=None,
     ):
         """Get the query results object for a query job.
 
@@ -1083,6 +1096,9 @@ class Client(ClientWithProject):
                 (Optional) number of milliseconds the the API call should
                 wait for the query to complete before the request times out.
             location (str): Location of the query job.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before retrying the HTTP request.
 
         Returns:
             google.cloud.bigquery.query._QueryResults:
@@ -1109,7 +1125,7 @@ class Client(ClientWithProject):
         # job is complete (from QueryJob.done(), called ultimately from
         # QueryJob.result()). So we don't need to poll here.
         resource = self._call_api(
-            retry, method="GET", path=path, query_params=extra_params
+            retry, method="GET", path=path, query_params=extra_params, timeout=timeout
         )
         return _QueryResults.from_api_repr(resource)
 

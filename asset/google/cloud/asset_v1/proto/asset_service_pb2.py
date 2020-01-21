@@ -39,7 +39,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\031com.google.cloud.asset.v1B\021AssetServiceProtoP\001Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\252\002\025Google.Cloud.Asset.V1\312\002\025Google\\Cloud\\Asset\\V1"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/asset_v1/proto/asset_service.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a(google/cloud/asset_v1/proto/assets.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8d\x02\n\x13\x45xportAssetsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12\x38\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32".google.cloud.asset.v1.ContentType\x12?\n\routput_config\x18\x05 \x01(\x0b\x32#.google.cloud.asset.v1.OutputConfigB\x03\xe0\x41\x02"\x81\x01\n\x14\x45xportAssetsResponse\x12-\n\tread_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\routput_config\x18\x02 \x01(\x0b\x32#.google.cloud.asset.v1.OutputConfig"\xed\x01\n\x1c\x42\x61tchGetAssetsHistoryRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12=\n\x0c\x63ontent_type\x18\x03 \x01(\x0e\x32".google.cloud.asset.v1.ContentTypeB\x03\xe0\x41\x01\x12@\n\x10read_time_window\x18\x04 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindowB\x03\xe0\x41\x01"U\n\x1d\x42\x61tchGetAssetsHistoryResponse\x12\x34\n\x06\x61ssets\x18\x01 \x03(\x0b\x32$.google.cloud.asset.v1.TemporalAsset"\xab\x01\n\x0cOutputConfig\x12@\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32%.google.cloud.asset.v1.GcsDestinationH\x00\x12J\n\x14\x62igquery_destination\x18\x02 \x01(\x0b\x32*.google.cloud.asset.v1.BigQueryDestinationH\x00\x42\r\n\x0b\x64\x65stination"C\n\x0eGcsDestination\x12\r\n\x03uri\x18\x01 \x01(\tH\x00\x12\x14\n\nuri_prefix\x18\x02 \x01(\tH\x00\x42\x0c\n\nobject_uri"N\n\x13\x42igQueryDestination\x12\x14\n\x07\x64\x61taset\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05table\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\r\n\x05\x66orce\x18\x03 \x01(\x08*l\n\x0b\x43ontentType\x12\x1c\n\x18\x43ONTENT_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08RESOURCE\x10\x01\x12\x0e\n\nIAM_POLICY\x10\x02\x12\x0e\n\nORG_POLICY\x10\x04\x12\x11\n\rACCESS_POLICY\x10\x05\x32\xf3\x03\n\x0c\x41ssetService\x12\xde\x01\n\x0c\x45xportAssets\x12*.google.cloud.asset.v1.ExportAssetsRequest\x1a\x1d.google.longrunning.Operation"\x82\x01\x82\xd3\xe4\x93\x02""\x1d/v1/{parent=*/*}:exportAssets:\x01*\xca\x41W\n*google.cloud.asset.v1.ExportAssetsResponse\x12)google.cloud.asset.v1.ExportAssetsRequest\x12\xb2\x01\n\x15\x42\x61tchGetAssetsHistory\x12\x33.google.cloud.asset.v1.BatchGetAssetsHistoryRequest\x1a\x34.google.cloud.asset.v1.BatchGetAssetsHistoryResponse".\x82\xd3\xe4\x93\x02(\x12&/v1/{parent=*/*}:batchGetAssetsHistory\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\x9c\x01\n\x19\x63om.google.cloud.asset.v1B\x11\x41ssetServiceProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3'
+        '\n/google/cloud/asset_v1/proto/asset_service.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a(google/cloud/asset_v1/proto/assets.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8d\x02\n\x13\x45xportAssetsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12\x38\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32".google.cloud.asset.v1.ContentType\x12?\n\routput_config\x18\x05 \x01(\x0b\x32#.google.cloud.asset.v1.OutputConfigB\x03\xe0\x41\x02"\x81\x01\n\x14\x45xportAssetsResponse\x12-\n\tread_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12:\n\routput_config\x18\x02 \x01(\x0b\x32#.google.cloud.asset.v1.OutputConfig"\xed\x01\n\x1c\x42\x61tchGetAssetsHistoryRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12=\n\x0c\x63ontent_type\x18\x03 \x01(\x0e\x32".google.cloud.asset.v1.ContentTypeB\x03\xe0\x41\x01\x12@\n\x10read_time_window\x18\x04 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindowB\x03\xe0\x41\x01"U\n\x1d\x42\x61tchGetAssetsHistoryResponse\x12\x34\n\x06\x61ssets\x18\x01 \x03(\x0b\x32$.google.cloud.asset.v1.TemporalAsset"n\n\x11\x43reateFeedRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07\x66\x65\x65\x64_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12.\n\x04\x66\x65\x65\x64\x18\x03 \x01(\x0b\x32\x1b.google.cloud.asset.v1.FeedB\x03\xe0\x41\x02"F\n\x0eGetFeedRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudasset.googleapis.com/Feed"\'\n\x10ListFeedsRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02"?\n\x11ListFeedsResponse\x12*\n\x05\x66\x65\x65\x64s\x18\x01 \x03(\x0b\x32\x1b.google.cloud.asset.v1.Feed"y\n\x11UpdateFeedRequest\x12.\n\x04\x66\x65\x65\x64\x18\x01 \x01(\x0b\x32\x1b.google.cloud.asset.v1.FeedB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"I\n\x11\x44\x65leteFeedRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudasset.googleapis.com/Feed"\xab\x01\n\x0cOutputConfig\x12@\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32%.google.cloud.asset.v1.GcsDestinationH\x00\x12J\n\x14\x62igquery_destination\x18\x02 \x01(\x0b\x32*.google.cloud.asset.v1.BigQueryDestinationH\x00\x42\r\n\x0b\x64\x65stination"C\n\x0eGcsDestination\x12\r\n\x03uri\x18\x01 \x01(\tH\x00\x12\x14\n\nuri_prefix\x18\x02 \x01(\tH\x00\x42\x0c\n\nobject_uri"N\n\x13\x42igQueryDestination\x12\x14\n\x07\x64\x61taset\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05table\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\r\n\x05\x66orce\x18\x03 \x01(\x08""\n\x11PubsubDestination\x12\r\n\x05topic\x18\x01 \x01(\t"i\n\x10\x46\x65\x65\x64OutputConfig\x12\x46\n\x12pubsub_destination\x18\x01 \x01(\x0b\x32(.google.cloud.asset.v1.PubsubDestinationH\x00\x42\r\n\x0b\x64\x65stination"\xdb\x02\n\x04\x46\x65\x65\x64\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12\x38\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32".google.cloud.asset.v1.ContentType\x12H\n\x12\x66\x65\x65\x64_output_config\x18\x05 \x01(\x0b\x32\'.google.cloud.asset.v1.FeedOutputConfigB\x03\xe0\x41\x02:\x91\x01\xea\x41\x8d\x01\n\x1e\x63loudasset.googleapis.com/Feed\x12\x1fprojects/{project}/feeds/{feed}\x12\x1d\x66olders/{folder}/feeds/{feed}\x12)organizations/{organization}/feeds/{feed} \x01*l\n\x0b\x43ontentType\x12\x1c\n\x18\x43ONTENT_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08RESOURCE\x10\x01\x12\x0e\n\nIAM_POLICY\x10\x02\x12\x0e\n\nORG_POLICY\x10\x04\x12\x11\n\rACCESS_POLICY\x10\x05\x32\xf0\x08\n\x0c\x41ssetService\x12\xde\x01\n\x0c\x45xportAssets\x12*.google.cloud.asset.v1.ExportAssetsRequest\x1a\x1d.google.longrunning.Operation"\x82\x01\x82\xd3\xe4\x93\x02""\x1d/v1/{parent=*/*}:exportAssets:\x01*\xca\x41W\n*google.cloud.asset.v1.ExportAssetsResponse\x12)google.cloud.asset.v1.ExportAssetsRequest\x12\xb2\x01\n\x15\x42\x61tchGetAssetsHistory\x12\x33.google.cloud.asset.v1.BatchGetAssetsHistoryRequest\x1a\x34.google.cloud.asset.v1.BatchGetAssetsHistoryResponse".\x82\xd3\xe4\x93\x02(\x12&/v1/{parent=*/*}:batchGetAssetsHistory\x12\x7f\n\nCreateFeed\x12(.google.cloud.asset.v1.CreateFeedRequest\x1a\x1b.google.cloud.asset.v1.Feed"*\x82\xd3\xe4\x93\x02\x1b"\x16/v1/{parent=*/*}/feeds:\x01*\xda\x41\x06parent\x12t\n\x07GetFeed\x12%.google.cloud.asset.v1.GetFeedRequest\x1a\x1b.google.cloud.asset.v1.Feed"%\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/{name=*/*/feeds/*}\xda\x41\x04name\x12\x87\x01\n\tListFeeds\x12\'.google.cloud.asset.v1.ListFeedsRequest\x1a(.google.cloud.asset.v1.ListFeedsResponse"\'\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/{parent=*/*}/feeds\xda\x41\x06parent\x12\x82\x01\n\nUpdateFeed\x12(.google.cloud.asset.v1.UpdateFeedRequest\x1a\x1b.google.cloud.asset.v1.Feed"-\x82\xd3\xe4\x93\x02 2\x1b/v1/{feed.name=*/*/feeds/*}:\x01*\xda\x41\x04\x66\x65\x65\x64\x12u\n\nDeleteFeed\x12(.google.cloud.asset.v1.DeleteFeedRequest\x1a\x16.google.protobuf.Empty"%\x82\xd3\xe4\x93\x02\x18*\x16/v1/{name=*/*/feeds/*}\xda\x41\x04name\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\x9c\x01\n\x19\x63om.google.cloud.asset.v1B\x11\x41ssetServiceProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -82,8 +82,8 @@ _CONTENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1418,
-    serialized_end=1526,
+    serialized_start=2399,
+    serialized_end=2507,
 )
 _sym_db.RegisterEnumDescriptor(_CONTENTTYPE)
 
@@ -399,6 +399,298 @@ _BATCHGETASSETSHISTORYRESPONSE = _descriptor.Descriptor(
 )
 
 
+_CREATEFEEDREQUEST = _descriptor.Descriptor(
+    name="CreateFeedRequest",
+    full_name="google.cloud.asset.v1.CreateFeedRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.asset.v1.CreateFeedRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="feed_id",
+            full_name="google.cloud.asset.v1.CreateFeedRequest.feed_id",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="feed",
+            full_name="google.cloud.asset.v1.CreateFeedRequest.feed",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1095,
+    serialized_end=1205,
+)
+
+
+_GETFEEDREQUEST = _descriptor.Descriptor(
+    name="GetFeedRequest",
+    full_name="google.cloud.asset.v1.GetFeedRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.asset.v1.GetFeedRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudasset.googleapis.com/Feed"
+            ),
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1207,
+    serialized_end=1277,
+)
+
+
+_LISTFEEDSREQUEST = _descriptor.Descriptor(
+    name="ListFeedsRequest",
+    full_name="google.cloud.asset.v1.ListFeedsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.asset.v1.ListFeedsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1279,
+    serialized_end=1318,
+)
+
+
+_LISTFEEDSRESPONSE = _descriptor.Descriptor(
+    name="ListFeedsResponse",
+    full_name="google.cloud.asset.v1.ListFeedsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="feeds",
+            full_name="google.cloud.asset.v1.ListFeedsResponse.feeds",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1320,
+    serialized_end=1383,
+)
+
+
+_UPDATEFEEDREQUEST = _descriptor.Descriptor(
+    name="UpdateFeedRequest",
+    full_name="google.cloud.asset.v1.UpdateFeedRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="feed",
+            full_name="google.cloud.asset.v1.UpdateFeedRequest.feed",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_mask",
+            full_name="google.cloud.asset.v1.UpdateFeedRequest.update_mask",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1385,
+    serialized_end=1506,
+)
+
+
+_DELETEFEEDREQUEST = _descriptor.Descriptor(
+    name="DeleteFeedRequest",
+    full_name="google.cloud.asset.v1.DeleteFeedRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.asset.v1.DeleteFeedRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudasset.googleapis.com/Feed"
+            ),
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1508,
+    serialized_end=1581,
+)
+
+
 _OUTPUTCONFIG = _descriptor.Descriptor(
     name="OutputConfig",
     full_name="google.cloud.asset.v1.OutputConfig",
@@ -459,8 +751,8 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1096,
-    serialized_end=1267,
+    serialized_start=1584,
+    serialized_end=1755,
 )
 
 
@@ -524,8 +816,8 @@ _GCSDESTINATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1269,
-    serialized_end=1336,
+    serialized_start=1757,
+    serialized_end=1824,
 )
 
 
@@ -599,8 +891,207 @@ _BIGQUERYDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1338,
-    serialized_end=1416,
+    serialized_start=1826,
+    serialized_end=1904,
+)
+
+
+_PUBSUBDESTINATION = _descriptor.Descriptor(
+    name="PubsubDestination",
+    full_name="google.cloud.asset.v1.PubsubDestination",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="topic",
+            full_name="google.cloud.asset.v1.PubsubDestination.topic",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1906,
+    serialized_end=1940,
+)
+
+
+_FEEDOUTPUTCONFIG = _descriptor.Descriptor(
+    name="FeedOutputConfig",
+    full_name="google.cloud.asset.v1.FeedOutputConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="pubsub_destination",
+            full_name="google.cloud.asset.v1.FeedOutputConfig.pubsub_destination",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="destination",
+            full_name="google.cloud.asset.v1.FeedOutputConfig.destination",
+            index=0,
+            containing_type=None,
+            fields=[],
+        )
+    ],
+    serialized_start=1942,
+    serialized_end=2047,
+)
+
+
+_FEED = _descriptor.Descriptor(
+    name="Feed",
+    full_name="google.cloud.asset.v1.Feed",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.asset.v1.Feed.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="asset_names",
+            full_name="google.cloud.asset.v1.Feed.asset_names",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="asset_types",
+            full_name="google.cloud.asset.v1.Feed.asset_types",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="content_type",
+            full_name="google.cloud.asset.v1.Feed.content_type",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="feed_output_config",
+            full_name="google.cloud.asset.v1.Feed.feed_output_config",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\002"),
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=_b(
+        "\352A\215\001\n\036cloudasset.googleapis.com/Feed\022\037projects/{project}/feeds/{feed}\022\035folders/{folder}/feeds/{feed}\022)organizations/{organization}/feeds/{feed} \001"
+    ),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2050,
+    serialized_end=2397,
 )
 
 _EXPORTASSETSREQUEST.fields_by_name[
@@ -619,6 +1110,12 @@ _BATCHGETASSETSHISTORYREQUEST.fields_by_name[
 _BATCHGETASSETSHISTORYRESPONSE.fields_by_name[
     "assets"
 ].message_type = google_dot_cloud_dot_asset__v1_dot_proto_dot_assets__pb2._TEMPORALASSET
+_CREATEFEEDREQUEST.fields_by_name["feed"].message_type = _FEED
+_LISTFEEDSRESPONSE.fields_by_name["feeds"].message_type = _FEED
+_UPDATEFEEDREQUEST.fields_by_name["feed"].message_type = _FEED
+_UPDATEFEEDREQUEST.fields_by_name[
+    "update_mask"
+].message_type = google_dot_protobuf_dot_field__mask__pb2._FIELDMASK
 _OUTPUTCONFIG.fields_by_name["gcs_destination"].message_type = _GCSDESTINATION
 _OUTPUTCONFIG.fields_by_name["bigquery_destination"].message_type = _BIGQUERYDESTINATION
 _OUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
@@ -645,6 +1142,15 @@ _GCSDESTINATION.oneofs_by_name["object_uri"].fields.append(
 _GCSDESTINATION.fields_by_name[
     "uri_prefix"
 ].containing_oneof = _GCSDESTINATION.oneofs_by_name["object_uri"]
+_FEEDOUTPUTCONFIG.fields_by_name["pubsub_destination"].message_type = _PUBSUBDESTINATION
+_FEEDOUTPUTCONFIG.oneofs_by_name["destination"].fields.append(
+    _FEEDOUTPUTCONFIG.fields_by_name["pubsub_destination"]
+)
+_FEEDOUTPUTCONFIG.fields_by_name[
+    "pubsub_destination"
+].containing_oneof = _FEEDOUTPUTCONFIG.oneofs_by_name["destination"]
+_FEED.fields_by_name["content_type"].enum_type = _CONTENTTYPE
+_FEED.fields_by_name["feed_output_config"].message_type = _FEEDOUTPUTCONFIG
 DESCRIPTOR.message_types_by_name["ExportAssetsRequest"] = _EXPORTASSETSREQUEST
 DESCRIPTOR.message_types_by_name["ExportAssetsResponse"] = _EXPORTASSETSRESPONSE
 DESCRIPTOR.message_types_by_name[
@@ -653,9 +1159,18 @@ DESCRIPTOR.message_types_by_name[
 DESCRIPTOR.message_types_by_name[
     "BatchGetAssetsHistoryResponse"
 ] = _BATCHGETASSETSHISTORYRESPONSE
+DESCRIPTOR.message_types_by_name["CreateFeedRequest"] = _CREATEFEEDREQUEST
+DESCRIPTOR.message_types_by_name["GetFeedRequest"] = _GETFEEDREQUEST
+DESCRIPTOR.message_types_by_name["ListFeedsRequest"] = _LISTFEEDSREQUEST
+DESCRIPTOR.message_types_by_name["ListFeedsResponse"] = _LISTFEEDSRESPONSE
+DESCRIPTOR.message_types_by_name["UpdateFeedRequest"] = _UPDATEFEEDREQUEST
+DESCRIPTOR.message_types_by_name["DeleteFeedRequest"] = _DELETEFEEDREQUEST
 DESCRIPTOR.message_types_by_name["OutputConfig"] = _OUTPUTCONFIG
 DESCRIPTOR.message_types_by_name["GcsDestination"] = _GCSDESTINATION
 DESCRIPTOR.message_types_by_name["BigQueryDestination"] = _BIGQUERYDESTINATION
+DESCRIPTOR.message_types_by_name["PubsubDestination"] = _PUBSUBDESTINATION
+DESCRIPTOR.message_types_by_name["FeedOutputConfig"] = _FEEDOUTPUTCONFIG
+DESCRIPTOR.message_types_by_name["Feed"] = _FEED
 DESCRIPTOR.enum_types_by_name["ContentType"] = _CONTENTTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -784,6 +1299,141 @@ BatchGetAssetsHistoryResponse = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(BatchGetAssetsHistoryResponse)
 
+CreateFeedRequest = _reflection.GeneratedProtocolMessageType(
+    "CreateFeedRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_CREATEFEEDREQUEST,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""Create asset feed request.
+  
+  
+  Attributes:
+      parent:
+          Required. The name of the project/folder/organization where
+          this feed should be created in. It can only be an organization
+          number (such as "organizations/123"), a folder number (such as
+          "folders/123"), a project ID (such as "projects/my-project-
+          id")", or a project number (such as "projects/12345").
+      feed_id:
+          Required. This is the client-assigned asset feed identifier
+          and it needs to be unique under a specific parent
+          project/folder/organization.
+      feed:
+          Required. The feed details. The field ``name`` must be empty
+          and it will be generated in the format of:
+          projects/project\_number/feeds/feed\_id
+          folders/folder\_number/feeds/feed\_id
+          organizations/organization\_number/feeds/feed\_id
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.CreateFeedRequest)
+    ),
+)
+_sym_db.RegisterMessage(CreateFeedRequest)
+
+GetFeedRequest = _reflection.GeneratedProtocolMessageType(
+    "GetFeedRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_GETFEEDREQUEST,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""Get asset feed request.
+  
+  
+  Attributes:
+      name:
+          Required. The name of the Feed and it must be in the format
+          of: projects/project\_number/feeds/feed\_id
+          folders/folder\_number/feeds/feed\_id
+          organizations/organization\_number/feeds/feed\_id
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.GetFeedRequest)
+    ),
+)
+_sym_db.RegisterMessage(GetFeedRequest)
+
+ListFeedsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListFeedsRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFEEDSREQUEST,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""List asset feeds request.
+  
+  
+  Attributes:
+      parent:
+          Required. The parent project/folder/organization whose feeds
+          are to be listed. It can only be using
+          project/folder/organization number (such as "folders/12345")",
+          or a project ID (such as "projects/my-project-id").
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.ListFeedsRequest)
+    ),
+)
+_sym_db.RegisterMessage(ListFeedsRequest)
+
+ListFeedsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListFeedsResponse",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_LISTFEEDSRESPONSE,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""
+    Attributes:
+      feeds:
+          A list of feeds.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.ListFeedsResponse)
+    ),
+)
+_sym_db.RegisterMessage(ListFeedsResponse)
+
+UpdateFeedRequest = _reflection.GeneratedProtocolMessageType(
+    "UpdateFeedRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_UPDATEFEEDREQUEST,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""Update asset feed request.
+  
+  
+  Attributes:
+      feed:
+          Required. The new values of feed details. It must match an
+          existing feed and the field ``name`` must be in the format of:
+          projects/project\_number/feeds/feed\_id or
+          folders/folder\_number/feeds/feed\_id or
+          organizations/organization\_number/feeds/feed\_id.
+      update_mask:
+          Required. Only updates the ``feed`` fields indicated by this
+          mask. The field mask must not be empty, and it must not
+          contain fields that are immutable or only set by the server.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.UpdateFeedRequest)
+    ),
+)
+_sym_db.RegisterMessage(UpdateFeedRequest)
+
+DeleteFeedRequest = _reflection.GeneratedProtocolMessageType(
+    "DeleteFeedRequest",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_DELETEFEEDREQUEST,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""
+    Attributes:
+      name:
+          Required. The name of the feed and it must be in the format
+          of: projects/project\_number/feeds/feed\_id
+          folders/folder\_number/feeds/feed\_id
+          organizations/organization\_number/feeds/feed\_id
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.DeleteFeedRequest)
+    ),
+)
+_sym_db.RegisterMessage(DeleteFeedRequest)
+
 OutputConfig = _reflection.GeneratedProtocolMessageType(
     "OutputConfig",
     (_message.Message,),
@@ -873,6 +1523,97 @@ BigQueryDestination = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(BigQueryDestination)
 
+PubsubDestination = _reflection.GeneratedProtocolMessageType(
+    "PubsubDestination",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_PUBSUBDESTINATION,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""A Cloud Pubsub destination.
+  
+  
+  Attributes:
+      topic:
+          The name of the Cloud Pub/Sub topic to publish to. For
+          example: ``projects/PROJECT_ID/topics/TOPIC_ID``.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.PubsubDestination)
+    ),
+)
+_sym_db.RegisterMessage(PubsubDestination)
+
+FeedOutputConfig = _reflection.GeneratedProtocolMessageType(
+    "FeedOutputConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_FEEDOUTPUTCONFIG,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""Output configuration for asset feed destination.
+  
+  
+  Attributes:
+      destination:
+          Asset feed destination.
+      pubsub_destination:
+          Destination on Cloud Pubsub.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.FeedOutputConfig)
+    ),
+)
+_sym_db.RegisterMessage(FeedOutputConfig)
+
+Feed = _reflection.GeneratedProtocolMessageType(
+    "Feed",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_FEED,
+        __module__="google.cloud.asset_v1.proto.asset_service_pb2",
+        __doc__="""An asset feed used to export asset updates to a destinations. An asset
+  feed filter controls what updates are exported. The asset feed must be
+  created within a project, organization, or folder. Supported
+  destinations are: Cloud Pub/Sub topics.
+  
+  
+  Attributes:
+      name:
+          Required. The format will be
+          projects/{project\_number}/feeds/{client-
+          assigned\_feed\_identifier} or
+          folders/{folder\_number}/feeds/{client-
+          assigned\_feed\_identifier} or
+          organizations/{organization\_number}/feeds/{client-
+          assigned\_feed\_identifier}  The client-assigned feed
+          identifier must be unique within the parent
+          project/folder/organization.
+      asset_names:
+          A list of the full names of the assets to receive updates. You
+          must specify either or both of asset\_names and asset\_types.
+          Only asset updates matching specified asset\_names and
+          asset\_types are exported to the feed. For example: ``//comput
+          e.googleapis.com/projects/my_project_123/zones/zone1/instances
+          /instance1``. See `Resource Names <https://cloud.google.com/ap
+          is/design/resource_names#full_resource_name>`__ for more info.
+      asset_types:
+          A list of types of the assets to receive updates. You must
+          specify either or both of asset\_names and asset\_types. Only
+          asset updates matching specified asset\_names and asset\_types
+          are exported to the feed. For example:
+          "compute.googleapis.com/Disk" See `Introduction to Cloud Asset
+          Inventory <https://cloud.google.com/resource-
+          manager/docs/cloud-asset-inventory/overview>`__ for all
+          supported asset types.
+      content_type:
+          Asset content type. If not specified, no content but the asset
+          name and type will be returned.
+      feed_output_config:
+          Required. Feed output configuration defining where the asset
+          updates are published to.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.Feed)
+    ),
+)
+_sym_db.RegisterMessage(Feed)
+
 
 DESCRIPTOR._options = None
 _EXPORTASSETSREQUEST.fields_by_name["parent"]._options = None
@@ -880,8 +1621,19 @@ _EXPORTASSETSREQUEST.fields_by_name["output_config"]._options = None
 _BATCHGETASSETSHISTORYREQUEST.fields_by_name["parent"]._options = None
 _BATCHGETASSETSHISTORYREQUEST.fields_by_name["content_type"]._options = None
 _BATCHGETASSETSHISTORYREQUEST.fields_by_name["read_time_window"]._options = None
+_CREATEFEEDREQUEST.fields_by_name["parent"]._options = None
+_CREATEFEEDREQUEST.fields_by_name["feed_id"]._options = None
+_CREATEFEEDREQUEST.fields_by_name["feed"]._options = None
+_GETFEEDREQUEST.fields_by_name["name"]._options = None
+_LISTFEEDSREQUEST.fields_by_name["parent"]._options = None
+_UPDATEFEEDREQUEST.fields_by_name["feed"]._options = None
+_UPDATEFEEDREQUEST.fields_by_name["update_mask"]._options = None
+_DELETEFEEDREQUEST.fields_by_name["name"]._options = None
 _BIGQUERYDESTINATION.fields_by_name["dataset"]._options = None
 _BIGQUERYDESTINATION.fields_by_name["table"]._options = None
+_FEED.fields_by_name["name"]._options = None
+_FEED.fields_by_name["feed_output_config"]._options = None
+_FEED._options = None
 
 _ASSETSERVICE = _descriptor.ServiceDescriptor(
     name="AssetService",
@@ -891,8 +1643,8 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=1529,
-    serialized_end=2028,
+    serialized_start=2510,
+    serialized_end=3646,
     methods=[
         _descriptor.MethodDescriptor(
             name="ExportAssets",
@@ -914,6 +1666,61 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             output_type=_BATCHGETASSETSHISTORYRESPONSE,
             serialized_options=_b(
                 "\202\323\344\223\002(\022&/v1/{parent=*/*}:batchGetAssetsHistory"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="CreateFeed",
+            full_name="google.cloud.asset.v1.AssetService.CreateFeed",
+            index=2,
+            containing_service=None,
+            input_type=_CREATEFEEDREQUEST,
+            output_type=_FEED,
+            serialized_options=_b(
+                '\202\323\344\223\002\033"\026/v1/{parent=*/*}/feeds:\001*\332A\006parent'
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetFeed",
+            full_name="google.cloud.asset.v1.AssetService.GetFeed",
+            index=3,
+            containing_service=None,
+            input_type=_GETFEEDREQUEST,
+            output_type=_FEED,
+            serialized_options=_b(
+                "\202\323\344\223\002\030\022\026/v1/{name=*/*/feeds/*}\332A\004name"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="ListFeeds",
+            full_name="google.cloud.asset.v1.AssetService.ListFeeds",
+            index=4,
+            containing_service=None,
+            input_type=_LISTFEEDSREQUEST,
+            output_type=_LISTFEEDSRESPONSE,
+            serialized_options=_b(
+                "\202\323\344\223\002\030\022\026/v1/{parent=*/*}/feeds\332A\006parent"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="UpdateFeed",
+            full_name="google.cloud.asset.v1.AssetService.UpdateFeed",
+            index=5,
+            containing_service=None,
+            input_type=_UPDATEFEEDREQUEST,
+            output_type=_FEED,
+            serialized_options=_b(
+                "\202\323\344\223\002 2\033/v1/{feed.name=*/*/feeds/*}:\001*\332A\004feed"
+            ),
+        ),
+        _descriptor.MethodDescriptor(
+            name="DeleteFeed",
+            full_name="google.cloud.asset.v1.AssetService.DeleteFeed",
+            index=6,
+            containing_service=None,
+            input_type=_DELETEFEEDREQUEST,
+            output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+            serialized_options=_b(
+                "\202\323\344\223\002\030*\026/v1/{name=*/*/feeds/*}\332A\004name"
             ),
         ),
     ],

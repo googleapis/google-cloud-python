@@ -103,9 +103,14 @@ against beta libraries are addressed with a higher priority.
 
 The following client libraries have **beta** support:
 
+-  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
+
+.. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
+.. _Billing Budgets README: https://github.com/googleapis/google-cloud-python/tree/master/billingbudgets
+.. _Billing Budgets Documentation: https://googleapis.dev/python/billingbudgets/latest
 
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore

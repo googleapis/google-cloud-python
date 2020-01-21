@@ -49,6 +49,11 @@ from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
 from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
+
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except (ImportError, AttributeError):  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 from tests.unit.helpers import make_connection
 
 
@@ -221,12 +226,14 @@ class TestClient(unittest.TestCase):
                 project="other-project",
                 location=self.LOCATION,
                 timeout_ms=500,
+                timeout=42,
             )
 
         conn.api_request.assert_called_once_with(
             method="GET",
             path="/projects/other-project/queries/nothere",
             query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
+            timeout=42,
         )
 
     def test__get_query_results_miss_w_client_location(self):
@@ -243,6 +250,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/PROJECT/queries/nothere",
             query_params={"maxResults": 0, "location": self.LOCATION},
+            timeout=None,
         )
 
     def test__get_query_results_hit(self):
@@ -534,6 +542,26 @@ class TestClient(unittest.TestCase):
             dataset_ref.dataset_id
         )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_create_bqstorage_client(self):
+        mock_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        mock_client_instance = object()
+        mock_client.return_value = mock_client_instance
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", mock_client
+        ):
+            bqstorage_client = client._create_bqstorage_client()
+
+        self.assertIs(bqstorage_client, mock_client_instance)
+        mock_client.assert_called_once_with(credentials=creds)
 
     def test_create_dataset_minimal(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -1552,6 +1580,7 @@ class TestClient(unittest.TestCase):
                 "User-Agent": expected_user_agent,
             },
             data=mock.ANY,
+            timeout=None,
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
