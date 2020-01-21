@@ -55,6 +55,11 @@ from google.cloud.spanner_v1.instance import Instance
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
+_EMULATOR_HOST_HTTP_SCHEME = (
+    "%s contains a http scheme. When used with a scheme it may cause gRPC's "
+    "DNS resolver to endlessly attempt to resolve. %s is intended to be used "
+    "without a scheme: ex %s=localhost:8080."
+) % ((EMULATOR_ENV_VAR,) * 3)
 SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
 _USER_AGENT_DEPRECATED = (
     "The 'user_agent' argument to 'Client' is deprecated / unused. "
@@ -64,16 +69,6 @@ _USER_AGENT_DEPRECATED = (
 
 def _get_spanner_emulator_host():
     return os.getenv(EMULATOR_ENV_VAR)
-
-
-if _get_spanner_emulator_host() is not None and (
-    "http://" in _get_spanner_emulator_host()
-    or "https://" in _get_spanner_emulator_host()
-):
-    warnings.warn(
-        "%s contains a http scheme. When used with a scheme it may cause gRPC's DNS resolver to endlessly attempt to resolve. %s is intended to be used without a scheme: ex %s=localhost:8080."
-        % ((EMULATOR_ENV_VAR,) * 3)
-    )
 
 
 class InstanceConfig(object):
@@ -173,6 +168,12 @@ class Client(ClientWithProject):
         if user_agent is not None:
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)
             self.user_agent = user_agent
+
+        if _get_spanner_emulator_host() is not None and (
+            "http://" in _get_spanner_emulator_host()
+            or "https://" in _get_spanner_emulator_host()
+        ):
+            warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
 
     @property
     def credentials(self):
