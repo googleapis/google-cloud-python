@@ -229,7 +229,7 @@ class Validator:
 
     # TODO(dovs): make the schema a required param.
     def __init__(self, method: wrappers.Method, api_schema=None):
-            # The response ($resp) variable is special and guaranteed to exist.
+        # The response ($resp) variable is special and guaranteed to exist.
         self.method = method
         self.request_type_ = method.input
         response_type = method.output
