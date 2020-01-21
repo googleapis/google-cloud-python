@@ -3,6 +3,7 @@
 import argparse
 import os
 import libcst as cst
+from itertools import chain
 from typing import (Any, Callable, Dict, List, Sequence, Tuple)
 
 
@@ -79,13 +80,16 @@ class {{ service.client_name }}CallTransformer(cst.CSTTransformer):
 
 def fix_files(
     dirs: Sequence[str],
+    files: Sequence[str],
     *,
     transformer={{ service.client_name }}CallTransformer(),
 ):
-    pyfile_gen = (os.path.join(root, f)
-                  for d in dirs
-                  for root, _, files in os.walk(d)
-                  for f in files if os.path.splitext(f)[1] == ".py")
+    pyfile_gen = chain(
+        (os.path.join(root, f)
+         for d in dirs
+         for root, _, files in os.walk(d)
+         for f in files if os.path.splitext(f)[1] == ".py"),
+        files)
 
     for fpath in pyfile_gen:
         with open(fpath, 'r+') as f:
@@ -113,13 +117,21 @@ Note: This tool operates at a best-effort level at converting positional
 
       Be sure to back up your source files before running this tool and to compare the diffs.
 """)
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
         '-d',
         metavar='dir',
         dest='dirs',
         action='append',
-        help='a directory to walk for python files to fix up'
+        help='a directory to walk for python files to fix up',
+    )
+    group.add_argument(
+        '-f',
+        metavar='file',
+        dest='files',
+        action='append',
+        help='a file to fix up via un-flattening',
     )
     args = parser.parse_args()
-    fix_files(args.dirs or ['.'])
+    fix_files(args.dirs or [], args.files or [])
 {% endblock %}
