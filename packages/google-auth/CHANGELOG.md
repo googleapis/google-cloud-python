@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.10.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.1...v1.10.2) (2020-01-18)
+
+
+### Bug Fixes
+
+* make collections import compatible across Python versions ([#419](https://www.github.com/googleapis/google-auth-library-python/issues/419)) ([c5a3395](https://www.github.com/googleapis/google-auth-library-python/commit/c5a3395b8781e14c4566cf0e476b234d6a1c1224)), closes [#418](https://www.github.com/googleapis/google-auth-library-python/issues/418)
+
 ### [1.10.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.0...v1.10.1) (2020-01-10)
 
 
