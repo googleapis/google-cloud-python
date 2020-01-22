@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import textwrap
+from typing import Iterable
 
 
 def sort_lines(text: str, dedupe: bool = True) -> str:
@@ -27,11 +28,11 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     trailing = '\n' if text.endswith('\n') else ''
 
     # Split the text into individual lines, throwing away any empty lines.
-    lines = [i for i in text.strip().split('\n') if i.strip()]
+    lines: Iterable[str] = (i for i in text.strip().split('\n') if i.strip())
 
     # De-duplicate the lines if requested.
     if dedupe:
-        lines = list(set(lines))
+        lines = set(lines)
 
     # Return the final string.
     answer = '\n'.join(sorted(lines))
@@ -78,8 +79,8 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     first = text.split('\n')[0] + '\n'
     if len(first) > width - offset:
         initial = textwrap.wrap(first,
-            break_long_words=False,
-            width=width - offset,
+                                break_long_words=False,
+                                width=width - offset,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below.

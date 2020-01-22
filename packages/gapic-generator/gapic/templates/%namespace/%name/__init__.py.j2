@@ -2,6 +2,7 @@
 
 {% block content %}
 {#  Import subpackages. -#}
+{% filter sort_lines -%}
 {% for subpackage in api.subpackages.keys() -%}
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
     {{ api.naming.versioned_module_name }} import {{ subpackage }}
@@ -14,34 +15,51 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
     {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.client_name }}
 {% endfor -%}
 
-{#  Import messages from each proto.
+{#  Import messages and enums from each proto.
     It is safe to import all of the messages into the same namespace here,
     because protocol buffers itself enforces selector uniqueness within
     a proto package.
 -#}
+{#  Import messages from each proto.
+    It is safe to import all of the messages into the same namespace here,
+    because protocol buffers itself enforces selector uniqueness within
+    a proto package.
+  -#}
 {% for proto in api.protos.values()|sort(attribute='module_name')
         if proto.meta.address.subpackage == api.subpackage_view -%}
-{% for message in proto.messages.values()|sort(attribute='name') -%}
+  {% for message in proto.messages.values()|sort(attribute='name') -%}
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
     {{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ message.name }}
-{% endfor %}{% endfor %}
-
+{% endfor -%}
+{% for enum in proto.enums.values()|sort(attribute='name') -%}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ enum.name }}
+{% endfor %}{% endfor -%}
+{% endfilter %}
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
 -#}
 __all__ = (
-    {%- for subpackage in api.subpackages.keys() %}
-    '{{ subpackage }}',
-    {%- endfor %}
-    {%- for service in api.services.values()|sort(attribute='name')
-            if service.meta.address.subpackage == api.subpackage_view %}
-    '{{ service.client_name }}',
-    {%- endfor %}
-    {%- for proto in api.protos.values()|sort(attribute='module_name')
-            if proto.meta.address.subpackage == api.subpackage_view %}
-    {%- for message in proto.messages.values()|sort(attribute='name') %}
-    '{{ message.name }}',
-    {%- endfor %}{% endfor %}
+{%- filter indent %}
+{% filter sort_lines -%}
+{% for subpackage in api.subpackages.keys() -%}
+'{{ subpackage }}',
+{% endfor -%}
+{% for service in api.services.values()|sort(attribute='name')
+   if service.meta.address.subpackage == api.subpackage_view -%}
+'{{ service.client_name }}',
+{% endfor -%}
+{% for proto in api.protos.values()|sort(attribute='module_name')
+   if proto.meta.address.subpackage == api.subpackage_view -%}
+{% for message in proto.messages.values()|sort(attribute='name') -%}
+'{{ message.name }}',
+{% endfor -%}
+{% for enum in proto.enums.values()|sort(attribute='name')
+   if proto.meta.address.subpackage == api.subpackage_view -%}
+'{{ enum.name }}',
+{% endfor -%}{% endfor -%}
+{% endfilter -%}
+{% endfilter -%}
 )
 {% endblock %}
