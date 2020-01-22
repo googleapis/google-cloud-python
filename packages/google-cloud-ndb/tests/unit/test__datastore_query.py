@@ -405,8 +405,7 @@ class Test_QueryIteratorImpl:
         with pytest.raises(exceptions.BadArgumentError):
             iterator.cursor_before()
 
-        with pytest.raises(exceptions.BadArgumentError):
-            iterator.cursor_after()
+        assert iterator.cursor_after() == b"bcd"
 
     @staticmethod
     def test_next_raw():

@@ -216,11 +216,11 @@ class QueryIterator(object):
 
         Raises:
             exceptions.BadArgumentError: If there is no cursor to return. This
-                will happen if the iterator hasn't returned a result yet or if
-                the iterator has been exhausted. Also, if query uses ``OR``,
-                ``!=``, or ``IN``, since those are composites of multiple
-                Datastore queries each with their own cursors—it is impossible
-                to return a cursor for the composite query.
+                will happen if the iterator hasn't returned a result yet. Also,
+                if query uses ``OR``, ``!=``, or ``IN``, since those are
+                composites of multiple Datastore queries each with their own
+                cursors—it is impossible to return a cursor for the composite
+                query.
         """
         raise NotImplementedError()
 
@@ -275,10 +275,9 @@ class _QueryIteratorImpl(QueryIterator):
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
         return (
-            self._batch is None
-            or self._has_next_batch  # Haven't even started yet
-            or self._index  # There's another batch to fetch
-            < len(self._batch)  # Not done with current batch
+            self._batch is None  # Haven't even started yet
+            or self._has_next_batch  # There's another batch to fetch
+            or self._index < len(self._batch)  # Not done with current batch
         )
 
     @tasklets.tasklet
@@ -322,7 +321,7 @@ class _QueryIteratorImpl(QueryIterator):
         """Implements :meth:`QueryIterator.next`."""
         # May block
         if not self.has_next():
-            self._cursor_before = self._cursor_after = None
+            self._cursor_before = None
             raise StopIteration
 
         # Won't block
