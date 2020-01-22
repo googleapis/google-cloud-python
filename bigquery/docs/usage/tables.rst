@@ -118,7 +118,7 @@ Load a Avro file from Cloud Storage:
    :start-after: [START bigquery_load_table_gcs_avro]
    :end-before: [END bigquery_load_table_gcs_avro]
 
-See also: `Loading Parquet data from Cloud Storage
+See also: `Loading Avro data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro>`_.
 
 Load a ORC file from Cloud Storage:
@@ -129,7 +129,7 @@ Load a ORC file from Cloud Storage:
    :start-after: [START bigquery_load_table_gcs_orc]
    :end-before: [END bigquery_load_table_gcs_orc]
 
-See also: `Loading Parquet data from Cloud Storage
+See also: `Loading ORC data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc>`_.
 
 Updating a Table

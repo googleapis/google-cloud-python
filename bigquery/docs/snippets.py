@@ -581,7 +581,6 @@ def test_manage_views(client, to_delete):
     # [END bigquery_grant_view_access]
 
 
-
 def test_load_table_from_uri_autodetect(client, to_delete, capsys):
     """Load table from a GCS URI using various formats and auto-detected schema
     Each file format has its own tested load from URI sample. Because most of
