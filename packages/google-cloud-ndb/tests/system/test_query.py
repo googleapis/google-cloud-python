@@ -229,6 +229,32 @@ def test_projection_datetime(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_projection_with_fetch_and_property(ds_entity):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=12, bar="none")
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=21, bar="naan")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    query = SomeKind.query()
+    eventually(query.fetch, _length_equals(2))
+
+    results = query.fetch(projection=(SomeKind.foo,))
+    results = sorted(results, key=operator.attrgetter("foo"))
+
+    assert results[0].foo == 12
+    with pytest.raises(ndb.UnprojectedPropertyError):
+        results[0].bar
+
+    assert results[1].foo == 21
+    with pytest.raises(ndb.UnprojectedPropertyError):
+        results[1].bar
+
+
+@pytest.mark.usefixtures("client_context")
 def test_distinct_on(ds_entity):
     for i in range(6):
         entity_id = test_utils.system.unique_resource_id()

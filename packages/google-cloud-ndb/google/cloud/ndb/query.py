@@ -1308,8 +1308,8 @@ class Query(object):
         app (str): Deprecated. Synonym for `project`.
         namespace (str): The namespace to which to restrict results.
             If not passed, uses the client's value.
-        projection (list[str]): The fields to return as part of the query
-            results.
+        projection (list[Union[str, google.cloud.ndb.model.Property]]): The
+            fields to return as part of the query results.
         distinct_on (list[str]): The field names used to group query
             results.
         group_by (list[str]): Deprecated. Synonym for distinct_on.
@@ -1732,8 +1732,8 @@ class Query(object):
             limit (Optional[int]): Maximum number of results to fetch.
                 data:`None` or data:`0` indicates no limit.
             keys_only (bool): Return keys instead of entities.
-            projection (list[str]): The fields to return as part of the query
-                results.
+            projection (list[Union[str, google.cloud.ndb.model.Property]]): The
+                fields to return as part of the query results.
             offset (int): Number of query results to skip.
             limit (Optional[int]): Maximum number of query results to return.
                 If not specified, there is no limit.
@@ -1788,8 +1788,8 @@ class Query(object):
 
         Args:
             keys_only (bool): Return keys instead of entities.
-            projection (list[str]): The fields to return as part of the query
-                results.
+            projection (list[Union[str, google.cloud.ndb.model.Property]]): The
+                fields to return as part of the query results.
             offset (int): Number of query results to skip.
             limit (Optional[int]): Maximum number of query results to return.
                 If not specified, there is no limit.
@@ -1822,6 +1822,12 @@ class Query(object):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import _datastore_query
 
+        # When projection fields are passed as property objects, fetch needs to
+        # convert them into property names. Fixes #295.
+        if getattr(kwargs["_options"], "projection", None) is not None:
+            kwargs["_options"].projection = self._to_property_names(
+                kwargs["_options"].projection
+            )
         return _datastore_query.fetch(kwargs["_options"])
 
     def _option(self, name, given, options=None):

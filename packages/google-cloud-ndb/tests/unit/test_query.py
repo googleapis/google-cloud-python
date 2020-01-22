@@ -1733,7 +1733,24 @@ class TestQuery:
         assert query.fetch_async(projection=("foo", "bar")) is response
         _datastore_query.fetch.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", projection=("foo", "bar")
+                project="testing", projection=["foo", "bar"]
+            )
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query")
+    def test_fetch_async_with_projection_with_properties(_datastore_query):
+        query = query_module.Query()
+        response = _datastore_query.fetch.return_value
+        foo = model.IntegerProperty()
+        foo._name = "foo"
+        bar = model.IntegerProperty()
+        bar._name = "bar"
+        assert query.fetch_async(projection=(foo, bar)) is response
+        _datastore_query.fetch.assert_called_once_with(
+            query_module.QueryOptions(
+                project="testing", projection=["foo", "bar"]
             )
         )
 
@@ -1747,7 +1764,7 @@ class TestQuery:
         assert query.fetch_async(options=options) is response
         _datastore_query.fetch.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", projection=("foo", "bar")
+                project="testing", projection=["foo", "bar"]
             )
         )
 
