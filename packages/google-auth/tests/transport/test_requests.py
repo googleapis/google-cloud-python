@@ -220,7 +220,25 @@ class TestAuthorizedHttp(object):
         assert adapter.requests[1].url == self.TEST_URL
         assert adapter.requests[1].headers["authorization"] == "token1"
 
-    def test_request_timeout(self, frozen_time):
+    def test_request_max_allowed_time_timeout_error(self, frozen_time):
+        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+
+        credentials = mock.Mock(
+            wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
+        )
+        adapter = TimeTickAdapterStub(
+            time_tick=tick_one_second, responses=[make_response(status=http_client.OK)]
+        )
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session.mount(self.TEST_URL, adapter)
+
+        # Because a request takes a full mocked second, max_allowed_time shorter
+        # than that will cause a timeout error.
+        with pytest.raises(requests.exceptions.Timeout):
+            authed_session.request("GET", self.TEST_URL, max_allowed_time=0.9)
+
+    def test_request_max_allowed_time_w_transport_timeout_no_error(self, frozen_time):
         tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
 
         credentials = mock.Mock(
@@ -237,12 +255,12 @@ class TestAuthorizedHttp(object):
         authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
         authed_session.mount(self.TEST_URL, adapter)
 
-        # Because at least two requests have to be made, and each takes one
-        # second, the total timeout specified will be exceeded.
-        with pytest.raises(requests.exceptions.Timeout):
-            authed_session.request("GET", self.TEST_URL, timeout=1.9)
+        # A short configured transport timeout does not affect max_allowed_time.
+        # The latter is not adjusted to it and is only concerned with the actual
+        # execution time. The call below should thus not raise a timeout error.
+        authed_session.request("GET", self.TEST_URL, timeout=0.5, max_allowed_time=3.1)
 
-    def test_request_timeout_w_refresh_timeout(self, frozen_time):
+    def test_request_max_allowed_time_w_refresh_timeout_no_error(self, frozen_time):
         tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
 
         credentials = mock.Mock(
@@ -257,15 +275,17 @@ class TestAuthorizedHttp(object):
         )
 
         authed_session = google.auth.transport.requests.AuthorizedSession(
-            credentials, refresh_timeout=1.9
+            credentials, refresh_timeout=1.1
         )
         authed_session.mount(self.TEST_URL, adapter)
 
-        # The timeout is long, but the short refresh timeout will prevail.
-        with pytest.raises(requests.exceptions.Timeout):
-            authed_session.request("GET", self.TEST_URL, timeout=60)
+        # A short configured refresh timeout does not affect max_allowed_time.
+        # The latter is not adjusted to it and is only concerned with the actual
+        # execution time. The call below should thus not raise a timeout error
+        # (and `timeout` does not come into play either, as it's very long).
+        authed_session.request("GET", self.TEST_URL, timeout=60, max_allowed_time=3.1)
 
-    def test_request_timeout_w_refresh_timeout_and_tuple_timeout(self, frozen_time):
+    def test_request_timeout_w_refresh_timeout_timeout_error(self, frozen_time):
         tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
 
         credentials = mock.Mock(
@@ -284,7 +304,10 @@ class TestAuthorizedHttp(object):
         )
         authed_session.mount(self.TEST_URL, adapter)
 
-        # The shortest timeout will prevail and cause a Timeout error, despite
-        # other timeouts being quite long.
+        # An UNAUTHORIZED response triggers a refresh (an extra request), thus
+        # the final request that otherwise succeeds results in a timeout error
+        # (all three requests together last 3 mocked seconds).
         with pytest.raises(requests.exceptions.Timeout):
-            authed_session.request("GET", self.TEST_URL, timeout=(100, 2.9))
+            authed_session.request(
+                "GET", self.TEST_URL, timeout=60, max_allowed_time=2.9
+            )

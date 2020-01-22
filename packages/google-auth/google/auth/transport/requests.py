@@ -239,18 +239,38 @@ class AuthorizedSession(requests.Session):
         # credentials.refresh).
         self._auth_request = auth_request
 
-    def request(self, method, url, data=None, headers=None, timeout=None, **kwargs):
+    def request(
+        self,
+        method,
+        url,
+        data=None,
+        headers=None,
+        max_allowed_time=None,
+        timeout=None,
+        **kwargs
+    ):
         """Implementation of Requests' request.
 
         Args:
-            timeout (Optional[Union[float, Tuple[float, float]]]): The number
-                of seconds to wait before raising a ``Timeout`` exception. If
-                multiple requests are made under the hood, ``timeout`` is
-                interpreted as the approximate total time of **all** requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The amount of time in seconds to wait for the server response
+                with each individual request.
 
-                If passed as a tuple ``(connect_timeout, read_timeout)``, the
-                smaller of the values is taken as the total allowed time across
-                all requests.
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+            max_allowed_time (Optional[float]):
+                If the method runs longer than this, a ``Timeout`` exception is
+                automatically raised. Unlike the ``timeout` parameter, this
+                value applies to the total method execution time, even if
+                multiple requests are made under the hood.
+
+                Mind that it is not guaranteed that the timeout error is raised
+                at ``max_allowed_time`. It might take longer, for example, if
+                an underlying request takes a lot of time, but the request
+                itself does not timeout, e.g. if a large file is being
+                transmitted. The timout error will be raised after such
+                request completes.
         """
         # pylint: disable=arguments-differ
         # Requests has a ton of arguments to request, but only two
@@ -273,11 +293,13 @@ class AuthorizedSession(requests.Session):
             else functools.partial(self._auth_request, timeout=timeout)
         )
 
-        with TimeoutGuard(timeout) as guard:
-            self.credentials.before_request(auth_request, method, url, request_headers)
-        timeout = guard.remaining_timeout
+        remaining_time = max_allowed_time
 
-        with TimeoutGuard(timeout) as guard:
+        with TimeoutGuard(remaining_time) as guard:
+            self.credentials.before_request(auth_request, method, url, request_headers)
+        remaining_time = guard.remaining_timeout
+
+        with TimeoutGuard(remaining_time) as guard:
             response = super(AuthorizedSession, self).request(
                 method,
                 url,
@@ -286,7 +308,7 @@ class AuthorizedSession(requests.Session):
                 timeout=timeout,
                 **kwargs
             )
-        timeout = guard.remaining_timeout
+        remaining_time = guard.remaining_timeout
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
@@ -305,14 +327,6 @@ class AuthorizedSession(requests.Session):
                 self._max_refresh_attempts,
             )
 
-            if self._refresh_timeout is not None:
-                if timeout is None:
-                    timeout = self._refresh_timeout
-                elif isinstance(timeout, numbers.Number):
-                    timeout = min(timeout, self._refresh_timeout)
-                else:
-                    timeout = tuple(min(x, self._refresh_timeout) for x in timeout)
-
             # Do not apply the timeout unconditionally in order to not override the
             # _auth_request's default timeout.
             auth_request = (
@@ -321,17 +335,18 @@ class AuthorizedSession(requests.Session):
                 else functools.partial(self._auth_request, timeout=timeout)
             )
 
-            with TimeoutGuard(timeout) as guard:
+            with TimeoutGuard(remaining_time) as guard:
                 self.credentials.refresh(auth_request)
-            timeout = guard.remaining_timeout
+            remaining_time = guard.remaining_timeout
 
             # Recurse. Pass in the original headers, not our modified set, but
-            # do pass the adjusted timeout (i.e. the remaining time).
+            # do pass the adjusted max allowed time (i.e. the remaining total time).
             return self.request(
                 method,
                 url,
                 data=data,
                 headers=headers,
+                max_allowed_time=remaining_time,
                 timeout=timeout,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
                 **kwargs
