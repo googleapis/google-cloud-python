@@ -422,13 +422,16 @@ def _record_field_to_json(fields, row_value):
     record = {}
     isdict = isinstance(row_value, dict)
 
+    MISSING = object()  # a sentinel to distinguish from None values
+
     for subindex, subfield in enumerate(fields):
         subname = subfield.name
-        if isdict:
-            subvalue = row_value.get(subname)
-        else:
-            subvalue = row_value[subindex]
-        record[subname] = _field_to_json(subfield, subvalue)
+        subvalue = row_value.get(subname, MISSING) if isdict else row_value[subindex]
+
+        # we should not convert missing values to an explicit None
+        if subvalue is not MISSING:
+            record[subname] = _field_to_json(subfield, subvalue)
+
     return record
 
 

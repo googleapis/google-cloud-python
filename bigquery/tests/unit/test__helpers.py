@@ -863,7 +863,9 @@ class Test_record_field_to_json(unittest.TestCase):
         ]
         original = {"one": 42}
         converted = self._call_fut(fields, original)
-        self.assertEqual(converted, {"one": "42", "two": None})
+
+        # missing fields should not be converted to an explicit None
+        self.assertEqual(converted, {"one": "42"})
 
 
 class Test_field_to_json(unittest.TestCase):
