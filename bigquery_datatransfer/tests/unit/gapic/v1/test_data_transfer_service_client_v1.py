@@ -185,6 +185,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        notification_pubsub_topic = "notificationPubsubTopic1794281191"
         expected_response = {
             "name": name,
             "destination_dataset_id": destination_dataset_id,
@@ -195,6 +196,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "notification_pubsub_topic": notification_pubsub_topic,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -245,6 +247,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        notification_pubsub_topic = "notificationPubsubTopic1794281191"
         expected_response = {
             "name": name,
             "destination_dataset_id": destination_dataset_id,
@@ -255,6 +258,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "notification_pubsub_topic": notification_pubsub_topic,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -336,6 +340,7 @@ class TestDataTransferServiceClient(object):
         disabled = True
         user_id = 147132913
         dataset_region = "datasetRegion959248539"
+        notification_pubsub_topic = "notificationPubsubTopic1794281191"
         expected_response = {
             "name": name_2,
             "destination_dataset_id": destination_dataset_id,
@@ -346,6 +351,7 @@ class TestDataTransferServiceClient(object):
             "disabled": disabled,
             "user_id": user_id,
             "dataset_region": dataset_region,
+            "notification_pubsub_topic": notification_pubsub_topic,
         }
         expected_response = transfer_pb2.TransferConfig(**expected_response)
 
@@ -481,12 +487,14 @@ class TestDataTransferServiceClient(object):
         data_source_id = "dataSourceId-1015796374"
         user_id = 147132913
         schedule = "schedule-697920873"
+        notification_pubsub_topic = "notificationPubsubTopic1794281191"
         expected_response = {
             "name": name_2,
             "destination_dataset_id": destination_dataset_id,
             "data_source_id": data_source_id,
             "user_id": user_id,
             "schedule": schedule,
+            "notification_pubsub_topic": notification_pubsub_topic,
         }
         expected_response = transfer_pb2.TransferRun(**expected_response)
 
