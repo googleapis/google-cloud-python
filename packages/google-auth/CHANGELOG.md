@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.11.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.2...v1.11.0) (2020-01-23)
+
+
+### Features
+
+* add non-None default timeout to AuthorizedSession.request() ([#435](https://www.github.com/googleapis/google-auth-library-python/issues/435)) ([d274a3a](https://www.github.com/googleapis/google-auth-library-python/commit/d274a3a2b3f913bc2cab4ca51f9c7fdef94b8f31)), closes [#434](https://www.github.com/googleapis/google-auth-library-python/issues/434) [googleapis/google-cloud-python#10182](https://www.github.com/googleapis/google-cloud-python/issues/10182)
+* distinguish transport and execution time timeouts ([#424](https://www.github.com/googleapis/google-auth-library-python/issues/424)) ([52a733d](https://www.github.com/googleapis/google-auth-library-python/commit/52a733d604528fa86d05321bb74241a43aea4211)), closes [#423](https://github.com/googleapis/google-auth-library-python/issues/423)
+
 ### [1.10.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.1...v1.10.2) (2020-01-18)
 
 
