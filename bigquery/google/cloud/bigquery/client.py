@@ -32,7 +32,6 @@ import json
 import math
 import os
 import tempfile
-import textwrap
 import uuid
 import warnings
 
@@ -383,11 +382,9 @@ class Client(ClientWithProject):
             project = self.project
 
         warnings.warn(
-            textwrap.fill(
-                "Client.dataset is deprecated and will be removed in a future version. "
-                "Use a string like 'my_project.my_dataset' or a "
-                "cloud.google.bigquery.DatasetReference object, instead."
-            ),
+            "Client.dataset is deprecated and will be removed in a future version. "
+            "Use a string like 'my_project.my_dataset' or a "
+            "cloud.google.bigquery.DatasetReference object, instead.",
             PendingDeprecationWarning,
             stacklevel=2,
         )
