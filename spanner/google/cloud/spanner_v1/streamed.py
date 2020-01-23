@@ -276,6 +276,12 @@ def _merge_struct(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     fields = type_.struct_type.fields
     lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
+
+    # Sanity check: If either list is empty, short-circuit.
+    # This is effectively a no-op.
+    if not len(lhs) or not len(rhs):
+        return Value(list_value=ListValue(values=(lhs + rhs)))
+
     candidate_type = fields[len(lhs) - 1].type
     first = rhs.pop(0)
     if first.HasField("null_value") or candidate_type.code in _UNMERGEABLE_TYPES:
