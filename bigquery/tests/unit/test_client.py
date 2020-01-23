@@ -5048,6 +5048,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_errors(self):
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
         ROWS = [
@@ -5058,6 +5059,7 @@ class TestClient(unittest.TestCase):
         ]
         creds = _make_credentials()
         http = object()
+
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # table ref with no selected fields
@@ -5068,9 +5070,18 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.insert_rows(Table(self.TABLE_REF), ROWS)
 
-        # neither Table nor tableReference
+        # neither Table nor TableReference
         with self.assertRaises(TypeError):
             client.insert_rows(1, ROWS)
+
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        # rows is just a dict
+        with self.assertRaises(TypeError):
+            client.insert_rows(table, {"full_name": "value"})
 
     def test_insert_rows_w_numeric(self):
         from google.cloud.bigquery import table
@@ -5853,7 +5864,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
-        # neither Table nor tableReference
+        # neither Table nor TableReference
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
