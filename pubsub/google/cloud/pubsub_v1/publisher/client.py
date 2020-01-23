@@ -398,7 +398,9 @@ class Client(object):
     def _commit_sequencers(self):
         """ Clean up finished sequencers and commit the rest. """
         finished_sequencer_keys = [
-            k[0] for k in self._sequencers.items() if k[1].is_finished()
+            key
+            for key, sequencer in self._sequencers.items()
+            if sequencer.is_finished()
         ]
         for sequencer_key in finished_sequencer_keys:
             del self._sequencers[sequencer_key]
