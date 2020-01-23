@@ -988,27 +988,31 @@ Taxonomy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TAXONOMY,
         __module__="google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
-        __doc__="""A taxonomy is a collection of policy tags of business significance,
-  typically associated with the substance of the policy tag (e.g. credit
-  card, SSN), or how it is used (e.g. account name, user ID).
+        __doc__="""A taxonomy is a collection of policy tags that classify data along a
+  common axis. For instance a data *sensitivity* taxonomy could contain
+  policy tags denoting PII such as age, zipcode, and SSN. A data *origin*
+  taxonomy could contain policy tags to distinguish user data, employee
+  data, partner data, public data.
   
   
   Attributes:
       name:
-          Output only. Resource name of the taxonomy, whose format is: "
-          projects/{project\_number}/locations/{location\_id}/taxonomies
-          /{id}".
+          Output only. Resource name of this taxonomy, whose format is: 
+          "projects/{project\_number}/locations/{location\_id}/taxonomie
+          s/{id}".
       display_name:
-          Required. Human readable name of this taxonomy. Max 200 bytes
+          Required. User defined name of this taxonomy. It must: contain
+          only unicode letters, numbers, underscores, dashes and spaces;
+          not start or end with spaces; and be at most 200 bytes long
           when encoded in UTF-8.
       description:
-          Optional. Description of the taxonomy. The length of the
-          description is limited to 2000 bytes when encoded in UTF-8. If
-          not set, defaults to an empty description.
+          Optional. Description of this taxonomy. It must: contain only
+          unicode characters, tabs, newlines, carriage returns and page
+          breaks; and be at most 2000 bytes long when encoded in UTF-8.
+          If not set, defaults to an empty description.
       activated_policy_types:
-          Optional. A list of policy types that are activated for the
-          taxonomy. If not set, defaults to an empty list of activated
-          policy types.
+          Optional. A list of policy types that are activated for this
+          taxonomy. If not set, defaults to an empty list.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.Taxonomy)
     ),
@@ -1030,23 +1034,28 @@ PolicyTag = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Output only. Resource name of the policy tag, whose format is:
-          "projects/{project\_number}/locations/{location\_id}/taxonomie
-          s/{taxonomy\_id}/policyTags/{id}".
+          Output only. Resource name of this policy tag, whose format
+          is: "projects/{project\_number}/locations/{location\_id}/taxon
+          omies/{taxonomy\_id}/policyTags/{id}".
       display_name:
-          Required. Human readable name of this policy tag. Max 200
-          bytes when encoded in UTF-8.
+          Required. User defined name of this policy tag. It must: be
+          unique within the parent taxonomy; contain only unicode
+          letters, numbers, underscores, dashes and spaces; not start or
+          end with spaces; and be at most 200 bytes long when encoded in
+          UTF-8.
       description:
-          Description of the policy tag. The length of the description
-          is limited to 2000 bytes when encoded in UTF-8. If not set,
-          defaults to an empty description.
+          Description of this policy tag. It must: contain only unicode
+          characters, tabs, newlines, carriage returns and page breaks;
+          and be at most 2000 bytes long when encoded in UTF-8. If not
+          set, defaults to an empty description. If not set, defaults to
+          an empty description.
       parent_policy_tag:
-          Resource name of the parent policy tag to this policy tag
-          (e.g. for policy tag "LatLong" in the example above, this
-          field contains the resource name of policy tag "Geolocation").
+          Resource name of this policy tag's parent policy tag (e.g. for
+          the "LatLong" policy tag in the example above, this field
+          contains the resource name of the "Geolocation" policy tag).
           If empty, it means this policy tag is a top level policy tag
-          (e.g. this field is empty for policy tag "Geolocation" in the
-          example above). If not set, defaults to an empty string.
+          (e.g. this field is empty for the "Geolocation" policy tag in
+          the example above). If not set, defaults to an empty string.
       child_policy_tags:
           Output only. Resource names of child policy tags of this
           policy tag.
@@ -1068,11 +1077,10 @@ CreateTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Resource name of the project that the newly created
-          taxonomy belongs to.
+          Required. Resource name of the project that the taxonomy will
+          belong to.
       taxonomy:
-          The taxonomy to be created. The name field must be left blank.
-          The display\_name field is mandatory.
+          The taxonomy to be created.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.CreateTaxonomyRequest)
     ),
@@ -1136,11 +1144,11 @@ ListTaxonomiesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Resource name of a project to list the taxonomies
+          Required. Resource name of the project to list the taxonomies
           of.
       page_size:
-          The maximum number of items to return. If not set, defaults to
-          50.
+          The maximum number of items to return. Must be a value between
+          1 and 1000. If not set, defaults to 50.
       page_token:
           The next\_page\_token value returned from a previous list
           request, if any. If not set, defaults to an empty string.
@@ -1164,8 +1172,8 @@ ListTaxonomiesResponse = _reflection.GeneratedProtocolMessageType(
       taxonomies:
           Taxonomies that the project contains.
       next_page_token:
-          Token to retrieve the next page of results, or empty if there
-          are no more results in the list.
+          Token used to retrieve the next page of results, or empty if
+          there are no more results in the list.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.ListTaxonomiesResponse)
     ),
@@ -1184,7 +1192,7 @@ GetTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. Resource name of the taxonomy to be returned.
+          Required. Resource name of the requested taxonomy.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.GetTaxonomyRequest)
     ),
@@ -1203,13 +1211,10 @@ CreatePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Resource name of the taxonomy that the newly created
-          policy tag belongs to.
+          Required. Resource name of the taxonomy that the policy tag
+          will belong to.
       policy_tag:
-          The policy tag to be created. The name, and
-          taxonomy\_display\_name field must be left blank. The
-          display\_name field is mandatory and must not be duplicated
-          with existing policy tags in the same taxonomy.
+          The policy tag to be created.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.CreatePolicyTagRequest)
     ),
@@ -1229,7 +1234,7 @@ DeletePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required. Resource name of the policy tag to be deleted. All
-          its descendant policy tags will also be deleted.
+          of its descendant policy tags will also be deleted.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.DeletePolicyTagRequest)
     ),
@@ -1278,11 +1283,11 @@ ListPolicyTagsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Resource name of a taxonomy to list the policy tags
-          of.
+          Required. Resource name of the taxonomy to list the policy
+          tags of.
       page_size:
-          The maximum number of items to return. If not set, defaults to
-          50.
+          The maximum number of items to return. Must be a value between
+          1 and 1000. If not set, defaults to 50.
       page_token:
           The next\_page\_token value returned from a previous List
           request, if any. If not set, defaults to an empty string.
@@ -1304,10 +1309,10 @@ ListPolicyTagsResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       policy_tags:
-          Policy Tags that are in this taxonomy.
+          The policy tags that are in the requested taxonomy.
       next_page_token:
-          Token to retrieve the next page of results, or empty if there
-          are no more results in the list.
+          Token used to retrieve the next page of results, or empty if
+          there are no more results in the list.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.ListPolicyTagsResponse)
     ),
@@ -1326,7 +1331,7 @@ GetPolicyTagRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. Resource name of the policy tag to be returned.
+          Required. Resource name of the requested policy tag.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.GetPolicyTagRequest)
     ),

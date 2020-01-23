@@ -52,8 +52,8 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class PolicyTagManagerClient(object):
     """
-    Policy tag manager API service allows clients to manage their taxonomies and
-    policy tags data.
+    The policy tag manager API service allows clients to manage their taxonomies
+    and policy tags.
     """
 
     SERVICE_ADDRESS = "datacatalog.googleapis.com:443"
@@ -205,7 +205,7 @@ class PolicyTagManagerClient(object):
         metadata=None,
     ):
         """
-        Creates a new taxonomy in a given project.
+        Creates a taxonomy in the specified project.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -215,10 +215,8 @@ class PolicyTagManagerClient(object):
             >>> response = client.create_taxonomy()
 
         Args:
-            parent (str): Required. Resource name of the project that the newly created taxonomy
-                belongs to.
-            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to be created. The name field must be left blank. The
-                display\_name field is mandatory.
+            parent (str): Required. Resource name of the project that the taxonomy will belong to.
+            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Taxonomy`
@@ -281,7 +279,7 @@ class PolicyTagManagerClient(object):
     ):
         """
         Deletes a taxonomy. This operation will also delete all
-        policy tags in this taxonomy.
+        policy tags in this taxonomy along with their associated policies.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -429,7 +427,8 @@ class PolicyTagManagerClient(object):
         metadata=None,
     ):
         """
-        Lists all taxonomies in a project in a particular location.
+        Lists all taxonomies in a project in a particular location that the caller
+        has permission to view.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -439,8 +438,9 @@ class PolicyTagManagerClient(object):
             >>> response = client.list_taxonomies()
 
         Args:
-            parent (str): Required. Resource name of a project to list the taxonomies of.
-            page_size (int): The maximum number of items to return. If not set, defaults to 50.
+            parent (str): Required. Resource name of the project to list the taxonomies of.
+            page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
+                If not set, defaults to 50.
             page_token (str): The next\_page\_token value returned from a previous list request, if
                 any. If not set, defaults to an empty string.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -511,7 +511,7 @@ class PolicyTagManagerClient(object):
             >>> response = client.get_taxonomy()
 
         Args:
-            name (str): Required. Resource name of the taxonomy to be returned.
+            name (str): Required. Resource name of the requested taxonomy.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -569,7 +569,7 @@ class PolicyTagManagerClient(object):
         metadata=None,
     ):
         """
-        Creates a policy tag in a taxonomy.
+        Creates a policy tag in the specified taxonomy.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -579,11 +579,8 @@ class PolicyTagManagerClient(object):
             >>> response = client.create_policy_tag()
 
         Args:
-            parent (str): Required. Resource name of the taxonomy that the newly created policy tag
-                belongs to.
-            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to be created. The name, and taxonomy\_display\_name
-                field must be left blank. The display\_name field is mandatory and must
-                not be duplicated with existing policy tags in the same taxonomy.
+            parent (str): Required. Resource name of the taxonomy that the policy tag will belong to.
+            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.PolicyTag`
@@ -655,7 +652,7 @@ class PolicyTagManagerClient(object):
             >>> client.delete_policy_tag()
 
         Args:
-            name (str): Required. Resource name of the policy tag to be deleted. All its descendant
+            name (str): Required. Resource name of the policy tag to be deleted. All of its descendant
                 policy tags will also be deleted.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -806,8 +803,9 @@ class PolicyTagManagerClient(object):
             >>> response = client.list_policy_tags()
 
         Args:
-            parent (str): Required. Resource name of a taxonomy to list the policy tags of.
-            page_size (int): The maximum number of items to return. If not set, defaults to 50.
+            parent (str): Required. Resource name of the taxonomy to list the policy tags of.
+            page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
+                If not set, defaults to 50.
             page_token (str): The next\_page\_token value returned from a previous List request, if
                 any. If not set, defaults to an empty string.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -878,7 +876,7 @@ class PolicyTagManagerClient(object):
             >>> response = client.get_policy_tag()
 
         Args:
-            name (str): Required. Resource name of the policy tag to be returned.
+            name (str): Required. Resource name of the requested policy tag.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1088,7 +1086,8 @@ class PolicyTagManagerClient(object):
         metadata=None,
     ):
         """
-        Returns permissions that a caller has on specified resources.
+        Returns the permissions that a caller has on the specified taxonomy or
+        policy tag.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
