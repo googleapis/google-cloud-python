@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-11-19T13:19:24.305834Z",
+  "updateTime": "2019-12-24T13:15:56.207878Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.42.1",
-        "dockerImage": "googleapis/artman@sha256:c773192618c608a7a0415dd95282f841f8e6bcdef7dd760a988c93b77a64bd57"
+        "version": "0.42.3",
+        "dockerImage": "googleapis/artman@sha256:feed210b5723c6f524b52ef6d7740a030f2d1a8f7c29a71c5e5b4481ceaad7f5"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "d8dd7fe8d5304f7bd1c52207703d7f27d5328c5a",
-        "internalRef": "281088257"
+        "sha": "46e52fd64973e815cae61e78b14608fe7aa7b1df",
+        "internalRef": "286958627"
       }
     },
     {
@@ -34,6 +34,3548 @@
         "generator": "gapic",
         "config": "google/cloud/datacatalog/v1beta1/artman_datacatalog_v1beta1.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "noxfile.py"
+    },
+    {
+      "path": "synth.py"
+    },
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".repo-metadata.json"
+    },
+    {
+      "path": "synth.metadata"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": "CHANGELOG.md"
+    },
+    {
+      "path": "README.rst"
+    },
+    {
+      "path": "setup.py"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "samples/__init__.py"
+    },
+    {
+      "path": "samples/v1beta1/datacatalog_get_entry.py"
+    },
+    {
+      "path": "samples/v1beta1/__init__.py"
+    },
+    {
+      "path": "samples/v1beta1/create_entry_group.py"
+    },
+    {
+      "path": "samples/v1beta1/datacatalog_search.py"
+    },
+    {
+      "path": "samples/v1beta1/datacatalog_lookup_entry_sql_resource.py"
+    },
+    {
+      "path": "samples/v1beta1/datacatalog_lookup_entry.py"
+    },
+    {
+      "path": "samples/v1beta1/create_fileset_entry.py"
+    },
+    {
+      "path": "samples/tests/test_create_fileset_entry.py"
+    },
+    {
+      "path": "samples/tests/conftest.py"
+    },
+    {
+      "path": "samples/tests/__init__.py"
+    },
+    {
+      "path": "samples/tests/test_create_entry_group.py"
+    },
+    {
+      "path": "samples/tests/quickstart/test_create_fileset_entry_quickstart.py"
+    },
+    {
+      "path": "samples/tests/quickstart/__init__.py"
+    },
+    {
+      "path": "samples/quickstart/__init__.py"
+    },
+    {
+      "path": "samples/quickstart/create_fileset_entry_quickstart.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/no-global-site-packages.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/orig-prefix.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blackd.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/easy_install.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/wheelfile.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/metadata.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/pep425tags.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/bdist_wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/util.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__main__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/pkginfo.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/util.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/__main__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/wheelfile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/metadata.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/bdist_wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/pep425tags.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/__pycache__/pkginfo.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/convert.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/unpack.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/pack.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/__pycache__/convert.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/__pycache__/pack.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/__pycache__/unpack.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel/cli/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/__main__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/__pycache__/__main__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/configuration.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/self_outdated_check.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/pep425tags.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/download.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/build_env.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/pyproject.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/main.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/collector.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cache.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/index.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/legacy_resolve.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/locations.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/setuptools_build.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/logging.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/subprocess.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/appdirs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/virtualenv.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/urls.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/ui.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/glibc.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/filetypes.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/marker_files.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/hashes.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/misc.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/inject_securetransport.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/models.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/temp_dir.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/filesystem.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/typing.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/deprecation.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/unpacking.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/encoding.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/packaging.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/models.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/ui.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/temp_dir.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/unpacking.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/packaging.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/subprocess.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/urls.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/glibc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/deprecation.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/hashes.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/logging.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/marker_files.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/misc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/encoding.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/virtualenv.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/typing.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/filetypes.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/setuptools_build.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/inject_securetransport.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/filesystem.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/utils/__pycache__/appdirs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/configuration.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/cache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/index.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/collector.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/main.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/locations.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/download.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/pyproject.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/legacy_resolve.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/self_outdated_check.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/build_env.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/__pycache__/pep425tags.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/link.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/selection_prefs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/target_python.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/search_scope.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/format_control.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/candidate.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/index.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/candidate.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/link.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/format_control.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/index.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/search_scope.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/selection_prefs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/models/__pycache__/target_python.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/status_codes.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/parser.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/main_parser.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/req_command.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/command_context.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/base_command.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/cmdoptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/autocompletion.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/base_command.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/autocompletion.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/main_parser.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/parser.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/cmdoptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/command_context.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/status_codes.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/cli/__pycache__/req_command.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/req_file.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/constructors.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/req_tracker.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/req_uninstall.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/req_install.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/req_set.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/constructors.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/req_set.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/req_tracker.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/req_install.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/req_uninstall.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/req/__pycache__/req_file.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/freeze.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/prepare.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/generate_metadata.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/check.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__pycache__/generate_metadata.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__pycache__/prepare.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__pycache__/check.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/operations/__pycache__/freeze.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/base.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/installed.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/source/legacy.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/source/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/source/__pycache__/legacy.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/source/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/__pycache__/wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/__pycache__/installed.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/distributions/__pycache__/base.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/debug.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/configuration.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/uninstall.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/freeze.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/list.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/download.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/help.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/search.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/check.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/completion.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/install.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/hash.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/show.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/configuration.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/list.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/completion.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/search.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/download.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/install.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/hash.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/help.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/show.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/uninstall.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/check.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/freeze.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/commands/__pycache__/debug.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/versioncontrol.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/git.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/subversion.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/mercurial.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/bazaar.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/subversion.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/bazaar.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/git.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/versioncontrol.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/vcs/__pycache__/mercurial.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/session.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/auth.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/xmlrpc.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/cache.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__pycache__/cache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__pycache__/xmlrpc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__pycache__/session.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_internal/network/__pycache__/auth.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/appdirs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/six.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distro.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/ipaddress.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/retrying.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pyparsing.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/contextlib2.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/ansi.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/win32.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/initialise.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/winterm.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/ansitowin32.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/ansitowin32.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/winterm.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/ansi.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/win32.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__/initialise.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/retrying.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/ipaddress.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/distro.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/six.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/pyparsing.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/contextlib2.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/__pycache__/appdirs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pkg_resources/py31compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pkg_resources/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pkg_resources/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pkg_resources/__pycache__/py31compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/_structures.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/tags.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__about__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/_compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/specifiers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/markers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/requirements.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/_compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/tags.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/__about__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/markers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/_structures.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/requirements.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__/specifiers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/package_data.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/codec.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/core.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/idnadata.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/intranges.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/uts46data.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/core.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/idnadata.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/package_data.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/intranges.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/uts46data.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/idna/__pycache__/codec.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langbulgarianmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langturkishmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/latin1prober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/euckrfreq.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/euctwprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/gb2312prober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/cp949prober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langcyrillicmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/hebrewprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/euckrprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/charsetgroupprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langthaimodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/codingstatemachine.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/euctwfreq.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/eucjpprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/chardistribution.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/jpcntx.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/charsetprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/sbcharsetprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/mbcsgroupprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/utf8prober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/universaldetector.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langhebrewmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langgreekmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/escprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/sjisprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/langhungarianmodel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/enums.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/jisfreq.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/escsm.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/big5prober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/mbcssm.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/sbcsgroupprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/mbcharsetprober.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/big5freq.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/gb2312freq.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/enums.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/euckrfreq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/chardistribution.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/cp949prober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/sjisprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/latin1prober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langturkishmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/hebrewprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/mbcharsetprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/codingstatemachine.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langhebrewmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/sbcharsetprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/gb2312freq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/jpcntx.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/mbcsgroupprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/universaldetector.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langhungarianmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/utf8prober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/eucjpprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/euctwprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/mbcssm.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langthaimodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/charsetprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/euctwfreq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/sbcsgroupprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langbulgarianmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/jisfreq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/escsm.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langcyrillicmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/escprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/langgreekmodel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/gb2312prober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/euckrprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/big5prober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/big5freq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/__pycache__/charsetgroupprober.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/cli/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/cli/chardetect.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/cli/__pycache__/chardetect.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/chardet/cli/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/tests.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/x_user_defined.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/mklabels.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/labels.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__/labels.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__/tests.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__/mklabels.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__/x_user_defined.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/fallback.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/_version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/__pycache__/_version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/__pycache__/fallback.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/msgpack/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/cacert.pem"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/core.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/__main__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/__pycache__/core.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/__pycache__/__main__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/certifi/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/resources.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/scripts.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/w32.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/locators.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/metadata.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/w64.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/database.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/util.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/markers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/t32.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/index.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/manifest.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/t64.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/database.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/manifest.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/index.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/util.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/resources.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/metadata.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/markers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/locators.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__/scripts.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/tarfile.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/misc.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/sysconfig.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/sysconfig.cfg"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/shutil.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__/shutil.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__/tarfile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__/misc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__/sysconfig.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/filewrapper.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/wrapper.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/serialize.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/controller.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/heuristics.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/cache.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/adapter.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/_cmd.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/cache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/heuristics.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/wrapper.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/serialize.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/controller.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/adapter.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/_cmd.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__/filewrapper.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/redis_cache.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/file_cache.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/__pycache__/file_cache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/__pycache__/redis_cache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_tokenizer.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/constants.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_inputstream.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/serializer.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/html5parser.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_ihatexml.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/alphabeticalattributes.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/base.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/optionaltags.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/sanitizer.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/lint.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/inject_meta_charset.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/whitespace.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/whitespace.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/lint.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/optionaltags.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/inject_meta_charset.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/alphabeticalattributes.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/base.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__/sanitizer.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/html5parser.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/constants.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/_ihatexml.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/_tokenizer.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/_inputstream.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/_utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__/serializer.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/datrie.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/_base.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/py.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__pycache__/datrie.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__pycache__/py.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__pycache__/_base.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/base.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/dom.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/etree_lxml.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/etree.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__/etree.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__/dom.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__/base.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__/etree_lxml.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/genshi.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/base.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/dom.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/etree_lxml.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/etree.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/etree.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/dom.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/genshi.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/base.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__/etree_lxml.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/genshi.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/sax.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/__pycache__/sax.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/__pycache__/genshi.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/status_codes.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/_internal_utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/cookies.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/sessions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/adapters.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/help.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/models.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/auth.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/packages.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__version__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/api.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/certs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/hooks.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/structures.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/models.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/structures.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/api.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/adapters.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/__version__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/help.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/auth.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/status_codes.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/packages.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/certs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/cookies.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/_internal_utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/sessions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__/hooks.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/meta.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/build.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/_in_process.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/check.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/wrappers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/envbuild.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/dirtools.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/colorlog.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/colorlog.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/envbuild.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/_in_process.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/dirtools.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/meta.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/build.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/check.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pep517/__pycache__/wrappers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/bar.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/counter.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/spinner.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/__pycache__/spinner.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/__pycache__/counter.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/progress/__pycache__/bar.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/request.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/poolmanager.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/response.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/connectionpool.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/_collections.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/filepost.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/connection.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/fields.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/six.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/__pycache__/six.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/_implementation.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/__pycache__/_implementation.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/backports/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/backports/makefile.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/wait.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/request.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/queue.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/response.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/timeout.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/url.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/connection.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/retry.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/ssl_.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/queue.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/timeout.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/ssl_.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/url.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/connection.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/retry.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/request.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/wait.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/util/__pycache__/response.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/_collections.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/connectionpool.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/poolmanager.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/connection.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/fields.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/filepost.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/request.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/__pycache__/response.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_appengine_environ.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/socks.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/ntlmpool.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/securetransport.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/pyopenssl.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/appengine.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/bindings.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/low_level.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/bindings.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/ntlmpool.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/socks.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/securetransport.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/_appengine_environ.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/pyopenssl.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/urllib3/contrib/__pycache__/appengine.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/parser.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/writer.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/core.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/test.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/core.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/test.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/parser.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/writer.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip/_vendor/pytoml/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/__pycache__/blackd.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/__pycache__/black.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/__pycache__/easy_install.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/__pycache__/toml.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/__pycache__/appdirs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/py31compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/__pycache__/py31compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/appdirs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/six.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/pyparsing.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/__pycache__/six.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/__pycache__/pyparsing.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/__pycache__/appdirs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/_structures.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__about__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/_compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/specifiers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/markers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/requirements.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/_compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/__about__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/markers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/_structures.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/requirements.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__/specifiers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/extern/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pkg_resources/extern/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/LICENSE.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/Click-7.0.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/LICENSE"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/entry_points.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/black-19.3b0.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/converters.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_version_info.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/py.typed"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__init__.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/converters.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_funcs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_version_info.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_make.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/validators.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/exceptions.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/filters.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/validators.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/_config.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/filters.pyi"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/_compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/filters.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/converters.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/_version_info.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/_funcs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/_make.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/_config.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attr/__pycache__/validators.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/metadata.json"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/DESCRIPTION.rst"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/LICENSE.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml-0.10.0.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_imp.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/gui.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/unicode_utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/script (dev).tmpl"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/launch.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/extension.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/glob.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/cli-32.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/dist.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/py31compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/build_meta.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/package_index.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/dep_util.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/windows_support.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/cli-64.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/site-patch.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/msvc.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/errors.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/config.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/archive_util.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/cli.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/script.tmpl"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/gui-32.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/gui-64.exe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/depends.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/installer.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/namespaces.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/py33compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/wheel.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_deprecation_warning.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/monkey.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/ssl_support.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/sandbox.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/py27compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/lib2to3_ex.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/py34compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/upload.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/saveopts.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/dist_info.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/alias.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/build_py.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/bdist_rpm.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/rotate.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/sdist.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/launcher manifest.xml"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/easy_install.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/upload_docs.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/egg_info.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/test.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/install_scripts.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/install_lib.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/py36compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/develop.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/bdist_egg.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/install_egg_info.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/build_clib.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/setopt.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/install.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/build_ext.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/bdist_wininst.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/register.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/bdist_rpm.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/upload_docs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/py36compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/build_ext.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/build_clib.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/egg_info.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/build_py.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/saveopts.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/test.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/register.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/install.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/setopt.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/alias.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/upload.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/dist_info.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/bdist_egg.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/easy_install.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/install_egg_info.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/sdist.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/develop.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/install_lib.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/rotate.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/install_scripts.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/command/__pycache__/bdist_wininst.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/sandbox.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/extension.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/_imp.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/build_meta.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/archive_util.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/launch.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/glob.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/msvc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/wheel.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/py33compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/installer.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/monkey.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/site-patch.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/depends.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/lib2to3_ex.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/_deprecation_warning.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/config.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/ssl_support.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/dep_util.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/py31compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/dist.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/py27compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/namespaces.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/py34compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/unicode_utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/package_index.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/windows_support.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/__pycache__/errors.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/ordered_set.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/six.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/pyparsing.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/__pycache__/six.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/__pycache__/pyparsing.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/__pycache__/ordered_set.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/version.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/_structures.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/tags.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__about__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/_compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/specifiers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/markers.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/requirements.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/version.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/_compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/tags.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/__about__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/markers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/_structures.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/requirements.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/_vendor/packaging/__pycache__/specifiers.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/extern/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools/extern/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/zip-safe"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/LICENSE"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/entry_points.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/dependency_links.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/setuptools-42.0.2.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/LICENSE.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/entry_points.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/wheel-0.33.6.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/metadata.json"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/DESCRIPTION.rst"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/appdirs-1.4.3.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/LICENSE.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/entry_points.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/pip-19.3.1.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/encoder.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/decoder.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/ordered.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/tz.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__pycache__/tz.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__pycache__/encoder.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__pycache__/decoder.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/toml/__pycache__/ordered.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/RECORD"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/top_level.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/METADATA"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/INSTALLER"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/LICENSE"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/attrs-19.3.0.dist-info/WHEEL"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/parser.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/testing.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/utils.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/core.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_unicodefun.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_winconsole.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_bashcomplete.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_compat.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_termui_impl.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/_textwrap.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/termui.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/types.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/exceptions.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/formatting.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/globals.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/decorators.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_unicodefun.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/core.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_compat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_bashcomplete.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/types.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/decorators.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_winconsole.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/testing.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/termui.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/formatting.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/parser.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_textwrap.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/exceptions.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/utils.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/_termui_impl.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/click/__pycache__/globals.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pytree.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/PatternGrammar.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pygram.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/Grammar.txt"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/__pycache__/pygram.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/__pycache__/pytree.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/token.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/grammar.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/parse.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/conv.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/driver.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/tokenize.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/pgen.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/literals.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/grammar.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/pgen.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/driver.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/tokenize.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/token.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/conv.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/literals.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/site-packages/blib2to3/pgen2/__pycache__/parse.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/os.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/posixpath.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/base64.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/fnmatch.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/_bootlocale.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/reprlib.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/struct.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/random.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/types.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/hmac.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/_weakrefset.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/ntpath.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/tempfile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/genericpath.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/enum.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/shutil.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/tarfile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/sre_parse.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/__future__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/warnings.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/weakref.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/copy.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/hashlib.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/heapq.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/linecache.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/abc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/stat.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/sre_constants.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/re.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/io.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/tokenize.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/functools.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/sre_compile.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/copyreg.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/operator.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/codecs.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/token.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/_collections_abc.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/bisect.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/site.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/locale.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/__pycache__/keyword.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/distutils/__init__.py"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/distutils/distutils.cfg"
+    },
+    {
+      "path": ".nox/blacken/lib/python3.6/distutils/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": ".nox/blacken/bin/black"
+    },
+    {
+      "path": ".nox/blacken/bin/wheel"
+    },
+    {
+      "path": ".nox/blacken/bin/easy_install-3.6"
+    },
+    {
+      "path": ".nox/blacken/bin/activate.fish"
+    },
+    {
+      "path": ".nox/blacken/bin/pip"
+    },
+    {
+      "path": ".nox/blacken/bin/blackd"
+    },
+    {
+      "path": ".nox/blacken/bin/easy_install"
+    },
+    {
+      "path": ".nox/blacken/bin/python"
+    },
+    {
+      "path": ".nox/blacken/bin/activate.csh"
+    },
+    {
+      "path": ".nox/blacken/bin/python-config"
+    },
+    {
+      "path": ".nox/blacken/bin/activate_this.py"
+    },
+    {
+      "path": ".nox/blacken/bin/python3"
+    },
+    {
+      "path": ".nox/blacken/bin/activate.ps1"
+    },
+    {
+      "path": ".nox/blacken/bin/activate"
+    },
+    {
+      "path": ".nox/blacken/bin/pip3.6"
+    },
+    {
+      "path": ".nox/blacken/bin/pip3"
+    },
+    {
+      "path": ".nox/blacken/bin/activate.xsh"
+    },
+    {
+      "path": ".nox/blacken/bin/python3.6"
+    },
+    {
+      "path": "tests/unit/gapic/v1beta1/test_policy_tag_manager_client_v1beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v1beta1/test_policy_tag_manager_serialization_client_v1beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v1beta1/test_data_catalog_client_v1beta1.py"
+    },
+    {
+      "path": "__pycache__/noxfile.cpython-36.pyc"
+    },
+    {
+      "path": "__pycache__/synth.cpython-36.pyc"
+    },
+    {
+      "path": "docs/changelog.md"
+    },
+    {
+      "path": "docs/index.rst"
+    },
+    {
+      "path": "docs/README.rst"
+    },
+    {
+      "path": "docs/conf.py"
+    },
+    {
+      "path": "docs/gapic/v1beta1/api.rst"
+    },
+    {
+      "path": "docs/gapic/v1beta1/types.rst"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "google/__init__.py"
+    },
+    {
+      "path": "google/__pycache__/__init__.cpython-36.pyc"
+    },
+    {
+      "path": "google/cloud/__init__.py"
+    },
+    {
+      "path": "google/cloud/datacatalog.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/__init__.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/types.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/datacatalog_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/timestamps_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/schema_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/timestamps_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/tags_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/policytagmanagerserialization_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/search_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/datacatalog.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/policytagmanager_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/schema.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/schema_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/table_spec_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/tags.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/datacatalog_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/timestamps.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/table_spec_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/search_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/search.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/policytagmanagerserialization_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/tags_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/table_spec.proto"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/proto/policytagmanager_pb2.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/policy_tag_manager_serialization_client_config.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/data_catalog_client_config.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/policy_tag_manager_serialization_client.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/data_catalog_client.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/enums.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/policy_tag_manager_client.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/policy_tag_manager_client_config.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/transports/data_catalog_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/transports/__init__.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/transports/policy_tag_manager_serialization_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/datacatalog_v1beta1/gapic/transports/policy_tag_manager_grpc_transport.py"
     }
   ]
 }
