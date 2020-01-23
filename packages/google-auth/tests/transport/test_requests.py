@@ -177,6 +177,21 @@ class TestAuthorizedHttp(object):
 
         assert authed_session._auth_request == auth_request
 
+    def test_request_default_timeout(self):
+        credentials = mock.Mock(wraps=CredentialsStub())
+        response = make_response()
+        adapter = AdapterStub([response])
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+        authed_session.mount(self.TEST_URL, adapter)
+
+        patcher = mock.patch("google.auth.transport.requests.requests.Session.request")
+        with patcher as patched_request:
+            authed_session.request("GET", self.TEST_URL)
+
+        expected_timeout = google.auth.transport.requests._DEFAULT_TIMEOUT
+        assert patched_request.call_args.kwargs.get("timeout") == expected_timeout
+
     def test_request_no_refresh(self):
         credentials = mock.Mock(wraps=CredentialsStub())
         response = make_response()
