@@ -110,7 +110,7 @@ Load a Parquet file from Cloud Storage:
 See also: `Loading Parquet data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet>`_.
 
-Load a autodetect CSV file from Cloud Storage:
+Load a CSV file from Cloud Storage and auto-detect schema:
 
 .. literalinclude:: ../samples/load_table_uri_autodetect_csv.py
    :language: python
@@ -118,7 +118,7 @@ Load a autodetect CSV file from Cloud Storage:
    :start-after: [START bigquery_load_table_gcs_csv_autodetect]
    :end-before: [END bigquery_load_table_gcs_csv_autodetect]
 
-Load a autodetect JSON file from Cloud Storage:
+Load a JSON file from Cloud Storage and auto-detect schema:
 
 .. literalinclude:: ../samples/load_table_uri_autodetect_json.py
    :language: python
@@ -217,7 +217,8 @@ Restore a deleted table from a snapshot by using the
 
 Overwrite a Table
 ^^^^^^^^^^^^^^^^^
-Overwrite the AVRO file from Cloud Storage to table data:
+
+Replace the table data with an Avro file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_truncate_avro.py
    :language: python
@@ -225,7 +226,7 @@ Overwrite the AVRO file from Cloud Storage to table data:
    :start-after: [START bigquery_load_table_gcs_avro_truncate]
    :end-before: [END bigquery_load_table_gcs_avro_truncate]
 
-Overwrite the CSV file from Cloud Storage to table data:
+Replace the table data with a CSV file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_truncate_csv.py
    :language: python
@@ -233,7 +234,7 @@ Overwrite the CSV file from Cloud Storage to table data:
    :start-after: [START bigquery_load_table_gcs_csv_truncate]
    :end-before: [END bigquery_load_table_gcs_csv_truncate]
 
-Overwrite the JSON file from Cloud Storage to table data:
+Replace the table data with a JSON file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_truncate_json.py
    :language: python
@@ -241,7 +242,7 @@ Overwrite the JSON file from Cloud Storage to table data:
    :start-after: [START bigquery_load_table_gcs_json_truncate]
    :end-before: [END bigquery_load_table_gcs_json_truncate]
 
-Overwrite the ORC file from Cloud Storage to table data:
+Replace the table data with an ORC file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_truncate_orc.py
    :language: python
@@ -249,7 +250,7 @@ Overwrite the ORC file from Cloud Storage to table data:
    :start-after: [START bigquery_load_table_gcs_orc_truncate]
    :end-before: [END bigquery_load_table_gcs_orc_truncate]
 
-Overwrite the PARQUET file from Cloud Storage to table data:
+Replace the table data with a Parquet file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_truncate_parquet.py
    :language: python
