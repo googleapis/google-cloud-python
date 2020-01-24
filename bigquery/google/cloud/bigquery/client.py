@@ -356,16 +356,18 @@ class Client(ClientWithProject):
     def dataset(self, dataset_id, project=None):
         """Deprecated: Construct a reference to a dataset.
 
-        This method is deprecated. Construct a
-        :class:`~google.cloud.bigquery.dataset.DatasetReference` using its
-        constructor or use a string where previously a reference object was
-        used.
+        .. deprecated:: 1.24.0
+           Construct a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` using its
+           constructor or use a string where previously a reference object
+           was used.
 
-        As of ``google-cloud-bigquery`` version 1.7.0, all client methods that
-        take a :class:`~google.cloud.bigquery.dataset.DatasetReference` or
-        :class:`~google.cloud.bigquery.table.TableReference` also take a
-        string in standard SQL format, e.g. ``project.dataset_id`` or
-        ``project.dataset_id.table_id``.
+           As of ``google-cloud-bigquery`` version 1.7.0, all client methods
+           that take a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` or
+           :class:`~google.cloud.bigquery.table.TableReference` also take a
+           string in standard SQL format, e.g. ``project.dataset_id`` or
+           ``project.dataset_id.table_id``.
 
         Args:
             dataset_id (str): ID of the dataset.
