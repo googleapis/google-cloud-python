@@ -17,12 +17,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.recommender_v1beta1.proto import recommender_service_pb2_grpc
+from google.cloud.recommender_v1.proto import recommender_service_pb2_grpc
 
 
 class RecommenderGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.recommender.v1beta1 Recommender API.
+    google.cloud.recommender.v1 Recommender API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -139,14 +139,13 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_claimed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_claimed`.
 
-        Marks the Recommendation State as Claimed. Users can use this method
+        Mark the Recommendation State as Claimed. Users can use this method
         to indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated. Associated insights are frozen and placed in the ACCEPTED
-        state.
+        being updated.
 
-        MarkRecommendationClaimed can be applied to recommendations in CLAIMED
-        or ACTIVE state.
+        MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
+        SUCCEEDED, FAILED, or ACTIVE state.
 
         Requires the recommender.*.update IAM permission for the specified
         recommender.
@@ -162,11 +161,10 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_succeeded(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_succeeded`.
 
-        Marks the Recommendation State as Succeeded. Users can use this
+        Mark the Recommendation State as Succeeded. Users can use this
         method to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated. Associated insights are
-        frozen and placed in the ACCEPTED state.
+        the recommendation content from being updated.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -185,11 +183,10 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_failed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_failed`.
 
-        Marks the Recommendation State as Failed. Users can use this method
+        Mark the Recommendation State as Failed. Users can use this method
         to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated. Associated insights are
-        frozen and placed in the ACCEPTED state.
+        recommendation content from being updated.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
