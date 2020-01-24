@@ -79,6 +79,8 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
 
 class _ACLEntity(object):
     """Class representing a set of roles for an entity.
@@ -206,10 +208,18 @@ class ACL(object):
     def __init__(self):
         self.entities = {}
 
-    def _ensure_loaded(self):
-        """Load if not already loaded."""
+    def _ensure_loaded(self, timeout=_DEFAULT_TIMEOUT):
+        """Load if not already loaded.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+        """
         if not self.loaded:
-            self.reload()
+            self.reload(timeout=timeout)
 
     @classmethod
     def validate_predefined(cls, predefined):
@@ -415,7 +425,7 @@ class ACL(object):
             client = self.client
         return client
 
-    def reload(self, client=None):
+    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Reload the ACL data from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -424,6 +434,12 @@ class ACL(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         path = self.reload_path
         client = self._require_client(client)
@@ -435,13 +451,13 @@ class ACL(object):
         self.entities.clear()
 
         found = client._connection.api_request(
-            method="GET", path=path, query_params=query_params
+            method="GET", path=path, query_params=query_params, timeout=timeout
         )
         self.loaded = True
         for entry in found.get("items", ()):
             self.add_entity(self.entity_from_dict(entry))
 
-    def _save(self, acl, predefined, client):
+    def _save(self, acl, predefined, client, timeout=_DEFAULT_TIMEOUT):
         """Helper for :meth:`save` and :meth:`save_predefined`.
 
         :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.
@@ -457,6 +473,12 @@ class ACL(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         query_params = {"projection": "full"}
         if predefined is not None:
@@ -474,13 +496,14 @@ class ACL(object):
             path=path,
             data={self._URL_PATH_ELEM: list(acl)},
             query_params=query_params,
+            timeout=timeout,
         )
         self.entities.clear()
         for entry in result.get(self._URL_PATH_ELEM, ()):
             self.add_entity(self.entity_from_dict(entry))
         self.loaded = True
 
-    def save(self, acl=None, client=None):
+    def save(self, acl=None, client=None, timeout=_DEFAULT_TIMEOUT):
         """Save this ACL for the current bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -493,6 +516,12 @@ class ACL(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         if acl is None:
             acl = self
@@ -501,9 +530,9 @@ class ACL(object):
             save_to_backend = True
 
         if save_to_backend:
-            self._save(acl, None, client)
+            self._save(acl, None, client, timeout=timeout)
 
-    def save_predefined(self, predefined, client=None):
+    def save_predefined(self, predefined, client=None, timeout=_DEFAULT_TIMEOUT):
         """Save this ACL for the current bucket using a predefined ACL.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -519,11 +548,17 @@ class ACL(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         predefined = self.validate_predefined(predefined)
-        self._save(None, predefined, client)
+        self._save(None, predefined, client, timeout=timeout)
 
-    def clear(self, client=None):
+    def clear(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Remove all ACL entries.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -537,8 +572,14 @@ class ACL(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
-        self.save([], client=client)
+        self.save([], client=client, timeout=timeout)
 
 
 class BucketACL(ACL):
