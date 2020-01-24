@@ -569,7 +569,10 @@ class StreamingPullManager(object):
 
         for received_message in response.received_messages:
             message = google.cloud.pubsub_v1.subscriber.message.Message(
-                received_message.message, received_message.ack_id, self._scheduler.queue
+                received_message.message,
+                received_message.ack_id,
+                received_message.delivery_attempt,
+                self._scheduler.queue,
             )
             # Making a decision based on the load, and modifying the data that
             # affects the load -> needs a lock, as that state can be modified

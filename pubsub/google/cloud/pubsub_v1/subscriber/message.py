@@ -70,7 +70,7 @@ class Message(object):
             published.
     """
 
-    def __init__(self, message, ack_id, request_queue):
+    def __init__(self, message, ack_id, delivery_attempt, request_queue):
         """Construct the Message.
 
         .. note::
@@ -88,6 +88,7 @@ class Message(object):
         """
         self._message = message
         self._ack_id = ack_id
+        self._delivery_attempt = delivery_attempt
         self._request_queue = request_queue
         self.message_id = message.message_id
 
@@ -161,6 +162,30 @@ class Message(object):
     def ack_id(self):
         """str: the ID used to ack the message."""
         return self._ack_id
+
+    @property
+    def delivery_attempt(self):
+        """The delivery attempt counter is 1 + (the sum of number of NACKs
+        and number of ack_deadline exceeds) for this message. It is set to zero
+        if a DeadLetterPolicy is not set on the subscription.
+
+        A NACK is any call to ModifyAckDeadline with a 0 deadline. An ack_deadline
+        exceeds event is whenever a message is not acknowledged within
+        ack_deadline. Note that ack_deadline is initially
+        Subscription.ackDeadlineSeconds, but may get extended automatically by
+        the client library.
+
+        The first delivery of a given message will have this value as 1. The value
+        is calculated at best effort and is approximate.
+
+        EXPERIMENTAL: This feature is part of a closed alpha release. This
+        API might be changed in backward-incompatible ways and is not recommended
+        for production use. It is not subject to any SLA or deprecation policy.
+
+        Returns:
+            int: The delivery attempt counter.
+        """
+        return self._delivery_attempt
 
     def ack(self):
         """Acknowledge the given message.
