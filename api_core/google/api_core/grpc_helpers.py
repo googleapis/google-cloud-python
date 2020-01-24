@@ -64,14 +64,12 @@ def _wrap_unary_errors(callable_):
 class _StreamingResponseIterator(grpc.Call):
     def __init__(self, wrapped):
         self._wrapped = wrapped
-        self._stored_first_result = False
 
         # This iterator is used in a retry context, and returned outside after init.
         # gRPC will not throw an exception until the stream is consumed, so we need 
         # to retrieve the first result, in order to fail, in order to trigger a retry.
         try:
-            self._first_result = six.next(self._wrapped)
-            self._stored_first_result = True
+            self._stored_first_result = six.next(self._wrapped)
         except StopIteration:
             # ignore stop iteration at this time. This should be handled outside of retry.
             pass
@@ -88,10 +86,11 @@ class _StreamingResponseIterator(grpc.Call):
             protobuf.Message: A single response from the stream.
         """
         try:
-            if self._stored_first_result:
-                self._stored_first_result = False
-                return self._first_result
-           return six.next(self._wrapped)
+            if hasattr(self._stored_first_result):
+                result = self._stored_first_result
+                del self._stored_first_result
+                return result
+            return six.next(self._wrapped)
         except grpc.RpcError as exc:
             # If the stream has already returned data, we cannot recover here. 
             six.raise_from(exceptions.from_grpc_error(exc), exc)
