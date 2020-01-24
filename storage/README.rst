@@ -98,6 +98,7 @@ how to create a bucket.
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
     blob = bucket.get_blob('remote/path/to/file.txt')
+    #   download_as_string() returns bytes not a string
     print(blob.download_as_string())
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('remote/path/storage.txt')
