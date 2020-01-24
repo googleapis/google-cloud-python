@@ -361,7 +361,7 @@ class Client(ClientWithProject):
         constructor or use a string where previously a reference object was
         used.
 
-        As ``google-cloud-bigquery`` version 1.7.0, all client methods that
+        As of ``google-cloud-bigquery`` version 1.7.0, all client methods that
         take a :class:`~google.cloud.bigquery.dataset.DatasetReference` or
         :class:`~google.cloud.bigquery.table.TableReference` also take a
         string in standard SQL format, e.g. ``project.dataset_id`` or
