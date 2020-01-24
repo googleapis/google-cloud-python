@@ -25,7 +25,7 @@ STORAGE_OBJECT_CREATOR_ROLE = "roles/storage.objectCreator"
 STORAGE_OBJECT_VIEWER_ROLE = "roles/storage.objectViewer"
 """Role implying rights to view object properties, excluding ACLs."""
 
-STORAGE_OBJECT_ADMIN_ROLE = "roles/storage.objectViewer"
+STORAGE_OBJECT_ADMIN_ROLE = "roles/storage.objectAdmin"
 """Role implying full control of objects."""
 
 STORAGE_ADMIN_ROLE = "roles/storage.admin"
