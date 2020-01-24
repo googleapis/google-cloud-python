@@ -4636,10 +4636,13 @@ class TestClient(unittest.TestCase):
         ]
 
         def _row_data(row):
+            result = {"full_name": row[0], "age": str(row[1])}
             joined = row[2]
-            if isinstance(row[2], datetime.datetime):
-                joined = _microseconds_from_datetime(joined) * 1e-6
-            return {"full_name": row[0], "age": str(row[1]), "joined": joined}
+            if joined is not None:
+                if isinstance(joined, datetime.datetime):
+                    joined = _microseconds_from_datetime(joined) * 1e-6
+                result["joined"] = joined
+            return result
 
         SENT = {
             "rows": [
@@ -4708,7 +4711,10 @@ class TestClient(unittest.TestCase):
 
         def _row_data(row):
             joined = row["joined"]
-            if isinstance(joined, datetime.datetime):
+            if joined is None:
+                row = copy.deepcopy(row)
+                del row["joined"]
+            elif isinstance(joined, datetime.datetime):
                 row["joined"] = _microseconds_from_datetime(joined) * 1e-6
             row["age"] = str(row["age"])
             return row
@@ -4927,9 +4933,8 @@ class TestClient(unittest.TestCase):
                 },
                 {
                     "json": {
-                        "color": None,
                         "items": [],
-                        "structs": [{"score": None, "times": [], "distances": [3.5]}],
+                        "structs": [{"times": [], "distances": [3.5]}],
                     },
                     "insertId": "1",
                 },
@@ -4996,10 +5001,7 @@ class TestClient(unittest.TestCase):
                     },
                     "insertId": "1",
                 },
-                {
-                    "json": {"full_name": "Wylma Phlyntstone", "phone": None},
-                    "insertId": "2",
-                },
+                {"json": {"full_name": "Wylma Phlyntstone"}, "insertId": "2"},
             ]
         }
 

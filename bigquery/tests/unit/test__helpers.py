@@ -867,6 +867,18 @@ class Test_record_field_to_json(unittest.TestCase):
         # missing fields should not be converted to an explicit None
         self.assertEqual(converted, {"one": "42"})
 
+    def test_w_explicit_none_value(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+            _make_field("BOOL", name="three", mode="REPEATED"),
+        ]
+        original = {"three": None, "one": 42, "two": None}
+        converted = self._call_fut(fields, original)
+
+        # None values should be dropped regardless of the field type
+        self.assertEqual(converted, {"one": "42"})
+
 
 class Test_field_to_json(unittest.TestCase):
     def _call_fut(self, field, value):
