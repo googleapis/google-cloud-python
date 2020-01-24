@@ -110,7 +110,7 @@ Load a Parquet file from Cloud Storage:
 See also: `Loading Parquet data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet>`_.
 
-Load a Avro file from Cloud Storage:
+Load an Avro file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_avro.py
    :language: python
@@ -121,7 +121,7 @@ Load a Avro file from Cloud Storage:
 See also: `Loading Avro data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro>`_.
 
-Load a ORC file from Cloud Storage:
+Load an ORC file from Cloud Storage:
 
 .. literalinclude:: ../samples/load_table_uri_orc.py
    :language: python
