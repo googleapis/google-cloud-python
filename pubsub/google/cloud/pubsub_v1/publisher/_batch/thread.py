@@ -191,7 +191,11 @@ class Batch(base.Batch):
             else:
                 return
 
-        # Start a new thread to actually handle the commit.
+        self._start_commit_thread()
+
+    def _start_commit_thread(self):
+        """Start a new thread to actually handle the commit."""
+
         commit_thread = threading.Thread(
             name="Thread-CommitBatchPublisher", target=self._commit
         )

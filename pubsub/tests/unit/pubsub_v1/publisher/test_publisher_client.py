@@ -281,17 +281,22 @@ def test_commit_thread_created_on_publish():
     batch_settings = types.BatchSettings(max_latency=600)
     client = publisher.Client(batch_settings=batch_settings, credentials=creds)
 
-    with mock.patch.object(threading, "Thread", autospec=True) as Thread:
+    with mock.patch.object(
+        client, "_start_commit_thread", autospec=True
+    ) as _start_commit_thread:
         # First publish should create a commit thread.
         assert client.publish("topic", b"bytestring body", ordering_key="") is not None
-        Thread.assert_called_once_with(
-            name="Thread-PubSubBatchCommitter", target=mock.ANY
-        )
-        # Second publish should not create a commit thread since one already
-        # exists.
+        _start_commit_thread.assert_called_once()
+
+        # Since _start_commit_thread is a mock, no actual thread has been
+        # created, so let's put a sentinel there to mimic real behavior.
+        client._commit_thread = mock.Mock()
+
+        # Second publish should not create a commit thread since one (the mock)
+        # already exists.
         assert client.publish("topic", b"bytestring body", ordering_key="") is not None
         # Call count should remain 1.
-        assert Thread.call_count == 1
+        _start_commit_thread.assert_called_once()
 
 
 def test_commit_thread_not_created_on_publish_if_max_latency_is_inf():
@@ -444,5 +449,3 @@ def test_resume_publish_ordering_keys_not_enabled():
     client = publisher.Client(publisher_options, credentials=creds)
 
     # Throw on calling resume_publish() when enable_message_ordering is False.
-    with pytest.raises(ValueError):
-        client.resume_publish("topic", "ord_key")

@@ -82,14 +82,12 @@ def test_client():
 
 def test_commit():
     batch = create_batch()
-    with mock.patch.object(threading, "Thread", autospec=True) as Thread:
-        batch.commit()
 
-        # A thread should have been created to do the actual commit.
-        Thread.assert_called_once_with(
-            name="Thread-CommitBatchPublisher", target=batch._commit
-        )
-        Thread.return_value.start.assert_called_once_with()
+    with mock.patch.object(
+        Batch, "_start_commit_thread", autospec=True
+    ) as _start_commit_thread:
+        batch.commit()
+        _start_commit_thread.assert_called_once()
 
     # The batch's status needs to be something other than "accepting messages",
     # since the commit started.

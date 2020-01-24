@@ -376,11 +376,14 @@ class Client(object):
             _batch_lock must be held before calling this method.
         """
         if not self._commit_thread and self.batch_settings.max_latency < float("inf"):
-            self._commit_thread = threading.Thread(
-                name="Thread-PubSubBatchCommitter",
-                target=self._wait_and_commit_sequencers,
-            )
-            self._commit_thread.start()
+            self._start_commit_thread()
+
+    def _start_commit_thread(self):
+        """Start a new thread to actually wait and commit the sequencers."""
+        self._commit_thread = threading.Thread(
+            name="Thread-PubSubBatchCommitter", target=self._wait_and_commit_sequencers
+        )
+        self._commit_thread.start()
 
     def _wait_and_commit_sequencers(self):
         """ Wait up to the batching timeout, and commit all sequencers.
