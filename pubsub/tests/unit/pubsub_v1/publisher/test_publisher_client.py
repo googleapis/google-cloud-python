@@ -19,7 +19,6 @@ from google.auth import credentials
 
 import mock
 import pytest
-import threading
 import time
 
 from google.cloud.pubsub_v1.gapic import publisher_client
@@ -449,3 +448,5 @@ def test_resume_publish_ordering_keys_not_enabled():
     client = publisher.Client(publisher_options, credentials=creds)
 
     # Throw on calling resume_publish() when enable_message_ordering is False.
+    with pytest.raises(ValueError):
+        client.resume_publish("topic", "ord_key")
