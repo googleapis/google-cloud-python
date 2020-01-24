@@ -56,7 +56,7 @@ class Impact(object):
 class RecommendationStateInfo(object):
     class State(enum.IntEnum):
         """
-        Represents Recommendation State.
+        Represents Recommendation State
 
         Attributes:
           STATE_UNSPECIFIED (int): Default state. Don't use directly.

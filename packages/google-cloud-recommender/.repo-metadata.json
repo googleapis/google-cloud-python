@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/recommender",
   "client_documentation": "https://googleapis.dev/python/recommender/latest",
   "issue_tracker": "",
-  "release_level": "alpha",
+  "release_level": "beta",
   "language": "python",
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-recommender",
