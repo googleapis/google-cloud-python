@@ -48,10 +48,16 @@ class ParseUtilsTests(TestCase):
                 'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
                 [1, 2, 3, 4, 5, 6],
                 {
-                    'homogenous': True,
-                    'columns': ['app', 'name', 'applied'],
-                    'table': 'django_migrations',
-                    'values': [(1, 2, 3,), (4, 5, 6,)],
+                    'sql_params_list': [
+                        (
+                            'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                            (1, 2, 3,),
+                        ),
+                        (
+                            'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                            (4, 5, 6,),
+                        ),
+                    ],
                 },
             ),
             (
@@ -74,21 +80,40 @@ class ParseUtilsTests(TestCase):
                 'VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s),(%s,      %s, %s)',
                 (1, 2, 3, 4, 5, 6, 7, 8, 9),
                 {
-                    'homogenous': True,
-                    'columns': ['n', 'ct', 'cn'],
-                    'table': 'ap',
-                    'values': [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)],
+                    'sql_params_list': [
+                        (
+                            'INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)',
+                            (1, 2, 3,),
+                        ),
+                        (
+                            'INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)',
+                            (4, 5, 6,),
+                        ),
+                        (
+                            'INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)',
+                            (7, 8, 9,),
+                        ),
+                    ],
                 },
             ),
             (
                 'INSERT INTO `no` (`yes`) VALUES (%s)',
                 (1, 4, 5),
                 {
-                    # The results MUST NOT contain any backticks.
-                    'homogenous': True,
-                    'table': 'no',
-                    'columns': ['yes'],
-                    'values': [(1,), (4,), (5,)],
+                    'sql_params_list': [
+                        (
+                            'INSERT INTO `no` (`yes`) VALUES (%s)',
+                            (1,),
+                        ),
+                        (
+                            'INSERT INTO `no` (`yes`) VALUES (%s)',
+                            (4,),
+                        ),
+                        (
+                            'INSERT INTO `no` (`yes`) VALUES (%s)',
+                            (5,),
+                        ),
+                    ],
                 },
             ),
             (

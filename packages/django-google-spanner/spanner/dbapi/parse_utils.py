@@ -160,22 +160,21 @@ def parse_insert(insert_sql, params):
     if values.homogenous():
         # Case c)
 
-        # We MUST strip backticks for the table_name and columns,
-        # only in this code path for homogenous statements.
-        table = strip_backticks(match.group('table_name'))
-
         columns = [
-            strip_backticks(mi.strip())
-            for mi in match.group('columns').split(',')
+             strip_backticks(mi.strip())
+             for mi in match.group('columns').split(',')
         ]
+        sql_params_list = []
+        insert_sql_preamble = 'INSERT INTO %s (%s) VALUES %s' % (
+                match.group('table_name'), match.group('columns'), values.argv[0],
+        )
         values_pyformat = [str(arg) for arg in values.argv]
         rows_list = rows_for_insert_or_update(columns, params, values_pyformat)
+        for row in rows_list:
+            sql_params_list.append((insert_sql_preamble, row,))
 
         return {
-            'homogenous': True,
-            'table': table,
-            'values': rows_list,
-            'columns': columns,
+            'sql_params_list': sql_params_list,
         }
 
     # Case d)

@@ -5,11 +5,15 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from .cursor import Cursor
-from .exceptions import Error
+from .exceptions import Error, ProgrammingError
 
 
 class Connection(object):
     def __init__(self, db_handle):
+        sess = db_handle.session()
+        if not sess.exists():
+            sess.create()
+        self.__sess = sess
         self.__dbhandle = db_handle
         self.__closed = False
         self.__ddl_statements = []
@@ -23,11 +27,15 @@ class Connection(object):
 
     def close(self):
         self.rollback()
-        self.__dbhandle = None
+        self.__clear()
         self.__closed = True
 
     def __enter__(self):
         return self
+
+    def __clear(self):
+        self.__dbhandle = None
+        self.__sess.delete()
 
     def __exit__(self, etype, value, traceback):
         self.commit()
@@ -38,15 +46,24 @@ class Connection(object):
 
         self.run_prior_DDL_statements()
 
+        if not self.__txn:
+            raise ProgrammingError('attempting to invoke commit on a non-existent transaction')
+
+        if not self.__txn.committed:
+            self.__txn.commit()
+            self.__txn = None
+
     def rollback(self):
         self.__raise_if_already_closed()
 
-        # TODO: to be added.
-
+        return self.__txn.rollback()
+        
     def cursor(self):
         self.__raise_if_already_closed()
 
-        return Cursor(self)
+        self.__txn = self.__sess.transaction()
+        self.__txn.begin()
+        return Cursor(self.__txn, self)
 
     def __handle_update_ddl(self, ddl_statements):
         """
@@ -64,16 +81,6 @@ class Connection(object):
         # Synchronously wait on the operation's completion.
         return self.__dbhandle.update_ddl(ddl_statements).result()
 
-    def read_snapshot(self):
-        self.__raise_if_already_closed()
-
-        return self.__dbhandle.snapshot()
-
-    def in_transaction(self, fn, *args, **kwargs):
-        self.__raise_if_already_closed()
-
-        return self.__dbhandle.run_in_transaction(fn, *args, **kwargs)
-
     def append_ddl_statement(self, ddl_statement):
         self.__raise_if_already_closed()
 
@@ -88,3 +95,39 @@ class Connection(object):
         ddl_statements = self.__ddl_statements
         self.__ddl_statements = []
         return self.__handle_update_ddl(ddl_statements)
+        
+    def __update_ddl(self, ddl_statements):
+        """
+        Runs the list of Data Definition Language (DDL) statements on the specified
+        database. Note that each DDL statement MUST NOT contain a semicolon.
+        Args:
+            ddl_statements: a list of DDL statements, each without a semicolon.
+        Returns:
+            google.api_core.operation.Operation
+        """
+        # Synchronously wait on the operation's completion.
+        return self.__dbhandle.update_ddl(ddl_statements).result()
+
+    def list_tables(self):
+        # We CANNOT list tables with
+        #   SELECT
+        #     t.table_name
+        #   FROM
+        #     information_schema.tables AS t
+        #   WHERE
+        #     t.table_catalog = '' and t.table_schema = ''
+        # with a transaction otherwise we get back:
+        #   400 Unsupported concurrency mode in query using INFORMATION_SCHEMA.
+        # hence this specialized method.
+        self.run_prior_DDL_statements()
+
+        with self.__dbhandle.snapshot() as snapshot:
+            res = snapshot.execute_sql("""
+             SELECT
+              t.table_name
+            FROM
+              information_schema.tables AS t
+            WHERE
+              t.table_catalog = '' and t.table_schema = ''
+            """)
+            return list(res)

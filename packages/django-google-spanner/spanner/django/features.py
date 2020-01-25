@@ -15,7 +15,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_partial_indexes = False
     supports_regex_backreferencing = False
     supports_timezones = False
-    supports_transactions = False
+    supports_transactions = True
     supports_column_check_constraints = False
     supports_table_check_constraints = False
     uses_savepoints = False

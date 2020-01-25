@@ -19,10 +19,11 @@ _UNSET_COUNT = -1
 
 
 class Cursor(object):
-    def __init__(self, db_handle=None):
+    def __init__(self, txn, db_handle=None):
         self.__itr = None
         self.__res = None
         self.__row_count = _UNSET_COUNT
+        self.__txn = txn
         self.__db_handle = db_handle
         self.__last_op = None
         self.__closed = False
@@ -89,7 +90,7 @@ class Cursor(object):
             self.__run_prior_DDL_statements()
 
             if classification == STMT_NON_UPDATING:
-                self.__handle_DQL(sql, args or None)
+                self.__handle_DQL(self.__get_txn(), sql, args or None)
             elif classification == STMT_INSERT:
                 self.__handle_insert(sql, args or None)
             else:
@@ -102,16 +103,10 @@ class Cursor(object):
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
     def __handle_update(self, sql, params):
-        self.__db_handle.in_transaction(
-            self.__do_execute_update,
-            sql, params,
-        )
-
-    def __do_execute_update(self, transaction, sql, params, param_types=None):
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
-        res = transaction.execute_update(sql, params=params, param_types=get_param_types(params))
+        res = self.__txn.execute_update(sql, params=params, param_types=get_param_types(params))
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
@@ -134,27 +129,11 @@ class Cursor(object):
         #           transaction.execute_sql(sql, params, param_types)
         # which invokes more RPCs and is more costly.
 
-        if parts.get('homogenous'):
-            # The common case of multiple values being passed in
-            # non-complex pyformat args and need to be uploaded in one RPC.
-            return self.__db_handle.in_transaction(
-                self.__do_execute_insert_homogenous,
-                parts,
-            )
-        else:
-            # All the other cases that are esoteric and need
-            #   transaction.execute_sql
-            sql_params_list = parts.get('sql_params_list')
-            return self.__db_handle.in_transaction(
-                self.__do_execute_insert_heterogenous,
-                sql_params_list,
-            )
-
-    def __do_execute_insert_heterogenous(self, transaction, sql_params_list):
+        sql_params_list = parts.get('sql_params_list')
         for sql, params in sql_params_list:
             sql, params = sql_pyformat_args_to_spanner(sql, params)
             param_types = get_param_types(params)
-            res = transaction.execute_sql(sql, params=params, param_types=param_types)
+            res = txn.execute_update(sql, params=params, param_types=param_types)
             # TODO: File a bug with Cloud Spanner and the Python client maintainers
             # about a lost commit when res isn't read from.
             _ = list(res)
@@ -166,40 +145,41 @@ class Cursor(object):
         values = parts.get('values')
         return transaction.insert(table, columns, values)
 
-    def __handle_DQL(self, sql, params):
-        with self.__db_handle.read_snapshot() as snapshot:
-            # Reference
-            #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
-            sql, params = sql_pyformat_args_to_spanner(sql, params)
-            res = snapshot.execute_sql(sql, params=params, param_types=get_param_types(params))
-            if type(res) == int:
-                self.__row_count = res
-                self.__itr = None
-            else:
-                # Immediately using:
-                #   iter(response)
-                # here, because this Spanner API doesn't provide
-                # easy mechanisms to detect when only a single item
-                # is returned or many, yet mixing results that
-                # are for .fetchone() with those that would result in
-                # many items returns a RuntimeError if .fetchone() is
-                # invoked and vice versa.
-                self.__res = res
-                # Read the first element so that StreamedResult can
-                # return the metadata after a DQL statement. See issue #155.
-                self.__itr = PeekIterator(self.__res)
-                # Unfortunately, Spanner doesn't seem to send back
-                # information about the number of rows available.
-                self.__row_count = _UNSET_COUNT
+    def __handle_DQL(self, txn, sql, params):
+        # Reference
+        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
+        sql, params = sql_pyformat_args_to_spanner(sql, params)
+        res = txn.execute_sql(sql, params=params, param_types=get_param_types(params))
+        if type(res) == int:
+            self.__row_count = res
+            self.__itr = None
+        else:
+            # Immediately using:
+            #   iter(response)
+            # here, because this Spanner API doesn't provide
+            # easy mechanisms to detect when only a single item
+            # is returned or many, yet mixing results that
+            # are for .fetchone() with those that would result in
+            # many items returns a RuntimeError if .fetchone() is
+            # invoked and vice versa.
+            self.__res = res
+            # Read the first element so that StreamedResult can
+            # return the metadata after a DQL statement. See issue #155.
+            self.__itr = PeekIterator(self.__res)
+            # Unfortunately, Spanner doesn't seem to send back
+            # information about the number of rows available.
+            self.__row_count = _UNSET_COUNT
 
     def __enter__(self):
         return self
 
     def __exit__(self, etype, value, traceback):
+        self.__txn.commit()
         self.__clear()
 
     def __clear(self):
         self.__db_handle = None
+        self.__txn = None
 
     def executemany(self, operation, seq_of_params):
         self.__raise_if_already_closed()
@@ -271,6 +251,19 @@ class Cursor(object):
 
     def __run_prior_DDL_statements(self):
         return self.__db_handle.run_prior_DDL_statements()
+
+    def list_tables(self):
+        # We CANNOT list tables with
+        #   SELECT
+        #     t.table_name
+        #   FROM
+        #     information_schema.tables AS t
+        #   WHERE
+        #     t.table_catalog = '' and t.table_schema = ''
+        # with a transaction otherwise we get back:
+        #   400 Unsupported concurrency mode in query using INFORMATION_SCHEMA.
+        # hence this specialized method.
+        return self.__db_handle.list_tables()
 
 
 class Column:
