@@ -354,7 +354,20 @@ class Client(ClientWithProject):
         )
 
     def dataset(self, dataset_id, project=None):
-        """Construct a reference to a dataset.
+        """Deprecated: Construct a reference to a dataset.
+
+        .. deprecated:: 1.24.0
+           Construct a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` using its
+           constructor or use a string where previously a reference object
+           was used.
+
+           As of ``google-cloud-bigquery`` version 1.7.0, all client methods
+           that take a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` or
+           :class:`~google.cloud.bigquery.table.TableReference` also take a
+           string in standard SQL format, e.g. ``project.dataset_id`` or
+           ``project.dataset_id.table_id``.
 
         Args:
             dataset_id (str): ID of the dataset.
@@ -370,6 +383,13 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
 
+        warnings.warn(
+            "Client.dataset is deprecated and will be removed in a future version. "
+            "Use a string like 'my_project.my_dataset' or a "
+            "cloud.google.bigquery.DatasetReference object, instead.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return DatasetReference(project, dataset_id)
 
     def _create_bqstorage_client(self):
@@ -419,7 +439,7 @@ class Client(ClientWithProject):
 
             >>> from google.cloud import bigquery
             >>> client = bigquery.Client()
-            >>> dataset = bigquery.Dataset(client.dataset('my_dataset'))
+            >>> dataset = bigquery.Dataset('my_project.my_dataset')
             >>> dataset = client.create_dataset(dataset)
 
         """
@@ -2584,7 +2604,7 @@ class Client(ClientWithProject):
         ) as guard:
             meta_table = self.get_table(
                 TableReference(
-                    self.dataset(table.dataset_id, project=table.project),
+                    DatasetReference(table.project, table.dataset_id),
                     "%s$__PARTITIONS_SUMMARY__" % table.table_id,
                 ),
                 retry=retry,
