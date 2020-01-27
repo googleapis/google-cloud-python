@@ -129,6 +129,20 @@ def test_wrap_stream_errors_invocation():
     assert exc_info.value.response == grpc_error
 
 
+def test_wrap_stream_empty_iterator():
+    expected_responses = []
+    callable_ = mock.Mock(spec=["__call__"], return_value=iter(expected_responses))
+
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
+
+    got_iterator = wrapped_callable()
+
+    responses = list(got_iterator)
+
+    callable_.assert_called_once_with()
+    assert responses == expected_responses
+
+
 class RpcResponseIteratorImpl(object):
     def __init__(self, exception):
         self._exception = exception
