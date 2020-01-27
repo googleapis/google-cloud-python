@@ -3073,7 +3073,7 @@ class QueryJob(_AsyncJob):
             else:
                 timeout = server_timeout_with_margin
 
-        # Do not refresh is the state is already done, as the job will not
+        # Do not refresh if the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(
