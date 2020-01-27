@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## 0.5.0
+
+01-27-2020 13:58 PST
+
+
+### Implementation Changes
+- Update spacing in docs templates (via synth). ([#9766](https://github.com/googleapis/google-cloud-python/pull/9766))
+
+### New Features
+- Add 2.7 sunset warning (via synth).  ([#10050](https://github.com/googleapis/google-cloud-python/pull/10050))
+- Add `query_language_code` to `talent.v4beta1.JobQuery` (via synth). ([#9571](https://github.com/googleapis/google-cloud-python/pull/9571))
+
+### Documentation
+- Update docstring for `DiversificationLevel`.  ([#9958](https://github.com/googleapis/google-cloud-python/pull/9958))
+- Add python 2 sunset banner to documentation. ([#9036](https://github.com/googleapis/google-cloud-python/pull/9036))
+- Update docstrings (via synth). ([#9644](https://github.com/googleapis/google-cloud-python/pull/9644))
+- Tweak docstrings (via synth). ([#9432](https://github.com/googleapis/google-cloud-python/pull/9432))
+
+### Internal / Testing Changes
+- Add 3.8 unit tests (via synth). ([#9941](https://github.com/googleapis/google-cloud-python/pull/9941))
+- Add LRO and RPC status imports to protos. (via synth) ([#9913](https://github.com/googleapis/google-cloud-python/pull/9913))
+
 ## 0.4.0
 
 10-04-2019 14:29 PDT
