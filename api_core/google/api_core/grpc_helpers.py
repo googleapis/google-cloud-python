@@ -71,7 +71,7 @@ class _StreamingResponseIterator(grpc.Call):
         try:
             self._stored_first_result = six.next(self._wrapped)
         except TypeError:
-            # It is possible the wrappe method isn't an iterable (a grpc.Call
+            # It is possible the wrapped method isn't an iterable (a grpc.Call
             # for instance). If this happens don't store the first result.
             pass
         except StopIteration:
