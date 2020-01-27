@@ -68,6 +68,12 @@ class TestClient(unittest.TestCase):
 
         return Client
 
+    @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
@@ -772,6 +778,7 @@ class TestClient(unittest.TestCase):
                 method="GET",
                 path="/b/%s/o" % BUCKET_NAME,
                 query_params={"projection": "noAcl"},
+                timeout=self._get_default_timeout(),
             )
 
     def test_list_blobs_w_all_arguments_and_user_project(self):
@@ -822,7 +829,10 @@ class TestClient(unittest.TestCase):
 
             self.assertEqual(blobs, [])
             connection.api_request.assert_called_once_with(
-                method="GET", path="/b/%s/o" % BUCKET_NAME, query_params=EXPECTED
+                method="GET",
+                path="/b/%s/o" % BUCKET_NAME,
+                query_params=EXPECTED,
+                timeout=self._get_default_timeout(),
             )
 
     def test_list_buckets_wo_project(self):
