@@ -70,6 +70,10 @@ class _StreamingResponseIterator(grpc.Call):
         # to retrieve the first result, in order to fail, in order to trigger a retry.
         try:
             self._stored_first_result = six.next(self._wrapped)
+        except TypeError:
+            # It is possible the wrappe method isn't an iterable (a grpc.Call
+            # for instance). If this happens don't store the first result.
+            pass
         except StopIteration:
             # ignore stop iteration at this time. This should be handled outside of retry.
             pass
@@ -86,7 +90,7 @@ class _StreamingResponseIterator(grpc.Call):
             protobuf.Message: A single response from the stream.
         """
         try:
-            if hasattr(self._stored_first_result):
+            if hasattr(self, "_stored_first_result"):
                 result = self._stored_first_result
                 del self._stored_first_result
                 return result
