@@ -29,7 +29,7 @@ version = "1.25.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-auth >= 1.9.0, < 2.0dev",
+    "google-auth >= 1.11.0, < 2.0dev",
     "google-cloud-core >= 1.2.0, < 2.0dev",
     "google-resumable-media >= 0.5.0, < 0.6dev",
 ]
