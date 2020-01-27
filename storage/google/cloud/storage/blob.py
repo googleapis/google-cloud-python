@@ -61,6 +61,7 @@ from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
 from google.cloud.storage.acl import ObjectACL
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
 from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
 from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
@@ -499,7 +500,7 @@ class Blob(_PropertyMixin):
             query_parameters=query_parameters,
         )
 
-    def exists(self, client=None):
+    def exists(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Determines whether or not this blob exists.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -509,6 +510,12 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
@@ -527,6 +534,7 @@ class Blob(_PropertyMixin):
                 path=self.path,
                 query_params=query_params,
                 _target_object=None,
+                timeout=timeout,
             )
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
@@ -535,7 +543,7 @@ class Blob(_PropertyMixin):
         except NotFound:
             return False
 
-    def delete(self, client=None):
+    def delete(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Deletes a blob from Cloud Storage.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -545,12 +553,20 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        self.bucket.delete_blob(self.name, client=client, generation=self.generation)
+        self.bucket.delete_blob(
+            self.name, client=client, generation=self.generation, timeout=timeout
+        )
 
     def _get_transport(self, client):
         """Return the client's transport.
@@ -1454,7 +1470,9 @@ class Blob(_PropertyMixin):
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
 
-    def get_iam_policy(self, client=None, requested_policy_version=None):
+    def get_iam_policy(
+        self, client=None, requested_policy_version=None, timeout=_DEFAULT_TIMEOUT
+    ):
         """Retrieve the IAM policy for the object.
 
         .. note:
@@ -1484,6 +1502,12 @@ class Blob(_PropertyMixin):
                                          The service might return a policy with version lower
                                          than the one that was requested, based on the
                                          feature syntax in the policy fetched.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
@@ -1504,10 +1528,11 @@ class Blob(_PropertyMixin):
             path="%s/iam" % (self.path,),
             query_params=query_params,
             _target_object=None,
+            timeout=timeout,
         )
         return Policy.from_api_repr(info)
 
-    def set_iam_policy(self, policy, client=None):
+    def set_iam_policy(self, policy, client=None, timeout=_DEFAULT_TIMEOUT):
         """Update the IAM policy for the bucket.
 
         .. note:
@@ -1528,6 +1553,12 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
@@ -1548,10 +1579,11 @@ class Blob(_PropertyMixin):
             query_params=query_params,
             data=resource,
             _target_object=None,
+            timeout=timeout,
         )
         return Policy.from_api_repr(info)
 
-    def test_iam_permissions(self, permissions, client=None):
+    def test_iam_permissions(self, permissions, client=None, timeout=_DEFAULT_TIMEOUT):
         """API call:  test permissions
 
         .. note:
@@ -1572,6 +1604,12 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: list of string
         :returns: the permissions returned by the ``testIamPermissions`` API
@@ -1585,7 +1623,7 @@ class Blob(_PropertyMixin):
 
         path = "%s/iam/testPermissions" % (self.path,)
         resp = client._connection.api_request(
-            method="GET", path=path, query_params=query_params
+            method="GET", path=path, query_params=query_params, timeout=timeout
         )
 
         return resp.get("permissions", [])
@@ -1612,7 +1650,7 @@ class Blob(_PropertyMixin):
         self.acl.all().revoke_read()
         self.acl.save(client=client)
 
-    def compose(self, sources, client=None):
+    def compose(self, sources, client=None, timeout=_DEFAULT_TIMEOUT):
         """Concatenate source blobs into this one.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1625,6 +1663,12 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         client = self._require_client(client)
         query_params = {}
@@ -1642,10 +1686,11 @@ class Blob(_PropertyMixin):
             query_params=query_params,
             data=request,
             _target_object=self,
+            timeout=timeout,
         )
         self._set_properties(api_response)
 
-    def rewrite(self, source, token=None, client=None):
+    def rewrite(self, source, token=None, client=None, timeout=_DEFAULT_TIMEOUT):
         """Rewrite source blob into this one.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1663,6 +1708,13 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
@@ -1695,6 +1747,7 @@ class Blob(_PropertyMixin):
             data=self._properties,
             headers=headers,
             _target_object=self,
+            timeout=timeout,
         )
         rewritten = int(api_response["totalBytesRewritten"])
         size = int(api_response["objectSize"])
