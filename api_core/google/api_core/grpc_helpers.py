@@ -66,7 +66,7 @@ class _StreamingResponseIterator(grpc.Call):
         self._wrapped = wrapped
 
         # This iterator is used in a retry context, and returned outside after init.
-        # gRPC will not throw an exception until the stream is consumed, so we need 
+        # gRPC will not throw an exception until the stream is consumed, so we need
         # to retrieve the first result, in order to fail, in order to trigger a retry.
         try:
             self._stored_first_result = six.next(self._wrapped)
@@ -77,7 +77,6 @@ class _StreamingResponseIterator(grpc.Call):
         except StopIteration:
             # ignore stop iteration at this time. This should be handled outside of retry.
             pass
-
 
     def __iter__(self):
         """This iterator is also an iterable that returns itself."""
@@ -96,7 +95,7 @@ class _StreamingResponseIterator(grpc.Call):
                 return result
             return six.next(self._wrapped)
         except grpc.RpcError as exc:
-            # If the stream has already returned data, we cannot recover here. 
+            # If the stream has already returned data, we cannot recover here.
             six.raise_from(exceptions.from_grpc_error(exc), exc)
 
     # Alias needed for Python 2/3 support.

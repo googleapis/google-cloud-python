@@ -88,7 +88,6 @@ def test_wrap_stream_iterable_iterface():
 
     got_iterator = wrapped_callable()
 
-
     callable_.assert_called_once_with()
 
     # Check each aliased method in the grpc.Call interface
@@ -148,7 +147,7 @@ def test_wrap_stream_errors_iterator():
     wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
 
     with pytest.raises(exceptions.ServiceUnavailable) as exc_info:
-        got_iterator = wrapped_callable(1, 2, three="four")
+        wrapped_callable(1, 2, three="four")
 
     callable_.assert_called_once_with(1, 2, three="four")
     assert exc_info.value.response == grpc_error
