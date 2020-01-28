@@ -1095,3 +1095,21 @@ def test_user_property_different_user_class(dispose_of):
     retreived = key.get()
     assert retreived.user.email() == "somebody@example.com"
     assert retreived.user.auth_domain() == "gmail.com"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_repeated_empty_strings(dispose_of):
+    """Regression test for issue # 300.
+
+    https://github.com/googleapis/python-ndb/issues/300
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty(repeated=True)
+
+    entity = SomeKind(foo=["", ""])
+    key = entity.put()
+    dispose_of(key._key)
+
+    retreived = key.get()
+    assert retreived.foo == ["", ""]

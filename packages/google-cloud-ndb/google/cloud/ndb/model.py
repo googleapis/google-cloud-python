@@ -635,14 +635,16 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
                 continue
 
+        def base_value_or_none(value):
+            return None if value is None else _BaseValue(value)
+
         if not (prop is not None and isinstance(prop, Property)):
             if value is not None and isinstance(  # pragma: NO BRANCH
                 entity, Expando
             ):
                 if isinstance(value, list):
                     value = [
-                        (_BaseValue(sub_value) if sub_value else None)
-                        for sub_value in value
+                        base_value_or_none(sub_value) for sub_value in value
                     ]
                 else:
                     value = _BaseValue(value)
@@ -656,8 +658,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 if isinstance(value, list):
                     # Not a projection
                     value = [
-                        (_BaseValue(sub_value) if sub_value else None)
-                        for sub_value in value
+                        base_value_or_none(sub_value) for sub_value in value
                     ]
                 else:
                     # Projection
