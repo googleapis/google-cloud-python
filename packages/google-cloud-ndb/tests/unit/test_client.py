@@ -133,3 +133,13 @@ class TestClient:
 
         with client.context():
             _eventloop.call_soon(finish_up)
+
+    @staticmethod
+    def test_client_info():
+        with patch_credentials("testing"):
+            client = client_module.Client()
+        agent = client.client_info.to_user_agent()
+        assert "google-cloud-ndb" in agent
+        version = agent.split("/")[1]
+        assert version[0].isdigit()
+        assert "." in version

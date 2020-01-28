@@ -19,7 +19,7 @@ except ImportError:  # pragma: NO PY3 COVER
 
 import pytest
 
-from google.cloud import _http
+from google.api_core import client_info
 from google.cloud.datastore import entity
 from google.cloud.datastore import helpers
 from google.cloud.datastore import key as ds_key_module
@@ -33,6 +33,7 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
+from google.cloud.ndb import __version__
 
 from tests.unit import utils
 
@@ -54,6 +55,9 @@ class TestStub:
             secure=True,
             host="thehost",
             spec=("_credentials", "secure", "host"),
+            client_info=client_info.ClientInfo(
+                user_agent="google-cloud-ndb/{}".format(__version__)
+            ),
         )
         context = context_module.Context(client)
         with context.use():
@@ -62,7 +66,7 @@ class TestStub:
         assert stub is datastore_pb2_grpc.DatastoreStub.return_value
         datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
         _helpers.make_secure_channel.assert_called_once_with(
-            "creds", _http.DEFAULT_USER_AGENT, "thehost"
+            "creds", client.client_info.to_user_agent(), "thehost"
         )
 
     @staticmethod

@@ -17,9 +17,13 @@
 It was originally included in the Google App Engine runtime as a "new"
 version of the ``db`` API (hence ``ndb``).
 
+.. autodata:: __version__
 .. autodata:: __all__
 """
 
+from pkg_resources import get_distribution
+
+__version__ = get_distribution("google-cloud-ndb").version
 
 from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
@@ -124,8 +128,6 @@ from google.cloud.ndb._transaction import transactional_async
 from google.cloud.ndb._transaction import transactional_tasklet
 from google.cloud.ndb._transaction import non_transactional
 
-
-"""Current ``ndb`` version."""
 __all__ = [
     "AutoBatcher",
     "Client",

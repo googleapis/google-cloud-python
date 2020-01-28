@@ -18,12 +18,18 @@ import contextlib
 import os
 import requests
 
+from google.api_core import client_info
 from google.cloud import environment_vars
 from google.cloud import _helpers
 from google.cloud import client as google_client
 from google.cloud.datastore_v1.gapic import datastore_client
 
+from google.cloud.ndb import __version__
 from google.cloud.ndb import context as context_module
+
+_CLIENT_INFO = client_info.ClientInfo(
+    user_agent="google-cloud-ndb/{}".format(__version__)
+)
 
 DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rsplit(
     ":", 1
@@ -85,6 +91,7 @@ class Client(google_client.ClientWithProject):
         self.host = os.environ.get(
             environment_vars.GCD_HOST, DATASTORE_API_HOST
         )
+        self.client_info = _CLIENT_INFO
 
         # Use insecure connection when using Datastore Emulator, otherwise
         # use secure connection
