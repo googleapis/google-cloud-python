@@ -1,0 +1,13 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+{% for p in api.protos.values() if p.file_to_generate and p.enums -%}
+from .types.{{ p.module_name }} import ({% for e in p.enums.values() %}{{ e.name }}, {% endfor %})
+{% endfor %}
+
+__all__ = (
+{%- for p in api.protos.values() if p.file_to_generate %}{% for e in p.enums.values() %}
+    '{{ e.name }}',
+{%- endfor %}{% endfor %}
+)
+{% endblock %}

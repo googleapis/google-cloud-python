@@ -20,6 +20,9 @@ from google.api_core import future
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
 {% endif -%}
+{% if api.protos.values()|selectattr('enums') -%}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import enums
+{% endif -%}
 {% for method in service.methods.values() -%}
 {% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
@@ -431,4 +434,13 @@ def test_{{ message.name|snake_case }}_path():
 
 {% endwith -%}
 {% endfor -%}
+
+{% with enums = [] -%}{% for p in api.protos.values() if p.file_to_generate -%}{% for e in p.enums.values() if e.ident.module == service.meta.address.module -%}{% do enums.append(e) %}
+{% if enums -%}
+def test_enum_path():
+{%- for e in enums %}
+    assert enums.{{ e.name }} == {{ e.ident.module }}.{{ e.name }}
+{%- endfor %}
+{% endif -%}
+{% endfor -%}{% endfor -%}{% endwith -%}
 {% endblock %}
