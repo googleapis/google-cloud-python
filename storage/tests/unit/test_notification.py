@@ -52,6 +52,12 @@ class TestBucketNotification(unittest.TestCase):
         return JSON_API_V1_PAYLOAD_FORMAT
 
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.storage.notification import BucketNotification
 
@@ -258,7 +264,11 @@ class TestBucketNotification(unittest.TestCase):
 
         data = {"topic": self.TOPIC_REF, "payload_format": NONE_PAYLOAD_FORMAT}
         api_request.assert_called_once_with(
-            method="POST", path=self.CREATE_PATH, query_params={}, data=data
+            method="POST",
+            path=self.CREATE_PATH,
+            query_params={},
+            data=data,
+            timeout=self._get_default_timeout(),
         )
 
     def test_create_w_explicit_client(self):
@@ -287,7 +297,7 @@ class TestBucketNotification(unittest.TestCase):
             "selfLink": self.SELF_LINK,
         }
 
-        notification.create(client=alt_client)
+        notification.create(client=alt_client, timeout=42)
 
         self.assertEqual(notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
         self.assertEqual(notification.event_types, self.event_types())
@@ -309,6 +319,7 @@ class TestBucketNotification(unittest.TestCase):
             path=self.CREATE_PATH,
             query_params={"userProject": USER_PROJECT},
             data=data,
+            timeout=42,
         )
 
     def test_exists_wo_notification_id(self):
@@ -329,10 +340,10 @@ class TestBucketNotification(unittest.TestCase):
         api_request = client._connection.api_request
         api_request.side_effect = NotFound("testing")
 
-        self.assertFalse(notification.exists())
+        self.assertFalse(notification.exists(timeout=42))
 
         api_request.assert_called_once_with(
-            method="GET", path=self.NOTIFICATION_PATH, query_params={}
+            method="GET", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
         )
 
     def test_exists_hit(self):
@@ -355,6 +366,7 @@ class TestBucketNotification(unittest.TestCase):
             method="GET",
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
+            timeout=self._get_default_timeout(),
         )
 
     def test_reload_wo_notification_id(self):
@@ -376,10 +388,10 @@ class TestBucketNotification(unittest.TestCase):
         api_request.side_effect = NotFound("testing")
 
         with self.assertRaises(NotFound):
-            notification.reload()
+            notification.reload(timeout=42)
 
         api_request.assert_called_once_with(
-            method="GET", path=self.NOTIFICATION_PATH, query_params={}
+            method="GET", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
         )
 
     def test_reload_hit(self):
@@ -412,6 +424,7 @@ class TestBucketNotification(unittest.TestCase):
             method="GET",
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
+            timeout=self._get_default_timeout(),
         )
 
     def test_delete_wo_notification_id(self):
@@ -433,10 +446,10 @@ class TestBucketNotification(unittest.TestCase):
         api_request.side_effect = NotFound("testing")
 
         with self.assertRaises(NotFound):
-            notification.delete()
+            notification.delete(timeout=42)
 
         api_request.assert_called_once_with(
-            method="DELETE", path=self.NOTIFICATION_PATH, query_params={}
+            method="DELETE", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
         )
 
     def test_delete_hit(self):
@@ -454,6 +467,7 @@ class TestBucketNotification(unittest.TestCase):
             method="DELETE",
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
+            timeout=self._get_default_timeout(),
         )
 
 
