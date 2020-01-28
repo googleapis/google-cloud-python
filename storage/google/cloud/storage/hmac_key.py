@@ -15,6 +15,8 @@
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _rfc3339_to_datetime
 
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
 
 class HMACKeyMetadata(object):
     """Metadata about an HMAC service account key withn Cloud Storage.
@@ -185,8 +187,15 @@ class HMACKeyMetadata(object):
         """
         return self._user_project
 
-    def exists(self):
+    def exists(self, timeout=_DEFAULT_TIMEOUT):
         """Determine whether or not the key for this metadata exists.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: bool
         :returns: True if the key exists in Cloud Storage.
@@ -198,15 +207,22 @@ class HMACKeyMetadata(object):
                 qs_params["userProject"] = self.user_project
 
             self._client._connection.api_request(
-                method="GET", path=self.path, query_params=qs_params
+                method="GET", path=self.path, query_params=qs_params, timeout=timeout
             )
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self):
+    def reload(self, timeout=_DEFAULT_TIMEOUT):
         """Reload properties from Cloud Storage.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -217,11 +233,18 @@ class HMACKeyMetadata(object):
             qs_params["userProject"] = self.user_project
 
         self._properties = self._client._connection.api_request(
-            method="GET", path=self.path, query_params=qs_params
+            method="GET", path=self.path, query_params=qs_params, timeout=timeout
         )
 
-    def update(self):
+    def update(self, timeout=_DEFAULT_TIMEOUT):
         """Save writable properties to Cloud Storage.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -232,11 +255,22 @@ class HMACKeyMetadata(object):
 
         payload = {"state": self.state}
         self._properties = self._client._connection.api_request(
-            method="PUT", path=self.path, data=payload, query_params=qs_params
+            method="PUT",
+            path=self.path,
+            data=payload,
+            query_params=qs_params,
+            timeout=timeout,
         )
 
-    def delete(self):
+    def delete(self, timeout=_DEFAULT_TIMEOUT):
         """Delete the key from Cloud Storage.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -249,5 +283,5 @@ class HMACKeyMetadata(object):
             qs_params["userProject"] = self.user_project
 
         self._client._connection.api_request(
-            method="DELETE", path=self.path, query_params=qs_params
+            method="DELETE", path=self.path, query_params=qs_params, timeout=timeout
         )
