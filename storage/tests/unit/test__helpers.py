@@ -45,6 +45,12 @@ class Test__get_storage_host(unittest.TestCase):
 
 class Test_PropertyMixin(unittest.TestCase):
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.storage._helpers import _PropertyMixin
 
@@ -103,7 +109,7 @@ class Test_PropertyMixin(unittest.TestCase):
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
-        derived.reload(client=client)
+        derived.reload(client=client, timeout=42)
         self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -115,6 +121,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "query_params": {"projection": "noAcl"},
                 "headers": {},
                 "_target_object": derived,
+                "timeout": 42,
             },
         )
         self.assertEqual(derived._changes, set())
@@ -139,6 +146,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "query_params": {"projection": "noAcl", "userProject": user_project},
                 "headers": {},
                 "_target_object": derived,
+                "timeout": self._get_default_timeout(),
             },
         )
         self.assertEqual(derived._changes, set())
@@ -164,7 +172,7 @@ class Test_PropertyMixin(unittest.TestCase):
         BAZ = object()
         derived._properties = {"bar": BAR, "baz": BAZ}
         derived._changes = set(["bar"])  # Ignore baz.
-        derived.patch(client=client)
+        derived.patch(client=client, timeout=42)
         self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -177,6 +185,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 # Since changes does not include `baz`, we don't see it sent.
                 "data": {"bar": BAR},
                 "_target_object": derived,
+                "timeout": 42,
             },
         )
         # Make sure changes get reset by patch().
@@ -205,6 +214,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 # Since changes does not include `baz`, we don't see it sent.
                 "data": {"bar": BAR},
                 "_target_object": derived,
+                "timeout": self._get_default_timeout(),
             },
         )
         # Make sure changes get reset by patch().
@@ -219,7 +229,7 @@ class Test_PropertyMixin(unittest.TestCase):
         BAZ = object()
         derived._properties = {"bar": BAR, "baz": BAZ}
         derived._changes = set(["bar"])  # Update sends 'baz' anyway.
-        derived.update(client=client)
+        derived.update(client=client, timeout=42)
         self.assertEqual(derived._properties, {"foo": "Foo"})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -227,6 +237,7 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/path")
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
+        self.assertEqual(kw[0]["timeout"], 42)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
@@ -250,6 +261,7 @@ class Test_PropertyMixin(unittest.TestCase):
             kw[0]["query_params"], {"projection": "full", "userProject": user_project}
         )
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 

@@ -21,6 +21,9 @@ import base64
 from hashlib import md5
 import os
 
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 """Environment variable defining host for Storage emulator."""
 
@@ -117,7 +120,7 @@ class _PropertyMixin(object):
             params["userProject"] = self.user_project
         return params
 
-    def reload(self, client=None):
+    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Reload properties from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -126,6 +129,12 @@ class _PropertyMixin(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -138,6 +147,7 @@ class _PropertyMixin(object):
             query_params=query_params,
             headers=self._encryption_headers(),
             _target_object=self,
+            timeout=timeout,
         )
         self._set_properties(api_response)
 
@@ -169,7 +179,7 @@ class _PropertyMixin(object):
         # If the values are reset, the changes must as well.
         self._changes = set()
 
-    def patch(self, client=None):
+    def patch(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -180,6 +190,12 @@ class _PropertyMixin(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -195,10 +211,11 @@ class _PropertyMixin(object):
             data=update_properties,
             query_params=query_params,
             _target_object=self,
+            timeout=timeout,
         )
         self._set_properties(api_response)
 
-    def update(self, client=None):
+    def update(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Sends all properties in a PUT request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -209,6 +226,12 @@ class _PropertyMixin(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -219,6 +242,7 @@ class _PropertyMixin(object):
             data=self._properties,
             query_params=query_params,
             _target_object=self,
+            timeout=timeout,
         )
         self._set_properties(api_response)
 
