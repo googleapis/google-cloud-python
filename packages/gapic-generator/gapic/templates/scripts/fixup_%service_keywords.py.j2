@@ -133,5 +133,13 @@ Note: This tool operates at a best-effort level at converting positional
         help='a file to fix up via un-flattening',
     )
     args = parser.parse_args()
-    fix_files(args.dirs or [], args.files or [])
+    print(
+        """It is strongly, strongly recommended that you commit outstanding changes and
+back up your source tree before running this conversion script.
+Please take a moment to do that now if you haven't already.
+"""
+    )
+    resp = input("Really attempt to convert sources? yes/[no]: ")
+    if resp == "yes":
+        fix_files(args.dirs or [], args.files or [])
 {% endblock %}
