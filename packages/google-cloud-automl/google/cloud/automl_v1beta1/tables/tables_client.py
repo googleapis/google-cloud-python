@@ -22,8 +22,10 @@ import logging
 from google.api_core.gapic_v1 import client_info
 from google.api_core import exceptions
 from google.cloud.automl_v1beta1 import gapic
-from google.cloud.automl_v1beta1.proto import data_types_pb2
+from google.cloud.automl_v1beta1.proto import data_types_pb2, data_items_pb2
 from google.cloud.automl_v1beta1.tables import gcs_client
+from google.protobuf import struct_pb2
+
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 _LOGGER = logging.getLogger(__name__)
@@ -402,21 +404,39 @@ class TablesClient(object):
 
         return column_spec_name
 
-    def __type_code_to_value_type(self, type_code, value):
+    def __data_type_to_proto_value(self, data_type, value):
+        type_code = data_type.type_code
         if value is None:
-            return {"null_value": 0}
+            return struct_pb2.Value(null_value=struct_pb2.NullValue.NULL_VALUE)
         elif type_code == data_types_pb2.FLOAT64:
-            return {"number_value": value}
-        elif type_code == data_types_pb2.TIMESTAMP:
-            return {"string_value": value}
-        elif type_code == data_types_pb2.STRING:
-            return {"string_value": value}
+            return struct_pb2.Value(number_value=value)
+        elif (
+            type_code == data_types_pb2.TIMESTAMP
+            or type_code == data_types_pb2.STRING
+            or type_code == data_types_pb2.CATEGORY
+        ):
+            return struct_pb2.Value(string_value=value)
         elif type_code == data_types_pb2.ARRAY:
-            return {"list_value": value}
+            if isinstance(value, struct_pb2.ListValue):
+                # in case the user passed in a ListValue.
+                return struct_pb2.Value(list_value=value)
+            array = []
+            for item in value:
+                array.append(
+                    self.__data_type_to_proto_value(data_type.list_element_type, item)
+                )
+            return struct_pb2.Value(list_value=struct_pb2.ListValue(values=array))
         elif type_code == data_types_pb2.STRUCT:
-            return {"struct_value": value}
-        elif type_code == data_types_pb2.CATEGORY:
-            return {"string_value": value}
+            if isinstance(value, struct_pb2.Struct):
+                # in case the user passed in a Struct.
+                return struct_pb2.Value(struct_value=value)
+            struct_value = struct_pb2.Struct()
+            for k, v in value.items():
+                field_value = self.__data_type_to_proto_value(
+                    data_type.struct_type.fields[k], v
+                )
+                struct_value.fields[k].CopyFrom(field_value)
+            return struct_pb2.Value(struct_value=struct_value)
         else:
             raise ValueError("Unknown type_code: {}".format(type_code))
 
@@ -2694,16 +2714,17 @@ class TablesClient(object):
 
         values = []
         for i, c in zip(inputs, column_specs):
-            value_type = self.__type_code_to_value_type(c.data_type.type_code, i)
+            value_type = self.__data_type_to_proto_value(c.data_type, i)
             values.append(value_type)
 
-        request = {"row": {"values": values}}
+        row = data_items_pb2.Row(values=values)
+        payload = data_items_pb2.ExamplePayload(row=row)
 
         params = None
         if feature_importance:
             params = {"feature_importance": "true"}
 
-        return self.prediction_client.predict(model.name, request, params, **kwargs)
+        return self.prediction_client.predict(model.name, payload, params, **kwargs)
 
     def batch_predict(
         self,
