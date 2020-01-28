@@ -2227,108 +2227,6 @@ class TestUser:
         user_value = self._make_default()
         assert user_value.auth_domain() == "example.com"
 
-    @staticmethod
-    def _add_to_entity_helper(user_value):
-        entity = entity_module.Entity()
-        name = "u"
-
-        user_value.add_to_entity(entity, name)
-        assert list(entity.keys()) == [name]
-        user_entity = entity[name]
-        assert entity._meanings == {
-            name: (model._MEANING_PREDEFINED_ENTITY_USER, user_entity)
-        }
-        assert user_entity["email"] == user_value._email
-        assert user_entity["auth_domain"] == user_value._auth_domain
-        return user_entity
-
-    def test_add_to_entity(self):
-        user_value = self._make_default()
-        user_entity = self._add_to_entity_helper(user_value)
-        assert sorted(user_entity.keys()) == ["auth_domain", "email"]
-        assert user_entity.exclude_from_indexes == set(
-            ["auth_domain", "email"]
-        )
-
-    def test_add_to_entity_with_user_id(self):
-        user_value = model.User(
-            email="foo@example.com",
-            _auth_domain="example.com",
-            _user_id="197382",
-        )
-        user_entity = self._add_to_entity_helper(user_value)
-        assert sorted(user_entity.keys()) == [
-            "auth_domain",
-            "email",
-            "user_id",
-        ]
-        assert user_entity["user_id"] == user_value._user_id
-        assert user_entity.exclude_from_indexes == set(
-            ["auth_domain", "email", "user_id"]
-        )
-
-    @staticmethod
-    def _prepare_entity(name, email, auth_domain):
-        entity = entity_module.Entity()
-        user_entity = entity_module.Entity()
-
-        entity[name] = user_entity
-        entity._meanings[name] = (
-            model._MEANING_PREDEFINED_ENTITY_USER,
-            user_entity,
-        )
-        user_entity.exclude_from_indexes.update(["auth_domain", "email"])
-        user_entity["auth_domain"] = auth_domain
-        user_entity["email"] = email
-
-        return entity
-
-    def test_read_from_entity(self):
-        name = "you_sir"
-        email = "foo@example.com"
-        auth_domain = "example.com"
-        entity = self._prepare_entity(name, email, auth_domain)
-
-        user_value = model.User.read_from_entity(entity, name)
-        assert user_value._auth_domain == auth_domain
-        assert user_value._email == email
-        assert user_value._user_id is None
-
-    def test_read_from_entity_bad_meaning(self):
-        name = "you_sir"
-        email = "foo@example.com"
-        auth_domain = "example.com"
-        entity = self._prepare_entity(name, email, auth_domain)
-
-        # Wrong meaning.
-        entity._meanings[name] = ("not-20", entity[name])
-        with pytest.raises(ValueError):
-            model.User.read_from_entity(entity, name)
-
-        # Wrong associated value.
-        entity._meanings[name] = (model._MEANING_PREDEFINED_ENTITY_USER, None)
-        with pytest.raises(ValueError):
-            model.User.read_from_entity(entity, name)
-
-        # No meaning.
-        entity._meanings.clear()
-        with pytest.raises(ValueError):
-            model.User.read_from_entity(entity, name)
-
-    def test_read_from_entity_with_user_id(self):
-        name = "you_sir"
-        email = "foo@example.com"
-        auth_domain = "example.com"
-        entity = self._prepare_entity(name, email, auth_domain)
-        entity[name].exclude_from_indexes.add("user_id")
-        user_id = "80131394"
-        entity[name]["user_id"] = user_id
-
-        user_value = model.User.read_from_entity(entity, name)
-        assert user_value._auth_domain == auth_domain
-        assert user_value._email == email
-        assert user_value._user_id == user_id
-
     def test___str__(self):
         user_value = self._make_default()
         assert str(user_value) == "foo"
@@ -2380,6 +2278,22 @@ class TestUser:
             with pytest.raises(TypeError):
                 user_value1 < user_value4
 
+    @staticmethod
+    def test__from_ds_entity():
+        assert model.User._from_ds_entity(
+            {"email": "foo@example.com", "auth_domain": "gmail.com"}
+        ) == model.User("foo@example.com", "gmail.com")
+
+    @staticmethod
+    def test__from_ds_entity_with_user_id():
+        assert model.User._from_ds_entity(
+            {
+                "email": "foo@example.com",
+                "auth_domain": "gmail.com",
+                "user_id": "12345",
+            }
+        ) == model.User("foo@example.com", "gmail.com", "12345")
+
 
 class TestUserProperty:
     @staticmethod
@@ -2428,6 +2342,58 @@ class TestUserProperty:
         prop = model.UserProperty(name="u")
         with pytest.raises(NotImplementedError):
             prop._db_get_value(None, None)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.UserProperty(name="u")
+        entity = prop._to_base_type(model.User("email", "auth_domain",))
+        assert entity["email"] == "email"
+        assert "email" in entity.exclude_from_indexes
+        assert entity["auth_domain"] == "auth_domain"
+        assert "auth_domain" in entity.exclude_from_indexes
+        assert "user_id" not in entity
+
+    @staticmethod
+    def test__to_base_type_w_user_id():
+        prop = model.UserProperty(name="u")
+        entity = prop._to_base_type(
+            model.User("email", "auth_domain", "user_id")
+        )
+        assert entity["email"] == "email"
+        assert "email" in entity.exclude_from_indexes
+        assert entity["auth_domain"] == "auth_domain"
+        assert "auth_domain" in entity.exclude_from_indexes
+        assert entity["user_id"] == "user_id"
+        assert "user_id" in entity.exclude_from_indexes
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.UserProperty(name="u")
+        assert prop._from_base_type(
+            {"email": "email", "auth_domain": "auth_domain"}
+        ) == model.User("email", "auth_domain")
+
+    @staticmethod
+    def test__to_datastore():
+        class SomeKind(model.Model):
+            u = model.UserProperty()
+
+        entity = SomeKind(u=model.User("email", "auth_domain"))
+        data = {}
+        SomeKind.u._to_datastore(entity, data)
+        meaning, ds_entity = data["_meanings"]["u"]
+        assert meaning == model._MEANING_PREDEFINED_ENTITY_USER
+        assert data["u"] == ds_entity
+
+    @staticmethod
+    def test__to_datastore_no_value():
+        class SomeKind(model.Model):
+            u = model.UserProperty()
+
+        entity = SomeKind()
+        data = {}
+        SomeKind.u._to_datastore(entity, data)
+        assert data == {"u": None}
 
 
 class TestKeyProperty:

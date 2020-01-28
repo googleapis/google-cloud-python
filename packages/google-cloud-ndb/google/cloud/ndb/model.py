@@ -3022,58 +3022,14 @@ class User(object):
         """
         return self._auth_domain
 
-    def add_to_entity(self, entity, name):
-        """Add the user value to a datastore entity.
-
-        .. note::
-
-            This assumes, but does not check, that ``name`` is not already
-            set on ``entity`` or in the meanings of ``entity``.
-
-        Args:
-            entity (~google.cloud.datastore.entity.Entity): An entity that
-                contains a user value as the field ``name``.
-            name (str): The name of the field containing this user value.
-        """
-        user_entity = ds_entity_module.Entity()
-        entity[name] = user_entity
-        entity._meanings[name] = (_MEANING_PREDEFINED_ENTITY_USER, user_entity)
-
-        # Set required fields.
-        user_entity["email"] = self._email
-        user_entity.exclude_from_indexes.add("email")
-        user_entity["auth_domain"] = self._auth_domain
-        user_entity.exclude_from_indexes.add("auth_domain")
-        # Set optional field.
-        if self._user_id:
-            user_entity["user_id"] = self._user_id
-            user_entity.exclude_from_indexes.add("user_id")
-
     @classmethod
-    def read_from_entity(cls, entity, name):
+    def _from_ds_entity(cls, user_entity):
         """Convert the user value to a datastore entity.
 
         Args:
-            entity (~google.cloud.datastore.entity.Entity): An entity that
-                contains a user value as the field ``name``.
-            name (str): The name of the field containing this user value.
-
-        Raises:
-            ValueError: If the stored meaning for the ``name`` field is not
-                equal to ``ENTITY_USER=20``.
-            ValueError: If the value stored in the meanings for ``entity``
-                is not the actual stored value under ``name``.
+            user_entity (~google.cloud.datastore.entity.Entity): A user value
+                datastore entity.
         """
-        # NOTE: This may fail in a ``KeyError``.
-        user_entity = entity[name]
-        # NOTE: This may result in a ``ValueError`` for failed unpacking.
-        meaning, value = entity._meanings.get(name, (0, None))
-        if meaning != _MEANING_PREDEFINED_ENTITY_USER:
-            raise ValueError("User values should have meaning=20")
-        if user_entity is not value:
-            raise ValueError("Unexpected value stored for meaning")
-
-        # NOTE: We do not check ``exclude_from_indexes``.
         kwargs = {
             "email": user_entity["email"],
             "_auth_domain": user_entity["auth_domain"],
@@ -3235,7 +3191,8 @@ class UserProperty(Property):
         Raises:
             .BadValueError: If ``value`` is not a :class:`User`.
         """
-        if not isinstance(value, User):
+        # Might be GAE User or our own version
+        if type(value).__name__ != "User":
             raise exceptions.BadValueError(
                 "Expected User, got {!r}".format(value)
             )
@@ -3250,6 +3207,59 @@ class UserProperty(Property):
         Args:
             entity (Model): An entity with values.
         """
+
+    def _to_base_type(self, value):
+        """Convert the user value to a datastore entity.
+
+        Arguments:
+            value (User): The user value.
+
+        Returns:
+            ~google.cloud.datastore.entity.Entity: The datastore entity.
+        """
+        user_entity = ds_entity_module.Entity()
+
+        # Set required fields.
+        user_entity["email"] = six.ensure_text(value.email())
+        user_entity.exclude_from_indexes.add("email")
+        user_entity["auth_domain"] = six.ensure_text(value.auth_domain())
+        user_entity.exclude_from_indexes.add("auth_domain")
+        # Set optional field.
+        user_id = value.user_id()
+        if user_id:
+            user_entity["user_id"] = six.ensure_text(user_id)
+            user_entity.exclude_from_indexes.add("user_id")
+
+        return user_entity
+
+    def _from_base_type(self, ds_entity):
+        """Convert the user value from a datastore entity.
+
+        Arguments:
+            ds_entity (~google.cloud.datastore.entity.Entity): The datastore
+                entity.
+
+        Returns:
+            User: The converted entity.
+        """
+        return User._from_ds_entity(ds_entity)
+
+    def _to_datastore(self, entity, data, prefix="", repeated=False):
+        """Override of :method:`Property._to_datastore`.
+
+        We just need to set the meaning to indicate value is a User.
+        """
+        keys = super(UserProperty, self)._to_datastore(
+            entity, data, prefix=prefix, repeated=repeated
+        )
+
+        for key in keys:
+            value = data.get(key)
+            if value:
+                data.setdefault("_meanings", {})[key] = (
+                    _MEANING_PREDEFINED_ENTITY_USER,
+                    value,
+                )
 
 
 class KeyProperty(Property):

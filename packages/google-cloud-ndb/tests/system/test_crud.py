@@ -1056,3 +1056,42 @@ def test_computed_key_property(dispose_of):
     entity = key_c.get()
     assert entity.key_a == key_a
     assert entity.key_b == key_b
+
+
+@pytest.mark.usefixtures("client_context")
+def test_user_property(dispose_of):
+    class SomeKind(ndb.Model):
+        user = ndb.UserProperty()
+
+    user = ndb.User("somebody@example.com", "gmail.com")
+    entity = SomeKind(user=user)
+    key = entity.put()
+    dispose_of(key._key)
+
+    retreived = key.get()
+    assert retreived.user.email() == "somebody@example.com"
+    assert retreived.user.auth_domain() == "gmail.com"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_user_property_different_user_class(dispose_of):
+    class SomeKind(ndb.Model):
+        user = ndb.UserProperty()
+
+    class User(object):
+        def email(self):
+            return "somebody@example.com"
+
+        def auth_domain(self):
+            return "gmail.com"
+
+        def user_id(self):
+            return None
+
+    entity = SomeKind(user=User())
+    key = entity.put()
+    dispose_of(key._key)
+
+    retreived = key.get()
+    assert retreived.user.email() == "somebody@example.com"
+    assert retreived.user.auth_domain() == "gmail.com"
