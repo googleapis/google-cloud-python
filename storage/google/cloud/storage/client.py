@@ -14,6 +14,8 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+import functools
+
 import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
@@ -30,6 +32,7 @@ from google.cloud.storage.blob import Blob
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
 
 _marker = object()
@@ -211,13 +214,19 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.top
 
-    def get_service_account_email(self, project=None):
+    def get_service_account_email(self, project=None, timeout=_DEFAULT_TIMEOUT):
         """Get the email address of the project's GCS service account
 
         :type project: str
         :param project:
             (Optional) Project ID to use for retreiving GCS service account
             email address.  Defaults to the client's project.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: str
         :returns: service account email address
@@ -225,7 +234,9 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
-        api_response = self._base_connection.api_request(method="GET", path=path)
+        api_response = self._base_connection.api_request(
+            method="GET", path=path, timeout=timeout
+        )
         return api_response["email_address"]
 
     def bucket(self, bucket_name, user_project=None):
@@ -259,7 +270,7 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_or_name):
+    def get_bucket(self, bucket_or_name, timeout=_DEFAULT_TIMEOUT):
         """API call: retrieve a bucket via a GET request.
 
         See
@@ -271,6 +282,12 @@ class Client(ClientWithProject):
                  str, \
             ]):
                 The bucket resource to pass or name to create.
+
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The amount of time, in seconds, to wait for the server response.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -302,10 +319,10 @@ class Client(ClientWithProject):
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
-        bucket.reload(client=self)
+        bucket.reload(client=self, timeout=timeout)
         return bucket
 
-    def lookup_bucket(self, bucket_name):
+    def lookup_bucket(self, bucket_name, timeout=_DEFAULT_TIMEOUT):
         """Get a bucket by name, returning None if not found.
 
         You can use this if you would rather check for a None value
@@ -318,11 +335,18 @@ class Client(ClientWithProject):
         :type bucket_name: str
         :param bucket_name: The name of the bucket to get.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided or None if not found.
         """
         try:
-            return self.get_bucket(bucket_name)
+            return self.get_bucket(bucket_name, timeout=timeout)
         except NotFound:
             return None
 
@@ -335,6 +359,7 @@ class Client(ClientWithProject):
         location=None,
         predefined_acl=None,
         predefined_default_object_acl=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """API call: create a new bucket via a POST request.
 
@@ -366,6 +391,11 @@ class Client(ClientWithProject):
             predefined_default_object_acl (str):
                 Optional. Name of predefined ACL to apply to bucket's objects. See:
                 https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The amount of time, in seconds, to wait for the server response.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -434,6 +464,7 @@ class Client(ClientWithProject):
             query_params=query_params,
             data=properties,
             _target_object=bucket,
+            timeout=timeout,
         )
 
         bucket._set_properties(api_response)
@@ -495,6 +526,7 @@ class Client(ClientWithProject):
         versions=None,
         projection="noAcl",
         fields=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -543,6 +575,12 @@ class Client(ClientWithProject):
                 ``'items(name,contentLanguage),nextPageToken'``.
                 See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
 
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The amount of time, in seconds, to wait for the server response.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
         Returns:
             Iterator of all :class:`~google.cloud.storage.blob.Blob`
             in this bucket matching the arguments.
@@ -557,6 +595,7 @@ class Client(ClientWithProject):
             projection=projection,
             fields=fields,
             client=self,
+            timeout=timeout,
         )
 
     def list_buckets(
@@ -567,6 +606,7 @@ class Client(ClientWithProject):
         projection="noAcl",
         fields=None,
         project=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """Get all buckets in the project associated to the client.
 
@@ -610,6 +650,13 @@ class Client(ClientWithProject):
         :param project: (Optional) the project whose buckets are to be listed.
                         If not passed, uses the project set on the client.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :raises ValueError: if both ``project`` is ``None`` and the client's
                             project is also ``None``.
@@ -632,9 +679,11 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
+        api_request = functools.partial(self._connection.api_request, timeout=timeout)
+
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=api_request,
             path="/b",
             item_to_value=_item_to_bucket,
             page_token=page_token,
@@ -643,7 +692,11 @@ class Client(ClientWithProject):
         )
 
     def create_hmac_key(
-        self, service_account_email, project_id=None, user_project=None
+        self,
+        service_account_email,
+        project_id=None,
+        user_project=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """Create an HMAC key for a service account.
 
@@ -656,6 +709,13 @@ class Client(ClientWithProject):
 
         :type user_project: str
         :param user_project: (Optional) This parameter is currently ignored.
+
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
@@ -671,7 +731,7 @@ class Client(ClientWithProject):
             qs_params["userProject"] = user_project
 
         api_response = self._connection.api_request(
-            method="POST", path=path, query_params=qs_params
+            method="POST", path=path, query_params=qs_params, timeout=timeout
         )
         metadata = HMACKeyMetadata(self)
         metadata._properties = api_response["metadata"]
@@ -685,6 +745,7 @@ class Client(ClientWithProject):
         show_deleted_keys=None,
         project_id=None,
         user_project=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """List HMAC keys for a project.
 
@@ -708,6 +769,13 @@ class Client(ClientWithProject):
         :type user_project: str
         :param user_project: (Optional) This parameter is currently ignored.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
@@ -727,16 +795,20 @@ class Client(ClientWithProject):
         if user_project is not None:
             extra_params["userProject"] = user_project
 
+        api_request = functools.partial(self._connection.api_request, timeout=timeout)
+
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_hmac_key_metadata,
             max_results=max_results,
             extra_params=extra_params,
         )
 
-    def get_hmac_key_metadata(self, access_id, project_id=None, user_project=None):
+    def get_hmac_key_metadata(
+        self, access_id, project_id=None, user_project=None, timeout=_DEFAULT_TIMEOUT
+    ):
         """Return a metadata instance for the given HMAC key.
 
         :type access_id: str
@@ -746,11 +818,18 @@ class Client(ClientWithProject):
         :param project_id: (Optional) project ID of an existing key.
             Defaults to client's project.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :type user_project: str
         :param user_project: (Optional) This parameter is currently ignored.
         """
         metadata = HMACKeyMetadata(self, access_id, project_id, user_project)
-        metadata.reload()  # raises NotFound for missing key
+        metadata.reload(timeout=timeout)  # raises NotFound for missing key
         return metadata
 
 

@@ -30,6 +30,7 @@ class TestConnection(unittest.TestCase):
     def test_extra_headers(self):
         import requests
         from google.cloud import _http as base_http
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
@@ -55,7 +56,7 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=_DEFAULT_TIMEOUT,
         )
 
     def test_build_api_url_no_extra_query_params(self):
