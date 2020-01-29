@@ -409,8 +409,8 @@ ViolatingResource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VIOLATINGRESOURCE,
         __module__="google.cloud.websecurityscanner_v1alpha.proto.finding_addon_pb2",
-        __doc__="""Information regarding any resource causing the vulnerability such as
-  JavaScript sources, image, audio files, etc.
+        __doc__="""Information regarding any resource causing the
+  vulnerability such as JavaScript sources, image, audio files, etc.
   
   
   Attributes:
