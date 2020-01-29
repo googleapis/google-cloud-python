@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -116,7 +116,7 @@ class TestTraceServiceClient(object):
             client = trace_v2.TraceServiceClient()
 
         # Setup Request
-        name = "name3373707"
+        name = client.span_path("[PROJECT]", "[TRACE]", "[SPAN]")
         span_id = "spanId-2011840976"
         display_name = {}
         start_time = {}
@@ -145,7 +145,7 @@ class TestTraceServiceClient(object):
             client = trace_v2.TraceServiceClient()
 
         # Setup request
-        name = "name3373707"
+        name = client.span_path("[PROJECT]", "[TRACE]", "[SPAN]")
         span_id = "spanId-2011840976"
         display_name = {}
         start_time = {}
