@@ -17,6 +17,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
@@ -28,10 +29,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\nEgoogle/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto"\xac\x02\n\x15HumanAnnotationConfig\x12\x13\n\x0binstruction\x18\x01 \x01(\t\x12&\n\x1e\x61nnotated_dataset_display_name\x18\x02 \x01(\t\x12%\n\x1d\x61nnotated_dataset_description\x18\x03 \x01(\t\x12\x13\n\x0blabel_group\x18\x04 \x01(\t\x12\x15\n\rlanguage_code\x18\x05 \x01(\t\x12\x15\n\rreplica_count\x18\x06 \x01(\x05\x12\x34\n\x11question_duration\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x1a\n\x12\x63ontributor_emails\x18\t \x03(\t\x12\x1a\n\x12user_email_address\x18\n \x01(\t"\xae\x01\n\x19ImageClassificationConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x19\n\x11\x61llow_multi_label\x18\x02 \x01(\x08\x12Y\n\x17\x61nswer_aggregation_type\x18\x03 \x01(\x0e\x32\x38.google.cloud.datalabeling.v1beta1.StringAggregationType"N\n\x12\x42oundingPolyConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x1b\n\x13instruction_message\x18\x02 \x01(\t"J\n\x0ePolylineConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x1b\n\x13instruction_message\x18\x02 \x01(\t"N\n\x12SegmentationConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x1b\n\x13instruction_message\x18\x02 \x01(\t"\x87\x02\n\x19VideoClassificationConfig\x12y\n\x1b\x61nnotation_spec_set_configs\x18\x01 \x03(\x0b\x32T.google.cloud.datalabeling.v1beta1.VideoClassificationConfig.AnnotationSpecSetConfig\x12\x1c\n\x14\x61pply_shot_detection\x18\x02 \x01(\x08\x1aQ\n\x17\x41nnotationSpecSetConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x19\n\x11\x61llow_multi_label\x18\x02 \x01(\x08"S\n\x15ObjectDetectionConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t\x12\x1d\n\x15\x65xtraction_frame_rate\x18\x03 \x01(\x01"3\n\x14ObjectTrackingConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t"+\n\x0b\x45ventConfig\x12\x1c\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\t"\xa0\x01\n\x18TextClassificationConfig\x12\x19\n\x11\x61llow_multi_label\x18\x01 \x01(\x08\x12\x1b\n\x13\x61nnotation_spec_set\x18\x02 \x01(\t\x12L\n\x10sentiment_config\x18\x03 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.SentimentConfig";\n\x0fSentimentConfig\x12(\n enable_label_sentiment_selection\x18\x01 \x01(\x08"9\n\x1aTextEntityExtractionConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x01 \x01(\t*{\n\x15StringAggregationType\x12\'\n#STRING_AGGREGATION_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rMAJORITY_VOTE\x10\x01\x12\x12\n\x0eUNANIMOUS_VOTE\x10\x02\x12\x12\n\x0eNO_AGGREGATION\x10\x03\x42x\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\nEgoogle/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1egoogle/protobuf/duration.proto"\xd4\x02\n\x15HumanAnnotationConfig\x12\x18\n\x0binstruction\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12+\n\x1e\x61nnotated_dataset_display_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12*\n\x1d\x61nnotated_dataset_description\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0blabel_group\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12\x1a\n\rlanguage_code\x18\x05 \x01(\tB\x03\xe0\x41\x01\x12\x1a\n\rreplica_count\x18\x06 \x01(\x05\x42\x03\xe0\x41\x01\x12\x39\n\x11question_duration\x18\x07 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01\x12\x1f\n\x12\x63ontributor_emails\x18\t \x03(\tB\x03\xe0\x41\x01\x12\x1a\n\x12user_email_address\x18\n \x01(\t"\xbd\x01\n\x19ImageClassificationConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x1e\n\x11\x61llow_multi_label\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01\x12^\n\x17\x61nswer_aggregation_type\x18\x03 \x01(\x0e\x32\x38.google.cloud.datalabeling.v1beta1.StringAggregationTypeB\x03\xe0\x41\x01"X\n\x12\x42oundingPolyConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12 \n\x13instruction_message\x18\x02 \x01(\tB\x03\xe0\x41\x01"T\n\x0ePolylineConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12 \n\x13instruction_message\x18\x02 \x01(\tB\x03\xe0\x41\x01"S\n\x12SegmentationConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x1b\n\x13instruction_message\x18\x02 \x01(\t"\x9b\x02\n\x19VideoClassificationConfig\x12~\n\x1b\x61nnotation_spec_set_configs\x18\x01 \x03(\x0b\x32T.google.cloud.datalabeling.v1beta1.VideoClassificationConfig.AnnotationSpecSetConfigB\x03\xe0\x41\x02\x12!\n\x14\x61pply_shot_detection\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01\x1a[\n\x17\x41nnotationSpecSetConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x1e\n\x11\x61llow_multi_label\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01"]\n\x15ObjectDetectionConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12"\n\x15\x65xtraction_frame_rate\x18\x03 \x01(\x01\x42\x03\xe0\x41\x02"8\n\x14ObjectTrackingConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02"0\n\x0b\x45ventConfig\x12!\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\tB\x03\xe0\x41\x02"\xaf\x01\n\x18TextClassificationConfig\x12\x1e\n\x11\x61llow_multi_label\x18\x01 \x01(\x08\x42\x03\xe0\x41\x01\x12 \n\x13\x61nnotation_spec_set\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12Q\n\x10sentiment_config\x18\x03 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.SentimentConfigB\x03\xe0\x41\x01";\n\x0fSentimentConfig\x12(\n enable_label_sentiment_selection\x18\x01 \x01(\x08">\n\x1aTextEntityExtractionConfig\x12 \n\x13\x61nnotation_spec_set\x18\x01 \x01(\tB\x03\xe0\x41\x02*{\n\x15StringAggregationType\x12\'\n#STRING_AGGREGATION_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rMAJORITY_VOTE\x10\x01\x12\x12\n\x0eUNANIMOUS_VOTE\x10\x02\x12\x12\n\x0eNO_AGGREGATION\x10\x03\x42x\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
     ],
 )
@@ -61,8 +63,8 @@ _STRINGAGGREGATIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1618,
-    serialized_end=1741,
+    serialized_start=1791,
+    serialized_end=1914,
 )
 _sym_db.RegisterEnumDescriptor(_STRINGAGGREGATIONTYPE)
 
@@ -95,7 +97,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -113,7 +115,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -131,7 +133,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -149,7 +151,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -167,7 +169,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -185,7 +187,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -203,7 +205,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -221,7 +223,7 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -251,8 +253,8 @@ _HUMANANNOTATIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=171,
-    serialized_end=471,
+    serialized_start=204,
+    serialized_end=544,
 )
 
 
@@ -278,7 +280,7 @@ _IMAGECLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -296,7 +298,7 @@ _IMAGECLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,7 +316,7 @@ _IMAGECLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -326,8 +328,8 @@ _IMAGECLASSIFICATIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=474,
-    serialized_end=648,
+    serialized_start=547,
+    serialized_end=736,
 )
 
 
@@ -353,7 +355,7 @@ _BOUNDINGPOLYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -371,7 +373,7 @@ _BOUNDINGPOLYCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -383,8 +385,8 @@ _BOUNDINGPOLYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=650,
-    serialized_end=728,
+    serialized_start=738,
+    serialized_end=826,
 )
 
 
@@ -410,7 +412,7 @@ _POLYLINECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -428,7 +430,7 @@ _POLYLINECONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -440,8 +442,8 @@ _POLYLINECONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=730,
-    serialized_end=804,
+    serialized_start=828,
+    serialized_end=912,
 )
 
 
@@ -467,7 +469,7 @@ _SEGMENTATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -497,8 +499,8 @@ _SEGMENTATIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=806,
-    serialized_end=884,
+    serialized_start=914,
+    serialized_end=997,
 )
 
 
@@ -524,7 +526,7 @@ _VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -542,7 +544,7 @@ _VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -554,8 +556,8 @@ _VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1069,
-    serialized_end=1150,
+    serialized_start=1192,
+    serialized_end=1283,
 )
 
 _VIDEOCLASSIFICATIONCONFIG = _descriptor.Descriptor(
@@ -580,7 +582,7 @@ _VIDEOCLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -598,7 +600,7 @@ _VIDEOCLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -610,8 +612,8 @@ _VIDEOCLASSIFICATIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=887,
-    serialized_end=1150,
+    serialized_start=1000,
+    serialized_end=1283,
 )
 
 
@@ -637,7 +639,7 @@ _OBJECTDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -655,7 +657,7 @@ _OBJECTDETECTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -667,8 +669,8 @@ _OBJECTDETECTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1152,
-    serialized_end=1235,
+    serialized_start=1285,
+    serialized_end=1378,
 )
 
 
@@ -694,7 +696,7 @@ _OBJECTTRACKINGCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -706,8 +708,8 @@ _OBJECTTRACKINGCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1237,
-    serialized_end=1288,
+    serialized_start=1380,
+    serialized_end=1436,
 )
 
 
@@ -733,7 +735,7 @@ _EVENTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -745,8 +747,8 @@ _EVENTCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1290,
-    serialized_end=1333,
+    serialized_start=1438,
+    serialized_end=1486,
 )
 
 
@@ -772,7 +774,7 @@ _TEXTCLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -790,7 +792,7 @@ _TEXTCLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -808,7 +810,7 @@ _TEXTCLASSIFICATIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -820,8 +822,8 @@ _TEXTCLASSIFICATIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1336,
-    serialized_end=1496,
+    serialized_start=1489,
+    serialized_end=1664,
 )
 
 
@@ -859,8 +861,8 @@ _SENTIMENTCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1498,
-    serialized_end=1557,
+    serialized_start=1666,
+    serialized_end=1725,
 )
 
 
@@ -886,7 +888,7 @@ _TEXTENTITYEXTRACTIONCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         )
     ],
@@ -898,8 +900,8 @@ _TEXTENTITYEXTRACTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1559,
-    serialized_end=1616,
+    serialized_start=1727,
+    serialized_end=1789,
 )
 
 _HUMANANNOTATIONCONFIG.fields_by_name[
@@ -972,7 +974,7 @@ HumanAnnotationConfig = _reflection.GeneratedProtocolMessageType(
           related labeling, valid values are 1, 3, 5.
       question_duration:
           Optional. Maximum duration for contributors to answer a
-          question. Default is 1800 seconds.
+          question. Maximum is 3600 seconds. Default is 3600 seconds.
       contributor_emails:
           Optional. If you want your own labeling contributors to manage
           and work on this labeling request, you can set these
@@ -1018,7 +1020,8 @@ BoundingPolyConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BOUNDINGPOLYCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.human_annotation_config_pb2",
-        __doc__="""Config for image bounding poly (and bounding box) human labeling task.
+        __doc__="""Config for image bounding poly (and bounding box) human
+  labeling task.
   
   
   Attributes:
@@ -1083,7 +1086,8 @@ VideoClassificationConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG,
                 __module__="google.cloud.datalabeling_v1beta1.proto.human_annotation_config_pb2",
-                __doc__="""Annotation spec set with the setting of allowing multi labels or not.
+                __doc__="""Annotation spec set with the setting of allowing multi
+    labels or not.
     
     
     Attributes:
@@ -1098,10 +1102,10 @@ VideoClassificationConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_VIDEOCLASSIFICATIONCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.human_annotation_config_pb2",
-        __doc__="""Config for video classification human labeling task. Currently two types
-  of video classification are supported: 1. Assign labels on the entire
-  video. 2. Split the video into multiple video clips based on camera
-  shot, and assign labels on each video clip.
+        __doc__="""Config for video classification human labeling task.
+  Currently two types of video classification are supported: 1. Assign
+  labels on the entire video. 2. Split the video into multiple video clips
+  based on camera shot, and assign labels on each video clip.
   
   
   Attributes:
@@ -1127,11 +1131,11 @@ ObjectDetectionConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTDETECTIONCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.human_annotation_config_pb2",
-        __doc__="""Config for video object detection human labeling task. Object detection
-  will be conducted on the images extracted from the video, and those
-  objects will be labeled with bounding boxes. User need to specify the
-  number of images to be extracted per second as the extraction frame
-  rate.
+        __doc__="""Config for video object detection human labeling task.
+  Object detection will be conducted on the images extracted from the
+  video, and those objects will be labeled with bounding boxes. User need
+  to specify the number of images to be extracted per second as the
+  extraction frame rate.
   
   
   Attributes:
@@ -1247,4 +1251,36 @@ _sym_db.RegisterMessage(TextEntityExtractionConfig)
 
 
 DESCRIPTOR._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["instruction"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["annotated_dataset_display_name"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["annotated_dataset_description"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["label_group"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["language_code"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["replica_count"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["question_duration"]._options = None
+_HUMANANNOTATIONCONFIG.fields_by_name["contributor_emails"]._options = None
+_IMAGECLASSIFICATIONCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_IMAGECLASSIFICATIONCONFIG.fields_by_name["allow_multi_label"]._options = None
+_IMAGECLASSIFICATIONCONFIG.fields_by_name["answer_aggregation_type"]._options = None
+_BOUNDINGPOLYCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_BOUNDINGPOLYCONFIG.fields_by_name["instruction_message"]._options = None
+_POLYLINECONFIG.fields_by_name["annotation_spec_set"]._options = None
+_POLYLINECONFIG.fields_by_name["instruction_message"]._options = None
+_SEGMENTATIONCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG.fields_by_name[
+    "annotation_spec_set"
+]._options = None
+_VIDEOCLASSIFICATIONCONFIG_ANNOTATIONSPECSETCONFIG.fields_by_name[
+    "allow_multi_label"
+]._options = None
+_VIDEOCLASSIFICATIONCONFIG.fields_by_name["annotation_spec_set_configs"]._options = None
+_VIDEOCLASSIFICATIONCONFIG.fields_by_name["apply_shot_detection"]._options = None
+_OBJECTDETECTIONCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_OBJECTDETECTIONCONFIG.fields_by_name["extraction_frame_rate"]._options = None
+_OBJECTTRACKINGCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_EVENTCONFIG.fields_by_name["annotation_spec_sets"]._options = None
+_TEXTCLASSIFICATIONCONFIG.fields_by_name["allow_multi_label"]._options = None
+_TEXTCLASSIFICATIONCONFIG.fields_by_name["annotation_spec_set"]._options = None
+_TEXTCLASSIFICATIONCONFIG.fields_by_name["sentiment_config"]._options = None
+_TEXTENTITYEXTRACTIONCONFIG.fields_by_name["annotation_spec_set"]._options = None
 # @@protoc_insertion_point(module_scope)
