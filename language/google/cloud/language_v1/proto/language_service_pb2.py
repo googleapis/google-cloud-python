@@ -2871,7 +2871,10 @@ Document = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENT,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents the input to API methods.
+        __doc__="""################################################################
+  #
+  
+  Represents the input to API methods.
   
   
   Attributes:
@@ -2988,7 +2991,8 @@ Token = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TOKEN,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents the smallest syntactic building block of the text.
+        __doc__="""Represents the smallest syntactic building block of the
+  text.
   
   
   Attributes:
@@ -2999,7 +3003,7 @@ Token = _reflection.GeneratedProtocolMessageType(
       dependency_edge:
           Dependency tree parse for this token.
       lemma:
-          `Lemma
+          \ `Lemma
           <https://en.wikipedia.org/wiki/Lemma_%28morphology%29>`__ of
           the token.
   """,
@@ -3014,8 +3018,8 @@ Sentiment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SENTIMENT,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents the feeling associated with the entire text or entities in
-  the text.
+        __doc__="""Represents the feeling associated with the entire text or
+  entities in the text.
   
   
   Attributes:
@@ -3038,8 +3042,8 @@ PartOfSpeech = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTOFSPEECH,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents part of speech information for a token. Parts of speech are
-  as defined in
+        __doc__="""Represents part of speech information for a token. Parts
+  of speech are as defined in
   http://www.lrec-conf.org/proceedings/lrec2012/pdf/274\_Paper.pdf
   
   
@@ -3080,8 +3084,8 @@ DependencyEdge = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DEPENDENCYEDGE,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents dependency parse tree information for a token. (For more
-  information on dependency labels, see
+        __doc__="""Represents dependency parse tree information for a token.
+  (For more information on dependency labels, see
   http://www.aclweb.org/anthology/P13-2017
   
   
@@ -3106,8 +3110,8 @@ EntityMention = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTITYMENTION,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents a mention for an entity in the text. Currently, proper noun
-  mentions are supported.
+        __doc__="""Represents a mention for an entity in the text. Currently,
+  proper noun mentions are supported.
   
   
   Attributes:
@@ -3399,9 +3403,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ANNOTATETEXTREQUEST_FEATURES,
                 __module__="google.cloud.language_v1.proto.language_service_pb2",
-                __doc__="""All available features for sentiment, syntax, and semantic analysis.
-    Setting each one to true will enable that specific analysis for the
-    input.
+                __doc__="""All available features for sentiment, syntax, and semantic
+    analysis. Setting each one to true will enable that specific analysis
+    for the input.
     
     
     Attributes:
@@ -3421,8 +3425,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ANNOTATETEXTREQUEST,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""The request message for the text annotation API, which can perform
-  multiple analysis types (sentiment, entities, and syntax) in one call.
+        __doc__="""The request message for the text annotation API, which can
+  perform multiple analysis types (sentiment, entities, and syntax) in one
+  call.
   
   
   Attributes:
