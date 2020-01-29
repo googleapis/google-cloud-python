@@ -98,7 +98,7 @@ class Test_GlobalCacheGetBatch:
         with in_context.new(global_cache=cache).use():
             batch.idle_callback()
 
-        cache.get.assert_called_once_with(batch.todo.keys())
+        cache.get.assert_called_once_with(batch.keys)
         assert future1.result() == b"one"
         assert future2.result() == b"two"
         assert future3.result() == b"one"
@@ -118,7 +118,7 @@ class Test_GlobalCacheGetBatch:
         with in_context.new(global_cache=cache).use():
             batch.idle_callback()
 
-        cache.get.assert_called_once_with(batch.todo.keys())
+        cache.get.assert_called_once_with(batch.keys)
         assert future1.result() == b"one"
         assert future2.result() == b"two"
 
@@ -139,7 +139,7 @@ class Test_GlobalCacheGetBatch:
         with in_context.new(global_cache=cache).use():
             batch.idle_callback()
 
-        cache.get.assert_called_once_with(batch.todo.keys())
+        cache.get.assert_called_once_with(batch.keys)
         assert future1.exception() is error
         assert future2.exception() is error
 

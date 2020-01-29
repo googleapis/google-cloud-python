@@ -8,6 +8,8 @@ import requests
 from google.cloud import datastore
 from google.cloud import ndb
 
+from google.cloud.ndb import global_cache as global_cache_module
+
 from . import KIND, OTHER_KIND, OTHER_NAMESPACE
 
 
@@ -110,8 +112,8 @@ def ds_entity_with_meanings(with_ds_client, dispose_of):
 
 @pytest.fixture
 def dispose_of(with_ds_client, to_delete):
-    def delete_entity(ds_key):
-        to_delete.append(ds_key)
+    def delete_entity(*ds_keys):
+        to_delete.extend(ds_keys)
 
     return delete_entity
 
@@ -126,3 +128,11 @@ def client_context(namespace):
     client = ndb.Client(namespace=namespace)
     with client.context(cache_policy=False, legacy_data=False) as the_context:
         yield the_context
+
+
+@pytest.fixture
+def redis_context(client_context):
+    global_cache = global_cache_module.RedisCache.from_environment()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+        yield context

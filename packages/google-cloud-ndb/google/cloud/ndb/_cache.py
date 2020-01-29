@@ -169,7 +169,7 @@ class _GlobalCacheGetBatch(_GlobalCacheBatch):
     def make_call(self):
         """Call :method:`GlobalCache.get`."""
         cache = context_module.get_context().global_cache
-        return cache.get(self.todo.keys())
+        return cache.get(self.keys)
 
     def future_info(self, key):
         """Generate info string for Future."""

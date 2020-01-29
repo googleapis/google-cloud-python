@@ -19,6 +19,7 @@ import datetime
 import functools
 import operator
 import os
+import random
 import threading
 import zlib
 
@@ -118,7 +119,7 @@ def test_retrieve_entity_with_global_cache(ds_entity, client_context):
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
-def test_retrieve_entity_with_redis_cache(ds_entity, client_context):
+def test_retrieve_entity_with_redis_cache(ds_entity, redis_context):
     entity_id = test_utils.system.unique_resource_id()
     ds_entity(KIND, entity_id, foo=42, bar="none", baz=b"night")
 
@@ -127,28 +128,24 @@ def test_retrieve_entity_with_redis_cache(ds_entity, client_context):
         bar = ndb.StringProperty()
         baz = ndb.StringProperty()
 
-    global_cache = global_cache_module.RedisCache.from_environment()
-    with client_context.new(global_cache=global_cache).use() as context:
-        context.set_global_cache_policy(None)  # Use default
+    key = ndb.Key(KIND, entity_id)
+    entity = key.get()
+    assert isinstance(entity, SomeKind)
+    assert entity.foo == 42
+    assert entity.bar == "none"
+    assert entity.baz == "night"
 
-        key = ndb.Key(KIND, entity_id)
+    cache_key = _cache.global_cache_key(key._key)
+    assert redis_context.global_cache.redis.get(cache_key) is not None
+
+    patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
+    patch.side_effect = Exception("Shouldn't call this")
+    with patch:
         entity = key.get()
         assert isinstance(entity, SomeKind)
         assert entity.foo == 42
         assert entity.bar == "none"
         assert entity.baz == "night"
-
-        cache_key = _cache.global_cache_key(key._key)
-        assert global_cache.redis.get(cache_key) is not None
-
-        patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
-        patch.side_effect = Exception("Shouldn't call this")
-        with patch:
-            entity = key.get()
-            assert isinstance(entity, SomeKind)
-            assert entity.foo == 42
-            assert entity.bar == "none"
-            assert entity.baz == "night"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -500,33 +497,29 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
-def test_insert_entity_with_redis_cache(dispose_of, client_context):
+def test_insert_entity_with_redis_cache(dispose_of, redis_context):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    global_cache = global_cache_module.RedisCache.from_environment()
-    with client_context.new(global_cache=global_cache).use() as context:
-        context.set_global_cache_policy(None)  # Use default
+    entity = SomeKind(foo=42, bar="none")
+    key = entity.put()
+    dispose_of(key._key)
+    cache_key = _cache.global_cache_key(key._key)
+    assert redis_context.global_cache.redis.get(cache_key) is None
 
-        entity = SomeKind(foo=42, bar="none")
-        key = entity.put()
-        dispose_of(key._key)
-        cache_key = _cache.global_cache_key(key._key)
-        assert global_cache.redis.get(cache_key) is None
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar == "none"
 
-        retrieved = key.get()
-        assert retrieved.foo == 42
-        assert retrieved.bar == "none"
+    assert redis_context.global_cache.redis.get(cache_key) is not None
 
-        assert global_cache.redis.get(cache_key) is not None
+    entity.foo = 43
+    entity.put()
 
-        entity.foo = 43
-        entity.put()
-
-        # This is py27 behavior. I can see a case being made for caching the
-        # entity on write rather than waiting for a subsequent lookup.
-        assert global_cache.redis.get(cache_key) is None
+    # This is py27 behavior. I can see a case being made for caching the
+    # entity on write rather than waiting for a subsequent lookup.
+    assert redis_context.global_cache.redis.get(cache_key) is None
 
 
 @pytest.mark.usefixtures("client_context")
@@ -671,7 +664,7 @@ def test_delete_entity_with_global_cache(ds_entity, client_context):
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
-def test_delete_entity_with_redis_cache(ds_entity, client_context):
+def test_delete_entity_with_redis_cache(ds_entity, redis_context):
     entity_id = test_utils.system.unique_resource_id()
     ds_entity(KIND, entity_id, foo=42)
 
@@ -680,19 +673,17 @@ def test_delete_entity_with_redis_cache(ds_entity, client_context):
 
     key = ndb.Key(KIND, entity_id)
     cache_key = _cache.global_cache_key(key._key)
-    global_cache = global_cache_module.RedisCache.from_environment()
 
-    with client_context.new(global_cache=global_cache).use():
-        assert key.get().foo == 42
-        assert global_cache.redis.get(cache_key) is not None
+    assert key.get().foo == 42
+    assert redis_context.global_cache.redis.get(cache_key) is not None
 
-        assert key.delete() is None
-        assert global_cache.redis.get(cache_key) is None
+    assert key.delete() is None
+    assert redis_context.global_cache.redis.get(cache_key) is None
 
-        # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
-        # Datastore misses.
-        assert key.get() is None
-        assert global_cache.redis.get(cache_key) == b"0"
+    # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
+    # Datastore misses.
+    assert key.get() is None
+    assert redis_context.global_cache.redis.get(cache_key) == b"0"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -1113,3 +1104,30 @@ def test_repeated_empty_strings(dispose_of):
 
     retreived = key.get()
     assert retreived.foo == ["", ""]
+
+
+@pytest.mark.usefixtures("redis_context")
+def test_multi_get_weirdness_with_redis(dispose_of):
+    """Regression test for issue #294.
+
+    https://github.com/googleapis/python-ndb/issues/294
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.StringProperty()
+
+    objects = [SomeKind(foo=str(i)) for i in range(10)]
+    keys = ndb.put_multi(objects)
+    for key in keys:
+        dispose_of(key._key)
+    ndb.get_multi(keys)
+
+    one_object = random.choice(keys).get()
+    one_object.foo = "CHANGED"
+    one_object.put()
+
+    objects_upd = ndb.get_multi(keys)
+    keys_upd = [obj.key for obj in objects_upd]
+    assert len(keys_upd) == len(keys)
+    assert len(set(keys_upd)) == len(set(keys))
+    assert set(keys_upd) == set(keys)
