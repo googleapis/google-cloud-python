@@ -174,8 +174,7 @@ class WorkerPool(object):
           STATUS_UNSPECIFIED (int): Status of the ``WorkerPool`` is unknown.
           CREATING (int): ``WorkerPool`` is being created.
           RUNNING (int): ``WorkerPool`` is running.
-          DELETING (int): ``WorkerPool`` is being deleting: cancelling builds and draining
-          workers.
+          DELETING (int): ``WorkerPool`` is being deleted: cancelling builds and draining workers.
           DELETED (int): ``WorkerPool`` is deleted.
         """
 
