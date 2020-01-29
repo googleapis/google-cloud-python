@@ -3232,12 +3232,12 @@ PubsubMessage = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PUBSUBMESSAGE,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""A message that is published by publishers and consumed by subscribers.
-  The message must contain either a non-empty data field or at least one
-  attribute. Note that client libraries represent this object differently
-  depending on the language. See the corresponding client library
-  documentation for more information. See Quotas and limits for more
-  information about message limits.
+        __doc__="""A message that is published by publishers and consumed by
+  subscribers. The message must contain either a non-empty data field or
+  at least one attribute. Note that client libraries represent this object
+  differently depending on the language. See the corresponding client
+  library documentation for more information. See Quotas and limits for
+  more information about message limits.
   
   
   Attributes:
@@ -3635,8 +3635,8 @@ DeadLetterPolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DEADLETTERPOLICY,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""Dead lettering is done on a best effort basis. The same message might be
-  dead lettered multiple times.
+        __doc__="""Dead lettering is done on a best effort basis. The same
+  message might be dead lettered multiple times.
   
   If validation on any of the fields fails at subscription
   creation/updation, the create/update subscription request will fail.
@@ -3676,8 +3676,8 @@ ExpirationPolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EXPIRATIONPOLICY,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""A policy that specifies the conditions for resource expiration (i.e.,
-  automatic resource deletion).
+        __doc__="""A policy that specifies the conditions for resource
+  expiration (i.e., automatic resource deletion).
   
   
   Attributes:
@@ -3705,13 +3705,14 @@ PushConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_PUSHCONFIG_OIDCTOKEN,
                 __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-                __doc__="""Contains information needed for generating an `OpenID Connect
+                __doc__="""Contains information needed for generating an `OpenID
+    Connect
     token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
     
     
     Attributes:
         service_account_email:
-            `Service account email
+            \ `Service account email
             <https://cloud.google.com/iam/docs/service-accounts>`__ to be
             used for generating the OIDC token. The caller (for
             CreateSubscription, UpdateSubscription, and ModifyPushConfig
@@ -4064,10 +4065,10 @@ StreamingPullRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGPULLREQUEST,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""Request for the ``StreamingPull`` streaming RPC method. This request is
-  used to establish the initial stream as well as to stream
-  acknowledgements and ack deadline modifications from the client to the
-  server.
+        __doc__="""Request for the ``StreamingPull`` streaming RPC method.
+  This request is used to establish the initial stream as well as to
+  stream acknowledgements and ack deadline modifications from the client
+  to the server.
   
   
   Attributes:
@@ -4123,8 +4124,8 @@ StreamingPullResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGPULLRESPONSE,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""Response for the ``StreamingPull`` method. This response is used to
-  stream messages from the server to the client.
+        __doc__="""Response for the ``StreamingPull`` method. This response
+  is used to stream messages from the server to the client.
   
   
   Attributes:
@@ -4217,10 +4218,10 @@ Snapshot = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SNAPSHOT,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
-        __doc__="""A snapshot resource. Snapshots are used in Seek operations, which allow
-  you to manage message acknowledgments in bulk. That is, you can set the
-  acknowledgment state of messages in an existing subscription to the
-  state captured by a snapshot.
+        __doc__="""A snapshot resource. Snapshots are used in Seek
+  operations, which allow you to manage message acknowledgments in bulk.
+  That is, you can set the acknowledgment state of messages in an existing
+  subscription to the state captured by a snapshot.
   
   
   Attributes:
@@ -4379,6 +4380,7 @@ SeekResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEEKRESPONSE,
         __module__="google.cloud.pubsub_v1.proto.pubsub_pb2",
         __doc__="""Response for the ``Seek`` method (this response is empty).
+  
   """,
         # @@protoc_insertion_point(class_scope:google.pubsub.v1.SeekResponse)
     ),

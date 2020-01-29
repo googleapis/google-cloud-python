@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-pubsub").v
 
 
 # TODO: remove conditional import after Python 2 support is dropped
-if six.PY3:
-    from collections.abc import Mapping
-else:
+if six.PY2:
     from collections import Mapping
+else:
+    from collections.abc import Mapping
 
 
 def _merge_dict(d1, d2):
