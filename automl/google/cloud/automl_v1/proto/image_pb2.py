@@ -508,6 +508,7 @@ ImageObjectDetectionDatasetMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMAGEOBJECTDETECTIONDATASETMETADATA,
         __module__="google.cloud.automl_v1.proto.image_pb2",
         __doc__="""Dataset metadata specific to image object detection.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1.ImageObjectDetectionDatasetMetadata)
     ),
@@ -668,7 +669,8 @@ ImageClassificationModelDeploymentMetadata = _reflection.GeneratedProtocolMessag
     dict(
         DESCRIPTOR=_IMAGECLASSIFICATIONMODELDEPLOYMENTMETADATA,
         __module__="google.cloud.automl_v1.proto.image_pb2",
-        __doc__="""Model deployment metadata specific to Image Classification.
+        __doc__="""Model deployment metadata specific to Image
+  Classification.
   
   
   Attributes:
@@ -690,7 +692,8 @@ ImageObjectDetectionModelDeploymentMetadata = _reflection.GeneratedProtocolMessa
     dict(
         DESCRIPTOR=_IMAGEOBJECTDETECTIONMODELDEPLOYMENTMETADATA,
         __module__="google.cloud.automl_v1.proto.image_pb2",
-        __doc__="""Model deployment metadata specific to Image Object Detection.
+        __doc__="""Model deployment metadata specific to Image Object
+  Detection.
   
   
   Attributes:

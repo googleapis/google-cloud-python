@@ -329,8 +329,8 @@ DataType = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DATATYPE,
         __module__="google.cloud.automl_v1beta1.proto.data_types_pb2",
-        __doc__="""Indicated the type of data that can be stored in a structured data
-  entity (e.g. a table).
+        __doc__="""Indicated the type of data that can be stored in a
+  structured data entity (e.g. a table).
   
   
   Attributes:
@@ -386,7 +386,7 @@ StructType = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_STRUCTTYPE,
         __module__="google.cloud.automl_v1beta1.proto.data_types_pb2",
-        __doc__="""``StructType`` defines the DataType-s of a
+        __doc__="""\ ``StructType`` defines the DataType-s of a
   [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT] type.
   
   
