@@ -2385,10 +2385,10 @@ Entry = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTRY,
         __module__="google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
-        __doc__="""Entry Metadata. A Data Catalog Entry resource represents another
-  resource in Google Cloud Platform, such as a BigQuery dataset or a Cloud
-  Pub/Sub topic. Clients can use the ``linked_resource`` field in the
-  Entry resource to refer to the original resource ID of the source
+        __doc__="""Entry Metadata. A Data Catalog Entry resource represents
+  another resource in Google Cloud Platform, such as a BigQuery dataset or
+  a Cloud Pub/Sub topic. Clients can use the ``linked_resource`` field in
+  the Entry resource to refer to the original resource ID of the source
   system.
   
   An Entry resource contains resource details, such as its schema. An
@@ -2454,8 +2454,8 @@ EntryGroup = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTRYGROUP,
         __module__="google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
-        __doc__="""EntryGroup Metadata. An EntryGroup resource represents a logical
-  grouping of zero or more Data Catalog
+        __doc__="""EntryGroup Metadata. An EntryGroup resource represents a
+  logical grouping of zero or more Data Catalog
   [Entry][google.cloud.datacatalog.v1beta1.Entry] resources.
   
   
