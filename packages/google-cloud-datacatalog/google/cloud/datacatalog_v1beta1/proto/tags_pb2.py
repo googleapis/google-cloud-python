@@ -870,8 +870,8 @@ Tag = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TAG,
         __module__="google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        __doc__="""Tags are used to attach custom metadata to Data Catalog resources. Tags
-  conform to the specifications within their tag template.
+        __doc__="""Tags are used to attach custom metadata to Data Catalog
+  resources. Tags conform to the specifications within their tag template.
   
   See `Data Catalog IAM </data-catalog/docs/concepts/iam>`__ for
   information on the permissions needed to create or view tags.
@@ -937,8 +937,8 @@ TagField = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TAGFIELD,
         __module__="google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        __doc__="""Contains the value and supporting information for a field within a
-  [Tag][google.cloud.datacatalog.v1beta1.Tag].
+        __doc__="""Contains the value and supporting information for a field
+  within a [Tag][google.cloud.datacatalog.v1beta1.Tag].
   
   
   Attributes:
@@ -980,10 +980,10 @@ TagTemplate = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TAGTEMPLATE,
         __module__="google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        __doc__="""A tag template defines the schema of the tags used to attach to Data
-  Catalog resources. It defines the mapping of accepted field names and
-  types that can be used within the tag. The tag template also controls
-  the access to the tag.
+        __doc__="""A tag template defines the schema of the tags used to
+  attach to Data Catalog resources. It defines the mapping of accepted
+  field names and types that can be used within the tag. The tag template
+  also controls the access to the tag.
   
   
   Attributes:
