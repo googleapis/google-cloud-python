@@ -608,7 +608,8 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT,
                         __module__="google.cloud.websecurityscanner_v1alpha.proto.scan_config_pb2",
-                        __doc__="""Describes authentication configuration that uses a Google account.
+                        __doc__="""Describes authentication configuration that uses a Google
+      account.
       
       
       Attributes:
@@ -628,7 +629,8 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_SCANCONFIG_AUTHENTICATION_CUSTOMACCOUNT,
                         __module__="google.cloud.websecurityscanner_v1alpha.proto.scan_config_pb2",
-                        __doc__="""Describes authentication configuration that uses a custom account.
+                        __doc__="""Describes authentication configuration that uses a custom
+      account.
       
       
       Attributes:
@@ -683,8 +685,8 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SCANCONFIG,
         __module__="google.cloud.websecurityscanner_v1alpha.proto.scan_config_pb2",
-        __doc__="""A ScanConfig resource contains the configurations to launch a scan. next
-  id: 12
+        __doc__="""A ScanConfig resource contains the configurations to
+  launch a scan. next id: 12
   
   
   Attributes:
