@@ -1284,7 +1284,8 @@ DocumentInputConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENTINPUTCONFIG,
         __module__="google.cloud.automl_v1.proto.io_pb2",
-        __doc__="""Input configuration of a [Document][google.cloud.automl.v1.Document].
+        __doc__="""Input configuration of a
+  [Document][google.cloud.automl.v1.Document].
   
   
   Attributes:
@@ -1579,7 +1580,8 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSDESTINATION,
         __module__="google.cloud.automl_v1.proto.io_pb2",
-        __doc__="""The Google Cloud Storage location where the output is to be written to.
+        __doc__="""The Google Cloud Storage location where the output is to
+  be written to.
   
   
   Attributes:
