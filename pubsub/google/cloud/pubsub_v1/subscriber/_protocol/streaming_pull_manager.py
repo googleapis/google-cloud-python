@@ -80,20 +80,6 @@ def _wrap_callback_errors(callback, on_callback_error, message):
         on_callback_error(exc)
 
 
-# TODO
-# check if dropping behavior in Leaser is going to be a problem. (maybe disbale
-# for ordering keys). check if what i'm doing here is okay?
-# investigate other places where Drop is happening. Drop is dangerous because it
-# can happen without the user intending an ack or nack.
-
-# 1) dont drop ordering keys messages OR
-# 2) drop all messages from the ordering key (better user experience)
-#
-# if message is in hold, then lease expires, then you wait for server to send
-# again.
-#
-
-
 class StreamingPullManager(object):
     """The streaming pull manager coordinates pulling messages from Pub/Sub,
     leasing them, and scheduling them to be processed.
@@ -262,7 +248,7 @@ class StreamingPullManager(object):
         because each key is the result of an ack or nack. Since the load went
         down by one message, it's safe to send the user another message for the
         same key. This is why this method does not check the load before
-        activating key.
+        activating the key.
 
         Args:
             ordering_keys(Sequence[str]): A sequence of ordering keys to
