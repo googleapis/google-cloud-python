@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -90,12 +90,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def location_path(cls, project, location):
-        """DEPRECATED. Return a fully-qualified location string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}",
             project=project,
@@ -104,12 +99,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def location_data_source_path(cls, project, location, data_source):
-        """DEPRECATED. Return a fully-qualified location_data_source string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location_data_source string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/dataSources/{data_source}",
             project=project,
@@ -119,12 +109,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def location_run_path(cls, project, location, transfer_config, run):
-        """DEPRECATED. Return a fully-qualified location_run string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location_run string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/transferConfigs/{transfer_config}/runs/{run}",
             project=project,
@@ -135,12 +120,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def location_transfer_config_path(cls, project, location, transfer_config):
-        """DEPRECATED. Return a fully-qualified location_transfer_config string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified location_transfer_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/transferConfigs/{transfer_config}",
             project=project,
@@ -150,24 +130,14 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def project_data_source_path(cls, project, data_source):
-        """DEPRECATED. Return a fully-qualified project_data_source string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_data_source string."""
         return google.api_core.path_template.expand(
             "projects/{project}/dataSources/{data_source}",
             project=project,
@@ -176,12 +146,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def project_run_path(cls, project, transfer_config, run):
-        """DEPRECATED. Return a fully-qualified project_run string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_run string."""
         return google.api_core.path_template.expand(
             "projects/{project}/transferConfigs/{transfer_config}/runs/{run}",
             project=project,
@@ -191,12 +156,7 @@ class DataTransferServiceClient(object):
 
     @classmethod
     def project_transfer_config_path(cls, project, transfer_config):
-        """DEPRECATED. Return a fully-qualified project_transfer_config string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project_transfer_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/transferConfigs/{transfer_config}",
             project=project,
