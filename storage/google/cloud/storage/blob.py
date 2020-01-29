@@ -31,8 +31,8 @@ import hashlib
 from io import BytesIO
 import mimetypes
 import os
-import time
 import warnings
+import six
 
 from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
@@ -57,6 +57,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._helpers import _convert_to_timestamp
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage.acl import ACL
@@ -763,7 +764,10 @@ class Blob(_PropertyMixin):
 
         updated = self.updated
         if updated is not None:
-            mtime = time.mktime(updated.timetuple())
+            if six.PY2:
+                mtime = _convert_to_timestamp(updated)
+            else:
+                mtime = updated.timestamp()
             os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None, start=None, end=None, raw_download=False):

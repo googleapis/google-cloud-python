@@ -19,6 +19,7 @@ These are *not* part of the API.
 
 import base64
 from hashlib import md5
+from datetime import datetime
 import os
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
@@ -273,3 +274,17 @@ def _base64_md5hash(buffer_object):
     _write_buffer_to_hash(buffer_object, hash_obj)
     digest_bytes = hash_obj.digest()
     return base64.b64encode(digest_bytes)
+
+
+def _convert_to_timestamp(value):
+    """Convert non-none datetime to timestamp.
+
+    :type value: :class:`datetime.datetime`
+    :param value: The datetime to convert.
+
+    :rtype: int
+    :returns: The timestamp.
+    """
+    utc_naive = value.replace(tzinfo=None) - value.utcoffset()
+    mtime = (utc_naive - datetime(1970, 1, 1)).total_seconds()
+    return mtime
