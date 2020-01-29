@@ -19,7 +19,7 @@ run on other Python platforms as well.
 
 ## Release Status
 
-Beta
+GA
 
 ### Officially Supported Python Versions
 Python 2.7 & Python 3.6-3.7
