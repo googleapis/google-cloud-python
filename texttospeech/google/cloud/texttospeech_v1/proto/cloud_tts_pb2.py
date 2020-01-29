@@ -700,7 +700,8 @@ ListVoicesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTVOICESREQUEST,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the ``ListVoices`` method.
+        __doc__="""The top-level message sent by the client for the
+  ``ListVoices`` method.
   
   
   Attributes:
@@ -726,7 +727,8 @@ ListVoicesResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTVOICESRESPONSE,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""The message returned to the client by the ``ListVoices`` method.
+        __doc__="""The message returned to the client by the ``ListVoices``
+  method.
   
   
   Attributes:
@@ -770,8 +772,8 @@ SynthesizeSpeechRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHREQUEST,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the ``SynthesizeSpeech``
-  method.
+        __doc__="""The top-level message sent by the client for the
+  ``SynthesizeSpeech`` method.
   
   
   Attributes:
@@ -794,8 +796,8 @@ SynthesisInput = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESISINPUT,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""Contains text input to be synthesized. Either ``text`` or ``ssml`` must
-  be supplied. Supplying both or neither returns
+        __doc__="""Contains text input to be synthesized. Either ``text`` or
+  ``ssml`` must be supplied. Supplying both or neither returns
   [google.rpc.Code.INVALID\_ARGUMENT][]. The input size is limited to 5000
   characters.
   
@@ -918,7 +920,8 @@ SynthesizeSpeechResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHRESPONSE,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""The message returned to the client by the ``SynthesizeSpeech`` method.
+        __doc__="""The message returned to the client by the
+  ``SynthesizeSpeech`` method.
   
   
   Attributes:
