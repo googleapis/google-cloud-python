@@ -396,10 +396,10 @@ ScanConfigError = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SCANCONFIGERROR,
         __module__="google.cloud.websecurityscanner_v1beta.proto.scan_config_error_pb2",
-        __doc__="""Defines a custom error message used by CreateScanConfig and
-  UpdateScanConfig APIs when scan configuration validation fails. It is
-  also reported as part of a ScanRunErrorTrace message if scan validation
-  fails due to a scan configuration error.
+        __doc__="""Defines a custom error message used by CreateScanConfig
+  and UpdateScanConfig APIs when scan configuration validation fails. It
+  is also reported as part of a ScanRunErrorTrace message if scan
+  validation fails due to a scan configuration error.
   
   
   Attributes:

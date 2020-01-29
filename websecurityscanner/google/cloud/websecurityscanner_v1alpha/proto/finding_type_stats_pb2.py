@@ -106,8 +106,8 @@ FindingTypeStats = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FINDINGTYPESTATS,
         __module__="google.cloud.websecurityscanner_v1alpha.proto.finding_type_stats_pb2",
-        __doc__="""A FindingTypeStats resource represents stats regarding a specific
-  FindingType of Findings under a given ScanRun.
+        __doc__="""A FindingTypeStats resource represents stats regarding a
+  specific FindingType of Findings under a given ScanRun.
   
   
   Attributes:

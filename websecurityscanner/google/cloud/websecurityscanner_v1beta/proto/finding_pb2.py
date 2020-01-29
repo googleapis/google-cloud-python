@@ -387,8 +387,8 @@ Finding = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FINDING,
         __module__="google.cloud.websecurityscanner_v1beta.proto.finding_pb2",
-        __doc__="""A Finding resource represents a vulnerability instance identified during
-  a ScanRun.
+        __doc__="""A Finding resource represents a vulnerability instance
+  identified during a ScanRun.
   
   
   Attributes:
