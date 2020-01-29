@@ -3361,7 +3361,7 @@ HadoopJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_HADOOPJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache Hadoop
+        __doc__="""A Dataproc job for running `Apache Hadoop
   MapReduce <https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html>`__
   jobs on `Apache Hadoop
   YARN <https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html>`__.
@@ -3403,9 +3403,8 @@ HadoopJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names to values, used to
           configure Hadoop. Properties that conflict with values set by
-          the Cloud Dataproc API may be overwritten. Can include
-          properties set in /etc/hadoop/conf/\*-site and classes in user
-          code.
+          the Dataproc API may be overwritten. Can include properties
+          set in /etc/hadoop/conf/\*-site and classes in user code.
       logging_config:
           Optional. The runtime log config for job execution.
   """,
@@ -3430,8 +3429,8 @@ SparkJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPARKJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache
-  Spark <http://spark.apache.org/>`__ applications on YARN.
+        __doc__="""A Dataproc job for running `Apache Spark <http://spark.apache.org/>`__
+  applications on YARN.
   
   
   Attributes:
@@ -3467,9 +3466,9 @@ SparkJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names to values, used to
           configure Spark. Properties that conflict with values set by
-          the Cloud Dataproc API may be overwritten. Can include
-          properties set in /etc/spark/conf/spark-defaults.conf and
-          classes in user code.
+          the Dataproc API may be overwritten. Can include properties
+          set in /etc/spark/conf/spark-defaults.conf and classes in user
+          code.
       logging_config:
           Optional. The runtime log config for job execution.
   """,
@@ -3494,7 +3493,7 @@ PySparkJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PYSPARKJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache
+        __doc__="""A Dataproc job for running `Apache
   PySpark <https://spark.apache.org/docs/0.9.0/python-programming-guide.html>`__
   applications on YARN.
   
@@ -3524,9 +3523,9 @@ PySparkJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names to values, used to
           configure PySpark. Properties that conflict with values set by
-          the Cloud Dataproc API may be overwritten. Can include
-          properties set in /etc/spark/conf/spark-defaults.conf and
-          classes in user code.
+          the Dataproc API may be overwritten. Can include properties
+          set in /etc/spark/conf/spark-defaults.conf and classes in user
+          code.
       logging_config:
           Optional. The runtime log config for job execution.
   """,
@@ -3584,8 +3583,8 @@ HiveJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_HIVEJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache
-  Hive <https://hive.apache.org/>`__ queries on YARN.
+        __doc__="""A Dataproc job for running `Apache Hive <https://hive.apache.org/>`__
+  queries on YARN.
   
   
   Attributes:
@@ -3606,9 +3605,9 @@ HiveJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names and values, used to
           configure Hive. Properties that conflict with values set by
-          the Cloud Dataproc API may be overwritten. Can include
-          properties set in /etc/hadoop/conf/\*-site.xml,
-          /etc/hive/conf/hive-site.xml, and classes in user code.
+          the Dataproc API may be overwritten. Can include properties
+          set in /etc/hadoop/conf/\*-site.xml, /etc/hive/conf/hive-
+          site.xml, and classes in user code.
       jar_file_uris:
           Optional. HCFS URIs of jar files to add to the CLASSPATH of
           the Hive server and Hadoop MapReduce (MR) tasks. Can contain
@@ -3645,7 +3644,7 @@ SparkSqlJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPARKSQLJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache Spark
+        __doc__="""A Dataproc job for running `Apache Spark
   SQL <http://spark.apache.org/sql/>`__ queries.
   
   
@@ -3663,7 +3662,7 @@ SparkSqlJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names to values, used to
           configure Spark SQL's SparkConf. Properties that conflict with
-          values set by the Cloud Dataproc API may be overwritten.
+          values set by the Dataproc API may be overwritten.
       jar_file_uris:
           Optional. HCFS URIs of jar files to be added to the Spark
           CLASSPATH.
@@ -3701,8 +3700,8 @@ PigJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PIGJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job for running `Apache
-  Pig <https://pig.apache.org/>`__ queries on YARN.
+        __doc__="""A Dataproc job for running `Apache Pig <https://pig.apache.org/>`__
+  queries on YARN.
   
   
   Attributes:
@@ -3723,9 +3722,9 @@ PigJob = _reflection.GeneratedProtocolMessageType(
       properties:
           Optional. A mapping of property names to values, used to
           configure Pig. Properties that conflict with values set by the
-          Cloud Dataproc API may be overwritten. Can include properties
-          set in /etc/hadoop/conf/\*-site.xml,
-          /etc/pig/conf/pig.properties, and classes in user code.
+          Dataproc API may be overwritten. Can include properties set in
+          /etc/hadoop/conf/\*-site.xml, /etc/pig/conf/pig.properties,
+          and classes in user code.
       jar_file_uris:
           Optional. HCFS URIs of jar files to add to the CLASSPATH of
           the Pig Client and Hadoop MapReduce (MR) tasks. Can contain
@@ -3746,7 +3745,7 @@ JobPlacement = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_JOBPLACEMENT,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""Cloud Dataproc job config.
+        __doc__="""Dataproc job config.
   
   
   Attributes:
@@ -3754,8 +3753,8 @@ JobPlacement = _reflection.GeneratedProtocolMessageType(
           Required. The name of the cluster where the job will be
           submitted.
       cluster_uuid:
-          Output only. A cluster UUID generated by the Cloud Dataproc
-          service when the job is submitted.
+          Output only. A cluster UUID generated by the Dataproc service
+          when the job is submitted.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dataproc.v1.JobPlacement)
     ),
@@ -3768,7 +3767,7 @@ JobStatus = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_JOBSTATUS,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""Cloud Dataproc job status.
+        __doc__="""Dataproc job status.
   
   
   Attributes:
@@ -3860,7 +3859,7 @@ Job = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_JOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Cloud Dataproc job resource.
+        __doc__="""A Dataproc job resource.
   
   
   Attributes:
@@ -3962,8 +3961,7 @@ SubmitJobRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       job:
           Required. The job resource.
       request_id:
@@ -3998,8 +3996,7 @@ GetJobRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       job_id:
           Required. The job ID.
   """,
@@ -4022,8 +4019,7 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       page_size:
           Optional. The number of results to return in each response.
       page_token:
@@ -4067,8 +4063,7 @@ UpdateJobRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       job_id:
           Required. The job ID.
       job:
@@ -4122,8 +4117,7 @@ CancelJobRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       job_id:
           Required. The job ID.
   """,
@@ -4146,8 +4140,7 @@ DeleteJobRequest = _reflection.GeneratedProtocolMessageType(
           Required. The ID of the Google Cloud Platform project that the
           job belongs to.
       region:
-          Required. The Cloud Dataproc region in which to handle the
-          request.
+          Required. The Dataproc region in which to handle the request.
       job_id:
           Required. The job ID.
   """,
