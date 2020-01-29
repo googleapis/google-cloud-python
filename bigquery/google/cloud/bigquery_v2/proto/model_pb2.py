@@ -3310,8 +3310,8 @@ Model = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MODEL_REGRESSIONMETRICS,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Evaluation metrics for regression and explicit feedback type matrix
-    factorization models.
+                __doc__="""Evaluation metrics for regression and explicit feedback
+    type matrix factorization models.
     
     
     Attributes:
@@ -3335,12 +3335,12 @@ Model = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MODEL_AGGREGATECLASSIFICATIONMETRICS,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Aggregate metrics for classification/classifier models. For multi-class
-    models, the metrics are either macro-averaged or micro-averaged. When
-    macro-averaged, the metrics are calculated for each label and then an
-    unweighted average is taken of those values. When micro-averaged, the
-    metric is calculated globally by counting the total number of correctly
-    predicted rows.
+                __doc__="""Aggregate metrics for classification/classifier models.
+    For multi-class models, the metrics are either macro-averaged or
+    micro-averaged. When macro-averaged, the metrics are calculated for each
+    label and then an unweighted average is taken of those values. When
+    micro-averaged, the metric is calculated globally by counting the total
+    number of correctly predicted rows.
     
     
     Attributes:
@@ -3414,7 +3414,8 @@ Model = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_MODEL_BINARYCLASSIFICATIONMETRICS,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Evaluation metrics for binary classification/classifier models.
+                __doc__="""Evaluation metrics for binary classification/classifier
+    models.
     
     
     Attributes:
@@ -3493,7 +3494,8 @@ Model = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_MODEL_MULTICLASSCLASSIFICATIONMETRICS,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Evaluation metrics for multi-class classification/classifier models.
+                __doc__="""Evaluation metrics for multi-class
+    classification/classifier models.
     
     
     Attributes:
@@ -3527,7 +3529,8 @@ Model = _reflection.GeneratedProtocolMessageType(
                                             dict(
                                                 DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE_CATEGORICALVALUE_CATEGORYCOUNT,
                                                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                                                __doc__="""Represents the count of a single category within the cluster.
+                                                __doc__="""Represents the count of a single category within the
+            cluster.
             
             
             Attributes:
@@ -3612,9 +3615,9 @@ Model = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MODEL_EVALUATIONMETRICS,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Evaluation metrics of a model. These are either computed on all training
-    data or just the eval data based on whether eval data was used during
-    training. These are not present for imported models.
+                __doc__="""Evaluation metrics of a model. These are either computed
+    on all training data or just the eval data based on whether eval data
+    was used during training. These are not present for imported models.
     
     
     Attributes:
@@ -3774,7 +3777,8 @@ Model = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_MODEL_TRAININGRUN,
                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                __doc__="""Information about a single training query run for the model.
+                __doc__="""Information about a single training query run for the
+    model.
     
     
     Attributes:
