@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## 0.7.0
+
+01-29-2020 10:53 PST
+
+### New Features
+- Add v1p1beta1, promote library to  beta. ([#10202](https://github.com/googleapis/google-cloud-python/pull/10202))
+- Undeprecate resource name helper methods, add 2.7 deprecation warning (via synth).  ([#10036](https://github.com/googleapis/google-cloud-python/pull/10036))
+
 ## 0.6.0
 
 12-12-2019 10:46 PST
