@@ -2120,9 +2120,9 @@ Document = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_DOCUMENT_SHARDINFO,
                 __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                __doc__="""For a large document, sharding may be performed to produce several
-    document shards. Each document shard contains this field to detail which
-    shard it is.
+                __doc__="""For a large document, sharding may be performed to produce
+    several document shards. Each document shard contains this field to
+    detail which shard it is.
     
     
     Attributes:
@@ -2162,8 +2162,8 @@ Document = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_DOCUMENT_STYLE,
                 __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                __doc__="""Annotation for common text style attributes. This adheres to CSS
-    conventions as much as possible.
+                __doc__="""Annotation for common text style attributes. This adheres
+    to CSS conventions as much as possible.
     
     
     Attributes:
@@ -2248,8 +2248,8 @@ Document = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_DOCUMENT_PAGE_BLOCK,
                         __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                        __doc__="""A block has a set of lines (collected into paragraphs) that have a
-      common line-spacing and orientation.
+                        __doc__="""A block has a set of lines (collected into paragraphs)
+      that have a common line-spacing and orientation.
       
       
       Attributes:
@@ -2269,7 +2269,8 @@ Document = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_DOCUMENT_PAGE_PARAGRAPH,
                         __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                        __doc__="""A collection of lines that a human would perceive as a paragraph.
+                        __doc__="""A collection of lines that a human would perceive as a
+      paragraph.
       
       
       Attributes:
@@ -2289,8 +2290,9 @@ Document = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_DOCUMENT_PAGE_LINE,
                         __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                        __doc__="""A collection of tokens that a human would perceive as a line. Does not
-      cross column boundaries, can be horizontal, vertical, etc.
+                        __doc__="""A collection of tokens that a human would perceive as a
+      line. Does not cross column boundaries, can be horizontal, vertical,
+      etc.
       
       
       Attributes:
@@ -2350,8 +2352,8 @@ Document = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_DOCUMENT_PAGE_VISUALELEMENT,
                         __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                        __doc__="""Detected non-text visual elements e.g. checkbox, signature etc. on the
-      page.
+                        __doc__="""Detected non-text visual elements e.g. checkbox, signature
+      etc. on the page.
       
       
       Attributes:
@@ -2483,7 +2485,8 @@ Document = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_DOCUMENT_PAGE,
                 __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                __doc__="""A page in a [Document][google.cloud.documentai.v1beta1.Document].
+                __doc__="""A page in a
+    [Document][google.cloud.documentai.v1beta1.Document].
     
     
     Attributes:
@@ -2531,8 +2534,8 @@ Document = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_DOCUMENT_ENTITY,
                 __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-                __doc__="""A phrase in the text that is a known entity type, such as a person, an
-    organization, or location.
+                __doc__="""A phrase in the text that is a known entity type, such as
+    a person, an organization, or location.
     
     
     Attributes:
@@ -2617,10 +2620,10 @@ Document = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_DOCUMENT,
         __module__="google.cloud.documentai_v1beta1.proto.document_pb2",
-        __doc__="""Document represents the canonical document resource in Document
-  Understanding AI. It is an interchange format that provides insights
-  into documents and allows for collaboration between users and Document
-  Understanding AI to iterate and optimize for quality.
+        __doc__="""Document represents the canonical document resource in
+  Document Understanding AI. It is an interchange format that provides
+  insights into documents and allows for collaboration between users and
+  Document Understanding AI to iterate and optimize for quality.
   
   
   Attributes:
