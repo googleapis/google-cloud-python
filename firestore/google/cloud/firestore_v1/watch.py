@@ -213,9 +213,9 @@ class Watch(object):
         self._closing = threading.Lock()
         self._closed = False
 
-        initial_request = firestore_pb2.ListenRequest(
-            database=self._firestore._database_string, add_target=self._targets
-        )
+        self.resume_token = None
+
+        initial_request = self._get_initial_request
 
         if ResumableBidiRpc is None:
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
@@ -252,12 +252,18 @@ class Watch(object):
         self.has_pushed = False
 
         # The server assigns and updates the resume token.
-        self.resume_token = None
         if BackgroundConsumer is None:  # FBO unit tests
             BackgroundConsumer = self.BackgroundConsumer
 
         self._consumer = BackgroundConsumer(self._rpc, self.on_snapshot)
         self._consumer.start()
+
+    def _get_initial_request(self):
+        if self.resume_token is not None:
+            self._targets["resume_token"] = self.resume_token
+        return firestore_pb2.ListenRequest(
+            database=self._firestore._database_string, add_target=self._targets
+        )
 
     @property
     def is_active(self):

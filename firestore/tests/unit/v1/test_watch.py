@@ -209,7 +209,7 @@ class TestWatch(unittest.TestCase):
         self.assertIs(inst._rpc.start_rpc, inst._api.transport.listen)
         self.assertIs(inst._rpc.should_recover, _should_recover)
         self.assertIs(inst._rpc.should_terminate, _should_terminate)
-        self.assertIsInstance(inst._rpc.initial_request, firestore_pb2.ListenRequest)
+        self.assertIsInstance(inst._rpc.initial_request(), firestore_pb2.ListenRequest)
         self.assertEqual(inst._rpc.metadata, DummyFirestore._rpc_metadata)
 
     def test__on_rpc_done(self):
@@ -775,6 +775,12 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(inst.change_map, {"/doc": ChangeType.REMOVED})
         self.assertEqual(inst.resume_token, None)
         self.assertFalse(inst.current)
+
+    def test_resume_token_sent_on_recovery(self):
+        inst = self._makeOne()
+        inst.resume_token = b"ABCD0123"
+        request = inst._get_initial_request()
+        self.assertEqual(request.add_target.resume_token, b"ABCD0123")
 
 
 class DummyFirestoreStub(object):
