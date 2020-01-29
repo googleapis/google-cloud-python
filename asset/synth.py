@@ -19,7 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1p2beta1", "v1"]
+versions = ["v1beta1", "v1p2beta1", "v1p1beta1", "v1"]
 
 excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
@@ -27,11 +27,17 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 # Generate asset GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
+    if version == "v1p1beta1":
+        config_path = "/google/cloud/asset/v1p1beta1/artman_cloudasset_v1p1beta1.yaml"
+        artman_output_name = f"cloudasset-{version}"
+    else:
+        config_path = f"/google/cloud/asset/artman_cloudasset_{version}.yaml"
+        artman_output_name=f"asset-{version}"
     library = gapic.py_library(
         "asset",
         version,
-        config_path=f"/google/cloud/asset/artman_cloudasset_{version}.yaml",
-        artman_output_name=f"asset-{version}",
+        config_path=config_path,
+        artman_output_name=artman_output_name,
         include_protos=True,
     )
 
@@ -53,11 +59,20 @@ s.replace(
 
 s.replace(
     "google/cloud/asset_v*/proto/assets_pb2.py",
-    "_ASSET.fields_by_name\['iam_policy'\].message_type "
-    "= google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
+    "_ASSET\.fields_by_name\['iam_policy'\]\.message_type "
+    "= google_dot_iam_dot_v1_dot_policy__pb2\._POLICY",
     "_ASSET.fields_by_name['iam_policy'].message_type = google_dot_iam_dot"
     "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
 )
+
+s.replace(
+    "google/cloud/asset_v*/proto/assets_pb2.py",
+    "_IAMPOLICYSEARCHRESULT\.fields_by_name\['policy'\]\.message_type "
+    "= google_dot_iam_dot_v1_dot_policy__pb2\._POLICY",
+    "_IAMPOLICYSEARCHRESULT.fields_by_name['policy'].message_type = google_dot_iam_dot"
+    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
+)
+
 
 
 _BORKED_ASSET_DOCSTRING = """\
@@ -80,6 +95,11 @@ s.replace(
     _FIXED_ASSET_DOCSTRING,
 )
 
+s.replace(
+    "google/cloud/**/asset_service_client.py",
+    "google-cloud-cloudasset",
+    "google-cloud-asset"
+)
 # Fix docstrings with no summary line
 s.replace(
     "google/cloud/**/proto/*_pb2.py",
