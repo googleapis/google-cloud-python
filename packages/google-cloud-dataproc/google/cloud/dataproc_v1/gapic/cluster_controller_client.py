@@ -235,7 +235,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster (Union[dict, ~google.cloud.dataproc_v1.types.Cluster]): Required. The cluster to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -346,7 +346,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project the
                 cluster belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster (Union[dict, ~google.cloud.dataproc_v1.types.Cluster]): Required. The changes to the cluster.
 
@@ -529,7 +529,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
                 (with error NOT\_FOUND) if cluster with specified UUID does not exist.
@@ -622,7 +622,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -702,7 +702,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             filter_ (str): Optional. A filter constraining the clusters to list. Filters are
                 case-sensitive and have the following syntax:
 
@@ -823,7 +823,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
