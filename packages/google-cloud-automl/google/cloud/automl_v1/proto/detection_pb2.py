@@ -412,8 +412,9 @@ BoundingBoxMetricsEntry = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_BOUNDINGBOXMETRICSENTRY,
         __module__="google.cloud.automl_v1.proto.detection_pb2",
-        __doc__="""Bounding box matching model metrics for a single intersection-over-union
-  threshold and multiple label match confidence thresholds.
+        __doc__="""Bounding box matching model metrics for a single
+  intersection-over-union threshold and multiple label match confidence
+  thresholds.
   
   
   Attributes:
@@ -441,8 +442,8 @@ ImageObjectDetectionEvaluationMetrics = _reflection.GeneratedProtocolMessageType
     dict(
         DESCRIPTOR=_IMAGEOBJECTDETECTIONEVALUATIONMETRICS,
         __module__="google.cloud.automl_v1.proto.detection_pb2",
-        __doc__="""Model evaluation metrics for image object detection problems. Evaluates
-  prediction quality of labeled bounding boxes.
+        __doc__="""Model evaluation metrics for image object detection
+  problems. Evaluates prediction quality of labeled bounding boxes.
   
   
   Attributes:

@@ -702,8 +702,8 @@ Image = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGE,
         __module__="google.cloud.automl_v1.proto.data_items_pb2",
-        __doc__="""A representation of an image. Only images up to 30MB in size are
-  supported.
+        __doc__="""A representation of an image. Only images up to 30MB in
+  size are supported.
   
   
   Attributes:

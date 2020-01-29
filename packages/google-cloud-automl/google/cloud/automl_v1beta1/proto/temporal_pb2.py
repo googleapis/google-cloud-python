@@ -107,8 +107,8 @@ TimeSegment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMESEGMENT,
         __module__="google.cloud.automl_v1beta1.proto.temporal_pb2",
-        __doc__="""A time period inside of an example that has a time dimension (e.g.
-  video).
+        __doc__="""A time period inside of an example that has a time
+  dimension (e.g. video).
   
   
   Attributes:
