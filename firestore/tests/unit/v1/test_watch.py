@@ -209,7 +209,7 @@ class TestWatch(unittest.TestCase):
         self.assertIs(inst._rpc.start_rpc, inst._api.transport.listen)
         self.assertIs(inst._rpc.should_recover, _should_recover)
         self.assertIs(inst._rpc.should_terminate, _should_terminate)
-        self.assertIsInstance(inst._rpc.initial_request(), firestore_pb2.ListenRequest)
+        self.assertIsInstance(inst._rpc.initial_request, firestore_pb2.ListenRequest)
         self.assertEqual(inst._rpc.metadata, DummyFirestore._rpc_metadata)
 
     def test__on_rpc_done(self):
@@ -928,7 +928,7 @@ class DummyRpc(object):
         self.start_rpc = start_rpc
         self.should_recover = should_recover
         self.should_terminate = should_terminate
-        self.initial_request = initial_request
+        self.initial_request = initial_request()
         self.metadata = metadata
         self.closed = False
         self.callbacks = []
