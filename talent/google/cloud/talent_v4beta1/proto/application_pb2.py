@@ -15,14 +15,15 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.type import date_pb2 as google_dot_type_dot_date__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -33,15 +34,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\030ApplicationResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto"\xe0\x07\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0b\x65xternal_id\x18\x1f \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07profile\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x0b\n\x03job\x18\x04 \x01(\t\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12M\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStageB\x03\xe0\x41\x02\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x34\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12\x31\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\x03\xe0\x41\x03\x12\x1e\n\x11job_title_snippet\x18\x1d \x01(\tB\x03\xe0\x41\x03"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07\x42\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n3google/cloud/talent_v4beta1/proto/application.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x16google/type/date.proto\x1a\x1cgoogle/api/annotations.proto"\x99\t\n\x0b\x41pplication\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0b\x65xternal_id\x18\x1f \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07profile\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12)\n\x03job\x18\x04 \x01(\tB\x1c\xfa\x41\x19\n\x17jobs.googleapis.com/Job\x12\x31\n\x07\x63ompany\x18\x05 \x01(\tB \xfa\x41\x1d\n\x1bjobs.googleapis.com/Company\x12+\n\x10\x61pplication_date\x18\x07 \x01(\x0b\x32\x11.google.type.Date\x12M\n\x05stage\x18\x0b \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationStageB\x03\xe0\x41\x02\x12H\n\x05state\x18\r \x01(\x0e\x32\x39.google.cloud.talent.v4beta1.Application.ApplicationState\x12:\n\ninterviews\x18\x10 \x03(\x0b\x32&.google.cloud.talent.v4beta1.Interview\x12,\n\x08referral\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x34\n\x0b\x63reate_time\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12/\n\x0bupdate_time\x18\x14 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x15\n\routcome_notes\x18\x15 \x01(\t\x12\x35\n\x07outcome\x18\x16 \x01(\x0e\x32$.google.cloud.talent.v4beta1.Outcome\x12\x31\n\x08is_match\x18\x1c \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\x03\xe0\x41\x03\x12\x1e\n\x11job_title_snippet\x18\x1d \x01(\tB\x03\xe0\x41\x03"\x90\x01\n\x10\x41pplicationState\x12!\n\x1d\x41PPLICATION_STATE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\x16\n\x12\x43\x41NDIDATE_WITHDREW\x10\x02\x12\x15\n\x11\x45MPLOYER_WITHDREW\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x43LOSED\x10\x05"\xa9\x01\n\x10\x41pplicationStage\x12!\n\x1d\x41PPLICATION_STAGE_UNSPECIFIED\x10\x00\x12\x07\n\x03NEW\x10\x01\x12\n\n\x06SCREEN\x10\x02\x12\x19\n\x15HIRING_MANAGER_REVIEW\x10\x03\x12\r\n\tINTERVIEW\x10\x04\x12\x12\n\x0eOFFER_EXTENDED\x10\x05\x12\x12\n\x0eOFFER_ACCEPTED\x10\x06\x12\x0b\n\x07STARTED\x10\x07:w\xea\x41t\n\x1fjobs.googleapis.com/Application\x12Qprojects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}B\x86\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x18\x41pplicationResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
         google_dot_type_dot_date__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -85,8 +87,8 @@ _APPLICATION_APPLICATIONSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=961,
-    serialized_end=1105,
+    serialized_start=1052,
+    serialized_end=1196,
 )
 _sym_db.RegisterEnumDescriptor(_APPLICATION_APPLICATIONSTATE)
 
@@ -131,8 +133,8 @@ _APPLICATION_APPLICATIONSTAGE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1108,
-    serialized_end=1277,
+    serialized_start=1199,
+    serialized_end=1368,
 )
 _sym_db.RegisterEnumDescriptor(_APPLICATION_APPLICATIONSTAGE)
 
@@ -213,7 +215,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A\031\n\027jobs.googleapis.com/Job"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -231,7 +233,7 @@ _APPLICATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A\035\n\033jobs.googleapis.com/Company"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -436,13 +438,15 @@ _APPLICATION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_APPLICATION_APPLICATIONSTATE, _APPLICATION_APPLICATIONSTAGE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352At\n\037jobs.googleapis.com/Application\022Qprojects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=285,
-    serialized_end=1277,
+    serialized_start=312,
+    serialized_end=1489,
 )
 
 _APPLICATION.fields_by_name[
@@ -481,7 +485,8 @@ Application = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPLICATION,
         __module__="google.cloud.talent_v4beta1.proto.application_pb2",
-        __doc__="""Resource that represents a job application record of a candidate.
+        __doc__="""Resource that represents a job application record of a
+  candidate.
   
   
   Attributes:
@@ -555,8 +560,11 @@ _sym_db.RegisterMessage(Application)
 DESCRIPTOR._options = None
 _APPLICATION.fields_by_name["external_id"]._options = None
 _APPLICATION.fields_by_name["profile"]._options = None
+_APPLICATION.fields_by_name["job"]._options = None
+_APPLICATION.fields_by_name["company"]._options = None
 _APPLICATION.fields_by_name["stage"]._options = None
 _APPLICATION.fields_by_name["create_time"]._options = None
 _APPLICATION.fields_by_name["is_match"]._options = None
 _APPLICATION.fields_by_name["job_title_snippet"]._options = None
+_APPLICATION._options = None
 # @@protoc_insertion_point(module_scope)

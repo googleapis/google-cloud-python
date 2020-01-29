@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -270,16 +270,6 @@ class CompletionClient(object):
             language_codes (list[str]): The list of languages of the query. This is the BCP-47 language code,
                 such as "en-US" or "sr-Latn". For more information, see `Tags for
                 Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
-
-                For ``CompletionType.JOB_TITLE`` type, only open jobs with the same
-                ``language_codes`` are returned.
-
-                For ``CompletionType.COMPANY_NAME`` type, only companies having open
-                jobs with the same ``language_codes`` are returned.
-
-                For ``CompletionType.COMBINED`` type, only open jobs with the same
-                ``language_codes`` or companies having open jobs with the same
-                ``language_codes`` are returned.
 
                 The maximum number of allowed characters is 255.
             company (str): If provided, restricts completion to specified company.
