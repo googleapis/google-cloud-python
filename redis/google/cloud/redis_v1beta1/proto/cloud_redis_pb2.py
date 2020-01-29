@@ -1947,9 +1947,9 @@ LocationMetadata = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_LOCATIONMETADATA,
         __module__="google.cloud.redis_v1beta1.proto.cloud_redis_pb2",
-        __doc__="""This location metadata represents additional configuration options for a
-  given location where a Redis instance may be created. All fields are
-  output only. It is returned as content of the
+        __doc__="""This location metadata represents additional configuration
+  options for a given location where a Redis instance may be created. All
+  fields are output only. It is returned as content of the
   ``google.cloud.location.Location.metadata`` field.
   
   
@@ -1973,8 +1973,9 @@ ZoneMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ZONEMETADATA,
         __module__="google.cloud.redis_v1beta1.proto.cloud_redis_pb2",
-        __doc__="""Defines specific information for a particular zone. Currently empty and
-  reserved for future use only.
+        __doc__="""Defines specific information for a particular zone.
+  Currently empty and reserved for future use only.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.redis.v1beta1.ZoneMetadata)
     ),
