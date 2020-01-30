@@ -2748,8 +2748,8 @@ DeleteTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETETRANSFERCONFIGREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to delete data transfer information. All associated transfer
-  runs and log messages will be deleted as well.
+        __doc__="""A request to delete data transfer information. All
+  associated transfer runs and log messages will be deleted as well.
   
   
   Attributes:
