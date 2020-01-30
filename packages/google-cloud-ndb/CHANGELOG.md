@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-ndb/compare/v0.2.2...v1.0.0) (2020-01-30)
+
+
+### Bug Fixes
+
+* add user agent prefix google-cloud-ndb + version ([#299](https://www.github.com/googleapis/python-ndb/issues/299)) ([9fa136b](https://www.github.com/googleapis/python-ndb/commit/9fa136b9c163b24aefde6ccbc227a1035fa24bcd))
+* Finish implementation of UserProperty. ([#301](https://www.github.com/googleapis/python-ndb/issues/301)) ([fd2e0ed](https://www.github.com/googleapis/python-ndb/commit/fd2e0ed9bb6cec8b5651c58eaee2b3ca8a96aebb)), closes [#280](https://www.github.com/googleapis/python-ndb/issues/280)
+* Fix bug when wrapping base values. ([#303](https://www.github.com/googleapis/python-ndb/issues/303)) ([91ca8d9](https://www.github.com/googleapis/python-ndb/commit/91ca8d9044671361b731323317cef720dd19be82)), closes [#300](https://www.github.com/googleapis/python-ndb/issues/300)
+* Fix bug with the _GlobalCacheGetBatch. ([#305](https://www.github.com/googleapis/python-ndb/issues/305)) ([f213165](https://www.github.com/googleapis/python-ndb/commit/f2131654c6e5f67895fb0e3c09a507e8dc25c4bb)), closes [#294](https://www.github.com/googleapis/python-ndb/issues/294)
+* Preserve `QueryIterator.cursor_after`. ([#296](https://www.github.com/googleapis/python-ndb/issues/296)) ([4ffedc7](https://www.github.com/googleapis/python-ndb/commit/4ffedc7b5a2366be15dcd299052d8a46a748addd)), closes [#292](https://www.github.com/googleapis/python-ndb/issues/292)
+
 ### [0.2.2](https://www.github.com/googleapis/python-ndb/compare/v0.2.1...v0.2.2) (2020-01-15)
 
 
