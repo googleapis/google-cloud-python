@@ -35,6 +35,7 @@ from grafeas.grafeas_v1.proto import grafeas_pb2
 from grafeas.grafeas_v1.proto import image_pb2
 from grafeas.grafeas_v1.proto import package_pb2
 from grafeas.grafeas_v1.proto import provenance_pb2
+from grafeas.grafeas_v1.proto import upgrade_pb2
 from grafeas.grafeas_v1.proto import vulnerability_pb2
 
 
@@ -57,6 +58,7 @@ _local_modules = [
     image_pb2,
     package_pb2,
     provenance_pb2,
+    upgrade_pb2,
     vulnerability_pb2,
 ]
 

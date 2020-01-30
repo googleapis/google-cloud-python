@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -35,7 +38,7 @@ from grafeas.grafeas_v1.proto import (
     package_pb2 as grafeas__v1_dot_proto_dot_package__pb2,
 )
 from grafeas.grafeas_v1.proto import (
-    provenance_pb2 as grafeas__v1_dot_proto_dot_provenance__pb2,
+    upgrade_pb2 as grafeas__v1_dot_proto_dot_upgrade__pb2,
 )
 from grafeas.grafeas_v1.proto import (
     vulnerability_pb2 as grafeas__v1_dot_proto_dot_vulnerability__pb2,
@@ -50,10 +53,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\rio.grafeas.v1P\001Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\242\002\003GRA"
     ),
     serialized_pb=_b(
-        '\n\x1egrafeas_v1/proto/grafeas.proto\x12\ngrafeas.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a"grafeas_v1/proto/attestation.proto\x1a\x1cgrafeas_v1/proto/build.proto\x1a\x1dgrafeas_v1/proto/common.proto\x1a!grafeas_v1/proto/deployment.proto\x1a grafeas_v1/proto/discovery.proto\x1a\x1cgrafeas_v1/proto/image.proto\x1a\x1egrafeas_v1/proto/package.proto\x1a!grafeas_v1/proto/provenance.proto\x1a$grafeas_v1/proto/vulnerability.proto"\xdd\x04\n\nOccurrence\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cresource_uri\x18\x02 \x01(\t\x12\x11\n\tnote_name\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12\x13\n\x0bremediation\x18\x05 \x01(\t\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\rvulnerability\x18\x08 \x01(\x0b\x32#.grafeas.v1.VulnerabilityOccurrenceH\x00\x12,\n\x05\x62uild\x18\t \x01(\x0b\x32\x1b.grafeas.v1.BuildOccurrenceH\x00\x12,\n\x05image\x18\n \x01(\x0b\x32\x1b.grafeas.v1.ImageOccurrenceH\x00\x12\x30\n\x07package\x18\x0b \x01(\x0b\x32\x1d.grafeas.v1.PackageOccurrenceH\x00\x12\x36\n\ndeployment\x18\x0c \x01(\x0b\x32 .grafeas.v1.DeploymentOccurrenceH\x00\x12\x34\n\tdiscovery\x18\r \x01(\x0b\x32\x1f.grafeas.v1.DiscoveryOccurrenceH\x00\x12\x38\n\x0b\x61ttestation\x18\x0e \x01(\x0b\x32!.grafeas.v1.AttestationOccurrenceH\x00\x42\t\n\x07\x64\x65tails"\x9f\x05\n\x04Note\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11short_description\x18\x02 \x01(\t\x12\x18\n\x10long_description\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12+\n\x0brelated_url\x18\x05 \x03(\x0b\x32\x16.grafeas.v1.RelatedUrl\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12related_note_names\x18\t \x03(\t\x12\x36\n\rvulnerability\x18\n \x01(\x0b\x32\x1d.grafeas.v1.VulnerabilityNoteH\x00\x12&\n\x05\x62uild\x18\x0b \x01(\x0b\x32\x15.grafeas.v1.BuildNoteH\x00\x12&\n\x05image\x18\x0c \x01(\x0b\x32\x15.grafeas.v1.ImageNoteH\x00\x12*\n\x07package\x18\r \x01(\x0b\x32\x17.grafeas.v1.PackageNoteH\x00\x12\x30\n\ndeployment\x18\x0e \x01(\x0b\x32\x1a.grafeas.v1.DeploymentNoteH\x00\x12.\n\tdiscovery\x18\x0f \x01(\x0b\x32\x19.grafeas.v1.DiscoveryNoteH\x00\x12\x32\n\x0b\x61ttestation\x18\x10 \x01(\x0b\x32\x1b.grafeas.v1.AttestationNoteH\x00\x42\x06\n\x04type"$\n\x14GetOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"_\n\x16ListOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"_\n\x17ListOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\'\n\x17\x44\x65leteOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"U\n\x17\x43reateOccurrenceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence"\x84\x01\n\x17UpdateOccurrenceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12*\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.Occurrence\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x1e\n\x0eGetNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"(\n\x18GetOccurrenceNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"Y\n\x10ListNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"M\n\x11ListNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"!\n\x11\x44\x65leteNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"T\n\x11\x43reateNoteRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0f\n\x07note_id\x18\x02 \x01(\t\x12\x1e\n\x04note\x18\x03 \x01(\x0b\x32\x10.grafeas.v1.Note"r\n\x11UpdateNoteRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1e\n\x04note\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"a\n\x1aListNoteOccurrencesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"c\n\x1bListNoteOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xa8\x01\n\x17\x42\x61tchCreateNotesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x05notes\x18\x02 \x03(\x0b\x32..grafeas.v1.BatchCreateNotesRequest.NotesEntry\x1a>\n\nNotesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note:\x02\x38\x01";\n\x18\x42\x61tchCreateNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note"\\\n\x1d\x42\x61tchCreateOccurrencesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x0boccurrences\x18\x02 \x03(\x0b\x32\x16.grafeas.v1.Occurrence"M\n\x1e\x42\x61tchCreateOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence2\x94\x0e\n\x07Grafeas\x12v\n\rGetOccurrence\x12 .grafeas.v1.GetOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"+\x82\xd3\xe4\x93\x02%\x12#/v1/{name=projects/*/occurrences/*}\x12\x87\x01\n\x0fListOccurrences\x12".grafeas.v1.ListOccurrencesRequest\x1a#.grafeas.v1.ListOccurrencesResponse"+\x82\xd3\xe4\x93\x02%\x12#/v1/{parent=projects/*}/occurrences\x12|\n\x10\x44\x65leteOccurrence\x12#.grafeas.v1.DeleteOccurrenceRequest\x1a\x16.google.protobuf.Empty"+\x82\xd3\xe4\x93\x02%*#/v1/{name=projects/*/occurrences/*}\x12\x88\x01\n\x10\x43reateOccurrence\x12#.grafeas.v1.CreateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"7\x82\xd3\xe4\x93\x02\x31"#/v1/{parent=projects/*}/occurrences:\noccurrence\x12\xab\x01\n\x16\x42\x61tchCreateOccurrences\x12).grafeas.v1.BatchCreateOccurrencesRequest\x1a*.grafeas.v1.BatchCreateOccurrencesResponse":\x82\xd3\xe4\x93\x02\x34"//v1/{parent=projects/*}/occurrences:batchCreate:\x01*\x12\x88\x01\n\x10UpdateOccurrence\x12#.grafeas.v1.UpdateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"7\x82\xd3\xe4\x93\x02\x31\x32#/v1/{name=projects/*/occurrences/*}:\noccurrence\x12~\n\x11GetOccurrenceNote\x12$.grafeas.v1.GetOccurrenceNoteRequest\x1a\x10.grafeas.v1.Note"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/occurrences/*}/notes\x12^\n\x07GetNote\x12\x1a.grafeas.v1.GetNoteRequest\x1a\x10.grafeas.v1.Note"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{name=projects/*/notes/*}\x12o\n\tListNotes\x12\x1c.grafeas.v1.ListNotesRequest\x1a\x1d.grafeas.v1.ListNotesResponse"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=projects/*}/notes\x12j\n\nDeleteNote\x12\x1d.grafeas.v1.DeleteNoteRequest\x1a\x16.google.protobuf.Empty"%\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=projects/*/notes/*}\x12j\n\nCreateNote\x12\x1d.grafeas.v1.CreateNoteRequest\x1a\x10.grafeas.v1.Note"+\x82\xd3\xe4\x93\x02%"\x1d/v1/{parent=projects/*}/notes:\x04note\x12\x93\x01\n\x10\x42\x61tchCreateNotes\x12#.grafeas.v1.BatchCreateNotesRequest\x1a$.grafeas.v1.BatchCreateNotesResponse"4\x82\xd3\xe4\x93\x02.")/v1/{parent=projects/*}/notes:batchCreate:\x01*\x12j\n\nUpdateNote\x12\x1d.grafeas.v1.UpdateNoteRequest\x1a\x10.grafeas.v1.Note"+\x82\xd3\xe4\x93\x02%2\x1d/v1/{name=projects/*/notes/*}:\x04note\x12\x99\x01\n\x13ListNoteOccurrences\x12&.grafeas.v1.ListNoteOccurrencesRequest\x1a\'.grafeas.v1.ListNoteOccurrencesResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/notes/*}/occurrencesBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
+        '\n\x1egrafeas_v1/proto/grafeas.proto\x12\ngrafeas.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a"grafeas_v1/proto/attestation.proto\x1a\x1cgrafeas_v1/proto/build.proto\x1a\x1dgrafeas_v1/proto/common.proto\x1a!grafeas_v1/proto/deployment.proto\x1a grafeas_v1/proto/discovery.proto\x1a\x1cgrafeas_v1/proto/image.proto\x1a\x1egrafeas_v1/proto/package.proto\x1a\x1egrafeas_v1/proto/upgrade.proto\x1a$grafeas_v1/proto/vulnerability.proto"\xd8\x05\n\nOccurrence\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cresource_uri\x18\x02 \x01(\t\x12\x11\n\tnote_name\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12\x13\n\x0bremediation\x18\x05 \x01(\t\x12/\n\x0b\x63reate_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\rvulnerability\x18\x08 \x01(\x0b\x32#.grafeas.v1.VulnerabilityOccurrenceH\x00\x12,\n\x05\x62uild\x18\t \x01(\x0b\x32\x1b.grafeas.v1.BuildOccurrenceH\x00\x12,\n\x05image\x18\n \x01(\x0b\x32\x1b.grafeas.v1.ImageOccurrenceH\x00\x12\x30\n\x07package\x18\x0b \x01(\x0b\x32\x1d.grafeas.v1.PackageOccurrenceH\x00\x12\x36\n\ndeployment\x18\x0c \x01(\x0b\x32 .grafeas.v1.DeploymentOccurrenceH\x00\x12\x34\n\tdiscovery\x18\r \x01(\x0b\x32\x1f.grafeas.v1.DiscoveryOccurrenceH\x00\x12\x38\n\x0b\x61ttestation\x18\x0e \x01(\x0b\x32!.grafeas.v1.AttestationOccurrenceH\x00\x12\x30\n\x07upgrade\x18\x0f \x01(\x0b\x32\x1d.grafeas.v1.UpgradeOccurrenceH\x00:G\xea\x41\x44\n\x15grafeas.io/Occurrence\x12+projects/{project}/occurrences/{occurrence}B\t\n\x07\x64\x65tails"\x82\x06\n\x04Note\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11short_description\x18\x02 \x01(\t\x12\x18\n\x10long_description\x18\x03 \x01(\t\x12"\n\x04kind\x18\x04 \x01(\x0e\x32\x14.grafeas.v1.NoteKind\x12+\n\x0brelated_url\x18\x05 \x03(\x0b\x32\x16.grafeas.v1.RelatedUrl\x12\x33\n\x0f\x65xpiration_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1a\n\x12related_note_names\x18\t \x03(\t\x12\x36\n\rvulnerability\x18\n \x01(\x0b\x32\x1d.grafeas.v1.VulnerabilityNoteH\x00\x12&\n\x05\x62uild\x18\x0b \x01(\x0b\x32\x15.grafeas.v1.BuildNoteH\x00\x12&\n\x05image\x18\x0c \x01(\x0b\x32\x15.grafeas.v1.ImageNoteH\x00\x12*\n\x07package\x18\r \x01(\x0b\x32\x17.grafeas.v1.PackageNoteH\x00\x12\x30\n\ndeployment\x18\x0e \x01(\x0b\x32\x1a.grafeas.v1.DeploymentNoteH\x00\x12.\n\tdiscovery\x18\x0f \x01(\x0b\x32\x19.grafeas.v1.DiscoveryNoteH\x00\x12\x32\n\x0b\x61ttestation\x18\x10 \x01(\x0b\x32\x1b.grafeas.v1.AttestationNoteH\x00\x12*\n\x07upgrade\x18\x11 \x01(\x0b\x32\x17.grafeas.v1.UpgradeNoteH\x00:5\xea\x41\x32\n\x0fgrafeas.io/Note\x12\x1fprojects/{project}/notes/{note}B\x06\n\x04type"C\n\x14GetOccurrenceRequest\x12+\n\x04name\x18\x01 \x01(\tB\x1d\xe0\x41\x02\xfa\x41\x17\n\x15grafeas.io/Occurrence"\x94\x01\n\x16ListOccurrencesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"_\n\x17ListOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"F\n\x17\x44\x65leteOccurrenceRequest\x12+\n\x04name\x18\x01 \x01(\tB\x1d\xe0\x41\x02\xfa\x41\x17\n\x15grafeas.io/Occurrence"\x8f\x01\n\x17\x43reateOccurrenceRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12/\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.OccurrenceB\x03\xe0\x41\x02"\xa8\x01\n\x17UpdateOccurrenceRequest\x12+\n\x04name\x18\x01 \x01(\tB\x1d\xe0\x41\x02\xfa\x41\x17\n\x15grafeas.io/Occurrence\x12/\n\noccurrence\x18\x02 \x01(\x0b\x32\x16.grafeas.v1.OccurrenceB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"7\n\x0eGetNoteRequest\x12%\n\x04name\x18\x01 \x01(\tB\x17\xe0\x41\x02\xfa\x41\x11\n\x0fgrafeas.io/Note"G\n\x18GetOccurrenceNoteRequest\x12+\n\x04name\x18\x01 \x01(\tB\x1d\xe0\x41\x02\xfa\x41\x17\n\x15grafeas.io/Occurrence"\x8e\x01\n\x10ListNotesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"M\n\x11ListNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t":\n\x11\x44\x65leteNoteRequest\x12%\n\x04name\x18\x01 \x01(\tB\x17\xe0\x41\x02\xfa\x41\x11\n\x0fgrafeas.io/Note"\x93\x01\n\x11\x43reateNoteRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x14\n\x07note_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12#\n\x04note\x18\x03 \x01(\x0b\x32\x10.grafeas.v1.NoteB\x03\xe0\x41\x02"\x90\x01\n\x11UpdateNoteRequest\x12%\n\x04name\x18\x01 \x01(\tB\x17\xe0\x41\x02\xfa\x41\x11\n\x0fgrafeas.io/Note\x12#\n\x04note\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.NoteB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"z\n\x1aListNoteOccurrencesRequest\x12%\n\x04name\x18\x01 \x01(\tB\x17\xe0\x41\x02\xfa\x41\x11\n\x0fgrafeas.io/Note\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"c\n\x1bListNoteOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xe2\x01\n\x17\x42\x61tchCreateNotesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x42\n\x05notes\x18\x02 \x03(\x0b\x32..grafeas.v1.BatchCreateNotesRequest.NotesEntryB\x03\xe0\x41\x02\x1a>\n\nNotesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.grafeas.v1.Note:\x02\x38\x01";\n\x18\x42\x61tchCreateNotesResponse\x12\x1f\n\x05notes\x18\x01 \x03(\x0b\x32\x10.grafeas.v1.Note"\x96\x01\n\x1d\x42\x61tchCreateOccurrencesRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x30\n\x0boccurrences\x18\x02 \x03(\x0b\x32\x16.grafeas.v1.OccurrenceB\x03\xe0\x41\x02"M\n\x1e\x42\x61tchCreateOccurrencesResponse\x12+\n\x0boccurrences\x18\x01 \x03(\x0b\x32\x16.grafeas.v1.Occurrence2\xed\x0f\n\x07Grafeas\x12}\n\rGetOccurrence\x12 .grafeas.v1.GetOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"2\x82\xd3\xe4\x93\x02%\x12#/v1/{name=projects/*/occurrences/*}\xda\x41\x04name\x12\x97\x01\n\x0fListOccurrences\x12".grafeas.v1.ListOccurrencesRequest\x1a#.grafeas.v1.ListOccurrencesResponse";\x82\xd3\xe4\x93\x02%\x12#/v1/{parent=projects/*}/occurrences\xda\x41\rparent,filter\x12\x83\x01\n\x10\x44\x65leteOccurrence\x12#.grafeas.v1.DeleteOccurrenceRequest\x1a\x16.google.protobuf.Empty"2\x82\xd3\xe4\x93\x02%*#/v1/{name=projects/*/occurrences/*}\xda\x41\x04name\x12\x9c\x01\n\x10\x43reateOccurrence\x12#.grafeas.v1.CreateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"K\x82\xd3\xe4\x93\x02\x31"#/v1/{parent=projects/*}/occurrences:\noccurrence\xda\x41\x11parent,occurrence\x12\xc0\x01\n\x16\x42\x61tchCreateOccurrences\x12).grafeas.v1.BatchCreateOccurrencesRequest\x1a*.grafeas.v1.BatchCreateOccurrencesResponse"O\x82\xd3\xe4\x93\x02\x34"//v1/{parent=projects/*}/occurrences:batchCreate:\x01*\xda\x41\x12parent,occurrences\x12\xa6\x01\n\x10UpdateOccurrence\x12#.grafeas.v1.UpdateOccurrenceRequest\x1a\x16.grafeas.v1.Occurrence"U\x82\xd3\xe4\x93\x02\x31\x32#/v1/{name=projects/*/occurrences/*}:\noccurrence\xda\x41\x1bname,occurrence,update_mask\x12\x85\x01\n\x11GetOccurrenceNote\x12$.grafeas.v1.GetOccurrenceNoteRequest\x1a\x10.grafeas.v1.Note"8\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/occurrences/*}/notes\xda\x41\x04name\x12\x65\n\x07GetNote\x12\x1a.grafeas.v1.GetNoteRequest\x1a\x10.grafeas.v1.Note",\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{name=projects/*/notes/*}\xda\x41\x04name\x12\x7f\n\tListNotes\x12\x1c.grafeas.v1.ListNotesRequest\x1a\x1d.grafeas.v1.ListNotesResponse"5\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=projects/*}/notes\xda\x41\rparent,filter\x12q\n\nDeleteNote\x12\x1d.grafeas.v1.DeleteNoteRequest\x1a\x16.google.protobuf.Empty",\x82\xd3\xe4\x93\x02\x1f*\x1d/v1/{name=projects/*/notes/*}\xda\x41\x04name\x12\x80\x01\n\nCreateNote\x12\x1d.grafeas.v1.CreateNoteRequest\x1a\x10.grafeas.v1.Note"A\x82\xd3\xe4\x93\x02%"\x1d/v1/{parent=projects/*}/notes:\x04note\xda\x41\x13parent,note_id,note\x12\xa2\x01\n\x10\x42\x61tchCreateNotes\x12#.grafeas.v1.BatchCreateNotesRequest\x1a$.grafeas.v1.BatchCreateNotesResponse"C\x82\xd3\xe4\x93\x02.")/v1/{parent=projects/*}/notes:batchCreate:\x01*\xda\x41\x0cparent,notes\x12\x82\x01\n\nUpdateNote\x12\x1d.grafeas.v1.UpdateNoteRequest\x1a\x10.grafeas.v1.Note"C\x82\xd3\xe4\x93\x02%2\x1d/v1/{name=projects/*/notes/*}:\x04note\xda\x41\x15name,note,update_mask\x12\xa7\x01\n\x13ListNoteOccurrences\x12&.grafeas.v1.ListNoteOccurrencesRequest\x1a\'.grafeas.v1.ListNoteOccurrencesResponse"?\x82\xd3\xe4\x93\x02+\x12)/v1/{name=projects/*/notes/*}/occurrences\xda\x41\x0bname,filterBQ\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -64,7 +70,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         grafeas__v1_dot_proto_dot_discovery__pb2.DESCRIPTOR,
         grafeas__v1_dot_proto_dot_image__pb2.DESCRIPTOR,
         grafeas__v1_dot_proto_dot_package__pb2.DESCRIPTOR,
-        grafeas__v1_dot_proto_dot_provenance__pb2.DESCRIPTOR,
+        grafeas__v1_dot_proto_dot_upgrade__pb2.DESCRIPTOR,
         grafeas__v1_dot_proto_dot_vulnerability__pb2.DESCRIPTOR,
     ],
 )
@@ -329,11 +335,31 @@ _OCCURRENCE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="upgrade",
+            full_name="grafeas.v1.Occurrence.upgrade",
+            index=14,
+            number=15,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AD\n\025grafeas.io/Occurrence\022+projects/{project}/occurrences/{occurrence}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -346,8 +372,8 @@ _OCCURRENCE = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=474,
-    serialized_end=1079,
+    serialized_start=556,
+    serialized_end=1284,
 )
 
 
@@ -646,11 +672,31 @@ _NOTE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="upgrade",
+            full_name="grafeas.v1.Note.upgrade",
+            index=16,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A2\n\017grafeas.io/Note\022\037projects/{project}/notes/{note}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -663,8 +709,8 @@ _NOTE = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=1082,
-    serialized_end=1753,
+    serialized_start=1287,
+    serialized_end=2057,
 )
 
 
@@ -690,7 +736,7 @@ _GETOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\027\n\025grafeas.io/Occurrence"),
             file=DESCRIPTOR,
         ),
     ],
@@ -702,8 +748,8 @@ _GETOCCURRENCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1755,
-    serialized_end=1791,
+    serialized_start=2059,
+    serialized_end=2126,
 )
 
 
@@ -729,7 +775,9 @@ _LISTOCCURRENCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -795,8 +843,8 @@ _LISTOCCURRENCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1793,
-    serialized_end=1888,
+    serialized_start=2129,
+    serialized_end=2277,
 )
 
 
@@ -852,8 +900,8 @@ _LISTOCCURRENCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1890,
-    serialized_end=1985,
+    serialized_start=2279,
+    serialized_end=2374,
 )
 
 
@@ -879,7 +927,7 @@ _DELETEOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\027\n\025grafeas.io/Occurrence"),
             file=DESCRIPTOR,
         ),
     ],
@@ -891,8 +939,8 @@ _DELETEOCCURRENCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1987,
-    serialized_end=2026,
+    serialized_start=2376,
+    serialized_end=2446,
 )
 
 
@@ -918,7 +966,9 @@ _CREATEOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -936,7 +986,7 @@ _CREATEOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -948,8 +998,8 @@ _CREATEOCCURRENCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2028,
-    serialized_end=2113,
+    serialized_start=2449,
+    serialized_end=2592,
 )
 
 
@@ -975,7 +1025,7 @@ _UPDATEOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\027\n\025grafeas.io/Occurrence"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -993,7 +1043,7 @@ _UPDATEOCCURRENCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1023,8 +1073,8 @@ _UPDATEOCCURRENCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2116,
-    serialized_end=2248,
+    serialized_start=2595,
+    serialized_end=2763,
 )
 
 
@@ -1050,7 +1100,7 @@ _GETNOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\021\n\017grafeas.io/Note"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1062,8 +1112,8 @@ _GETNOTEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2250,
-    serialized_end=2280,
+    serialized_start=2765,
+    serialized_end=2820,
 )
 
 
@@ -1089,7 +1139,7 @@ _GETOCCURRENCENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\027\n\025grafeas.io/Occurrence"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1101,8 +1151,8 @@ _GETOCCURRENCENOTEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2282,
-    serialized_end=2322,
+    serialized_start=2822,
+    serialized_end=2893,
 )
 
 
@@ -1128,7 +1178,9 @@ _LISTNOTESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1194,8 +1246,8 @@ _LISTNOTESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2324,
-    serialized_end=2413,
+    serialized_start=2896,
+    serialized_end=3038,
 )
 
 
@@ -1251,8 +1303,8 @@ _LISTNOTESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2415,
-    serialized_end=2492,
+    serialized_start=3040,
+    serialized_end=3117,
 )
 
 
@@ -1278,7 +1330,7 @@ _DELETENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\021\n\017grafeas.io/Note"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1290,8 +1342,8 @@ _DELETENOTEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2494,
-    serialized_end=2527,
+    serialized_start=3119,
+    serialized_end=3177,
 )
 
 
@@ -1317,7 +1369,9 @@ _CREATENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1335,7 +1389,7 @@ _CREATENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1353,7 +1407,7 @@ _CREATENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1365,8 +1419,8 @@ _CREATENOTEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2529,
-    serialized_end=2613,
+    serialized_start=3180,
+    serialized_end=3327,
 )
 
 
@@ -1392,7 +1446,7 @@ _UPDATENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\021\n\017grafeas.io/Note"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1410,7 +1464,7 @@ _UPDATENOTEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1440,8 +1494,8 @@ _UPDATENOTEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2615,
-    serialized_end=2729,
+    serialized_start=3330,
+    serialized_end=3474,
 )
 
 
@@ -1467,7 +1521,7 @@ _LISTNOTEOCCURRENCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\372A\021\n\017grafeas.io/Note"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1533,8 +1587,8 @@ _LISTNOTEOCCURRENCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2731,
-    serialized_end=2828,
+    serialized_start=3476,
+    serialized_end=3598,
 )
 
 
@@ -1590,8 +1644,8 @@ _LISTNOTEOCCURRENCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2830,
-    serialized_end=2929,
+    serialized_start=3600,
+    serialized_end=3699,
 )
 
 
@@ -1647,8 +1701,8 @@ _BATCHCREATENOTESREQUEST_NOTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3038,
-    serialized_end=3100,
+    serialized_start=3866,
+    serialized_end=3928,
 )
 
 _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
@@ -1673,7 +1727,9 @@ _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1691,7 +1747,7 @@ _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1703,8 +1759,8 @@ _BATCHCREATENOTESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2932,
-    serialized_end=3100,
+    serialized_start=3702,
+    serialized_end=3928,
 )
 
 
@@ -1742,8 +1798,8 @@ _BATCHCREATENOTESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3102,
-    serialized_end=3161,
+    serialized_start=3930,
+    serialized_end=3989,
 )
 
 
@@ -1769,7 +1825,9 @@ _BATCHCREATEOCCURRENCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1787,7 +1845,7 @@ _BATCHCREATEOCCURRENCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1799,8 +1857,8 @@ _BATCHCREATEOCCURRENCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3163,
-    serialized_end=3255,
+    serialized_start=3992,
+    serialized_end=4142,
 )
 
 
@@ -1838,8 +1896,8 @@ _BATCHCREATEOCCURRENCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3257,
-    serialized_end=3334,
+    serialized_start=4144,
+    serialized_end=4221,
 )
 
 _OCCURRENCE.fields_by_name[
@@ -1872,6 +1930,9 @@ _OCCURRENCE.fields_by_name[
 _OCCURRENCE.fields_by_name[
     "attestation"
 ].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONOCCURRENCE
+_OCCURRENCE.fields_by_name[
+    "upgrade"
+].message_type = grafeas__v1_dot_proto_dot_upgrade__pb2._UPGRADEOCCURRENCE
 _OCCURRENCE.oneofs_by_name["details"].fields.append(
     _OCCURRENCE.fields_by_name["vulnerability"]
 )
@@ -1910,6 +1971,12 @@ _OCCURRENCE.oneofs_by_name["details"].fields.append(
 _OCCURRENCE.fields_by_name["attestation"].containing_oneof = _OCCURRENCE.oneofs_by_name[
     "details"
 ]
+_OCCURRENCE.oneofs_by_name["details"].fields.append(
+    _OCCURRENCE.fields_by_name["upgrade"]
+)
+_OCCURRENCE.fields_by_name["upgrade"].containing_oneof = _OCCURRENCE.oneofs_by_name[
+    "details"
+]
 _NOTE.fields_by_name["kind"].enum_type = grafeas__v1_dot_proto_dot_common__pb2._NOTEKIND
 _NOTE.fields_by_name[
     "related_url"
@@ -1944,6 +2011,9 @@ _NOTE.fields_by_name[
 _NOTE.fields_by_name[
     "attestation"
 ].message_type = grafeas__v1_dot_proto_dot_attestation__pb2._ATTESTATIONNOTE
+_NOTE.fields_by_name[
+    "upgrade"
+].message_type = grafeas__v1_dot_proto_dot_upgrade__pb2._UPGRADENOTE
 _NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["vulnerability"])
 _NOTE.fields_by_name["vulnerability"].containing_oneof = _NOTE.oneofs_by_name["type"]
 _NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["build"])
@@ -1958,6 +2028,8 @@ _NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["discovery"])
 _NOTE.fields_by_name["discovery"].containing_oneof = _NOTE.oneofs_by_name["type"]
 _NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["attestation"])
 _NOTE.fields_by_name["attestation"].containing_oneof = _NOTE.oneofs_by_name["type"]
+_NOTE.oneofs_by_name["type"].fields.append(_NOTE.fields_by_name["upgrade"])
+_NOTE.fields_by_name["upgrade"].containing_oneof = _NOTE.oneofs_by_name["type"]
 _LISTOCCURRENCESRESPONSE.fields_by_name["occurrences"].message_type = _OCCURRENCE
 _CREATEOCCURRENCEREQUEST.fields_by_name["occurrence"].message_type = _OCCURRENCE
 _UPDATEOCCURRENCEREQUEST.fields_by_name["occurrence"].message_type = _OCCURRENCE
@@ -2062,6 +2134,8 @@ Occurrence = _reflection.GeneratedProtocolMessageType(
           Describes when a resource was discovered.
       attestation:
           Describes an attestation of an artifact.
+      upgrade:
+          Describes an available package upgrade on the linked resource.
   """,
         # @@protoc_insertion_point(class_scope:grafeas.v1.Occurrence)
     ),
@@ -2119,6 +2193,8 @@ Note = _reflection.GeneratedProtocolMessageType(
           A note describing the initial analysis of a resource.
       attestation:
           A note describing an attestation role.
+      upgrade:
+          A note describing available package upgrades.
   """,
         # @@protoc_insertion_point(class_scope:grafeas.v1.Note)
     ),
@@ -2199,7 +2275,7 @@ DeleteOccurrenceRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEOCCURRENCEREQUEST,
         __module__="grafeas_v1.proto.grafeas_pb2",
-        __doc__="""Request to delete a occurrence.
+        __doc__="""Request to delete an occurrence.
   
   
   Attributes:
@@ -2547,7 +2623,30 @@ _sym_db.RegisterMessage(BatchCreateOccurrencesResponse)
 
 
 DESCRIPTOR._options = None
+_OCCURRENCE._options = None
+_NOTE._options = None
+_GETOCCURRENCEREQUEST.fields_by_name["name"]._options = None
+_LISTOCCURRENCESREQUEST.fields_by_name["parent"]._options = None
+_DELETEOCCURRENCEREQUEST.fields_by_name["name"]._options = None
+_CREATEOCCURRENCEREQUEST.fields_by_name["parent"]._options = None
+_CREATEOCCURRENCEREQUEST.fields_by_name["occurrence"]._options = None
+_UPDATEOCCURRENCEREQUEST.fields_by_name["name"]._options = None
+_UPDATEOCCURRENCEREQUEST.fields_by_name["occurrence"]._options = None
+_GETNOTEREQUEST.fields_by_name["name"]._options = None
+_GETOCCURRENCENOTEREQUEST.fields_by_name["name"]._options = None
+_LISTNOTESREQUEST.fields_by_name["parent"]._options = None
+_DELETENOTEREQUEST.fields_by_name["name"]._options = None
+_CREATENOTEREQUEST.fields_by_name["parent"]._options = None
+_CREATENOTEREQUEST.fields_by_name["note_id"]._options = None
+_CREATENOTEREQUEST.fields_by_name["note"]._options = None
+_UPDATENOTEREQUEST.fields_by_name["name"]._options = None
+_UPDATENOTEREQUEST.fields_by_name["note"]._options = None
+_LISTNOTEOCCURRENCESREQUEST.fields_by_name["name"]._options = None
 _BATCHCREATENOTESREQUEST_NOTESENTRY._options = None
+_BATCHCREATENOTESREQUEST.fields_by_name["parent"]._options = None
+_BATCHCREATENOTESREQUEST.fields_by_name["notes"]._options = None
+_BATCHCREATEOCCURRENCESREQUEST.fields_by_name["parent"]._options = None
+_BATCHCREATEOCCURRENCESREQUEST.fields_by_name["occurrences"]._options = None
 
 _GRAFEAS = _descriptor.ServiceDescriptor(
     name="Grafeas",
@@ -2555,8 +2654,8 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=None,
-    serialized_start=3337,
-    serialized_end=5149,
+    serialized_start=4224,
+    serialized_end=6253,
     methods=[
         _descriptor.MethodDescriptor(
             name="GetOccurrence",
@@ -2566,7 +2665,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_GETOCCURRENCEREQUEST,
             output_type=_OCCURRENCE,
             serialized_options=_b(
-                "\202\323\344\223\002%\022#/v1/{name=projects/*/occurrences/*}"
+                "\202\323\344\223\002%\022#/v1/{name=projects/*/occurrences/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2577,7 +2676,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_LISTOCCURRENCESREQUEST,
             output_type=_LISTOCCURRENCESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002%\022#/v1/{parent=projects/*}/occurrences"
+                "\202\323\344\223\002%\022#/v1/{parent=projects/*}/occurrences\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2588,7 +2687,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_DELETEOCCURRENCEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002%*#/v1/{name=projects/*/occurrences/*}"
+                "\202\323\344\223\002%*#/v1/{name=projects/*/occurrences/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2599,7 +2698,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_CREATEOCCURRENCEREQUEST,
             output_type=_OCCURRENCE,
             serialized_options=_b(
-                '\202\323\344\223\0021"#/v1/{parent=projects/*}/occurrences:\noccurrence'
+                '\202\323\344\223\0021"#/v1/{parent=projects/*}/occurrences:\noccurrence\332A\021parent,occurrence'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2610,7 +2709,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_BATCHCREATEOCCURRENCESREQUEST,
             output_type=_BATCHCREATEOCCURRENCESRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\0024"//v1/{parent=projects/*}/occurrences:batchCreate:\001*'
+                '\202\323\344\223\0024"//v1/{parent=projects/*}/occurrences:batchCreate:\001*\332A\022parent,occurrences'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2621,7 +2720,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_UPDATEOCCURRENCEREQUEST,
             output_type=_OCCURRENCE,
             serialized_options=_b(
-                "\202\323\344\223\00212#/v1/{name=projects/*/occurrences/*}:\noccurrence"
+                "\202\323\344\223\00212#/v1/{name=projects/*/occurrences/*}:\noccurrence\332A\033name,occurrence,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2632,7 +2731,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_GETOCCURRENCENOTEREQUEST,
             output_type=_NOTE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1/{name=projects/*/occurrences/*}/notes"
+                "\202\323\344\223\002+\022)/v1/{name=projects/*/occurrences/*}/notes\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2643,7 +2742,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_GETNOTEREQUEST,
             output_type=_NOTE,
             serialized_options=_b(
-                "\202\323\344\223\002\037\022\035/v1/{name=projects/*/notes/*}"
+                "\202\323\344\223\002\037\022\035/v1/{name=projects/*/notes/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2654,7 +2753,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_LISTNOTESREQUEST,
             output_type=_LISTNOTESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\037\022\035/v1/{parent=projects/*}/notes"
+                "\202\323\344\223\002\037\022\035/v1/{parent=projects/*}/notes\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2665,7 +2764,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_DELETENOTEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002\037*\035/v1/{name=projects/*/notes/*}"
+                "\202\323\344\223\002\037*\035/v1/{name=projects/*/notes/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2676,7 +2775,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_CREATENOTEREQUEST,
             output_type=_NOTE,
             serialized_options=_b(
-                '\202\323\344\223\002%"\035/v1/{parent=projects/*}/notes:\004note'
+                '\202\323\344\223\002%"\035/v1/{parent=projects/*}/notes:\004note\332A\023parent,note_id,note'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2687,7 +2786,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_BATCHCREATENOTESREQUEST,
             output_type=_BATCHCREATENOTESRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002.")/v1/{parent=projects/*}/notes:batchCreate:\001*'
+                '\202\323\344\223\002.")/v1/{parent=projects/*}/notes:batchCreate:\001*\332A\014parent,notes'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2698,7 +2797,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_UPDATENOTEREQUEST,
             output_type=_NOTE,
             serialized_options=_b(
-                "\202\323\344\223\002%2\035/v1/{name=projects/*/notes/*}:\004note"
+                "\202\323\344\223\002%2\035/v1/{name=projects/*/notes/*}:\004note\332A\025name,note,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2709,7 +2808,7 @@ _GRAFEAS = _descriptor.ServiceDescriptor(
             input_type=_LISTNOTEOCCURRENCESREQUEST,
             output_type=_LISTNOTEOCCURRENCESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1/{name=projects/*/notes/*}/occurrences"
+                "\202\323\344\223\002+\022)/v1/{name=projects/*/notes/*}/occurrences\332A\013name,filter"
             ),
         ),
     ],
