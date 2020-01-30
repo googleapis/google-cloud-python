@@ -3030,8 +3030,7 @@ ProductSetPurgeConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PRODUCTSETPURGECONFIG,
         __module__="google.cloud.vision_v1p4beta1.proto.product_search_service_pb2",
-        __doc__="""Config to control which ProductSet contains the Products
-  to be deleted.
+        __doc__="""Config to control which ProductSet contains the Products to be deleted.
   
   
   Attributes:
