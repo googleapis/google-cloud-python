@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -396,8 +396,7 @@ class TenantServiceClient(object):
             >>> response = client.update_tenant(tenant)
 
         Args:
-            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required. The tenant resource to replace the current resource in the
-                system.
+            tenant (Union[dict, ~google.cloud.talent_v4beta1.types.Tenant]): Required. The tenant resource to replace the current resource in the system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Tenant`

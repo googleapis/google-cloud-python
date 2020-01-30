@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -392,8 +392,7 @@ class ApplicationServiceClient(object):
             >>> response = client.update_application(application)
 
         Args:
-            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application resource to replace the current resource in the
-                system.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application resource to replace the current resource in the system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Application`

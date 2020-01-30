@@ -18,6 +18,7 @@ _sym_db = _symbol_database.Default()
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.talent_v4beta1.proto import (
     application_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2,
 )
@@ -36,12 +37,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\027ApplicationServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n;google/cloud/talent_v4beta1/proto/application_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"s\n\x18\x43reateApplicationRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x42\n\x0b\x61pplication\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ApplicationB\x03\xe0\x41\x02"*\n\x15GetApplicationRequest\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02"\x8f\x01\n\x18UpdateApplicationRequest\x12\x42\n\x0b\x61pplication\x18\x01 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ApplicationB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"-\n\x18\x44\x65leteApplicationRequest\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02"U\n\x17ListApplicationsRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xb4\x01\n\x18ListApplicationsResponse\x12>\n\x0c\x61pplications\x18\x01 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xc2\x08\n\x12\x41pplicationService\x12\xbf\x01\n\x11\x43reateApplication\x12\x35.google.cloud.talent.v4beta1.CreateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"I\x82\xd3\xe4\x93\x02\x43">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\x01*\x12\xb6\x01\n\x0eGetApplication\x12\x32.google.cloud.talent.v4beta1.GetApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xcb\x01\n\x11UpdateApplication\x12\x35.google.cloud.talent.v4beta1.UpdateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"U\x82\xd3\xe4\x93\x02O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\x01*\x12\xaa\x01\n\x11\x44\x65leteApplication\x12\x35.google.cloud.talent.v4beta1.DeleteApplicationRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\x12\xc7\x01\n\x10ListApplications\x12\x34.google.cloud.talent.v4beta1.ListApplicationsRequest\x1a\x35.google.cloud.talent.v4beta1.ListApplicationsResponse"F\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x85\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x17\x41pplicationServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n;google/cloud/talent_v4beta1/proto/application_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x33google/cloud/talent_v4beta1/proto/application.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x93\x01\n\x18\x43reateApplicationRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Profile\x12\x42\n\x0b\x61pplication\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ApplicationB\x03\xe0\x41\x02"N\n\x15GetApplicationRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fjobs.googleapis.com/Application"\x8f\x01\n\x18UpdateApplicationRequest\x12\x42\n\x0b\x61pplication\x18\x01 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ApplicationB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"Q\n\x18\x44\x65leteApplicationRequest\x12\x35\n\x04name\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fjobs.googleapis.com/Application"u\n\x17ListApplicationsRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Profile\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05"\xb4\x01\n\x18ListApplicationsResponse\x12>\n\x0c\x61pplications\x18\x01 \x03(\x0b\x32(.google.cloud.talent.v4beta1.Application\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xfc\x08\n\x12\x41pplicationService\x12\xd4\x01\n\x11\x43reateApplication\x12\x35.google.cloud.talent.v4beta1.CreateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"^\x82\xd3\xe4\x93\x02\x43">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\x01*\xda\x41\x12parent,application\x12\xbd\x01\n\x0eGetApplication\x12\x32.google.cloud.talent.v4beta1.GetApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"M\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\xda\x41\x04name\x12\xd9\x01\n\x11UpdateApplication\x12\x35.google.cloud.talent.v4beta1.UpdateApplicationRequest\x1a(.google.cloud.talent.v4beta1.Application"c\x82\xd3\xe4\x93\x02O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\x01*\xda\x41\x0b\x61pplication\x12\xb1\x01\n\x11\x44\x65leteApplication\x12\x35.google.cloud.talent.v4beta1.DeleteApplicationRequest\x1a\x16.google.protobuf.Empty"M\x82\xd3\xe4\x93\x02@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\xda\x41\x04name\x12\xd0\x01\n\x10ListApplications\x12\x34.google.cloud.talent.v4beta1.ListApplicationsRequest\x1a\x35.google.cloud.talent.v4beta1.ListApplicationsResponse"O\x82\xd3\xe4\x93\x02@\x12>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications\xda\x41\x06parent\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x85\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x17\x41pplicationServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
@@ -72,7 +74,9 @@ _CREATEAPPLICATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A\035\n\033jobs.googleapis.com/Profile"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -102,8 +106,8 @@ _CREATEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=344,
-    serialized_end=459,
+    serialized_start=372,
+    serialized_end=519,
 )
 
 
@@ -129,7 +133,9 @@ _GETAPPLICATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A!\n\037jobs.googleapis.com/Application"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -141,8 +147,8 @@ _GETAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=461,
-    serialized_end=503,
+    serialized_start=521,
+    serialized_end=599,
 )
 
 
@@ -198,8 +204,8 @@ _UPDATEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=506,
-    serialized_end=649,
+    serialized_start=602,
+    serialized_end=745,
 )
 
 
@@ -225,7 +231,9 @@ _DELETEAPPLICATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A!\n\037jobs.googleapis.com/Application"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -237,8 +245,8 @@ _DELETEAPPLICATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=651,
-    serialized_end=696,
+    serialized_start=747,
+    serialized_end=828,
 )
 
 
@@ -264,7 +272,9 @@ _LISTAPPLICATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A\035\n\033jobs.googleapis.com/Profile"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -312,8 +322,8 @@ _LISTAPPLICATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=698,
-    serialized_end=783,
+    serialized_start=830,
+    serialized_end=947,
 )
 
 
@@ -387,8 +397,8 @@ _LISTAPPLICATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=786,
-    serialized_end=966,
+    serialized_start=950,
+    serialized_end=1130,
 )
 
 _CREATEAPPLICATIONREQUEST.fields_by_name[
@@ -584,8 +594,8 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=969,
-    serialized_end=2059,
+    serialized_start=1133,
+    serialized_end=2281,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateApplication",
@@ -595,7 +605,7 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEAPPLICATIONREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2._APPLICATION,
             serialized_options=_b(
-                '\202\323\344\223\002C">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\001*'
+                '\202\323\344\223\002C">/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications:\001*\332A\022parent,application'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -606,7 +616,7 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETAPPLICATIONREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2._APPLICATION,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}"
+                "\202\323\344\223\002@\022>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -617,7 +627,7 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEAPPLICATIONREQUEST,
             output_type=google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_application__pb2._APPLICATION,
             serialized_options=_b(
-                "\202\323\344\223\002O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\001*"
+                "\202\323\344\223\002O2J/v4beta1/{application.name=projects/*/tenants/*/profiles/*/applications/*}:\001*\332A\013application"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -628,7 +638,7 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEAPPLICATIONREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}"
+                "\202\323\344\223\002@*>/v4beta1/{name=projects/*/tenants/*/profiles/*/applications/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -639,7 +649,7 @@ _APPLICATIONSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTAPPLICATIONSREQUEST,
             output_type=_LISTAPPLICATIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications"
+                "\202\323\344\223\002@\022>/v4beta1/{parent=projects/*/tenants/*/profiles/*}/applications\332A\006parent"
             ),
         ),
     ],

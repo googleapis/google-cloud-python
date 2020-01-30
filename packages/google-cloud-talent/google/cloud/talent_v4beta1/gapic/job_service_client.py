@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -979,6 +979,10 @@ class JobServiceClient(object):
                 location, amongst the jobs deemed by the API as relevant) in search
                 results. This field is only considered if ``page_token`` is unset.
 
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for
                 pagination, (for example, pageSize = 10 and offset = 10 means to return
@@ -1334,6 +1338,10 @@ class JobServiceClient(object):
             offset (int): An integer that specifies the current offset (that is, starting result
                 location, amongst the jobs deemed by the API as relevant) in search
                 results. This field is only considered if ``page_token`` is unset.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
 
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for
