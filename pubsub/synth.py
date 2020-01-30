@@ -127,10 +127,10 @@ s.replace(
     "google/cloud/pubsub_v1/gapic/publisher_client.py",
     "class PublisherClient",
     """# TODO: remove conditional import after Python 2 support is dropped
-if six.PY3:
-    from collections.abc import Mapping
-else:
+if six.PY2:
     from collections import Mapping
+else:
+    from collections.abc import Mapping
     
 
 def _merge_dict(d1, d2):

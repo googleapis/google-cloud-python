@@ -468,7 +468,7 @@ _NOTIFICATIONCHANNEL = _descriptor.Descriptor(
         _NOTIFICATIONCHANNEL_LABELSENTRY,
         _NOTIFICATIONCHANNEL_USERLABELSENTRY,
     ],
-    enum_types=[_NOTIFICATIONCHANNEL_VERIFICATIONSTATUS,],
+    enum_types=[_NOTIFICATIONCHANNEL_VERIFICATIONSTATUS],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -511,9 +511,9 @@ NotificationChannelDescriptor = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NOTIFICATIONCHANNELDESCRIPTOR,
         __module__="google.cloud.monitoring_v3.proto.notification_pb2",
-        __doc__="""A description of a notification channel. The descriptor includes the
-  properties of the channel and the set of labels or fields that must be
-  specified to configure channels of a given type.
+        __doc__="""A description of a notification channel. The descriptor
+  includes the properties of the channel and the set of labels or fields
+  that must be specified to configure channels of a given type.
   
   
   Attributes:
@@ -569,11 +569,11 @@ NotificationChannel = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_NOTIFICATIONCHANNEL,
         __module__="google.cloud.monitoring_v3.proto.notification_pb2",
-        __doc__="""A ``NotificationChannel`` is a medium through which an alert is
-  delivered when a policy violation is detected. Examples of channels
-  include email, SMS, and third-party messaging applications. Fields
-  containing sensitive information like authentication tokens or contact
-  info are only partially populated on retrieval.
+        __doc__="""A ``NotificationChannel`` is a medium through which an
+  alert is delivered when a policy violation is detected. Examples of
+  channels include email, SMS, and third-party messaging applications.
+  Fields containing sensitive information like authentication tokens or
+  contact info are only partially populated on retrieval.
   
   
   Attributes:

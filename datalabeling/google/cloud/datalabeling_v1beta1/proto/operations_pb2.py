@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.datalabeling_v1beta1.proto import (
     dataset_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2,
 )
@@ -34,10 +35,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\n8google/cloud/datalabeling_v1beta1/proto/operations.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"Y\n\x1bImportDataOperationResponse\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12\x13\n\x0btotal_count\x18\x02 \x01(\x05\x12\x14\n\x0cimport_count\x18\x03 \x01(\x05"\xe5\x01\n\x1b\x45xportDataOperationResponse\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12\x13\n\x0btotal_count\x18\x02 \x01(\x05\x12\x14\n\x0c\x65xport_count\x18\x03 \x01(\x05\x12\x42\n\x0blabel_stats\x18\x04 \x01(\x0b\x32-.google.cloud.datalabeling.v1beta1.LabelStats\x12\x46\n\routput_config\x18\x05 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfig"\x8d\x01\n\x1bImportDataOperationMetadata\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8d\x01\n\x1b\x45xportDataOperationMetadata\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8c\x0c\n\x16LabelOperationMetadata\x12t\n\x1cimage_classification_details\x18\x03 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelImageClassificationOperationMetadataH\x00\x12o\n\x1aimage_bounding_box_details\x18\x04 \x01(\x0b\x32I.google.cloud.datalabeling.v1beta1.LabelImageBoundingBoxOperationMetadataH\x00\x12q\n\x1bimage_bounding_poly_details\x18\x0b \x01(\x0b\x32J.google.cloud.datalabeling.v1beta1.LabelImageBoundingPolyOperationMetadataH\x00\x12\x80\x01\n#image_oriented_bounding_box_details\x18\x0e \x01(\x0b\x32Q.google.cloud.datalabeling.v1beta1.LabelImageOrientedBoundingBoxOperationMetadataH\x00\x12h\n\x16image_polyline_details\x18\x0c \x01(\x0b\x32\x46.google.cloud.datalabeling.v1beta1.LabelImagePolylineOperationMetadataH\x00\x12p\n\x1aimage_segmentation_details\x18\x0f \x01(\x0b\x32J.google.cloud.datalabeling.v1beta1.LabelImageSegmentationOperationMetadataH\x00\x12t\n\x1cvideo_classification_details\x18\x05 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelVideoClassificationOperationMetadataH\x00\x12w\n\x1evideo_object_detection_details\x18\x06 \x01(\x0b\x32M.google.cloud.datalabeling.v1beta1.LabelVideoObjectDetectionOperationMetadataH\x00\x12u\n\x1dvideo_object_tracking_details\x18\x07 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelVideoObjectTrackingOperationMetadataH\x00\x12\x62\n\x13video_event_details\x18\x08 \x01(\x0b\x32\x43.google.cloud.datalabeling.v1beta1.LabelVideoEventOperationMetadataH\x00\x12r\n\x1btext_classification_details\x18\t \x01(\x0b\x32K.google.cloud.datalabeling.v1beta1.LabelTextClassificationOperationMetadataH\x00\x12w\n\x1etext_entity_extraction_details\x18\r \x01(\x0b\x32M.google.cloud.datalabeling.v1beta1.LabelTextEntityExtractionOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\x01 \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x10 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"{\n)LabelImageClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"x\n&LabelImageBoundingBoxOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"\x80\x01\n.LabelImageOrientedBoundingBoxOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"y\n\'LabelImageBoundingPolyOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"u\n#LabelImagePolylineOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"y\n\'LabelImageSegmentationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"{\n)LabelVideoClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"|\n*LabelVideoObjectDetectionOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"{\n)LabelVideoObjectTrackingOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"r\n LabelVideoEventOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"z\n(LabelTextClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"|\n*LabelTextEntityExtractionOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"\x8f\x01\n\x19\x43reateInstructionMetadata\x12\x13\n\x0binstruction\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\n8google/cloud/datalabeling_v1beta1/proto/operations.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"Y\n\x1bImportDataOperationResponse\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12\x13\n\x0btotal_count\x18\x02 \x01(\x05\x12\x14\n\x0cimport_count\x18\x03 \x01(\x05"\xe5\x01\n\x1b\x45xportDataOperationResponse\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12\x13\n\x0btotal_count\x18\x02 \x01(\x05\x12\x14\n\x0c\x65xport_count\x18\x03 \x01(\x05\x12\x42\n\x0blabel_stats\x18\x04 \x01(\x0b\x32-.google.cloud.datalabeling.v1beta1.LabelStats\x12\x46\n\routput_config\x18\x05 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfig"\x8d\x01\n\x1bImportDataOperationMetadata\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8d\x01\n\x1b\x45xportDataOperationMetadata\x12\x0f\n\x07\x64\x61taset\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8c\x0c\n\x16LabelOperationMetadata\x12t\n\x1cimage_classification_details\x18\x03 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelImageClassificationOperationMetadataH\x00\x12o\n\x1aimage_bounding_box_details\x18\x04 \x01(\x0b\x32I.google.cloud.datalabeling.v1beta1.LabelImageBoundingBoxOperationMetadataH\x00\x12q\n\x1bimage_bounding_poly_details\x18\x0b \x01(\x0b\x32J.google.cloud.datalabeling.v1beta1.LabelImageBoundingPolyOperationMetadataH\x00\x12\x80\x01\n#image_oriented_bounding_box_details\x18\x0e \x01(\x0b\x32Q.google.cloud.datalabeling.v1beta1.LabelImageOrientedBoundingBoxOperationMetadataH\x00\x12h\n\x16image_polyline_details\x18\x0c \x01(\x0b\x32\x46.google.cloud.datalabeling.v1beta1.LabelImagePolylineOperationMetadataH\x00\x12p\n\x1aimage_segmentation_details\x18\x0f \x01(\x0b\x32J.google.cloud.datalabeling.v1beta1.LabelImageSegmentationOperationMetadataH\x00\x12t\n\x1cvideo_classification_details\x18\x05 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelVideoClassificationOperationMetadataH\x00\x12w\n\x1evideo_object_detection_details\x18\x06 \x01(\x0b\x32M.google.cloud.datalabeling.v1beta1.LabelVideoObjectDetectionOperationMetadataH\x00\x12u\n\x1dvideo_object_tracking_details\x18\x07 \x01(\x0b\x32L.google.cloud.datalabeling.v1beta1.LabelVideoObjectTrackingOperationMetadataH\x00\x12\x62\n\x13video_event_details\x18\x08 \x01(\x0b\x32\x43.google.cloud.datalabeling.v1beta1.LabelVideoEventOperationMetadataH\x00\x12r\n\x1btext_classification_details\x18\t \x01(\x0b\x32K.google.cloud.datalabeling.v1beta1.LabelTextClassificationOperationMetadataH\x00\x12w\n\x1etext_entity_extraction_details\x18\r \x01(\x0b\x32M.google.cloud.datalabeling.v1beta1.LabelTextEntityExtractionOperationMetadataH\x00\x12\x18\n\x10progress_percent\x18\x01 \x01(\x05\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x10 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\t\n\x07\x64\x65tails"{\n)LabelImageClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"x\n&LabelImageBoundingBoxOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"\x80\x01\n.LabelImageOrientedBoundingBoxOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"y\n\'LabelImageBoundingPolyOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"u\n#LabelImagePolylineOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"y\n\'LabelImageSegmentationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"{\n)LabelVideoClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"|\n*LabelVideoObjectDetectionOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"{\n)LabelVideoObjectTrackingOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"r\n LabelVideoEventOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"z\n(LabelTextClassificationOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"|\n*LabelTextEntityExtractionOperationMetadata\x12N\n\x0c\x62\x61sic_config\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig"\x8f\x01\n\x19\x43reateInstructionMetadata\x12\x13\n\x0binstruction\x18\x01 \x01(\t\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.Status\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -116,8 +118,8 @@ _IMPORTDATAOPERATIONRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=309,
-    serialized_end=398,
+    serialized_start=336,
+    serialized_end=425,
 )
 
 
@@ -227,8 +229,8 @@ _EXPORTDATAOPERATIONRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=401,
-    serialized_end=630,
+    serialized_start=428,
+    serialized_end=657,
 )
 
 
@@ -302,8 +304,8 @@ _IMPORTDATAOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=633,
-    serialized_end=774,
+    serialized_start=660,
+    serialized_end=801,
 )
 
 
@@ -377,8 +379,8 @@ _EXPORTDATAOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=777,
-    serialized_end=918,
+    serialized_start=804,
+    serialized_end=945,
 )
 
 
@@ -676,8 +678,8 @@ _LABELOPERATIONMETADATA = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=921,
-    serialized_end=2469,
+    serialized_start=948,
+    serialized_end=2496,
 )
 
 
@@ -715,8 +717,8 @@ _LABELIMAGECLASSIFICATIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2471,
-    serialized_end=2594,
+    serialized_start=2498,
+    serialized_end=2621,
 )
 
 
@@ -754,8 +756,8 @@ _LABELIMAGEBOUNDINGBOXOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2596,
-    serialized_end=2716,
+    serialized_start=2623,
+    serialized_end=2743,
 )
 
 
@@ -793,8 +795,8 @@ _LABELIMAGEORIENTEDBOUNDINGBOXOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2719,
-    serialized_end=2847,
+    serialized_start=2746,
+    serialized_end=2874,
 )
 
 
@@ -832,8 +834,8 @@ _LABELIMAGEBOUNDINGPOLYOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2849,
-    serialized_end=2970,
+    serialized_start=2876,
+    serialized_end=2997,
 )
 
 
@@ -871,8 +873,8 @@ _LABELIMAGEPOLYLINEOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2972,
-    serialized_end=3089,
+    serialized_start=2999,
+    serialized_end=3116,
 )
 
 
@@ -910,8 +912,8 @@ _LABELIMAGESEGMENTATIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3091,
-    serialized_end=3212,
+    serialized_start=3118,
+    serialized_end=3239,
 )
 
 
@@ -949,8 +951,8 @@ _LABELVIDEOCLASSIFICATIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3214,
-    serialized_end=3337,
+    serialized_start=3241,
+    serialized_end=3364,
 )
 
 
@@ -988,8 +990,8 @@ _LABELVIDEOOBJECTDETECTIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3339,
-    serialized_end=3463,
+    serialized_start=3366,
+    serialized_end=3490,
 )
 
 
@@ -1027,8 +1029,8 @@ _LABELVIDEOOBJECTTRACKINGOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3465,
-    serialized_end=3588,
+    serialized_start=3492,
+    serialized_end=3615,
 )
 
 
@@ -1066,8 +1068,8 @@ _LABELVIDEOEVENTOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3590,
-    serialized_end=3704,
+    serialized_start=3617,
+    serialized_end=3731,
 )
 
 
@@ -1105,8 +1107,8 @@ _LABELTEXTCLASSIFICATIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3706,
-    serialized_end=3828,
+    serialized_start=3733,
+    serialized_end=3855,
 )
 
 
@@ -1144,8 +1146,8 @@ _LABELTEXTENTITYEXTRACTIONOPERATIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3830,
-    serialized_end=3954,
+    serialized_start=3857,
+    serialized_end=3981,
 )
 
 
@@ -1219,8 +1221,8 @@ _CREATEINSTRUCTIONMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3957,
-    serialized_end=4100,
+    serialized_start=3984,
+    serialized_end=4127,
 )
 
 _EXPORTDATAOPERATIONRESPONSE.fields_by_name[
@@ -1512,8 +1514,7 @@ ExportDataOperationResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       dataset:
-          Ouptut only. The name of dataset.
-          "projects/*/datasets/*/Datasets/\*"
+          Ouptut only. The name of dataset. "projects/*/datasets/*"
       total_count:
           Output only. Total number of examples requested to export
       export_count:
@@ -1540,7 +1541,7 @@ ImportDataOperationMetadata = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       dataset:
-          Ouptut only. The name of imported dataset.
+          Output only. The name of imported dataset.
           "projects/*/datasets/*"
       partial_failures:
           Output only. Partial failures encountered. E.g. single files
@@ -1567,7 +1568,7 @@ ExportDataOperationMetadata = _reflection.GeneratedProtocolMessageType(
   Attributes:
       dataset:
           Output only. The name of dataset to be exported.
-          "projects/*/datasets/*/Datasets/\*"
+          "projects/*/datasets/*"
       partial_failures:
           Output only. Partial failures encountered. E.g. single files
           that couldn't be read. Status details field will contain
@@ -1587,8 +1588,8 @@ LabelOperationMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LABELOPERATIONMETADATA,
         __module__="google.cloud.datalabeling_v1beta1.proto.operations_pb2",
-        __doc__="""Metadata of a labeling operation, such as LabelImage or LabelVideo. Next
-  tag: 18
+        __doc__="""Metadata of a labeling operation, such as LabelImage or
+  LabelVideo. Next tag: 20
   
   
   Attributes:
@@ -1674,7 +1675,8 @@ LabelImageOrientedBoundingBoxOperationMetadata = _reflection.GeneratedProtocolMe
     dict(
         DESCRIPTOR=_LABELIMAGEORIENTEDBOUNDINGBOXOPERATIONMETADATA,
         __module__="google.cloud.datalabeling_v1beta1.proto.operations_pb2",
-        __doc__="""Details of a LabelImageOrientedBoundingBox operation metadata.
+        __doc__="""Details of a LabelImageOrientedBoundingBox operation
+  metadata.
   
   
   Attributes:

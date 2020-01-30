@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,12 +79,7 @@ class CompletionClient(object):
 
     @classmethod
     def company_path(cls, project, tenant, company):
-        """DEPRECATED. Return a fully-qualified company string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/companies/{company}",
             project=project,
@@ -94,36 +89,21 @@ class CompletionClient(object):
 
     @classmethod
     def company_without_tenant_path(cls, project, company):
-        """DEPRECATED. Return a fully-qualified company_without_tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company_without_tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/companies/{company}", project=project, company=company
         )
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """DEPRECATED. Return a fully-qualified tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
@@ -290,16 +270,6 @@ class CompletionClient(object):
             language_codes (list[str]): The list of languages of the query. This is the BCP-47 language code,
                 such as "en-US" or "sr-Latn". For more information, see `Tags for
                 Identifying Languages <https://tools.ietf.org/html/bcp47>`__.
-
-                For ``CompletionType.JOB_TITLE`` type, only open jobs with the same
-                ``language_codes`` are returned.
-
-                For ``CompletionType.COMPANY_NAME`` type, only companies having open
-                jobs with the same ``language_codes`` are returned.
-
-                For ``CompletionType.COMBINED`` type, only open jobs with the same
-                ``language_codes`` or companies having open jobs with the same
-                ``language_codes`` are returned.
 
                 The maximum number of allowed characters is 255.
             company (str): If provided, restricts completion to specified company.

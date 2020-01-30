@@ -29,11 +29,13 @@ class ProtectionLevel(enum.IntEnum):
       PROTECTION_LEVEL_UNSPECIFIED (int): Not specified.
       SOFTWARE (int): Crypto operations are performed in software.
       HSM (int): Crypto operations are performed in a Hardware Security Module.
+      EXTERNAL (int): Crypto operations are performed by an external key manager.
     """
 
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
+    EXTERNAL = 3
 
 
 class CryptoKey(object):

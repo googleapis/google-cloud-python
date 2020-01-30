@@ -21,8 +21,8 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -43,18 +43,20 @@ class Impact(object):
           COST (int): Indicates a potential increase or decrease in cost.
           SECURITY (int): Indicates a potential increase or decrease in security.
           PERFORMANCE (int): Indicates a potential increase or decrease in performance.
+          MANAGEABILITY (int): Indicates a potential increase or decrease in manageability.
         """
 
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
         PERFORMANCE = 3
+        MANAGEABILITY = 4
 
 
 class RecommendationStateInfo(object):
     class State(enum.IntEnum):
         """
-        Represents Recommendation State
+        Represents Recommendation State.
 
         Attributes:
           STATE_UNSPECIFIED (int): Default state. Don't use directly.

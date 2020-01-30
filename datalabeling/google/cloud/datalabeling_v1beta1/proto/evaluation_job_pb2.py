@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.datalabeling_v1beta1.proto import (
     dataset_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2,
 )
@@ -37,10 +38,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\n<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xfe\x03\n\rEvaluationJob\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\x05state\x18\x03 \x01(\x0e\x32\x36.google.cloud.datalabeling.v1beta1.EvaluationJob.State\x12\x10\n\x08schedule\x18\x04 \x01(\t\x12\x15\n\rmodel_version\x18\x05 \x01(\t\x12U\n\x15\x65valuation_job_config\x18\x06 \x01(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.EvaluationJobConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x07 \x01(\t\x12"\n\x1alabel_missing_ground_truth\x18\x08 \x01(\x08\x12<\n\x08\x61ttempts\x18\t \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Attempt\x12/\n\x0b\x63reate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp"S\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\r\n\tSCHEDULED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07STOPPED\x10\x04"\xaa\t\n\x13\x45valuationJobConfig\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12\x63\n\x1bvideo_classification_config\x18\x06 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.VideoClassificationConfigH\x00\x12[\n\x17object_detection_config\x18\x07 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ObjectDetectionConfigH\x00\x12\x61\n\x1atext_classification_config\x18\x08 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12Y\n\x16object_tracking_config\x18\x0c \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.ObjectTrackingConfigH\x00\x12\x44\n\x0cinput_config\x18\x01 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfig\x12N\n\x11\x65valuation_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.EvaluationConfig\x12Y\n\x17human_annotation_config\x18\x03 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12l\n\x14\x62igquery_import_keys\x18\t \x03(\x0b\x32N.google.cloud.datalabeling.v1beta1.EvaluationJobConfig.BigqueryImportKeysEntry\x12\x15\n\rexample_count\x18\n \x01(\x05\x12!\n\x19\x65xample_sample_percentage\x18\x0b \x01(\x01\x12`\n\x1b\x65valuation_job_alert_config\x18\r \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig\x1a\x39\n\x17\x42igqueryImportKeysEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42!\n\x1fhuman_annotation_request_config"X\n\x18\x45valuationJobAlertConfig\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12-\n%min_acceptable_mean_average_precision\x18\x02 \x01(\x01"i\n\x07\x41ttempt\x12\x30\n\x0c\x61ttempt_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.StatusBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\n<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xe2\x04\n\rEvaluationJob\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x45\n\x05state\x18\x03 \x01(\x0e\x32\x36.google.cloud.datalabeling.v1beta1.EvaluationJob.State\x12\x10\n\x08schedule\x18\x04 \x01(\t\x12\x15\n\rmodel_version\x18\x05 \x01(\t\x12U\n\x15\x65valuation_job_config\x18\x06 \x01(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.EvaluationJobConfig\x12\x1b\n\x13\x61nnotation_spec_set\x18\x07 \x01(\t\x12"\n\x1alabel_missing_ground_truth\x18\x08 \x01(\x08\x12<\n\x08\x61ttempts\x18\t \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Attempt\x12/\n\x0b\x63reate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp"S\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\r\n\tSCHEDULED\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07STOPPED\x10\x04:b\xea\x41_\n)datalabeling.googleapis.com/EvaluationJob\x12\x32projects/{project}/evaluationJobs/{evaluation_job}"\x8d\x07\n\x13\x45valuationJobConfig\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12\x61\n\x1atext_classification_config\x18\x08 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12\x44\n\x0cinput_config\x18\x01 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfig\x12N\n\x11\x65valuation_config\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.EvaluationConfig\x12Y\n\x17human_annotation_config\x18\x03 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12l\n\x14\x62igquery_import_keys\x18\t \x03(\x0b\x32N.google.cloud.datalabeling.v1beta1.EvaluationJobConfig.BigqueryImportKeysEntry\x12\x15\n\rexample_count\x18\n \x01(\x05\x12!\n\x19\x65xample_sample_percentage\x18\x0b \x01(\x01\x12`\n\x1b\x65valuation_job_alert_config\x18\r \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig\x1a\x39\n\x17\x42igqueryImportKeysEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42!\n\x1fhuman_annotation_request_config"X\n\x18\x45valuationJobAlertConfig\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12-\n%min_acceptable_mean_average_precision\x18\x02 \x01(\x01"i\n\x07\x41ttempt\x12\x30\n\x0c\x61ttempt_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x10partial_failures\x18\x02 \x03(\x0b\x32\x12.google.rpc.StatusBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2.DESCRIPTOR,
@@ -78,8 +80,8 @@ _EVALUATIONJOB_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=799,
-    serialized_end=882,
+    serialized_start=826,
+    serialized_end=909,
 )
 _sym_db.RegisterEnumDescriptor(_EVALUATIONJOB_STATE)
 
@@ -275,13 +277,15 @@ _EVALUATIONJOB = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_EVALUATIONJOB_STATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A_\n)datalabeling.googleapis.com/EvaluationJob\0222projects/{project}/evaluationJobs/{evaluation_job}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=372,
-    serialized_end=882,
+    serialized_start=399,
+    serialized_end=1009,
 )
 
 
@@ -337,8 +341,8 @@ _EVALUATIONJOBCONFIG_BIGQUERYIMPORTKEYSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1987,
-    serialized_end=2044,
+    serialized_start=1829,
+    serialized_end=1886,
 )
 
 _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
@@ -385,64 +389,10 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="video_classification_config",
-            full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.video_classification_config",
-            index=2,
-            number=6,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="object_detection_config",
-            full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.object_detection_config",
-            index=3,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="text_classification_config",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.text_classification_config",
-            index=4,
+            index=2,
             number=8,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
-            name="object_tracking_config",
-            full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.object_tracking_config",
-            index=5,
-            number=12,
             type=11,
             cpp_type=10,
             label=1,
@@ -459,7 +409,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="input_config",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config",
-            index=6,
+            index=3,
             number=1,
             type=11,
             cpp_type=10,
@@ -477,7 +427,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="evaluation_config",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.evaluation_config",
-            index=7,
+            index=4,
             number=2,
             type=11,
             cpp_type=10,
@@ -495,7 +445,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="human_annotation_config",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.human_annotation_config",
-            index=8,
+            index=5,
             number=3,
             type=11,
             cpp_type=10,
@@ -513,7 +463,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="bigquery_import_keys",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.bigquery_import_keys",
-            index=9,
+            index=6,
             number=9,
             type=11,
             cpp_type=10,
@@ -531,7 +481,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="example_count",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.example_count",
-            index=10,
+            index=7,
             number=10,
             type=5,
             cpp_type=1,
@@ -549,7 +499,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="example_sample_percentage",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.example_sample_percentage",
-            index=11,
+            index=8,
             number=11,
             type=1,
             cpp_type=5,
@@ -567,7 +517,7 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="evaluation_job_alert_config",
             full_name="google.cloud.datalabeling.v1beta1.EvaluationJobConfig.evaluation_job_alert_config",
-            index=12,
+            index=9,
             number=13,
             type=11,
             cpp_type=10,
@@ -599,8 +549,8 @@ _EVALUATIONJOBCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=885,
-    serialized_end=2079,
+    serialized_start=1012,
+    serialized_end=1921,
 )
 
 
@@ -656,8 +606,8 @@ _EVALUATIONJOBALERTCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2081,
-    serialized_end=2169,
+    serialized_start=1923,
+    serialized_end=2011,
 )
 
 
@@ -713,8 +663,8 @@ _ATTEMPT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2171,
-    serialized_end=2276,
+    serialized_start=2013,
+    serialized_end=2118,
 )
 
 _EVALUATIONJOB.fields_by_name["state"].enum_type = _EVALUATIONJOB_STATE
@@ -738,24 +688,9 @@ _EVALUATIONJOBCONFIG.fields_by_name[
     google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2._BOUNDINGPOLYCONFIG
 )
 _EVALUATIONJOBCONFIG.fields_by_name[
-    "video_classification_config"
-].message_type = (
-    google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2._VIDEOCLASSIFICATIONCONFIG
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
-    "object_detection_config"
-].message_type = (
-    google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2._OBJECTDETECTIONCONFIG
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
     "text_classification_config"
 ].message_type = (
     google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2._TEXTCLASSIFICATIONCONFIG
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
-    "object_tracking_config"
-].message_type = (
-    google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2._OBJECTTRACKINGCONFIG
 )
 _EVALUATIONJOBCONFIG.fields_by_name[
     "input_config"
@@ -795,34 +730,10 @@ _EVALUATIONJOBCONFIG.fields_by_name[
     "human_annotation_request_config"
 ]
 _EVALUATIONJOBCONFIG.oneofs_by_name["human_annotation_request_config"].fields.append(
-    _EVALUATIONJOBCONFIG.fields_by_name["video_classification_config"]
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
-    "video_classification_config"
-].containing_oneof = _EVALUATIONJOBCONFIG.oneofs_by_name[
-    "human_annotation_request_config"
-]
-_EVALUATIONJOBCONFIG.oneofs_by_name["human_annotation_request_config"].fields.append(
-    _EVALUATIONJOBCONFIG.fields_by_name["object_detection_config"]
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
-    "object_detection_config"
-].containing_oneof = _EVALUATIONJOBCONFIG.oneofs_by_name[
-    "human_annotation_request_config"
-]
-_EVALUATIONJOBCONFIG.oneofs_by_name["human_annotation_request_config"].fields.append(
     _EVALUATIONJOBCONFIG.fields_by_name["text_classification_config"]
 )
 _EVALUATIONJOBCONFIG.fields_by_name[
     "text_classification_config"
-].containing_oneof = _EVALUATIONJOBCONFIG.oneofs_by_name[
-    "human_annotation_request_config"
-]
-_EVALUATIONJOBCONFIG.oneofs_by_name["human_annotation_request_config"].fields.append(
-    _EVALUATIONJOBCONFIG.fields_by_name["object_tracking_config"]
-)
-_EVALUATIONJOBCONFIG.fields_by_name[
-    "object_tracking_config"
 ].containing_oneof = _EVALUATIONJOBCONFIG.oneofs_by_name[
     "human_annotation_request_config"
 ]
@@ -844,41 +755,64 @@ EvaluationJob = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONJOB,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""Defines an evaluation job that is triggered periodically to generate
-  evaluations.
+        __doc__="""Defines an evaluation job that runs periodically to
+  generate [Evaluations][google.cloud.datalabeling.v1beta1.Evaluation].
+  `Creating an evaluation
+  job </ml-engine/docs/continuous-evaluation/create-job>`__ is the
+  starting point for using continuous evaluation.
   
   
   Attributes:
       name:
-          Format:
-          'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+          Output only. After you create a job, Data Labeling Service
+          assigns a name to the job with the following format:
+          "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
       description:
-          Description of the job. The description can be up to 25000
-          characters long.
+          Required. Description of the job. The description can be up to
+          25,000 characters long.
+      state:
+          Output only. Describes the current state of the job.
       schedule:
-          Describes the schedule on which the job will be executed.
-          Minimum schedule unit is 1 day.  The schedule can be either of
-          the following types: \* `Crontab
-          <http://en.wikipedia.org/wiki/Cron#Overview>`__ \* English-
-          like  `schedule
-          <https:%20//cloud.google.com/scheduler/docs/configuring/cron-
-          job-schedules>`__
+          Required. Describes the interval at which the job runs. This
+          interval must be at least 1 day, and it is rounded to the
+          nearest day. For example, if you specify a 50-hour interval,
+          the job runs every 2 days.  You can provide the schedule in
+          `crontab format </scheduler/docs/configuring/cron-job-
+          schedules>`__ or in an `English-like format </appengine/docs/s
+          tandard/python/config/cronref#schedule_format>`__.  Regardless
+          of what you specify, the job will run at 10:00 AM UTC. Only
+          the interval from this schedule is used, not the specific time
+          of day.
       model_version:
-          The versioned model that is being evaluated here. Only one job
-          is allowed for each model name. Format:
-          'projects/*/models/*/versions/\*'
+          Required. The `AI Platform Prediction model version </ml-
+          engine/docs/prediction-overview>`__ to be evaluated.
+          Prediction input and output is sampled from this model
+          version. When creating an evaluation job, specify the model
+          version in the following format:  "projects/{project\_id}/mode
+          ls/{model\_name}/versions/{version\_name}"  There can only be
+          one evaluation job per model version.
       evaluation_job_config:
-          Detailed config for running this eval job.
+          Required. Configuration details for the evaluation job.
       annotation_spec_set:
-          Name of the AnnotationSpecSet.
+          Required. Name of the [AnnotationSpecSet][google.cloud.datalab
+          eling.v1beta1.AnnotationSpecSet] describing all the labels
+          that your machine learning model outputs. You must create this
+          resource before you create an evaluation job and provide its
+          name in the following format:  "projects/{project\_id}/annotat
+          ionSpecSets/{annotation\_spec\_set\_id}"
       label_missing_ground_truth:
-          If a human annotation should be requested when some data don't
-          have ground truth.
+          Required. Whether you want Data Labeling Service to provide
+          ground truth labels for prediction input. If you want the
+          service to assign human labelers to annotate your data, set
+          this to ``true``. If you want to provide your own ground truth
+          labels in the evaluation job's BigQuery table, set this to
+          ``false``.
       attempts:
-          Output only. Any attempts with errors happening in evaluation
-          job runs each time will be recorded here incrementally.
+          Output only. Every time the evaluation job runs and an error
+          occurs, the failed attempt is appended to this array.
       create_time:
-          Timestamp when this evaluation job was created.
+          Output only. Timestamp of when this evaluation job was
+          created.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.EvaluationJob)
     ),
@@ -900,33 +834,108 @@ EvaluationJobConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_EVALUATIONJOBCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""
-    Attributes:
+        __doc__="""Configures specific details of how a continuous evaluation
+  job works. Provide this configuration when you create an EvaluationJob.
+  
+  
+  Attributes:
       human_annotation_request_config:
-          config specific to different supported human annotation use
-          cases.
+          Required. Details for how you want human reviewers to provide
+          ground truth labels.
+      image_classification_config:
+          Specify this field if your model version performs image
+          classification or general classification.
+          ``annotationSpecSet`` in this configuration must match [Evalua
+          tionJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.E
+          valuationJob.annotation\_spec\_set]. ``allowMultiLabel`` in
+          this configuration must match
+          ``classificationMetadata.isMultiLabel`` in [input\_config][goo
+          gle.cloud.datalabeling.v1beta1.EvaluationJobConfig.input\_conf
+          ig].
+      bounding_poly_config:
+          Specify this field if your model version performs image object
+          detection (bounding box detection).  ``annotationSpecSet`` in
+          this configuration must match [EvaluationJob.annotationSpecSet
+          ][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation\_
+          spec\_set].
+      text_classification_config:
+          Specify this field if your model version performs text
+          classification.  ``annotationSpecSet`` in this configuration
+          must match [EvaluationJob.annotationSpecSet][google.cloud.data
+          labeling.v1beta1.EvaluationJob.annotation\_spec\_set].
+          ``allowMultiLabel`` in this configuration must match
+          ``classificationMetadata.isMultiLabel`` in [input\_config][goo
+          gle.cloud.datalabeling.v1beta1.EvaluationJobConfig.input\_conf
+          ig].
       input_config:
-          Input config for data, gcs\_source in the config will be the
-          root path for data. Data should be organzied chronically under
-          that path.
+          Rquired. Details for the sampled prediction input. Within this
+          configuration, there are requirements for several fields:  -
+          ``dataType`` must be one of ``IMAGE``, ``TEXT``, or
+          ``GENERAL_DATA``. -  ``annotationType`` must be one of
+          ``IMAGE_CLASSIFICATION_ANNOTATION``,
+          ``TEXT_CLASSIFICATION_ANNOTATION``,
+          ``GENERAL_CLASSIFICATION_ANNOTATION``, or
+          ``IMAGE_BOUNDING_BOX_ANNOTATION`` (image object detection). -
+          If your machine learning model performs classification, you
+          must    specify ``classificationMetadata.isMultiLabel``. -
+          You must specify ``bigquerySource`` (not ``gcsSource``).
       evaluation_config:
-          Config used to create evaluation.
+          Required. Details for calculating evaluation metrics and
+          creating
+          [Evaulations][google.cloud.datalabeling.v1beta1.Evaluation].
+          If your model version performs image object detection, you
+          must specify the ``boundingBoxEvaluationOptions`` field within
+          this configuration. Otherwise, provide an empty object for
+          this configuration.
+      human_annotation_config:
+          Optional. Details for human annotation of your data. If you
+          set [labelMissingGroundTruth][google.cloud.datalabeling.v1beta
+          1.EvaluationJob.label\_missing\_ground\_truth] to ``true`` for
+          this evaluation job, then you must specify this field. If you
+          plan to provide your own ground truth labels, then omit this
+          field.  Note that you must create an
+          [Instruction][google.cloud.datalabeling.v1beta1.Instruction]
+          resource before you can specify this field. Provide the name
+          of the instruction resource in the ``instruction`` field
+          within this configuration.
       bigquery_import_keys:
-          Mappings between reserved keys for bigquery import and
-          customized tensor names. Key is the reserved key, value is
-          tensor name in the bigquery table. Different annotation type
-          has different required key mapping. See user manual for more
-          details:  https: //docs.google.com/document/d/1bg1meMIBGY //
-          9I5QEoFoHSX6u9LsZQYBSmPt6E9SxqHZc/edit#heading=h.tfyjhxhvsqem
+          Required. Prediction keys that tell Data Labeling Service
+          where to find the data for evaluation in your BigQuery table.
+          When the service samples prediction input and output from your
+          model version and saves it to BigQuery, the data gets stored
+          as JSON strings in the BigQuery table. These keys tell Data
+          Labeling Service how to parse the JSON.  You can provide the
+          following entries in this field:  -  ``data_json_key``: the
+          data key for prediction input. You must    provide either this
+          key or ``reference_json_key``. -  ``reference_json_key``: the
+          data reference key for prediction input.    You must provide
+          either this key or ``data_json_key``. -  ``label_json_key``:
+          the label key for prediction output. Required. -
+          ``label_score_json_key``: the score key for prediction output.
+          Required. -  ``bounding_box_json_key``: the bounding box key
+          for prediction    output. Required if your model version
+          perform image object    detection.  Learn `how to configure
+          prediction keys </ml-engine/docs/continuous-evaluation/create-
+          job#prediction-keys>`__.
       example_count:
-          Max number of examples to collect in each period.
+          Required. The maximum number of predictions to sample and save
+          to BigQuery during each [evaluation interval][google.cloud.dat
+          alabeling.v1beta1.EvaluationJob.schedule]. This limit
+          overrides ``example_sample_percentage``: even if the service
+          has not sampled enough predictions to fulfill
+          ``example_sample_perecentage`` during an interval, it stops
+          sampling predictions when it meets this limit.
       example_sample_percentage:
-          Percentage of examples to collect in each period. 0.1 means
-          10% of total examples will be collected, and 0.0 means no
-          collection.
+          Required. Fraction of predictions to sample and save to
+          BigQuery during each [evaluation interval][google.cloud.datala
+          beling.v1beta1.EvaluationJob.schedule]. For example, 0.1 means
+          10% of predictions served by your model version get saved to
+          BigQuery.
       evaluation_job_alert_config:
-          Alert config for the evaluation job. The alert will be
-          triggered when its criteria is met.
+          Optional. Configuration details for evaluation job alerts.
+          Specify this field if you want to receive email alerts if the
+          evaluation job finds that your predictions have low mean
+          average precision during a run.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.EvaluationJobConfig)
     ),
@@ -940,13 +949,21 @@ EvaluationJobAlertConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONJOBALERTCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""
-    Attributes:
+        __doc__="""Provides details for how an evaluation job sends email
+  alerts based on the results of a run.
+  
+  
+  Attributes:
       email:
-          Required. Email of the user who will be receiving the alert.
+          Required. An email address to send alerts to.
       min_acceptable_mean_average_precision:
-          If a single evaluation run's aggregate mean average precision
-          is lower than this threshold, the alert will be triggered.
+          Required. A number between 0 and 1 that describes a minimum
+          mean average precision threshold. When the evaluation job
+          runs, if it calculates that your model version's predictions
+          from the recent interval have [meanAveragePrecision][google.cl
+          oud.datalabeling.v1beta1.PrCurve.mean\_average\_precision]
+          below this threshold, then it sends an alert to your specified
+          email.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig)
     ),
@@ -959,7 +976,12 @@ Attempt = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ATTEMPT,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""Records a failed attempt.
+        __doc__="""Records a failed evaluation job run.
+  
+  
+  Attributes:
+      partial_failures:
+          Details of errors that occurred.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.Attempt)
     ),
@@ -968,5 +990,6 @@ _sym_db.RegisterMessage(Attempt)
 
 
 DESCRIPTOR._options = None
+_EVALUATIONJOB._options = None
 _EVALUATIONJOBCONFIG_BIGQUERYIMPORTKEYSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

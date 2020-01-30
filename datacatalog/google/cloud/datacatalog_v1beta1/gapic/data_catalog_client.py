@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1533,18 +1533,20 @@ class DataCatalogClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.TagTemplateField`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The field mask specifies the parts of the template to be updated.
-                Allowed fields:
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): Optional. The field mask specifies the parts of the template to be
+                updated. Allowed fields:
 
                 -  ``display_name``
                 -  ``type.enum_type``
+                -  ``is_required``
 
                 If ``update_mask`` is not set or empty, all of the allowed fields above
                 will be updated.
 
                 When updating an enum type, the provided values will be merged with the
                 existing values. Therefore, enum values can only be added, existing enum
-                values cannot be deleted nor renamed.
+                values cannot be deleted nor renamed. Updating a template field from
+                optional to required is NOT allowed.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`

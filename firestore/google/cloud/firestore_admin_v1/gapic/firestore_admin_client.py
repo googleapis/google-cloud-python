@@ -264,9 +264,9 @@ class FirestoreAdminClient(object):
             >>> response = client.create_index(parent, index)
 
         Args:
-            parent (str): A parent name of the form
+            parent (str): Required. A parent name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}``
-            index (Union[dict, ~google.cloud.firestore_admin_v1.types.Index]): The composite index to create.
+            index (Union[dict, ~google.cloud.firestore_admin_v1.types.Index]): Required. The composite index to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_admin_v1.types.Index`
@@ -352,7 +352,7 @@ class FirestoreAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): A parent name of the form
+            parent (str): Required. A parent name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}``
             filter_ (str): The filter to apply to list results.
             page_size (int): The maximum number of resources contained in the
@@ -444,7 +444,7 @@ class FirestoreAdminClient(object):
             >>> response = client.get_index(name)
 
         Args:
-            name (str): A name of the form
+            name (str): Required. A name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -514,7 +514,7 @@ class FirestoreAdminClient(object):
             >>> client.delete_index(name)
 
         Args:
-            name (str): A name of the form
+            name (str): Required. A name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -587,7 +587,7 @@ class FirestoreAdminClient(object):
             >>> response = client.import_documents(name)
 
         Args:
-            name (str): Database to import into. Should be of the form:
+            name (str): Required. Database to import into. Should be of the form:
                 ``projects/{project_id}/databases/{database_id}``.
             collection_ids (list[str]): Which collection ids to import. Unspecified means all collections included
                 in the import.
@@ -674,7 +674,7 @@ class FirestoreAdminClient(object):
             >>> response = client.export_documents(name)
 
         Args:
-            name (str): Database to export. Should be of the form:
+            name (str): Required. Database to export. Should be of the form:
                 ``projects/{project_id}/databases/{database_id}``.
             collection_ids (list[str]): Which collection ids to export. Unspecified means all collections.
             output_uri_prefix (str): The output URI. Currently only supports Google Cloud Storage URIs of the
@@ -757,7 +757,7 @@ class FirestoreAdminClient(object):
             >>> response = client.get_field(name)
 
         Args:
-            name (str): A name of the form
+            name (str): Required. A name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_id}``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -846,7 +846,7 @@ class FirestoreAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): A parent name of the form
+            parent (str): Required. A parent name of the form
                 ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}``
             filter_ (str): The filter to apply to list results. Currently,
                 ``FirestoreAdmin.ListFields`` only supports listing fields that have
@@ -956,7 +956,7 @@ class FirestoreAdminClient(object):
             >>> response = client.update_field(field)
 
         Args:
-            field (Union[dict, ~google.cloud.firestore_admin_v1.types.Field]): The field to be updated.
+            field (Union[dict, ~google.cloud.firestore_admin_v1.types.Field]): Required. The field to be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.firestore_admin_v1.types.Field`

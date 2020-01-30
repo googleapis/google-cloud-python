@@ -17,6 +17,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -29,10 +31,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\027com.google.cloud.kms.v1B\021KmsResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
     ),
     serialized_pb=_b(
-        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"H\n\x07KeyRing\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xf5\x04\n\tCryptoKey\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x36\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersion\x12@\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\x12/\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06\x42\x13\n\x11rotation_schedule"\xae\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xe7\x01\n\x17KeyOperationAttestation\x12N\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormat\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\x0c"k\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\x12\x18\n\x14\x43\x41VIUM_V2_COMPRESSED\x10\x04"\xa3\x0b\n\x10\x43ryptoKeyVersion\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12>\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12R\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\x12\x41\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestation\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x36\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\nimport_job\x18\x0e \x01(\t\x12/\n\x0bimport_time\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1d\n\x15import_failure_reason\x18\x10 \x01(\t"\x9c\x04\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA512\x10\x0f\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA512\x10\x10\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA512\x10\x11\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r"\xc1\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\x12\x12\n\x0ePENDING_IMPORT\x10\x06\x12\x11\n\rIMPORT_FAILED\x10\x07"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xa6\x06\n\tImportJob\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\rimport_method\x18\x02 \x01(\x0e\x32+.google.cloud.kms.v1.ImportJob.ImportMethod\x12>\n\x10protection_level\x18\t \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12/\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\rgenerate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpire_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x35\n\x11\x65xpire_event_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x05state\x18\x06 \x01(\x0e\x32-.google.cloud.kms.v1.ImportJob.ImportJobState\x12\x44\n\npublic_key\x18\x07 \x01(\x0b\x32\x30.google.cloud.kms.v1.ImportJob.WrappingPublicKey\x12\x41\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestation\x1a \n\x11WrappingPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t"m\n\x0cImportMethod\x12\x1d\n\x19IMPORT_METHOD_UNSPECIFIED\x10\x00\x12\x1e\n\x1aRSA_OAEP_3072_SHA1_AES_256\x10\x01\x12\x1e\n\x1aRSA_OAEP_4096_SHA1_AES_256\x10\x02"c\n\x0eImportJobState\x12 \n\x1cIMPORT_JOB_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x01\x12\n\n\x06\x41\x43TIVE\x10\x02\x12\x0b\n\x07\x45XPIRED\x10\x03*J\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
+        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb5\x01\n\x07KeyRing\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03:a\xea\x41^\n\x1f\x63loudkms.googleapis.com/KeyRing\x12;projects/{project}/locations/{location}/keyRings/{key_ring}"\x86\x06\n\tCryptoKey\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12;\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersionB\x03\xe0\x41\x03\x12\x45\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurposeB\x03\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06:{\xea\x41x\n!cloudkms.googleapis.com/CryptoKey\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}B\x13\n\x11rotation_schedule"\xb3\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12W\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x02"\xf1\x01\n\x17KeyOperationAttestation\x12S\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormatB\x03\xe0\x41\x03\x12\x14\n\x07\x63ontent\x18\x05 \x01(\x0c\x42\x03\xe0\x41\x03"k\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\x12\x18\n\x14\x43\x41VIUM_V2_COMPRESSED\x10\x04"\x87\r\n\x10\x43ryptoKeyVersion\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12\x43\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x03\xe0\x41\x03\x12W\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x35\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12;\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nimport_job\x18\x0e \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0bimport_time\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12"\n\x15import_failure_reason\x18\x10 \x01(\tB\x03\xe0\x41\x03"\x9c\x04\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA512\x10\x0f\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA512\x10\x10\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA512\x10\x11\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r"\xc1\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\x12\x12\n\x0ePENDING_IMPORT\x10\x06\x12\x11\n\rIMPORT_FAILED\x10\x07"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01:\xaa\x01\xea\x41\xa6\x01\n(cloudkms.googleapis.com/CryptoKeyVersion\x12zprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xdb\x07\n\tImportJob\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\rimport_method\x18\x02 \x01(\x0e\x32+.google.cloud.kms.v1.ImportJob.ImportMethodB\x06\xe0\x41\x02\xe0\x41\x05\x12\x46\n\x10protection_level\x18\t \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x06\xe0\x41\x02\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x34\n\x0b\x65xpire_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12:\n\x11\x65xpire_event_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x41\n\x05state\x18\x06 \x01(\x0e\x32-.google.cloud.kms.v1.ImportJob.ImportJobStateB\x03\xe0\x41\x03\x12I\n\npublic_key\x18\x07 \x01(\x0b\x32\x30.google.cloud.kms.v1.ImportJob.WrappingPublicKeyB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x1a \n\x11WrappingPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t"m\n\x0cImportMethod\x12\x1d\n\x19IMPORT_METHOD_UNSPECIFIED\x10\x00\x12\x1e\n\x1aRSA_OAEP_3072_SHA1_AES_256\x10\x01\x12\x1e\n\x1aRSA_OAEP_4096_SHA1_AES_256\x10\x02"c\n\x0eImportJobState\x12 \n\x1cIMPORT_JOB_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x01\x12\n\n\x06\x41\x43TIVE\x10\x02\x12\x0b\n\x07\x45XPIRED\x10\x03:{\xea\x41x\n!cloudkms.googleapis.com/ImportJob\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}*X\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x12\x0c\n\x08\x45XTERNAL\x10\x03\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -57,11 +61,14 @@ _PROTECTIONLEVEL = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="HSM", index=2, number=2, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="EXTERNAL", index=3, number=3, serialized_options=None, type=None
+        ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3643,
-    serialized_end=3717,
+    serialized_start=4382,
+    serialized_end=4470,
 )
 _sym_db.RegisterEnumDescriptor(_PROTECTIONLEVEL)
 
@@ -69,6 +76,7 @@ ProtectionLevel = enum_type_wrapper.EnumTypeWrapper(_PROTECTIONLEVEL)
 PROTECTION_LEVEL_UNSPECIFIED = 0
 SOFTWARE = 1
 HSM = 2
+EXTERNAL = 3
 
 
 _CRYPTOKEY_CRYPTOKEYPURPOSE = _descriptor.EnumDescriptor(
@@ -108,8 +116,8 @@ _CRYPTOKEY_CRYPTOKEYPURPOSE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=724,
-    serialized_end=844,
+    serialized_start=914,
+    serialized_end=1034,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEY_CRYPTOKEYPURPOSE)
 
@@ -143,8 +151,8 @@ _KEYOPERATIONATTESTATION_ATTESTATIONFORMAT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1169,
-    serialized_end=1276,
+    serialized_start=1499,
+    serialized_end=1606,
 )
 _sym_db.RegisterEnumDescriptor(_KEYOPERATIONATTESTATION_ATTESTATIONFORMAT)
 
@@ -269,8 +277,8 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1911,
-    serialized_end=2451,
+    serialized_start=2296,
+    serialized_end=2836,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM)
 
@@ -319,8 +327,8 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2454,
-    serialized_end=2647,
+    serialized_start=2839,
+    serialized_end=3032,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE)
 
@@ -343,8 +351,8 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2649,
-    serialized_end=2722,
+    serialized_start=3034,
+    serialized_end=3107,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW)
 
@@ -378,8 +386,8 @@ _IMPORTJOB_IMPORTMETHOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3431,
-    serialized_end=3540,
+    serialized_start=4045,
+    serialized_end=4154,
 )
 _sym_db.RegisterEnumDescriptor(_IMPORTJOB_IMPORTMETHOD)
 
@@ -412,8 +420,8 @@ _IMPORTJOB_IMPORTJOBSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3542,
-    serialized_end=3641,
+    serialized_start=4156,
+    serialized_end=4255,
 )
 _sym_db.RegisterEnumDescriptor(_IMPORTJOB_IMPORTJOBSTATE)
 
@@ -440,7 +448,7 @@ _KEYRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -458,20 +466,22 @@ _KEYRING = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A^\n\037cloudkms.googleapis.com/KeyRing\022;projects/{project}/locations/{location}/keyRings/{key_ring}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=161,
-    serialized_end=233,
+    serialized_start=222,
+    serialized_end=403,
 )
 
 
@@ -527,8 +537,8 @@ _CRYPTOKEY_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=677,
-    serialized_end=722,
+    serialized_start=867,
+    serialized_end=912,
 )
 
 _CRYPTOKEY = _descriptor.Descriptor(
@@ -553,7 +563,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -571,7 +581,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -589,7 +599,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\005"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -607,7 +617,7 @@ _CRYPTOKEY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -686,7 +696,9 @@ _CRYPTOKEY = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_CRYPTOKEY_LABELSENTRY],
     enum_types=[_CRYPTOKEY_CRYPTOKEYPURPOSE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ax\n!cloudkms.googleapis.com/CryptoKey\022Sprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -699,8 +711,8 @@ _CRYPTOKEY = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=236,
-    serialized_end=865,
+    serialized_start=406,
+    serialized_end=1180,
 )
 
 
@@ -744,7 +756,7 @@ _CRYPTOKEYVERSIONTEMPLATE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -756,8 +768,8 @@ _CRYPTOKEYVERSIONTEMPLATE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=868,
-    serialized_end=1042,
+    serialized_start=1183,
+    serialized_end=1362,
 )
 
 
@@ -783,7 +795,7 @@ _KEYOPERATIONATTESTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -801,7 +813,7 @@ _KEYOPERATIONATTESTATION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -813,8 +825,8 @@ _KEYOPERATIONATTESTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1045,
-    serialized_end=1276,
+    serialized_start=1365,
+    serialized_end=1606,
 )
 
 
@@ -840,7 +852,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -876,7 +888,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -894,7 +906,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -912,7 +924,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -930,7 +942,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -948,7 +960,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -966,7 +978,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -984,7 +996,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1002,7 +1014,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1020,7 +1032,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1038,7 +1050,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1049,13 +1061,15 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
         _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE,
         _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW,
     ],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\246\001\n(cloudkms.googleapis.com/CryptoKeyVersion\022zprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1279,
-    serialized_end=2722,
+    serialized_start=1609,
+    serialized_end=3280,
 )
 
 
@@ -1111,8 +1125,8 @@ _PUBLICKEY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2724,
-    serialized_end=2832,
+    serialized_start=3282,
+    serialized_end=3390,
 )
 
 
@@ -1150,8 +1164,8 @@ _IMPORTJOB_WRAPPINGPUBLICKEY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3397,
-    serialized_end=3429,
+    serialized_start=4011,
+    serialized_end=4043,
 )
 
 _IMPORTJOB = _descriptor.Descriptor(
@@ -1176,7 +1190,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1194,7 +1208,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\340A\005"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1212,7 +1226,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002\340A\005"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1230,7 +1244,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1248,7 +1262,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1266,7 +1280,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1284,7 +1298,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1302,7 +1316,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1320,7 +1334,7 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1338,20 +1352,22 @@ _IMPORTJOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
     ],
     extensions=[],
     nested_types=[_IMPORTJOB_WRAPPINGPUBLICKEY],
     enum_types=[_IMPORTJOB_IMPORTMETHOD, _IMPORTJOB_IMPORTJOBSTATE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ax\n!cloudkms.googleapis.com/ImportJob\022Sprojects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2835,
-    serialized_end=3641,
+    serialized_start=3393,
+    serialized_end=4380,
 )
 
 _KEYRING.fields_by_name[
@@ -1509,13 +1525,13 @@ CryptoKey = _reflection.GeneratedProtocolMessageType(
           me].  The [CryptoKey][google.cloud.kms.v1.CryptoKey]'s primary
           version can be updated via [UpdateCryptoKeyPrimaryVersion][goo
           gle.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVe
-          rsion].  All keys with
+          rsion].  Keys with
           [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC
           RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_
-          DECRYPT] have a primary. For other keys, this field will be
-          omitted.
+          DECRYPT] may have a primary. For other keys, this field will
+          be omitted.
       purpose:
-          The immutable purpose of this
+          Immutable. The immutable purpose of this
           [CryptoKey][google.cloud.kms.v1.CryptoKey].
       create_time:
           Output only. The time at which this
@@ -1540,10 +1556,11 @@ CryptoKey = _reflection.GeneratedProtocolMessageType(
       rotation_period:
           [next\_rotation\_time][google.cloud.kms.v1.CryptoKey.next\_rot
           ation\_time] will be advanced by this period when the service
-          automatically rotates a key. Must be at least one day.  If [ro
-          tation\_period][google.cloud.kms.v1.CryptoKey.rotation\_period
-          ] is set, [next\_rotation\_time][google.cloud.kms.v1.CryptoKey
-          .next\_rotation\_time] must also be set.  Keys with
+          automatically rotates a key. Must be at least 24 hours and at
+          most 876,000 hours.  If [rotation\_period][google.cloud.kms.v1
+          .CryptoKey.rotation\_period] is set, [next\_rotation\_time][go
+          ogle.cloud.kms.v1.CryptoKey.next\_rotation\_time] must also be
+          set.  Keys with
           [purpose][google.cloud.kms.v1.CryptoKey.purpose] [ENCRYPT\_DEC
           RYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT\_
           DECRYPT] support automatic rotation. For other keys, this
@@ -1812,10 +1829,10 @@ ImportJob = _reflection.GeneratedProtocolMessageType(
           [ImportJob][google.cloud.kms.v1.ImportJob] in the format
           ``projects/*/locations/*/keyRings/*/importJobs/*``.
       import_method:
-          Required and immutable. The wrapping method to be used for
+          Required. Immutable. The wrapping method to be used for
           incoming key material.
       protection_level:
-          Required and immutable. The protection level of the
+          Required. Immutable. The protection level of the
           [ImportJob][google.cloud.kms.v1.ImportJob]. This must match
           the [protection\_level][google.cloud.kms.v1.CryptoKeyVersionTe
           mplate.protection\_level] of the [version\_template][google.cl
@@ -1864,5 +1881,39 @@ _sym_db.RegisterMessage(ImportJob.WrappingPublicKey)
 
 
 DESCRIPTOR._options = None
+_KEYRING.fields_by_name["name"]._options = None
+_KEYRING.fields_by_name["create_time"]._options = None
+_KEYRING._options = None
 _CRYPTOKEY_LABELSENTRY._options = None
+_CRYPTOKEY.fields_by_name["name"]._options = None
+_CRYPTOKEY.fields_by_name["primary"]._options = None
+_CRYPTOKEY.fields_by_name["purpose"]._options = None
+_CRYPTOKEY.fields_by_name["create_time"]._options = None
+_CRYPTOKEY._options = None
+_CRYPTOKEYVERSIONTEMPLATE.fields_by_name["algorithm"]._options = None
+_KEYOPERATIONATTESTATION.fields_by_name["format"]._options = None
+_KEYOPERATIONATTESTATION.fields_by_name["content"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["name"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["protection_level"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["algorithm"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["attestation"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["create_time"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["generate_time"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["destroy_time"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["destroy_event_time"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["import_job"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["import_time"]._options = None
+_CRYPTOKEYVERSION.fields_by_name["import_failure_reason"]._options = None
+_CRYPTOKEYVERSION._options = None
+_IMPORTJOB.fields_by_name["name"]._options = None
+_IMPORTJOB.fields_by_name["import_method"]._options = None
+_IMPORTJOB.fields_by_name["protection_level"]._options = None
+_IMPORTJOB.fields_by_name["create_time"]._options = None
+_IMPORTJOB.fields_by_name["generate_time"]._options = None
+_IMPORTJOB.fields_by_name["expire_time"]._options = None
+_IMPORTJOB.fields_by_name["expire_event_time"]._options = None
+_IMPORTJOB.fields_by_name["state"]._options = None
+_IMPORTJOB.fields_by_name["public_key"]._options = None
+_IMPORTJOB.fields_by_name["attestation"]._options = None
+_IMPORTJOB._options = None
 # @@protoc_insertion_point(module_scope)

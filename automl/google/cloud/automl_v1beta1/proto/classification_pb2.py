@@ -782,7 +782,8 @@ VideoClassificationAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VIDEOCLASSIFICATIONANNOTATION,
         __module__="google.cloud.automl_v1beta1.proto.classification_pb2",
-        __doc__="""Contains annotation details specific to video classification.
+        __doc__="""Contains annotation details specific to video
+  classification.
   
   
   Attributes:
@@ -944,9 +945,9 @@ ClassificationEvaluationMetrics = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CLASSIFICATIONEVALUATIONMETRICS,
         __module__="google.cloud.automl_v1beta1.proto.classification_pb2",
-        __doc__="""Model evaluation metrics for classification problems. Note: For Video
-  Classification this metrics only describe quality of the Video
-  Classification predictions of "segment\_classification" type.
+        __doc__="""Model evaluation metrics for classification problems.
+  Note: For Video Classification this metrics only describe quality of the
+  Video Classification predictions of "segment\_classification" type.
   
   
   Attributes:

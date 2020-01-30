@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ from google.cloud.datalabeling_v1beta1.proto import (
 )
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
 from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
 
 
 class MultiCallableStub(object):
@@ -337,7 +336,9 @@ class TestDataLabelingServiceClient(object):
 
         # Setup Request
         name = client.dataset_path("[PROJECT]", "[DATASET]")
-        annotated_dataset = "annotatedDataset-1407812655"
+        annotated_dataset = client.annotated_dataset_path(
+            "[PROJECT]", "[DATASET]", "[ANNOTATED_DATASET]"
+        )
         output_config = {}
 
         response = client.export_data(name, annotated_dataset, output_config)
@@ -368,7 +369,9 @@ class TestDataLabelingServiceClient(object):
 
         # Setup Request
         name = client.dataset_path("[PROJECT]", "[DATASET]")
-        annotated_dataset = "annotatedDataset-1407812655"
+        annotated_dataset = client.annotated_dataset_path(
+            "[PROJECT]", "[DATASET]", "[ANNOTATED_DATASET]"
+        )
         output_config = {}
 
         response = client.export_data(name, annotated_dataset, output_config)
@@ -564,6 +567,43 @@ class TestDataLabelingServiceClient(object):
         paged_list_response = client.list_annotated_datasets(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_delete_annotated_dataset(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup Request
+        name = client.annotated_dataset_path(
+            "[PROJECT]", "[DATASET]", "[ANNOTATED_DATASET]"
+        )
+
+        client.delete_annotated_dataset(name)
+
+        assert len(channel.requests) == 1
+        expected_request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(
+            name=name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_annotated_dataset_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+        # Setup request
+        name = client.annotated_dataset_path(
+            "[PROJECT]", "[DATASET]", "[ANNOTATED_DATASET]"
+        )
+
+        with pytest.raises(CustomException):
+            client.delete_annotated_dataset(name)
 
     def test_label_image(self):
         # Setup Expected Response
@@ -1287,10 +1327,9 @@ class TestDataLabelingServiceClient(object):
             client = datalabeling_v1beta1.DataLabelingServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
-        filter_ = "filter-1274492040"
+        parent = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
 
-        paged_list_response = client.search_evaluations(parent, filter_)
+        paged_list_response = client.search_evaluations(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
@@ -1298,7 +1337,7 @@ class TestDataLabelingServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = data_labeling_service_pb2.SearchEvaluationsRequest(
-            parent=parent, filter=filter_
+            parent=parent
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1311,10 +1350,9 @@ class TestDataLabelingServiceClient(object):
             client = datalabeling_v1beta1.DataLabelingServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
-        filter_ = "filter-1274492040"
+        parent = client.evaluation_path("[PROJECT]", "[DATASET]", "[EVALUATION]")
 
-        paged_list_response = client.search_evaluations(parent, filter_)
+        paged_list_response = client.search_evaluations(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
 
@@ -1449,14 +1487,13 @@ class TestDataLabelingServiceClient(object):
 
         # Setup Request
         evaluation_job = {}
-        update_mask = {}
 
-        response = client.update_evaluation_job(evaluation_job, update_mask)
+        response = client.update_evaluation_job(evaluation_job)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = data_labeling_service_pb2.UpdateEvaluationJobRequest(
-            evaluation_job=evaluation_job, update_mask=update_mask
+            evaluation_job=evaluation_job
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1471,10 +1508,9 @@ class TestDataLabelingServiceClient(object):
 
         # Setup request
         evaluation_job = {}
-        update_mask = {}
 
         with pytest.raises(CustomException):
-            client.update_evaluation_job(evaluation_job, update_mask)
+            client.update_evaluation_job(evaluation_job)
 
     def test_get_evaluation_job(self):
         # Setup Expected Response
@@ -1647,9 +1683,8 @@ class TestDataLabelingServiceClient(object):
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
-        filter_ = "filter-1274492040"
 
-        paged_list_response = client.list_evaluation_jobs(parent, filter_)
+        paged_list_response = client.list_evaluation_jobs(parent)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
@@ -1657,7 +1692,7 @@ class TestDataLabelingServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = data_labeling_service_pb2.ListEvaluationJobsRequest(
-            parent=parent, filter=filter_
+            parent=parent
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1671,33 +1706,7 @@ class TestDataLabelingServiceClient(object):
 
         # Setup request
         parent = client.project_path("[PROJECT]")
-        filter_ = "filter-1274492040"
 
-        paged_list_response = client.list_evaluation_jobs(parent, filter_)
+        paged_list_response = client.list_evaluation_jobs(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
-
-    def test_delete_annotated_dataset(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datalabeling_v1beta1.DataLabelingServiceClient()
-
-        client.delete_annotated_dataset()
-
-        assert len(channel.requests) == 1
-        expected_request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest()
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_annotated_dataset_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datalabeling_v1beta1.DataLabelingServiceClient()
-
-        with pytest.raises(CustomException):
-            client.delete_annotated_dataset()

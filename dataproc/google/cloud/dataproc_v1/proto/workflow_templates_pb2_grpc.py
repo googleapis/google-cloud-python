@@ -12,7 +12,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 class WorkflowTemplateServiceStub(object):
     """The API interface for managing Workflow Templates in the
-  Cloud Dataproc API.
+  Dataproc API.
   """
 
     def __init__(self, channel):
@@ -60,7 +60,7 @@ class WorkflowTemplateServiceStub(object):
 
 class WorkflowTemplateServiceServicer(object):
     """The API interface for managing Workflow Templates in the
-  Cloud Dataproc API.
+  Dataproc API.
   """
 
     def CreateWorkflowTemplate(self, request, context):

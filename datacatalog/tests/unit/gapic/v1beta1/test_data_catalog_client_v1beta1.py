@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -616,7 +616,12 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name = "name3373707"
         display_name = "displayName1615086568"
-        expected_response = {"name": name, "display_name": display_name}
+        is_required = True
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "is_required": is_required,
+        }
         expected_response = tags_pb2.TagTemplateField(**expected_response)
 
         # Mock the API response
@@ -667,7 +672,12 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
-        expected_response = {"name": name_2, "display_name": display_name}
+        is_required = True
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "is_required": is_required,
+        }
         expected_response = tags_pb2.TagTemplateField(**expected_response)
 
         # Mock the API response
@@ -710,7 +720,12 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
-        expected_response = {"name": name_2, "display_name": display_name}
+        is_required = True
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "is_required": is_required,
+        }
         expected_response = tags_pb2.TagTemplateField(**expected_response)
 
         # Mock the API response

@@ -16,6 +16,8 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
 from google.cloud.dataproc_v1beta2 import types
 from google.cloud.dataproc_v1beta2.gapic import autoscaling_policy_service_client
@@ -23,6 +25,15 @@ from google.cloud.dataproc_v1beta2.gapic import cluster_controller_client
 from google.cloud.dataproc_v1beta2.gapic import enums
 from google.cloud.dataproc_v1beta2.gapic import job_controller_client
 from google.cloud.dataproc_v1beta2.gapic import workflow_template_service_client
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
 
 
 class AutoscalingPolicyServiceClient(

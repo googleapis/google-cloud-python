@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -191,147 +191,6 @@ class TraceServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def patch_traces(
-        self,
-        project_id,
-        traces,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
-        of a trace that you send matches that of an existing trace, any fields
-        in the existing trace and its spans are overwritten by the provided values,
-        and any new fields provided are merged with the existing trace data. If the
-        ID does not match, a new trace is created.
-
-        Example:
-            >>> from google.cloud import trace_v1
-            >>>
-            >>> client = trace_v1.TraceServiceClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `traces`:
-            >>> traces = {}
-            >>>
-            >>> client.patch_traces(project_id, traces)
-
-        Args:
-            project_id (str): ID of the Cloud project where the trace data is stored.
-            traces (Union[dict, ~google.cloud.trace_v1.types.Traces]): The body of the message.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.trace_v1.types.Traces`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "patch_traces" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "patch_traces"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.patch_traces,
-                default_retry=self._method_configs["PatchTraces"].retry,
-                default_timeout=self._method_configs["PatchTraces"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = trace_pb2.PatchTracesRequest(project_id=project_id, traces=traces,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("project_id", project_id)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["patch_traces"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_trace(
-        self,
-        project_id,
-        trace_id,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets a single trace by its ID.
-
-        Example:
-            >>> from google.cloud import trace_v1
-            >>>
-            >>> client = trace_v1.TraceServiceClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `trace_id`:
-            >>> trace_id = ''
-            >>>
-            >>> response = client.get_trace(project_id, trace_id)
-
-        Args:
-            project_id (str): ID of the Cloud project where the trace data is stored.
-            trace_id (str): ID of the trace to return.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.trace_v1.types.Trace` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_trace" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_trace"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_trace,
-                default_retry=self._method_configs["GetTrace"].retry,
-                default_timeout=self._method_configs["GetTrace"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = trace_pb2.GetTraceRequest(project_id=project_id, trace_id=trace_id,)
-        return self._inner_api_calls["get_trace"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def list_traces(
         self,
         project_id,
@@ -371,8 +230,8 @@ class TraceServiceClient(object):
             ...         pass
 
         Args:
-            project_id (str): ID of the Cloud project where the trace data is stored.
-            view (~google.cloud.trace_v1.types.ViewType): Type of data returned for traces in the list. Optional. Default is
+            project_id (str): Required. ID of the Cloud project where the trace data is stored.
+            view (~google.cloud.trace_v1.types.ViewType): Optional. Type of data returned for traces in the list. Default is
                 ``MINIMAL``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -389,7 +248,7 @@ class TraceServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v1.types.Timestamp`
-            filter_ (str): An optional filter against labels for the request.
+            filter_ (str): Optional. A filter against labels for the request.
 
                 By default, searches use prefix matching. To specify exact match,
                 prepend a plus symbol (``+``) to the search term. Multiple terms are
@@ -419,7 +278,7 @@ class TraceServiceClient(object):
                    specified.
                 -  ``method:VALUE``: Equivalent to ``/http/method:VALUE``.
                 -  ``url:VALUE``: Equivalent to ``/http/url:VALUE``.
-            order_by (str): Field used to sort the returned traces. Optional. Can be one of the
+            order_by (str): Optional. Field used to sort the returned traces. Can be one of the
                 following:
 
                 -  ``trace_id``
@@ -501,3 +360,144 @@ class TraceServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def get_trace(
+        self,
+        project_id,
+        trace_id,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets a single trace by its ID.
+
+        Example:
+            >>> from google.cloud import trace_v1
+            >>>
+            >>> client = trace_v1.TraceServiceClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `trace_id`:
+            >>> trace_id = ''
+            >>>
+            >>> response = client.get_trace(project_id, trace_id)
+
+        Args:
+            project_id (str): Required. ID of the Cloud project where the trace data is stored.
+            trace_id (str): Required. ID of the trace to return.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.trace_v1.types.Trace` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_trace" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_trace"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_trace,
+                default_retry=self._method_configs["GetTrace"].retry,
+                default_timeout=self._method_configs["GetTrace"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = trace_pb2.GetTraceRequest(project_id=project_id, trace_id=trace_id,)
+        return self._inner_api_calls["get_trace"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def patch_traces(
+        self,
+        project_id,
+        traces,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
+        of a trace that you send matches that of an existing trace, any fields
+        in the existing trace and its spans are overwritten by the provided values,
+        and any new fields provided are merged with the existing trace data. If the
+        ID does not match, a new trace is created.
+
+        Example:
+            >>> from google.cloud import trace_v1
+            >>>
+            >>> client = trace_v1.TraceServiceClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `traces`:
+            >>> traces = {}
+            >>>
+            >>> client.patch_traces(project_id, traces)
+
+        Args:
+            project_id (str): Required. ID of the Cloud project where the trace data is stored.
+            traces (Union[dict, ~google.cloud.trace_v1.types.Traces]): Required. The body of the message.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.trace_v1.types.Traces`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "patch_traces" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "patch_traces"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.patch_traces,
+                default_retry=self._method_configs["PatchTraces"].retry,
+                default_timeout=self._method_configs["PatchTraces"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = trace_pb2.PatchTracesRequest(project_id=project_id, traces=traces,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_id", project_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["patch_traces"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

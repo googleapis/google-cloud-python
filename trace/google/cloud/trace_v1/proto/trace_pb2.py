@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -28,10 +31,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\252\002\025Google.Cloud.Trace.V1\312\002\025Google\\Cloud\\Trace\\V1"
     ),
     serialized_pb=_b(
-        '\n/google/devtools/cloudtrace_v1/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"f\n\x05Trace\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x10\n\x08trace_id\x18\x02 \x01(\t\x12\x37\n\x05spans\x18\x03 \x03(\x0b\x32(.google.devtools.cloudtrace.v1.TraceSpan">\n\x06Traces\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace"\x9d\x03\n\tTraceSpan\x12\x0f\n\x07span_id\x18\x01 \x01(\x06\x12?\n\x04kind\x18\x02 \x01(\x0e\x32\x31.google.devtools.cloudtrace.v1.TraceSpan.SpanKind\x12\x0c\n\x04name\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x16\n\x0eparent_span_id\x18\x06 \x01(\x06\x12\x44\n\x06labels\x18\x07 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v1.TraceSpan.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"E\n\x08SpanKind\x12\x19\n\x15SPAN_KIND_UNSPECIFIED\x10\x00\x12\x0e\n\nRPC_SERVER\x10\x01\x12\x0e\n\nRPC_CLIENT\x10\x02"\xe7\x02\n\x11ListTracesRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12G\n\x04view\x18\x02 \x01(\x0e\x32\x39.google.devtools.cloudtrace.v1.ListTracesRequest.ViewType\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12.\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06\x66ilter\x18\x07 \x01(\t\x12\x10\n\x08order_by\x18\x08 \x01(\t"N\n\x08ViewType\x12\x19\n\x15VIEW_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07MINIMAL\x10\x01\x12\x0c\n\x08ROOTSPAN\x10\x02\x12\x0c\n\x08\x43OMPLETE\x10\x03"c\n\x12ListTracesResponse\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"7\n\x0fGetTraceRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x10\n\x08trace_id\x18\x02 \x01(\t"_\n\x12PatchTracesRequest\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x35\n\x06traces\x18\x02 \x01(\x0b\x32%.google.devtools.cloudtrace.v1.Traces2\xd1\x03\n\x0cTraceService\x12\x9b\x01\n\nListTraces\x12\x30.google.devtools.cloudtrace.v1.ListTracesRequest\x1a\x31.google.devtools.cloudtrace.v1.ListTracesResponse"(\x82\xd3\xe4\x93\x02"\x12 /v1/projects/{project_id}/traces\x12\x95\x01\n\x08GetTrace\x12..google.devtools.cloudtrace.v1.GetTraceRequest\x1a$.google.devtools.cloudtrace.v1.Trace"3\x82\xd3\xe4\x93\x02-\x12+/v1/projects/{project_id}/traces/{trace_id}\x12\x8a\x01\n\x0bPatchTraces\x12\x31.google.devtools.cloudtrace.v1.PatchTracesRequest\x1a\x16.google.protobuf.Empty"0\x82\xd3\xe4\x93\x02*2 /v1/projects/{project_id}/traces:\x06tracesB\xaa\x01\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V1\xca\x02\x15Google\\Cloud\\Trace\\V1b\x06proto3'
+        '\n/google/devtools/cloudtrace_v1/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"f\n\x05Trace\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x10\n\x08trace_id\x18\x02 \x01(\t\x12\x37\n\x05spans\x18\x03 \x03(\x0b\x32(.google.devtools.cloudtrace.v1.TraceSpan">\n\x06Traces\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace"\xa2\x03\n\tTraceSpan\x12\x0f\n\x07span_id\x18\x01 \x01(\x06\x12?\n\x04kind\x18\x02 \x01(\x0e\x32\x31.google.devtools.cloudtrace.v1.TraceSpan.SpanKind\x12\x0c\n\x04name\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x0eparent_span_id\x18\x06 \x01(\x06\x42\x03\xe0\x41\x01\x12\x44\n\x06labels\x18\x07 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v1.TraceSpan.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"E\n\x08SpanKind\x12\x19\n\x15SPAN_KIND_UNSPECIFIED\x10\x00\x12\x0e\n\nRPC_SERVER\x10\x01\x12\x0e\n\nRPC_CLIENT\x10\x02"\x80\x03\n\x11ListTracesRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12L\n\x04view\x18\x02 \x01(\x0e\x32\x39.google.devtools.cloudtrace.v1.ListTracesRequest.ViewTypeB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x12\n\npage_token\x18\x04 \x01(\t\x12.\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x06\x66ilter\x18\x07 \x01(\tB\x03\xe0\x41\x01\x12\x15\n\x08order_by\x18\x08 \x01(\tB\x03\xe0\x41\x01"N\n\x08ViewType\x12\x19\n\x15VIEW_TYPE_UNSPECIFIED\x10\x00\x12\x0b\n\x07MINIMAL\x10\x01\x12\x0c\n\x08ROOTSPAN\x10\x02\x12\x0c\n\x08\x43OMPLETE\x10\x03"c\n\x12ListTracesResponse\x12\x34\n\x06traces\x18\x01 \x03(\x0b\x32$.google.devtools.cloudtrace.v1.Trace\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"A\n\x0fGetTraceRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x15\n\x08trace_id\x18\x02 \x01(\tB\x03\xe0\x41\x02"i\n\x12PatchTracesRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12:\n\x06traces\x18\x02 \x01(\x0b\x32%.google.devtools.cloudtrace.v1.TracesB\x03\xe0\x41\x02\x32\xb5\x05\n\x0cTraceService\x12\xa8\x01\n\nListTraces\x12\x30.google.devtools.cloudtrace.v1.ListTracesRequest\x1a\x31.google.devtools.cloudtrace.v1.ListTracesResponse"5\x82\xd3\xe4\x93\x02"\x12 /v1/projects/{project_id}/traces\xda\x41\nproject_id\x12\xab\x01\n\x08GetTrace\x12..google.devtools.cloudtrace.v1.GetTraceRequest\x1a$.google.devtools.cloudtrace.v1.Trace"I\x82\xd3\xe4\x93\x02-\x12+/v1/projects/{project_id}/traces/{trace_id}\xda\x41\x13project_id,trace_id\x12\x9e\x01\n\x0bPatchTraces\x12\x31.google.devtools.cloudtrace.v1.PatchTracesRequest\x1a\x16.google.protobuf.Empty"D\x82\xd3\xe4\x93\x02*2 /v1/projects/{project_id}/traces:\x06traces\xda\x41\x11project_id,traces\x1a\xaa\x01\xca\x41\x19\x63loudtrace.googleapis.com\xd2\x41\x8a\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/trace.readonlyB\xaa\x01\n!com.google.devtools.cloudtrace.v1B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v1;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V1\xca\x02\x15Google\\Cloud\\Trace\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -60,8 +66,8 @@ _TRACESPAN_SPANKIND = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=687,
-    serialized_end=756,
+    serialized_start=777,
+    serialized_end=846,
 )
 _sym_db.RegisterEnumDescriptor(_TRACESPAN_SPANKIND)
 
@@ -90,8 +96,8 @@ _LISTTRACESREQUEST_VIEWTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1040,
-    serialized_end=1118,
+    serialized_start=1155,
+    serialized_end=1233,
 )
 _sym_db.RegisterEnumDescriptor(_LISTTRACESREQUEST_VIEWTYPE)
 
@@ -166,8 +172,8 @@ _TRACE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=174,
-    serialized_end=276,
+    serialized_start=259,
+    serialized_end=361,
 )
 
 
@@ -205,8 +211,8 @@ _TRACES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=278,
-    serialized_end=340,
+    serialized_start=363,
+    serialized_end=425,
 )
 
 
@@ -262,8 +268,8 @@ _TRACESPAN_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=640,
-    serialized_end=685,
+    serialized_start=730,
+    serialized_end=775,
 )
 
 _TRACESPAN = _descriptor.Descriptor(
@@ -378,7 +384,7 @@ _TRACESPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -408,8 +414,8 @@ _TRACESPAN = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=343,
-    serialized_end=756,
+    serialized_start=428,
+    serialized_end=846,
 )
 
 
@@ -435,7 +441,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -453,7 +459,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -471,7 +477,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -543,7 +549,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -561,7 +567,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -573,8 +579,8 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=759,
-    serialized_end=1118,
+    serialized_start=849,
+    serialized_end=1233,
 )
 
 
@@ -630,8 +636,8 @@ _LISTTRACESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1120,
-    serialized_end=1219,
+    serialized_start=1235,
+    serialized_end=1334,
 )
 
 
@@ -657,7 +663,7 @@ _GETTRACEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -675,7 +681,7 @@ _GETTRACEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -687,8 +693,8 @@ _GETTRACEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1221,
-    serialized_end=1276,
+    serialized_start=1336,
+    serialized_end=1401,
 )
 
 
@@ -714,7 +720,7 @@ _PATCHTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -732,7 +738,7 @@ _PATCHTRACESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -744,8 +750,8 @@ _PATCHTRACESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1278,
-    serialized_end=1373,
+    serialized_start=1403,
+    serialized_end=1508,
 )
 
 _TRACE.fields_by_name["spans"].message_type = _TRACESPAN
@@ -785,9 +791,9 @@ Trace = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRACE,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""A trace describes how long it takes for an application to perform an
-  operation. It consists of a set of spans, each of which represent a
-  single timed event within the operation.
+        __doc__="""A trace describes how long it takes for an application to
+  perform an operation. It consists of a set of spans, each of which
+  represent a single timed event within the operation.
   
   
   Attributes:
@@ -796,7 +802,8 @@ Trace = _reflection.GeneratedProtocolMessageType(
           stored.
       trace_id:
           Globally unique identifier for the trace. This identifier is a
-          128-bit numeric value formatted as a 32-byte hex string.
+          128-bit numeric value formatted as a 32-byte hex string. For
+          example, ``382d4f4c6b7bb2f4a972559d9085001d``.
       spans:
           Collection of spans in the trace.
   """,
@@ -838,17 +845,18 @@ TraceSpan = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TRACESPAN,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""A span represents a single timed event within a trace. Spans can be
-  nested and form a trace tree. Often, a trace contains a root span that
-  describes the end-to-end latency of an operation and, optionally, one or
-  more subspans for its suboperations. Spans do not need to be contiguous.
-  There may be gaps between spans in a trace.
+        __doc__="""A span represents a single timed event within a trace.
+  Spans can be nested and form a trace tree. Often, a trace contains a
+  root span that describes the end-to-end latency of an operation and,
+  optionally, one or more subspans for its suboperations. Spans do not
+  need to be contiguous. There may be gaps between spans in a trace.
   
   
   Attributes:
       span_id:
           Identifier for the span. Must be a 64-bit integer other than 0
-          and unique within a trace.
+          and unique within a trace. For example,
+          ``2205310701640571284``.
       kind:
           Distinguishes between spans generated in a particular context.
           For example, two spans with the same name may be distinguished
@@ -857,17 +865,17 @@ TraceSpan = _reflection.GeneratedProtocolMessageType(
       name:
           Name of the span. Must be less than 128 bytes. The span name
           is sanitized and displayed in the Stackdriver Trace tool in
-          the {% dynamic print site\_values.console\_name %}. The name
-          may be a method name or some other per-call site name. For the
-          same executable and the same call point, a best practice is to
-          use a consistent name, which makes it easier to correlate
-          cross-trace spans.
+          the Google Cloud Platform Console. The name may be a method
+          name or some other per-call site name. For the same executable
+          and the same call point, a best practice is to use a
+          consistent name, which makes it easier to correlate cross-
+          trace spans.
       start_time:
           Start time of the span in nanoseconds from the UNIX epoch.
       end_time:
           End time of the span in nanoseconds from the UNIX epoch.
       parent_span_id:
-          ID of the parent span, if any. Optional.
+          Optional. ID of the parent span, if any.
       labels:
           Collection of labels associated with the span. Label keys must
           be less than 128 bytes. Label values must be less than 16
@@ -900,25 +908,26 @@ ListTracesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRACESREQUEST,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""The request message for the ``ListTraces`` method. All fields are
-  required unless specified.
+        __doc__="""The request message for the ``ListTraces`` method. All
+  fields are required unless specified.
   
   
   Attributes:
       project_id:
-          ID of the Cloud project where the trace data is stored.
+          Required. ID of the Cloud project where the trace data is
+          stored.
       view:
-          Type of data returned for traces in the list. Optional.
+          Optional. Type of data returned for traces in the list.
           Default is ``MINIMAL``.
       page_size:
-          Maximum number of traces to return. If not specified or <= 0,
-          the implementation selects a reasonable value. The
+          Optional. Maximum number of traces to return. If not specified
+          or <= 0, the implementation selects a reasonable value. The
           implementation may return fewer traces than the requested page
-          size. Optional.
+          size.
       page_token:
           Token identifying the page of results to return. If provided,
           use the value of the ``next_page_token`` field from a previous
-          request. Optional.
+          request.
       start_time:
           Start of the time interval (inclusive) during which the trace
           data was collected from the application.
@@ -926,7 +935,7 @@ ListTracesRequest = _reflection.GeneratedProtocolMessageType(
           End of the time interval (inclusive) during which the trace
           data was collected from the application.
       filter:
-          An optional filter against labels for the request.  By
+          Optional. A filter against labels for the request.  By
           default, searches use prefix matching. To specify exact match,
           prepend a plus symbol (``+``) to the search term. Multiple
           terms are ANDed. Syntax:  -  ``root:NAME_PREFIX`` or
@@ -954,7 +963,7 @@ ListTracesRequest = _reflection.GeneratedProtocolMessageType(
           ``/http/method:VALUE``. -  ``url:VALUE``: Equivalent to
           ``/http/url:VALUE``.
       order_by:
-          Field used to sort the returned traces. Optional. Can be one
+          Optional. Field used to sort the returned traces. Can be one
           of the following:  -  ``trace_id`` -  ``name`` (``name`` field
           of root span in the trace) -  ``duration`` (difference between
           ``end_time`` and ``start_time``    fields of the root span) -
@@ -979,7 +988,7 @@ ListTracesResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       traces:
-          List of trace records returned.
+          List of trace records as specified by the view parameter.
       next_page_token:
           If defined, indicates that there are more traces that match
           the request and that this value should be passed to the next
@@ -1001,9 +1010,10 @@ GetTraceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          ID of the Cloud project where the trace data is stored.
+          Required. ID of the Cloud project where the trace data is
+          stored.
       trace_id:
-          ID of the trace to return.
+          Required. ID of the trace to return.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudtrace.v1.GetTraceRequest)
     ),
@@ -1021,9 +1031,10 @@ PatchTracesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          ID of the Cloud project where the trace data is stored.
+          Required. ID of the Cloud project where the trace data is
+          stored.
       traces:
-          The body of the message.
+          Required. The body of the message.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudtrace.v1.PatchTracesRequest)
     ),
@@ -1033,15 +1044,27 @@ _sym_db.RegisterMessage(PatchTracesRequest)
 
 DESCRIPTOR._options = None
 _TRACESPAN_LABELSENTRY._options = None
+_TRACESPAN.fields_by_name["parent_span_id"]._options = None
+_LISTTRACESREQUEST.fields_by_name["project_id"]._options = None
+_LISTTRACESREQUEST.fields_by_name["view"]._options = None
+_LISTTRACESREQUEST.fields_by_name["page_size"]._options = None
+_LISTTRACESREQUEST.fields_by_name["filter"]._options = None
+_LISTTRACESREQUEST.fields_by_name["order_by"]._options = None
+_GETTRACEREQUEST.fields_by_name["project_id"]._options = None
+_GETTRACEREQUEST.fields_by_name["trace_id"]._options = None
+_PATCHTRACESREQUEST.fields_by_name["project_id"]._options = None
+_PATCHTRACESREQUEST.fields_by_name["traces"]._options = None
 
 _TRACESERVICE = _descriptor.ServiceDescriptor(
     name="TraceService",
     full_name="google.devtools.cloudtrace.v1.TraceService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=1376,
-    serialized_end=1841,
+    serialized_options=_b(
+        "\312A\031cloudtrace.googleapis.com\322A\212\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/trace.readonly"
+    ),
+    serialized_start=1511,
+    serialized_end=2204,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListTraces",
@@ -1051,7 +1074,7 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTTRACESREQUEST,
             output_type=_LISTTRACESRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002"\022 /v1/projects/{project_id}/traces'
+                '\202\323\344\223\002"\022 /v1/projects/{project_id}/traces\332A\nproject_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1062,7 +1085,7 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETTRACEREQUEST,
             output_type=_TRACE,
             serialized_options=_b(
-                "\202\323\344\223\002-\022+/v1/projects/{project_id}/traces/{trace_id}"
+                "\202\323\344\223\002-\022+/v1/projects/{project_id}/traces/{trace_id}\332A\023project_id,trace_id"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1073,7 +1096,7 @@ _TRACESERVICE = _descriptor.ServiceDescriptor(
             input_type=_PATCHTRACESREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002*2 /v1/projects/{project_id}/traces:\006traces"
+                "\202\323\344\223\002*2 /v1/projects/{project_id}/traces:\006traces\332A\021project_id,traces"
             ),
         ),
     ],

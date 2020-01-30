@@ -150,7 +150,7 @@ class Batch(Connection):
         self._requests = []
         self._target_objects = []
 
-    def _do_request(self, method, url, headers, data, target_object):
+    def _do_request(self, method, url, headers, data, target_object, timeout=None):
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -173,6 +173,12 @@ class Batch(Connection):
             connection. Here we defer an HTTP request and complete
             initialization of the object at a later time.
 
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response. By default, the method waits indefinitely.
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
         :returns: The HTTP response object and the content of the response.
@@ -181,7 +187,7 @@ class Batch(Connection):
             raise ValueError(
                 "Too many deferred requests (max %d)" % self._MAX_BATCH_SIZE
             )
-        self._requests.append((method, url, headers, data))
+        self._requests.append((method, url, headers, data, timeout))
         result = _FutureDict()
         self._target_objects.append(target_object)
         if target_object is not None:
@@ -200,22 +206,25 @@ class Batch(Connection):
 
         multi = MIMEMultipart()
 
-        for method, uri, headers, body in self._requests:
+        # Use timeout of last request, default to None (indefinite)
+        timeout = None
+        for method, uri, headers, body, _timeout in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)
+            timeout = _timeout
 
         # The `email` package expects to deal with "native" strings
-        if six.PY3:  # pragma: NO COVER  Python3
-            buf = io.StringIO()
-        else:
+        if six.PY2:  # pragma: NO COVER  Python3
             buf = io.BytesIO()
+        else:
+            buf = io.StringIO()
         generator = Generator(buf, False, 0)
         generator.flatten(multi)
         payload = buf.getvalue()
 
         # Strip off redundant header text
         _, body = payload.split("\n\n", 1)
-        return dict(multi._headers), body
+        return dict(multi._headers), body, timeout
 
     def _finish_futures(self, responses):
         """Apply all the batch responses to the futures created.
@@ -230,7 +239,7 @@ class Batch(Connection):
         # until all futures have been populated.
         exception_args = None
 
-        if len(self._target_objects) != len(responses):
+        if len(self._target_objects) != len(responses):  # pragma: NO COVER
             raise ValueError("Expected a response for every request.")
 
         for target_object, subresponse in zip(self._target_objects, responses):
@@ -251,7 +260,7 @@ class Batch(Connection):
         :rtype: list of tuples
         :returns: one ``(headers, payload)`` tuple per deferred request.
         """
-        headers, body = self._prepare_batch_request()
+        headers, body, timeout = self._prepare_batch_request()
 
         url = "%s/batch/storage/v1" % self.API_BASE_URL
 
@@ -259,7 +268,7 @@ class Batch(Connection):
         # ``_connection``, since the property may be this
         # current batch.
         response = self._client._base_connection._make_request(
-            "POST", url, data=body, headers=headers
+            "POST", url, data=body, headers=headers, timeout=timeout
         )
         responses = list(_unpack_batch_response(response))
         self._finish_futures(responses)
@@ -313,7 +322,7 @@ def _unpack_batch_response(response):
     parser = Parser()
     message = _generate_faux_mime_message(parser, response)
 
-    if not isinstance(message._payload, list):
+    if not isinstance(message._payload, list):  # pragma: NO COVER
         raise ValueError("Bad response:  not multi-part")
 
     for subrequest in message._payload:

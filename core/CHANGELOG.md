@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.2.0
+
+01-14-2020 13:22 PST
+
+### Dependencies
+
+- chores(core): bump api-core dependency to 1.16.0 ([#10111](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/10111))
+
 ## 1.1.0
 
 12-04-2019 13:56 PST

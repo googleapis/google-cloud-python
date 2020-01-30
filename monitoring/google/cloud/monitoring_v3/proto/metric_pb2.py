@@ -297,10 +297,11 @@ TimeSeries = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMESERIES,
         __module__="google.cloud.monitoring_v3.proto.metric_pb2",
-        __doc__="""A collection of data points that describes the time-varying values of a
-  metric. A time series is identified by a combination of a
-  fully-specified monitored resource and a fully-specified metric. This
-  type is used for both listing and creating time series.
+        __doc__="""A collection of data points that describes the
+  time-varying values of a metric. A time series is identified by a
+  combination of a fully-specified monitored resource and a
+  fully-specified metric. This type is used for both listing and creating
+  time series.
   
   
   Attributes:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -91,12 +91,7 @@ class PredictionServiceClient(object):
 
     @classmethod
     def model_path(cls, project, location, model):
-        """DEPRECATED. Return a fully-qualified model string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified model string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/models/{model}",
             project=project,

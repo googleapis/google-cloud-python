@@ -15,8 +15,10 @@
 
 import mock
 
+from google.api_core import exceptions
 from google.api_core import operation
 from google.api_core import operations_v1
+from google.api_core import retry
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2
 from google.rpc import code_pb2
@@ -111,6 +113,23 @@ def test_result():
 
     assert result == expected_result
     assert future.done()
+
+
+def test_done_w_retry():
+    RETRY_PREDICATE = retry.if_exception_type(exceptions.TooManyRequests)
+    test_retry = retry.Retry(predicate=RETRY_PREDICATE)
+
+    expected_result = struct_pb2.Struct()
+    responses = [
+        make_operation_proto(),
+        # Second operation response includes the result.
+        make_operation_proto(done=True, response=expected_result),
+    ]
+    future, _, _ = make_operation_future(responses)
+    future._refresh = mock.Mock()
+
+    future.done(retry=test_retry)
+    future._refresh.assert_called_once_with(retry=test_retry)
 
 
 def test_exception():

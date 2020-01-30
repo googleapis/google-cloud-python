@@ -16,15 +16,16 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.iot_v1.proto import (
     resources_pb2 as google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2,
 )
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
-from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 
@@ -36,17 +37,18 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\027com.google.cloud.iot.v1B\022DeviceManagerProtoP\001Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\370\001\001"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/iot_v1/proto/device_manager.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/iot_v1/proto/resources.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"k\n\x1b\x43reateDeviceRegistryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12<\n\x0f\x64\x65vice_registry\x18\x02 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry"(\n\x18GetDeviceRegistryRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"+\n\x1b\x44\x65leteDeviceRegistryRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x8c\x01\n\x1bUpdateDeviceRegistryRequest\x12<\n\x0f\x64\x65vice_registry\x18\x01 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"T\n\x1bListDeviceRegistriesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"w\n\x1cListDeviceRegistriesResponse\x12>\n\x11\x64\x65vice_registries\x18\x01 \x03(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"R\n\x13\x43reateDeviceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12+\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.Device"P\n\x10GetDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"s\n\x13UpdateDeviceRequest\x12+\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.Device\x12/\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"#\n\x13\x44\x65leteDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xee\x01\n\x12ListDevicesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x16\n\x0e\x64\x65vice_num_ids\x18\x02 \x03(\x04\x12\x12\n\ndevice_ids\x18\x03 \x03(\t\x12.\n\nfield_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x45\n\x14gateway_list_options\x18\x06 \x01(\x0b\x32\'.google.cloud.iot.v1.GatewayListOptions\x12\x11\n\tpage_size\x18\x64 \x01(\x05\x12\x12\n\npage_token\x18\x65 \x01(\t"\x9d\x01\n\x12GatewayListOptions\x12\x38\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayTypeH\x00\x12!\n\x17\x61ssociations_gateway_id\x18\x02 \x01(\tH\x00\x12 \n\x16\x61ssociations_device_id\x18\x03 \x01(\tH\x00\x42\x08\n\x06\x66ilter"\\\n\x13ListDevicesResponse\x12,\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1b.google.cloud.iot.v1.Device\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n ModifyCloudToDeviceConfigRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11version_to_update\x18\x02 \x01(\x03\x12\x13\n\x0b\x62inary_data\x18\x03 \x01(\x0c"E\n\x1fListDeviceConfigVersionsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0cnum_versions\x18\x02 \x01(\x05"]\n ListDeviceConfigVersionsResponse\x12\x39\n\x0e\x64\x65vice_configs\x18\x01 \x03(\x0b\x32!.google.cloud.iot.v1.DeviceConfig";\n\x17ListDeviceStatesRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nnum_states\x18\x02 \x01(\x05"S\n\x18ListDeviceStatesResponse\x12\x37\n\rdevice_states\x18\x01 \x03(\x0b\x32 .google.cloud.iot.v1.DeviceState"R\n\x1aSendCommandToDeviceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x62inary_data\x18\x02 \x01(\x0c\x12\x11\n\tsubfolder\x18\x03 \x01(\t"\x1d\n\x1bSendCommandToDeviceResponse"S\n\x1a\x42indDeviceToGatewayRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ngateway_id\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t"\x1d\n\x1b\x42indDeviceToGatewayResponse"W\n\x1eUnbindDeviceFromGatewayRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\ngateway_id\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\t"!\n\x1fUnbindDeviceFromGatewayResponse2\xe5"\n\rDeviceManager\x12\xb6\x01\n\x14\x43reateDeviceRegistry\x12\x30.google.cloud.iot.v1.CreateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"G\x82\xd3\xe4\x93\x02\x41"./v1/{parent=projects/*/locations/*}/registries:\x0f\x64\x65vice_registry\x12\x9f\x01\n\x11GetDeviceRegistry\x12-.google.cloud.iot.v1.GetDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"6\x82\xd3\xe4\x93\x02\x30\x12./v1/{name=projects/*/locations/*/registries/*}\x12\xc6\x01\n\x14UpdateDeviceRegistry\x12\x30.google.cloud.iot.v1.UpdateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"W\x82\xd3\xe4\x93\x02Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\x0f\x64\x65vice_registry\x12\x98\x01\n\x14\x44\x65leteDeviceRegistry\x12\x30.google.cloud.iot.v1.DeleteDeviceRegistryRequest\x1a\x16.google.protobuf.Empty"6\x82\xd3\xe4\x93\x02\x30*./v1/{name=projects/*/locations/*/registries/*}\x12\xb3\x01\n\x14ListDeviceRegistries\x12\x30.google.cloud.iot.v1.ListDeviceRegistriesRequest\x1a\x31.google.cloud.iot.v1.ListDeviceRegistriesResponse"6\x82\xd3\xe4\x93\x02\x30\x12./v1/{parent=projects/*/locations/*}/registries\x12\x9f\x01\n\x0c\x43reateDevice\x12(.google.cloud.iot.v1.CreateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"H\x82\xd3\xe4\x93\x02\x42"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\x06\x64\x65vice\x12\xd7\x01\n\tGetDevice\x12%.google.cloud.iot.v1.GetDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\x85\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\x12\x41/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}\x12\xfc\x01\n\x0cUpdateDevice\x12(.google.cloud.iot.v1.UpdateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01\x32?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\x06\x64\x65viceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\x06\x64\x65vice\x12\x92\x01\n\x0c\x44\x65leteDevice\x12(.google.cloud.iot.v1.DeleteDeviceRequest\x1a\x16.google.protobuf.Empty"@\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}\x12\xe8\x01\n\x0bListDevices\x12\'.google.cloud.iot.v1.ListDevicesRequest\x1a(.google.cloud.iot.v1.ListDevicesResponse"\x85\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\x12\x41/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices\x12\xb8\x02\n\x19ModifyCloudToDeviceConfig\x12\x35.google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest\x1a!.google.cloud.iot.v1.DeviceConfig"\xc0\x01\x82\xd3\xe4\x93\x02\xb9\x01"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\x01*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\x01*\x12\xae\x02\n\x18ListDeviceConfigVersions\x12\x34.google.cloud.iot.v1.ListDeviceConfigVersionsRequest\x1a\x35.google.cloud.iot.v1.ListDeviceConfigVersionsResponse"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01\x12G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\x12P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions\x12\x86\x02\n\x10ListDeviceStates\x12,.google.cloud.iot.v1.ListDeviceStatesRequest\x1a-.google.cloud.iot.v1.ListDeviceStatesResponse"\x94\x01\x82\xd3\xe4\x93\x02\x8d\x01\x12?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\x12H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states\x12\xe6\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\x01*\x12\xe6\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x9a\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\x01*\x12\x92\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xa6\x01\x82\xd3\xe4\x93\x02\x9f\x01"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\x01*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\x01*\x12\xaf\x02\n\x13SendCommandToDevice\x12/.google.cloud.iot.v1.SendCommandToDeviceRequest\x1a\x30.google.cloud.iot.v1.SendCommandToDeviceResponse"\xb4\x01\x82\xd3\xe4\x93\x02\xad\x01"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\x01*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\x01*\x12\x9f\x02\n\x13\x42indDeviceToGateway\x12/.google.cloud.iot.v1.BindDeviceToGatewayRequest\x1a\x30.google.cloud.iot.v1.BindDeviceToGatewayResponse"\xa4\x01\x82\xd3\xe4\x93\x02\x9d\x01"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\x01*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\x01*\x12\xb3\x02\n\x17UnbindDeviceFromGateway\x12\x33.google.cloud.iot.v1.UnbindDeviceFromGatewayRequest\x1a\x34.google.cloud.iot.v1.UnbindDeviceFromGatewayResponse"\xac\x01\x82\xd3\xe4\x93\x02\xa5\x01"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\x01*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\x01*Bj\n\x17\x63om.google.cloud.iot.v1B\x12\x44\x65viceManagerProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3'
+        '\n.google/cloud/iot_v1/proto/device_manager.proto\x12\x13google.cloud.iot.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a)google/cloud/iot_v1/proto/resources.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x17google/rpc/status.proto"\x9b\x01\n\x1b\x43reateDeviceRegistryRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\x41\n\x0f\x64\x65vice_registry\x18\x02 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistryB\x03\xe0\x41\x02"R\n\x18GetDeviceRegistryRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry"U\n\x1b\x44\x65leteDeviceRegistryRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry"\x96\x01\n\x1bUpdateDeviceRegistryRequest\x12\x41\n\x0f\x64\x65vice_registry\x18\x01 \x01(\x0b\x32#.google.cloud.iot.v1.DeviceRegistryB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"\x7f\n\x1bListDeviceRegistriesRequest\x12\x39\n\x06parent\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!locations.googleapis.com/Location\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"w\n\x1cListDeviceRegistriesResponse\x12>\n\x11\x64\x65vice_registries\x18\x01 \x03(\x0b\x32#.google.cloud.iot.v1.DeviceRegistry\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x81\x01\n\x13\x43reateDeviceRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry\x12\x30\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.DeviceB\x03\xe0\x41\x02"x\n\x10GetDeviceRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device\x12.\n\nfield_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"}\n\x13UpdateDeviceRequest\x12\x30\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\x1b.google.cloud.iot.v1.DeviceB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"K\n\x13\x44\x65leteDeviceRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device"\x98\x02\n\x12ListDevicesRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry\x12\x16\n\x0e\x64\x65vice_num_ids\x18\x02 \x03(\x04\x12\x12\n\ndevice_ids\x18\x03 \x03(\t\x12.\n\nfield_mask\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x45\n\x14gateway_list_options\x18\x06 \x01(\x0b\x32\'.google.cloud.iot.v1.GatewayListOptions\x12\x11\n\tpage_size\x18\x64 \x01(\x05\x12\x12\n\npage_token\x18\x65 \x01(\t"\x9d\x01\n\x12GatewayListOptions\x12\x38\n\x0cgateway_type\x18\x01 \x01(\x0e\x32 .google.cloud.iot.v1.GatewayTypeH\x00\x12!\n\x17\x61ssociations_gateway_id\x18\x02 \x01(\tH\x00\x12 \n\x16\x61ssociations_device_id\x18\x03 \x01(\tH\x00\x42\x08\n\x06\x66ilter"\\\n\x13ListDevicesResponse\x12,\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x1b.google.cloud.iot.v1.Device\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8d\x01\n ModifyCloudToDeviceConfigRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device\x12\x19\n\x11version_to_update\x18\x02 \x01(\x03\x12\x18\n\x0b\x62inary_data\x18\x03 \x01(\x0c\x42\x03\xe0\x41\x02"m\n\x1fListDeviceConfigVersionsRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device\x12\x14\n\x0cnum_versions\x18\x02 \x01(\x05"]\n ListDeviceConfigVersionsResponse\x12\x39\n\x0e\x64\x65vice_configs\x18\x01 \x03(\x0b\x32!.google.cloud.iot.v1.DeviceConfig"c\n\x17ListDeviceStatesRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device\x12\x12\n\nnum_states\x18\x02 \x01(\x05"S\n\x18ListDeviceStatesResponse\x12\x37\n\rdevice_states\x18\x01 \x03(\x0b\x32 .google.cloud.iot.v1.DeviceState"\x7f\n\x1aSendCommandToDeviceRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudiot.googleapis.com/Device\x12\x18\n\x0b\x62inary_data\x18\x02 \x01(\x0c\x42\x03\xe0\x41\x02\x12\x11\n\tsubfolder\x18\x03 \x01(\t"\x1d\n\x1bSendCommandToDeviceResponse"\x87\x01\n\x1a\x42indDeviceToGatewayRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry\x12\x17\n\ngateway_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\tdevice_id\x18\x03 \x01(\tB\x03\xe0\x41\x02"\x1d\n\x1b\x42indDeviceToGatewayResponse"\x8b\x01\n\x1eUnbindDeviceFromGatewayRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n cloudiot.googleapis.com/Registry\x12\x17\n\ngateway_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\tdevice_id\x18\x03 \x01(\tB\x03\xe0\x41\x02"!\n\x1fUnbindDeviceFromGatewayResponse2\xa6&\n\rDeviceManager\x12\xcf\x01\n\x14\x43reateDeviceRegistry\x12\x30.google.cloud.iot.v1.CreateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"`\x82\xd3\xe4\x93\x02\x41"./v1/{parent=projects/*/locations/*}/registries:\x0f\x64\x65vice_registry\xda\x41\x16parent,device_registry\x12\xa6\x01\n\x11GetDeviceRegistry\x12-.google.cloud.iot.v1.GetDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"=\x82\xd3\xe4\x93\x02\x30\x12./v1/{name=projects/*/locations/*/registries/*}\xda\x41\x04name\x12\xe4\x01\n\x14UpdateDeviceRegistry\x12\x30.google.cloud.iot.v1.UpdateDeviceRegistryRequest\x1a#.google.cloud.iot.v1.DeviceRegistry"u\x82\xd3\xe4\x93\x02Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\x0f\x64\x65vice_registry\xda\x41\x1b\x64\x65vice_registry,update_mask\x12\x9f\x01\n\x14\x44\x65leteDeviceRegistry\x12\x30.google.cloud.iot.v1.DeleteDeviceRegistryRequest\x1a\x16.google.protobuf.Empty"=\x82\xd3\xe4\x93\x02\x30*./v1/{name=projects/*/locations/*/registries/*}\xda\x41\x04name\x12\xbc\x01\n\x14ListDeviceRegistries\x12\x30.google.cloud.iot.v1.ListDeviceRegistriesRequest\x1a\x31.google.cloud.iot.v1.ListDeviceRegistriesResponse"?\x82\xd3\xe4\x93\x02\x30\x12./v1/{parent=projects/*/locations/*}/registries\xda\x41\x06parent\x12\xaf\x01\n\x0c\x43reateDevice\x12(.google.cloud.iot.v1.CreateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"X\x82\xd3\xe4\x93\x02\x42"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\x06\x64\x65vice\xda\x41\rparent,device\x12\xde\x01\n\tGetDevice\x12%.google.cloud.iot.v1.GetDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\x8c\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\x12\x41/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}\xda\x41\x04name\x12\x91\x02\n\x0cUpdateDevice\x12(.google.cloud.iot.v1.UpdateDeviceRequest\x1a\x1b.google.cloud.iot.v1.Device"\xb9\x01\x82\xd3\xe4\x93\x02\x9d\x01\x32?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\x06\x64\x65viceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\x06\x64\x65vice\xda\x41\x12\x64\x65vice,update_mask\x12\x99\x01\n\x0c\x44\x65leteDevice\x12(.google.cloud.iot.v1.DeleteDeviceRequest\x1a\x16.google.protobuf.Empty"G\x82\xd3\xe4\x93\x02:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}\xda\x41\x04name\x12\xf1\x01\n\x0bListDevices\x12\'.google.cloud.iot.v1.ListDevicesRequest\x1a(.google.cloud.iot.v1.ListDevicesResponse"\x8e\x01\x82\xd3\xe4\x93\x02\x7f\x12\x38/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\x12\x41/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices\xda\x41\x06parent\x12\xcb\x02\n\x19ModifyCloudToDeviceConfig\x12\x35.google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest\x1a!.google.cloud.iot.v1.DeviceConfig"\xd3\x01\x82\xd3\xe4\x93\x02\xb9\x01"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\x01*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\x01*\xda\x41\x10name,binary_data\x12\xb5\x02\n\x18ListDeviceConfigVersions\x12\x34.google.cloud.iot.v1.ListDeviceConfigVersionsRequest\x1a\x35.google.cloud.iot.v1.ListDeviceConfigVersionsResponse"\xab\x01\x82\xd3\xe4\x93\x02\x9d\x01\x12G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\x12P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions\xda\x41\x04name\x12\x8d\x02\n\x10ListDeviceStates\x12,.google.cloud.iot.v1.ListDeviceStatesRequest\x1a-.google.cloud.iot.v1.ListDeviceStatesResponse"\x9b\x01\x82\xd3\xe4\x93\x02\x8d\x01\x12?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\x12H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states\xda\x41\x04name\x12\xf8\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xac\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xf1\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xa5\x01\x82\xd3\xe4\x93\x02\x93\x01"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\x01*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xa9\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xbd\x01\x82\xd3\xe4\x93\x02\x9f\x01"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\x01*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x12\xdf\x02\n\x13SendCommandToDevice\x12/.google.cloud.iot.v1.SendCommandToDeviceRequest\x1a\x30.google.cloud.iot.v1.SendCommandToDeviceResponse"\xe4\x01\x82\xd3\xe4\x93\x02\xad\x01"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\x01*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\x01*\xda\x41\x10name,binary_data\xda\x41\x1aname,binary_data,subfolder\x12\xbd\x02\n\x13\x42indDeviceToGateway\x12/.google.cloud.iot.v1.BindDeviceToGatewayRequest\x1a\x30.google.cloud.iot.v1.BindDeviceToGatewayResponse"\xc2\x01\x82\xd3\xe4\x93\x02\x9d\x01"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\x01*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\x01*\xda\x41\x1bparent,gateway_id,device_id\x12\xd1\x02\n\x17UnbindDeviceFromGateway\x12\x33.google.cloud.iot.v1.UnbindDeviceFromGatewayRequest\x1a\x34.google.cloud.iot.v1.UnbindDeviceFromGatewayResponse"\xca\x01\x82\xd3\xe4\x93\x02\xa5\x01"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\x01*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\x01*\xda\x41\x1bparent,gateway_id,device_id\x1at\xca\x41\x17\x63loudiot.googleapis.com\xd2\x41Whttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloudiotBj\n\x17\x63om.google.cloud.iot.v1B\x12\x44\x65viceManagerProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/iot/v1;iot\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
     ],
 )
@@ -74,7 +76,9 @@ _CREATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -92,7 +96,7 @@ _CREATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -104,8 +108,8 @@ _CREATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=357,
-    serialized_end=464,
+    serialized_start=378,
+    serialized_end=533,
 )
 
 
@@ -131,7 +135,7 @@ _GETDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         )
     ],
@@ -143,8 +147,8 @@ _GETDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=466,
-    serialized_end=506,
+    serialized_start=535,
+    serialized_end=617,
 )
 
 
@@ -170,7 +174,7 @@ _DELETEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         )
     ],
@@ -182,8 +186,8 @@ _DELETEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=508,
-    serialized_end=551,
+    serialized_start=619,
+    serialized_end=704,
 )
 
 
@@ -209,7 +213,7 @@ _UPDATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -227,7 +231,7 @@ _UPDATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -239,8 +243,8 @@ _UPDATEDEVICEREGISTRYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=554,
-    serialized_end=694,
+    serialized_start=707,
+    serialized_end=857,
 )
 
 
@@ -266,7 +270,9 @@ _LISTDEVICEREGISTRIESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!locations.googleapis.com/Location"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -314,8 +320,8 @@ _LISTDEVICEREGISTRIESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=696,
-    serialized_end=780,
+    serialized_start=859,
+    serialized_end=986,
 )
 
 
@@ -371,8 +377,8 @@ _LISTDEVICEREGISTRIESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=782,
-    serialized_end=901,
+    serialized_start=988,
+    serialized_end=1107,
 )
 
 
@@ -398,7 +404,7 @@ _CREATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -416,7 +422,7 @@ _CREATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -428,8 +434,8 @@ _CREATEDEVICEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=903,
-    serialized_end=985,
+    serialized_start=1110,
+    serialized_end=1239,
 )
 
 
@@ -455,7 +461,9 @@ _GETDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -485,8 +493,8 @@ _GETDEVICEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=987,
-    serialized_end=1067,
+    serialized_start=1241,
+    serialized_end=1361,
 )
 
 
@@ -512,7 +520,7 @@ _UPDATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -530,7 +538,7 @@ _UPDATEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -542,8 +550,8 @@ _UPDATEDEVICEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1069,
-    serialized_end=1184,
+    serialized_start=1363,
+    serialized_end=1488,
 )
 
 
@@ -569,7 +577,9 @@ _DELETEDEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -581,8 +591,8 @@ _DELETEDEVICEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1186,
-    serialized_end=1221,
+    serialized_start=1490,
+    serialized_end=1565,
 )
 
 
@@ -608,7 +618,7 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -728,8 +738,8 @@ _LISTDEVICESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1224,
-    serialized_end=1462,
+    serialized_start=1568,
+    serialized_end=1848,
 )
 
 
@@ -811,8 +821,8 @@ _GATEWAYLISTOPTIONS = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1465,
-    serialized_end=1622,
+    serialized_start=1851,
+    serialized_end=2008,
 )
 
 
@@ -868,8 +878,8 @@ _LISTDEVICESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1624,
-    serialized_end=1716,
+    serialized_start=2010,
+    serialized_end=2102,
 )
 
 
@@ -895,7 +905,9 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -931,7 +943,7 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -943,8 +955,8 @@ _MODIFYCLOUDTODEVICECONFIGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1718,
-    serialized_end=1814,
+    serialized_start=2105,
+    serialized_end=2246,
 )
 
 
@@ -970,7 +982,9 @@ _LISTDEVICECONFIGVERSIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1000,8 +1014,8 @@ _LISTDEVICECONFIGVERSIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1816,
-    serialized_end=1885,
+    serialized_start=2248,
+    serialized_end=2357,
 )
 
 
@@ -1039,8 +1053,8 @@ _LISTDEVICECONFIGVERSIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1887,
-    serialized_end=1980,
+    serialized_start=2359,
+    serialized_end=2452,
 )
 
 
@@ -1066,7 +1080,9 @@ _LISTDEVICESTATESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1096,8 +1112,8 @@ _LISTDEVICESTATESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1982,
-    serialized_end=2041,
+    serialized_start=2454,
+    serialized_end=2553,
 )
 
 
@@ -1135,8 +1151,8 @@ _LISTDEVICESTATESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2043,
-    serialized_end=2126,
+    serialized_start=2555,
+    serialized_end=2638,
 )
 
 
@@ -1162,7 +1178,9 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036cloudiot.googleapis.com/Device"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1180,7 +1198,7 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1210,8 +1228,8 @@ _SENDCOMMANDTODEVICEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2128,
-    serialized_end=2210,
+    serialized_start=2640,
+    serialized_end=2767,
 )
 
 
@@ -1230,8 +1248,8 @@ _SENDCOMMANDTODEVICERESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2212,
-    serialized_end=2241,
+    serialized_start=2769,
+    serialized_end=2798,
 )
 
 
@@ -1257,7 +1275,7 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1275,7 +1293,7 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1293,7 +1311,7 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1305,8 +1323,8 @@ _BINDDEVICETOGATEWAYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2243,
-    serialized_end=2326,
+    serialized_start=2801,
+    serialized_end=2936,
 )
 
 
@@ -1325,8 +1343,8 @@ _BINDDEVICETOGATEWAYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2328,
-    serialized_end=2357,
+    serialized_start=2938,
+    serialized_end=2967,
 )
 
 
@@ -1352,7 +1370,7 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b('\340A\002\372A"\n cloudiot.googleapis.com/Registry'),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1370,7 +1388,7 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1388,7 +1406,7 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1400,8 +1418,8 @@ _UNBINDDEVICEFROMGATEWAYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2359,
-    serialized_end=2446,
+    serialized_start=2970,
+    serialized_end=3109,
 )
 
 
@@ -1420,8 +1438,8 @@ _UNBINDDEVICEFROMGATEWAYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2448,
-    serialized_end=2481,
+    serialized_start=3111,
+    serialized_end=3144,
 )
 
 _CREATEDEVICEREGISTRYREQUEST.fields_by_name[
@@ -1555,13 +1573,13 @@ CreateDeviceRegistryRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project and cloud region where this device registry must
-          be created. For example, ``projects/example-
+          Required. The project and cloud region where this device
+          registry must be created. For example, ``projects/example-
           project/locations/us-central1``.
       device_registry:
-          The device registry. The field ``name`` must be empty. The
-          server will generate that field from the device registry
-          ``id`` provided and the ``parent`` field.
+          Required. The device registry. The field ``name`` must be
+          empty. The server will generate that field from the device
+          registry ``id`` provided and the ``parent`` field.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.CreateDeviceRegistryRequest)
     ),
@@ -1579,7 +1597,7 @@ GetDeviceRegistryRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device registry. For example,
+          Required. The name of the device registry. For example,
           ``projects/example-project/locations/us-
           central1/registries/my-registry``.
   """,
@@ -1599,7 +1617,7 @@ DeleteDeviceRegistryRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device registry. For example,
+          Required. The name of the device registry. For example,
           ``projects/example-project/locations/us-
           central1/registries/my-registry``.
   """,
@@ -1619,17 +1637,17 @@ UpdateDeviceRegistryRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       device_registry:
-          The new values for the device registry. The ``id`` field must
-          be empty, and the ``name`` field must indicate the path of the
-          resource. For example, ``projects/example-
+          Required. The new values for the device registry. The ``id``
+          field must be empty, and the ``name`` field must indicate the
+          path of the resource. For example, ``projects/example-
           project/locations/us-central1/registries/my-registry``.
       update_mask:
-          Only updates the ``device_registry`` fields indicated by this
-          mask. The field mask must not be empty, and it must not
-          contain fields that are immutable or only set by the server.
-          Mutable top-level fields: ``event_notification_config``,
-          ``http_config``, ``mqtt_config``, and
-          ``state_notification_config``.
+          Required. Only updates the ``device_registry`` fields
+          indicated by this mask. The field mask must not be empty, and
+          it must not contain fields that are immutable or only set by
+          the server. Mutable top-level fields:
+          ``event_notification_config``, ``http_config``,
+          ``mqtt_config``, and ``state_notification_config``.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UpdateDeviceRegistryRequest)
     ),
@@ -1647,7 +1665,7 @@ ListDeviceRegistriesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The project and cloud region path. For example,
+          Required. The project and cloud region path. For example,
           ``projects/example-project/locations/us-central1``.
       page_size:
           The maximum number of registries to return in the response. If
@@ -1699,13 +1717,13 @@ CreateDeviceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The name of the device registry where this device should be
-          created. For example, ``projects/example-project/locations/us-
-          central1/registries/my-registry``.
+          Required. The name of the device registry where this device
+          should be created. For example, ``projects/example-
+          project/locations/us-central1/registries/my-registry``.
       device:
-          The device registration details. The field ``name`` must be
-          empty. The server generates ``name`` from the device registry
-          ``id`` and the ``parent`` field.
+          Required. The device registration details. The field ``name``
+          must be empty. The server generates ``name`` from the device
+          registry ``id`` and the ``parent`` field.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.CreateDeviceRequest)
     ),
@@ -1723,7 +1741,7 @@ GetDeviceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
@@ -1749,17 +1767,19 @@ UpdateDeviceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       device:
-          The new values for the device. The ``id`` and ``num_id``
-          fields must be empty, and the field ``name`` must specify the
-          name path. For example, ``projects/p0/locations/us-
+          Required. The new values for the device. The ``id`` and
+          ``num_id`` fields must be empty, and the field ``name`` must
+          specify the name path. For example,
+          ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0``\ or
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/{num_id}``.
       update_mask:
-          Only updates the ``device`` fields indicated by this mask. The
-          field mask must not be empty, and it must not contain fields
-          that are immutable or only set by the server. Mutable top-
-          level fields: ``credentials``, ``blocked``, and ``metadata``
+          Required. Only updates the ``device`` fields indicated by this
+          mask. The field mask must not be empty, and it must not
+          contain fields that are immutable or only set by the server.
+          Mutable top-level fields: ``credentials``, ``blocked``, and
+          ``metadata``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UpdateDeviceRequest)
     ),
@@ -1777,7 +1797,7 @@ DeleteDeviceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
@@ -1799,7 +1819,7 @@ ListDevicesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The device registry path. Required. For example,
+          Required. The device registry path. Required. For example,
           ``projects/my-project/locations/us-central1/registries/my-
           registry``.
       device_num_ids:
@@ -1838,7 +1858,8 @@ GatewayListOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GATEWAYLISTOPTIONS,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
-        __doc__="""Options for limiting the list based on gateway type and associations.
+        __doc__="""Options for limiting the list based on gateway type and
+  associations.
   
   
   Attributes:
@@ -1901,7 +1922,7 @@ ModifyCloudToDeviceConfigRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
@@ -1914,7 +1935,7 @@ ModifyCloudToDeviceConfigRequest = _reflection.GeneratedProtocolMessageType(
           version number. This is used to support multiple simultaneous
           updates without losing data.
       binary_data:
-          The configuration data for the device.
+          Required. The configuration data for the device.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.ModifyCloudToDeviceConfigRequest)
     ),
@@ -1932,7 +1953,7 @@ ListDeviceConfigVersionsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
@@ -1979,7 +2000,7 @@ ListDeviceStatesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
@@ -2026,13 +2047,13 @@ SendCommandToDeviceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The name of the device. For example,
+          Required. The name of the device. For example,
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/device0`` or
           ``projects/p0/locations/us-
           central1/registries/registry0/devices/{num_id}``.
       binary_data:
-          The command data to send to the device.
+          Required. The command data to send to the device.
       subfolder:
           Optional subfolder for the command. If empty, the command will
           be delivered to the /devices/{device-id}/commands topic,
@@ -2054,6 +2075,7 @@ SendCommandToDeviceResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SENDCOMMANDTODEVICERESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``SendCommandToDevice``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.SendCommandToDeviceResponse)
     ),
@@ -2071,15 +2093,16 @@ BindDeviceToGatewayRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The name of the registry. For example, ``projects/example-
-          project/locations/us-central1/registries/my-registry``.
+          Required. The name of the registry. For example,
+          ``projects/example-project/locations/us-
+          central1/registries/my-registry``.
       gateway_id:
-          The value of ``gateway_id`` can be either the device numeric
-          ID or the user-defined device identifier.
+          Required. The value of ``gateway_id`` can be either the device
+          numeric ID or the user-defined device identifier.
       device_id:
-          The device to associate with the specified gateway. The value
-          of ``device_id`` can be either the device numeric ID or the
-          user-defined device identifier.
+          Required. The device to associate with the specified gateway.
+          The value of ``device_id`` can be either the device numeric ID
+          or the user-defined device identifier.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.BindDeviceToGatewayRequest)
     ),
@@ -2093,6 +2116,7 @@ BindDeviceToGatewayResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BINDDEVICETOGATEWAYRESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``BindDeviceToGateway``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.BindDeviceToGatewayResponse)
     ),
@@ -2110,15 +2134,16 @@ UnbindDeviceFromGatewayRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          The name of the registry. For example, ``projects/example-
-          project/locations/us-central1/registries/my-registry``.
+          Required. The name of the registry. For example,
+          ``projects/example-project/locations/us-
+          central1/registries/my-registry``.
       gateway_id:
-          The value of ``gateway_id`` can be either the device numeric
-          ID or the user-defined device identifier.
+          Required. The value of ``gateway_id`` can be either the device
+          numeric ID or the user-defined device identifier.
       device_id:
-          The device to disassociate from the specified gateway. The
-          value of ``device_id`` can be either the device numeric ID or
-          the user-defined device identifier.
+          Required. The device to disassociate from the specified
+          gateway. The value of ``device_id`` can be either the device
+          numeric ID or the user-defined device identifier.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UnbindDeviceFromGatewayRequest)
     ),
@@ -2132,6 +2157,7 @@ UnbindDeviceFromGatewayResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UNBINDDEVICEFROMGATEWAYRESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``UnbindDeviceFromGateway``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UnbindDeviceFromGatewayResponse)
     ),
@@ -2140,15 +2166,43 @@ _sym_db.RegisterMessage(UnbindDeviceFromGatewayResponse)
 
 
 DESCRIPTOR._options = None
+_CREATEDEVICEREGISTRYREQUEST.fields_by_name["parent"]._options = None
+_CREATEDEVICEREGISTRYREQUEST.fields_by_name["device_registry"]._options = None
+_GETDEVICEREGISTRYREQUEST.fields_by_name["name"]._options = None
+_DELETEDEVICEREGISTRYREQUEST.fields_by_name["name"]._options = None
+_UPDATEDEVICEREGISTRYREQUEST.fields_by_name["device_registry"]._options = None
+_UPDATEDEVICEREGISTRYREQUEST.fields_by_name["update_mask"]._options = None
+_LISTDEVICEREGISTRIESREQUEST.fields_by_name["parent"]._options = None
+_CREATEDEVICEREQUEST.fields_by_name["parent"]._options = None
+_CREATEDEVICEREQUEST.fields_by_name["device"]._options = None
+_GETDEVICEREQUEST.fields_by_name["name"]._options = None
+_UPDATEDEVICEREQUEST.fields_by_name["device"]._options = None
+_UPDATEDEVICEREQUEST.fields_by_name["update_mask"]._options = None
+_DELETEDEVICEREQUEST.fields_by_name["name"]._options = None
+_LISTDEVICESREQUEST.fields_by_name["parent"]._options = None
+_MODIFYCLOUDTODEVICECONFIGREQUEST.fields_by_name["name"]._options = None
+_MODIFYCLOUDTODEVICECONFIGREQUEST.fields_by_name["binary_data"]._options = None
+_LISTDEVICECONFIGVERSIONSREQUEST.fields_by_name["name"]._options = None
+_LISTDEVICESTATESREQUEST.fields_by_name["name"]._options = None
+_SENDCOMMANDTODEVICEREQUEST.fields_by_name["name"]._options = None
+_SENDCOMMANDTODEVICEREQUEST.fields_by_name["binary_data"]._options = None
+_BINDDEVICETOGATEWAYREQUEST.fields_by_name["parent"]._options = None
+_BINDDEVICETOGATEWAYREQUEST.fields_by_name["gateway_id"]._options = None
+_BINDDEVICETOGATEWAYREQUEST.fields_by_name["device_id"]._options = None
+_UNBINDDEVICEFROMGATEWAYREQUEST.fields_by_name["parent"]._options = None
+_UNBINDDEVICEFROMGATEWAYREQUEST.fields_by_name["gateway_id"]._options = None
+_UNBINDDEVICEFROMGATEWAYREQUEST.fields_by_name["device_id"]._options = None
 
 _DEVICEMANAGER = _descriptor.ServiceDescriptor(
     name="DeviceManager",
     full_name="google.cloud.iot.v1.DeviceManager",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2484,
-    serialized_end=6937,
+    serialized_options=_b(
+        "\312A\027cloudiot.googleapis.com\322AWhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloudiot"
+    ),
+    serialized_start=3147,
+    serialized_end=8049,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateDeviceRegistry",
@@ -2158,7 +2212,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_CREATEDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
             serialized_options=_b(
-                '\202\323\344\223\002A"./v1/{parent=projects/*/locations/*}/registries:\017device_registry'
+                '\202\323\344\223\002A"./v1/{parent=projects/*/locations/*}/registries:\017device_registry\332A\026parent,device_registry'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2169,7 +2223,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_GETDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
             serialized_options=_b(
-                "\202\323\344\223\0020\022./v1/{name=projects/*/locations/*/registries/*}"
+                "\202\323\344\223\0020\022./v1/{name=projects/*/locations/*/registries/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2180,7 +2234,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_UPDATEDEVICEREGISTRYREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICEREGISTRY,
             serialized_options=_b(
-                "\202\323\344\223\002Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\017device_registry"
+                "\202\323\344\223\002Q2>/v1/{device_registry.name=projects/*/locations/*/registries/*}:\017device_registry\332A\033device_registry,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2191,7 +2245,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_DELETEDEVICEREGISTRYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\0020*./v1/{name=projects/*/locations/*/registries/*}"
+                "\202\323\344\223\0020*./v1/{name=projects/*/locations/*/registries/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2202,7 +2256,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTDEVICEREGISTRIESREQUEST,
             output_type=_LISTDEVICEREGISTRIESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0020\022./v1/{parent=projects/*/locations/*}/registries"
+                "\202\323\344\223\0020\022./v1/{parent=projects/*/locations/*}/registries\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2213,7 +2267,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_CREATEDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
             serialized_options=_b(
-                '\202\323\344\223\002B"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\006device'
+                '\202\323\344\223\002B"8/v1/{parent=projects/*/locations/*/registries/*}/devices:\006device\332A\rparent,device'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2224,7 +2278,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_GETDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
             serialized_options=_b(
-                "\202\323\344\223\002\177\0228/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\022A/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}"
+                "\202\323\344\223\002\177\0228/v1/{name=projects/*/locations/*/registries/*/devices/*}ZC\022A/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2235,7 +2289,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_UPDATEDEVICEREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICE,
             serialized_options=_b(
-                "\202\323\344\223\002\235\0012?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\006deviceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\006device"
+                "\202\323\344\223\002\235\0012?/v1/{device.name=projects/*/locations/*/registries/*/devices/*}:\006deviceZR2H/v1/{device.name=projects/*/locations/*/registries/*/groups/*/devices/*}:\006device\332A\022device,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2246,7 +2300,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_DELETEDEVICEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}"
+                "\202\323\344\223\002:*8/v1/{name=projects/*/locations/*/registries/*/devices/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2257,7 +2311,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTDEVICESREQUEST,
             output_type=_LISTDEVICESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\177\0228/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\022A/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices"
+                "\202\323\344\223\002\177\0228/v1/{parent=projects/*/locations/*/registries/*}/devicesZC\022A/v1/{parent=projects/*/locations/*/registries/*/groups/*}/devices\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2268,7 +2322,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_MODIFYCLOUDTODEVICECONFIGREQUEST,
             output_type=google_dot_cloud_dot_iot__v1_dot_proto_dot_resources__pb2._DEVICECONFIG,
             serialized_options=_b(
-                '\202\323\344\223\002\271\001"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\001*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\001*'
+                '\202\323\344\223\002\271\001"R/v1/{name=projects/*/locations/*/registries/*/devices/*}:modifyCloudToDeviceConfig:\001*Z`"[/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:modifyCloudToDeviceConfig:\001*\332A\020name,binary_data'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2279,7 +2333,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTDEVICECONFIGVERSIONSREQUEST,
             output_type=_LISTDEVICECONFIGVERSIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\235\001\022G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\022P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions"
+                "\202\323\344\223\002\235\001\022G/v1/{name=projects/*/locations/*/registries/*/devices/*}/configVersionsZR\022P/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/configVersions\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2290,7 +2344,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTDEVICESTATESREQUEST,
             output_type=_LISTDEVICESTATESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\215\001\022?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\022H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states"
+                "\202\323\344\223\002\215\001\022?/v1/{name=projects/*/locations/*/registries/*/devices/*}/statesZJ\022H/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}/states\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2301,7 +2355,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\001*'
+                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:setIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:setIamPolicy:\001*\332A\017resource,policy'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2312,7 +2366,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\001*'
+                '\202\323\344\223\002\223\001"?/v1/{resource=projects/*/locations/*/registries/*}:getIamPolicy:\001*ZM"H/v1/{resource=projects/*/locations/*/registries/*/groups/*}:getIamPolicy:\001*\332A\010resource'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2323,7 +2377,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\237\001"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\001*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\001*'
+                '\202\323\344\223\002\237\001"E/v1/{resource=projects/*/locations/*/registries/*}:testIamPermissions:\001*ZS"N/v1/{resource=projects/*/locations/*/registries/*/groups/*}:testIamPermissions:\001*\332A\024resource,permissions'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2334,7 +2388,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_SENDCOMMANDTODEVICEREQUEST,
             output_type=_SENDCOMMANDTODEVICERESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\255\001"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\001*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\001*'
+                '\202\323\344\223\002\255\001"L/v1/{name=projects/*/locations/*/registries/*/devices/*}:sendCommandToDevice:\001*ZZ"U/v1/{name=projects/*/locations/*/registries/*/groups/*/devices/*}:sendCommandToDevice:\001*\332A\020name,binary_data\332A\032name,binary_data,subfolder'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2345,7 +2399,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_BINDDEVICETOGATEWAYREQUEST,
             output_type=_BINDDEVICETOGATEWAYRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\235\001"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\001*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\001*'
+                '\202\323\344\223\002\235\001"D/v1/{parent=projects/*/locations/*/registries/*}:bindDeviceToGateway:\001*ZR"M/v1/{parent=projects/*/locations/*/registries/*/groups/*}:bindDeviceToGateway:\001*\332A\033parent,gateway_id,device_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2356,7 +2410,7 @@ _DEVICEMANAGER = _descriptor.ServiceDescriptor(
             input_type=_UNBINDDEVICEFROMGATEWAYREQUEST,
             output_type=_UNBINDDEVICEFROMGATEWAYRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\245\001"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\001*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\001*'
+                '\202\323\344\223\002\245\001"H/v1/{parent=projects/*/locations/*/registries/*}:unbindDeviceFromGateway:\001*ZV"Q/v1/{parent=projects/*/locations/*/registries/*/groups/*}:unbindDeviceFromGateway:\001*\332A\033parent,gateway_id,device_id'
             ),
         ),
     ],

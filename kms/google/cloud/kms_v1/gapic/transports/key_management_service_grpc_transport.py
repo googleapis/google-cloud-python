@@ -458,6 +458,9 @@ class KeyManagementServiceGrpcTransport(object):
         Sets the access control policy on the specified resource. Replaces
         any existing policy.
 
+        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
+        PERMISSION_DENIED
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a

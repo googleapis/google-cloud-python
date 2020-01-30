@@ -13,32 +13,32 @@ config = {
                     "initial_rpc_timeout_millis": 20000,
                     "rpc_timeout_multiplier": 1.0,
                     "max_rpc_timeout_millis": 20000,
-                    "total_timeout_millis": 600000,
+                    "total_timeout_millis": 300000,
                 }
             },
             "methods": {
                 "CreateTenant": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetTenant": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateTenant": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteTenant": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListTenants": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

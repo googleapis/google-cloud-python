@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## 1.3.1
+
+12-06-2019 13:05 PST
+
+### Implementation Changes
+- Increase timeout values in client config (via synth). ([#9922](https://github.com/googleapis/google-cloud-python/pull/9922))
+
 ## 1.3.0
 
 11-21-2019 14:03 PST

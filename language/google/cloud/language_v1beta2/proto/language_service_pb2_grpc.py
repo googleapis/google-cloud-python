@@ -80,7 +80,7 @@ class LanguageServiceServicer(object):
 
     def AnalyzeSyntax(self, request, context):
         """Analyzes the syntax of the text and provides sentence boundaries and
-    tokenization along with part of speech tags, dependency trees, and other
+    tokenization along with part-of-speech tags, dependency trees, and other
     properties.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)

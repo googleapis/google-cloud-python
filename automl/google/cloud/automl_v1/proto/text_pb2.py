@@ -288,6 +288,7 @@ TextExtractionDatasetMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTEXTRACTIONDATASETMETADATA,
         __module__="google.cloud.automl_v1.proto.text_pb2",
         __doc__="""Dataset metadata that is specific to text extraction
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1.TextExtractionDatasetMetadata)
     ),
@@ -301,6 +302,7 @@ TextExtractionModelMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTEXTRACTIONMODELMETADATA,
         __module__="google.cloud.automl_v1.proto.text_pb2",
         __doc__="""Model metadata that is specific to text extraction.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1.TextExtractionModelMetadata)
     ),
@@ -338,6 +340,7 @@ TextSentimentModelMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTSENTIMENTMODELMETADATA,
         __module__="google.cloud.automl_v1.proto.text_pb2",
         __doc__="""Model metadata that is specific to text sentiment.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1.TextSentimentModelMetadata)
     ),
