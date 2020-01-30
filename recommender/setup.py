@@ -21,8 +21,8 @@ import setuptools
 
 name = "google-cloud-recommender"
 description = "Cloud Recommender API client library"
-version = "0.1.0"
-release_status = "Development Status :: 3 - Alpha"
+version = "0.2.0"
+release_status = "Development Status :: 4 - Beta"
 dependencies = ["google-api-core[grpc] >= 1.14.0, < 2.0.0dev"]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

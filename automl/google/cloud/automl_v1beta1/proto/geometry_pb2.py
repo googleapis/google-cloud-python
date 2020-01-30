@@ -156,9 +156,9 @@ BoundingPoly = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BOUNDINGPOLY,
         __module__="google.cloud.automl_v1beta1.proto.geometry_pb2",
-        __doc__="""A bounding polygon of a detected object on a plane. On output both
-  vertices and normalized\_vertices are provided. The polygon is formed by
-  connecting vertices in the order they are listed.
+        __doc__="""A bounding polygon of a detected object on a plane. On
+  output both vertices and normalized\_vertices are provided. The polygon
+  is formed by connecting vertices in the order they are listed.
   
   
   Attributes:

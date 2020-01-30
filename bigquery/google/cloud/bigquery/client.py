@@ -208,7 +208,9 @@ class Client(ClientWithProject):
         self._http._auth_request.session.close()
         self._http.close()
 
-    def get_service_account_email(self, project=None, timeout=None):
+    def get_service_account_email(
+        self, project=None, retry=DEFAULT_RETRY, timeout=None
+    ):
         """Get the email address of the project's BigQuery service account
 
         Note:
@@ -219,8 +221,10 @@ class Client(ClientWithProject):
             project (str, optional):
                 Project ID to use for retreiving service account email.
                 Defaults to the client's project.
+            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
             timeout (Optional[float]):
-                The number of seconds to wait for the API response.
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
 
         Returns:
             str: service account email address
@@ -237,10 +241,7 @@ class Client(ClientWithProject):
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
 
-        # TODO: call thorugh self._call_api() and allow passing in a retry?
-        api_response = self._connection.api_request(
-            method="GET", path=path, timeout=timeout
-        )
+        api_response = self._call_api(retry, method="GET", path=path, timeout=timeout)
         return api_response["email"]
 
     def list_projects(
@@ -353,7 +354,20 @@ class Client(ClientWithProject):
         )
 
     def dataset(self, dataset_id, project=None):
-        """Construct a reference to a dataset.
+        """Deprecated: Construct a reference to a dataset.
+
+        .. deprecated:: 1.24.0
+           Construct a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` using its
+           constructor or use a string where previously a reference object
+           was used.
+
+           As of ``google-cloud-bigquery`` version 1.7.0, all client methods
+           that take a
+           :class:`~google.cloud.bigquery.dataset.DatasetReference` or
+           :class:`~google.cloud.bigquery.table.TableReference` also take a
+           string in standard SQL format, e.g. ``project.dataset_id`` or
+           ``project.dataset_id.table_id``.
 
         Args:
             dataset_id (str): ID of the dataset.
@@ -369,6 +383,13 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
 
+        warnings.warn(
+            "Client.dataset is deprecated and will be removed in a future version. "
+            "Use a string like 'my_project.my_dataset' or a "
+            "cloud.google.bigquery.DatasetReference object, instead.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         return DatasetReference(project, dataset_id)
 
     def _create_bqstorage_client(self):
@@ -418,7 +439,7 @@ class Client(ClientWithProject):
 
             >>> from google.cloud import bigquery
             >>> client = bigquery.Client()
-            >>> dataset = bigquery.Dataset(client.dataset('my_dataset'))
+            >>> dataset = bigquery.Dataset('my_project.my_dataset')
             >>> dataset = client.create_dataset(dataset)
 
         """
@@ -1219,7 +1240,7 @@ class Client(ClientWithProject):
                 raise
 
     def _get_query_results(
-        self, job_id, retry, project=None, timeout_ms=None, location=None, timeout=None,
+        self, job_id, retry, project=None, timeout_ms=None, location=None, timeout=None
     ):
         """Get the query results object for a query job.
 
@@ -2354,7 +2375,7 @@ class Client(ClientWithProject):
                 str, \
             ]):
                 The destination table for the row data, or a reference to it.
-            rows (Union[Sequence[Tuple], Sequence[dict]]):
+            rows (Union[Sequence[Tuple], Sequence[Dict]]):
                 Row data to be inserted. If a list of tuples is given, each
                 tuple should contain data for each schema field on the
                 current table and in the same order as the schema fields. If
@@ -2375,8 +2396,11 @@ class Client(ClientWithProject):
                 the mappings describing one or more problems with the row.
 
         Raises:
-            ValueError: if table's schema is not set
+            ValueError: if table's schema is not set or `rows` is not a `Sequence`.
         """
+        if not isinstance(rows, (collections_abc.Sequence, collections_abc.Iterator)):
+            raise TypeError("rows argument should be a sequence of dicts or tuples")
+
         table = _table_arg_to_table(table, default_project=self.project)
 
         if not isinstance(table, Table):
@@ -2504,7 +2528,14 @@ class Client(ClientWithProject):
                 One mapping per row with insert errors: the "index" key
                 identifies the row, and the "errors" key contains a list of
                 the mappings describing one or more problems with the row.
+
+        Raises:
+            TypeError: if `json_rows` is not a `Sequence`.
         """
+        if not isinstance(
+            json_rows, (collections_abc.Sequence, collections_abc.Iterator)
+        ):
+            raise TypeError("json_rows argument should be a sequence of dicts")
         # Convert table to just a reference because unlike insert_rows,
         # insert_rows_json doesn't need the table schema. It's not doing any
         # type conversions.
@@ -2573,7 +2604,7 @@ class Client(ClientWithProject):
         ) as guard:
             meta_table = self.get_table(
                 TableReference(
-                    self.dataset(table.dataset_id, project=table.project),
+                    DatasetReference(table.project, table.dataset_id),
                     "%s$__PARTITIONS_SUMMARY__" % table.table_id,
                 ),
                 retry=retry,

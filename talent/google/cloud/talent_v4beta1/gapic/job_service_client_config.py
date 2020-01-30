@@ -18,52 +18,52 @@ config = {
             },
             "methods": {
                 "CreateJob": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetJob": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateJob": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteJob": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListJobs": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "BatchDeleteJobs": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "SearchJobs": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "SearchJobsForAlert": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "BatchCreateJobs": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "BatchUpdateJobs": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },

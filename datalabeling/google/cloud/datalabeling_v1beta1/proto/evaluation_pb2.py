@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.datalabeling_v1beta1.proto import (
     annotation_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__pb2,
 )
@@ -33,10 +34,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\n8google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/annotation.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x89\x03\n\nEvaluation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x43\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.EvaluationConfig\x12;\n\x17\x65valuation_job_run_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12P\n\x12\x65valuation_metrics\x18\x05 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.EvaluationMetrics\x12J\n\x0f\x61nnotation_type\x18\x06 \x01(\x0e\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationType\x12\x1c\n\x14\x65valuated_item_count\x18\x07 \x01(\x03"\x91\x01\n\x10\x45valuationConfig\x12j\n\x1f\x62ounding_box_evaluation_options\x18\x01 \x01(\x0b\x32?.google.cloud.datalabeling.v1beta1.BoundingBoxEvaluationOptionsH\x00\x42\x11\n\x0fvertical_option"5\n\x1c\x42oundingBoxEvaluationOptions\x12\x15\n\riou_threshold\x18\x01 \x01(\x02"\xd9\x01\n\x11\x45valuationMetrics\x12Z\n\x16\x63lassification_metrics\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ClassificationMetricsH\x00\x12]\n\x18object_detection_metrics\x18\x02 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.ObjectDetectionMetricsH\x00\x42\t\n\x07metrics"\xa3\x01\n\x15\x43lassificationMetrics\x12<\n\x08pr_curve\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.PrCurve\x12L\n\x10\x63onfusion_matrix\x18\x02 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.ConfusionMatrix"V\n\x16ObjectDetectionMetrics\x12<\n\x08pr_curve\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.PrCurve"\xe6\x03\n\x07PrCurve\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x18\n\x10\x61rea_under_curve\x18\x02 \x01(\x02\x12\x65\n\x1a\x63onfidence_metrics_entries\x18\x03 \x03(\x0b\x32\x41.google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry\x12\x1e\n\x16mean_average_precision\x18\x04 \x01(\x02\x1a\xed\x01\n\x16\x43onfidenceMetricsEntry\x12\x1c\n\x14\x63onfidence_threshold\x18\x01 \x01(\x02\x12\x0e\n\x06recall\x18\x02 \x01(\x02\x12\x11\n\tprecision\x18\x03 \x01(\x02\x12\x10\n\x08\x66\x31_score\x18\x04 \x01(\x02\x12\x12\n\nrecall_at1\x18\x05 \x01(\x02\x12\x15\n\rprecision_at1\x18\x06 \x01(\x02\x12\x14\n\x0c\x66\x31_score_at1\x18\x07 \x01(\x02\x12\x12\n\nrecall_at5\x18\x08 \x01(\x02\x12\x15\n\rprecision_at5\x18\t \x01(\x02\x12\x14\n\x0c\x66\x31_score_at5\x18\n \x01(\x02"\xfc\x02\n\x0f\x43onfusionMatrix\x12\x43\n\x03row\x18\x01 \x03(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.ConfusionMatrix.Row\x1av\n\x14\x43onfusionMatrixEntry\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x12\n\nitem_count\x18\x02 \x01(\x05\x1a\xab\x01\n\x03Row\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12X\n\x07\x65ntries\x18\x02 \x03(\x0b\x32G.google.cloud.datalabeling.v1beta1.ConfusionMatrix.ConfusionMatrixEntryBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\n8google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/annotation.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf6\x03\n\nEvaluation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x43\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.EvaluationConfig\x12;\n\x17\x65valuation_job_run_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12P\n\x12\x65valuation_metrics\x18\x05 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.EvaluationMetrics\x12J\n\x0f\x61nnotation_type\x18\x06 \x01(\x0e\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationType\x12\x1c\n\x14\x65valuated_item_count\x18\x07 \x01(\x03:k\xea\x41h\n&datalabeling.googleapis.com/Evaluation\x12>projects/{project}/datasets/{dataset}/evaluations/{evaluation}"\x91\x01\n\x10\x45valuationConfig\x12j\n\x1f\x62ounding_box_evaluation_options\x18\x01 \x01(\x0b\x32?.google.cloud.datalabeling.v1beta1.BoundingBoxEvaluationOptionsH\x00\x42\x11\n\x0fvertical_option"5\n\x1c\x42oundingBoxEvaluationOptions\x12\x15\n\riou_threshold\x18\x01 \x01(\x02"\xd9\x01\n\x11\x45valuationMetrics\x12Z\n\x16\x63lassification_metrics\x18\x01 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ClassificationMetricsH\x00\x12]\n\x18object_detection_metrics\x18\x02 \x01(\x0b\x32\x39.google.cloud.datalabeling.v1beta1.ObjectDetectionMetricsH\x00\x42\t\n\x07metrics"\xa3\x01\n\x15\x43lassificationMetrics\x12<\n\x08pr_curve\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.PrCurve\x12L\n\x10\x63onfusion_matrix\x18\x02 \x01(\x0b\x32\x32.google.cloud.datalabeling.v1beta1.ConfusionMatrix"V\n\x16ObjectDetectionMetrics\x12<\n\x08pr_curve\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.PrCurve"\xe6\x03\n\x07PrCurve\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x18\n\x10\x61rea_under_curve\x18\x02 \x01(\x02\x12\x65\n\x1a\x63onfidence_metrics_entries\x18\x03 \x03(\x0b\x32\x41.google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry\x12\x1e\n\x16mean_average_precision\x18\x04 \x01(\x02\x1a\xed\x01\n\x16\x43onfidenceMetricsEntry\x12\x1c\n\x14\x63onfidence_threshold\x18\x01 \x01(\x02\x12\x0e\n\x06recall\x18\x02 \x01(\x02\x12\x11\n\tprecision\x18\x03 \x01(\x02\x12\x10\n\x08\x66\x31_score\x18\x04 \x01(\x02\x12\x12\n\nrecall_at1\x18\x05 \x01(\x02\x12\x15\n\rprecision_at1\x18\x06 \x01(\x02\x12\x14\n\x0c\x66\x31_score_at1\x18\x07 \x01(\x02\x12\x12\n\nrecall_at5\x18\x08 \x01(\x02\x12\x15\n\rprecision_at5\x18\t \x01(\x02\x12\x14\n\x0c\x66\x31_score_at5\x18\n \x01(\x02"\xfc\x02\n\x0f\x43onfusionMatrix\x12\x43\n\x03row\x18\x01 \x03(\x0b\x32\x36.google.cloud.datalabeling.v1beta1.ConfusionMatrix.Row\x1av\n\x14\x43onfusionMatrixEntry\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12\x12\n\nitem_count\x18\x02 \x01(\x05\x1a\xab\x01\n\x03Row\x12J\n\x0f\x61nnotation_spec\x18\x01 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.AnnotationSpec\x12X\n\x07\x65ntries\x18\x02 \x03(\x0b\x32G.google.cloud.datalabeling.v1beta1.ConfusionMatrix.ConfusionMatrixEntryBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -181,13 +183,15 @@ _EVALUATION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ah\n&datalabeling.googleapis.com/Evaluation\022>projects/{project}/datasets/{dataset}/evaluations/{evaluation}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=284,
-    serialized_end=677,
+    serialized_start=311,
+    serialized_end=813,
 )
 
 
@@ -233,8 +237,8 @@ _EVALUATIONCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=680,
-    serialized_end=825,
+    serialized_start=816,
+    serialized_end=961,
 )
 
 
@@ -272,8 +276,8 @@ _BOUNDINGBOXEVALUATIONOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=827,
-    serialized_end=880,
+    serialized_start=963,
+    serialized_end=1016,
 )
 
 
@@ -337,8 +341,8 @@ _EVALUATIONMETRICS = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=883,
-    serialized_end=1100,
+    serialized_start=1019,
+    serialized_end=1236,
 )
 
 
@@ -394,8 +398,8 @@ _CLASSIFICATIONMETRICS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1103,
-    serialized_end=1266,
+    serialized_start=1239,
+    serialized_end=1402,
 )
 
 
@@ -433,8 +437,8 @@ _OBJECTDETECTIONMETRICS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1268,
-    serialized_end=1354,
+    serialized_start=1404,
+    serialized_end=1490,
 )
 
 
@@ -634,8 +638,8 @@ _PRCURVE_CONFIDENCEMETRICSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1606,
-    serialized_end=1843,
+    serialized_start=1742,
+    serialized_end=1979,
 )
 
 _PRCURVE = _descriptor.Descriptor(
@@ -726,8 +730,8 @@ _PRCURVE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1357,
-    serialized_end=1843,
+    serialized_start=1493,
+    serialized_end=1979,
 )
 
 
@@ -783,8 +787,8 @@ _CONFUSIONMATRIX_CONFUSIONMATRIXENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1934,
-    serialized_end=2052,
+    serialized_start=2070,
+    serialized_end=2188,
 )
 
 _CONFUSIONMATRIX_ROW = _descriptor.Descriptor(
@@ -839,8 +843,8 @@ _CONFUSIONMATRIX_ROW = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2055,
-    serialized_end=2226,
+    serialized_start=2191,
+    serialized_end=2362,
 )
 
 _CONFUSIONMATRIX = _descriptor.Descriptor(
@@ -877,8 +881,8 @@ _CONFUSIONMATRIX = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1846,
-    serialized_end=2226,
+    serialized_start=1982,
+    serialized_end=2362,
 )
 
 _EVALUATION.fields_by_name["config"].message_type = _EVALUATIONCONFIG
@@ -969,31 +973,38 @@ Evaluation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Describes an evaluation between 2 annotated datasets. Created by an
-  evaluation plan.
+        __doc__="""Describes an evaluation between a machine learning model's
+  predictions and ground truth labels. Created when an
+  [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] runs
+  successfully.
   
   
   Attributes:
       name:
-          Resource name of an evaluation. Format: 'projects/{project\_id
-          }/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
+          Output only. Resource name of an evaluation. The name has the
+          following format:  "projects/{project\_id}/datasets/{dataset\_
+          id}/evaluations/{evaluation\_id}'
       config:
-          Options used in evaluation plan for creating the evaluation.
+          Output only. Options used in the evaluation job that created
+          this evaluation.
       evaluation_job_run_time:
-          Output only. Timestamp when the evaluation plan triggered this
-          evaluation flow.
+          Output only. Timestamp for when the evaluation job that
+          created this evaluation ran.
       create_time:
-          Output only. Timestamp when this model evaluation was created.
+          Output only. Timestamp for when this evaluation was created.
       evaluation_metrics:
-          Output only. Metrics of the evaluation.
+          Output only. Metrics comparing predictions to ground truth
+          labels.
       annotation_type:
-          Type of the annotation to compute metrics for in the
-          groundtruth and annotation labeled dataset. Required for
-          creation.
+          Output only. Type of task that the model version being
+          evaluated performs, as defined in the  [evaluationJobConfig.in
+          putConfig.annotationType][google.cloud.datalabeling.v1beta1.Ev
+          aluationJobConfig.input\_config] field of the evaluation job
+          that created this evaluation.
       evaluated_item_count:
-          Output only. Count of items in groundtruth dataset included in
-          this evaluation. Will be unset if annotation type is not
-          applicable.
+          Output only. The number of items in the ground truth dataset
+          that were used for this evaluation. Only populated when the
+          evaulation is for certain AnnotationTypes.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.Evaluation)
     ),
@@ -1006,10 +1017,18 @@ EvaluationConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""
-    Attributes:
+        __doc__="""Configuration details used for calculating evaluation
+  metrics and creating an
+  [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
+  
+  
+  Attributes:
       vertical_option:
           Vertical specific options for general metrics.
+      bounding_box_evaluation_options:
+          Only specify this field if the related model performs image
+          object detection (``IMAGE_BOUNDING_BOX_ANNOTATION``).
+          Describes how to evaluate bounding boxes.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.EvaluationConfig)
     ),
@@ -1027,8 +1046,11 @@ BoundingBoxEvaluationOptions = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       iou_threshold:
-          Minimize IoU required to consider 2 bounding boxes are
-          matched.
+          Minimum [intersection-over-union
+          (IOU)](/vision/automl/object-
+          detection/docs/evaluate#intersection-over-union) required for
+          2 bounding boxes to be considered a match. This must be a
+          number between 0 and 1.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.BoundingBoxEvaluationOptions)
     ),
@@ -1044,7 +1066,7 @@ EvaluationMetrics = _reflection.GeneratedProtocolMessageType(
         __doc__="""
     Attributes:
       metrics:
-          Common metrics covering most genernal cases.
+          Common metrics covering most general cases.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.EvaluationMetrics)
     ),
@@ -1057,10 +1079,15 @@ ClassificationMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLASSIFICATIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""
-    Attributes:
+        __doc__="""Metrics calculated for a classification model.
+  
+  
+  Attributes:
       pr_curve:
-          Precision-recall curve.
+          Precision-recall curve based on ground truth labels, predicted
+          labels, and scores for the predicted labels.
+      confusion_matrix:
+          Confusion matrix of predicted labels vs. ground truth labels.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ClassificationMetrics)
     ),
@@ -1073,8 +1100,11 @@ ObjectDetectionMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTDETECTIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""
-    Attributes:
+        __doc__="""Metrics calculated for an image object detection (bounding
+  box) model.
+  
+  
+  Attributes:
       pr_curve:
           Precision-recall curve.
   """,
@@ -1096,9 +1126,15 @@ PrCurve = _reflection.GeneratedProtocolMessageType(
                 __doc__="""
     Attributes:
         confidence_threshold:
-            Threshold used for this entry, for example, IoU threshold for
-            bounding box problem, or detection threshold for
-            classification.
+            Threshold used for this entry.  For classification tasks, this
+            is a classification threshold: a predicted label is
+            categorized as positive or negative (in the context of this
+            point on the PR curve) based on whether the label's score
+            meets this threshold.  For image object detection (bounding
+            box) tasks, this is the [intersection-over-union
+            (IOU)](/vision/automl/object-
+            detection/docs/evaluate#intersection-over-union) threshold for
+            the context of this point on the PR curve.
         recall:
             Recall value.
         precision:
@@ -1133,13 +1169,19 @@ PrCurve = _reflection.GeneratedProtocolMessageType(
         __doc__="""
     Attributes:
       annotation_spec:
-          PR curve against which annotation spec. Could be empty.
+          The annotation spec of the label for which the precision-
+          recall curve calculated. If this field is empty, that means
+          the precision-recall curve is an aggregate curve for all
+          labels.
       area_under_curve:
-          Area under precision recall curve.
+          Area under the precision-recall curve. Not to be confused with
+          area under a receiver operating characteristic (ROC) curve.
       confidence_metrics_entries:
-          entries to draw PR graph.
+          Entries that make up the precision-recall graph. Each entry is
+          a "point" on the graph drawn for a different
+          ``confidence_threshold``.
       mean_average_precision:
-          mean average prcision of this curve.
+          Mean average prcision of this curve.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.PrCurve)
     ),
@@ -1160,9 +1202,11 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
                 __doc__="""
     Attributes:
         annotation_spec:
-            The predicted annotation spec.
+            The annotation spec of a predicted label.
         item_count:
-            Number of items being predicted as this label.
+            Number of items predicted to have this label. (The ground
+            truth label for these items is the ``Row.annotationSpec`` of
+            this entry's parent.)
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ConfusionMatrix.ConfusionMatrixEntry)
             ),
@@ -1173,22 +1217,26 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_CONFUSIONMATRIX_ROW,
                 __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-                __doc__="""A row in the confusion matrix.
+                __doc__="""A row in the confusion matrix. Each entry in this row has
+    the same ground truth label.
     
     
     Attributes:
         annotation_spec:
-            the original annotation spec of this row.
+            The annotation spec of the ground truth label for this row.
         entries:
-            Info describing predicted label distribution.
+            A list of the confusion matrix entries. One entry for each
+            possible predicted label.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ConfusionMatrix.Row)
             ),
         ),
         DESCRIPTOR=_CONFUSIONMATRIX,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Confusion matrix of the model running the classification. Not applicable
-  when label filtering is specified in evaluation option.
+        __doc__="""Confusion matrix of the model running the classification. Only
+  applicable when the metrics entry aggregates multiple labels. Not
+  applicable when the entry is for a single label.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ConfusionMatrix)
     ),
@@ -1199,4 +1247,5 @@ _sym_db.RegisterMessage(ConfusionMatrix.Row)
 
 
 DESCRIPTOR._options = None
+_EVALUATION._options = None
 # @@protoc_insertion_point(module_scope)

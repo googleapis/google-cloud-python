@@ -115,8 +115,8 @@ TextSegment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEXTSEGMENT,
         __module__="google.cloud.automl_v1.proto.text_segment_pb2",
-        __doc__="""A contiguous part of a text (string), assuming it has an UTF-8 NFC
-  encoding.
+        __doc__="""A contiguous part of a text (string), assuming it has an
+  UTF-8 NFC encoding.
   
   
   Attributes:

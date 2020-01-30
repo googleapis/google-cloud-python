@@ -193,7 +193,8 @@ Schema = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SCHEMA,
         __module__="google.cloud.datacatalog_v1beta1.proto.schema_pb2",
-        __doc__="""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
+        __doc__="""Represents a schema (e.g. BigQuery, GoogleSQL, Avro
+  schema).
   
   
   Attributes:
@@ -212,8 +213,8 @@ ColumnSchema = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COLUMNSCHEMA,
         __module__="google.cloud.datacatalog_v1beta1.proto.schema_pb2",
-        __doc__="""Representation of a column within a schema. Columns could be nested
-  inside other columns.
+        __doc__="""Representation of a column within a schema. Columns could
+  be nested inside other columns.
   
   
   Attributes:

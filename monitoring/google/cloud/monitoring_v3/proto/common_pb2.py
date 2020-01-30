@@ -435,7 +435,7 @@ _TYPEDVALUE = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        ),
+        )
     ],
     serialized_start=168,
     serialized_end=338,
@@ -581,7 +581,7 @@ _AGGREGATION = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_AGGREGATION_ALIGNER, _AGGREGATION_REDUCER,],
+    enum_types=[_AGGREGATION_ALIGNER, _AGGREGATION_REDUCER],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -680,9 +680,9 @@ TimeInterval = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMEINTERVAL,
         __module__="google.cloud.monitoring_v3.proto.common_pb2",
-        __doc__="""A closed time interval. It extends from the start time to the end time,
-  and includes both: ``[startTime, endTime]``. Valid time intervals depend
-  on the
+        __doc__="""A closed time interval. It extends from the start time to
+  the end time, and includes both: ``[startTime, endTime]``. Valid time
+  intervals depend on the
   ```MetricKind`` </monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
   of the metric value. In no case can the end time be earlier than the
   start time.
@@ -723,12 +723,13 @@ Aggregation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AGGREGATION,
         __module__="google.cloud.monitoring_v3.proto.common_pb2",
-        __doc__="""Describes how to combine multiple time series to provide different views
-  of the data. Aggregation consists of an alignment step on individual
-  time series (``alignment_period`` and ``per_series_aligner``) followed
-  by an optional reduction step of the data across the aligned time series
-  (``cross_series_reducer`` and ``group_by_fields``). For more details,
-  see `Aggregation </monitoring/api/learn_more#aggregation>`__.
+        __doc__="""Describes how to combine multiple time series to provide
+  different views of the data. Aggregation consists of an alignment step
+  on individual time series (``alignment_period`` and
+  ``per_series_aligner``) followed by an optional reduction step of the
+  data across the aligned time series (``cross_series_reducer`` and
+  ``group_by_fields``). For more details, see
+  `Aggregation </monitoring/api/learn_more#aggregation>`__.
   
   
   Attributes:
@@ -789,3 +790,4 @@ _sym_db.RegisterMessage(Aggregation)
 DESCRIPTOR._options = None
 _SERVICETIER._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

@@ -542,6 +542,7 @@ class InstanceAdminClient(object):
     def get_instance(
         self,
         name,
+        field_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -561,6 +562,12 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field\_mask is present, specifies the subset of [][google.spanner.admin.instance.v1.Instance] fields
+                that should be returned. If absent, all [][google.spanner.admin.instance.v1.Instance] fields are
+                returned.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -591,7 +598,9 @@ class InstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = spanner_instance_admin_pb2.GetInstanceRequest(name=name)
+        request = spanner_instance_admin_pb2.GetInstanceRequest(
+            name=name, field_mask=field_mask
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -980,7 +989,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1065,7 +1075,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1149,7 +1160,8 @@ class InstanceAdminClient(object):
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []

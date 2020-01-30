@@ -10,8 +10,8 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class PolicyTagManagerStub(object):
-    """Policy tag manager API service allows clients to manage their taxonomies and
-  policy tags data.
+    """The policy tag manager API service allows clients to manage their taxonomies
+  and policy tags.
   """
 
     def __init__(self, channel):
@@ -88,12 +88,12 @@ class PolicyTagManagerStub(object):
 
 
 class PolicyTagManagerServicer(object):
-    """Policy tag manager API service allows clients to manage their taxonomies and
-  policy tags data.
+    """The policy tag manager API service allows clients to manage their taxonomies
+  and policy tags.
   """
 
     def CreateTaxonomy(self, request, context):
-        """Creates a new taxonomy in a given project.
+        """Creates a taxonomy in the specified project.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -101,7 +101,7 @@ class PolicyTagManagerServicer(object):
 
     def DeleteTaxonomy(self, request, context):
         """Deletes a taxonomy. This operation will also delete all
-    policy tags in this taxonomy.
+    policy tags in this taxonomy along with their associated policies.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -115,7 +115,8 @@ class PolicyTagManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListTaxonomies(self, request, context):
-        """Lists all taxonomies in a project in a particular location.
+        """Lists all taxonomies in a project in a particular location that the caller
+    has permission to view.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -129,7 +130,7 @@ class PolicyTagManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def CreatePolicyTag(self, request, context):
-        """Creates a policy tag in a taxonomy.
+        """Creates a policy tag in the specified taxonomy.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -178,7 +179,8 @@ class PolicyTagManagerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def TestIamPermissions(self, request, context):
-        """Returns permissions that a caller has on specified resources.
+        """Returns the permissions that a caller has on the specified taxonomy or
+    policy tag.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

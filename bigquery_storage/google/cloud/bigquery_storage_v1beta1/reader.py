@@ -43,6 +43,16 @@ from google.cloud.bigquery_storage_v1beta1 import types
 
 _STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
 
+# The Google API endpoint can unexpectedly close long-running HTTP/2 streams.
+# Unfortunately, this condition is surfaced to the caller as an internal error
+# by gRPC. We don't want to resume on all internal errors, so instead we look
+# for error message that we know are caused by problems that are safe to
+# reconnect.
+_STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
+    # See: https://github.com/googleapis/google-cloud-python/pull/9994
+    "RST_STREAM",
+)
+
 _FASTAVRO_REQUIRED = (
     "fastavro is required to parse ReadRowResponse messages with Avro bytes."
 )
@@ -131,6 +141,13 @@ class ReadRowsStream(object):
                     yield message
 
                 return  # Made it through the whole stream.
+            except google.api_core.exceptions.InternalServerError as exc:
+                resumable_error = any(
+                    resumable_message in exc.message
+                    for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+                )
+                if not resumable_error:
+                    raise
             except _STREAM_RESUMPTION_EXCEPTIONS:
                 # Transient error, so reconnect to the stream.
                 pass
@@ -311,6 +328,21 @@ class ReadRowsIterable(object):
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
 
+        if dtypes is None:
+            dtypes = {}
+
+        # If it's an Arrow stream, calling to_arrow, then converting to a
+        # pandas dataframe is about 2x faster. This is because pandas.concat is
+        # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
+        # usually no-copy.
+        schema_type = self._read_session.WhichOneof("schema")
+        if schema_type == "arrow_schema":
+            record_batch = self.to_arrow()
+            df = record_batch.to_pandas()
+            for column in dtypes:
+                df[column] = pandas.Series(df[column], dtype=dtypes[column])
+            return df
+
         frames = []
         for page in self.pages:
             frames.append(page.to_dataframe(dtypes=dtypes))
@@ -403,6 +435,7 @@ class ReadRowsPage(object):
         """
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
+
         return self._stream_parser.to_dataframe(self._message, dtypes=dtypes)
 
 

@@ -17,6 +17,26 @@ config = {
                 }
             },
             "methods": {
+                "DeleteArtifact": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "RequestIncidentRoleHandover": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ConfirmIncidentRoleHandover": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "ForceIncidentRoleHandover": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateIncident": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -59,7 +79,7 @@ config = {
                 },
                 "DeleteTag": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "ListTags": {
@@ -77,12 +97,12 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "GetSignal": {
+                "LookupSignal": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "LookupSignal": {
+                "GetSignal": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -112,11 +132,6 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
-                "DeleteArtifact": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "SendShiftHandoff": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -139,7 +154,7 @@ config = {
                 },
                 "DeleteSubscription": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateIncidentRoleAssignment": {
@@ -149,27 +164,12 @@ config = {
                 },
                 "DeleteIncidentRoleAssignment": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "ListIncidentRoleAssignments": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "RequestIncidentRoleHandover": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "ConfirmIncidentRoleHandover": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "ForceIncidentRoleHandover": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CancelIncidentRoleHandover": {

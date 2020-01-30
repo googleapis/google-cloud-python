@@ -831,6 +831,43 @@ class Test_AsyncJob(unittest.TestCase):
         )
         self.assertEqual(job._properties, resource)
 
+    def test_cancel_w_custom_retry(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        api_path = "/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID)
+        resource = {
+            "jobReference": {
+                "jobId": self.JOB_ID,
+                "projectId": self.PROJECT,
+                "location": None,
+            },
+            "configuration": {"test": True},
+        }
+        response = {"job": resource}
+        job = self._set_properties_job()
+
+        api_request_patcher = mock.patch.object(
+            job._client._connection, "api_request", side_effect=[ValueError, response],
+        )
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, ValueError)
+        )
+
+        with api_request_patcher as fake_api_request:
+            result = job.cancel(retry=retry, timeout=7.5)
+
+        self.assertTrue(result)
+        self.assertEqual(job._properties, resource)
+        self.assertEqual(
+            fake_api_request.call_args_list,
+            [
+                mock.call(method="POST", path=api_path, query_params={}, timeout=7.5),
+                mock.call(
+                    method="POST", path=api_path, query_params={}, timeout=7.5,
+                ),  # was retried once
+            ],
+        )
+
     def test__set_future_result_wo_done(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)

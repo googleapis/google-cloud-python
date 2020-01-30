@@ -626,8 +626,8 @@ LoginProfile = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_LOGINPROFILE,
         __module__="google.cloud.oslogin_v1.proto.oslogin_pb2",
-        __doc__="""The user profile information used for logging in to a virtual machine on
-  Google Compute Engine.
+        __doc__="""The user profile information used for logging in to a
+  virtual machine on Google Compute Engine.
   
   
   Attributes:
@@ -693,8 +693,8 @@ GetLoginProfileRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GETLOGINPROFILEREQUEST,
         __module__="google.cloud.oslogin_v1.proto.oslogin_pb2",
-        __doc__="""A request message for retrieving the login profile information for a
-  user.
+        __doc__="""A request message for retrieving the login profile
+  information for a user.
   
   
   Attributes:

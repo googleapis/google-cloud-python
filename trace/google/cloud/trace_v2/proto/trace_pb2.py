@@ -16,6 +16,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
@@ -29,10 +31,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2"
     ),
     serialized_pb=_b(
-        '\n/google/devtools/cloudtrace_v2/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xc5\x0f\n\x04Span\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07span_id\x18\x02 \x01(\t\x12\x16\n\x0eparent_span_id\x18\x03 \x01(\t\x12\x46\n\x0c\x64isplay_name\x18\x04 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12.\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x42\n\nattributes\x18\x07 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x12>\n\x0bstack_trace\x18\x08 \x01(\x0b\x32).google.devtools.cloudtrace.v2.StackTrace\x12\x43\n\x0btime_events\x18\t \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.TimeEvents\x12\x38\n\x05links\x18\n \x01(\x0b\x32).google.devtools.cloudtrace.v2.Span.Links\x12"\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.Status\x12?\n\x1bsame_process_as_parent_span\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x35\n\x10\x63hild_span_count\x18\r \x01(\x0b\x32\x1b.google.protobuf.Int32Value\x1a\xeb\x01\n\nAttributes\x12W\n\rattribute_map\x18\x01 \x03(\x0b\x32@.google.devtools.cloudtrace.v2.Span.Attributes.AttributeMapEntry\x12 \n\x18\x64ropped_attributes_count\x18\x02 \x01(\x05\x1a\x62\n\x11\x41ttributeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.devtools.cloudtrace.v2.AttributeValue:\x02\x38\x01\x1a\xdf\x04\n\tTimeEvent\x12(\n\x04time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12N\n\nannotation\x18\x02 \x01(\x0b\x32\x38.google.devtools.cloudtrace.v2.Span.TimeEvent.AnnotationH\x00\x12S\n\rmessage_event\x18\x03 \x01(\x0b\x32:.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEventH\x00\x1a\x97\x01\n\nAnnotation\x12\x45\n\x0b\x64\x65scription\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\nattributes\x18\x02 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x1a\xdf\x01\n\x0cMessageEvent\x12M\n\x04type\x18\x01 \x01(\x0e\x32?.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.Type\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x1f\n\x17uncompressed_size_bytes\x18\x03 \x01(\x03\x12\x1d\n\x15\x63ompressed_size_bytes\x18\x04 \x01(\x03"4\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04SENT\x10\x01\x12\x0c\n\x08RECEIVED\x10\x02\x42\x07\n\x05value\x1a\x98\x01\n\nTimeEvents\x12\x41\n\ntime_event\x18\x01 \x03(\x0b\x32-.google.devtools.cloudtrace.v2.Span.TimeEvent\x12!\n\x19\x64ropped_annotations_count\x18\x02 \x01(\x05\x12$\n\x1c\x64ropped_message_events_count\x18\x03 \x01(\x05\x1a\xf7\x01\n\x04Link\x12\x10\n\x08trace_id\x18\x01 \x01(\t\x12\x0f\n\x07span_id\x18\x02 \x01(\t\x12;\n\x04type\x18\x03 \x01(\x0e\x32-.google.devtools.cloudtrace.v2.Span.Link.Type\x12\x42\n\nattributes\x18\x04 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes"K\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11\x43HILD_LINKED_SPAN\x10\x01\x12\x16\n\x12PARENT_LINKED_SPAN\x10\x02\x1a\\\n\x05Links\x12\x36\n\x04link\x18\x01 \x03(\x0b\x32(.google.devtools.cloudtrace.v2.Span.Link\x12\x1b\n\x13\x64ropped_links_count\x18\x02 \x01(\x05"\x8e\x01\n\x0e\x41ttributeValue\x12H\n\x0cstring_value\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableStringH\x00\x12\x13\n\tint_value\x18\x02 \x01(\x03H\x00\x12\x14\n\nbool_value\x18\x03 \x01(\x08H\x00\x42\x07\n\x05value"\x89\x05\n\nStackTrace\x12K\n\x0cstack_frames\x18\x01 \x01(\x0b\x32\x35.google.devtools.cloudtrace.v2.StackTrace.StackFrames\x12\x1b\n\x13stack_trace_hash_id\x18\x02 \x01(\x03\x1a\x9e\x03\n\nStackFrame\x12G\n\rfunction_name\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12P\n\x16original_function_name\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x43\n\tfile_name\x18\x03 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x13\n\x0bline_number\x18\x04 \x01(\x03\x12\x15\n\rcolumn_number\x18\x05 \x01(\x03\x12:\n\x0bload_module\x18\x06 \x01(\x0b\x32%.google.devtools.cloudtrace.v2.Module\x12H\n\x0esource_version\x18\x07 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x1ap\n\x0bStackFrames\x12\x43\n\x05\x66rame\x18\x01 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v2.StackTrace.StackFrame\x12\x1c\n\x14\x64ropped_frames_count\x18\x02 \x01(\x05"\x8e\x01\n\x06Module\x12@\n\x06module\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\x08\x62uild_id\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString"@\n\x11TruncatableString\x12\r\n\x05value\x18\x01 \x01(\t\x12\x1c\n\x14truncated_byte_count\x18\x02 \x01(\x05\x42\xaa\x01\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
+        '\n/google/devtools/cloudtrace_v2/proto/trace.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xc2\x10\n\x04Span\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07span_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\x0eparent_span_id\x18\x03 \x01(\t\x12K\n\x0c\x64isplay_name\x18\x04 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableStringB\x03\xe0\x41\x02\x12\x33\n\nstart_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x31\n\x08\x65nd_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x42\n\nattributes\x18\x07 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x12>\n\x0bstack_trace\x18\x08 \x01(\x0b\x32).google.devtools.cloudtrace.v2.StackTrace\x12\x43\n\x0btime_events\x18\t \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.TimeEvents\x12\x38\n\x05links\x18\n \x01(\x0b\x32).google.devtools.cloudtrace.v2.Span.Links\x12\'\n\x06status\x18\x0b \x01(\x0b\x32\x12.google.rpc.StatusB\x03\xe0\x41\x01\x12\x44\n\x1bsame_process_as_parent_span\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.BoolValueB\x03\xe0\x41\x01\x12:\n\x10\x63hild_span_count\x18\r \x01(\x0b\x32\x1b.google.protobuf.Int32ValueB\x03\xe0\x41\x01\x1a\xeb\x01\n\nAttributes\x12W\n\rattribute_map\x18\x01 \x03(\x0b\x32@.google.devtools.cloudtrace.v2.Span.Attributes.AttributeMapEntry\x12 \n\x18\x64ropped_attributes_count\x18\x02 \x01(\x05\x1a\x62\n\x11\x41ttributeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.devtools.cloudtrace.v2.AttributeValue:\x02\x38\x01\x1a\xdf\x04\n\tTimeEvent\x12(\n\x04time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12N\n\nannotation\x18\x02 \x01(\x0b\x32\x38.google.devtools.cloudtrace.v2.Span.TimeEvent.AnnotationH\x00\x12S\n\rmessage_event\x18\x03 \x01(\x0b\x32:.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEventH\x00\x1a\x97\x01\n\nAnnotation\x12\x45\n\x0b\x64\x65scription\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\nattributes\x18\x02 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes\x1a\xdf\x01\n\x0cMessageEvent\x12M\n\x04type\x18\x01 \x01(\x0e\x32?.google.devtools.cloudtrace.v2.Span.TimeEvent.MessageEvent.Type\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x1f\n\x17uncompressed_size_bytes\x18\x03 \x01(\x03\x12\x1d\n\x15\x63ompressed_size_bytes\x18\x04 \x01(\x03"4\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04SENT\x10\x01\x12\x0c\n\x08RECEIVED\x10\x02\x42\x07\n\x05value\x1a\x98\x01\n\nTimeEvents\x12\x41\n\ntime_event\x18\x01 \x03(\x0b\x32-.google.devtools.cloudtrace.v2.Span.TimeEvent\x12!\n\x19\x64ropped_annotations_count\x18\x02 \x01(\x05\x12$\n\x1c\x64ropped_message_events_count\x18\x03 \x01(\x05\x1a\xf7\x01\n\x04Link\x12\x10\n\x08trace_id\x18\x01 \x01(\t\x12\x0f\n\x07span_id\x18\x02 \x01(\t\x12;\n\x04type\x18\x03 \x01(\x0e\x32-.google.devtools.cloudtrace.v2.Span.Link.Type\x12\x42\n\nattributes\x18\x04 \x01(\x0b\x32..google.devtools.cloudtrace.v2.Span.Attributes"K\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x15\n\x11\x43HILD_LINKED_SPAN\x10\x01\x12\x16\n\x12PARENT_LINKED_SPAN\x10\x02\x1a\\\n\x05Links\x12\x36\n\x04link\x18\x01 \x03(\x0b\x32(.google.devtools.cloudtrace.v2.Span.Link\x12\x1b\n\x13\x64ropped_links_count\x18\x02 \x01(\x05:S\xea\x41P\n\x1e\x63loudtrace.googleapis.com/Span\x12.projects/{project}/traces/{trace}/spans/{span}"\x8e\x01\n\x0e\x41ttributeValue\x12H\n\x0cstring_value\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableStringH\x00\x12\x13\n\tint_value\x18\x02 \x01(\x03H\x00\x12\x14\n\nbool_value\x18\x03 \x01(\x08H\x00\x42\x07\n\x05value"\x89\x05\n\nStackTrace\x12K\n\x0cstack_frames\x18\x01 \x01(\x0b\x32\x35.google.devtools.cloudtrace.v2.StackTrace.StackFrames\x12\x1b\n\x13stack_trace_hash_id\x18\x02 \x01(\x03\x1a\x9e\x03\n\nStackFrame\x12G\n\rfunction_name\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12P\n\x16original_function_name\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x43\n\tfile_name\x18\x03 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x13\n\x0bline_number\x18\x04 \x01(\x03\x12\x15\n\rcolumn_number\x18\x05 \x01(\x03\x12:\n\x0bload_module\x18\x06 \x01(\x0b\x32%.google.devtools.cloudtrace.v2.Module\x12H\n\x0esource_version\x18\x07 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x1ap\n\x0bStackFrames\x12\x43\n\x05\x66rame\x18\x01 \x03(\x0b\x32\x34.google.devtools.cloudtrace.v2.StackTrace.StackFrame\x12\x1c\n\x14\x64ropped_frames_count\x18\x02 \x01(\x05"\x8e\x01\n\x06Module\x12@\n\x06module\x18\x01 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString\x12\x42\n\x08\x62uild_id\x18\x02 \x01(\x0b\x32\x30.google.devtools.cloudtrace.v2.TruncatableString"@\n\x11TruncatableString\x12\r\n\x05value\x18\x01 \x01(\t\x12\x1c\n\x14truncated_byte_count\x18\x02 \x01(\x05\x42\xaa\x01\n!com.google.devtools.cloudtrace.v2B\nTraceProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
@@ -62,8 +66,8 @@ _SPAN_TIMEEVENT_MESSAGEEVENT_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1632,
-    serialized_end=1684,
+    serialized_start=1732,
+    serialized_end=1784,
 )
 _sym_db.RegisterEnumDescriptor(_SPAN_TIMEEVENT_MESSAGEEVENT_TYPE)
 
@@ -97,8 +101,8 @@ _SPAN_LINK_TYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2023,
-    serialized_end=2098,
+    serialized_start=2123,
+    serialized_end=2198,
 )
 _sym_db.RegisterEnumDescriptor(_SPAN_LINK_TYPE)
 
@@ -155,8 +159,8 @@ _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=985,
-    serialized_end=1083,
+    serialized_start=1085,
+    serialized_end=1183,
 )
 
 _SPAN_ATTRIBUTES = _descriptor.Descriptor(
@@ -211,8 +215,8 @@ _SPAN_ATTRIBUTES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=848,
-    serialized_end=1083,
+    serialized_start=948,
+    serialized_end=1183,
 )
 
 _SPAN_TIMEEVENT_ANNOTATION = _descriptor.Descriptor(
@@ -267,8 +271,8 @@ _SPAN_TIMEEVENT_ANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1307,
-    serialized_end=1458,
+    serialized_start=1407,
+    serialized_end=1558,
 )
 
 _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
@@ -359,8 +363,8 @@ _SPAN_TIMEEVENT_MESSAGEEVENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1461,
-    serialized_end=1684,
+    serialized_start=1561,
+    serialized_end=1784,
 )
 
 _SPAN_TIMEEVENT = _descriptor.Descriptor(
@@ -441,8 +445,8 @@ _SPAN_TIMEEVENT = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=1086,
-    serialized_end=1693,
+    serialized_start=1186,
+    serialized_end=1793,
 )
 
 _SPAN_TIMEEVENTS = _descriptor.Descriptor(
@@ -515,8 +519,8 @@ _SPAN_TIMEEVENTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1696,
-    serialized_end=1848,
+    serialized_start=1796,
+    serialized_end=1948,
 )
 
 _SPAN_LINK = _descriptor.Descriptor(
@@ -607,8 +611,8 @@ _SPAN_LINK = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1851,
-    serialized_end=2098,
+    serialized_start=1951,
+    serialized_end=2198,
 )
 
 _SPAN_LINKS = _descriptor.Descriptor(
@@ -663,8 +667,8 @@ _SPAN_LINKS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2100,
-    serialized_end=2192,
+    serialized_start=2200,
+    serialized_end=2292,
 )
 
 _SPAN = _descriptor.Descriptor(
@@ -689,7 +693,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -707,7 +711,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -743,7 +747,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -761,7 +765,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -779,7 +783,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -869,7 +873,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -887,7 +891,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -905,7 +909,7 @@ _SPAN = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -918,13 +922,15 @@ _SPAN = _descriptor.Descriptor(
         _SPAN_LINKS,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AP\n\036cloudtrace.googleapis.com/Span\022.projects/{project}/traces/{trace}/spans/{span}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=203,
-    serialized_end=2192,
+    serialized_start=263,
+    serialized_end=2377,
 )
 
 
@@ -1006,8 +1012,8 @@ _ATTRIBUTEVALUE = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=2195,
-    serialized_end=2337,
+    serialized_start=2380,
+    serialized_end=2522,
 )
 
 
@@ -1153,8 +1159,8 @@ _STACKTRACE_STACKFRAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2461,
-    serialized_end=2875,
+    serialized_start=2646,
+    serialized_end=3060,
 )
 
 _STACKTRACE_STACKFRAMES = _descriptor.Descriptor(
@@ -1209,8 +1215,8 @@ _STACKTRACE_STACKFRAMES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2877,
-    serialized_end=2989,
+    serialized_start=3062,
+    serialized_end=3174,
 )
 
 _STACKTRACE = _descriptor.Descriptor(
@@ -1265,8 +1271,8 @@ _STACKTRACE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2340,
-    serialized_end=2989,
+    serialized_start=2525,
+    serialized_end=3174,
 )
 
 
@@ -1322,8 +1328,8 @@ _MODULE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2992,
-    serialized_end=3134,
+    serialized_start=3177,
+    serialized_end=3319,
 )
 
 
@@ -1379,8 +1385,8 @@ _TRUNCATABLESTRING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3136,
-    serialized_end=3200,
+    serialized_start=3321,
+    serialized_end=3385,
 )
 
 _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY.fields_by_name[
@@ -1513,9 +1519,9 @@ Span = _reflection.GeneratedProtocolMessageType(
     Attributes:
         attribute_map:
             The set of attributes. Each attribute's key can be up to 128
-            bytes long. The value can be a string up to 256 bytes, an
-            integer, or the Boolean values ``true`` and ``false``. For
-            example:  ::      "/instance_id": "my-instance"
+            bytes long. The value can be a string up to 256 bytes, a
+            signed 64-bit integer, or the Boolean values ``true`` and
+            ``false``. For example:  ::      "/instance_id": "my-instance"
             "/http/user_agent": ""     "/http/request_bytes": 300
             "abc.com/myattribute": true
         dropped_attributes_count:
@@ -1602,9 +1608,9 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_TIMEEVENTS,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a time-stamped
-    annotation on the span, consisting of either user-supplied key:value
-    pairs, or details of a message sent/received between Spans.
+                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a
+    time-stamped annotation on the span, consisting of either user-supplied
+    key:value pairs, or details of a message sent/received between Spans.
     
     
     Attributes:
@@ -1627,10 +1633,11 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_LINK,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A pointer from the current span to another span in the same trace or in
-    a different trace. For example, this can be used in batching operations,
-    where a single batch handler processes multiple requests from different
-    traces or when the handler receives a request from a different project.
+                __doc__="""A pointer from the current span to another span in the
+    same trace or in a different trace. For example, this can be used in
+    batching operations, where a single batch handler processes multiple
+    requests from different traces or when the handler receives a request
+    from a different project.
     
     
     Attributes:
@@ -1654,8 +1661,8 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_LINKS,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A collection of links, which are references from this span to a span in
-    the same or different trace.
+                __doc__="""A collection of links, which are references from this span
+    to a span in the same or different trace.
     
     
     Attributes:
@@ -1670,12 +1677,12 @@ Span = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPAN,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""A span represents a single operation within a trace. Spans can be nested
-  to form a trace tree. Often, a trace contains a root span that describes
-  the end-to-end latency, and one or more subspans for its sub-operations.
-  A trace can also contain multiple root spans, or none at all. Spans do
-  not need to be contiguous—there may be gaps or overlaps between spans in
-  a trace.
+        __doc__="""A span represents a single operation within a trace. Spans
+  can be nested to form a trace tree. Often, a trace contains a root span
+  that describes the end-to-end latency, and one or more subspans for its
+  sub-operations. A trace can also contain multiple root spans, or none at
+  all. Spans do not need to be contiguous—there may be gaps or overlaps
+  between spans in a trace.
   
   
   Attributes:
@@ -1694,13 +1701,12 @@ Span = _reflection.GeneratedProtocolMessageType(
           span, then this field must be empty.
       display_name:
           A description of the span's operation (up to 128 bytes).
-          Stackdriver Trace displays the description in the {% dynamic
-          print site\_values.console\_name %}. For example, the display
-          name can be a qualified method name or a file name and a line
-          number where the operation is called. A best practice is to
-          use the same display name within an application and at the
-          same call point. This makes it easier to correlate spans in
-          different traces.
+          Stackdriver Trace displays the description in the Google Cloud
+          Platform Console. For example, the display name can be a
+          qualified method name or a file name and a line number where
+          the operation is called. A best practice is to use the same
+          display name within an application and at the same call point.
+          This makes it easier to correlate spans in different traces.
       start_time:
           The start time of the span. On the client side, this is the
           time kept by the local machine where the span execution
@@ -1723,14 +1729,14 @@ Span = _reflection.GeneratedProtocolMessageType(
           Links associated with the span. You can have up to 128 links
           per Span.
       status:
-          An optional final status for this span.
+          Optional. The final status for this span.
       same_process_as_parent_span:
-          (Optional) Set this parameter to indicate whether this span is
+          Optional. Set this parameter to indicate whether this span is
           in the same process as its parent. If you do not set this
           parameter, Stackdriver Trace is unable to take advantage of
           this helpful information.
       child_span_count:
-          An optional number of child spans that were generated while
+          Optional. The number of child spans that were generated while
           this span was active. If set, allows implementation to detect
           missing child spans.
   """,
@@ -1753,7 +1759,8 @@ AttributeValue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ATTRIBUTEVALUE,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""The allowed types for [VALUE] in a ``[KEY]:[VALUE]`` attribute.
+        __doc__="""The allowed types for [VALUE] in a ``[KEY]:[VALUE]``
+  attribute.
   
   
   Attributes:
@@ -1906,4 +1913,13 @@ _sym_db.RegisterMessage(TruncatableString)
 
 DESCRIPTOR._options = None
 _SPAN_ATTRIBUTES_ATTRIBUTEMAPENTRY._options = None
+_SPAN.fields_by_name["name"]._options = None
+_SPAN.fields_by_name["span_id"]._options = None
+_SPAN.fields_by_name["display_name"]._options = None
+_SPAN.fields_by_name["start_time"]._options = None
+_SPAN.fields_by_name["end_time"]._options = None
+_SPAN.fields_by_name["status"]._options = None
+_SPAN.fields_by_name["same_process_as_parent_span"]._options = None
+_SPAN.fields_by_name["child_span_count"]._options = None
+_SPAN._options = None
 # @@protoc_insertion_point(module_scope)

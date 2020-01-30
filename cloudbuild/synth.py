@@ -39,9 +39,9 @@ s.move(
         'nox*.py',
         'setup.py',
         'setup.cfg',
-        'README.rst'
-        '**/*.proto'
-        'google/cloud/devtools/__init__.py'  # declare this as a namespace package
+        'README.rst',
+        '**/*.proto',
+        'google/cloud/devtools/__init__.py',  # declare this as a namespace package
     ],
 )
 

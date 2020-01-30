@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,6 +62,174 @@ class CustomException(Exception):
 
 
 class TestIncidentServiceClient(object):
+    def test_delete_artifact(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup Request
+        name = client.artifact_path("[PROJECT]", "[INCIDENT]", "[ARTIFACT]")
+
+        client.delete_artifact(name)
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.DeleteArtifactRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_artifact_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup request
+        name = client.artifact_path("[PROJECT]", "[INCIDENT]", "[ARTIFACT]")
+
+        with pytest.raises(CustomException):
+            client.delete_artifact(name)
+
+    def test_request_incident_role_handover(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        etag = "etag3123477"
+        expected_response = {"name": name_2, "etag": etag}
+        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup Request
+        name = "name3373707"
+        new_assignee = {}
+
+        response = client.request_incident_role_handover(name, new_assignee)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.RequestIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_request_incident_role_handover_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup request
+        name = "name3373707"
+        new_assignee = {}
+
+        with pytest.raises(CustomException):
+            client.request_incident_role_handover(name, new_assignee)
+
+    def test_confirm_incident_role_handover(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        etag = "etag3123477"
+        expected_response = {"name": name_2, "etag": etag}
+        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup Request
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
+        )
+        new_assignee = {}
+
+        response = client.confirm_incident_role_handover(name, new_assignee)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.ConfirmIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_confirm_incident_role_handover_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup request
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
+        )
+        new_assignee = {}
+
+        with pytest.raises(CustomException):
+            client.confirm_incident_role_handover(name, new_assignee)
+
+    def test_force_incident_role_handover(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        etag = "etag3123477"
+        expected_response = {"name": name_2, "etag": etag}
+        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup Request
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
+        )
+        new_assignee = {}
+
+        response = client.force_incident_role_handover(name, new_assignee)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.ForceIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_force_incident_role_handover_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        # Setup request
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
+        )
+        new_assignee = {}
+
+        with pytest.raises(CustomException):
+            client.force_incident_role_handover(name, new_assignee)
+
     def test_create_incident(self):
         # Setup Expected Response
         name = "name3373707"
@@ -610,6 +778,50 @@ class TestIncidentServiceClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
+    def test_lookup_signal(self):
+        # Setup Expected Response
+        name = "name3373707"
+        etag = "etag3123477"
+        incident = "incident86983890"
+        title = "title110371416"
+        content_type = "contentType831846208"
+        content = "content951530617"
+        expected_response = {
+            "name": name,
+            "etag": etag,
+            "incident": incident,
+            "title": title,
+            "content_type": content_type,
+            "content": content,
+        }
+        expected_response = incidents_pb2.Signal(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        response = client.lookup_signal()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = incidents_service_pb2.LookupSignalRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_lookup_signal_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = irm_v1alpha2.IncidentServiceClient()
+
+        with pytest.raises(CustomException):
+            client.lookup_signal()
+
     def test_get_signal(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -659,50 +871,6 @@ class TestIncidentServiceClient(object):
 
         with pytest.raises(CustomException):
             client.get_signal(name)
-
-    def test_lookup_signal(self):
-        # Setup Expected Response
-        name = "name3373707"
-        etag = "etag3123477"
-        incident = "incident86983890"
-        title = "title110371416"
-        content_type = "contentType831846208"
-        content = "content951530617"
-        expected_response = {
-            "name": name,
-            "etag": etag,
-            "incident": incident,
-            "title": title,
-            "content_type": content_type,
-            "content": content,
-        }
-        expected_response = incidents_pb2.Signal(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        response = client.lookup_signal()
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.LookupSignalRequest()
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_lookup_signal_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        with pytest.raises(CustomException):
-            client.lookup_signal()
 
     def test_update_signal(self):
         # Setup Expected Response
@@ -937,37 +1105,6 @@ class TestIncidentServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_artifact(artifact)
-
-    def test_delete_artifact(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        name = client.artifact_path("[PROJECT]", "[INCIDENT]", "[ARTIFACT]")
-
-        client.delete_artifact(name)
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.DeleteArtifactRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_artifact_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        name = client.artifact_path("[PROJECT]", "[INCIDENT]", "[ARTIFACT]")
-
-        with pytest.raises(CustomException):
-            client.delete_artifact(name)
 
     def test_send_shift_handoff(self):
         # Setup Expected Response
@@ -1232,9 +1369,7 @@ class TestIncidentServiceClient(object):
             client = irm_v1alpha2.IncidentServiceClient()
 
         # Setup Request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
+        name = client.incident_path("[PROJECT]", "[INCIDENT]")
 
         client.delete_incident_role_assignment(name)
 
@@ -1254,9 +1389,7 @@ class TestIncidentServiceClient(object):
             client = irm_v1alpha2.IncidentServiceClient()
 
         # Setup request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
+        name = client.incident_path("[PROJECT]", "[INCIDENT]")
 
         with pytest.raises(CustomException):
             client.delete_incident_role_assignment(name)
@@ -1311,147 +1444,6 @@ class TestIncidentServiceClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
-    def test_request_incident_role_handover(self):
-        # Setup Expected Response
-        name_2 = "name2-1052831874"
-        etag = "etag3123477"
-        expected_response = {"name": name_2, "etag": etag}
-        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        response = client.request_incident_role_handover(name, new_assignee)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.RequestIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_request_incident_role_handover_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        with pytest.raises(CustomException):
-            client.request_incident_role_handover(name, new_assignee)
-
-    def test_confirm_incident_role_handover(self):
-        # Setup Expected Response
-        name_2 = "name2-1052831874"
-        etag = "etag3123477"
-        expected_response = {"name": name_2, "etag": etag}
-        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        response = client.confirm_incident_role_handover(name, new_assignee)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.ConfirmIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_confirm_incident_role_handover_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        with pytest.raises(CustomException):
-            client.confirm_incident_role_handover(name, new_assignee)
-
-    def test_force_incident_role_handover(self):
-        # Setup Expected Response
-        name_2 = "name2-1052831874"
-        etag = "etag3123477"
-        expected_response = {"name": name_2, "etag": etag}
-        expected_response = incidents_pb2.IncidentRoleAssignment(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup Request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        response = client.force_incident_role_handover(name, new_assignee)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = incidents_service_pb2.ForceIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_force_incident_role_handover_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = irm_v1alpha2.IncidentServiceClient()
-
-        # Setup request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
-        )
-        new_assignee = {}
-
-        with pytest.raises(CustomException):
-            client.force_incident_role_handover(name, new_assignee)
-
     def test_cancel_incident_role_handover(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -1467,8 +1459,8 @@ class TestIncidentServiceClient(object):
             client = irm_v1alpha2.IncidentServiceClient()
 
         # Setup Request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
         )
         new_assignee = {}
 
@@ -1491,8 +1483,8 @@ class TestIncidentServiceClient(object):
             client = irm_v1alpha2.IncidentServiceClient()
 
         # Setup request
-        name = client.role_assignment_path(
-            "[PROJECT]", "[INCIDENT]", "[ROLE_ASSIGNMENT]"
+        name = client.incident_role_assignment_path(
+            "[PROJECT_ID_OR_NUMBER]", "[INCIDENT_ID]", "[ROLE_ID]"
         )
         new_assignee = {}
 

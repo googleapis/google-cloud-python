@@ -46,10 +46,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class RecommenderClient(object):
     """
-    Provides recommendations for cloud customers for various categories like
-    performance optimization, cost savings, reliability, feature discovery, etc.
-    These recommendations are generated automatically based on analysis of user
-    resources, configuration and monitoring metrics.
+    Provides insights and recommendations for cloud customers for various
+    categories like performance optimization, cost savings, reliability, feature
+    discovery, etc. Insights and recommendations are generated automatically
+    based on analysis of user resources, configuration and monitoring metrics.
     """
 
     SERVICE_ADDRESS = "recommender.googleapis.com:443"
@@ -234,7 +234,7 @@ class RecommenderClient(object):
     ):
         """
         Lists recommendations for a Cloud project. Requires the
-        recommender.\*.list IAM permission for the specified recommender.
+        recommender.*.list IAM permission for the specified recommender.
 
         Example:
             >>> from google.cloud import recommender_v1beta1
@@ -263,7 +263,7 @@ class RecommenderClient(object):
 
                 1.
 
-                "projects/[PROJECT\_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER\_ID]",
+                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]",
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/
@@ -272,9 +272,9 @@ class RecommenderClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            filter_ (str): Filter expression to restrict the recommendations returned. Supported
-                filter fields: state\_info.state Eg: \`state\_info.state:"DISMISSED" or
-                state\_info.state:"FAILED"
+            filter_ (str): Filter expression to restrict the recommendations returned.
+                Supported filter fields: state_info.state Eg:
+                \`state_info.state:"DISMISSED" or state_info.state:"FAILED"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -347,8 +347,8 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Gets the requested recommendation. Requires the recommender.\*.get IAM
-        permission for the specified recommender.
+        Gets the requested recommendation. Requires the recommender.*.get
+        IAM permission for the specified recommender.
 
         Example:
             >>> from google.cloud import recommender_v1beta1
@@ -360,7 +360,7 @@ class RecommenderClient(object):
             >>> response = client.get_recommendation(name)
 
         Args:
-            name (str): Name of the recommendation.
+            name (str): Required. Name of the recommendation.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -419,15 +419,16 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Claimed. Users can use this method to
-        indicate to the Recommender API that they are starting to apply the
+        Marks the Recommendation State as Claimed. Users can use this method
+        to indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated.
+        being updated. Associated insights are frozen and placed in the ACCEPTED
+        state.
 
-        MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
-        SUCCEEDED, FAILED, or ACTIVE state.
+        MarkRecommendationClaimed can be applied to recommendations in CLAIMED
+        or ACTIVE state.
 
-        Requires the recommender.\*.update IAM permission for the specified
+        Requires the recommender.*.update IAM permission for the specified
         recommender.
 
         Example:
@@ -443,10 +444,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_claimed(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex
+                ``/^[a-zA-Z0-9_./-]{0,255}$/``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -509,15 +512,16 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Succeeded. Users can use this method to
-        indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Succeeded. Users can use this
+        method to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated.
+        the recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.\*.update IAM permission for the specified
+        Requires the recommender.*.update IAM permission for the specified
         recommender.
 
         Example:
@@ -533,10 +537,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_succeeded(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex
+                ``/^[a-zA-Z0-9_./-]{0,255}$/``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -599,15 +605,16 @@ class RecommenderClient(object):
         metadata=None,
     ):
         """
-        Mark the Recommendation State as Failed. Users can use this method to
-        indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Failed. Users can use this method
+        to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated.
+        recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.\*.update IAM permission for the specified
+        Requires the recommender.*.update IAM permission for the specified
         recommender.
 
         Example:
@@ -623,10 +630,12 @@ class RecommenderClient(object):
             >>> response = client.mark_recommendation_failed(name, etag)
 
         Args:
-            name (str): Name of the recommendation.
-            etag (str): Fingerprint of the Recommendation. Provides optimistic locking.
+            name (str): Required. Name of the recommendation.
+            etag (str): Required. Fingerprint of the Recommendation. Provides optimistic locking.
             state_metadata (dict[str -> str]): State properties to include with this state. Overwrites any existing
-                ``state_metadata``.
+                ``state_metadata``. Keys must match the regex
+                ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex
+                ``/^[a-zA-Z0-9_./-]{0,255}$/``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

@@ -388,7 +388,8 @@ NormalizedBoundingPoly = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NORMALIZEDBOUNDINGPOLY,
         __module__="google.cloud.vision_v1p3beta1.proto.geometry_pb2",
-        __doc__="""A normalized bounding polygon around a portion of an image.
+        __doc__="""A normalized bounding polygon around a portion of an
+  image.
   
   
   Attributes:
@@ -406,9 +407,10 @@ Position = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_POSITION,
         __module__="google.cloud.vision_v1p3beta1.proto.geometry_pb2",
-        __doc__="""A 3D position in the image, used primarily for Face detection landmarks.
-  A valid Position must have both x and y coordinates. The position
-  coordinates are in the same scale as the original image.
+        __doc__="""A 3D position in the image, used primarily for Face
+  detection landmarks. A valid Position must have both x and y
+  coordinates. The position coordinates are in the same scale as the
+  original image.
   
   
   Attributes:

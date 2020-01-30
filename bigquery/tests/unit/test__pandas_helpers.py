@@ -92,6 +92,7 @@ def test_is_datetime():
     assert is_datetime(pyarrow.timestamp("us", tz=None))
     assert not is_datetime(pyarrow.timestamp("ms", tz=None))
     assert not is_datetime(pyarrow.timestamp("us", tz="UTC"))
+    assert not is_datetime(pyarrow.timestamp("ns", tz="UTC"))
     assert not is_datetime(pyarrow.string())
 
 
@@ -386,20 +387,15 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
         ),
         ("BOOLEAN", [True, None, False, None]),
         ("BOOL", [False, None, True, None]),
-        # TODO: Once https://issues.apache.org/jira/browse/ARROW-5450 is
-        # resolved, test with TIMESTAMP column. Conversion from pyarrow
-        # TimestampArray to list of Python objects fails with OverflowError:
-        # Python int too large to convert to C long.
-        #
-        # (
-        #     "TIMESTAMP",
-        #     [
-        #         datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
-        #         None,
-        #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc),
-        #         datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
-        #     ],
-        # ),
+        (
+            "TIMESTAMP",
+            [
+                datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                None,
+                datetime.datetime(9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc),
+                datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+            ],
+        ),
         (
             "DATE",
             [
@@ -418,20 +414,16 @@ def test_bq_to_arrow_data_type_w_struct_unknown_subfield(module_under_test):
                 datetime.time(12, 0, 0),
             ],
         ),
-        # TODO: Once https://issues.apache.org/jira/browse/ARROW-5450 is
-        # resolved, test with DATETIME column. Conversion from pyarrow
-        # TimestampArray to list of Python objects fails with OverflowError:
-        # Python int too large to convert to C long.
-        #
-        # (
-        #     "DATETIME",
-        #     [
-        #         datetime.datetime(1, 1, 1, 0, 0, 0),
-        #         None,
-        #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-        #         datetime.datetime(1970, 1, 1, 0, 0, 0),
-        #     ],
-        # ),
+        (
+            "DATETIME",
+            [
+                datetime.datetime(1, 1, 1, 0, 0, 0),
+                datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                None,
+                datetime.datetime(1970, 1, 1, 0, 0, 0),
+                datetime.datetime(1999, 3, 14, 15, 9, 26, 535898),
+            ],
+        ),
         (
             "GEOGRAPHY",
             [
@@ -451,6 +443,42 @@ def test_bq_to_arrow_array_w_nullable_scalars(module_under_test, bq_type, rows):
     arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
     roundtrip = arrow_array.to_pylist()
     assert rows == roundtrip
+
+
+@pytest.mark.parametrize(
+    "bq_type,rows",
+    [
+        (
+            "TIMESTAMP",
+            [
+                "1971-09-28T23:59:07+00:00",
+                "1975-04-09T23:59:02+00:00",
+                "1979-08-17T23:59:05+00:00",
+                "NaT",
+                "1983-05-09T13:00:00+00:00",
+            ],
+        ),
+        (
+            "DATETIME",
+            [
+                "1971-09-28T23:59:07",
+                "1975-04-09T23:59:02",
+                "1979-08-17T23:59:05",
+                "NaT",
+                "1983-05-09T13:00:00",
+            ],
+        ),
+    ],
+)
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_array_w_pandas_timestamp(module_under_test, bq_type, rows):
+    rows = [pandas.Timestamp(row) for row in rows]
+    series = pandas.Series(rows)
+    bq_field = schema.SchemaField("field_name", bq_type)
+    arrow_array = module_under_test.bq_to_arrow_array(series, bq_field)
+    roundtrip = arrow_array.to_pandas()
+    assert series.equals(roundtrip)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

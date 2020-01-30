@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,12 +83,7 @@ class IAMCredentialsClient(object):
 
     @classmethod
     def service_account_path(cls, project, service_account):
-        """DEPRECATED. Return a fully-qualified service_account string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified service_account string."""
         return google.api_core.path_template.expand(
             "projects/{project}/serviceAccounts/{service_account}",
             project=project,

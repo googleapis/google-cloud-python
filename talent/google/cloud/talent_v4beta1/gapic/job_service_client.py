@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -93,12 +93,7 @@ class JobServiceClient(object):
 
     @classmethod
     def company_path(cls, project, tenant, company):
-        """DEPRECATED. Return a fully-qualified company string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/companies/{company}",
             project=project,
@@ -108,24 +103,14 @@ class JobServiceClient(object):
 
     @classmethod
     def company_without_tenant_path(cls, project, company):
-        """DEPRECATED. Return a fully-qualified company_without_tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified company_without_tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/companies/{company}", project=project, company=company
         )
 
     @classmethod
     def job_path(cls, project, tenant, jobs):
-        """DEPRECATED. Return a fully-qualified job string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/jobs/{jobs}",
             project=project,
@@ -135,36 +120,21 @@ class JobServiceClient(object):
 
     @classmethod
     def job_without_tenant_path(cls, project, jobs):
-        """DEPRECATED. Return a fully-qualified job_without_tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified job_without_tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/jobs/{jobs}", project=project, jobs=jobs
         )
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
-        """DEPRECATED. Return a fully-qualified tenant string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
         )
@@ -1009,6 +979,10 @@ class JobServiceClient(object):
                 location, amongst the jobs deemed by the API as relevant) in search
                 results. This field is only considered if ``page_token`` is unset.
 
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for
                 pagination, (for example, pageSize = 10 and offset = 10 means to return
@@ -1364,6 +1338,10 @@ class JobServiceClient(object):
             offset (int): An integer that specifies the current offset (that is, starting result
                 location, amongst the jobs deemed by the API as relevant) in search
                 results. This field is only considered if ``page_token`` is unset.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
+
+                The maximum allowed value is 5000. Otherwise an error is thrown.
 
                 For example, 0 means to return results starting from the first matching
                 job, and 10 means to return from the 11th job. This can be used for

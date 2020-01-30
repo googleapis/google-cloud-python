@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ class WebRiskServiceV1Beta1GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive.",
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
             )
 
         # Create the channel.
@@ -74,7 +74,7 @@ class WebRiskServiceV1Beta1GrpcTransport(object):
         self._stubs = {
             "web_risk_service_v1_beta1_stub": webrisk_pb2_grpc.WebRiskServiceV1Beta1Stub(
                 channel
-            ),
+            )
         }
 
     @classmethod

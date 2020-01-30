@@ -262,15 +262,15 @@ class Instance(object):
 
         .. note::
 
-           Updates the ``display_name`` and ``node_count``. To change those
-           values before updating, set them via
+            Updates the ``display_name`` and ``node_count``. To change those
+            values before updating, set them via
 
-           .. code:: python
+            .. code:: python
 
-              instance.display_name = 'New display name'
-              instance.node_count = 5
+                instance.display_name = 'New display name'
+                instance.node_count = 5
 
-            before calling :meth:`update`.
+           before calling :meth:`update`.
 
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance

@@ -214,10 +214,10 @@ class Batch(Connection):
             timeout = _timeout
 
         # The `email` package expects to deal with "native" strings
-        if six.PY3:  # pragma: NO COVER  Python3
-            buf = io.StringIO()
-        else:
+        if six.PY2:  # pragma: NO COVER  Python3
             buf = io.BytesIO()
+        else:
+            buf = io.StringIO()
         generator = Generator(buf, False, 0)
         generator.flatten(multi)
         payload = buf.getvalue()
