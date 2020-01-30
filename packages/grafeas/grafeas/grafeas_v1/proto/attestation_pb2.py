@@ -184,13 +184,13 @@ AttestationNote = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ATTESTATIONNOTE_HINT,
                 __module__="grafeas_v1.proto.attestation_pb2",
-                __doc__="""This submessage provides human-readable hints about the purpose of the
-    authority. Because the name of a note acts as its resource reference, it
-    is important to disambiguate the canonical name of the Note (which might
-    be a UUID for security purposes) from "readable" names more suitable for
-    debug output. Note that these hints should not be used to look up
-    authorities in security sensitive contexts, such as when looking up
-    attestations to verify.
+                __doc__="""This submessage provides human-readable hints about the
+    purpose of the authority. Because the name of a note acts as its
+    resource reference, it is important to disambiguate the canonical name
+    of the Note (which might be a UUID for security purposes) from
+    "readable" names more suitable for debug output. Note that these hints
+    should not be used to look up authorities in security sensitive
+    contexts, such as when looking up attestations to verify.
     
     
     Attributes:
@@ -229,14 +229,14 @@ AttestationOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ATTESTATIONOCCURRENCE,
         __module__="grafeas_v1.proto.attestation_pb2",
-        __doc__="""Occurrence that represents a single "attestation". The authenticity of
-  an attestation can be verified using the attached signature. If the
-  verifier trusts the public key of the signer, then verifying the
-  signature is sufficient to establish trust. In this circumstance, the
-  authority to which this attestation is attached is primarily useful for
-  lookup (how to find this attestation if you already know the authority
-  and artifact to be verified) and intent (for which authority this
-  attestation was intended to sign.
+        __doc__="""Occurrence that represents a single "attestation". The
+  authenticity of an attestation can be verified using the attached
+  signature. If the verifier trusts the public key of the signer, then
+  verifying the signature is sufficient to establish trust. In this
+  circumstance, the authority to which this attestation is attached is
+  primarily useful for lookup (how to find this attestation if you already
+  know the authority and artifact to be verified) and intent (for which
+  authority this attestation was intended to sign.
   
   
   Attributes:

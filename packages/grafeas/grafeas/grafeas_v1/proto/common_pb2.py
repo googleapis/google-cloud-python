@@ -229,11 +229,11 @@ Signature = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SIGNATURE,
         __module__="grafeas_v1.proto.common_pb2",
-        __doc__="""Verifiers (e.g. Kritis implementations) MUST verify signatures with
-  respect to the trust anchors defined in policy (e.g. a Kritis policy).
-  Typically this means that the verifier has been configured with a map
-  from ``public_key_id`` to public key material (and any required
-  parameters, e.g. signing algorithm).
+        __doc__="""Verifiers (e.g. Kritis implementations) MUST verify
+  signatures with respect to the trust anchors defined in policy (e.g. a
+  Kritis policy). Typically this means that the verifier has been
+  configured with a map from ``public_key_id`` to public key material (and
+  any required parameters, e.g. signing algorithm).
   
   In particular, verification implementations MUST NOT treat the signature
   ``public_key_id`` as anything more than a key lookup hint. The

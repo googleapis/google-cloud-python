@@ -293,9 +293,9 @@ DiscoveryNote = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DISCOVERYNOTE,
         __module__="grafeas_v1.proto.discovery_pb2",
-        __doc__="""A note that indicates a type of analysis a provider would perform. This
-  note exists in a provider's project. A ``Discovery`` occurrence is
-  created in a consumer's project at the start of analysis.
+        __doc__="""A note that indicates a type of analysis a provider would
+  perform. This note exists in a provider's project. A ``Discovery``
+  occurrence is created in a consumer's project at the start of analysis.
   
   
   Attributes:
@@ -314,7 +314,8 @@ DiscoveryOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DISCOVERYOCCURRENCE,
         __module__="grafeas_v1.proto.discovery_pb2",
-        __doc__="""Provides information about the analysis status of a discovered resource.
+        __doc__="""Provides information about the analysis status of a
+  discovered resource.
   
   
   Attributes:
