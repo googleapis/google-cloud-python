@@ -2873,10 +2873,7 @@ Document = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENT,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""################################################################
-  #
-  
-  Represents the input to API methods.
+        __doc__="""Represents the input to API methods.
   
   
   Attributes:
