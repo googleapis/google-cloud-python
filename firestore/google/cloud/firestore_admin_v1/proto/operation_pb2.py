@@ -1089,8 +1089,8 @@ Progress = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PROGRESS,
         __module__="google.cloud.firestore.admin_v1.proto.operation_pb2",
-        __doc__="""Describes the progress of the operation. Unit of work is generic and
-  must be interpreted based on where
+        __doc__="""Describes the progress of the operation. Unit of work is
+  generic and must be interpreted based on where
   [Progress][google.firestore.admin.v1.Progress] is used.
   
   
