@@ -222,7 +222,7 @@ The following client libraries have **alpha** support:
 .. _Runtime Config Documentation: https://googleapis.dev/python/runtimeconfig/latest
 
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
-.. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
+.. _Security Scanner README: https://github.com/googleapis/python-websecurityscanner#python-client-for-web-security-scanner-api
 .. _Security Scanner Documentation: https://googleapis.dev/python/websecurityscanner/latest
 
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
