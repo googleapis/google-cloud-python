@@ -1054,7 +1054,8 @@ DocumentDelete = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENTDELETE,
         __module__="google.cloud.firestore_v1.proto.write_pb2",
-        __doc__="""A [Document][google.firestore.v1.Document] has been deleted.
+        __doc__="""A [Document][google.firestore.v1.Document] has been
+  deleted.
   
   May be the result of multiple [writes][google.firestore.v1.Write],
   including updates, the last of which deleted the
@@ -1087,8 +1088,8 @@ DocumentRemove = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENTREMOVE,
         __module__="google.cloud.firestore_v1.proto.write_pb2",
-        __doc__="""A [Document][google.firestore.v1.Document] has been removed from the
-  view of the targets.
+        __doc__="""A [Document][google.firestore.v1.Document] has been
+  removed from the view of the targets.
   
   Sent if the document is no longer relevant to a target and is out of
   view. Can be sent instead of a DocumentDelete or a DocumentChange if the
