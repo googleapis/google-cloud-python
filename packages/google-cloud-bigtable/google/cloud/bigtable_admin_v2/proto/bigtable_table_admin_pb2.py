@@ -2069,7 +2069,8 @@ CreateTableFromSnapshotMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CREATETABLEFROMSNAPSHOTMETADATA,
         __module__="google.cloud.bigtable.admin_v2.proto.bigtable_table_admin_pb2",
-        __doc__="""The metadata for the Operation returned by CreateTableFromSnapshot.
+        __doc__="""The metadata for the Operation returned by
+  CreateTableFromSnapshot.
   
   Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.

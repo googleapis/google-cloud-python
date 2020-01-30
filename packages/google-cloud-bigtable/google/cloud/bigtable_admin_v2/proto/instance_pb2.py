@@ -653,14 +653,15 @@ Instance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_INSTANCE,
         __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-        __doc__="""A collection of Bigtable [Tables][google.bigtable.admin.v2.Table] and
-  the resources that serve them. All tables in an instance are served from
-  a single [Cluster][google.bigtable.admin.v2.Cluster].
+        __doc__="""A collection of Bigtable
+  [Tables][google.bigtable.admin.v2.Table] and the resources that serve
+  them. All tables in an instance are served from a single
+  [Cluster][google.bigtable.admin.v2.Cluster].
   
   
   Attributes:
       name:
-          (``OutputOnly``) The unique name of the instance. Values are
+          (\ ``OutputOnly``) The unique name of the instance. Values are
           of the form
           ``projects/<project>/instances/[a-z][a-z0-9\\-]+[a-z0-9]``.
       display_name:
@@ -668,7 +669,7 @@ Instance = _reflection.GeneratedProtocolMessageType(
           Can be changed at any time, but should be kept globally unique
           to avoid confusion.
       state:
-          (``OutputOnly``) The current state of the instance.
+          (\ ``OutputOnly``) The current state of the instance.
       type:
           The type of the instance. Defaults to ``PRODUCTION``.
       labels:
@@ -696,30 +697,30 @@ Cluster = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLUSTER,
         __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-        __doc__="""A resizable group of nodes in a particular cloud location, capable of
-  serving all [Tables][google.bigtable.admin.v2.Table] in the parent
-  [Instance][google.bigtable.admin.v2.Instance].
+        __doc__="""A resizable group of nodes in a particular cloud location,
+  capable of serving all [Tables][google.bigtable.admin.v2.Table] in the
+  parent [Instance][google.bigtable.admin.v2.Instance].
   
   
   Attributes:
       name:
-          (``OutputOnly``) The unique name of the cluster. Values are of
-          the form ``projects/<project>/instances/<instance>/clusters/[a
-          -z][-a-z0-9]*``.
+          (\ ``OutputOnly``) The unique name of the cluster. Values are
+          of the form ``projects/<project>/instances/<instance>/clusters
+          /[a-z][-a-z0-9]*``.
       location:
-          (``CreationOnly``) The location where this cluster's nodes and
-          storage reside. For best performance, clients should be
+          (\ ``CreationOnly``) The location where this cluster's nodes
+          and storage reside. For best performance, clients should be
           located as close as possible to this cluster. Currently only
           zones are supported, so values should be of the form
           ``projects/<project>/locations/<zone>``.
       state:
-          (``OutputOnly``) The current state of the cluster.
+          (\ ``OutputOnly``) The current state of the cluster.
       serve_nodes:
           The number of nodes allocated to this cluster. More nodes
           enable higher throughput and more consistent performance.
       default_storage_type:
-          (``CreationOnly``) The type of storage used by this cluster to
-          serve its parent instance's tables, unless explicitly
+          (\ ``CreationOnly``) The type of storage used by this cluster
+          to serve its parent instance's tables, unless explicitly
           overridden.
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Cluster)
@@ -737,10 +738,11 @@ AppProfile = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_APPPROFILE_MULTICLUSTERROUTINGUSEANY,
                 __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-                __doc__="""Read/write requests may be routed to any cluster in the instance, and
-    will fail over to another cluster in the event of transient errors or
-    delays. Choosing this option sacrifices read-your-writes consistency to
-    improve availability.
+                __doc__="""Read/write requests may be routed to any cluster in the
+    instance, and will fail over to another cluster in the event of
+    transient errors or delays. Choosing this option sacrifices
+    read-your-writes consistency to improve availability.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.AppProfile.MultiClusterRoutingUseAny)
             ),
@@ -751,9 +753,9 @@ AppProfile = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_APPPROFILE_SINGLECLUSTERROUTING,
                 __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-                __doc__="""Unconditionally routes all read/write requests to a specific cluster.
-    This option preserves read-your-writes consistency, but does not improve
-    availability.
+                __doc__="""Unconditionally routes all read/write requests to a
+    specific cluster. This option preserves read-your-writes consistency,
+    but does not improve availability.
     
     
     Attributes:
@@ -770,13 +772,13 @@ AppProfile = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPPROFILE,
         __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-        __doc__="""A configuration object describing how Cloud Bigtable should treat
-  traffic from a particular end user application.
+        __doc__="""A configuration object describing how Cloud Bigtable
+  should treat traffic from a particular end user application.
   
   
   Attributes:
       name:
-          (``OutputOnly``) The unique name of the app profile. Values
+          (\ ``OutputOnly``) The unique name of the app profile. Values
           are of the form
           ``projects/<project>/instances/<instance>/appProfiles/[_a-
           zA-Z0-9][-_.a-zA-Z0-9]*``.
