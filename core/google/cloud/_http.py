@@ -46,6 +46,8 @@ The '_EXTRA_HEADERS' class-level attribute is deprecated.  Please use
 'extra_headers' instead.
 """
 
+_DEFAULT_TIMEOUT = 60  # in seconds
+
 
 class Connection(object):
     """A generic connection to Google Cloud Platform.
@@ -222,7 +224,7 @@ class JSONConnection(Connection):
         content_type=None,
         headers=None,
         target_object=None,
-        timeout=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """A low level method to send a request to the API.
 
@@ -253,7 +255,7 @@ class JSONConnection(Connection):
 
         :type timeout: float or tuple
         :param timeout: (optional) The amount of time, in seconds, to wait
-            for the server response. By default, the method waits indefinitely.
+            for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
@@ -276,7 +278,7 @@ class JSONConnection(Connection):
         )
 
     def _do_request(
-        self, method, url, headers, data, target_object, timeout=None
+        self, method, url, headers, data, target_object, timeout=_DEFAULT_TIMEOUT
     ):  # pylint: disable=unused-argument
         """Low-level helper:  perform the actual API request over HTTP.
 
@@ -301,7 +303,7 @@ class JSONConnection(Connection):
 
         :type timeout: float or tuple
         :param timeout: (optional) The amount of time, in seconds, to wait
-            for the server response. By default, the method waits indefinitely.
+            for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
@@ -325,7 +327,7 @@ class JSONConnection(Connection):
         api_version=None,
         expect_json=True,
         _target_object=None,
-        timeout=None,
+        timeout=_DEFAULT_TIMEOUT,
     ):
         """Make a request over the HTTP transport to the API.
 
@@ -382,7 +384,7 @@ class JSONConnection(Connection):
 
         :type timeout: float or tuple
         :param timeout: (optional) The amount of time, in seconds, to wait
-            for the server response. By default, the method waits indefinitely.
+            for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.

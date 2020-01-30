@@ -2411,9 +2411,9 @@ DataSourceParameter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DATASOURCEPARAMETER,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""Represents a data source parameter with validation rules, so that
-  parameters can be rendered in the UI. These parameters are given to us
-  by supported data sources, and include all needed information for
+        __doc__="""Represents a data source parameter with validation rules,
+  so that parameters can be rendered in the UI. These parameters are given
+  to us by supported data sources, and include all needed information for
   rendering and validation. Thus, whoever uses this api can decide to
   generate either generic ui, or custom data source specific forms.
   
@@ -2468,8 +2468,8 @@ DataSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DATASOURCE,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""Represents data source metadata. Metadata is sufficient to render UI and
-  request proper OAuth tokens.
+        __doc__="""Represents data source metadata. Metadata is sufficient to
+  render UI and request proper OAuth tokens.
   
   
   Attributes:
@@ -2558,7 +2558,8 @@ ListDataSourcesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTDATASOURCESREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""Request to list supported data sources and their data transfer settings.
+        __doc__="""Request to list supported data sources and their data
+  transfer settings.
   
   
   Attributes:
@@ -2611,11 +2612,11 @@ CreateTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CREATETRANSFERCONFIGREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to create a data transfer configuration. If new credentials
-  are needed for this transfer configuration, an authorization code must
-  be provided. If an authorization code is provided, the transfer
-  configuration will be associated with the user id corresponding to the
-  authorization code. Otherwise, the transfer configuration will be
+        __doc__="""A request to create a data transfer configuration. If new
+  credentials are needed for this transfer configuration, an authorization
+  code must be provided. If an authorization code is provided, the
+  transfer configuration will be associated with the user id corresponding
+  to the authorization code. Otherwise, the transfer configuration will be
   associated with the calling user.
   
   
@@ -2671,8 +2672,9 @@ UpdateTransferConfigRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPDATETRANSFERCONFIGREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to update a transfer configuration. To update the user id of
-  the transfer configuration, an authorization code needs to be provided.
+        __doc__="""A request to update a transfer configuration. To update
+  the user id of the transfer configuration, an authorization code needs
+  to be provided.
   
   
   Attributes:
@@ -2811,7 +2813,8 @@ ListTransferConfigsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRANSFERCONFIGSREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to list data transfers configured for a BigQuery project.
+        __doc__="""A request to list data transfers configured for a BigQuery
+  project.
   
   
   Attributes:
@@ -2866,9 +2869,9 @@ ListTransferRunsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRANSFERRUNSREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to list data transfer runs. UI can use this method to
-  show/filter specific data transfer runs. The data source can use this
-  method to request all scheduled transfer runs.
+        __doc__="""A request to list data transfer runs. UI can use this
+  method to show/filter specific data transfer runs. The data source can
+  use this method to request all scheduled transfer runs.
   
   
   Attributes:
@@ -2928,8 +2931,8 @@ ListTransferLogsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRANSFERLOGSREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to get user facing log messages associated with data transfer
-  run.
+        __doc__="""A request to get user facing log messages associated with
+  data transfer run.
   
   
   Attributes:
@@ -2985,12 +2988,12 @@ CheckValidCredsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CHECKVALIDCREDSREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to determine whether the user has valid credentials. This
-  method is used to limit the number of OAuth popups in the user
-  interface. The user id is inferred from the API call context. If the
-  data source has the Google+ authorization type, this method returns
-  false, as it cannot be determined whether the credentials are already
-  valid merely based on the user id.
+        __doc__="""A request to determine whether the user has valid
+  credentials. This method is used to limit the number of OAuth popups in
+  the user interface. The user id is inferred from the API call context.
+  If the data source has the Google+ authorization type, this method
+  returns false, as it cannot be determined whether the credentials are
+  already valid merely based on the user id.
   
   
   Attributes:
@@ -3011,7 +3014,8 @@ CheckValidCredsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CHECKVALIDCREDSRESPONSE,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A response indicating whether the credentials exist and are valid.
+        __doc__="""A response indicating whether the credentials exist and
+  are valid.
   
   
   Attributes:
@@ -3078,8 +3082,9 @@ StartManualTransferRunsRequest = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_STARTMANUALTRANSFERRUNSREQUEST_TIMERANGE,
                 __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-                __doc__="""A specification for a time range, this will request transfer runs with
-    run\_time between start\_time (inclusive) and end\_time (exclusive).
+                __doc__="""A specification for a time range, this will request
+    transfer runs with run\_time between start\_time (inclusive) and
+    end\_time (exclusive).
     
     
     Attributes:

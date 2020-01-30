@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ class AnnotationSentiment(enum.IntEnum):
 
 class AnnotationSource(enum.IntEnum):
     """
-    Specifies where is the answer from.
+    Specifies where the annotation comes from (whether it was provided by a
+    human labeler or a different source).
 
     Attributes:
       ANNOTATION_SOURCE_UNSPECIFIED (int)
@@ -49,8 +50,9 @@ class AnnotationType(enum.IntEnum):
     """
     Attributes:
       ANNOTATION_TYPE_UNSPECIFIED (int)
-      IMAGE_CLASSIFICATION_ANNOTATION (int): Classification annotations in an image.
-      IMAGE_BOUNDING_BOX_ANNOTATION (int): Bounding box annotations in an image.
+      IMAGE_CLASSIFICATION_ANNOTATION (int): Classification annotations in an image. Allowed for continuous evaluation.
+      IMAGE_BOUNDING_BOX_ANNOTATION (int): Bounding box annotations in an image. A form of image object detection.
+      Allowed for continuous evaluation.
       IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION (int): Oriented bounding box. The box does not have to be parallel to horizontal
       line.
       IMAGE_BOUNDING_POLY_ANNOTATION (int): Bounding poly annotations in an image.
@@ -60,9 +62,9 @@ class AnnotationType(enum.IntEnum):
       VIDEO_OBJECT_TRACKING_ANNOTATION (int): Video object tracking annotation.
       VIDEO_OBJECT_DETECTION_ANNOTATION (int): Video object detection annotation.
       VIDEO_EVENT_ANNOTATION (int): Video event annotation.
-      TEXT_CLASSIFICATION_ANNOTATION (int): Classification for text.
+      TEXT_CLASSIFICATION_ANNOTATION (int): Classification for text. Allowed for continuous evaluation.
       TEXT_ENTITY_EXTRACTION_ANNOTATION (int): Entity extraction for text.
-      GENERAL_CLASSIFICATION_ANNOTATION (int): General classification.
+      GENERAL_CLASSIFICATION_ANNOTATION (int): General classification. Allowed for continuous evaluation.
     """
 
     ANNOTATION_TYPE_UNSPECIFIED = 0
@@ -85,10 +87,10 @@ class DataType(enum.IntEnum):
     """
     Attributes:
       DATA_TYPE_UNSPECIFIED (int)
-      IMAGE (int)
+      IMAGE (int): Allowed for continuous evaluation.
       VIDEO (int)
-      TEXT (int)
-      GENERAL_DATA (int)
+      TEXT (int): Allowed for continuous evaluation.
+      GENERAL_DATA (int): Allowed for continuous evaluation.
     """
 
     DATA_TYPE_UNSPECIFIED = 0
@@ -120,10 +122,39 @@ class EvaluationJob(object):
 
         Attributes:
           STATE_UNSPECIFIED (int)
-          SCHEDULED (int)
-          RUNNING (int)
-          PAUSED (int)
-          STOPPED (int)
+          SCHEDULED (int): The job is scheduled to run at the ``configured interval``. You can
+          ``pause`` or ``delete`` the job.
+
+          When the job is in this state, it samples prediction input and output
+          from your model version into your BigQuery table as predictions occur.
+          RUNNING (int): The job is currently running. When the job runs, Data Labeling Service
+          does several things:
+
+          1. If you have configured your job to use Data Labeling Service for
+             ground truth labeling, the service creates a ``Dataset`` and a
+             labeling task for all data sampled since the last time the job ran.
+             Human labelers provide ground truth labels for your data. Human
+             labeling may take hours, or even days, depending on how much data has
+             been sampled. The job remains in the ``RUNNING`` state during this
+             time, and it can even be running multiple times in parallel if it
+             gets triggered again (for example 24 hours later) before the earlier
+             run has completed. When human labelers have finished labeling the
+             data, the next step occurs. If you have configured your job to
+             provide your own ground truth labels, Data Labeling Service still
+             creates a ``Dataset`` for newly sampled data, but it expects that you
+             have already added ground truth labels to the BigQuery table by this
+             time. The next step occurs immediately.
+
+          2. Data Labeling Service creates an ``Evaluation`` by comparing your
+             model version's predictions with the ground truth labels.
+
+          If the job remains in this state for a long time, it continues to sample
+          prediction data into your BigQuery table and will run again at the next
+          interval, even if it causes the job to run multiple times in parallel.
+          PAUSED (int): The job is not sampling prediction input and output into your BigQuery
+          table and it will not run according to its schedule. You can ``resume``
+          the job.
+          STOPPED (int): The job has this state right before it is deleted.
         """
 
         STATE_UNSPECIFIED = 0

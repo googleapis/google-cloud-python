@@ -987,7 +987,8 @@ OperationMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
-        __doc__="""Metadata used across all long running operations returned by AutoML API.
+        __doc__="""Metadata used across all long running operations returned
+  by AutoML API.
   
   
   Attributes:
@@ -1038,7 +1039,9 @@ DeleteOperationMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEOPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
-        __doc__="""Details of operations that perform deletes of any entities.
+        __doc__="""Details of operations that perform deletes of any
+  entities.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.DeleteOperationMetadata)
     ),
@@ -1052,6 +1055,7 @@ DeployModelOperationMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DEPLOYMODELOPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
         __doc__="""Details of DeployModel operation.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.DeployModelOperationMetadata)
     ),
@@ -1065,6 +1069,7 @@ UndeployModelOperationMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UNDEPLOYMODELOPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
         __doc__="""Details of UndeployModel operation.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.UndeployModelOperationMetadata)
     ),
@@ -1078,6 +1083,7 @@ CreateModelOperationMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEMODELOPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
         __doc__="""Details of CreateModel operation.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.CreateModelOperationMetadata)
     ),
@@ -1091,6 +1097,7 @@ ImportDataOperationMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMPORTDATAOPERATIONMETADATA,
         __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
         __doc__="""Details of ImportData operation.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.automl.v1beta1.ImportDataOperationMetadata)
     ),
@@ -1238,8 +1245,8 @@ ExportEvaluatedExamplesOperationMetadata = _reflection.GeneratedProtocolMessageT
             dict(
                 DESCRIPTOR=_EXPORTEVALUATEDEXAMPLESOPERATIONMETADATA_EXPORTEVALUATEDEXAMPLESOUTPUTINFO,
                 __module__="google.cloud.automl_v1beta1.proto.operations_pb2",
-                __doc__="""Further describes the output of the evaluated examples export.
-    Supplements
+                __doc__="""Further describes the output of the evaluated examples
+    export. Supplements
     
     [ExportEvaluatedExamplesOutputConfig][google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig].
     

@@ -1568,10 +1568,10 @@ Feed = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FEED,
         __module__="google.cloud.asset_v1.proto.asset_service_pb2",
-        __doc__="""An asset feed used to export asset updates to a destinations. An asset
-  feed filter controls what updates are exported. The asset feed must be
-  created within a project, organization, or folder. Supported
-  destinations are: Cloud Pub/Sub topics.
+        __doc__="""An asset feed used to export asset updates to a
+  destinations. An asset feed filter controls what updates are exported.
+  The asset feed must be created within a project, organization, or
+  folder. Supported destinations are: Cloud Pub/Sub topics.
   
   
   Attributes:

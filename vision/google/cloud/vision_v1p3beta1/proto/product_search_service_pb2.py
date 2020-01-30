@@ -2104,9 +2104,9 @@ ProductSet = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PRODUCTSET,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""A ProductSet contains Products. A ProductSet can contain a maximum of 1
-  million reference images. If the limit is exceeded, periodic indexing
-  will fail.
+        __doc__="""A ProductSet contains Products. A ProductSet can contain a
+  maximum of 1 million reference images. If the limit is exceeded,
+  periodic indexing will fail.
   
   
   Attributes:
@@ -2138,8 +2138,8 @@ ReferenceImage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REFERENCEIMAGE,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""A ``ReferenceImage`` represents a product image and its associated
-  metadata, such as bounding boxes.
+        __doc__="""A ``ReferenceImage`` represents a product image and its
+  associated metadata, such as bounding boxes.
   
   
   Attributes:
@@ -2585,7 +2585,8 @@ RemoveProductFromProductSetRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REMOVEPRODUCTFROMPRODUCTSETREQUEST,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""Request message for the ``RemoveProductFromProductSet`` method.
+        __doc__="""Request message for the ``RemoveProductFromProductSet``
+  method.
   
   
   Attributes:
@@ -2609,7 +2610,8 @@ ListProductsInProductSetRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTPRODUCTSINPRODUCTSETREQUEST,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""Request message for the ``ListProductsInProductSet`` method.
+        __doc__="""Request message for the ``ListProductsInProductSet``
+  method.
   
   
   Attributes:
@@ -2635,7 +2637,8 @@ ListProductsInProductSetResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTPRODUCTSINPRODUCTSETRESPONSE,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""Response message for the ``ListProductsInProductSet`` method.
+        __doc__="""Response message for the ``ListProductsInProductSet``
+  method.
   
   
   Attributes:
@@ -2656,8 +2659,8 @@ ImportProductSetsGcsSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMPORTPRODUCTSETSGCSSOURCE,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""The Google Cloud Storage location for a csv file which preserves a list
-  of ImportProductSetRequests in each line.
+        __doc__="""The Google Cloud Storage location for a csv file which
+  preserves a list of ImportProductSetRequests in each line.
   
   
   Attributes:
@@ -2786,7 +2789,8 @@ BatchOperationMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHOPERATIONMETADATA,
         __module__="google.cloud.vision_v1p3beta1.proto.product_search_service_pb2",
-        __doc__="""Metadata for the batch operations such as the current state.
+        __doc__="""Metadata for the batch operations such as the current
+  state.
   
   This is included in the ``metadata`` field of the ``Operation`` returned
   by the ``GetOperation`` call of the ``google::longrunning::Operations``

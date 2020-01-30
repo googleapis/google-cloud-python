@@ -270,7 +270,7 @@ class Instance(object):
                 instance.display_name = 'New display name'
                 instance.node_count = 5
 
-            before calling :meth:`update`.
+           before calling :meth:`update`.
 
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance

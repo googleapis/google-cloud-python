@@ -892,8 +892,8 @@ TablesModelColumnInfo = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TABLESMODELCOLUMNINFO,
         __module__="google.cloud.automl_v1beta1.proto.tables_pb2",
-        __doc__="""An information specific to given column and Tables Model, in context of
-  the Model and the predictions created by it.
+        __doc__="""An information specific to given column and Tables Model,
+  in context of the Model and the predictions created by it.
   
   
   Attributes:

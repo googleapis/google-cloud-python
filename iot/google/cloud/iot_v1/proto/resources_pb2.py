@@ -1833,7 +1833,7 @@ Device = _reflection.GeneratedProtocolMessageType(
           device. If no state has been reported, this field is not
           present.
       log_level:
-          **Beta Feature**  The logging verbosity for device activity.
+          \ **Beta Feature**  The logging verbosity for device activity.
           If unspecified, DeviceRegistry.log\_level will be used.
       metadata:
           The metadata key-value pairs assigned to the device. This
@@ -1922,7 +1922,7 @@ DeviceRegistry = _reflection.GeneratedProtocolMessageType(
           The DeviceService (HTTP) configuration for this device
           registry.
       log_level:
-          **Beta Feature**  The default logging verbosity for activity
+          \ **Beta Feature**  The default logging verbosity for activity
           from devices in this registry. The verbosity level can be
           overridden by Device.log\_level.
       credentials:
@@ -1969,7 +1969,8 @@ HttpConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HTTPCONFIG,
         __module__="google.cloud.iot_v1.proto.resources_pb2",
-        __doc__="""The configuration of the HTTP bridge for a device registry.
+        __doc__="""The configuration of the HTTP bridge for a device
+  registry.
   
   
   Attributes:
@@ -2014,8 +2015,8 @@ StateNotificationConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STATENOTIFICATIONCONFIG,
         __module__="google.cloud.iot_v1.proto.resources_pb2",
-        __doc__="""The configuration for notification of new states received from the
-  device.
+        __doc__="""The configuration for notification of new states received
+  from the device.
   
   
   Attributes:
@@ -2034,7 +2035,8 @@ RegistryCredential = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REGISTRYCREDENTIAL,
         __module__="google.cloud.iot_v1.proto.resources_pb2",
-        __doc__="""A server-stored registry credential used to validate device credentials.
+        __doc__="""A server-stored registry credential used to validate
+  device credentials.
   
   
   Attributes:
@@ -2055,7 +2057,8 @@ X509CertificateDetails = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_X509CERTIFICATEDETAILS,
         __module__="google.cloud.iot_v1.proto.resources_pb2",
-        __doc__="""Details of an X.509 certificate. For informational purposes only.
+        __doc__="""Details of an X.509 certificate. For informational
+  purposes only.
   
   
   Attributes:

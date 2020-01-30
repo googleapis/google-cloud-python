@@ -1858,7 +1858,8 @@ GatewayListOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GATEWAYLISTOPTIONS,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
-        __doc__="""Options for limiting the list based on gateway type and associations.
+        __doc__="""Options for limiting the list based on gateway type and
+  associations.
   
   
   Attributes:
@@ -2074,6 +2075,7 @@ SendCommandToDeviceResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SENDCOMMANDTODEVICERESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``SendCommandToDevice``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.SendCommandToDeviceResponse)
     ),
@@ -2114,6 +2116,7 @@ BindDeviceToGatewayResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BINDDEVICETOGATEWAYRESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``BindDeviceToGateway``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.BindDeviceToGatewayResponse)
     ),
@@ -2154,6 +2157,7 @@ UnbindDeviceFromGatewayResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UNBINDDEVICEFROMGATEWAYRESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``UnbindDeviceFromGateway``.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UnbindDeviceFromGatewayResponse)
     ),

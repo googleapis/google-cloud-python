@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,13 +24,9 @@ from google.cloud.webrisk_v1beta1.proto import webrisk_pb2
 from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [
-    timestamp_pb2,
-]
+_shared_modules = [timestamp_pb2]
 
-_local_modules = [
-    webrisk_pb2,
-]
+_local_modules = [webrisk_pb2]
 
 names = []
 

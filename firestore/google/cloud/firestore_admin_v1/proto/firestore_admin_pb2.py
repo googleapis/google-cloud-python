@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.firestore_admin_v1.proto import (
     field_pb2 as google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_field__pb2,
 )
@@ -27,7 +30,6 @@ from google.longrunning import (
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -35,19 +37,21 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.firestore.admin.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\035com.google.firestore.admin.v1B\023FirestoreAdminProtoP\001Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\242\002\004GCFS\252\002\037Google.Cloud.Firestore.Admin.V1\312\002\037Google\\Cloud\\Firestore\\Admin\\V1"
+        "\n\035com.google.firestore.admin.v1B\023FirestoreAdminProtoP\001Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\242\002\004GCFS\252\002\037Google.Cloud.Firestore.Admin.V1\312\002\037Google\\Cloud\\Firestore\\Admin\\V1\352AL\n!firestore.googleapis.com/Database\022'projects/{project}/databases/{database}\352Aq\n(firestore.googleapis.com/CollectionGroup\022Eprojects/{project}/databases/{database}/collectionGroups/{collection}"
     ),
     serialized_pb=_b(
-        '\n;google/cloud/firestore/admin_v1/proto/firestore_admin.proto\x12\x19google.firestore.admin.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x31google/cloud/firestore/admin_v1/proto/field.proto\x1a\x31google/cloud/firestore/admin_v1/proto/index.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x17google/api/client.proto"U\n\x12\x43reateIndexRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12/\n\x05index\x18\x02 \x01(\x0b\x32 .google.firestore.admin.v1.Index"[\n\x12ListIndexesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"a\n\x13ListIndexesResponse\x12\x31\n\x07indexes\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Index\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetIndexRequest\x12\x0c\n\x04name\x18\x01 \x01(\t""\n\x12\x44\x65leteIndexRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"v\n\x12UpdateFieldRequest\x12/\n\x05\x66ield\x18\x01 \x01(\x0b\x32 .google.firestore.admin.v1.Field\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x1f\n\x0fGetFieldRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"Z\n\x11ListFieldsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"_\n\x12ListFieldsResponse\x12\x30\n\x06\x66ields\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Field\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"Y\n\x16\x45xportDocumentsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x16\n\x0e\x63ollection_ids\x18\x02 \x03(\t\x12\x19\n\x11output_uri_prefix\x18\x03 \x01(\t"X\n\x16ImportDocumentsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x16\n\x0e\x63ollection_ids\x18\x02 \x03(\t\x12\x18\n\x10input_uri_prefix\x18\x03 \x01(\t2\xfd\x0c\n\x0e\x46irestoreAdmin\x12\xaa\x01\n\x0b\x43reateIndex\x12-.google.firestore.admin.v1.CreateIndexRequest\x1a\x1d.google.longrunning.Operation"M\x82\xd3\xe4\x93\x02G">/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes:\x05index\x12\xb4\x01\n\x0bListIndexes\x12-.google.firestore.admin.v1.ListIndexesRequest\x1a..google.firestore.admin.v1.ListIndexesResponse"F\x82\xd3\xe4\x93\x02@\x12>/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes\x12\xa0\x01\n\x08GetIndex\x12*.google.firestore.admin.v1.GetIndexRequest\x1a .google.firestore.admin.v1.Index"F\x82\xd3\xe4\x93\x02@\x12>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\x12\x9c\x01\n\x0b\x44\x65leteIndex\x12-.google.firestore.admin.v1.DeleteIndexRequest\x1a\x16.google.protobuf.Empty"F\x82\xd3\xe4\x93\x02@*>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\x12\x9f\x01\n\x08GetField\x12*.google.firestore.admin.v1.GetFieldRequest\x1a .google.firestore.admin.v1.Field"E\x82\xd3\xe4\x93\x02?\x12=/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}\x12\xaf\x01\n\x0bUpdateField\x12-.google.firestore.admin.v1.UpdateFieldRequest\x1a\x1d.google.longrunning.Operation"R\x82\xd3\xe4\x93\x02L2C/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}:\x05\x66ield\x12\xb0\x01\n\nListFields\x12,.google.firestore.admin.v1.ListFieldsRequest\x1a-.google.firestore.admin.v1.ListFieldsResponse"E\x82\xd3\xe4\x93\x02?\x12=/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields\x12\xa1\x01\n\x0f\x45xportDocuments\x12\x31.google.firestore.admin.v1.ExportDocumentsRequest\x1a\x1d.google.longrunning.Operation"<\x82\xd3\xe4\x93\x02\x36"1/v1/{name=projects/*/databases/*}:exportDocuments:\x01*\x12\xa1\x01\n\x0fImportDocuments\x12\x31.google.firestore.admin.v1.ImportDocumentsRequest\x1a\x1d.google.longrunning.Operation"<\x82\xd3\xe4\x93\x02\x36"1/v1/{name=projects/*/databases/*}:importDocuments:\x01*\x1av\xca\x41\x18\x66irestore.googleapis.com\xd2\x41Xhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastoreB\xc1\x01\n\x1d\x63om.google.firestore.admin.v1B\x13\x46irestoreAdminProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1b\x06proto3'
+        '\n;google/cloud/firestore/admin_v1/proto/firestore_admin.proto\x12\x19google.firestore.admin.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x31google/cloud/firestore/admin_v1/proto/field.proto\x1a\x31google/cloud/firestore/admin_v1/proto/index.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x8c\x01\n\x12\x43reateIndexRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(firestore.googleapis.com/CollectionGroup\x12\x34\n\x05index\x18\x02 \x01(\x0b\x32 .google.firestore.admin.v1.IndexB\x03\xe0\x41\x02"\x8d\x01\n\x12ListIndexesRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(firestore.googleapis.com/CollectionGroup\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"a\n\x13ListIndexesResponse\x12\x31\n\x07indexes\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Index\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"G\n\x0fGetIndexRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x66irestore.googleapis.com/Index"J\n\x12\x44\x65leteIndexRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x66irestore.googleapis.com/Index"{\n\x12UpdateFieldRequest\x12\x34\n\x05\x66ield\x18\x01 \x01(\x0b\x32 .google.firestore.admin.v1.FieldB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"G\n\x0fGetFieldRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x66irestore.googleapis.com/Field"\x8c\x01\n\x11ListFieldsRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(firestore.googleapis.com/CollectionGroup\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"_\n\x12ListFieldsResponse\x12\x30\n\x06\x66ields\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Field\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x84\x01\n\x16\x45xportDocumentsRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!firestore.googleapis.com/Database\x12\x16\n\x0e\x63ollection_ids\x18\x02 \x03(\t\x12\x19\n\x11output_uri_prefix\x18\x03 \x01(\t"\x83\x01\n\x16ImportDocumentsRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!firestore.googleapis.com/Database\x12\x16\n\x0e\x63ollection_ids\x18\x02 \x03(\t\x12\x18\n\x10input_uri_prefix\x18\x03 \x01(\t2\xf5\x0e\n\x0e\x46irestoreAdmin\x12\xdb\x01\n\x0b\x43reateIndex\x12-.google.firestore.admin.v1.CreateIndexRequest\x1a\x1d.google.longrunning.Operation"~\x82\xd3\xe4\x93\x02G">/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes:\x05index\xda\x41\x0cparent,index\xca\x41\x1f\n\x05Index\x12\x16IndexOperationMetadata\x12\xbd\x01\n\x0bListIndexes\x12-.google.firestore.admin.v1.ListIndexesRequest\x1a..google.firestore.admin.v1.ListIndexesResponse"O\x82\xd3\xe4\x93\x02@\x12>/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes\xda\x41\x06parent\x12\xa7\x01\n\x08GetIndex\x12*.google.firestore.admin.v1.GetIndexRequest\x1a .google.firestore.admin.v1.Index"M\x82\xd3\xe4\x93\x02@\x12>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\xda\x41\x04name\x12\xa3\x01\n\x0b\x44\x65leteIndex\x12-.google.firestore.admin.v1.DeleteIndexRequest\x1a\x16.google.protobuf.Empty"M\x82\xd3\xe4\x93\x02@*>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\xda\x41\x04name\x12\xa6\x01\n\x08GetField\x12*.google.firestore.admin.v1.GetFieldRequest\x1a .google.firestore.admin.v1.Field"L\x82\xd3\xe4\x93\x02?\x12=/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}\xda\x41\x04name\x12\xd9\x01\n\x0bUpdateField\x12-.google.firestore.admin.v1.UpdateFieldRequest\x1a\x1d.google.longrunning.Operation"|\x82\xd3\xe4\x93\x02L2C/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}:\x05\x66ield\xda\x41\x05\x66ield\xca\x41\x1f\n\x05\x46ield\x12\x16\x46ieldOperationMetadata\x12\xb9\x01\n\nListFields\x12,.google.firestore.admin.v1.ListFieldsRequest\x1a-.google.firestore.admin.v1.ListFieldsResponse"N\x82\xd3\xe4\x93\x02?\x12=/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields\xda\x41\x06parent\x12\xdd\x01\n\x0f\x45xportDocuments\x12\x31.google.firestore.admin.v1.ExportDocumentsRequest\x1a\x1d.google.longrunning.Operation"x\x82\xd3\xe4\x93\x02\x36"1/v1/{name=projects/*/databases/*}:exportDocuments:\x01*\xda\x41\x04name\xca\x41\x32\n\x17\x45xportDocumentsResponse\x12\x17\x45xportDocumentsMetadata\x12\xdb\x01\n\x0fImportDocuments\x12\x31.google.firestore.admin.v1.ImportDocumentsRequest\x1a\x1d.google.longrunning.Operation"v\x82\xd3\xe4\x93\x02\x36"1/v1/{name=projects/*/databases/*}:importDocuments:\x01*\xda\x41\x04name\xca\x41\x30\n\x15google.protobuf.Empty\x12\x17ImportDocumentsMetadata\x1av\xca\x41\x18\x66irestore.googleapis.com\xd2\x41Xhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastoreB\x84\x03\n\x1d\x63om.google.firestore.admin.v1B\x13\x46irestoreAdminProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1\xea\x41L\n!firestore.googleapis.com/Database\x12\'projects/{project}/databases/{database}\xea\x41q\n(firestore.googleapis.com/CollectionGroup\x12\x45projects/{project}/databases/{database}/collectionGroups/{collection}b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_field__pb2.DESCRIPTOR,
         google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_index__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -74,7 +78,9 @@ _CREATEINDEXREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(firestore.googleapis.com/CollectionGroup"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -92,7 +98,7 @@ _CREATEINDEXREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -104,8 +110,8 @@ _CREATEINDEXREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=347,
-    serialized_end=432,
+    serialized_start=408,
+    serialized_end=548,
 )
 
 
@@ -131,7 +137,9 @@ _LISTINDEXESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(firestore.googleapis.com/CollectionGroup"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -197,8 +205,8 @@ _LISTINDEXESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=434,
-    serialized_end=525,
+    serialized_start=551,
+    serialized_end=692,
 )
 
 
@@ -254,8 +262,8 @@ _LISTINDEXESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=527,
-    serialized_end=624,
+    serialized_start=694,
+    serialized_end=791,
 )
 
 
@@ -281,7 +289,9 @@ _GETINDEXREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036firestore.googleapis.com/Index"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -293,8 +303,8 @@ _GETINDEXREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=626,
-    serialized_end=657,
+    serialized_start=793,
+    serialized_end=864,
 )
 
 
@@ -320,7 +330,9 @@ _DELETEINDEXREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036firestore.googleapis.com/Index"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -332,8 +344,8 @@ _DELETEINDEXREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=659,
-    serialized_end=693,
+    serialized_start=866,
+    serialized_end=940,
 )
 
 
@@ -359,7 +371,7 @@ _UPDATEFIELDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -389,8 +401,8 @@ _UPDATEFIELDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=695,
-    serialized_end=813,
+    serialized_start=942,
+    serialized_end=1065,
 )
 
 
@@ -416,7 +428,9 @@ _GETFIELDREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A \n\036firestore.googleapis.com/Field"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -428,8 +442,8 @@ _GETFIELDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=815,
-    serialized_end=846,
+    serialized_start=1067,
+    serialized_end=1138,
 )
 
 
@@ -455,7 +469,9 @@ _LISTFIELDSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A*\n(firestore.googleapis.com/CollectionGroup"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -521,8 +537,8 @@ _LISTFIELDSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=848,
-    serialized_end=938,
+    serialized_start=1141,
+    serialized_end=1281,
 )
 
 
@@ -578,8 +594,8 @@ _LISTFIELDSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=940,
-    serialized_end=1035,
+    serialized_start=1283,
+    serialized_end=1378,
 )
 
 
@@ -605,7 +621,9 @@ _EXPORTDOCUMENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!firestore.googleapis.com/Database"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -653,8 +671,8 @@ _EXPORTDOCUMENTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1037,
-    serialized_end=1126,
+    serialized_start=1381,
+    serialized_end=1513,
 )
 
 
@@ -680,7 +698,9 @@ _IMPORTDOCUMENTSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A#\n!firestore.googleapis.com/Database"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -728,8 +748,8 @@ _IMPORTDOCUMENTSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1128,
-    serialized_end=1216,
+    serialized_start=1516,
+    serialized_end=1647,
 )
 
 _CREATEINDEXREQUEST.fields_by_name[
@@ -780,10 +800,10 @@ CreateIndexRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          A parent name of the form ``projects/{project_id}/databases/{d
-          atabase_id}/collectionGroups/{collection_id}``
+          Required. A parent name of the form ``projects/{project_id}/da
+          tabases/{database_id}/collectionGroups/{collection_id}``
       index:
-          The composite index to create.
+          Required. The composite index to create.
   """,
         # @@protoc_insertion_point(class_scope:google.firestore.admin.v1.CreateIndexRequest)
     ),
@@ -802,8 +822,8 @@ ListIndexesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          A parent name of the form ``projects/{project_id}/databases/{d
-          atabase_id}/collectionGroups/{collection_id}``
+          Required. A parent name of the form ``projects/{project_id}/da
+          tabases/{database_id}/collectionGroups/{collection_id}``
       filter:
           The filter to apply to list results.
       page_size:
@@ -852,8 +872,9 @@ GetIndexRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          A name of the form ``projects/{project_id}/databases/{database
-          _id}/collectionGroups/{collection_id}/indexes/{index_id}``
+          Required. A name of the form ``projects/{project_id}/databases
+          /{database_id}/collectionGroups/{collection_id}/indexes/{index
+          _id}``
   """,
         # @@protoc_insertion_point(class_scope:google.firestore.admin.v1.GetIndexRequest)
     ),
@@ -872,8 +893,9 @@ DeleteIndexRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          A name of the form ``projects/{project_id}/databases/{database
-          _id}/collectionGroups/{collection_id}/indexes/{index_id}``
+          Required. A name of the form ``projects/{project_id}/databases
+          /{database_id}/collectionGroups/{collection_id}/indexes/{index
+          _id}``
   """,
         # @@protoc_insertion_point(class_scope:google.firestore.admin.v1.DeleteIndexRequest)
     ),
@@ -892,7 +914,7 @@ UpdateFieldRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       field:
-          The field to be updated.
+          Required. The field to be updated.
       update_mask:
           A mask, relative to the field. If specified, only
           configuration specified by this field\_mask will be updated in
@@ -915,8 +937,9 @@ GetFieldRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          A name of the form ``projects/{project_id}/databases/{database
-          _id}/collectionGroups/{collection_id}/fields/{field_id}``
+          Required. A name of the form ``projects/{project_id}/databases
+          /{database_id}/collectionGroups/{collection_id}/fields/{field_
+          id}``
   """,
         # @@protoc_insertion_point(class_scope:google.firestore.admin.v1.GetFieldRequest)
     ),
@@ -935,8 +958,8 @@ ListFieldsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          A parent name of the form ``projects/{project_id}/databases/{d
-          atabase_id}/collectionGroups/{collection_id}``
+          Required. A parent name of the form ``projects/{project_id}/da
+          tabases/{database_id}/collectionGroups/{collection_id}``
       filter:
           The filter to apply to list results. Currently, [FirestoreAdmi
           n.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFie
@@ -990,7 +1013,7 @@ ExportDocumentsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Database to export. Should be of the form:
+          Required. Database to export. Should be of the form:
           ``projects/{project_id}/databases/{database_id}``.
       collection_ids:
           Which collection ids to export. Unspecified means all
@@ -1023,7 +1046,7 @@ ImportDocumentsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Database to import into. Should be of the form:
+          Required. Database to import into. Should be of the form:
           ``projects/{project_id}/databases/{database_id}``.
       collection_ids:
           Which collection ids to import. Unspecified means all
@@ -1043,6 +1066,16 @@ _sym_db.RegisterMessage(ImportDocumentsRequest)
 
 
 DESCRIPTOR._options = None
+_CREATEINDEXREQUEST.fields_by_name["parent"]._options = None
+_CREATEINDEXREQUEST.fields_by_name["index"]._options = None
+_LISTINDEXESREQUEST.fields_by_name["parent"]._options = None
+_GETINDEXREQUEST.fields_by_name["name"]._options = None
+_DELETEINDEXREQUEST.fields_by_name["name"]._options = None
+_UPDATEFIELDREQUEST.fields_by_name["field"]._options = None
+_GETFIELDREQUEST.fields_by_name["name"]._options = None
+_LISTFIELDSREQUEST.fields_by_name["parent"]._options = None
+_EXPORTDOCUMENTSREQUEST.fields_by_name["name"]._options = None
+_IMPORTDOCUMENTSREQUEST.fields_by_name["name"]._options = None
 
 _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
     name="FirestoreAdmin",
@@ -1052,8 +1085,8 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\030firestore.googleapis.com\322AXhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastore"
     ),
-    serialized_start=1219,
-    serialized_end=2880,
+    serialized_start=1650,
+    serialized_end=3559,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateIndex",
@@ -1063,7 +1096,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_CREATEINDEXREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002G">/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes:\005index'
+                '\202\323\344\223\002G">/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes:\005index\332A\014parent,index\312A\037\n\005Index\022\026IndexOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1074,7 +1107,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_LISTINDEXESREQUEST,
             output_type=_LISTINDEXESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes"
+                "\202\323\344\223\002@\022>/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1085,7 +1118,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_GETINDEXREQUEST,
             output_type=google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_index__pb2._INDEX,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}"
+                "\202\323\344\223\002@\022>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1096,7 +1129,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_DELETEINDEXREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002@*>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}"
+                "\202\323\344\223\002@*>/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1107,7 +1140,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_GETFIELDREQUEST,
             output_type=google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_field__pb2._FIELD,
             serialized_options=_b(
-                "\202\323\344\223\002?\022=/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}"
+                "\202\323\344\223\002?\022=/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1118,7 +1151,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_UPDATEFIELDREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                "\202\323\344\223\002L2C/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}:\005field"
+                "\202\323\344\223\002L2C/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}:\005field\332A\005field\312A\037\n\005Field\022\026FieldOperationMetadata"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1129,7 +1162,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_LISTFIELDSREQUEST,
             output_type=_LISTFIELDSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002?\022=/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields"
+                "\202\323\344\223\002?\022=/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1140,7 +1173,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_EXPORTDOCUMENTSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0026"1/v1/{name=projects/*/databases/*}:exportDocuments:\001*'
+                '\202\323\344\223\0026"1/v1/{name=projects/*/databases/*}:exportDocuments:\001*\332A\004name\312A2\n\027ExportDocumentsResponse\022\027ExportDocumentsMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1151,7 +1184,7 @@ _FIRESTOREADMIN = _descriptor.ServiceDescriptor(
             input_type=_IMPORTDOCUMENTSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0026"1/v1/{name=projects/*/databases/*}:importDocuments:\001*'
+                '\202\323\344\223\0026"1/v1/{name=projects/*/databases/*}:importDocuments:\001*\332A\004name\312A0\n\025google.protobuf.Empty\022\027ImportDocumentsMetadata'
             ),
         ),
     ],

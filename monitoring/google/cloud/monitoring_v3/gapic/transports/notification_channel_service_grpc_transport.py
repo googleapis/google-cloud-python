@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class NotificationChannelServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive.",
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
             )
 
         # Create the channel.
@@ -79,7 +79,7 @@ class NotificationChannelServiceGrpcTransport(object):
         self._stubs = {
             "notification_channel_service_stub": notification_service_pb2_grpc.NotificationChannelServiceStub(
                 channel
-            ),
+            )
         }
 
     @classmethod

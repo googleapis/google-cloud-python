@@ -180,7 +180,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        ),
+        )
     ],
     serialized_start=293,
     serialized_end=466,
@@ -268,7 +268,7 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -848,8 +848,8 @@ DeleteGroupRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
-        __doc__="""The ``DeleteGroup`` request. The default behavior is to be able to
-  delete a single group without any descendants.
+        __doc__="""The ``DeleteGroup`` request. The default behavior is to be
+  able to delete a single group without any descendants.
   
   
   Attributes:

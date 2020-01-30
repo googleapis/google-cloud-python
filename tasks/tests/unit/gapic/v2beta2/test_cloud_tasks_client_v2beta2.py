@@ -386,7 +386,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -405,7 +405,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -425,7 +425,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -447,7 +447,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -468,7 +468,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup Request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -490,7 +490,7 @@ class TestCloudTasksClient(object):
             client = tasks_v2beta2.CloudTasksClient()
 
         # Setup request
-        resource = client.queue_path("[PROJECT]", "[LOCATION]", "[QUEUE]")
+        resource = "resource-341064690"
         permissions = []
 
         with pytest.raises(CustomException):

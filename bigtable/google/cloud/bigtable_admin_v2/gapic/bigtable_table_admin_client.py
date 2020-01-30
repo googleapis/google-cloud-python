@@ -1051,7 +1051,7 @@ class BigtableTableAdminClient(object):
         metadata=None,
     ):
         """
-        Gets the access control policy for an instance resource. Returns an empty
+        Gets the access control policy for a table resource. Returns an empty
         policy if an table exists but does not have a policy set.
 
         Example:
