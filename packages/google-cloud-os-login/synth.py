@@ -41,7 +41,7 @@ s.move(
         library / "google/cloud/oslogin_v1/proto/oslogin_v1/**",
     ],
 )
-s.move(library / "google/cloud/oslogin_v1/proto/**/*", "google/cloud/oslogin_v1/proto")
+s.move(library / "google/cloud/oslogin_v1/proto/**/*.py", "google/cloud/oslogin_v1/proto")
 
 
 # Fix up imports
