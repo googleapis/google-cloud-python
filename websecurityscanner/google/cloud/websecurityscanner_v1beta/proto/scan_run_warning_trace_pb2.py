@@ -123,9 +123,9 @@ ScanRunWarningTrace = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SCANRUNWARNINGTRACE,
         __module__="google.cloud.websecurityscanner_v1beta.proto.scan_run_warning_trace_pb2",
-        __doc__="""Output only. Defines a warning trace message for ScanRun. Warning traces
-  provide customers with useful information that helps make the scanning
-  process more effective.
+        __doc__="""Output only. Defines a warning trace message for ScanRun.
+  Warning traces provide customers with useful information that helps make
+  the scanning process more effective.
   
   
   Attributes:
