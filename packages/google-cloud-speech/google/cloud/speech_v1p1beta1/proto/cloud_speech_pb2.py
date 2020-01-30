@@ -2505,10 +2505,10 @@ LongRunningRecognizeMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LONGRUNNINGRECOGNIZEMETADATA,
         __module__="google.cloud.speech_v1p1beta1.proto.cloud_speech_pb2",
-        __doc__="""Describes the progress of a long-running ``LongRunningRecognize`` call.
-  It is included in the ``metadata`` field of the ``Operation`` returned
-  by the ``GetOperation`` call of the ``google::longrunning::Operations``
-  service.
+        __doc__="""Describes the progress of a long-running
+  ``LongRunningRecognize`` call. It is included in the ``metadata`` field
+  of the ``Operation`` returned by the ``GetOperation`` call of the
+  ``google::longrunning::Operations`` service.
   
   
   Attributes:
@@ -2657,8 +2657,7 @@ SpeechRecognitionResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHRECOGNITIONRESULT,
         __module__="google.cloud.speech_v1p1beta1.proto.cloud_speech_pb2",
-        __doc__="""A speech recognition result corresponding to a portion of
-  the audio.
+        __doc__="""A speech recognition result corresponding to a portion of the audio.
   
   
   Attributes:
