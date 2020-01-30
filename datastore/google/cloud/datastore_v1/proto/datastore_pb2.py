@@ -16,6 +16,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.datastore_v1.proto import (
     entity_pb2 as google_dot_cloud_dot_datastore__v1_dot_proto_dot_entity__pb2,
 )
@@ -32,10 +34,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\027com.google.datastore.v1B\016DatastoreProtoP\001Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\252\002\031Google.Cloud.Datastore.V1\312\002\031Google\\Cloud\\Datastore\\V1"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/datastore_v1/proto/datastore.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a+google/cloud/datastore_v1/proto/query.proto"\x83\x01\n\rLookupRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12&\n\x04keys\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.Key"\xa2\x01\n\x0eLookupResponse\x12\x30\n\x05\x66ound\x18\x01 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x32\n\x07missing\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12*\n\x08\x64\x65\x66\x65rred\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.Key"\x84\x02\n\x0fRunQueryRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x36\n\x0cpartition_id\x18\x02 \x01(\x0b\x32 .google.datastore.v1.PartitionId\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12+\n\x05query\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.QueryH\x00\x12\x32\n\tgql_query\x18\x07 \x01(\x0b\x32\x1d.google.datastore.v1.GqlQueryH\x00\x42\x0c\n\nquery_type"s\n\x10RunQueryResponse\x12\x34\n\x05\x62\x61tch\x18\x01 \x01(\x0b\x32%.google.datastore.v1.QueryResultBatch\x12)\n\x05query\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.Query"s\n\x17\x42\x65ginTransactionRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x44\n\x13transaction_options\x18\n \x01(\x0b\x32\'.google.datastore.v1.TransactionOptions"/\n\x18\x42\x65ginTransactionResponse\x12\x13\n\x0btransaction\x18\x01 \x01(\x0c":\n\x0fRollbackRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x13\n\x0btransaction\x18\x01 \x01(\x0c"\x12\n\x10RollbackResponse"\x83\x02\n\rCommitRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x35\n\x04mode\x18\x05 \x01(\x0e\x32\'.google.datastore.v1.CommitRequest.Mode\x12\x15\n\x0btransaction\x18\x01 \x01(\x0cH\x00\x12\x30\n\tmutations\x18\x06 \x03(\x0b\x32\x1d.google.datastore.v1.Mutation"F\n\x04Mode\x12\x14\n\x10MODE_UNSPECIFIED\x10\x00\x12\x11\n\rTRANSACTIONAL\x10\x01\x12\x15\n\x11NON_TRANSACTIONAL\x10\x02\x42\x16\n\x14transaction_selector"f\n\x0e\x43ommitResponse\x12=\n\x10mutation_results\x18\x03 \x03(\x0b\x32#.google.datastore.v1.MutationResult\x12\x15\n\rindex_updates\x18\x04 \x01(\x05"P\n\x12\x41llocateIdsRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key"=\n\x13\x41llocateIdsResponse\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key"d\n\x11ReserveIdsRequest\x12\x12\n\nproject_id\x18\x08 \x01(\t\x12\x13\n\x0b\x64\x61tabase_id\x18\t \x01(\t\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key"\x14\n\x12ReserveIdsResponse"\x87\x02\n\x08Mutation\x12-\n\x06insert\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06update\x18\x05 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06upsert\x18\x06 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12*\n\x06\x64\x65lete\x18\x07 \x01(\x0b\x32\x18.google.datastore.v1.KeyH\x00\x12\x16\n\x0c\x62\x61se_version\x18\x08 \x01(\x03H\x01\x42\x0b\n\toperationB\x1d\n\x1b\x63onflict_detection_strategy"c\n\x0eMutationResult\x12%\n\x03key\x18\x03 \x01(\x0b\x32\x18.google.datastore.v1.Key\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x19\n\x11\x63onflict_detected\x18\x05 \x01(\x08"\xd5\x01\n\x0bReadOptions\x12L\n\x10read_consistency\x18\x01 \x01(\x0e\x32\x30.google.datastore.v1.ReadOptions.ReadConsistencyH\x00\x12\x15\n\x0btransaction\x18\x02 \x01(\x0cH\x00"M\n\x0fReadConsistency\x12 \n\x1cREAD_CONSISTENCY_UNSPECIFIED\x10\x00\x12\n\n\x06STRONG\x10\x01\x12\x0c\n\x08\x45VENTUAL\x10\x02\x42\x12\n\x10\x63onsistency_type"\xe3\x01\n\x12TransactionOptions\x12G\n\nread_write\x18\x01 \x01(\x0b\x32\x31.google.datastore.v1.TransactionOptions.ReadWriteH\x00\x12\x45\n\tread_only\x18\x02 \x01(\x0b\x32\x30.google.datastore.v1.TransactionOptions.ReadOnlyH\x00\x1a)\n\tReadWrite\x12\x1c\n\x14previous_transaction\x18\x01 \x01(\x0c\x1a\n\n\x08ReadOnlyB\x06\n\x04mode2\xec\x07\n\tDatastore\x12~\n\x06Lookup\x12".google.datastore.v1.LookupRequest\x1a#.google.datastore.v1.LookupResponse"+\x82\xd3\xe4\x93\x02%" /v1/projects/{project_id}:lookup:\x01*\x12\x86\x01\n\x08RunQuery\x12$.google.datastore.v1.RunQueryRequest\x1a%.google.datastore.v1.RunQueryResponse"-\x82\xd3\xe4\x93\x02\'""/v1/projects/{project_id}:runQuery:\x01*\x12\xa6\x01\n\x10\x42\x65ginTransaction\x12,.google.datastore.v1.BeginTransactionRequest\x1a-.google.datastore.v1.BeginTransactionResponse"5\x82\xd3\xe4\x93\x02/"*/v1/projects/{project_id}:beginTransaction:\x01*\x12~\n\x06\x43ommit\x12".google.datastore.v1.CommitRequest\x1a#.google.datastore.v1.CommitResponse"+\x82\xd3\xe4\x93\x02%" /v1/projects/{project_id}:commit:\x01*\x12\x86\x01\n\x08Rollback\x12$.google.datastore.v1.RollbackRequest\x1a%.google.datastore.v1.RollbackResponse"-\x82\xd3\xe4\x93\x02\'""/v1/projects/{project_id}:rollback:\x01*\x12\x92\x01\n\x0b\x41llocateIds\x12\'.google.datastore.v1.AllocateIdsRequest\x1a(.google.datastore.v1.AllocateIdsResponse"0\x82\xd3\xe4\x93\x02*"%/v1/projects/{project_id}:allocateIds:\x01*\x12\x8e\x01\n\nReserveIds\x12&.google.datastore.v1.ReserveIdsRequest\x1a\'.google.datastore.v1.ReserveIdsResponse"/\x82\xd3\xe4\x93\x02)"$/v1/projects/{project_id}:reserveIds:\x01*B\xa1\x01\n\x17\x63om.google.datastore.v1B\x0e\x44\x61tastoreProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1\xca\x02\x19Google\\Cloud\\Datastore\\V1b\x06proto3'
+        '\n/google/cloud/datastore_v1/proto/datastore.proto\x12\x13google.datastore.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a,google/cloud/datastore_v1/proto/entity.proto\x1a+google/cloud/datastore_v1/proto/query.proto"\x8d\x01\n\rLookupRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12+\n\x04keys\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.KeyB\x03\xe0\x41\x02"\xa2\x01\n\x0eLookupResponse\x12\x30\n\x05\x66ound\x18\x01 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12\x32\n\x07missing\x18\x02 \x03(\x0b\x32!.google.datastore.v1.EntityResult\x12*\n\x08\x64\x65\x66\x65rred\x18\x03 \x03(\x0b\x32\x18.google.datastore.v1.Key"\x89\x02\n\x0fRunQueryRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x36\n\x0cpartition_id\x18\x02 \x01(\x0b\x32 .google.datastore.v1.PartitionId\x12\x36\n\x0cread_options\x18\x01 \x01(\x0b\x32 .google.datastore.v1.ReadOptions\x12+\n\x05query\x18\x03 \x01(\x0b\x32\x1a.google.datastore.v1.QueryH\x00\x12\x32\n\tgql_query\x18\x07 \x01(\x0b\x32\x1d.google.datastore.v1.GqlQueryH\x00\x42\x0c\n\nquery_type"s\n\x10RunQueryResponse\x12\x34\n\x05\x62\x61tch\x18\x01 \x01(\x0b\x32%.google.datastore.v1.QueryResultBatch\x12)\n\x05query\x18\x02 \x01(\x0b\x32\x1a.google.datastore.v1.Query"x\n\x17\x42\x65ginTransactionRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x44\n\x13transaction_options\x18\n \x01(\x0b\x32\'.google.datastore.v1.TransactionOptions"/\n\x18\x42\x65ginTransactionResponse\x12\x13\n\x0btransaction\x18\x01 \x01(\x0c"D\n\x0fRollbackRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0btransaction\x18\x01 \x01(\x0c\x42\x03\xe0\x41\x02"\x12\n\x10RollbackResponse"\x88\x02\n\rCommitRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x35\n\x04mode\x18\x05 \x01(\x0e\x32\'.google.datastore.v1.CommitRequest.Mode\x12\x15\n\x0btransaction\x18\x01 \x01(\x0cH\x00\x12\x30\n\tmutations\x18\x06 \x03(\x0b\x32\x1d.google.datastore.v1.Mutation"F\n\x04Mode\x12\x14\n\x10MODE_UNSPECIFIED\x10\x00\x12\x11\n\rTRANSACTIONAL\x10\x01\x12\x15\n\x11NON_TRANSACTIONAL\x10\x02\x42\x16\n\x14transaction_selector"f\n\x0e\x43ommitResponse\x12=\n\x10mutation_results\x18\x03 \x03(\x0b\x32#.google.datastore.v1.MutationResult\x12\x15\n\rindex_updates\x18\x04 \x01(\x05"Z\n\x12\x41llocateIdsRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12+\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.KeyB\x03\xe0\x41\x02"=\n\x13\x41llocateIdsResponse\x12&\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.Key"n\n\x11ReserveIdsRequest\x12\x17\n\nproject_id\x18\x08 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x64\x61tabase_id\x18\t \x01(\t\x12+\n\x04keys\x18\x01 \x03(\x0b\x32\x18.google.datastore.v1.KeyB\x03\xe0\x41\x02"\x14\n\x12ReserveIdsResponse"\x87\x02\n\x08Mutation\x12-\n\x06insert\x18\x04 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06update\x18\x05 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12-\n\x06upsert\x18\x06 \x01(\x0b\x32\x1b.google.datastore.v1.EntityH\x00\x12*\n\x06\x64\x65lete\x18\x07 \x01(\x0b\x32\x18.google.datastore.v1.KeyH\x00\x12\x16\n\x0c\x62\x61se_version\x18\x08 \x01(\x03H\x01\x42\x0b\n\toperationB\x1d\n\x1b\x63onflict_detection_strategy"c\n\x0eMutationResult\x12%\n\x03key\x18\x03 \x01(\x0b\x32\x18.google.datastore.v1.Key\x12\x0f\n\x07version\x18\x04 \x01(\x03\x12\x19\n\x11\x63onflict_detected\x18\x05 \x01(\x08"\xd5\x01\n\x0bReadOptions\x12L\n\x10read_consistency\x18\x01 \x01(\x0e\x32\x30.google.datastore.v1.ReadOptions.ReadConsistencyH\x00\x12\x15\n\x0btransaction\x18\x02 \x01(\x0cH\x00"M\n\x0fReadConsistency\x12 \n\x1cREAD_CONSISTENCY_UNSPECIFIED\x10\x00\x12\n\n\x06STRONG\x10\x01\x12\x0c\n\x08\x45VENTUAL\x10\x02\x42\x12\n\x10\x63onsistency_type"\xe3\x01\n\x12TransactionOptions\x12G\n\nread_write\x18\x01 \x01(\x0b\x32\x31.google.datastore.v1.TransactionOptions.ReadWriteH\x00\x12\x45\n\tread_only\x18\x02 \x01(\x0b\x32\x30.google.datastore.v1.TransactionOptions.ReadOnlyH\x00\x1a)\n\tReadWrite\x12\x1c\n\x14previous_transaction\x18\x01 \x01(\x0c\x1a\n\n\x08ReadOnlyB\x06\n\x04mode2\x93\n\n\tDatastore\x12\x9d\x01\n\x06Lookup\x12".google.datastore.v1.LookupRequest\x1a#.google.datastore.v1.LookupResponse"J\x82\xd3\xe4\x93\x02%" /v1/projects/{project_id}:lookup:\x01*\xda\x41\x1cproject_id,read_options,keys\x12\x86\x01\n\x08RunQuery\x12$.google.datastore.v1.RunQueryRequest\x1a%.google.datastore.v1.RunQueryResponse"-\x82\xd3\xe4\x93\x02\'""/v1/projects/{project_id}:runQuery:\x01*\x12\xb3\x01\n\x10\x42\x65ginTransaction\x12,.google.datastore.v1.BeginTransactionRequest\x1a-.google.datastore.v1.BeginTransactionResponse"B\x82\xd3\xe4\x93\x02/"*/v1/projects/{project_id}:beginTransaction:\x01*\xda\x41\nproject_id\x12\xc2\x01\n\x06\x43ommit\x12".google.datastore.v1.CommitRequest\x1a#.google.datastore.v1.CommitResponse"o\x82\xd3\xe4\x93\x02%" /v1/projects/{project_id}:commit:\x01*\xda\x41%project_id,mode,transaction,mutations\xda\x41\x19project_id,mode,mutations\x12\x9f\x01\n\x08Rollback\x12$.google.datastore.v1.RollbackRequest\x1a%.google.datastore.v1.RollbackResponse"F\x82\xd3\xe4\x93\x02\'""/v1/projects/{project_id}:rollback:\x01*\xda\x41\x16project_id,transaction\x12\xa4\x01\n\x0b\x41llocateIds\x12\'.google.datastore.v1.AllocateIdsRequest\x1a(.google.datastore.v1.AllocateIdsResponse"B\x82\xd3\xe4\x93\x02*"%/v1/projects/{project_id}:allocateIds:\x01*\xda\x41\x0fproject_id,keys\x12\xa0\x01\n\nReserveIds\x12&.google.datastore.v1.ReserveIdsRequest\x1a\'.google.datastore.v1.ReserveIdsResponse"A\x82\xd3\xe4\x93\x02)"$/v1/projects/{project_id}:reserveIds:\x01*\xda\x41\x0fproject_id,keys\x1av\xca\x41\x18\x64\x61tastore.googleapis.com\xd2\x41Xhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastoreB\xa1\x01\n\x17\x63om.google.datastore.v1B\x0e\x44\x61tastoreProtoP\x01Z<google.golang.org/genproto/googleapis/datastore/v1;datastore\xaa\x02\x19Google.Cloud.Datastore.V1\xca\x02\x19Google\\Cloud\\Datastore\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datastore__v1_dot_proto_dot_entity__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datastore__v1_dot_proto_dot_query__pb2.DESCRIPTOR,
     ],
@@ -68,8 +72,8 @@ _COMMITREQUEST_MODE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1284,
-    serialized_end=1354,
+    serialized_start=1377,
+    serialized_end=1447,
 )
 _sym_db.RegisterEnumDescriptor(_COMMITREQUEST_MODE)
 
@@ -95,8 +99,8 @@ _READOPTIONS_READCONSISTENCY = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2237,
-    serialized_end=2314,
+    serialized_start=2350,
+    serialized_end=2427,
 )
 _sym_db.RegisterEnumDescriptor(_READOPTIONS_READCONSISTENCY)
 
@@ -123,7 +127,7 @@ _LOOKUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -159,7 +163,7 @@ _LOOKUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -171,8 +175,8 @@ _LOOKUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=194,
-    serialized_end=325,
+    serialized_start=252,
+    serialized_end=393,
 )
 
 
@@ -246,8 +250,8 @@ _LOOKUPRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=328,
-    serialized_end=490,
+    serialized_start=396,
+    serialized_end=558,
 )
 
 
@@ -273,7 +277,7 @@ _RUNQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -365,8 +369,8 @@ _RUNQUERYREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=493,
-    serialized_end=753,
+    serialized_start=561,
+    serialized_end=826,
 )
 
 
@@ -422,8 +426,8 @@ _RUNQUERYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=755,
-    serialized_end=870,
+    serialized_start=828,
+    serialized_end=943,
 )
 
 
@@ -449,7 +453,7 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -479,8 +483,8 @@ _BEGINTRANSACTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=872,
-    serialized_end=987,
+    serialized_start=945,
+    serialized_end=1065,
 )
 
 
@@ -518,8 +522,8 @@ _BEGINTRANSACTIONRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=989,
-    serialized_end=1036,
+    serialized_start=1067,
+    serialized_end=1114,
 )
 
 
@@ -545,7 +549,7 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -563,7 +567,7 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -575,8 +579,8 @@ _ROLLBACKREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1038,
-    serialized_end=1096,
+    serialized_start=1116,
+    serialized_end=1184,
 )
 
 
@@ -595,8 +599,8 @@ _ROLLBACKRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1098,
-    serialized_end=1116,
+    serialized_start=1186,
+    serialized_end=1204,
 )
 
 
@@ -622,7 +626,7 @@ _COMMITREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -696,8 +700,8 @@ _COMMITREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1119,
-    serialized_end=1378,
+    serialized_start=1207,
+    serialized_end=1471,
 )
 
 
@@ -753,8 +757,8 @@ _COMMITRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1380,
-    serialized_end=1482,
+    serialized_start=1473,
+    serialized_end=1575,
 )
 
 
@@ -780,7 +784,7 @@ _ALLOCATEIDSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -798,7 +802,7 @@ _ALLOCATEIDSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -810,8 +814,8 @@ _ALLOCATEIDSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1484,
-    serialized_end=1564,
+    serialized_start=1577,
+    serialized_end=1667,
 )
 
 
@@ -849,8 +853,8 @@ _ALLOCATEIDSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1566,
-    serialized_end=1627,
+    serialized_start=1669,
+    serialized_end=1730,
 )
 
 
@@ -876,7 +880,7 @@ _RESERVEIDSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -912,7 +916,7 @@ _RESERVEIDSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -924,8 +928,8 @@ _RESERVEIDSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1629,
-    serialized_end=1729,
+    serialized_start=1732,
+    serialized_end=1842,
 )
 
 
@@ -944,8 +948,8 @@ _RESERVEIDSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1731,
-    serialized_end=1751,
+    serialized_start=1844,
+    serialized_end=1864,
 )
 
 
@@ -1070,8 +1074,8 @@ _MUTATION = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=1754,
-    serialized_end=2017,
+    serialized_start=1867,
+    serialized_end=2130,
 )
 
 
@@ -1145,8 +1149,8 @@ _MUTATIONRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2019,
-    serialized_end=2118,
+    serialized_start=2132,
+    serialized_end=2231,
 )
 
 
@@ -1210,8 +1214,8 @@ _READOPTIONS = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2121,
-    serialized_end=2334,
+    serialized_start=2234,
+    serialized_end=2447,
 )
 
 
@@ -1249,8 +1253,8 @@ _TRANSACTIONOPTIONS_READWRITE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2503,
-    serialized_end=2544,
+    serialized_start=2616,
+    serialized_end=2657,
 )
 
 _TRANSACTIONOPTIONS_READONLY = _descriptor.Descriptor(
@@ -1268,8 +1272,8 @@ _TRANSACTIONOPTIONS_READONLY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2546,
-    serialized_end=2556,
+    serialized_start=2659,
+    serialized_end=2669,
 )
 
 _TRANSACTIONOPTIONS = _descriptor.Descriptor(
@@ -1332,8 +1336,8 @@ _TRANSACTIONOPTIONS = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2337,
-    serialized_end=2564,
+    serialized_start=2450,
+    serialized_end=2677,
 )
 
 _LOOKUPREQUEST.fields_by_name["read_options"].message_type = _READOPTIONS
@@ -1510,11 +1514,12 @@ LookupRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       read_options:
           The options for this lookup request.
       keys:
-          Keys of entities to look up.
+          Required. Keys of entities to look up.
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.LookupRequest)
     ),
@@ -1562,7 +1567,8 @@ RunQueryRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       partition_id:
           Entities are partitioned into subsets, identified by a
           partition ID. Queries are scoped to a single partition. This
@@ -1616,7 +1622,8 @@ BeginTransactionRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       transaction_options:
           Options for a new transaction.
   """,
@@ -1656,11 +1663,12 @@ RollbackRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       transaction:
-          The transaction identifier, returned by a call to [Datastore.B
-          eginTransaction][google.datastore.v1.Datastore.BeginTransactio
-          n].
+          Required. The transaction identifier, returned by a call to [D
+          atastore.BeginTransaction][google.datastore.v1.Datastore.Begin
+          Transaction].
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.RollbackRequest)
     ),
@@ -1676,6 +1684,7 @@ RollbackResponse = _reflection.GeneratedProtocolMessageType(
         __doc__="""The response for
   [Datastore.Rollback][google.datastore.v1.Datastore.Rollback]. (an empty
   message).
+  
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.RollbackResponse)
     ),
@@ -1694,7 +1703,8 @@ CommitRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       mode:
           The type of commit to perform. Defaults to ``TRANSACTIONAL``.
       transaction_selector:
@@ -1754,10 +1764,11 @@ AllocateIdsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       keys:
-          A list of keys with incomplete key paths for which to allocate
-          IDs. No key may be reserved/read-only.
+          Required. A list of keys with incomplete key paths for which
+          to allocate IDs. No key may be reserved/read-only.
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.AllocateIdsRequest)
     ),
@@ -1796,13 +1807,14 @@ ReserveIdsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       project_id:
-          The ID of the project against which to make the request.
+          Required. The ID of the project against which to make the
+          request.
       database_id:
           If not empty, the ID of the database against which to make the
           request.
       keys:
-          A list of keys with complete key paths whose numeric IDs
-          should not be auto-allocated.
+          Required. A list of keys with complete key paths whose numeric
+          IDs should not be auto-allocated.
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.ReserveIdsRequest)
     ),
@@ -1817,6 +1829,7 @@ ReserveIdsResponse = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.datastore_v1.proto.datastore_pb2",
         __doc__="""The response for
   [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
+  
   """,
         # @@protoc_insertion_point(class_scope:google.datastore.v1.ReserveIdsResponse)
     ),
@@ -1953,6 +1966,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_TRANSACTIONOPTIONS_READONLY,
                 __module__="google.cloud.datastore_v1.proto.datastore_pb2",
                 __doc__="""Options specific to read-only transactions.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.datastore.v1.TransactionOptions.ReadOnly)
             ),
@@ -1986,15 +2000,28 @@ _sym_db.RegisterMessage(TransactionOptions.ReadOnly)
 
 
 DESCRIPTOR._options = None
+_LOOKUPREQUEST.fields_by_name["project_id"]._options = None
+_LOOKUPREQUEST.fields_by_name["keys"]._options = None
+_RUNQUERYREQUEST.fields_by_name["project_id"]._options = None
+_BEGINTRANSACTIONREQUEST.fields_by_name["project_id"]._options = None
+_ROLLBACKREQUEST.fields_by_name["project_id"]._options = None
+_ROLLBACKREQUEST.fields_by_name["transaction"]._options = None
+_COMMITREQUEST.fields_by_name["project_id"]._options = None
+_ALLOCATEIDSREQUEST.fields_by_name["project_id"]._options = None
+_ALLOCATEIDSREQUEST.fields_by_name["keys"]._options = None
+_RESERVEIDSREQUEST.fields_by_name["project_id"]._options = None
+_RESERVEIDSREQUEST.fields_by_name["keys"]._options = None
 
 _DATASTORE = _descriptor.ServiceDescriptor(
     name="Datastore",
     full_name="google.datastore.v1.Datastore",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=2567,
-    serialized_end=3571,
+    serialized_options=_b(
+        "\312A\030datastore.googleapis.com\322AXhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastore"
+    ),
+    serialized_start=2680,
+    serialized_end=3979,
     methods=[
         _descriptor.MethodDescriptor(
             name="Lookup",
@@ -2004,7 +2031,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_LOOKUPREQUEST,
             output_type=_LOOKUPRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002%" /v1/projects/{project_id}:lookup:\001*'
+                '\202\323\344\223\002%" /v1/projects/{project_id}:lookup:\001*\332A\034project_id,read_options,keys'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2026,7 +2053,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_BEGINTRANSACTIONREQUEST,
             output_type=_BEGINTRANSACTIONRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002/"*/v1/projects/{project_id}:beginTransaction:\001*'
+                '\202\323\344\223\002/"*/v1/projects/{project_id}:beginTransaction:\001*\332A\nproject_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2037,7 +2064,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_COMMITREQUEST,
             output_type=_COMMITRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002%" /v1/projects/{project_id}:commit:\001*'
+                '\202\323\344\223\002%" /v1/projects/{project_id}:commit:\001*\332A%project_id,mode,transaction,mutations\332A\031project_id,mode,mutations'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2048,7 +2075,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_ROLLBACKREQUEST,
             output_type=_ROLLBACKRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002\'""/v1/projects/{project_id}:rollback:\001*'
+                '\202\323\344\223\002\'""/v1/projects/{project_id}:rollback:\001*\332A\026project_id,transaction'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2059,7 +2086,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_ALLOCATEIDSREQUEST,
             output_type=_ALLOCATEIDSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002*"%/v1/projects/{project_id}:allocateIds:\001*'
+                '\202\323\344\223\002*"%/v1/projects/{project_id}:allocateIds:\001*\332A\017project_id,keys'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2070,7 +2097,7 @@ _DATASTORE = _descriptor.ServiceDescriptor(
             input_type=_RESERVEIDSREQUEST,
             output_type=_RESERVEIDSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002)"$/v1/projects/{project_id}:reserveIds:\001*'
+                '\202\323\344\223\002)"$/v1/projects/{project_id}:reserveIds:\001*\332A\017project_id,keys'
             ),
         ),
     ],

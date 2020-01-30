@@ -1390,7 +1390,8 @@ PropertyReference = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PROPERTYREFERENCE,
         __module__="google.cloud.datastore_v1.proto.query_pb2",
-        __doc__="""A reference to a property relative to the kind expressions.
+        __doc__="""A reference to a property relative to the kind
+  expressions.
   
   
   Attributes:
@@ -1469,7 +1470,8 @@ CompositeFilter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMPOSITEFILTER,
         __module__="google.cloud.datastore_v1.proto.query_pb2",
-        __doc__="""A filter that merges multiple other filters using the given operator.
+        __doc__="""A filter that merges multiple other filters using the
+  given operator.
   
   
   Attributes:
