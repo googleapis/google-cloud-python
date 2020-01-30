@@ -53,7 +53,7 @@ class WebRiskServiceV1Beta1GrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive.",
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
             )
 
         # Create the channel.
@@ -74,7 +74,7 @@ class WebRiskServiceV1Beta1GrpcTransport(object):
         self._stubs = {
             "web_risk_service_v1_beta1_stub": webrisk_pb2_grpc.WebRiskServiceV1Beta1Stub(
                 channel
-            ),
+            )
         }
 
     @classmethod

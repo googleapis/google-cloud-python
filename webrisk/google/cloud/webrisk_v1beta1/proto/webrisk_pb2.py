@@ -281,7 +281,7 @@ _COMPUTETHREATLISTDIFFREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS,],
+    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -317,7 +317,7 @@ _COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -448,8 +448,8 @@ _COMPUTETHREATLISTDIFFRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM,],
-    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE,],
+    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM],
+    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -597,10 +597,10 @@ _SEARCHURISRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
-    nested_types=[_SEARCHURISRESPONSE_THREATURI,],
+    nested_types=[_SEARCHURISRESPONSE_THREATURI],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -788,7 +788,7 @@ _SEARCHHASHESRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH,],
+    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -938,7 +938,7 @@ _RAWINDICES = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -1482,9 +1482,10 @@ RawHashes = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RAWHASHES,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""The uncompressed threat entries in hash format. Hashes can be anywhere
-  from 4 to 32 bytes in size. A large majority are 4 bytes, but some
-  hashes are lengthened if they collide with the hash of a popular URI.
+        __doc__="""The uncompressed threat entries in hash format. Hashes can
+  be anywhere from 4 to 32 bytes in size. A large majority are 4 bytes,
+  but some hashes are lengthened if they collide with the hash of a
+  popular URI.
   
   Used for sending ThreatEntryAdditons to clients that do not support
   compression, or when sending non-4-byte hashes to clients that do

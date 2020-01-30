@@ -24,13 +24,9 @@ from google.cloud.webrisk_v1beta1.proto import webrisk_pb2
 from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [
-    timestamp_pb2,
-]
+_shared_modules = [timestamp_pb2]
 
-_local_modules = [
-    webrisk_pb2,
-]
+_local_modules = [webrisk_pb2]
 
 names = []
 

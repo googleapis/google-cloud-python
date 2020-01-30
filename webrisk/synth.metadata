@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-01-30T01:14:04.923169Z",
+  "updateTime": "2020-01-30T01:51:00.132441Z",
   "sources": [
     {
       "generator": {
@@ -42,6 +42,12 @@
     },
     {
       "path": ".flake8"
+    },
+    {
+      "path": "noxfile.py"
+    },
+    {
+      "path": "setup.py"
     },
     {
       "path": ".coveragerc"

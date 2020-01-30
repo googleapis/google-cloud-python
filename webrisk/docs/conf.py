@@ -264,7 +264,7 @@ latex_documents = [
         u"google-cloud-webrisk Documentation",
         author,
         "manual",
-    ),
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -320,7 +320,7 @@ texinfo_documents = [
         "google-cloud-webrisk",
         "GAPIC library for the {metadata.shortName} v1beta1 service",
         "APIs",
-    ),
+    )
 ]
 
 # Documents to append as an appendix to all manuals.
