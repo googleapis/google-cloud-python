@@ -47,6 +47,13 @@ for version in versions:
 templated_files = common.py_library(unit_cov_level=97, cov_level=100)
 s.move(templated_files, excludes=['noxfile.py'])
 
+s.replace("google/cloud/**/language_service_pb2.py",
+'''__doc__ = """################################################################
+  #
+  
+  Represents the input to API methods.''',
+'''__doc__="""Represents the input to API methods.'''
+)
 s.replace(
     f"google/cloud/**/gapic/language_service_client.py",
     r"types\.EncodingType",
