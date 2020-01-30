@@ -9556,9 +9556,9 @@ NodeTaint = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODETAINT,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Kubernetes taint is comprised of three fields: key, value, and effect.
-  Effect can only be one of three types: NoSchedule, PreferNoSchedule or
-  NoExecute.
+        __doc__="""Kubernetes taint is comprised of three fields: key, value,
+  and effect. Effect can only be one of three types: NoSchedule,
+  PreferNoSchedule or NoExecute.
   
   For more information, including usage and the valid values, see:
   https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
@@ -9583,9 +9583,9 @@ MasterAuth = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_MASTERAUTH,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""The authentication information for accessing the master endpoint.
-  Authentication can be done using HTTP basic auth or using client
-  certificates.
+        __doc__="""The authentication information for accessing the master
+  endpoint. Authentication can be done using HTTP basic auth or using
+  client certificates.
   
   
   Attributes:
@@ -9642,8 +9642,8 @@ AddonsConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ADDONSCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration for the addons that can be automatically spun up in the
-  cluster, enabling additional functionality.
+        __doc__="""Configuration for the addons that can be automatically
+  spun up in the cluster, enabling additional functionality.
   
   
   Attributes:
@@ -9682,9 +9682,9 @@ HttpLoadBalancing = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HTTPLOADBALANCING,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the HTTP (L7) load balancing controller addon,
-  which makes it easy to set up HTTP load balancers for services in a
-  cluster.
+        __doc__="""Configuration options for the HTTP (L7) load balancing
+  controller addon, which makes it easy to set up HTTP load balancers for
+  services in a cluster.
   
   
   Attributes:
@@ -9704,9 +9704,10 @@ HorizontalPodAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HORIZONTALPODAUTOSCALING,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the horizontal pod autoscaling feature, which
-  increases or decreases the number of replica pods a replication
-  controller has based on the resource usage of the existing pods.
+        __doc__="""Configuration options for the horizontal pod autoscaling
+  feature, which increases or decreases the number of replica pods a
+  replication controller has based on the resource usage of the existing
+  pods.
   
   
   Attributes:
@@ -9745,9 +9746,9 @@ NetworkPolicyConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NETWORKPOLICYCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration for NetworkPolicy. This only tracks whether the addon is
-  enabled or not on the Master, it does not track whether network policy
-  is enabled for the nodes.
+        __doc__="""Configuration for NetworkPolicy. This only tracks whether
+  the addon is enabled or not on the Master, it does not track whether
+  network policy is enabled for the nodes.
   
   
   Attributes:
@@ -9800,7 +9801,8 @@ AuthenticatorGroupsConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTHENTICATORGROUPSCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration for returning group information from authenticators.
+        __doc__="""Configuration for returning group information from
+  authenticators.
   
   
   Attributes:
@@ -9859,10 +9861,11 @@ MasterAuthorizedNetworksConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_MASTERAUTHORIZEDNETWORKSCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the master authorized networks feature.
-  Enabled master authorized networks will disallow all external traffic to
-  access Kubernetes master through HTTPS except traffic from the given
-  CIDR blocks, Google Compute Engine Public IPs and Google Prod IPs.
+        __doc__="""Configuration options for the master authorized networks
+  feature. Enabled master authorized networks will disallow all external
+  traffic to access Kubernetes master through HTTPS except traffic from
+  the given CIDR blocks, Google Compute Engine Public IPs and Google Prod
+  IPs.
   
   
   Attributes:
@@ -9884,8 +9887,8 @@ LegacyAbac = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LEGACYABAC,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration for the legacy Attribute Based Access Control
-  authorization mode.
+        __doc__="""Configuration for the legacy Attribute Based Access
+  Control authorization mode.
   
   
   Attributes:
@@ -9947,7 +9950,8 @@ IPAllocationPolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IPALLOCATIONPOLICY,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Configuration for controlling how IPs are allocated in the cluster.
+        __doc__="""Configuration for controlling how IPs are allocated in the
+  cluster.
   
   
   Attributes:
@@ -10266,9 +10270,9 @@ ClusterUpdate = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLUSTERUPDATE,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""ClusterUpdate describes an update to the cluster. Exactly one update can
-  be applied to a cluster with each request, so at most one field can be
-  provided.
+        __doc__="""ClusterUpdate describes an update to the cluster. Exactly
+  one update can be applied to a cluster with each request, so at most one
+  field can be provided.
   
   
   Attributes:
@@ -10358,8 +10362,9 @@ Operation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OPERATION,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""This operation resource represents operations that may have happened or
-  are happening on the cluster. All fields are output only.
+        __doc__="""This operation resource represents operations that may
+  have happened or are happening on the cluster. All fields are output
+  only.
   
   
   Attributes:
@@ -10508,7 +10513,8 @@ UpdateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPDATENODEPOOLREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""UpdateNodePoolRequests update a node pool's image and/or version.
+        __doc__="""UpdateNodePoolRequests update a node pool's image and/or
+  version.
   
   
   Attributes:
@@ -10556,8 +10562,8 @@ SetNodePoolAutoscalingRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNODEPOOLAUTOSCALINGREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetNodePoolAutoscalingRequest sets the autoscaler settings of a node
-  pool.
+        __doc__="""SetNodePoolAutoscalingRequest sets the autoscaler settings
+  of a node pool.
   
   
   Attributes:
@@ -10595,7 +10601,8 @@ SetLoggingServiceRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETLOGGINGSERVICEREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetLoggingServiceRequest sets the logging service of a cluster.
+        __doc__="""SetLoggingServiceRequest sets the logging service of a
+  cluster.
   
   
   Attributes:
@@ -10633,7 +10640,8 @@ SetMonitoringServiceRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMONITORINGSERVICEREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetMonitoringServiceRequest sets the monitoring service of a cluster.
+        __doc__="""SetMonitoringServiceRequest sets the monitoring service of
+  a cluster.
   
   
   Attributes:
@@ -10674,7 +10682,8 @@ SetAddonsConfigRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETADDONSCONFIGREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetAddonsConfigRequest sets the addons associated with the cluster.
+        __doc__="""SetAddonsConfigRequest sets the addons associated with the
+  cluster.
   
   
   Attributes:
@@ -10794,7 +10803,8 @@ SetMasterAuthRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMASTERAUTHREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetMasterAuthRequest updates the admin password of a cluster.
+        __doc__="""SetMasterAuthRequest updates the admin password of a
+  cluster.
   
   
   Attributes:
@@ -11015,7 +11025,8 @@ ListOperationsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTOPERATIONSRESPONSE,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""ListOperationsResponse is the result of ListOperationsRequest.
+        __doc__="""ListOperationsResponse is the result of
+  ListOperationsRequest.
   
   
   Attributes:
@@ -11231,12 +11242,12 @@ NodePool = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEPOOL,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""NodePool contains the name and configuration for a cluster's node pool.
-  Node pools are a set of nodes (i.e. VM's), with a common configuration
-  and specification, under the control of the cluster master. They may
-  have a set of Kubernetes labels applied to them, which may be used to
-  reference them during pod scheduling. They may also be resized up or
-  down, to accommodate the workload.
+        __doc__="""NodePool contains the name and configuration for a
+  cluster's node pool. Node pools are a set of nodes (i.e. VM's), with a
+  common configuration and specification, under the control of the cluster
+  master. They may have a set of Kubernetes labels applied to them, which
+  may be used to reference them during pod scheduling. They may also be
+  resized up or down, to accommodate the workload.
   
   
   Attributes:
@@ -11287,8 +11298,8 @@ NodeManagement = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEMANAGEMENT,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""NodeManagement defines the set of node management services turned on for
-  the node pool.
+        __doc__="""NodeManagement defines the set of node management services
+  turned on for the node pool.
   
   
   Attributes:
@@ -11316,8 +11327,8 @@ AutoUpgradeOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTOUPGRADEOPTIONS,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""AutoUpgradeOptions defines the set of options for the user to control
-  how the Auto Upgrades will proceed.
+        __doc__="""AutoUpgradeOptions defines the set of options for the user
+  to control how the Auto Upgrades will proceed.
   
   
   Attributes:
@@ -11341,8 +11352,8 @@ MaintenancePolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_MAINTENANCEPOLICY,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""MaintenancePolicy defines the maintenance policy to be used for the
-  cluster.
+        __doc__="""MaintenancePolicy defines the maintenance policy to be
+  used for the cluster.
   
   
   Attributes:
@@ -11377,8 +11388,8 @@ MaintenanceWindow = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_MAINTENANCEWINDOW,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""MaintenanceWindow defines the maintenance window to be used for the
-  cluster.
+        __doc__="""MaintenanceWindow defines the maintenance window to be
+  used for the cluster.
   
   
   Attributes:
@@ -11492,8 +11503,8 @@ SetNodePoolManagementRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNODEPOOLMANAGEMENTREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetNodePoolManagementRequest sets the node management properties of a
-  node pool.
+        __doc__="""SetNodePoolManagementRequest sets the node management
+  properties of a node pool.
   
   
   Attributes:
@@ -11569,9 +11580,9 @@ RollbackNodePoolUpgradeRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ROLLBACKNODEPOOLUPGRADEREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or
-  Failed NodePool upgrade. This will be an no-op if the last upgrade
-  successfully completed.
+        __doc__="""RollbackNodePoolUpgradeRequest rollbacks the previously
+  Aborted or Failed NodePool upgrade. This will be an no-op if the last
+  upgrade successfully completed.
   
   
   Attributes:
@@ -11607,7 +11618,8 @@ ListNodePoolsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTNODEPOOLSRESPONSE,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""ListNodePoolsResponse is the result of ListNodePoolsRequest.
+        __doc__="""ListNodePoolsResponse is the result of
+  ListNodePoolsRequest.
   
   
   Attributes:
@@ -11625,9 +11637,10 @@ ClusterAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLUSTERAUTOSCALING,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""ClusterAutoscaling contains global, per-cluster information required by
-  Cluster Autoscaler to automatically adjust the size of the cluster and
-  create/delete node pools based on the current needs.
+        __doc__="""ClusterAutoscaling contains global, per-cluster
+  information required by Cluster Autoscaler to automatically adjust the
+  size of the cluster and create/delete node pools based on the current
+  needs.
   
   
   Attributes:
@@ -11655,8 +11668,8 @@ AutoprovisioningNodePoolDefaults = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTOPROVISIONINGNODEPOOLDEFAULTS,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""AutoprovisioningNodePoolDefaults contains defaults for a node pool
-  created by NAP.
+        __doc__="""AutoprovisioningNodePoolDefaults contains defaults for a
+  node pool created by NAP.
   
   
   Attributes:
@@ -11679,8 +11692,8 @@ ResourceLimit = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RESOURCELIMIT,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Contains information about amount of some resource in the cluster. For
-  memory, value should be in GB.
+        __doc__="""Contains information about amount of some resource in the
+  cluster. For memory, value should be in GB.
   
   
   Attributes:
@@ -11702,8 +11715,9 @@ NodePoolAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEPOOLAUTOSCALING,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""NodePoolAutoscaling contains information required by cluster autoscaler
-  to adjust the size of the node pool to the current cluster usage.
+        __doc__="""NodePoolAutoscaling contains information required by
+  cluster autoscaler to adjust the size of the node pool to the current
+  cluster usage.
   
   
   Attributes:
@@ -11739,9 +11753,9 @@ SetLabelsRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SETLABELSREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetLabelsRequest sets the Google Cloud Platform labels on a Google
-  Container Engine cluster, which will in turn set them for Google Compute
-  Engine resources used by that cluster
+        __doc__="""SetLabelsRequest sets the Google Cloud Platform labels on
+  a Google Container Engine cluster, which will in turn set them for
+  Google Compute Engine resources used by that cluster
   
   
   Attributes:
@@ -11785,8 +11799,8 @@ SetLegacyAbacRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETLEGACYABACREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetLegacyAbacRequest enables or disables the ABAC authorization
-  mechanism for a cluster.
+        __doc__="""SetLegacyAbacRequest enables or disables the ABAC
+  authorization mechanism for a cluster.
   
   
   Attributes:
@@ -11822,8 +11836,9 @@ StartIPRotationRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STARTIPROTATIONREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""StartIPRotationRequest creates a new IP for the cluster and then
-  performs a node upgrade on each node pool to point to the new IP.
+        __doc__="""StartIPRotationRequest creates a new IP for the cluster
+  and then performs a node upgrade on each node pool to point to the new
+  IP.
   
   
   Attributes:
@@ -11858,8 +11873,8 @@ CompleteIPRotationRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMPLETEIPROTATIONREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""CompleteIPRotationRequest moves the cluster master back into single-IP
-  mode.
+        __doc__="""CompleteIPRotationRequest moves the cluster master back
+  into single-IP mode.
   
   
   Attributes:
@@ -11892,7 +11907,8 @@ AcceleratorConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ACCELERATORCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""AcceleratorConfig represents a Hardware Accelerator request.
+        __doc__="""AcceleratorConfig represents a Hardware Accelerator
+  request.
   
   
   Attributes:
@@ -11913,7 +11929,8 @@ SetNetworkPolicyRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNETWORKPOLICYREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetNetworkPolicyRequest enables/disables network policy for a cluster.
+        __doc__="""SetNetworkPolicyRequest enables/disables network policy
+  for a cluster.
   
   
   Attributes:
@@ -11948,7 +11965,8 @@ SetMaintenancePolicyRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMAINTENANCEPOLICYREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""SetMaintenancePolicyRequest sets the maintenance policy for a cluster.
+        __doc__="""SetMaintenancePolicyRequest sets the maintenance policy
+  for a cluster.
   
   
   Attributes:
@@ -11980,8 +11998,8 @@ StatusCondition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STATUSCONDITION,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""StatusCondition describes why a cluster or a node pool has a certain
-  status (e.g., ERROR or DEGRADED).
+        __doc__="""StatusCondition describes why a cluster or a node pool has
+  a certain status (e.g., ERROR or DEGRADED).
   
   
   Attributes:
@@ -12001,7 +12019,8 @@ NetworkConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NETWORKCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""NetworkConfig reports the relative names of network & subnetwork.
+        __doc__="""NetworkConfig reports the relative names of network &
+  subnetwork.
   
   
   Attributes:
@@ -12032,8 +12051,8 @@ IntraNodeVisibilityConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INTRANODEVISIBILITYCONFIG,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""IntraNodeVisibilityConfig contains the desired config of the intra-node
-  visibility on this cluster.
+        __doc__="""IntraNodeVisibilityConfig contains the desired config of
+  the intra-node visibility on this cluster.
   
   
   Attributes:
@@ -12091,8 +12110,8 @@ ListUsableSubnetworksRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTUSABLESUBNETWORKSREQUEST,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""ListUsableSubnetworksRequest requests the list of usable subnetworks
-  available to a user for creating clusters.
+        __doc__="""ListUsableSubnetworksRequest requests the list of usable
+  subnetworks available to a user for creating clusters.
   
   
   Attributes:
@@ -12177,7 +12196,8 @@ UsableSubnetwork = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_USABLESUBNETWORK,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""Network Name. Example: projects/my-project/global/networks/my-network
+        __doc__="""Network Name. Example:
+  projects/my-project/global/networks/my-network
   
   
   Attributes:
@@ -12211,8 +12231,8 @@ ResourceUsageExportConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_RESOURCEUSAGEEXPORTCONFIG_BIGQUERYDESTINATION,
                 __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-                __doc__="""Parameters for using BigQuery as the destination of resource usage
-    export.
+                __doc__="""Parameters for using BigQuery as the destination of
+    resource usage export.
     
     
     Attributes:
@@ -12268,9 +12288,9 @@ VerticalPodAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VERTICALPODAUTOSCALING,
         __module__="google.cloud.container_v1.proto.cluster_service_pb2",
-        __doc__="""VerticalPodAutoscaling contains global, per-cluster information required
-  by Vertical Pod Autoscaler to automatically adjust the resources of pods
-  controlled by it.
+        __doc__="""VerticalPodAutoscaling contains global, per-cluster
+  information required by Vertical Pod Autoscaler to automatically adjust
+  the resources of pods controlled by it.
   
   
   Attributes:

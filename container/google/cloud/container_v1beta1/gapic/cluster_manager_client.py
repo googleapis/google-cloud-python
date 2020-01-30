@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -215,10 +215,10 @@ class ClusterManagerClient(object):
             >>> response = client.list_clusters(project_id, zone)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the parent field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides, or "-" for all zones. This field has been
                 deprecated and replaced by the parent field.
@@ -305,14 +305,14 @@ class ClusterManagerClient(object):
             >>> response = client.get_cluster(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to retrieve.
+            cluster_id (str): Required. Deprecated. The name of the cluster to retrieve.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster) of the cluster to retrieve.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
@@ -384,11 +384,11 @@ class ClusterManagerClient(object):
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
         One firewall is added for the cluster. After cluster creation, the
-        cluster creates routes for each node to allow the containers on that
+        Kubelet creates routes for each node to allow the containers on that
         node to communicate with all other instances in the cluster.
 
         Finally, an entry is added to the project's global metadata indicating
-        which CIDR range is being used by the cluster.
+        which CIDR range the cluster is using.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -407,14 +407,14 @@ class ClusterManagerClient(object):
             >>> response = client.create_cluster(project_id, zone, cluster)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the parent field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the parent field.
-            cluster (Union[dict, ~google.cloud.container_v1beta1.types.Cluster]): A `cluster
+            cluster (Union[dict, ~google.cloud.container_v1beta1.types.Cluster]): Required. A `cluster
                 resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters>`__
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -505,16 +505,16 @@ class ClusterManagerClient(object):
             >>> response = client.update_cluster(project_id, zone, cluster_id, update)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            update (Union[dict, ~google.cloud.container_v1beta1.types.ClusterUpdate]): A description of the update.
+            update (Union[dict, ~google.cloud.container_v1beta1.types.ClusterUpdate]): Required. A description of the update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.ClusterUpdate`
@@ -582,6 +582,7 @@ class ClusterManagerClient(object):
         node_pool_id,
         node_version,
         image_type,
+        workload_metadata_config=None,
         name=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -616,18 +617,18 @@ class ClusterManagerClient(object):
             >>> response = client.update_node_pool(project_id, zone, cluster_id, node_pool_id, node_version, image_type)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to upgrade.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to upgrade.
                 This field has been deprecated and replaced by the name field.
-            node_version (str): The Kubernetes version to change the nodes to (typically an
+            node_version (str): Required. The Kubernetes version to change the nodes to (typically an
                 upgrade).
 
                 Users may specify either explicit versions offered by Kubernetes Engine or
@@ -638,7 +639,11 @@ class ClusterManagerClient(object):
                 - "1.X.Y": picks the highest valid gke.N patch in the 1.X.Y version
                 - "1.X.Y-gke.N": picks an explicit Kubernetes version
                 - "-": picks the Kubernetes master version
-            image_type (str): The desired image type for the node pool.
+            image_type (str): Required. The desired image type for the node pool.
+            workload_metadata_config (Union[dict, ~google.cloud.container_v1beta1.types.WorkloadMetadataConfig]): The desired image type for the node pool.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.container_v1beta1.types.WorkloadMetadataConfig`
             name (str): The name (project, location, cluster, node pool) of the node pool to
                 update. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
@@ -679,6 +684,7 @@ class ClusterManagerClient(object):
             node_pool_id=node_pool_id,
             node_version=node_version,
             image_type=image_type,
+            workload_metadata_config=workload_metadata_config,
             name=name,
         )
         if metadata is None:
@@ -736,18 +742,18 @@ class ClusterManagerClient(object):
             >>> response = client.set_node_pool_autoscaling(project_id, zone, cluster_id, node_pool_id, autoscaling)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to upgrade.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to upgrade.
                 This field has been deprecated and replaced by the name field.
-            autoscaling (Union[dict, ~google.cloud.container_v1beta1.types.NodePoolAutoscaling]): Autoscaling configuration for the node pool.
+            autoscaling (Union[dict, ~google.cloud.container_v1beta1.types.NodePoolAutoscaling]): Required. Autoscaling configuration for the node pool.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.NodePoolAutoscaling`
@@ -843,17 +849,17 @@ class ClusterManagerClient(object):
             >>> response = client.set_logging_service(project_id, zone, cluster_id, logging_service)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            logging_service (str): The logging service the cluster should use to write metrics. Currently
-                available options:
+            logging_service (str): Required. The logging service the cluster should use to write metrics.
+                Currently available options:
 
                 -  "logging.googleapis.com" - the Google Cloud Logging service
                 -  "none" - no metrics will be exported from the cluster
@@ -947,17 +953,17 @@ class ClusterManagerClient(object):
             >>> response = client.set_monitoring_service(project_id, zone, cluster_id, monitoring_service)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            monitoring_service (str): The monitoring service the cluster should use to write metrics.
-                Currently available options:
+            monitoring_service (str): Required. The monitoring service the cluster should use to write
+                metrics. Currently available options:
 
                 -  "monitoring.googleapis.com" - the Google Cloud Monitoring service
                 -  "none" - no metrics will be exported from the cluster
@@ -1051,16 +1057,16 @@ class ClusterManagerClient(object):
             >>> response = client.set_addons_config(project_id, zone, cluster_id, addons_config)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            addons_config (Union[dict, ~google.cloud.container_v1beta1.types.AddonsConfig]): The desired configurations for the various addons available to run in the
+            addons_config (Union[dict, ~google.cloud.container_v1beta1.types.AddonsConfig]): Required. The desired configurations for the various addons available to run in the
                 cluster.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1155,16 +1161,16 @@ class ClusterManagerClient(object):
             >>> response = client.set_locations(project_id, zone, cluster_id, locations)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            locations (list[str]): The desired list of Google Compute Engine
+            locations (list[str]): Required. The desired list of Google Compute Engine
                 `zones <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster's nodes should be located. Changing the locations a
                 cluster is in will result in nodes being either created or removed from
@@ -1261,16 +1267,16 @@ class ClusterManagerClient(object):
             >>> response = client.update_master(project_id, zone, cluster_id, master_version)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            master_version (str): The Kubernetes version to change the master to.
+            master_version (str): Required. The Kubernetes version to change the master to.
 
                 Users may specify either explicit versions offered by
                 Kubernetes Engine or version aliases, which have the following behavior:
@@ -1349,10 +1355,9 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Used to set master auth materials. Currently supports :- Changing the
-        admin password for a specific cluster. This can be either via password
-        generation or explicitly set. Modify basic\_auth.csv and reset the K8S
-        API server.
+        Sets master auth materials. Currently supports changing the admin password
+        or a specific cluster, either via password generation or explicitly setting
+        the password.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -1378,17 +1383,17 @@ class ClusterManagerClient(object):
             >>> response = client.set_master_auth(project_id, zone, cluster_id, action, update)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to upgrade.
+            cluster_id (str): Required. Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            action (~google.cloud.container_v1beta1.types.Action): The exact form of action to be taken on the master auth.
-            update (Union[dict, ~google.cloud.container_v1beta1.types.MasterAuth]): A description of the update.
+            action (~google.cloud.container_v1beta1.types.Action): Required. The exact form of action to be taken on the master auth.
+            update (Union[dict, ~google.cloud.container_v1beta1.types.MasterAuth]): Required. A description of the update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.MasterAuth`
@@ -1466,9 +1471,9 @@ class ClusterManagerClient(object):
         Firewalls and routes that were configured during cluster creation
         are also deleted.
 
-        Other Google Compute Engine resources that might be in use by the cluster
-        (e.g. load balancer resources) will not be deleted if they weren't present
-        at the initial create time.
+        Other Google Compute Engine resources that might be in use by the cluster,
+        such as load balancer resources, are not deleted if they weren't present
+        when the cluster was initially created.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -1487,14 +1492,14 @@ class ClusterManagerClient(object):
             >>> response = client.delete_cluster(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to delete.
+            cluster_id (str): Required. Deprecated. The name of the cluster to delete.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster) of the cluster to delete.
                 Specified in the format 'projects/*/locations/*/clusters/\*'.
@@ -1558,7 +1563,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Lists all operations in a project in a specific zone or all zones.
+        Lists all operations in a project in the specified zone or all zones.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -1574,10 +1579,10 @@ class ClusterManagerClient(object):
             >>> response = client.list_operations(project_id, zone)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the parent field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the parent field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
                 return operations for, or ``-`` for all zones. This field has been
                 deprecated and replaced by the parent field.
@@ -1664,15 +1669,15 @@ class ClusterManagerClient(object):
             >>> response = client.get_operation(project_id, zone, operation_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This field
-                has been deprecated and replaced by the name field.
+            operation_id (str): Required. Deprecated. The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, operation id) of the operation to get.
                 Specified in the format 'projects/*/locations/*/operations/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1755,15 +1760,15 @@ class ClusterManagerClient(object):
             >>> client.cancel_operation(project_id, zone, operation_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the operation resides. This field has been deprecated and replaced
                 by the name field.
-            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This field
-                has been deprecated and replaced by the name field.
+            operation_id (str): Required. Deprecated. The server-assigned ``name`` of the operation.
+                This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, operation id) of the operation to cancel.
                 Specified in the format 'projects/*/locations/*/operations/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1823,7 +1828,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Returns configuration info about the Kubernetes Engine service.
+        Returns configuration info about the Google Kubernetes Engine service.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -1839,15 +1844,15 @@ class ClusterManagerClient(object):
             >>> response = client.get_server_config(project_id, zone)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
                 return operations for. This field has been deprecated and replaced by
                 the name field.
-            name (str): The name (project and location) of the server config to get Specified in
-                the format 'projects/*/locations/*'.
+            name (str): The name (project and location) of the server config to get, specified
+                in the format 'projects/*/locations/*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1928,14 +1933,15 @@ class ClusterManagerClient(object):
             >>> response = client.list_node_pools(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the parent field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the parent field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the parent field.
             parent (str): The parent (project, location, cluster id) where the node pools will be
                 listed. Specified in the format 'projects/*/locations/*/clusters/\*'.
@@ -2001,7 +2007,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Retrieves the node pool requested.
+        Retrieves the requested node pool.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -2023,16 +2029,17 @@ class ClusterManagerClient(object):
             >>> response = client.get_node_pool(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool.
+            node_pool_id (str): Required. Deprecated. The name of the node pool.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster, node pool id) of the node pool to
                 get. Specified in the format
@@ -2125,16 +2132,17 @@ class ClusterManagerClient(object):
             >>> response = client.create_node_pool(project_id, zone, cluster_id, node_pool)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the parent field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the parent field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the parent field.
-            node_pool (Union[dict, ~google.cloud.container_v1beta1.types.NodePool]): The node pool to create.
+            node_pool (Union[dict, ~google.cloud.container_v1beta1.types.NodePool]): Required. The node pool to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.NodePool`
@@ -2228,16 +2236,17 @@ class ClusterManagerClient(object):
             >>> response = client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to delete.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to delete.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster, node pool id) of the node pool to
                 delete. Specified in the format
@@ -2308,8 +2317,8 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Roll back the previously Aborted or Failed NodePool upgrade.
-        This will be an no-op if the last upgrade successfully completed.
+        Rolls back a previously Aborted or Failed NodePool upgrade.
+        This makes no changes if the last upgrade successfully completed.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -2331,16 +2340,16 @@ class ClusterManagerClient(object):
             >>> response = client.rollback_node_pool_upgrade(project_id, zone, cluster_id, node_pool_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to rollback.
+            cluster_id (str): Required. Deprecated. The name of the cluster to rollback.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to rollback.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to rollback.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster, node pool id) of the node poll to
                 rollback upgrade. Specified in the format
@@ -2437,18 +2446,18 @@ class ClusterManagerClient(object):
             >>> response = client.set_node_pool_management(project_id, zone, cluster_id, node_pool_id, management)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to update.
+            cluster_id (str): Required. Deprecated. The name of the cluster to update.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to update.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to update.
                 This field has been deprecated and replaced by the name field.
-            management (Union[dict, ~google.cloud.container_v1beta1.types.NodeManagement]): NodeManagement configuration for the node pool.
+            management (Union[dict, ~google.cloud.container_v1beta1.types.NodeManagement]): Required. NodeManagement configuration for the node pool.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.NodeManagement`
@@ -2548,17 +2557,18 @@ class ClusterManagerClient(object):
             >>> response = client.set_labels(project_id, zone, cluster_id, resource_labels, label_fingerprint)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            resource_labels (dict[str -> str]): The labels to set for that cluster.
-            label_fingerprint (str): The fingerprint of the previous set of labels for this resource,
+            resource_labels (dict[str -> str]): Required. The labels to set for that cluster.
+            label_fingerprint (str): Required. The fingerprint of the previous set of labels for this resource,
                 used to detect conflicts. The fingerprint is initially generated by
                 Kubernetes Engine and changes after every request to modify or update
                 labels. You must always provide an up-to-date fingerprint hash when
@@ -2655,16 +2665,16 @@ class ClusterManagerClient(object):
             >>> response = client.set_legacy_abac(project_id, zone, cluster_id, enabled)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to update.
+            cluster_id (str): Required. Deprecated. The name of the cluster to update.
                 This field has been deprecated and replaced by the name field.
-            enabled (bool): Whether ABAC authorization will be enabled in the cluster.
+            enabled (bool): Required. Whether ABAC authorization will be enabled in the cluster.
             name (str): The name (project, location, cluster id) of the cluster to set legacy
                 abac. Specified in the format 'projects/*/locations/*/clusters/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -2733,7 +2743,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Start master IP rotation.
+        Starts master IP rotation.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -2752,14 +2762,15 @@ class ClusterManagerClient(object):
             >>> response = client.start_i_p_rotation(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster id) of the cluster to start IP
                 rotation. Specified in the format 'projects/*/locations/*/clusters/\*'.
@@ -2848,14 +2859,15 @@ class ClusterManagerClient(object):
             >>> response = client.complete_i_p_rotation(project_id, zone, cluster_id)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
             name (str): The name (project, location, cluster id) of the cluster to complete IP
                 rotation. Specified in the format 'projects/*/locations/*/clusters/\*'.
@@ -2947,18 +2959,18 @@ class ClusterManagerClient(object):
             >>> response = client.set_node_pool_size(project_id, zone, cluster_id, node_pool_id, node_count)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project number <https://support.google.com/cloud/answer/6158840>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to update.
+            cluster_id (str): Required. Deprecated. The name of the cluster to update.
                 This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to update.
+            node_pool_id (str): Required. Deprecated. The name of the node pool to update.
                 This field has been deprecated and replaced by the name field.
-            node_count (int): The desired node count for the pool.
+            node_count (int): Required. The desired node count for the pool.
             name (str): The name (project, location, cluster, node pool id) of the node pool to
                 set size. Specified in the format
                 'projects/*/locations/*/clusters/*/nodePools/*'.
@@ -3029,7 +3041,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Enables/Disables Network Policy for a cluster.
+        Enables or disables Network Policy for a cluster.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -3051,16 +3063,17 @@ class ClusterManagerClient(object):
             >>> response = client.set_network_policy(project_id, zone, cluster_id, network_policy)
 
         Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
+            project_id (str): Required. Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
+            zone (str): Required. Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
+            cluster_id (str): Required. Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            network_policy (Union[dict, ~google.cloud.container_v1beta1.types.NetworkPolicy]): Configuration options for the NetworkPolicy feature.
+            network_policy (Union[dict, ~google.cloud.container_v1beta1.types.NetworkPolicy]): Required. Configuration options for the NetworkPolicy feature.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.container_v1beta1.types.NetworkPolicy`
@@ -3155,13 +3168,13 @@ class ClusterManagerClient(object):
             >>> response = client.set_maintenance_policy(project_id, zone, cluster_id, maintenance_policy)
 
         Args:
-            project_id (str): The Google Developers Console `project ID or project
+            project_id (str): Required. The Google Developers Console `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
-            zone (str): The name of the Google Compute Engine
+            zone (str): Required. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides.
-            cluster_id (str): The name of the cluster to update.
-            maintenance_policy (Union[dict, ~google.cloud.container_v1beta1.types.MaintenancePolicy]): The maintenance policy to be set for the cluster. An empty field
+            cluster_id (str): Required. The name of the cluster to update.
+            maintenance_policy (Union[dict, ~google.cloud.container_v1beta1.types.MaintenancePolicy]): Required. The maintenance policy to be set for the cluster. An empty field
                 clears the existing maintenance policy.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -3233,7 +3246,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Lists subnetworks that are usable for creating clusters in a project.
+        Lists subnetworks that can be used for creating clusters in a project.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -3258,8 +3271,8 @@ class ClusterManagerClient(object):
             ...         pass
 
         Args:
-            parent (str): The parent project where subnetworks are usable. Specified in the format
-                'projects/\*'.
+            parent (str): Required. The parent project where subnetworks are usable. Specified in
+                the format 'projects/\*'.
             filter_ (str): Filtering currently only supports equality on the networkProjectId and
                 must be in the form: "networkProjectId=[PROJECTID]", where
                 ``networkProjectId`` is the project which owns the listed subnetworks.
@@ -3341,7 +3354,7 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Used to fetch locations that offer GKE.
+        Fetches locations that offer Google Kubernetes Engine.
 
         Example:
             >>> from google.cloud import container_v1beta1
@@ -3354,8 +3367,8 @@ class ClusterManagerClient(object):
             >>> response = client.list_locations(parent)
 
         Args:
-            parent (str): Contains the name of the resource requested. Specified in the format
-                'projects/\*'.
+            parent (str): Required. Contains the name of the resource requested. Specified in the
+                format 'projects/\*'.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

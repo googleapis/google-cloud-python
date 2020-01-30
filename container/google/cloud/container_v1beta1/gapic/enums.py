@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,23 @@ class Cluster(object):
         STOPPING = 4
         ERROR = 5
         DEGRADED = 6
+
+
+class DatabaseEncryption(object):
+    class State(enum.IntEnum):
+        """
+        State of etcd encryption.
+
+        Attributes:
+          UNKNOWN (int): Should never be set
+          ENCRYPTED (int): Secrets in etcd are encrypted.
+          DECRYPTED (int): Secrets in etcd are stored in plain text (at etcd level) - this is
+          unrelated to Google Compute Engine level full disk encryption.
+        """
+
+        UNKNOWN = 0
+        ENCRYPTED = 1
+        DECRYPTED = 2
 
 
 class IstioConfig(object):
@@ -236,6 +253,8 @@ class StatusCondition(object):
           robot service account.
           GCE_QUOTA_EXCEEDED (int): Google Compute Engine quota was exceeded.
           SET_BY_OPERATOR (int): Cluster state was manually changed by an SRE due to a system logic error.
+          CLOUD_KMS_KEY_ERROR (int): Unable to perform an encrypt operation against the CloudKMS key used for
+          etcd level encryption.
           More codes TBA
         """
 
@@ -244,6 +263,7 @@ class StatusCondition(object):
         GKE_SERVICE_ACCOUNT_DELETED = 2
         GCE_QUOTA_EXCEEDED = 3
         SET_BY_OPERATOR = 4
+        CLOUD_KMS_KEY_ERROR = 7
 
 
 class UsableSubnetworkSecondaryRange(object):
