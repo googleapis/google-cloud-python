@@ -244,11 +244,10 @@ class StreamingPullManager(object):
         ordering keys, if they exist. Clean up state for keys that no longer
         have any queued messages.
 
-        There is enough load capacity to send one message per ordering key
-        because each key is the result of an ack or nack. Since the load went
-        down by one message, it's safe to send the user another message for the
-        same key. This is why this method does not check the load before
-        activating the key.
+        Since the load went down by one message, it's probably safe to send the
+        user another message for the same key. Since the released message may be
+        bigger than the previous one, this may increase the load above the maximum.
+        This decision is by design because it simplifies MessagesOnHold.
 
         Args:
             ordering_keys(Sequence[str]): A sequence of ordering keys to

@@ -59,7 +59,7 @@ class MessagesOnHold(object):
         flight.
 
         Returns:
-            google.cloud.pubsub_v1.subscriber.message.Message|None: A message
+            Optional[google.cloud.pubsub_v1.subscriber.message.Message]: A message
                 that hasn't been sent to the user yet or None if there are no
                 messages available.
         """
@@ -109,6 +109,8 @@ class MessagesOnHold(object):
         Args:
             ordering_keys(Sequence[str]): A sequence of ordering keys to
                 activate. May be empty.
+            schedule_message_callback(Callable[google.cloud.pubsub_v1.subscriber.message.Message]):
+                The callback to call to schedule a message to be sent to the user.
         """
         for key in ordering_keys:
             assert (
@@ -149,6 +151,9 @@ class MessagesOnHold(object):
             ordering_key (str): The ordering key to clean up.
         """
         message_queue = self._pending_ordered_messages.get(ordering_key)
+        assert (
+            message_queue is not None
+        ), "Cleaning up ordering key that does not exist."
         assert not len(message_queue), (
             "Ordering key must only be removed if there are no messages "
             "left for that key."
