@@ -105,12 +105,7 @@ class InstanceAdminClient(object):
 
     @classmethod
     def instance_path(cls, project, instance):
-        """DEPRECATED. Return a fully-qualified instance string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}",
             project=project,
@@ -119,12 +114,7 @@ class InstanceAdminClient(object):
 
     @classmethod
     def instance_config_path(cls, project, instance_config):
-        """DEPRECATED. Return a fully-qualified instance_config string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instance_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instanceConfigs/{instance_config}",
             project=project,
@@ -133,12 +123,7 @@ class InstanceAdminClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )

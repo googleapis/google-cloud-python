@@ -88,12 +88,7 @@ class DatabaseAdminClient(object):
 
     @classmethod
     def database_path(cls, project, instance, database):
-        """DEPRECATED. Return a fully-qualified database string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified database string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}",
             project=project,
@@ -103,12 +98,7 @@ class DatabaseAdminClient(object):
 
     @classmethod
     def instance_path(cls, project, instance):
-        """DEPRECATED. Return a fully-qualified instance string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instance string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}",
             project=project,
