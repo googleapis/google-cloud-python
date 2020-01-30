@@ -3290,8 +3290,8 @@ Digest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DIGEST,
         __module__="google.cloud.kms_v1.proto.service_pb2",
-        __doc__="""A [Digest][google.cloud.kms.v1.Digest] holds a cryptographic message
-  digest.
+        __doc__="""A [Digest][google.cloud.kms.v1.Digest] holds a
+  cryptographic message digest.
   
   
   Attributes:
