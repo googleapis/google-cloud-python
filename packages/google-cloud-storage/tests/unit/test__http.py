@@ -55,7 +55,7 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=base_http._DEFAULT_TIMEOUT,
         )
 
     def test_build_api_url_no_extra_query_params(self):
