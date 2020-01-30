@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class GroupServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive.",
+                "The `channel` and `credentials` arguments are mutually " "exclusive."
             )
 
         # Create the channel.
@@ -77,7 +77,7 @@ class GroupServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "group_service_stub": group_service_pb2_grpc.GroupServiceStub(channel),
+            "group_service_stub": group_service_pb2_grpc.GroupServiceStub(channel)
         }
 
     @classmethod
