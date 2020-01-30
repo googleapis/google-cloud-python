@@ -920,8 +920,7 @@ SynthesizeSpeechResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHRESPONSE,
         __module__="google.cloud.texttospeech_v1.proto.cloud_tts_pb2",
-        __doc__="""The message returned to the client by the
-  ``SynthesizeSpeech`` method.
+        __doc__="""The message returned to the client by the ``SynthesizeSpeech`` method.
   
   
   Attributes:

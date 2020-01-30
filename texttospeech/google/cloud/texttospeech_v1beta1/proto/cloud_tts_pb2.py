@@ -700,7 +700,8 @@ ListVoicesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTVOICESREQUEST,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the ``ListVoices`` method.
+        __doc__="""The top-level message sent by the client for the
+  ``ListVoices`` method.
   
   
   Attributes:
@@ -726,8 +727,7 @@ ListVoicesResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTVOICESRESPONSE,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The message returned to the client by the ``ListVoices``
-  method.
+        __doc__="""The message returned to the client by the ``ListVoices`` method.
   
   
   Attributes:
