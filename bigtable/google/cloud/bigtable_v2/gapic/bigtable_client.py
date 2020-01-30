@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -408,9 +408,6 @@ class BigtableClient(object):
                 applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): Required. The key of the row to which the mutation should be applied.
-
-                Classified as IDENTIFYING\_ID to provide context around data accesses
-                for auditing systems.
             mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Required. Changes to be atomically applied to the specified row. Entries are applied
                 in order, meaning that earlier mutations can be masked by later ones.
                 Must contain at least one entry and at most 100000.
@@ -593,11 +590,7 @@ class BigtableClient(object):
             table_name (str): Required. The unique name of the table to which the conditional mutation
                 should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            row_key (bytes): Required. The key of the row to which the conditional mutation should be
-                applied.
-
-                Classified as IDENTIFYING\_ID to provide context around data accesses
-                for auditing systems.
+            row_key (bytes): Required. The key of the row to which the conditional mutation should be applied.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
             predicate_filter (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to be applied to the contents of the specified row. Depending
@@ -714,11 +707,7 @@ class BigtableClient(object):
             table_name (str): Required. The unique name of the table to which the read/modify/write
                 rules should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
-            row_key (bytes): Required. The key of the row to which the read/modify/write rules should
-                be applied.
-
-                Classified as IDENTIFYING\_ID to provide context around data accesses
-                for auditing systems.
+            row_key (bytes): Required. The key of the row to which the read/modify/write rules should be applied.
             rules (list[Union[dict, ~google.cloud.bigtable_v2.types.ReadModifyWriteRule]]): Required. Rules specifying how the specified row's contents are to be transformed
                 into writes. Entries are applied in order, meaning that earlier rules will
                 affect the results of later ones.
