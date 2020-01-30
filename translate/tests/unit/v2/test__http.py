@@ -82,7 +82,7 @@ class TestConnection(unittest.TestCase):
         expected_headers = {
             base_http.CLIENT_INFO_HEADER: conn.user_agent,
             "User-Agent": conn.user_agent,
-            "Accept-Encoding": "gzip"
+            "Accept-Encoding": "gzip",
         }
         expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
