@@ -2383,7 +2383,8 @@ GetSessionRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GETSESSIONREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [GetSession][google.spanner.v1.Spanner.GetSession].
+        __doc__="""The request for
+  [GetSession][google.spanner.v1.Spanner.GetSession].
   
   
   Attributes:
@@ -2401,7 +2402,8 @@ ListSessionsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTSESSIONSREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].
+        __doc__="""The request for
+  [ListSessions][google.spanner.v1.Spanner.ListSessions].
   
   
   Attributes:
@@ -2435,14 +2437,15 @@ ListSessionsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTSESSIONSRESPONSE,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].
+        __doc__="""The response for
+  [ListSessions][google.spanner.v1.Spanner.ListSessions].
   
   
   Attributes:
       sessions:
           The list of requested sessions.
       next_page_token:
-          ``next_page_token`` can be sent in a subsequent
+          \ ``next_page_token`` can be sent in a subsequent
           [ListSessions][google.spanner.v1.Spanner.ListSessions] call to
           fetch more of the matching sessions.
   """,
@@ -2485,7 +2488,8 @@ ExecuteSqlRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_EXECUTESQLREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
+        __doc__="""The request for
+  [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
   [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
   
   
@@ -2719,19 +2723,20 @@ PartitionOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTITIONOPTIONS,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""Options for a PartitionQueryRequest and PartitionReadRequest.
+        __doc__="""Options for a PartitionQueryRequest and
+  PartitionReadRequest.
   
   
   Attributes:
       partition_size_bytes:
-          **Note:** This hint is currently ignored by PartitionQuery and
-          PartitionRead requests.  The desired data size for each
+          \ **Note:** This hint is currently ignored by PartitionQuery
+          and PartitionRead requests.  The desired data size for each
           partition generated. The default for this option is currently
           1 GiB. This is only a hint. The actual size of each partition
           may be smaller or larger than this size request.
       max_partitions:
-          **Note:** This hint is currently ignored by PartitionQuery and
-          PartitionRead requests.  The desired maximum number of
+          \ **Note:** This hint is currently ignored by PartitionQuery
+          and PartitionRead requests.  The desired maximum number of
           partitions to return. For example, this may be set to the
           number of workers available. The default for this option is
           currently 10,000. The maximum value is currently 200,000. This
@@ -2816,7 +2821,8 @@ PartitionReadRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTITIONREADREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
+        __doc__="""The request for
+  [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
   
   
   Attributes:
@@ -2870,7 +2876,8 @@ Partition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTITION,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""Information returned for each partition returned in a PartitionResponse.
+        __doc__="""Information returned for each partition returned in a
+  PartitionResponse.
   
   
   Attributes:
@@ -3007,7 +3014,8 @@ CommitRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMMITREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [Commit][google.spanner.v1.Spanner.Commit].
+        __doc__="""The request for
+  [Commit][google.spanner.v1.Spanner.Commit].
   
   
   Attributes:
@@ -3044,7 +3052,8 @@ CommitResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMMITRESPONSE,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The response for [Commit][google.spanner.v1.Spanner.Commit].
+        __doc__="""The response for
+  [Commit][google.spanner.v1.Spanner.Commit].
   
   
   Attributes:
@@ -3063,7 +3072,8 @@ RollbackRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ROLLBACKREQUEST,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""The request for [Rollback][google.spanner.v1.Spanner.Rollback].
+        __doc__="""The request for
+  [Rollback][google.spanner.v1.Spanner.Rollback].
   
   
   Attributes:

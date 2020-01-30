@@ -279,8 +279,8 @@ Type = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TYPE,
         __module__="google.cloud.spanner_v1.proto.type_pb2",
-        __doc__="""``Type`` indicates the type of a Cloud Spanner value, as might be stored
-  in a table cell or returned from an SQL query.
+        __doc__="""\ ``Type`` indicates the type of a Cloud Spanner value, as
+  might be stored in a table cell or returned from an SQL query.
   
   
   Attributes:
@@ -332,7 +332,7 @@ StructType = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_STRUCTTYPE,
         __module__="google.cloud.spanner_v1.proto.type_pb2",
-        __doc__="""``StructType`` defines the fields of a
+        __doc__="""\ ``StructType`` defines the fields of a
   [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
   
   

@@ -1304,8 +1304,9 @@ InstanceConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTANCECONFIG,
         __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""A possible configuration for a Cloud Spanner instance. Configurations
-  define the geographic placement of nodes and their replication.
+        __doc__="""A possible configuration for a Cloud Spanner instance.
+  Configurations define the geographic placement of nodes and their
+  replication.
   
   
   Attributes:
@@ -1339,8 +1340,8 @@ Instance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_INSTANCE,
         __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""An isolated set of Cloud Spanner resources on which databases can be
-  hosted.
+        __doc__="""An isolated set of Cloud Spanner resources on which
+  databases can be hosted.
   
   
   Attributes:
@@ -1458,9 +1459,9 @@ ListInstanceConfigsResponse = _reflection.GeneratedProtocolMessageType(
       instance_configs:
           The list of requested instance configurations.
       next_page_token:
-          ``next_page_token`` can be sent in a subsequent [ListInstanceC
-          onfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListIns
-          tanceConfigs] call to fetch more of the matching instance
+          \ ``next_page_token`` can be sent in a subsequent [ListInstanc
+          eConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListI
+          nstanceConfigs] call to fetch more of the matching instance
           configurations.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstanceConfigsResponse)
@@ -1597,9 +1598,9 @@ ListInstancesResponse = _reflection.GeneratedProtocolMessageType(
       instances:
           The list of requested instances.
       next_page_token:
-          ``next_page_token`` can be sent in a subsequent [ListInstances
-          ][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances
-          ] call to fetch more of the matching instances.
+          \ ``next_page_token`` can be sent in a subsequent [ListInstanc
+          es][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanc
+          es] call to fetch more of the matching instances.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.ListInstancesResponse)
     ),
