@@ -52,7 +52,7 @@ _SPANCONTEXT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -75,8 +75,9 @@ SpanContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPANCONTEXT,
         __module__="google.cloud.monitoring_v3.proto.span_context_pb2",
-        __doc__="""The context of a span, attached to google.api.Distribution.Exemplars in
-  google.api.Distribution values during aggregation.
+        __doc__="""The context of a span, attached to
+  google.api.Distribution.Exemplars in google.api.Distribution values
+  during aggregation.
   
   It contains the name of a span with format:
   projects/[PROJECT\_ID]/traces/[TRACE\_ID]/spans/[SPAN\_ID]
