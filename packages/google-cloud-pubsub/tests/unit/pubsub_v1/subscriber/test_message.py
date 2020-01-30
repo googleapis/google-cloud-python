@@ -33,11 +33,11 @@ PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
-def create_message(data, ack_id="ACKID", **attrs):
+def create_message(data, ack_id="ACKID", delivery_attempt=0, **attrs):
     with mock.patch.object(time, "time") as time_:
         time_.return_value = RECEIVED_SECONDS
         msg = message.Message(
-            types.PubsubMessage(
+            message=types.PubsubMessage(
                 attributes=attrs,
                 data=data,
                 message_id="message_id",
@@ -45,8 +45,9 @@ def create_message(data, ack_id="ACKID", **attrs):
                     seconds=PUBLISHED_SECONDS, nanos=PUBLISHED_MICROS * 1000
                 ),
             ),
-            ack_id,
-            queue.Queue(),
+            ack_id=ack_id,
+            delivery_attempt=delivery_attempt,
+            request_queue=queue.Queue(),
         )
         return msg
 
@@ -70,6 +71,17 @@ def test_ack_id():
     ack_id = "MY-ACK-ID"
     msg = create_message(b"foo", ack_id=ack_id)
     assert msg.ack_id == ack_id
+
+
+def test_delivery_attempt():
+    delivery_attempt = 10
+    msg = create_message(b"foo", delivery_attempt=delivery_attempt)
+    assert msg.delivery_attempt == delivery_attempt
+
+
+def test_delivery_attempt_is_none():
+    msg = create_message(b"foo", delivery_attempt=0)
+    assert msg.delivery_attempt is None
 
 
 def test_publish_time():

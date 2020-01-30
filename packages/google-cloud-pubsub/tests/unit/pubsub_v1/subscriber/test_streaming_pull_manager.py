@@ -627,6 +627,37 @@ def test__get_initial_request_wo_leaser():
     assert initial_request.modify_deadline_seconds == []
 
 
+def test__on_response_delivery_attempt():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # Set up the messages.
+    response = types.StreamingPullResponse(
+        received_messages=[
+            types.ReceivedMessage(
+                ack_id="fack", message=types.PubsubMessage(data=b"foo", message_id="1")
+            ),
+            types.ReceivedMessage(
+                ack_id="back",
+                message=types.PubsubMessage(data=b"bar", message_id="2"),
+                delivery_attempt=6,
+            ),
+        ]
+    )
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    manager._on_response(response)
+
+    schedule_calls = scheduler.schedule.mock_calls
+    assert len(schedule_calls) == 2
+    msg1 = schedule_calls[0][1][1]
+    assert msg1.delivery_attempt is None
+    msg2 = schedule_calls[1][1][1]
+    assert msg2.delivery_attempt == 6
+
+
 def test__on_response_no_leaser_overload():
     manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
     manager._callback = mock.sentinel.callback
