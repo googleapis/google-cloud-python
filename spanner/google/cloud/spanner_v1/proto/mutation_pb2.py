@@ -373,7 +373,8 @@ Mutation = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MUTATION_DELETE,
                 __module__="google.cloud.spanner_v1.proto.mutation_pb2",
-                __doc__="""Arguments to [delete][google.spanner.v1.Mutation.delete] operations.
+                __doc__="""Arguments to [delete][google.spanner.v1.Mutation.delete]
+    operations.
     
     
     Attributes:
@@ -390,9 +391,9 @@ Mutation = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_MUTATION,
         __module__="google.cloud.spanner_v1.proto.mutation_pb2",
-        __doc__="""A modification to one or more Cloud Spanner rows. Mutations can be
-  applied to a Cloud Spanner database by sending them in a
-  [Commit][google.spanner.v1.Spanner.Commit] call.
+        __doc__="""A modification to one or more Cloud Spanner rows.
+  Mutations can be applied to a Cloud Spanner database by sending them in
+  a [Commit][google.spanner.v1.Spanner.Commit] call.
   
   
   Attributes:

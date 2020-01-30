@@ -478,9 +478,9 @@ PartialResultSet = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTIALRESULTSET,
         __module__="google.cloud.spanner_v1.proto.result_set_pb2",
-        __doc__="""Partial results from a streaming read or SQL query. Streaming reads and
-  SQL queries better tolerate large result sets, large rows, and large
-  values, but are a little trickier to consume.
+        __doc__="""Partial results from a streaming read or SQL query.
+  Streaming reads and SQL queries better tolerate large result sets, large
+  rows, and large values, but are a little trickier to consume.
   
   
   Attributes:
@@ -564,8 +564,8 @@ ResultSetMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RESULTSETMETADATA,
         __module__="google.cloud.spanner_v1.proto.result_set_pb2",
-        __doc__="""Metadata about a [ResultSet][google.spanner.v1.ResultSet] or
-  [PartialResultSet][google.spanner.v1.PartialResultSet].
+        __doc__="""Metadata about a [ResultSet][google.spanner.v1.ResultSet]
+  or [PartialResultSet][google.spanner.v1.PartialResultSet].
   
   
   Attributes:
@@ -591,8 +591,9 @@ ResultSetStats = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RESULTSETSTATS,
         __module__="google.cloud.spanner_v1.proto.result_set_pb2",
-        __doc__="""Additional statistics about a [ResultSet][google.spanner.v1.ResultSet]
-  or [PartialResultSet][google.spanner.v1.PartialResultSet].
+        __doc__="""Additional statistics about a
+  [ResultSet][google.spanner.v1.ResultSet] or
+  [PartialResultSet][google.spanner.v1.PartialResultSet].
   
   
   Attributes:
