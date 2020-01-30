@@ -15,13 +15,14 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.type import postal_address_pb2 as google_dot_type_dot_postal__address__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -32,14 +33,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\020JobResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\"\xd3\x0e\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x07\x63ompany\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x1b\n\x0erequisition_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05title\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12?\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.VisibilityB\x02\x18\x01\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12<\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12!\n\x14\x63ompany_display_name\x18\x1c \x01(\tB\x03\xe0\x41\x03\x12G\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfoB\x03\xe0\x41\x03\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01\x42~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
+        "\n+google/cloud/talent_v4beta1/proto/job.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/type/postal_address.proto\x1a\x1cgoogle/api/annotations.proto\"\xe0\x0f\n\x03Job\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x07\x63ompany\x18\x02 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Company\x12\x1b\n\x0erequisition_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05title\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\taddresses\x18\x06 \x03(\t\x12J\n\x10\x61pplication_info\x18\x07 \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Job.ApplicationInfo\x12=\n\x0cjob_benefits\x18\x08 \x03(\x0e\x32'.google.cloud.talent.v4beta1.JobBenefit\x12H\n\x11\x63ompensation_info\x18\t \x01(\x0b\x32-.google.cloud.talent.v4beta1.CompensationInfo\x12Q\n\x11\x63ustom_attributes\x18\n \x03(\x0b\x32\x36.google.cloud.talent.v4beta1.Job.CustomAttributesEntry\x12=\n\x0c\x64\x65gree_types\x18\x0b \x03(\x0e\x32'.google.cloud.talent.v4beta1.DegreeType\x12\x12\n\ndepartment\x18\x0c \x01(\t\x12\x45\n\x10\x65mployment_types\x18\r \x03(\x0e\x32+.google.cloud.talent.v4beta1.EmploymentType\x12\x12\n\nincentives\x18\x0e \x01(\t\x12\x15\n\rlanguage_code\x18\x0f \x01(\t\x12\x38\n\tjob_level\x18\x10 \x01(\x0e\x32%.google.cloud.talent.v4beta1.JobLevel\x12\x17\n\x0fpromotion_value\x18\x11 \x01(\x05\x12\x16\n\x0equalifications\x18\x12 \x01(\t\x12\x18\n\x10responsibilities\x18\x13 \x01(\t\x12\x42\n\x0eposting_region\x18\x14 \x01(\x0e\x32*.google.cloud.talent.v4beta1.PostingRegion\x12?\n\nvisibility\x18\x15 \x01(\x0e\x32'.google.cloud.talent.v4beta1.VisibilityB\x02\x18\x01\x12\x32\n\x0ejob_start_time\x18\x16 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0cjob_end_time\x18\x17 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14posting_publish_time\x18\x18 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x13posting_expire_time\x18\x19 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12<\n\x13posting_create_time\x18\x1a \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12<\n\x13posting_update_time\x18\x1b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12!\n\x14\x63ompany_display_name\x18\x1c \x01(\tB\x03\xe0\x41\x03\x12G\n\x0c\x64\x65rived_info\x18\x1d \x01(\x0b\x32,.google.cloud.talent.v4beta1.Job.DerivedInfoB\x03\xe0\x41\x03\x12N\n\x12processing_options\x18\x1e \x01(\x0b\x32\x32.google.cloud.talent.v4beta1.Job.ProcessingOptions\x1a\x44\n\x0f\x41pplicationInfo\x12\x0e\n\x06\x65mails\x18\x01 \x03(\t\x12\x13\n\x0binstruction\x18\x02 \x01(\t\x12\x0c\n\x04uris\x18\x03 \x03(\t\x1a\x89\x01\n\x0b\x44\x65rivedInfo\x12\x38\n\tlocations\x18\x01 \x03(\x0b\x32%.google.cloud.talent.v4beta1.Location\x12@\n\x0ejob_categories\x18\x03 \x03(\x0e\x32(.google.cloud.talent.v4beta1.JobCategory\x1a\x88\x01\n\x11ProcessingOptions\x12)\n!disable_street_address_resolution\x18\x01 \x01(\x08\x12H\n\x11html_sanitization\x18\x02 \x01(\x0e\x32-.google.cloud.talent.v4beta1.HtmlSanitization\x1a\x65\n\x15\x43ustomAttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.cloud.talent.v4beta1.CustomAttribute:\x02\x38\x01:k\xea\x41h\n\x17jobs.googleapis.com/Job\x12\x1dprojects/{project}/jobs/{job}\x12.projects/{project}/tenants/{tenant}/jobs/{job}B~\n\x1f\x63om.google.cloud.talent.v4beta1B\x10JobResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3"
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_type_dot_postal__address__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -114,8 +116,8 @@ _JOB_APPLICATIONINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1680,
-    serialized_end=1748,
+    serialized_start=1739,
+    serialized_end=1807,
 )
 
 _JOB_DERIVEDINFO = _descriptor.Descriptor(
@@ -170,8 +172,8 @@ _JOB_DERIVEDINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1751,
-    serialized_end=1888,
+    serialized_start=1810,
+    serialized_end=1947,
 )
 
 _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
@@ -226,8 +228,8 @@ _JOB_PROCESSINGOPTIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1891,
-    serialized_end=2027,
+    serialized_start=1950,
+    serialized_end=2086,
 )
 
 _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
@@ -282,8 +284,8 @@ _JOB_CUSTOMATTRIBUTESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2029,
-    serialized_end=2130,
+    serialized_start=2088,
+    serialized_end=2189,
 )
 
 _JOB = _descriptor.Descriptor(
@@ -326,7 +328,9 @@ _JOB = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A\035\n\033jobs.googleapis.com/Company"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -842,13 +846,15 @@ _JOB = _descriptor.Descriptor(
         _JOB_CUSTOMATTRIBUTESENTRY,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Ah\n\027jobs.googleapis.com/Job\022\035projects/{project}/jobs/{job}\022.projects/{project}/tenants/{tenant}/jobs/{job}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=255,
-    serialized_end=2130,
+    serialized_start=282,
+    serialized_end=2298,
 )
 
 _JOB_APPLICATIONINFO.containing_type = _JOB
@@ -1020,8 +1026,8 @@ Job = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_JOB,
         __module__="google.cloud.talent_v4beta1.proto.job_pb2",
-        __doc__="""A Job resource represents a job posting (also referred to as a "job
-  listing" or "job requisition"). A job belongs to a
+        __doc__="""A Job resource represents a job posting (also referred to
+  as a "job listing" or "job requisition"). A job belongs to a
   [Company][google.cloud.talent.v4beta1.Company], which is the hiring
   entity responsible for the job.
   
@@ -1272,4 +1278,5 @@ _JOB.fields_by_name["posting_create_time"]._options = None
 _JOB.fields_by_name["posting_update_time"]._options = None
 _JOB.fields_by_name["company_display_name"]._options = None
 _JOB.fields_by_name["derived_info"]._options = None
+_JOB._options = None
 # @@protoc_insertion_point(module_scope)
