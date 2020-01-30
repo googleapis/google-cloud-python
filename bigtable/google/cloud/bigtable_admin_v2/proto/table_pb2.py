@@ -841,7 +841,7 @@ Table = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         replication_state:
-            (``OutputOnly``) The state of replication for the table in
+            (\ ``OutputOnly``) The state of replication for the table in
             this cluster.
     """,
                 # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table.ClusterState)
@@ -867,32 +867,33 @@ Table = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TABLE,
         __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-        __doc__="""A collection of user data indexed by row, column, and timestamp. Each
-  table is served using the resources of its parent cluster.
+        __doc__="""A collection of user data indexed by row, column, and
+  timestamp. Each table is served using the resources of its parent
+  cluster.
   
   
   Attributes:
       name:
-          (``OutputOnly``) The unique name of the table. Values are of
+          (\ ``OutputOnly``) The unique name of the table. Values are of
           the form ``projects/<project>/instances/<instance>/tables/[_a-
           zA-Z0-9][-_.a-zA-Z0-9]*``. Views: ``NAME_ONLY``,
           ``SCHEMA_VIEW``, ``REPLICATION_VIEW``, ``FULL``
       cluster_states:
-          (``OutputOnly``) Map from cluster ID to per-cluster table
+          (\ ``OutputOnly``) Map from cluster ID to per-cluster table
           state. If it could not be determined whether or not the table
           has data in a particular cluster (for example, if its zone is
           unavailable), then there will be an entry for the cluster with
           UNKNOWN ``replication_status``. Views: ``REPLICATION_VIEW``,
           ``FULL``
       column_families:
-          (``CreationOnly``) The column families configured for this
+          (\ ``CreationOnly``) The column families configured for this
           table, mapped by column family ID. Views: ``SCHEMA_VIEW``,
           ``FULL``
       granularity:
-          (``CreationOnly``) The granularity (i.e. ``MILLIS``) at which
-          timestamps are stored in this table. Timestamps not matching
-          the granularity will be rejected. If unspecified at creation
-          time, the value will be set to ``MILLIS``. Views:
+          (\ ``CreationOnly``) The granularity (i.e. ``MILLIS``) at
+          which timestamps are stored in this table. Timestamps not
+          matching the granularity will be rejected. If unspecified at
+          creation time, the value will be set to ``MILLIS``. Views:
           ``SCHEMA_VIEW``, ``FULL``
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table)
@@ -909,7 +910,8 @@ ColumnFamily = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COLUMNFAMILY,
         __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-        __doc__="""A set of columns within a table which share a common configuration.
+        __doc__="""A set of columns within a table which share a common
+  configuration.
   
   
   Attributes:
@@ -935,7 +937,8 @@ GcRule = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_GCRULE_INTERSECTION,
                 __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-                __doc__="""A GcRule which deletes cells matching all of the given rules.
+                __doc__="""A GcRule which deletes cells matching all of the given
+    rules.
     
     
     Attributes:
@@ -952,7 +955,8 @@ GcRule = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_GCRULE_UNION,
                 __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-                __doc__="""A GcRule which deletes cells matching any of the given rules.
+                __doc__="""A GcRule which deletes cells matching any of the given
+    rules.
     
     
     Attributes:
@@ -965,7 +969,8 @@ GcRule = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_GCRULE,
         __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-        __doc__="""Rule for determining which cells to delete during garbage collection.
+        __doc__="""Rule for determining which cells to delete during garbage
+  collection.
   
   
   Attributes:
@@ -995,8 +1000,9 @@ Snapshot = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SNAPSHOT,
         __module__="google.cloud.bigtable.admin_v2.proto.table_pb2",
-        __doc__="""A snapshot of a table at a particular time. A snapshot can be used as a
-  checkpoint for data restoration or a data source for a new table.
+        __doc__="""A snapshot of a table at a particular time. A snapshot can
+  be used as a checkpoint for data restoration or a data source for a new
+  table.
   
   Note: This is a private alpha release of Cloud Bigtable snapshots. This
   feature is not currently available to most Cloud Bigtable customers.
@@ -1007,28 +1013,28 @@ Snapshot = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          (``OutputOnly``) The unique name of the snapshot. Values are
+          (\ ``OutputOnly``) The unique name of the snapshot. Values are
           of the form ``projects/<project>/instances/<instance>/clusters
           /<cluster>/snapshots/<snapshot>``.
       source_table:
-          (``OutputOnly``) The source table at the time the snapshot was
-          taken.
+          (\ ``OutputOnly``) The source table at the time the snapshot
+          was taken.
       data_size_bytes:
-          (``OutputOnly``) The size of the data in the source table at
+          (\ ``OutputOnly``) The size of the data in the source table at
           the time the snapshot was taken. In some cases, this value may
           be computed asynchronously via a background process and a
           placeholder of 0 will be used in the meantime.
       create_time:
-          (``OutputOnly``) The time when the snapshot is created.
+          (\ ``OutputOnly``) The time when the snapshot is created.
       delete_time:
-          (``OutputOnly``) The time when the snapshot will be deleted.
+          (\ ``OutputOnly``) The time when the snapshot will be deleted.
           The maximum amount of time a snapshot can stay active is 365
           days. If 'ttl' is not specified, the default maximum of 365
           days will be used.
       state:
-          (``OutputOnly``) The current state of the snapshot.
+          (\ ``OutputOnly``) The current state of the snapshot.
       description:
-          (``OutputOnly``) Description of the snapshot.
+          (\ ``OutputOnly``) Description of the snapshot.
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Snapshot)
     ),

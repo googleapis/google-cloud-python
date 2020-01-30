@@ -1298,8 +1298,6 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
             this CellChunk is a continuation of the same row as the
             previous CellChunk in the response stream, even if that
             CellChunk was in a previous ReadRowsResponse message.
-            Classified as IDENTIFYING\_ID to provide context around data
-            accesses for auditing systems.
         family_name:
             The column family name for this chunk of data. If this message
             is not present this CellChunk is a continuation of the same
@@ -1413,8 +1411,7 @@ SampleRowKeysResponse = _reflection.GeneratedProtocolMessageType(
           if present. Note that row keys in this list may not have ever
           been written to or read from, and users should therefore not
           make any assumptions about the row key structure that are
-          specific to their use case.  Classified as IDENTIFYING\_ID to
-          provide context around data accesses for auditing systems.
+          specific to their use case.
       offset_bytes:
           Approximate total storage space used by all rows in the table
           which precede ``row_key``. Buffering the contents of all rows
@@ -1445,8 +1442,7 @@ MutateRowRequest = _reflection.GeneratedProtocolMessageType(
           specified, the "default" application profile will be used.
       row_key:
           Required. The key of the row to which the mutation should be
-          applied.  Classified as IDENTIFYING\_ID to provide context
-          around data accesses for auditing systems.
+          applied.
       mutations:
           Required. Changes to be atomically applied to the specified
           row. Entries are applied in order, meaning that earlier
@@ -1465,6 +1461,7 @@ MutateRowResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_MUTATEROWRESPONSE,
         __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
         __doc__="""Response message for Bigtable.MutateRow.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowResponse)
     ),
@@ -1487,8 +1484,7 @@ MutateRowsRequest = _reflection.GeneratedProtocolMessageType(
     Attributes:
         row_key:
             The key of the row to which the ``mutations`` should be
-            applied.  Classified as IDENTIFYING\_ID to provide context
-            around data accesses for auditing systems.
+            applied.
         mutations:
             Required. Changes to be atomically applied to the specified
             row. Mutations are applied in order, meaning that earlier
@@ -1534,7 +1530,8 @@ MutateRowsResponse = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MUTATEROWSRESPONSE_ENTRY,
                 __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
-                __doc__="""The result of applying a passed mutation in the original request.
+                __doc__="""The result of applying a passed mutation in the original
+    request.
     
     
     Attributes:
@@ -1585,8 +1582,7 @@ CheckAndMutateRowRequest = _reflection.GeneratedProtocolMessageType(
           specified, the "default" application profile will be used.
       row_key:
           Required. The key of the row to which the conditional mutation
-          should be applied.  Classified as IDENTIFYING\_ID to provide
-          context around data accesses for auditing systems.
+          should be applied.
       predicate_filter:
           The filter to be applied to the contents of the specified row.
           Depending on whether or not any results are yielded, either
@@ -1651,8 +1647,7 @@ ReadModifyWriteRowRequest = _reflection.GeneratedProtocolMessageType(
           specified, the "default" application profile will be used.
       row_key:
           Required. The key of the row to which the read/modify/write
-          rules should be applied.  Classified as IDENTIFYING\_ID to
-          provide context around data accesses for auditing systems.
+          rules should be applied.
       rules:
           Required. Rules specifying how the specified row's contents
           are to be transformed into writes. Entries are applied in
