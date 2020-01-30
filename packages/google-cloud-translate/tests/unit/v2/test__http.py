@@ -80,9 +80,9 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(result, data)
 
         expected_headers = {
-            "Accept-Encoding": "gzip",
             base_http.CLIENT_INFO_HEADER: conn.user_agent,
             "User-Agent": conn.user_agent,
+            "Accept-Encoding": "gzip",
         }
         expected_uri = conn.build_api_url("/rainbow")
         http.request.assert_called_once_with(
@@ -90,5 +90,5 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=60,
         )
