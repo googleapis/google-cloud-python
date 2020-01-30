@@ -604,10 +604,11 @@ UpgradeNote = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPGRADENOTE,
         __module__="grafeas_v1.proto.upgrade_pb2",
-        __doc__="""An Upgrade Note represents a potential upgrade of a package to a given
-  version. For each package version combination (i.e. bash 4.0, bash 4.1,
-  bash 4.1.2), there will be an Upgrade Note. For Windows, windows\_update
-  field represents the information related to the update.
+        __doc__="""An Upgrade Note represents a potential upgrade of a
+  package to a given version. For each package version combination (i.e.
+  bash 4.0, bash 4.1, bash 4.1.2), there will be an Upgrade Note. For
+  Windows, windows\_update field represents the information related to the
+  update.
   
   
   Attributes:
@@ -633,9 +634,10 @@ UpgradeDistribution = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPGRADEDISTRIBUTION,
         __module__="grafeas_v1.proto.upgrade_pb2",
-        __doc__="""The Upgrade Distribution represents metadata about the Upgrade for each
-  operating system (CPE). Some distributions have additional metadata
-  around updates, classifying them into various categories and severities.
+        __doc__="""The Upgrade Distribution represents metadata about the
+  Upgrade for each operating system (CPE). Some distributions have
+  additional metadata around updates, classifying them into various
+  categories and severities.
   
   
   Attributes:
@@ -700,9 +702,9 @@ WindowsUpdate = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_WINDOWSUPDATE,
         __module__="grafeas_v1.proto.upgrade_pb2",
-        __doc__="""Windows Update represents the metadata about the update for the Windows
-  operating system. The fields in this message come from the Windows
-  Update API documented at
+        __doc__="""Windows Update represents the metadata about the update
+  for the Windows operating system. The fields in this message come from
+  the Windows Update API documented at
   https://docs.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdate.
   
   
@@ -736,11 +738,12 @@ UpgradeOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPGRADEOCCURRENCE,
         __module__="grafeas_v1.proto.upgrade_pb2",
-        __doc__="""An Upgrade Occurrence represents that a specific resource\_url could
-  install a specific upgrade. This presence is supplied via local sources
-  (i.e. it is present in the mirror and the running system has noticed its
-  availability). For Windows, both distribution and windows\_update
-  contain information for the Windows update.
+        __doc__="""An Upgrade Occurrence represents that a specific
+  resource\_url could install a specific upgrade. This presence is
+  supplied via local sources (i.e. it is present in the mirror and the
+  running system has noticed its availability). For Windows, both
+  distribution and windows\_update contain information for the Windows
+  update.
   
   
   Attributes:
