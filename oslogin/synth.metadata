@@ -1,19 +1,19 @@
 {
-  "updateTime": "2020-01-08T13:26:22.968839Z",
+  "updateTime": "2020-01-30T02:35:03.193416Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.43.0",
-        "dockerImage": "googleapis/artman@sha256:264654a37596a44b0668b8ce6ac41082d713f6ee150b3fc6425fa78cc64e4f20"
+        "version": "0.44.4",
+        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
       }
     },
     {
       "git": {
         "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "08b488e0660c59842a7dee0e3e2b65d9e3a514a9",
-        "internalRef": "288625007"
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "b491d07cadaae7cde5608321f913e5ca1459b32d",
+        "internalRef": "292245373"
       }
     },
     {
@@ -34,6 +34,95 @@
         "generator": "gapic",
         "config": "google/cloud/oslogin/artman_oslogin_v1.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": "noxfile.py"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "docs/conf.py"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/gapic/v1/api.rst"
+    },
+    {
+      "path": "docs/gapic/v1/types.rst"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "google/__init__.py"
+    },
+    {
+      "path": "google/cloud/__init__.py"
+    },
+    {
+      "path": "google/cloud/oslogin.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/types.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/__init__.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/os_login_service_client.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/os_login_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/enums.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/transports/__init__.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/gapic/transports/os_login_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/oslogin.proto"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/oslogin_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/common_pb2.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/common_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/oslogin_v1/proto/oslogin_pb2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v1/test_os_login_service_client_v1.py"
     }
   ]
 }
